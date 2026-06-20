@@ -1211,21 +1211,24 @@
   .download-list{ display:flex; flex-direction:column; gap:8px; }
 
   .download-item{
+    display:flex; align-items:center; gap:8px;
+  }
+  .download-item .download-item-link{
     display:flex; align-items:center; justify-content:space-between;
-    gap:12px; padding:12px 14px;
+    gap:12px; padding:12px 14px; flex:1; min-width:0;
     border:1px solid var(--line); border-radius:2px;
     background:var(--paper); text-decoration:none; color:var(--ink);
     transition:border-color .15s ease, background .15s ease, transform .1s ease;
     position:relative; overflow:hidden;
   }
-  .download-item::after{
+  .download-item .download-item-link::after{
     content:''; position:absolute; inset:0;
     background:linear-gradient(90deg,transparent,rgba(194,112,61,.04));
     opacity:0; transition:opacity .2s;
   }
-  .download-item:hover{ border-color:var(--ochre); background:var(--white); }
-  .download-item:hover::after{ opacity:1; }
-  .download-item:active{ transform:scale(.995); }
+  .download-item .download-item-link:hover{ border-color:var(--ochre); background:var(--white); }
+  .download-item .download-item-link:hover::after{ opacity:1; }
+  .download-item .download-item-link:active{ transform:scale(.995); }
 
   .download-item .di-left{ display:flex; align-items:center; gap:10px; }
   .download-item .di-icon{
@@ -1254,19 +1257,19 @@
     flex-shrink:0;
     animation:downloadStatusPulse 2.2s ease-in-out infinite;
   }
-  .download-item.unavailable{
+  .download-item-link.unavailable{
     border-color:#f5c2c7;
     background:#fff7f7;
     cursor:default;
   }
-  .download-item.unavailable:hover,
-  .download-item.unavailable:hover::after{
+  .download-item-link.unavailable:hover,
+  .download-item-link.unavailable:hover::after{
     border-color:#f5c2c7;
     background:#fff7f7;
     opacity:1;
   }
-  .download-item.unavailable .di-arrow{ display:none; }
-  .download-item.unavailable .download-status{ display:inline-flex; }
+  .download-item-link.unavailable .di-arrow{ display:none; }
+  .download-item-link.unavailable .download-status{ display:inline-flex; }
 
   @keyframes downloadStatusPulse{
     0%, 100%{ opacity:.78; transform:translateY(0); }
@@ -1338,6 +1341,38 @@
   .btn-dl.unavailable:hover{
     display:none;
   }
+
+  /* ── PREVIEW BUTTON ──────────────────────── */
+  .btn-preview{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:28px; height:28px;
+    border:1px solid var(--line); border-radius:2px;
+    background:var(--white);
+    font-size:13px; line-height:1;
+    cursor:pointer; transition:border-color .12s, background .12s, color .12s;
+    flex-shrink:0; font-family:'IBM Plex Mono', monospace;
+    color:var(--stone); padding:0;
+  }
+  .btn-preview:hover{ border-color:#0369a1; background:#f0f9ff; color:#0369a1; }
+  .btn-preview.active{ border-color:#0369a1; background:#0369a1; color:#fff; }
+  .btn-preview.loading{ opacity:.5; cursor:wait; }
+  .btn-preview.unavailable{ display:none; }
+
+  .preview-map-badge{
+    position:absolute; top:14px; left:14px; z-index:600;
+    display:none; align-items:center; gap:8px;
+    background:rgba(3,105,161,.94); color:#fff;
+    padding:6px 8px 6px 12px; border-radius:999px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.04em;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);
+  }
+  .preview-map-badge.visible{ display:flex; }
+  .preview-map-badge button{
+    border:none; background:rgba(255,255,255,.15); color:#fff;
+    border-radius:999px; padding:3px 9px; font-size:10px;
+    cursor:pointer; font-family:'IBM Plex Mono', monospace;
+  }
+  .preview-map-badge button:hover{ background:rgba(255,255,255,.3); }
   .osm-actions .download-status{
     display:none;
     min-width:110px;
@@ -1586,6 +1621,10 @@
       <span id="osm-badge-label">—</span>
       <button onclick="limparOsmOverlay()">✕ fechar</button>
     </div>
+    <div class="preview-map-badge" id="preview-map-badge">
+      <span id="preview-badge-label">—</span>
+      <button onclick="limparPreview()">✕ fechar</button>
+    </div>
     <div class="map-counter" id="map-counter">261 municípios</div>
   </div>
 
@@ -1616,52 +1655,64 @@
 
         <div class="download-list">
           <!-- CAOP -->
-          <a class="download-item" id="link-caop" href="#" download>
-            <div class="di-left">
-              <div class="di-text">
-                <span class="di-name">Limite administrativo (CAOP)</span>
-                <span class="di-meta" id="size-caop">Shapefile · —</span>
+          <div class="download-item">
+            <a class="download-item-link" id="link-caop" href="#" download>
+              <div class="di-left">
+                <div class="di-text">
+                  <span class="di-name">Limite administrativo (CAOP)</span>
+                  <span class="di-meta" id="size-caop">Shapefile · —</span>
+                </div>
               </div>
-            </div>
-            <span class="di-arrow">&darr;</span>
-            <span class="download-status">Indisponível</span>
-          </a>
+              <span class="di-arrow">&darr;</span>
+              <span class="download-status">Indisponível</span>
+            </a>
+            <button type="button" class="btn-preview" id="preview-caop" title="Pré-visualizar no mapa" onclick="togglePreview('caop', this);">&#128065;</button>
+          </div>
 
           <!-- COS -->
-          <a class="download-item" id="link-cos" href="#" download>
-            <div class="di-left">
-              <div class="di-text">
-                <span class="di-name">Uso e Ocupação do Solo (COS, nível 4)</span>
-                <span class="di-meta" id="size-cos">Shapefile · —</span>
+          <div class="download-item">
+            <a class="download-item-link" id="link-cos" href="#" download>
+              <div class="di-left">
+                <div class="di-text">
+                  <span class="di-name">Uso e Ocupação do Solo (COS, nível 4)</span>
+                  <span class="di-meta" id="size-cos">Shapefile · —</span>
+                </div>
               </div>
-            </div>
-            <span class="di-arrow">&darr;</span>
-            <span class="download-status">Indisponível</span>
-          </a>
+              <span class="di-arrow">&darr;</span>
+              <span class="download-status">Indisponível</span>
+            </a>
+            <button type="button" class="btn-preview" id="preview-cos" title="Pré-visualizar no mapa" onclick="togglePreview('cos', this);">&#128065;</button>
+          </div>
 
           <!-- BGRI -->
-          <a class="download-item" id="link-bgri" href="#" download>
-            <div class="di-left">
-              <div class="di-text">
-                <span class="di-name">Base Geográfica de Referenciação de Informação (BGRI, INE 2021)</span>
-                <span class="di-meta" id="size-bgri">Shapefile · —</span>
+          <div class="download-item">
+            <a class="download-item-link" id="link-bgri" href="#" download>
+              <div class="di-left">
+                <div class="di-text">
+                  <span class="di-name">Base Geográfica de Referenciação de Informação (BGRI, INE 2021)</span>
+                  <span class="di-meta" id="size-bgri">Shapefile · —</span>
+                </div>
               </div>
-            </div>
-            <span class="di-arrow">&darr;</span>
-            <span class="download-status">Indisponível</span>
-          </a>
+              <span class="di-arrow">&darr;</span>
+              <span class="download-status">Indisponível</span>
+            </a>
+            <button type="button" class="btn-preview" id="preview-bgri" title="Pré-visualizar no mapa" onclick="togglePreview('bgri', this);">&#128065;</button>
+          </div>
 
           <!-- MDT -->
-          <a class="download-item" id="link-mdt" href="#" download>
-            <div class="di-left">
-              <div class="di-text">
-                <span class="di-name">Modelo Digital de Terreno (MDT, 10 metros)</span>
-                <span class="di-meta" id="size-mdt">Shapefile · —</span>
+          <div class="download-item">
+            <a class="download-item-link" id="link-mdt" href="#" download>
+              <div class="di-left">
+                <div class="di-text">
+                  <span class="di-name">Modelo Digital de Terreno (MDT, 10 metros)</span>
+                  <span class="di-meta" id="size-mdt">Shapefile · —</span>
+                </div>
               </div>
-            </div>
-            <span class="di-arrow">&darr;</span>
-            <span class="download-status">Indisponível</span>
-          </a>
+              <span class="di-arrow">&darr;</span>
+              <span class="download-status">Indisponível</span>
+            </a>
+            <button type="button" class="btn-preview" id="preview-mdt" title="Pré-visualizar no mapa" onclick="togglePreview('mdt', this);">&#128065;</button>
+          </div>
 
           <!-- OSM -->
           <div class="osm-section">
@@ -1947,6 +1998,94 @@ function limparOsmOverlay(){
   if(activeOsmBtn){ activeOsmBtn.classList.remove('active'); activeOsmBtn=null; }
 }
 
+// ── PRÉ-VISUALIZAÇÃO DE DADOS ────────────────────────────────────────────────
+let previewLayer    = null;
+let activePreviewBtn = null;
+
+const PREVIEW_LABELS = { caop:'CAOP', cos:'COS', bgri:'BGRI', mdt:'MDT' };
+const PREVIEW_STYLES = {
+  caop: { color:'#c2703d', weight:2, fillOpacity:0.04 },
+  cos:  { color:'#34a853', weight:1, fillOpacity:0.28 },
+  bgri: { color:'#2563eb', weight:1, fillOpacity:0.12 }
+};
+
+function caminhoRelativoPreview(p){
+  if(!p || typeof p !== 'string') return null;
+  let norm = p.replace(/\\/g, '/');
+  const idx = norm.indexOf('previews/');
+  return idx === -1 ? norm : norm.slice(idx);
+}
+
+function limparPreview(){
+  if(previewLayer){ map.removeLayer(previewLayer); previewLayer = null; }
+  document.getElementById('preview-map-badge').classList.remove('visible');
+  if(activePreviewBtn){ activePreviewBtn.classList.remove('active'); activePreviewBtn = null; }
+}
+
+function togglePreview(tipo, btnEl){
+  if(!activeMunicipio || btnEl.classList.contains('unavailable')) return;
+  if(activePreviewBtn === btnEl && previewLayer){ limparPreview(); return; }
+  limparPreview();
+
+  btnEl.classList.add('loading');
+
+  if(tipo === 'mdt'){
+    const mdt = activeMunicipio.mdt_preview;
+    const imgPath = mdt && caminhoRelativoPreview(mdt.image);
+    if(!imgPath || !mdt.bounds){
+      btnEl.classList.remove('loading');
+      showToast('⚠ Pré-visualização indisponível', 2500);
+      return;
+    }
+    previewLayer = L.imageOverlay(imgPath, mdt.bounds, { opacity:0.85, zIndex:550 }).addTo(map);
+    map.fitBounds(mdt.bounds, { padding:[40,40] });
+    document.getElementById('preview-badge-label').textContent = 'Pré-visualização · MDT';
+    document.getElementById('preview-map-badge').classList.add('visible');
+    btnEl.classList.add('active');
+    btnEl.classList.remove('loading');
+    activePreviewBtn = btnEl;
+    return;
+  }
+
+  let rawPath, label;
+  if(tipo.startsWith('osm:')){
+    const layerName = tipo.slice(4);
+    rawPath = activeMunicipio.osm_previews ? activeMunicipio.osm_previews[layerName] : null;
+    label   = osmMeta(layerName).nome;
+  } else {
+    rawPath = activeMunicipio[`${tipo}_preview`];
+    label   = PREVIEW_LABELS[tipo] || tipo.toUpperCase();
+  }
+
+  const relPath = caminhoRelativoPreview(rawPath);
+  if(!relPath){
+    btnEl.classList.remove('loading');
+    showToast('⚠ Pré-visualização indisponível', 2500);
+    return;
+  }
+
+  fetch(relPath)
+    .then(r => { if(!r.ok) throw new Error('preview não encontrada'); return r.json(); })
+    .then(geojson => {
+      const estilo = PREVIEW_STYLES[tipo] || { color:'#2563eb', weight:1.5, fillOpacity:0.1 };
+      previewLayer = L.geoJSON(geojson, {
+        style: estilo,
+        pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius:4, color:estilo.color, weight:1, fillOpacity:0.8 })
+      }).addTo(map);
+      const b = previewLayer.getBounds();
+      if(b.isValid()) map.fitBounds(b, { padding:[40,40] });
+      document.getElementById('preview-badge-label').textContent = `Pré-visualização · ${label}`;
+      document.getElementById('preview-map-badge').classList.add('visible');
+      btnEl.classList.add('active');
+      activePreviewBtn = btnEl;
+    })
+    .catch(err => {
+      console.error(err);
+      showToast('⚠ Pré-visualização indisponível', 2500);
+    })
+    .finally(() => btnEl.classList.remove('loading'));
+}
+
 // ── CARREGAR DADOS ───────────────────────────────────────────────────────────
 fetch('data/municipios.json')
   .then(r => { if(!r.ok) throw new Error('municipios.json não encontrado'); return r.json(); })
@@ -2002,6 +2141,16 @@ function selectMunicipio(m, layer){
 
   activeMunicipio = m || { municipio, distrito, caop_zip:caopZip, cos_zip:cosZip, bgri_zip:bgriZip, mdt_zip:mdtZip };
   limparOsmOverlay();
+  limparPreview();
+
+  function aplicarPreviewBtn(id, disponivel){
+    const btn = document.getElementById(id);
+    if(btn) btn.classList.toggle('unavailable', !disponivel);
+  }
+  aplicarPreviewBtn('preview-caop', metadataOk && !!m.caop_preview);
+  aplicarPreviewBtn('preview-cos',  metadataOk && !!m.cos_preview);
+  aplicarPreviewBtn('preview-bgri', metadataOk && !!m.bgri_preview);
+  aplicarPreviewBtn('preview-mdt',  metadataOk && !!(m.mdt_preview && m.mdt_preview.image));
 
   document.getElementById('empty-state').style.display    = 'none';
   const content = document.getElementById('selection-content');
@@ -2060,11 +2209,17 @@ function selectMunicipio(m, layer){
         </div>
       </div>
       <div class="osm-actions">
+        <button type="button" class="btn-preview" data-osm-preview="${layerName}" title="Pré-visualizar no mapa" onclick="togglePreview('osm:${layerName}', this)">&#128065;</button>
         <a class="btn-dl" href="${zipUrl}" data-download-path="${zipUrl}" download title="Descarregar ZIP">↓</a>
         <span class="download-status">Indisponível</span>
       </div>
     `;
     osmList.appendChild(div);
+    const previewBtn = div.querySelector('.btn-preview');
+    if(previewBtn){
+      const osmPreviews = metadataOk && m.osm_previews ? m.osm_previews : {};
+      previewBtn.classList.toggle('unavailable', !osmPreviews[layerName]);
+    }
   });
 
   document.getElementById('osm-note').style.display = layers.length > 0 ? 'block' : 'none';
@@ -2085,6 +2240,7 @@ function selectMunicipio(m, layer){
 function deselectMunicipio(){
   if(selectedLayer){ selectedLayer.setStyle(estiloNormal); selectedLayer=null; }
   limparOsmOverlay();
+  limparPreview();
   activeMunicipio = null;
   document.getElementById('selection-content').style.display = 'none';
   document.getElementById('empty-state').style.display       = 'flex';
