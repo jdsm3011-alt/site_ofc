@@ -830,9 +830,7 @@
   @media (max-width: 900px){
     .layout{ grid-template-columns: 1fr; position:relative; height:auto; min-height:0; max-height:none; overflow:visible; }
     #map{ position:relative; inset:auto; height:58vh; min-height:420px; }
-    .panel{ position:relative; top:auto; right:auto; bottom:auto; left:auto; width:100%; max-height:none; }
     header{ padding:14px 20px; }
-    .panel{ padding:20px 18px; }
   }
 
   .map-controls{
@@ -1017,6 +1015,16 @@
   .panel::-webkit-scrollbar{ width:4px; }
   .panel::-webkit-scrollbar-track{ background:transparent; }
   .panel::-webkit-scrollbar-thumb{ background:var(--line); border-radius:2px; }
+
+  @media (max-width: 900px){
+    .panel{
+      position:relative;
+      top:auto; right:auto; bottom:auto; left:auto;
+      width:100%;
+      max-height:none;
+      padding:20px 18px;
+    }
+  }
 
   .site-footer{
     position:relative;
