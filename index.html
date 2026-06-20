@@ -1887,20 +1887,6 @@ function updateDownloadAvailabilityForSelection(){
   });
 }
 
-fetch('errors.csv')
-  .then(r => {
-    if(!r.ok) throw new Error('errors.csv não encontrado');
-    return r.text();
-  })
-  .then(text => {
-    const parsed = parseErrorsCsv(text);
-    unavailablePaths = parsed;
-    updateDownloadAvailabilityForSelection();
-  })
-  .catch(() => {
-    // Mantém o comportamento normal caso o ficheiro não esteja disponível.
-  });
-
 document.getElementById('map-fit-all').addEventListener('click', ajustarMapaAoTerritorio);
 document.getElementById('map-zoom-in').addEventListener('click', () => map.zoomIn());
 document.getElementById('map-zoom-out').addEventListener('click', () => map.zoomOut());
@@ -2028,29 +2014,30 @@ function selectMunicipio(m, layer){
   const linkCos  = document.getElementById('link-cos');
   const linkBgri = document.getElementById('link-bgri');
   const linkMdt  = document.getElementById('link-mdt');
-  linkCaop.href = caopZip;
-  linkCaop.dataset.downloadPath = caopZip;
-  linkCaop.style.pointerEvents = caopZip === '#' ? 'none' : 'auto';
-  linkCaop.setAttribute('aria-disabled', caopZip === '#' ? 'true' : 'false');
-  document.getElementById('size-caop').textContent      = `Shapefile (.zip) · ${caopSize}`;
 
-  linkCos.href = cosZip;
-  linkCos.dataset.downloadPath = cosZip;
-  linkCos.style.pointerEvents = cosZip === '#' ? 'none' : 'auto';
-  linkCos.setAttribute('aria-disabled', cosZip === '#' ? 'true' : 'false');
-  document.getElementById('size-cos').textContent       = `Shapefile (.zip) · ${cosSize}`;
+  function aplicarLink(linkEl, zipUrl, sizeElId, sizeTexto){
+    const indisponivel = zipUrl === '#';
+    linkEl.href = zipUrl;
+    linkEl.dataset.downloadPath = zipUrl;
+    linkEl.classList.toggle('unavailable', indisponivel);
+    linkEl.style.pointerEvents = indisponivel ? 'none' : 'auto';
+    linkEl.setAttribute('aria-disabled', indisponivel ? 'true' : 'false');
+    if(indisponivel){
+      linkEl.removeAttribute('download');
+      linkEl.setAttribute('tabindex', '-1');
+    } else {
+      linkEl.setAttribute('download', '');
+      linkEl.removeAttribute('tabindex');
+    }
+    const statusEl = linkEl.querySelector('.download-status');
+    if(statusEl) statusEl.style.display = indisponivel ? 'inline-flex' : 'none';
+    document.getElementById(sizeElId).textContent = sizeTexto;
+  }
 
-  linkBgri.href = bgriZip;
-  linkBgri.dataset.downloadPath = bgriZip;
-  linkBgri.style.pointerEvents = bgriZip === '#' ? 'none' : 'auto';
-  linkBgri.setAttribute('aria-disabled', bgriZip === '#' ? 'true' : 'false');
-  document.getElementById('size-bgri').textContent      = 'Shapefile (.zip) · —';
-
-  linkMdt.href = mdtZip;
-  linkMdt.dataset.downloadPath = mdtZip;
-  linkMdt.style.pointerEvents = mdtZip === '#' ? 'none' : 'auto';
-  linkMdt.setAttribute('aria-disabled', mdtZip === '#' ? 'true' : 'false');
-  document.getElementById('size-mdt').textContent       = 'Shapefile (.zip) · —';
+  aplicarLink(linkCaop, caopZip, 'size-caop', `Shapefile (.zip) · ${caopSize}`);
+  aplicarLink(linkCos,  cosZip,  'size-cos',  `Shapefile (.zip) · ${cosSize}`);
+  aplicarLink(linkBgri, bgriZip, 'size-bgri', 'Shapefile (.zip) · —');
+  aplicarLink(linkMdt,  mdtZip,  'size-mdt',  'Shapefile (.zip) · —');
 
   // OSM layers
   const osmList  = document.getElementById('osm-list');
@@ -2080,7 +2067,6 @@ function selectMunicipio(m, layer){
     osmList.appendChild(div);
   });
 
-  updateDownloadAvailabilityForSelection();
   document.getElementById('osm-note').style.display = layers.length > 0 ? 'block' : 'none';
 
   if(selectedLayer) selectedLayer.setStyle(estiloNormal);
