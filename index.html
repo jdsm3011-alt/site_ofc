@@ -2055,12 +2055,13 @@ function selectMunicipio(m, layer){
   // OSM layers
   const osmList  = document.getElementById('osm-list');
   osmList.innerHTML = '';
-  const distritoSlug  = distrito.replace(/ /g,'_');
-  const municipioSlug = municipio.replace(/ /g,'_');
+  const osmZips = metadataOk && m.osm_zips ? m.osm_zips : {};
 
   layers.forEach(layerName => {
+    const zipUrl = osmZips[layerName];
+    if(!zipUrl) return; // esta camada não tem ficheiro disponível para este município
+
     const meta   = osmMeta(layerName);
-    const zipUrl = `data/${distritoSlug}/${municipioSlug}/OSM_${layerName}_${municipioSlug}.zip`;
 
     const div = document.createElement('div');
     div.className = 'osm-item';
