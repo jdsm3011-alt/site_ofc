@@ -816,13 +816,6 @@
     border:1px solid var(--line);
   }
 
-  @media (max-width: 900px){
-    .layout{ grid-template-columns: 1fr; height:auto; min-height:0; max-height:none; }
-    #map{ height:58vh; min-height:420px; }
-    header{ padding:14px 20px; }
-    .panel{ padding:20px 18px; }
-  }
-
   /* ── MAP ─────────────────────────────────── */
   #map{
     position:absolute;
@@ -832,6 +825,13 @@
     background:var(--paper-deep);
     overflow:hidden;
     z-index:1;
+  }
+
+  @media (max-width: 900px){
+    .layout{ grid-template-columns: 1fr; position:relative; height:auto; min-height:0; max-height:none; }
+    #map{ position:relative; inset:auto; height:58vh; min-height:420px; }
+    header{ padding:14px 20px; }
+    .panel{ padding:20px 18px; }
   }
 
   .map-controls{
@@ -1822,6 +1822,13 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png
   attribution:'&copy; OpenStreetMap &copy; CARTO',
   maxZoom:19
 }).addTo(map);
+
+// Garante que o Leaflet recalcula o tamanho do container após o layout assentar
+// (essencial no mobile, onde o container pode mudar de tamanho após a inicialização)
+setTimeout(() => map.invalidateSize(), 200);
+window.addEventListener('load', () => map.invalidateSize());
+window.addEventListener('resize', () => map.invalidateSize());
+window.addEventListener('orientationchange', () => setTimeout(() => map.invalidateSize(), 250));
 
 let municipios       = [];
 let municipiosPorNome = {};
