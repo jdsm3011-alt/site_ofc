@@ -1,0 +1,1 @@
+{"type": "FeatureCollection", "name": "osm_gis_osm_natural_a_free_1_preview", "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:OGC:1.3:CRS84"}}, "features": [{"type": "Feature", "properties": {"fclass": "beach", "name": null}, "geometry": {"type": "Polygon", "coordinates": [[[-8.74656, 41.9573], [-8.74606, 41.95676], [-8.74642, 41.95661], [-8.74656, 41.9573]]]}}]}
