@@ -87,6 +87,24 @@
     background-attachment:fixed;
     color:var(--ink);
     min-height:100vh;
+    opacity:0;
+    animation:pageFadeIn .45s ease forwards;
+  }
+  @keyframes pageFadeIn{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  body.page-leaving{
+    animation:pageFadeOut .32s ease forwards;
+    pointer-events:none;
+  }
+  @keyframes pageFadeOut{
+    from{ opacity:1; transform:translateY(0); }
+    to{ opacity:0; transform:translateY(-6px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    body{ animation:none; opacity:1; }
+    body.page-leaving{ animation:none; }
   }
 
   a{ color:inherit; }
@@ -883,6 +901,31 @@
       btnSuspeitos.style.display = 'none';
     }
   }
+
+  // ── TRANSIÇÃO DE SAÍDA AO NAVEGAR PARA OUTRA PÁGINA DO SITE ──────────────────
+  function isLinkNavegavel(a){
+    if(!a || !a.href) return false;
+    if(a.target && a.target !== '' && a.target !== '_self') return false;
+    if(a.hasAttribute('download')) return false;
+    var url;
+    try{ url = new URL(a.href, window.location.href); }catch(e){ return false; }
+    if(url.origin !== window.location.origin) return false;
+    if(url.pathname === window.location.pathname && url.hash) return false; // âncoras na mesma página
+    return /\.html?$/i.test(url.pathname) || url.pathname === '/' || url.pathname.endsWith('/');
+  }
+
+  document.addEventListener('click', function(e){
+    if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest('a');
+    if(!isLinkNavegavel(a)) return;
+    e.preventDefault();
+    document.body.classList.add('page-leaving');
+    setTimeout(function(){ window.location.href = a.href; }, 260);
+  });
+
+  window.addEventListener('pageshow', function(e){
+    if(e.persisted) document.body.classList.remove('page-leaving');
+  });
 
 })();
 </script>
