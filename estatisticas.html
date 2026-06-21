@@ -315,6 +315,94 @@
   }
   .aviso-global b{ color:var(--warn); }
 
+  /* ── pergunta rápida (filtro livre por classe COS) ── */
+  .pergunta-rapida{
+    background:var(--paper-elevated);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:24px;
+    box-shadow:var(--shadow-soft);
+    animation:fadeUp .5s ease backwards;
+    animation-delay:.2s;
+  }
+  .pergunta-cabecalho{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .pergunta-icon{ font-size:20px; line-height:1.3; flex-shrink:0; }
+  .pergunta-cabecalho h3{
+    font-family:'Spectral', serif;
+    font-size:17px;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .pergunta-cabecalho p{
+    font-size:12.5px;
+    color:var(--stone);
+    margin:0;
+    line-height:1.5;
+  }
+  .pergunta-cabecalho p em{ color:var(--ink); font-style:normal; font-family:'IBM Plex Mono', monospace; font-size:11.5px; }
+  .pergunta-rapida .seletor{ margin-bottom:0; }
+  .pergunta-resultados{ margin-top:14px; }
+  .pr-vazio{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--stone);
+    padding:10px 4px 2px;
+  }
+  .pr-item{
+    display:grid;
+    grid-template-columns:26px 1fr auto auto;
+    gap:14px;
+    align-items:center;
+    padding:10px 10px;
+    border-bottom:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    transition:background .12s ease;
+  }
+  .pr-item:hover{ background:var(--paper-deep); }
+  .pr-item:last-child{ border-bottom:none; }
+  .pr-pos{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--stone);
+    text-align:center;
+  }
+  .pr-item:first-child .pr-pos{ color:var(--ochre); font-weight:600; }
+  .pr-nomes{ display:flex; flex-direction:column; min-width:0; gap:1px; }
+  .pr-municipio{ font-weight:500; font-size:13.5px; }
+  .pr-distrito-classe{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--stone);
+    letter-spacing:.02em;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .pr-area{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-align:right;
+    white-space:nowrap;
+  }
+  .pr-pct{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--stone);
+    text-align:right;
+    white-space:nowrap;
+  }
+  @media (max-width:640px){
+    .pr-item{ grid-template-columns:18px 1fr; row-gap:4px; }
+    .pr-area, .pr-pct{ text-align:left; grid-column:2; }
+  }
+
   /* ── pesquisa / seletor ── */
   .seletor{
     position:relative;
@@ -564,7 +652,7 @@
 
 <header>
   <div class="brand">
-    <span class="brand-icon">📊</span>
+    <span class="brand-icon"></span>
     <div class="brand-text">
       <h1>Estatísticas</h1>
       <span>DataGis · CAOP / COS / BGRI / MDT</span>
@@ -597,6 +685,22 @@
            área de alguns registos. Estamos a trabalhar na correção e validação destes casos na origem. 
            Até essa revisão estar concluída, os valores de área e percentagem associados à COS devem ser interpretados com alguma reserva.
       </div>
+    </div>
+
+    <div class="pergunta-rapida" id="pergunta-rapida">
+      <div class="pergunta-cabecalho">
+        <span class="pergunta-icon"></span>
+        <div>
+          <h3>Pergunta à base de dados (Em desenvolvimento)</h3>
+          <p>
+            Ex: <em>"Município com maior floresta de eucalipto?"</em>, <em>"mais oceano"</em>,
+            <em>"menor área agrícola"</em>.</p>
+        </div>
+      </div>
+      <div class="seletor">
+        <input type="text" id="pergunta" placeholder="Escreve a tua pergunta…" autocomplete="off">
+      </div>
+      <div class="pergunta-resultados" id="pergunta-resultados"></div>
     </div>
 
     <div class="seletor">
@@ -762,6 +866,133 @@
   document.addEventListener('click', function(e){
     if(!e.target.closest('.seletor')) caixaResultados.classList.remove('aberto');
   });
+
+  // ── pergunta rápida (filtro livre por classe COS) ──
+  // Lista de palavras a ignorar ao interpretar a pergunta, para sobrar só o
+  // que interessa (o nome, ou parte do nome, da classe COS). Tudo já passado
+  // por normalizar() (minúsculas, sem acentos).
+  var STOPWORDS_PERGUNTA = [
+    'qual','quais','o','a','os','as','um','uma','uns','umas',
+    'de','do','da','dos','das','em','no','na','nos','nas',
+    'com','sem','e','ou','que','quanto','quanta','quantos','quantas',
+    'municipio','municipios','concelho','concelhos','cidade','cidades',
+    'tem','tens','possui','possuem','existe','existem','ha',
+    'maior','maiores','mais','menor','menores','menos',
+    'area','areas','percentagem','percentagens','classe','classes',
+    'uso','solo','ocupacao','cos','onde','top','ranking','qto'
+  ];
+
+  function extrairConsultaPergunta(texto){
+    var norm = normalizar(texto).replace(/[^a-z0-9\s]/g, ' ');
+    // se a pergunta usar "menor"/"menos", o interesse é ordenar do mais pequeno
+    // para o maior; por omissão (ou com "maior"/"mais"), é do maior para o menor.
+    var descendente = !(/\bmenor(es)?\b/.test(norm) || /\bmenos\b/.test(norm));
+    var palavras = norm.split(/\s+/).filter(function(p){
+      return p.length >= 2 && STOPWORDS_PERGUNTA.indexOf(p) === -1;
+    });
+    return { palavras: palavras, descendente: descendente };
+  }
+
+  function classeCorrespondeAproximado(nomeNorm, palavra){
+    // correspondência direta (cobre plurais simples: eucalipto/eucaliptos, floresta/florestas)
+    if(nomeNorm.indexOf(palavra) !== -1) return true;
+    // correspondência aproximada por prefixo comum, para sufixos diferentes do
+    // mesmo radical (ex.: "eucalipto" vs "eucaliptal" -- a nomenclatura COS usa
+    // muitas vezes sufixos distintos para a mesma família de classes)
+    var tokens = nomeNorm.split(/[^a-z0-9]+/).filter(Boolean);
+    for(var i = 0; i < tokens.length; i++){
+      var t = tokens[i];
+      var max = Math.min(t.length, palavra.length);
+      var comum = 0;
+      while(comum < max && t.charAt(comum) === palavra.charAt(comum)) comum++;
+      var limite = Math.max(4, Math.min(t.length, palavra.length) - 2);
+      if(comum >= limite) return true;
+    }
+    return false;
+  }
+
+  function pesquisarPorClasse(texto){
+    var consulta = extrairConsultaPergunta(texto);
+    var resultados = [];
+    if(!dados || !consulta.palavras.length) return { resultados: resultados, consulta: consulta };
+
+    Object.keys(dados).forEach(function(chave){
+      var v = dados[chave];
+      if(!v.cos || !v.cos.classes) return;
+      // para cada município, escolhe-se a classe que corresponde a MAIS palavras
+      // da pergunta (relevância); em caso de empate, a de maior área. Não se exige
+      // que TODAS as palavras estejam presentes -- assim uma pergunta como
+      // "floresta de eucalipto" continua a encontrar uma classe chamada apenas
+      // "Eucaliptal", só que com menor relevância do que uma correspondência total.
+      var melhor = null;
+      var melhorScore = -1;
+      Object.keys(v.cos.classes).forEach(function(nomeClasse){
+        var nomeNorm = normalizar(nomeClasse);
+        var score = 0;
+        consulta.palavras.forEach(function(p){ if(classeCorrespondeAproximado(nomeNorm, p)) score++; });
+        if(score === 0) return;
+        var c = v.cos.classes[nomeClasse];
+        if(!melhor || score > melhorScore || (score === melhorScore && c.area_ha > melhor.area_ha)){
+          melhor = { classe: nomeClasse, area_ha: c.area_ha, pct: c.percentagem_area_caop };
+          melhorScore = score;
+        }
+      });
+      if(melhor){
+        resultados.push({
+          chave: chave, municipio: v.municipio, distrito: v.distrito,
+          classe: melhor.classe, area_ha: melhor.area_ha, pct: melhor.pct, score: melhorScore
+        });
+      }
+    });
+
+    resultados.sort(function(a, b){
+      if(b.score !== a.score) return b.score - a.score; // relevância primeiro
+      return consulta.descendente ? (b.area_ha - a.area_ha) : (a.area_ha - b.area_ha);
+    });
+
+    return { resultados: resultados.slice(0, 10), consulta: consulta };
+  }
+
+  var inputPergunta = document.getElementById('pergunta');
+  var caixaPergunta = document.getElementById('pergunta-resultados');
+
+  function renderPergunta(texto){
+    if(!texto || !normalizar(texto).trim()){
+      caixaPergunta.innerHTML = '';
+      return;
+    }
+    var r = pesquisarPorClasse(texto);
+    if(!r.consulta.palavras.length){
+      caixaPergunta.innerHTML = '<div class="pr-vazio">Escreve o nome (ou parte do nome) de uma classe de uso do solo. ex: "eucalipto", "oceano", "agricultura"…</div>';
+      return;
+    }
+    if(!r.resultados.length){
+      caixaPergunta.innerHTML = '<div class="pr-vazio">Nenhum município tem uma classe que corresponda a "' + r.consulta.palavras.join(' ') + '".</div>';
+      return;
+    }
+    caixaPergunta.innerHTML = r.resultados.map(function(item, i){
+      return '<div class="pr-item" data-chave="' + item.chave + '">' +
+        '<span class="pr-pos">' + (i + 1) + '</span>' +
+        '<span class="pr-nomes">' +
+          '<span class="pr-municipio">' + item.municipio.replace(/_/g, ' ') + '</span>' +
+          '<span class="pr-distrito-classe">' + item.distrito.replace(/_/g, ' ') + ' · ' + item.classe + '</span>' +
+        '</span>' +
+        '<span class="pr-area">' + fmt(item.area_ha, 1) + ' ha</span>' +
+        '<span class="pr-pct">' + fmt(item.pct, 1) + '%</span>' +
+        '</div>';
+    }).join('');
+    caixaPergunta.querySelectorAll('.pr-item').forEach(function(it){
+      it.addEventListener('click', function(){
+        mostrarMunicipio(it.getAttribute('data-chave'));
+      });
+    });
+  }
+
+  if(inputPergunta){
+    inputPergunta.addEventListener('input', function(){
+      renderPergunta(inputPergunta.value);
+    });
+  }
 
   function marcarAtivo(itens){
     itens.forEach(function(it, i){ it.classList.toggle('kb-active', i===ativo); });
