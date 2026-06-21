@@ -73,7 +73,6 @@
   html.theme-transition .resultados,
   html.theme-transition .back-link,
   html.theme-transition .theme-toggle,
-  html.theme-transition .aviso-global,
   html.theme-transition footer{
     transition:background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
   }
@@ -218,6 +217,114 @@
     padding:28px 24px 80px;
   }
 
+  /* ── aviso flutuante de desenvolvimento (barra fixa no rodapé) ── */
+  .aviso-flutuante{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:200;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    max-width:960px;
+    margin:0 auto;
+    padding:16px 20px;
+    background:color-mix(in srgb, var(--paper-elevated) 94%, transparent);
+    backdrop-filter:blur(14px) saturate(1.1);
+    -webkit-backdrop-filter:blur(14px) saturate(1.1);
+    border:1px solid var(--line-strong);
+    border-bottom:none;
+    border-radius:var(--radius) var(--radius) 0 0;
+    box-shadow:0 -12px 40px rgba(23,49,36,.14);
+    font-size:13px;
+    line-height:1.55;
+    color:var(--ink);
+    transform:translateY(120%);
+    animation:avisoFlutuanteEntrada .65s cubic-bezier(.16,.84,.32,1) .35s forwards;
+  }
+  @media (min-width:1000px){
+    .aviso-flutuante{
+      left:24px;
+      right:auto;
+      bottom:24px;
+      border-radius:var(--radius);
+      border-bottom:1px solid var(--line-strong);
+    }
+  }
+  @keyframes avisoFlutuanteEntrada{
+    from{ transform:translateY(120%); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
+  }
+  .aviso-flutuante.fechado{
+    animation:avisoFlutuanteSaida .35s ease forwards;
+    pointer-events:none;
+  }
+  @keyframes avisoFlutuanteSaida{
+    from{ transform:translateY(0); opacity:1; }
+    to{ transform:translateY(120%); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .aviso-flutuante{ animation:none; transform:none; opacity:1; }
+    .aviso-flutuante.fechado{ animation:none; display:none; }
+  }
+  .aviso-flutuante-icon{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    border-radius:999px;
+    background:color-mix(in srgb, var(--ochre) 16%, transparent);
+    color:var(--ochre);
+    font-size:14px;
+    margin-top:1px;
+  }
+  .aviso-flutuante-texto{ flex:1; }
+  .aviso-flutuante-texto b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ochre);
+    margin-bottom:5px;
+  }
+  .aviso-flutuante-texto p{
+    margin:0;
+    color:var(--stone);
+  }
+  .aviso-flutuante-fechar{
+    flex-shrink:0;
+    width:26px;
+    height:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--white);
+    color:var(--stone);
+    cursor:pointer;
+    font-size:13px;
+    line-height:1;
+    transition:border-color .15s ease, color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .aviso-flutuante-fechar:hover{
+    border-color:var(--ochre);
+    color:var(--ochre);
+    transform:rotate(90deg);
+  }
+  @media (max-width:640px){
+    .aviso-flutuante{
+      padding:14px 16px;
+      gap:10px;
+      font-size:12.5px;
+    }
+    .aviso-flutuante-icon{ width:26px; height:26px; font-size:12px; }
+  }
+
   /* ── estado de carregamento / erro ── */
   #estado{
     font-family:'IBM Plex Mono', monospace;
@@ -299,21 +406,6 @@
     color:var(--stone);
     margin-top:4px;
   }
-
-  .aviso-global{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    background:rgba(181,71,43,.08);
-    border:1px solid var(--warn);
-    border-radius:var(--radius-sm);
-    padding:12px 16px;
-    margin-bottom:24px;
-    font-size:13px;
-    line-height:1.5;
-    animation:fadeUp .4s ease;
-  }
-  .aviso-global b{ color:var(--warn); }
 
   /* ── pergunta rápida (filtro livre por classe COS) ── */
   .pergunta-rapida{
@@ -679,6 +771,22 @@
   </div>
 </header>
 
+<div class="aviso-flutuante" id="aviso-flutuante" role="status" aria-live="polite">
+  <span class="aviso-flutuante-icon" aria-hidden="true">⚠</span>
+  <div class="aviso-flutuante-texto">
+    <b>Componente em desenvolvimento</b>
+    <p>
+      Esta secção encontra-se atualmente em fase experimental de desenvolvimento e validação.
+      Os métodos de cálculo e processamento aqui aplicados estão sujeitos a revisão contínua,
+      pelo que os valores apresentados podem não refletir, com exatidão, a situação real de
+      cada município. Recomenda-se uma utilização criteriosa destes dados, não devendo os
+      mesmos ser tomados como fonte definitiva para fins técnicos, jurídicos ou de tomada de decisão.
+    </p>
+  </div>
+  <button type="button" class="aviso-flutuante-fechar" id="aviso-flutuante-fechar"
+    title="Fechar aviso" aria-label="Fechar aviso">✕</button>
+</div>
+
 <main>
 
   <div id="estado"><div class="estado-spinner"></div><span>A carregar estatísticas…</span></div>
@@ -687,19 +795,6 @@
   <div id="conteudo" style="display:none">
 
     <div class="kpis" id="kpis"></div>
-
-    <div class="aviso-global" id="aviso-global" style="display:none">
-      <span>⚠</span>
-      <div>
-        <b>Nota sobre o cálculo das percentagens da COS:</b> Estamos ainda a desenvolver e a aperfeiçoar esta componente.
-           As percentagens de cada classe são calculadas relativamente à área total classificada na própria COS
-           (já com a correção de registos identificados como suspeitos — geometrias que transbordam a fronteira do
-           município ou cujo atributo de área está dessincronizado da geometria), e não diretamente relativamente à
-           área oficial do CAOP. Por isso a soma das percentagens de cada município é sempre 100%, mas a área total
-           classificada na COS pode diferir ligeiramente da área oficial do CAOP — essa diferença está disponível
-           para consulta nos dados de cada município. Estamos a trabalhar na validação destes casos na origem.
-      </div>
-    </div>
 
     <div class="pergunta-rapida" id="pergunta-rapida">
       <div class="pergunta-cabecalho">
@@ -792,6 +887,29 @@
     });
   }
 
+  // ── aviso flutuante (componente em desenvolvimento) ──
+  // Fica escondido pelo resto da sessão de navegação depois de fechado
+  // (sessionStorage), mas volta a aparecer numa visita nova, já que o aviso
+  // continua válido enquanto a secção estiver em desenvolvimento.
+  (function(){
+    var AVISO_KEY = 'datagis-aviso-estatisticas-fechado';
+    var aviso = document.getElementById('aviso-flutuante');
+    var btnFechar = document.getElementById('aviso-flutuante-fechar');
+    if(!aviso || !btnFechar) return;
+
+    var jaFechado = false;
+    try{ jaFechado = sessionStorage.getItem(AVISO_KEY) === '1'; }catch(e){}
+    if(jaFechado){
+      aviso.style.display = 'none';
+    }
+
+    btnFechar.addEventListener('click', function(){
+      aviso.classList.add('fechado');
+      try{ sessionStorage.setItem(AVISO_KEY, '1'); }catch(e){}
+      setTimeout(function(){ aviso.style.display = 'none'; }, 400);
+    });
+  })();
+
   var dados = null;
   var listaMunicipios = [];
   var ativo = -1;
@@ -831,18 +949,16 @@
   function montarKPIs(){
     var lista = Object.values(dados);
     var nMunic = lista.length;
-    var areaTotal = 0, popTotal = 0, comAviso = 0;
+    var areaTotal = 0, popTotal = 0;
     lista.forEach(function(v){
       if(v.caop) areaTotal += v.caop.area_ha;
       if(v.bgri && v.bgri.populacao_total) popTotal += v.bgri.populacao_total;
-      if(v.cos && v.cos.soma_percentagens && Math.abs(v.cos.soma_percentagens - 100) > 15) comAviso++;
     });
 
     var kpis = [
       { valor: nMunic, label: 'Municípios processados' },
       { valor: fmt(areaTotal/1000, 1) + ' mil ha', label: 'Área total (CAOP)' },
       { valor: fmt(popTotal), label: 'População total (BGRI 2021)' },
-      { valor: comAviso, label: 'Municípios com aviso COS' },
     ];
 
     var html = '';
@@ -850,10 +966,6 @@
       html += '<div class="kpi-card"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
     });
     document.getElementById('kpis').innerHTML = html;
-
-    if(comAviso > 0){
-      document.getElementById('aviso-global').style.display = 'flex';
-    }
   }
 
   // ── pesquisa ──
