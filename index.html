@@ -654,7 +654,7 @@
   .hero-demo-map .leaflet-marker-icon,
   .hero-demo-map .leaflet-image-layer,
   .hero-demo-map .leaflet-interactive{
-    transition:opacity .5s ease;
+    transition:opacity .75s cubic-bezier(.22,.61,.36,1);
   }
 
   /* etiqueta de estado, no topo — mostra a etapa atual da demonstração */
@@ -692,6 +692,13 @@
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+    display:inline-block;
+    transition:opacity .45s ease, transform .45s ease;
+  }
+
+  #hero-demo-badge-text.fade-out{
+    opacity:0;
+    transform:translateY(2px);
   }
 
   /* etiqueta com o nome do concelho-alvo, aparece quando o zoom termina */
@@ -699,7 +706,7 @@
     position:absolute;
     left:50%;
     bottom:16%;
-    transform:translate(-50%, 6px);
+    transform:translate(-50%, 10px) scale(.97);
     z-index:650;
     display:flex;
     align-items:center;
@@ -717,12 +724,12 @@
     white-space:nowrap;
     opacity:0;
     pointer-events:none;
-    transition:opacity .5s ease, transform .5s ease;
+    transition:opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
   }
 
   .hero-demo-tag.show{
     opacity:1;
-    transform:translate(-50%, 0);
+    transform:translate(-50%, 0) scale(1);
   }
 
   .hero-demo-tag-dot{
@@ -751,12 +758,12 @@
     width:5px; height:5px;
     border-radius:50%;
     background:var(--line-strong);
-    transition:background .3s ease, transform .3s ease;
+    transition:background .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.22,.61,.36,1);
   }
 
   .hero-demo-progress span.active{
     background:var(--ochre);
-    transform:scale(1.3);
+    transform:scale(1.5);
   }
 
   @keyframes heroReveal{
@@ -2101,7 +2108,7 @@
           <!-- Baixar tudo -->
           <button type="button" class="btn-download-all" id="btn-download-all" onclick="baixarTudo()">
             <span class="dla-icon">⬇</span>
-            <span>Download completo</span>
+            <span>Baixar tudo</span>
             <span class="dla-count" id="download-all-count"></span>
           </button>
 
@@ -2971,6 +2978,17 @@ function heroSetBadge(texto){
   if(el) el.textContent = texto;
 }
 
+// troca o texto do badge com um pequeno fade-out → fade-in, em vez de mudança instantânea
+function heroFadeBadge(texto){
+  const el = document.getElementById('hero-demo-badge-text');
+  if(!el) return;
+  el.classList.add('fade-out');
+  setTimeout(() => {
+    el.textContent = texto;
+    el.classList.remove('fade-out');
+  }, 260);
+}
+
 function heroSetTagText(texto){
   const el = document.getElementById('hero-demo-tag-text');
   if(el) el.innerHTML = texto;
@@ -3011,8 +3029,9 @@ function heroPreviewsDisponiveis(municipio){
   }
   const camadasOsm  = Array.isArray(municipio.selected_layers) ? municipio.selected_layers : [];
   const osmPreviews = municipio.osm_previews || {};
-  const camadaComPreview = camadasOsm.find(l => osmPreviews[l]);
-  if(camadaComPreview) lista.push(['osm:' + camadaComPreview, osmMeta(camadaComPreview).nome]);
+  camadasOsm
+    .filter(l => osmPreviews[l])
+    .forEach(l => lista.push(['osm:' + l, osmMeta(l).nome]));
   return lista;
 }
 
@@ -3024,9 +3043,14 @@ async function heroShowPreview(tipo, label, municipio){
     const mdt = municipio.mdt_preview;
     const imgPath = mdt && caminhoRelativoPreview(mdt.image);
     if(!imgPath || !mdt.bounds) return false;
-    heroPreviewLayer = L.imageOverlay(imgPath, mdt.bounds, { opacity:.85 }).addTo(heroMap);
-    heroMap.flyToBounds(mdt.bounds, { padding:[28,28], duration:1.1 });
-    heroSetBadge(`Pré-visualização · ${label}`);
+    heroPreviewLayer = L.imageOverlay(imgPath, mdt.bounds, { opacity:0 }).addTo(heroMap);
+    heroMap.flyToBounds(mdt.bounds, { padding:[28,28], duration:2.1, easeLinearity:0.18 });
+    heroFadeBadge(`Pré-visualização · ${label}`);
+    // double rAF: garante que o browser já pintou opacity:0 antes de subir para o valor
+    // final — só um rAF pode disparar antes do primeiro paint e a transição CSS falha
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if(heroPreviewLayer) heroPreviewLayer.setOpacity(.85);
+    }));
     return true;
   }
 
@@ -3041,13 +3065,31 @@ async function heroShowPreview(tipo, label, municipio){
     if(!r.ok) return false;
     const geojson = await r.json();
     const estilo  = PREVIEW_STYLES[tipo] || { color:'#6E726A', weight:1.5, fillOpacity:.12 };
+    // garante opacity:1 explícito no estilo final — sem isto, o setStyle() do fade-in
+    // deixava a opacidade "presa" em 0 (Leaflet só altera as chaves passadas em setStyle)
+    const estiloFinal   = { opacity:1, ...estilo };
+    const estiloInicial = { ...estiloFinal, opacity:0, fillOpacity:0 };
+    // pontos (circleMarker) usam fillOpacity:.8 fixo quando visíveis — aplicar o mesmo
+    // padrão "começa invisível, depois sobe" para ficarem consistentes com as áreas/linhas
     heroPreviewLayer = L.geoJSON(geojson, {
-      style: estilo,
-      pointToLayer:(f, latlng) => L.circleMarker(latlng, { radius:3, color:estilo.color, weight:1, fillOpacity:.8 })
+      style: estiloInicial,
+      pointToLayer:(f, latlng) => L.circleMarker(latlng, { radius:3, color:estilo.color, weight:1, fillOpacity:0, opacity:0 })
     }).addTo(heroMap);
     const b = heroPreviewLayer.getBounds();
-    if(b.isValid()) heroMap.flyToBounds(b, { padding:[28,28], duration:1.1 });
-    heroSetBadge(`Pré-visualização · ${label}`);
+    if(b.isValid()) heroMap.flyToBounds(b, { padding:[28,28], duration:2.1, easeLinearity:0.18 });
+    heroFadeBadge(`Pré-visualização · ${label}`);
+    // double rAF: garante que o browser já pintou opacity:0 antes de subir para o valor
+    // final — só um rAF pode disparar antes do primeiro paint e a transição CSS falha
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if(!heroPreviewLayer) return;
+      heroPreviewLayer.eachLayer(l => {
+        if(l instanceof L.CircleMarker){
+          l.setStyle({ opacity:1, fillOpacity:.8 });
+        } else {
+          l.setStyle(estiloFinal);
+        }
+      });
+    }));
     return true;
   } catch(err){
     return false;
@@ -3062,45 +3104,48 @@ async function heroRunCycle(municipio, layer, boundsPortugal){
   heroSetTagVisible(false);
   heroClearPreview();
   heroSetProgress(0, -1);
-  heroSetBadge('Portal geográfico · 261 municípios');
+  heroFadeBadge('Portal geográfico · 261 municípios');
   if(heroHighlightLayer) heroHighlightLayer.setStyle(estiloNormal);
-  heroMap.flyToBounds(boundsPortugal, { padding:[16,16], duration:1.2 });
-  await heroWait(2800);
+  heroMap.flyToBounds(boundsPortugal, { padding:[16,16], duration:2.2, easeLinearity:0.15 });
+  await heroWait(4200);
   if(!heroMap) return;
 
   // 2) zoom suave até ao concelho selecionado, com destaque real (mesmo estilo do mapa principal)
-  heroSetBadge(`A explorar · ${municipio.municipio}`);
+  heroFadeBadge(`A explorar · ${municipio.municipio}`);
   if(layer){
     layer.setStyle(estiloSelecionado);
     heroHighlightLayer = layer;
-    heroMap.flyToBounds(layer.getBounds(), { padding:[40,40], duration:1.5, maxZoom:11 });
+    heroMap.flyToBounds(layer.getBounds(), { padding:[40,40], duration:2.6, easeLinearity:0.18, maxZoom:11 });
   }
-  await heroWait(1500);
+  await heroWait(2800);
   if(!heroMap) return;
   heroSetTagText(`${municipio.municipio}${municipio.distrito ? ` · <strong>${municipio.distrito}</strong>` : ''}`);
   heroSetTagVisible(true);
-  await heroWait(1700);
+  await heroWait(2200);
   if(!heroMap) return;
 
   // 3) carrossel automático das pré-visualizações reais deste município
   const disponiveis = heroPreviewsDisponiveis(municipio);
   if(disponiveis.length){
+    // ritmo calmo, tipo slideshow — ligeiramente mais curto quando há muitas camadas,
+    // para o ciclo completo não se tornar demasiado longo
+    const duracaoSlide = disponiveis.length > 6 ? 2600 : 3400;
     heroSetProgress(disponiveis.length, -1);
     for(let i = 0; i < disponiveis.length; i++){
       const [tipo, label] = disponiveis[i];
       heroSetProgress(disponiveis.length, i);
       const ok = await heroShowPreview(tipo, label, municipio);
       if(!heroMap) return;
-      if(ok) await heroWait(2400);
+      if(ok) await heroWait(duracaoSlide);
       if(!heroMap) return;
     }
   } else {
-    await heroWait(1500);
+    await heroWait(2200);
   }
 
   heroClearPreview();
   heroSetTagVisible(false);
-  await heroWait(700);
+  await heroWait(1100);
   if(!heroMap) return;
 
   heroRunCycle(municipio, layer, boundsPortugal); // repete indefinidamente, tipo display
