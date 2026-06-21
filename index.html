@@ -1607,6 +1607,33 @@
   /* ── DOWNLOAD ITEMS ──────────────────────── */
   .download-list{ display:flex; flex-direction:column; gap:8px; }
 
+  /* botão "baixar tudo" */
+  .btn-download-all{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%; padding:13px 14px; margin-bottom:2px;
+    border:none; border-radius:12px; cursor:pointer;
+    background:linear-gradient(135deg, var(--green), var(--green-deep));
+    color:var(--white); font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    transition:transform .12s ease, box-shadow .15s ease, opacity .15s ease;
+    box-shadow:0 8px 16px rgba(35,70,53,.18);
+  }
+  .btn-download-all .dla-icon{ font-size:15px; line-height:1; }
+  .btn-download-all .dla-count{
+    font-weight:500; opacity:.85; text-transform:none; letter-spacing:0;
+  }
+  .btn-download-all:hover{ transform:translateY(-1px); box-shadow:0 12px 22px rgba(35,70,53,.24); }
+  .btn-download-all:active{ transform:translateY(0) scale(.99); }
+  .btn-download-all:disabled{
+    cursor:default; opacity:.55; transform:none; box-shadow:none;
+    background:var(--stone);
+  }
+  html[data-theme="dark"] .btn-download-all{
+    background:linear-gradient(135deg, var(--green-deep), var(--green));
+    color:var(--paper-deep);
+  }
+  html[data-theme="dark"] .btn-download-all:disabled{ background:var(--stone); color:var(--paper-deep); }
+
   .download-item{
     display:flex; align-items:center; gap:8px;
   }
@@ -2071,6 +2098,13 @@
         </div>
 
         <div class="download-list">
+          <!-- Baixar tudo -->
+          <button type="button" class="btn-download-all" id="btn-download-all" onclick="baixarTudo()">
+            <span class="dla-icon">⬇</span>
+            <span>Baixar tudo</span>
+            <span class="dla-count" id="download-all-count"></span>
+          </button>
+
           <!-- CAOP -->
           <div class="download-item">
             <a class="download-item-link" id="link-caop" href="#" download>
@@ -2666,6 +2700,8 @@ function selectMunicipio(m, layer){
 
   document.getElementById('osm-note').style.display = layers.length > 0 ? 'block' : 'none';
 
+  atualizarBtnBaixarTudo();
+
   if(selectedLayer) selectedLayer.setStyle(estiloNormal);
   if(layer){
     layer.setStyle(estiloSelecionado);
@@ -2679,6 +2715,70 @@ function selectMunicipio(m, layer){
   document.querySelector('.panel').scrollTo({ top:0, behavior:'smooth' });
 }
 
+// ── BAIXAR TUDO ──────────────────────────────────────────────────────────────
+function listarDownloadsDisponiveis(){
+  if(!activeMunicipio) return [];
+
+  const candidatos = [
+    { nome:'CAOP',                       url:activeMunicipio.caop_zip },
+    { nome:'COS',                        url:activeMunicipio.cos_zip  },
+    { nome:'BGRI',                       url:activeMunicipio.bgri_zip },
+    { nome:'MDT',                        url:activeMunicipio.mdt_zip  },
+  ];
+
+  const osmZips = activeMunicipio.osm_zips || {};
+  Object.keys(osmZips).forEach(layerName => {
+    candidatos.push({ nome:`OSM · ${osmMeta(layerName).nome}`, url:osmZips[layerName] });
+  });
+
+  return candidatos.filter(c => {
+    if(!c.url || c.url === '#') return false;
+    const normalized = normalizeDownloadPath(c.url);
+    return !(normalized && unavailablePaths.has(normalized));
+  });
+}
+
+function atualizarBtnBaixarTudo(){
+  const btn = document.getElementById('btn-download-all');
+  const countEl = document.getElementById('download-all-count');
+  if(!btn || !countEl) return;
+
+  const disponiveis = listarDownloadsDisponiveis();
+  countEl.textContent = disponiveis.length > 0 ? `(${disponiveis.length} ficheiros)` : '';
+  btn.disabled = disponiveis.length === 0;
+}
+
+function baixarTudo(){
+  const btn = document.getElementById('btn-download-all');
+  const countEl = document.getElementById('download-all-count');
+  const disponiveis = listarDownloadsDisponiveis();
+  if(disponiveis.length === 0) return;
+
+  const INTERVALO_MS = 1800; // intervalo generoso entre downloads, para reduzir o risco
+                              // de o browser bloquear downloads múltiplos automáticos
+  if(btn) btn.disabled = true;
+
+  disponiveis.forEach((item, i) => {
+    setTimeout(() => {
+      if(countEl) countEl.textContent = `(a descarregar ${i+1}/${disponiveis.length}…)`;
+
+      const a = document.createElement('a');
+      a.href = item.url;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      if(i === disponiveis.length - 1){
+        setTimeout(() => {
+          if(btn) btn.disabled = false;
+          atualizarBtnBaixarTudo();
+        }, 400);
+      }
+    }, i * INTERVALO_MS);
+  });
+}
+
 function deselectMunicipio(){
   if(selectedLayer){ selectedLayer.setStyle(estiloNormal); selectedLayer=null; }
   limparOsmOverlay();
@@ -2689,6 +2789,7 @@ function deselectMunicipio(){
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').style.display = 'none';
   document.getElementById('search-kbd-hint').classList.remove('hidden');
+  atualizarBtnBaixarTudo();
 }
 
 // ── FECHAR SELEÇÃO ────────────────────────────────────────────────────────────
