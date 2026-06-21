@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DataGis — estatísticas por município: CAOP, COS, BGRI 2021 e MDT.">
+<title>Estatísticas — DataGis</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F7F5EF;
+    --paper-deep:#EFEBE0;
+    --paper-elevated:#FCFAF5;
+    --ink:#173124;
+    --green:#3D6B4F;
+    --green-soft:#6E9A7C;
+    --green-deep:#234635;
+    --ochre:#C2703D;
+    --ochre-soft:#E7A57A;
+    --stone:#6E726A;
+    --line:#D9D3C6;
+    --line-strong:#C6BBAB;
+    --white:#FFFFFF;
+    --shadow:0 18px 50px rgba(23,49,36,.08);
+    --shadow-soft:0 12px 30px rgba(23,49,36,.06);
+    --radius:18px;
+    --radius-sm:12px;
+    --radius-lg:22px;
+    --warn:#B5472B;
+  }
+
+  html[data-theme="dark"]{
+    --paper:#171A16;
+    --paper-deep:#10130F;
+    --paper-elevated:#1E2219;
+    --ink:#EAE7DC;
+    --green:#7FB894;
+    --green-soft:#5C8C6E;
+    --green-deep:#9FCBAE;
+    --ochre:#E0935E;
+    --ochre-soft:#C2703D;
+    --stone:#9B9E94;
+    --line:#33392E;
+    --line-strong:#454C3C;
+    --white:#20251C;
+    --shadow:0 18px 50px rgba(0,0,0,.45);
+    --shadow-soft:0 12px 30px rgba(0,0,0,.35);
+    --warn:#E0935E;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    font-family:'IBM Plex Sans', sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(61,107,79,.06), transparent 16%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    min-height:100vh;
+  }
+
+  a{ color:inherit; }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    border-bottom:1px solid var(--line);
+    background:var(--paper-elevated);
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .brand h1{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:21px;
+    margin:0;
+    letter-spacing:.01em;
+  }
+  .brand span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    color:var(--stone);
+    text-transform:uppercase;
+  }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-decoration:none;
+    color:var(--ink);
+    border:1px solid var(--line);
+    background:var(--white);
+    padding:8px 14px;
+    border-radius:999px;
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .back-link:hover{ background:var(--paper-deep); box-shadow:var(--shadow-soft); }
+
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 24px 80px;
+  }
+
+  /* ── estado de carregamento / erro ── */
+  #estado{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--stone);
+    padding:40px 0;
+    text-align:center;
+  }
+  #estado.erro{ color:var(--warn); }
+
+  /* ── KPIs gerais ── */
+  .kpis{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+    gap:14px;
+    margin-bottom:28px;
+  }
+  .kpi-card{
+    background:var(--paper-elevated);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    box-shadow:var(--shadow-soft);
+  }
+  .kpi-card .valor{
+    font-family:'Spectral', serif;
+    font-size:28px;
+    font-weight:600;
+    color:var(--green-deep);
+    line-height:1.1;
+  }
+  html[data-theme="dark"] .kpi-card .valor{ color:var(--green-deep); }
+  .kpi-card .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--stone);
+    margin-top:4px;
+  }
+
+  .aviso-global{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:rgba(181,71,43,.08);
+    border:1px solid var(--warn);
+    border-radius:var(--radius-sm);
+    padding:12px 16px;
+    margin-bottom:24px;
+    font-size:13px;
+    line-height:1.5;
+  }
+  .aviso-global b{ color:var(--warn); }
+
+  /* ── pesquisa / seletor ── */
+  .seletor{
+    position:relative;
+    margin-bottom:20px;
+  }
+  .seletor input{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    padding:13px 16px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+  }
+  .seletor input:focus{ border-color:var(--green); }
+  .resultados{
+    position:absolute;
+    left:0; right:0; top:calc(100% + 6px);
+    background:var(--paper-elevated);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    box-shadow:var(--shadow);
+    max-height:320px;
+    overflow-y:auto;
+    z-index:40;
+    display:none;
+  }
+  .resultados.aberto{ display:block; }
+  .resultado-item{
+    padding:10px 16px;
+    cursor:pointer;
+    font-size:13px;
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+  }
+  .resultado-item:last-child{ border-bottom:none; }
+  .resultado-item:hover, .resultado-item.kb-active{ background:var(--paper-deep); }
+  .resultado-item .distrito-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--stone);
+    letter-spacing:.06em;
+  }
+
+  /* ── painel do município ── */
+  #painel{ display:none; }
+  #painel.ativo{ display:block; }
+
+  .painel-cabecalho{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .painel-cabecalho h2{
+    font-family:'Spectral', serif;
+    font-size:30px;
+    font-weight:600;
+    margin:0;
+  }
+  .painel-cabecalho .distrito{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    color:var(--stone);
+    text-transform:uppercase;
+  }
+
+  .grid-blocos{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:12px;
+    margin:18px 0 28px;
+  }
+  .bloco{
+    background:var(--paper-elevated);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:14px 16px;
+  }
+  .bloco .valor{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:19px;
+    font-weight:500;
+    color:var(--ink);
+  }
+  .bloco .label{
+    font-size:11px;
+    color:var(--stone);
+    letter-spacing:.04em;
+    margin-top:3px;
+  }
+
+  section.seccao{
+    margin-bottom:32px;
+  }
+  section.seccao h3{
+    font-family:'Spectral', serif;
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  section.seccao h3 .badge-aviso{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.05em;
+    color:var(--warn);
+    border:1px solid var(--warn);
+    border-radius:999px;
+    padding:2px 8px;
+    text-transform:uppercase;
+  }
+
+  .barra-linha{
+    display:grid;
+    grid-template-columns:minmax(160px, 280px) 1fr auto;
+    gap:12px;
+    align-items:center;
+    padding:6px 0;
+    font-size:13px;
+    border-bottom:1px solid var(--line);
+  }
+  .barra-linha:last-child{ border-bottom:none; }
+  .barra-nome{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .barra-pista{
+    height:9px;
+    background:var(--paper-deep);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .barra-fill{
+    height:100%;
+    background:linear-gradient(90deg, var(--green-soft), var(--green));
+    border-radius:999px;
+  }
+  .barra-fill.ochre{ background:linear-gradient(90deg, var(--ochre-soft), var(--ochre)); }
+  .barra-pct{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--stone);
+    width:54px;
+    text-align:right;
+  }
+
+  .suspeitos-toggle{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.05em;
+    color:var(--warn);
+    background:none;
+    border:1px solid var(--warn);
+    border-radius:999px;
+    padding:6px 12px;
+    cursor:pointer;
+    margin-top:10px;
+  }
+  .suspeitos-lista{
+    display:none;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--stone);
+    background:var(--paper-deep);
+    border-radius:var(--radius-sm);
+    padding:10px 14px;
+    max-height:200px;
+    overflow-y:auto;
+  }
+  .suspeitos-lista.aberta{ display:block; }
+  .suspeitos-lista div{ padding:3px 0; border-bottom:1px solid var(--line); }
+  .suspeitos-lista div:last-child{ border-bottom:none; }
+
+  .erros-municipio{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--warn);
+    background:rgba(181,71,43,.08);
+    border:1px solid var(--warn);
+    border-radius:var(--radius-sm);
+    padding:10px 14px;
+    margin-bottom:20px;
+  }
+
+  footer{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--stone);
+    padding:30px 0 10px;
+  }
+
+  @media (max-width:640px){
+    header{ padding:14px 18px; }
+    main{ padding:20px 16px 60px; }
+    .barra-linha{ grid-template-columns:1fr; }
+    .barra-pct{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>Estatísticas</h1>
+    <span>DataGis · CAOP / COS / BGRI / MDT</span>
+  </div>
+  <a class="back-link" href="index.html">← Voltar ao mapa</a>
+</header>
+
+<main>
+
+  <div id="estado">A carregar estatísticas…</div>
+
+  <div id="conteudo" style="display:none">
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="aviso-global" id="aviso-global" style="display:none">
+      <span>⚠</span>
+      <div>
+        <b>Aviso de qualidade de dados:</b> em parte dos municípios, a soma das percentagens
+        das classes COS face à área do CAOP excede claramente os 100% — sinal de sobreposição
+        ou erro residual no cálculo de área de alguns registos. Os valores de área/percentagem
+        da COS devem ser lidos com reserva até este ponto ser corrigido na origem.
+      </div>
+    </div>
+
+    <div class="seletor">
+      <input type="text" id="pesquisa" placeholder="Pesquisar município…" autocomplete="off">
+      <div class="resultados" id="resultados"></div>
+    </div>
+
+    <div id="painel">
+      <div class="painel-cabecalho">
+        <h2 id="p-nome">—</h2>
+        <span class="distrito" id="p-distrito">—</span>
+      </div>
+
+      <div id="p-erros"></div>
+
+      <div class="grid-blocos" id="p-blocos"></div>
+
+      <section class="seccao" id="sec-cos">
+        <h3>Uso e ocupação do solo (COS 2023) <span class="badge-aviso" id="cos-badge" style="display:none">soma ≠ 100%</span></h3>
+        <div id="cos-barras"></div>
+        <button class="suspeitos-toggle" id="btn-suspeitos" style="display:none">Ver registos suspeitos</button>
+        <div class="suspeitos-lista" id="lista-suspeitos"></div>
+      </section>
+
+      <section class="seccao" id="sec-bgri">
+        <h3>Censos 2021 (BGRI)</h3>
+        <div class="grid-blocos" id="bgri-blocos"></div>
+      </section>
+
+      <section class="seccao" id="sec-mdt">
+        <h3>Modelo Digital de Terreno (MDT)</h3>
+        <div class="grid-blocos" id="mdt-blocos"></div>
+      </section>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>DataGis — dados CAOP 2025 · COS 2023 · INE 2021 · processados localmente</footer>
+
+<script>
+(function(){
+  // Tema: segue a preferência já guardada pelo index.html (mesma chave/atributo)
+  try{
+    var temaGuardado = localStorage.getItem('datagis-tema');
+    if(temaGuardado){ document.documentElement.setAttribute('data-theme', temaGuardado); }
+    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }catch(e){}
+
+  var dados = null;
+  var listaMunicipios = [];
+  var ativo = -1;
+
+  function normalizar(txt){
+    return (txt || '').toString().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function fmt(n, casas){
+    if(n === null || n === undefined || isNaN(n)) return '—';
+    return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: casas||0, maximumFractionDigits: casas||0 });
+  }
+
+  fetch('data/estatisticas_municipios.json')
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(json){
+      dados = json;
+      listaMunicipios = Object.keys(dados).map(function(chave){
+        var v = dados[chave];
+        return { chave: chave, distrito: v.distrito, municipio: v.municipio, busca: normalizar(v.distrito + ' ' + v.municipio) };
+      }).sort(function(a,b){ return a.municipio.localeCompare(b.municipio, 'pt'); });
+
+      montarKPIs();
+      document.getElementById('estado').style.display = 'none';
+      document.getElementById('conteudo').style.display = 'block';
+    })
+    .catch(function(err){
+      var el = document.getElementById('estado');
+      el.classList.add('erro');
+      el.textContent = 'Não foi possível carregar data/estatisticas_municipios.json (' + err.message + '). Confirma que o ficheiro existe nesse caminho relativo a esta página.';
+    });
+
+  function montarKPIs(){
+    var lista = Object.values(dados);
+    var nMunic = lista.length;
+    var areaTotal = 0, popTotal = 0, comAviso = 0;
+    lista.forEach(function(v){
+      if(v.caop) areaTotal += v.caop.area_ha;
+      if(v.bgri && v.bgri.populacao_total) popTotal += v.bgri.populacao_total;
+      if(v.cos && v.cos.soma_percentagens && Math.abs(v.cos.soma_percentagens - 100) > 15) comAviso++;
+    });
+
+    var kpis = [
+      { valor: nMunic, label: 'Municípios processados' },
+      { valor: fmt(areaTotal/1000, 1) + ' mil ha', label: 'Área total (CAOP)' },
+      { valor: fmt(popTotal), label: 'População total (BGRI 2021)' },
+      { valor: comAviso, label: 'Municípios com aviso COS' },
+    ];
+
+    var html = '';
+    kpis.forEach(function(k){
+      html += '<div class="kpi-card"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
+    });
+    document.getElementById('kpis').innerHTML = html;
+
+    if(comAviso > 0){
+      document.getElementById('aviso-global').style.display = 'flex';
+    }
+  }
+
+  // ── pesquisa ──
+  var inputPesquisa = document.getElementById('pesquisa');
+  var caixaResultados = document.getElementById('resultados');
+
+  inputPesquisa.addEventListener('input', function(){
+    var termo = normalizar(inputPesquisa.value);
+    ativo = -1;
+    if(!termo){ caixaResultados.classList.remove('aberto'); caixaResultados.innerHTML = ''; return; }
+    var filtrados = listaMunicipios.filter(function(m){ return m.busca.indexOf(termo) !== -1; }).slice(0, 30);
+    renderResultados(filtrados);
+  });
+
+  inputPesquisa.addEventListener('keydown', function(e){
+    var itens = caixaResultados.querySelectorAll('.resultado-item');
+    if(!itens.length) return;
+    if(e.key === 'ArrowDown'){ e.preventDefault(); ativo = Math.min(ativo+1, itens.length-1); marcarAtivo(itens); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); ativo = Math.max(ativo-1, 0); marcarAtivo(itens); }
+    else if(e.key === 'Enter'){ e.preventDefault(); if(ativo>=0) itens[ativo].click(); }
+    else if(e.key === 'Escape'){ caixaResultados.classList.remove('aberto'); }
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.seletor')) caixaResultados.classList.remove('aberto');
+  });
+
+  function marcarAtivo(itens){
+    itens.forEach(function(it, i){ it.classList.toggle('kb-active', i===ativo); });
+    if(ativo>=0) itens[ativo].scrollIntoView({ block:'nearest' });
+  }
+
+  function renderResultados(lista){
+    if(!lista.length){ caixaResultados.classList.remove('aberto'); caixaResultados.innerHTML=''; return; }
+    caixaResultados.innerHTML = lista.map(function(m){
+      return '<div class="resultado-item" data-chave="' + m.chave + '">' +
+        '<span>' + m.municipio + '</span><span class="distrito-tag">' + m.distrito + '</span></div>';
+    }).join('');
+    caixaResultados.classList.add('aberto');
+    caixaResultados.querySelectorAll('.resultado-item').forEach(function(it){
+      it.addEventListener('click', function(){
+        var chave = it.getAttribute('data-chave');
+        inputPesquisa.value = dados[chave].municipio;
+        caixaResultados.classList.remove('aberto');
+        mostrarMunicipio(chave);
+      });
+    });
+  }
+
+  // ── painel do município ──
+  function mostrarMunicipio(chave){
+    var v = dados[chave];
+    if(!v) return;
+    var painel = document.getElementById('painel');
+    painel.classList.add('ativo');
+
+    document.getElementById('p-nome').textContent = v.municipio.replace(/_/g, ' ');
+    document.getElementById('p-distrito').textContent = v.distrito.replace(/_/g, ' ');
+
+    var errosEl = document.getElementById('p-erros');
+    if(v.erros && v.erros.length){
+      errosEl.innerHTML = '<div class="erros-municipio">⚠ ' + v.erros.join('<br>⚠ ') + '</div>';
+    } else {
+      errosEl.innerHTML = '';
+    }
+
+    // blocos de topo: CAOP
+    var blocosHtml = '';
+    if(v.caop){
+      blocosHtml += bloco(fmt(v.caop.area_ha, 1) + ' ha', 'Área oficial (CAOP)');
+      blocosHtml += bloco(v.caop.num_geometrias, 'Geometrias CAOP');
+    }
+    document.getElementById('p-blocos').innerHTML = blocosHtml;
+
+    // COS
+    renderCOS(v.cos);
+
+    // BGRI
+    var bgriHtml = '';
+    if(v.bgri){
+      bgriHtml += bloco(fmt(v.bgri.populacao_total), 'População residente');
+      bgriHtml += bloco(fmt(v.bgri.edificios_total), 'Edifícios clássicos');
+      bgriHtml += bloco(fmt(v.bgri.alojamentos_total), 'Alojamentos');
+      bgriHtml += bloco(fmt(v.bgri.num_subseccoes), 'Subsecções estatísticas');
+    } else {
+      bgriHtml = '<div class="bloco"><div class="valor">—</div><div class="label">Sem dados BGRI</div></div>';
+    }
+    document.getElementById('bgri-blocos').innerHTML = bgriHtml;
+
+    // MDT
+    var mdtHtml = '';
+    if(v.mdt && !v.mdt.erro){
+      mdtHtml += bloco(fmt(v.mdt.altitude_min_m, 0) + ' m', 'Altitude mínima');
+      mdtHtml += bloco(fmt(v.mdt.altitude_media_m, 0) + ' m', 'Altitude média');
+      mdtHtml += bloco(fmt(v.mdt.altitude_max_m, 0) + ' m', 'Altitude máxima');
+      mdtHtml += bloco(v.mdt.resolucao_m ? (v.mdt.resolucao_m[0] + ' m') : '—', 'Resolução do raster');
+    } else {
+      mdtHtml = '<div class="bloco"><div class="valor">—</div><div class="label">Sem dados MDT</div></div>';
+    }
+    document.getElementById('mdt-blocos').innerHTML = mdtHtml;
+
+    window.scrollTo({ top: document.getElementById('painel').offsetTop - 90, behavior:'smooth' });
+  }
+
+  function bloco(valor, label){
+    return '<div class="bloco"><div class="valor">' + valor + '</div><div class="label">' + label + '</div></div>';
+  }
+
+  function renderCOS(cos){
+    var badge = document.getElementById('cos-badge');
+    var barrasEl = document.getElementById('cos-barras');
+    var btnSuspeitos = document.getElementById('btn-suspeitos');
+    var listaSuspeitos = document.getElementById('lista-suspeitos');
+    listaSuspeitos.classList.remove('aberta');
+    listaSuspeitos.innerHTML = '';
+
+    if(!cos){
+      barrasEl.innerHTML = '<p style="color:var(--stone); font-size:13px;">Sem dados COS para este município.</p>';
+      badge.style.display = 'none';
+      btnSuspeitos.style.display = 'none';
+      return;
+    }
+
+    var foraDe100 = Math.abs(cos.soma_percentagens - 100) > 15;
+    badge.style.display = foraDe100 ? 'inline-block' : 'none';
+    badge.textContent = 'soma ' + fmt(cos.soma_percentagens, 1) + '%';
+
+    var classes = Object.keys(cos.classes).map(function(nome){
+      return { nome: nome, area: cos.classes[nome].area_ha, pct: cos.classes[nome].percentagem_area_caop };
+    }).sort(function(a,b){ return b.area - a.area; }).slice(0, 15);
+
+    var maxPct = Math.max.apply(null, classes.map(function(c){ return c.pct || 0; }).concat([1]));
+
+    barrasEl.innerHTML = classes.map(function(c){
+      var largura = Math.min(100, (c.pct / maxPct) * 100);
+      var corOchre = c.pct > 50 ? ' ochre' : '';
+      return '<div class="barra-linha">' +
+        '<span class="barra-nome" title="' + c.nome + '">' + c.nome + '</span>' +
+        '<span class="barra-pista"><span class="barra-fill' + corOchre + '" style="width:' + largura + '%"></span></span>' +
+        '<span class="barra-pct">' + fmt(c.pct, 1) + '%</span>' +
+        '</div>';
+    }).join('');
+
+    if(cos.registos_suspeitos && cos.registos_suspeitos.length){
+      btnSuspeitos.style.display = 'inline-block';
+      btnSuspeitos.textContent = 'Ver registos suspeitos (' + cos.registos_suspeitos.length + ')';
+      btnSuspeitos.onclick = function(){
+        listaSuspeitos.classList.toggle('aberta');
+      };
+      listaSuspeitos.innerHTML = cos.registos_suspeitos.map(function(r){
+        return '<div>' + r.classe + ' — dbf: ' + fmt(r.area_dbf_ha,1) + ' ha | geom: ' + fmt(r.area_geom_ha,1) + ' ha | usado: ' + fmt(r.area_usada_ha,1) + ' ha</div>';
+      }).join('');
+    } else {
+      btnSuspeitos.style.display = 'none';
+    }
+  }
+
+})();
+</script>
+</body>
+</html>

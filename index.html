@@ -192,17 +192,6 @@
     background:rgba(16,19,15,.86);
   }
 
-  html[data-theme="dark"] .map-thumb-card{
-    background:rgba(20,24,17,.88);
-  }
-
-  html[data-theme="dark"] .map-thumb-preview{
-    background:
-      linear-gradient(135deg, rgba(127,184,148,.14), rgba(224,147,94,.08)),
-      radial-gradient(circle at 30% 30%, rgba(127,184,148,.16), transparent 22%),
-      linear-gradient(90deg, rgba(40,46,33,.9), rgba(30,34,25,.94));
-  }
-
   /* ── TOGGLE DE TEMA ─────────────────────── */
   .theme-toggle{
     display:flex; align-items:center; justify-content:center;
@@ -267,7 +256,6 @@
   html.theme-transition .methodology-card,
   html.theme-transition .detail-card,
   html.theme-transition .panel,
-  html.theme-transition .map-thumb-card,
   html.theme-transition .selection-card,
   html.theme-transition .search-box input,
   html.theme-transition .search-results,
@@ -1305,6 +1293,45 @@
   .osm-map-badge button:hover{ background:var(--green-soft); color:var(--ink); }
 
   /* contador de municípios no mapa */
+  /* botão flutuante "Visualizar estatísticas?" dentro do mapa */
+  .stats-fab{
+    position:absolute;
+    top:18px; left:18px;
+    z-index:800;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--green-deep);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.04em;
+    text-decoration:none;
+    padding:11px 18px;
+    border-radius:999px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--green-deep);
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .stats-fab:hover{
+    background:var(--green);
+    transform:translateY(-2px);
+    box-shadow:0 22px 50px rgba(23,49,36,.18);
+  }
+  .stats-fab:active{ transform:translateY(0); }
+  .stats-fab .icone{ font-size:14px; }
+
+  html[data-theme="dark"] .stats-fab{
+    background:var(--green-soft);
+    color:var(--paper-deep);
+    border-color:var(--green-soft);
+  }
+  html[data-theme="dark"] .stats-fab:hover{ background:var(--green-deep); color:var(--paper); }
+
+  @media (max-width:640px){
+    .stats-fab{ font-size:11px; padding:9px 14px; }
+  }
+
   .map-counter{
     position:absolute;
     bottom:14px; left:14px;
@@ -1319,56 +1346,6 @@
     pointer-events:none;
   }
 
-  .map-thumb-card{
-    position:absolute;
-    top:18px;
-    left:18px;
-    z-index:800;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    width:min(240px, calc(100% - 36px));
-    padding:10px 12px;
-    background:rgba(255,255,255,.88);
-    border:1px solid var(--line);
-    border-radius:10px;
-    box-shadow:var(--shadow);
-  }
-
-  .map-thumb-preview{
-    width:54px;
-    height:54px;
-    flex:0 0 auto;
-    border-radius:8px;
-    background:
-      linear-gradient(135deg, rgba(61,107,79,.12), rgba(194,112,61,.06)),
-      radial-gradient(circle at 30% 30%, rgba(61,107,79,.18), transparent 22%),
-      linear-gradient(90deg, rgba(216,210,194,.9), rgba(247,245,239,.94));
-    border:1px solid var(--line);
-  }
-
-  .map-thumb-meta{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    min-width:0;
-  }
-
-  .map-thumb-meta small{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    letter-spacing:.08em;
-    color:var(--stone);
-    text-transform:uppercase;
-  }
-
-  .map-thumb-meta span{
-    font-size:12px;
-    color:var(--ink);
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
 
   /* ── PANEL ───────────────────────────────── */
   .panel{
@@ -2055,13 +2032,9 @@
 
 <div class="layout">
   <div id="map">
-    <div class="map-thumb-card">
-      <div class="map-thumb-preview"></div>
-      <div class="map-thumb-meta">
-        <small>Vista rápida</small>
-        <span>Mapa geral · Portugal</span>
-      </div>
-    </div>
+    <a class="stats-fab" href="estatisticas.html" title="Ver estatísticas por município (CAOP, COS, BGRI, MDT)">
+      <span class="icone">📊</span> Visualizar estatísticas?
+    </a>
     <div class="map-controls" aria-label="Controlo do mapa">
       <button id="map-fit-all" title="Ajustar ao território">⌖</button>
       <button id="map-zoom-in" title="Aumentar zoom">+</button>
@@ -2105,11 +2078,11 @@
         </div>
 
         <div class="download-list">
-          <!-- Baixar tudo -->
+          <!-- Download completo -->
           <button type="button" class="btn-download-all" id="btn-download-all" onclick="baixarTudo()">
             <span class="dla-icon">⬇</span>
-            <span>Download completo</span>
-            <span class="dla-count" id="download-all-count"></span>
+            <span class="dla-text">Download completo</span>
+            <span class="dla-count" id="download-all-count">12</span>
           </button>
 
           <!-- CAOP -->
