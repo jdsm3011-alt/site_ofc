@@ -54,6 +54,30 @@
 
   *{ box-sizing:border-box; }
 
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+
+  /* ── transição animada entre tema claro/escuro ── */
+  html.theme-transition,
+  html.theme-transition body,
+  html.theme-transition header,
+  html.theme-transition .kpi-card,
+  html.theme-transition .bloco,
+  html.theme-transition .seletor input,
+  html.theme-transition .resultados,
+  html.theme-transition .back-link,
+  html.theme-transition .theme-toggle,
+  html.theme-transition .aviso-global,
+  html.theme-transition footer{
+    transition:background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+
   body{
     margin:0;
     font-family:'IBM Plex Sans', sans-serif;
@@ -71,9 +95,11 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:18px 32px;
+    padding:16px 32px;
     border-bottom:1px solid var(--line);
-    background:var(--paper-elevated);
+    background:color-mix(in srgb, var(--paper-elevated) 88%, transparent);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
     position:sticky;
     top:0;
     z-index:50;
@@ -81,22 +107,46 @@
 
   .brand{
     display:flex;
-    align-items:baseline;
-    gap:10px;
+    align-items:center;
+    gap:12px;
+  }
+  .brand-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:linear-gradient(135deg, var(--green-deep), var(--green));
+    color:var(--paper);
+    font-size:16px;
+    flex-shrink:0;
+    box-shadow:var(--shadow-soft);
+  }
+  .brand-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.15;
   }
   .brand h1{
     font-family:'Spectral', serif;
     font-weight:600;
-    font-size:21px;
+    font-size:20px;
     margin:0;
     letter-spacing:.01em;
   }
   .brand span{
     font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:.12em;
+    font-size:10.5px;
+    letter-spacing:.1em;
     color:var(--stone);
     text-transform:uppercase;
+  }
+
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
   }
 
   .back-link{
@@ -112,9 +162,37 @@
     background:var(--white);
     padding:8px 14px;
     border-radius:999px;
-    transition:background .15s ease, box-shadow .15s ease;
+    transition:background .15s ease, box-shadow .15s ease, border-color .15s ease, transform .15s ease;
   }
-  .back-link:hover{ background:var(--paper-deep); box-shadow:var(--shadow-soft); }
+  .back-link:hover{ background:var(--paper-deep); box-shadow:var(--shadow-soft); border-color:var(--line-strong); transform:translateX(-2px); }
+
+  /* ── toggle de tema (consistente com a página principal) ── */
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--paper-elevated);
+    color:var(--ink);
+    cursor:pointer;
+    font-size:15px;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+    flex-shrink:0;
+  }
+  .theme-toggle:hover{ border-color:var(--green); transform:rotate(-12deg); }
+  .theme-toggle .icon-moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon{ display:inline; }
+
+  @keyframes themeIconSpin{
+    0%{ transform:rotate(0deg) scale(1); opacity:1; }
+    50%{ transform:rotate(160deg) scale(.4); opacity:0; }
+    51%{ transform:rotate(160deg) scale(.4); opacity:0; }
+    100%{ transform:rotate(360deg) scale(1); opacity:1; }
+  }
+  html.theme-transition .theme-toggle span{
+    animation:themeIconSpin .9s cubic-bezier(.4,0,.2,1);
+  }
 
   main{
     max-width:1180px;
@@ -127,10 +205,28 @@
     font-family:'IBM Plex Mono', monospace;
     font-size:13px;
     color:var(--stone);
-    padding:40px 0;
+    padding:60px 0;
     text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
   }
   #estado.erro{ color:var(--warn); }
+  .estado-spinner{
+    width:22px; height:22px;
+    border-radius:50%;
+    border:2.5px solid var(--line);
+    border-top-color:var(--green);
+    animation:spin .8s linear infinite;
+  }
+  #estado.erro .estado-spinner{ display:none; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
 
   /* ── KPIs gerais ── */
   .kpis{
@@ -140,12 +236,35 @@
     margin-bottom:28px;
   }
   .kpi-card{
+    position:relative;
     background:var(--paper-elevated);
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:16px 18px;
     box-shadow:var(--shadow-soft);
+    overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    animation:fadeUp .5s ease backwards;
   }
+  .kpis .kpi-card:nth-child(1){ animation-delay:.02s; }
+  .kpis .kpi-card:nth-child(2){ animation-delay:.07s; }
+  .kpis .kpi-card:nth-child(3){ animation-delay:.12s; }
+  .kpis .kpi-card:nth-child(4){ animation-delay:.17s; }
+  .kpi-card::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0;
+    height:3px;
+    background:linear-gradient(90deg, var(--green-soft), var(--green));
+    opacity:0;
+    transition:opacity .2s ease;
+  }
+  .kpi-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow);
+    border-color:var(--line-strong);
+  }
+  .kpi-card:hover::before{ opacity:1; }
   .kpi-card .valor{
     font-family:'Spectral', serif;
     font-size:28px;
@@ -174,6 +293,7 @@
     margin-bottom:24px;
     font-size:13px;
     line-height:1.5;
+    animation:fadeUp .4s ease;
   }
   .aviso-global b{ color:var(--warn); }
 
@@ -182,18 +302,28 @@
     position:relative;
     margin-bottom:20px;
   }
+  .seletor::before{
+    content:"⌕";
+    position:absolute;
+    left:16px; top:50%;
+    transform:translateY(-50%);
+    font-size:17px;
+    color:var(--stone);
+    pointer-events:none;
+  }
   .seletor input{
     width:100%;
     font-family:'IBM Plex Sans', sans-serif;
     font-size:15px;
-    padding:13px 16px;
+    padding:13px 16px 13px 42px;
     border:1px solid var(--line-strong);
     border-radius:var(--radius-sm);
     background:var(--white);
     color:var(--ink);
     outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
   }
-  .seletor input:focus{ border-color:var(--green); }
+  .seletor input:focus{ border-color:var(--green); box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 18%, transparent); }
   .resultados{
     position:absolute;
     left:0; right:0; top:calc(100% + 6px);
@@ -205,8 +335,11 @@
     overflow-y:auto;
     z-index:40;
     display:none;
+    opacity:0;
+    transform:translateY(-4px);
+    transition:opacity .15s ease, transform .15s ease;
   }
-  .resultados.aberto{ display:block; }
+  .resultados.aberto{ display:block; opacity:1; transform:translateY(0); }
   .resultado-item{
     padding:10px 16px;
     cursor:pointer;
@@ -214,6 +347,7 @@
     display:flex;
     justify-content:space-between;
     border-bottom:1px solid var(--line);
+    transition:background .1s ease;
   }
   .resultado-item:last-child{ border-bottom:none; }
   .resultado-item:hover, .resultado-item.kb-active{ background:var(--paper-deep); }
@@ -226,7 +360,7 @@
 
   /* ── painel do município ── */
   #painel{ display:none; }
-  #painel.ativo{ display:block; }
+  #painel.ativo{ display:block; animation:fadeUp .45s ease; }
 
   .painel-cabecalho{
     display:flex;
@@ -261,6 +395,12 @@
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
     padding:14px 16px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .bloco:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow-soft);
+    border-color:var(--line-strong);
   }
   .bloco .valor{
     font-family:'IBM Plex Mono', monospace;
@@ -277,6 +417,8 @@
 
   section.seccao{
     margin-bottom:32px;
+    padding-left:14px;
+    border-left:2px solid var(--line);
   }
   section.seccao h3{
     font-family:'Spectral', serif;
@@ -321,8 +463,10 @@
   }
   .barra-fill{
     height:100%;
+    width:0;
     background:linear-gradient(90deg, var(--green-soft), var(--green));
     border-radius:999px;
+    transition:width .7s cubic-bezier(.2,.8,.2,1);
   }
   .barra-fill.ochre{ background:linear-gradient(90deg, var(--ochre-soft), var(--ochre)); }
   .barra-pct{
@@ -344,7 +488,9 @@
     padding:6px 12px;
     cursor:pointer;
     margin-top:10px;
+    transition:background .15s ease, color .15s ease;
   }
+  .suspeitos-toggle:hover{ background:var(--warn); color:var(--white); }
   .suspeitos-lista{
     display:none;
     margin-top:10px;
@@ -382,26 +528,43 @@
   }
 
   @media (max-width:640px){
-    header{ padding:14px 18px; }
+    header{ padding:12px 16px; }
+    .brand-icon{ width:32px; height:32px; font-size:14px; }
+    .brand h1{ font-size:17px; }
+    .brand span{ display:none; }
+    .header-actions{ gap:8px; }
     main{ padding:20px 16px 60px; }
     .barra-linha{ grid-template-columns:1fr; }
     .barra-pct{ text-align:left; }
+    .back-link span.txt{ display:none; }
+    .back-link{ padding:8px 12px; }
   }
 </style>
+
 </head>
 <body>
 
 <header>
   <div class="brand">
-    <h1>Estatísticas</h1>
-    <span>DataGis · CAOP / COS / BGRI / MDT</span>
+    <span class="brand-icon">📊</span>
+    <div class="brand-text">
+      <h1>Estatísticas</h1>
+      <span>DataGis · CAOP / COS / BGRI / MDT</span>
+    </div>
   </div>
-  <a class="back-link" href="index.html">← Voltar ao mapa</a>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
+      <span class="icon-sun">&#9728;</span>
+      <span class="icon-moon">&#9789;</span>
+    </button>
+    <a class="back-link" href="index.html">← <span class="txt">Voltar ao mapa</span></a>
+  </div>
 </header>
 
 <main>
 
-  <div id="estado">A carregar estatísticas…</div>
+  <div id="estado"><div class="estado-spinner"></div><span>A carregar estatísticas…</span></div>
+
 
   <div id="conteudo" style="display:none">
 
@@ -459,14 +622,39 @@
 
 <script>
 (function(){
-  // Tema: segue a preferência já guardada pelo index.html (mesma chave/atributo)
-  try{
-    var temaGuardado = localStorage.getItem('datagis-tema');
-    if(temaGuardado){ document.documentElement.setAttribute('data-theme', temaGuardado); }
-    else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  }catch(e){}
+  // ── TEMA CLARO/ESCURO (mesma chave usada em index.html, para sincronizar) ──
+  var THEME_KEY = 'datagis-theme';
+  var themeToggleBtn = document.getElementById('theme-toggle');
+
+  function aplicarTema(tema){
+    document.documentElement.setAttribute('data-theme', tema);
+    if(themeToggleBtn) themeToggleBtn.setAttribute('aria-pressed', tema === 'dark' ? 'true' : 'false');
+  }
+
+  function temaPreferido(){
+    try{
+      var guardado = localStorage.getItem(THEME_KEY);
+      if(guardado === 'dark' || guardado === 'light') return guardado;
+    }catch(e){}
+    return 'light'; // predefinição é sempre claro, consistente com a página principal
+  }
+
+  aplicarTema(temaPreferido());
+
+  if(themeToggleBtn){
+    themeToggleBtn.addEventListener('click', function(){
+      var atual = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      var novo  = atual === 'dark' ? 'light' : 'dark';
+      try{ localStorage.setItem(THEME_KEY, novo); }catch(e){}
+
+      document.documentElement.classList.add('theme-transition');
+      aplicarTema(novo);
+      clearTimeout(themeToggleBtn._transitionTimeout);
+      themeToggleBtn._transitionTimeout = setTimeout(function(){
+        document.documentElement.classList.remove('theme-transition');
+      }, 1200);
+    });
+  }
 
   var dados = null;
   var listaMunicipios = [];
@@ -668,10 +856,19 @@
       var corOchre = c.pct > 50 ? ' ochre' : '';
       return '<div class="barra-linha">' +
         '<span class="barra-nome" title="' + c.nome + '">' + c.nome + '</span>' +
-        '<span class="barra-pista"><span class="barra-fill' + corOchre + '" style="width:' + largura + '%"></span></span>' +
+        '<span class="barra-pista"><span class="barra-fill' + corOchre + '" data-largura="' + largura + '" style="width:0%"></span></span>' +
         '<span class="barra-pct">' + fmt(c.pct, 1) + '%</span>' +
         '</div>';
     }).join('');
+
+    // anima o crescimento das barras COS (do 0% até ao valor real)
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        barrasEl.querySelectorAll('.barra-fill').forEach(function(el){
+          el.style.width = el.getAttribute('data-largura') + '%';
+        });
+      });
+    });
 
     if(cos.registos_suspeitos && cos.registos_suspeitos.length){
       btnSuspeitos.style.display = 'inline-block';
