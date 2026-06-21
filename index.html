@@ -159,23 +159,11 @@
       linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
   }
 
-  html[data-theme="dark"] .gis-globe{
-    opacity:.9;
-    filter:
-      drop-shadow(0 0 30px rgba(127,184,148,.12))
-      drop-shadow(0 0 60px rgba(127,184,148,.06));
-  }
-
-  html[data-theme="dark"] .globe-body{
-    fill:url(#globeShadeDark);
-  }
-
-  html[data-theme="dark"] .globe-edge{
-    stroke:rgba(159,203,174,.65);
-  }
-
-  html[data-theme="dark"] .globe-line{
-    stroke:rgba(159,203,174,.6);
+  html[data-theme="dark"] .hero-demo-badge,
+  html[data-theme="dark"] .hero-demo-tag{
+    background:rgba(30,34,25,.9);
+    border-color:var(--line);
+    color:var(--ink);
   }
 
   html[data-theme="dark"] .download-item-link.unavailable{
@@ -197,29 +185,6 @@
 
   html[data-theme="dark"] .osm-item:hover{
     border-color:#3f8bc4;
-  }
-
-  html[data-theme="dark"] .gis-compass,
-  html[data-theme="dark"] .gis-coord,
-  html[data-theme="dark"] .gis-scalebar{
-    background:var(--paper-elevated);
-    border-color:var(--line);
-  }
-
-  html[data-theme="dark"] .preview-grid{
-    background-image:
-      linear-gradient(rgba(159,203,174,.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(159,203,174,.06) 1px, transparent 1px),
-      linear-gradient(90deg, transparent 0%, transparent 48%, rgba(127,184,148,.04) 48%, rgba(127,184,148,.04) 52%, transparent 52%);
-  }
-
-  html[data-theme="dark"] .preview-grid::before,
-  html[data-theme="dark"] .preview-grid::after{
-    background:linear-gradient(90deg, transparent, rgba(127,184,148,.16), transparent);
-  }
-
-  html[data-theme="dark"] .gis-scan{
-    background:linear-gradient(180deg, transparent, rgba(127,184,148,.05), transparent);
   }
 
   html[data-theme="dark"] header,
@@ -596,7 +561,7 @@
     padding:18px;
     box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.5);
     transform:translateY(0);
-    animation:panelEntrance 1.15s cubic-bezier(.22,.61,.36,1) both, floatPanel 7.5s ease-in-out 1.15s infinite;
+    animation:panelEntrance 1.15s cubic-bezier(.22,.61,.36,1) both, floatPanel 9s ease-in-out 1.15s infinite;
     overflow:hidden;
     will-change:transform;
   }
@@ -672,249 +637,126 @@
     animation:pulseGlow 10s ease-in-out infinite;
   }
 
-  .preview-grid,
-  .preview-grid::before,
-  .preview-grid::after{
-    position:absolute;
-    pointer-events:none;
-  }
+  /* ── DEMO AUTOMÁTICA DO MAPA: Portugal → zoom a Cabeceiras de Basto → pré-visualizações reais ── */
+  /* Mapa Leaflet duplicado, não-interativo, com os mesmos dados/estilos do mapa principal,
+     a fazer um ciclo automático tipo "display" (sem inputs do utilizador). */
 
-  .preview-grid{
+  .hero-demo-map{
+    position:absolute;
     inset:0;
-    background-image:
-      linear-gradient(rgba(216,210,194,.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(216,210,194,.07) 1px, transparent 1px),
-      linear-gradient(90deg, transparent 0%, transparent 48%, rgba(61,107,79,.03) 48%, rgba(61,107,79,.03) 52%, transparent 52%);
-    background-size:28px 28px, 28px 28px, 100% 100%;
-    opacity:.55;
-    animation:slideGrid 26s linear infinite;
+    pointer-events:none; /* puramente decorativo — nunca captura cliques/scroll/touch */
+    background:transparent;
   }
 
-  .preview-grid::before,
-  .preview-grid::after{
-    content:'';
-    left:0; right:0;
-    height:1px;
-    background:linear-gradient(90deg, transparent, rgba(61,107,79,.18), transparent);
+  .hero-demo-map .leaflet-control-container{ display:none; }
+  .hero-demo-map .leaflet-pane,
+  .hero-demo-map .leaflet-tile,
+  .hero-demo-map .leaflet-marker-icon,
+  .hero-demo-map .leaflet-image-layer,
+  .hero-demo-map .leaflet-interactive{
+    transition:opacity .5s ease;
   }
 
-  .preview-grid::before{ top:30%; }
-  .preview-grid::after{ top:68%; }
-
-  .gis-globe{
+  /* etiqueta de estado, no topo — mostra a etapa atual da demonstração */
+  .hero-demo-badge{
     position:absolute;
-    left:50%; top:50%;
-    width:300px;
-    height:300px;
-    transform:translate(-50%, -50%);
-    z-index:0;
-    pointer-events:none;
-    opacity:.8;
-    filter:
-      drop-shadow(0 0 30px rgba(110,114,106,.16))
-      drop-shadow(0 0 60px rgba(110,114,106,.08));
-    animation:globeBreathe 13s ease-in-out infinite;
-  }
-
-  .gis-globe-svg{ width:100%; height:100%; overflow:visible; }
-
-  .globe-body{ fill:url(#globeShade); }
-
-  .globe-edge{
-    fill:none;
-    stroke:rgba(110,114,106,.4);
-    stroke-width:1.1;
-  }
-
-  .globe-line{
-    fill:none;
-    stroke:rgba(110,114,106,.34);
-    stroke-width:.9;
-  }
-
-  .globe-line.parallel{ animation:parallelGlow 9s ease-in-out infinite; }
-  .globe-line.parallel.p1{ animation-delay:0s; }
-  .globe-line.parallel.p2{ animation-delay:1.5s; }
-  .globe-line.parallel.p3{ animation-delay:3s; }
-
-  .gis-animation-svg{
-    position:absolute;
-    inset:-12%;
-    width:124%;
-    height:124%;
-    z-index:1;
-    overflow:visible;
-    pointer-events:none;
-    animation:svgDrift 15s ease-in-out infinite;
-  }
-
-  /* território (limite administrativo, à semelhança da CAOP) */
-  .gis-territory{
-    fill:url(#gisLandGrad);
-    opacity:.82;
-    animation:territoryBreathe 14s ease-in-out infinite;
-  }
-
-  .gis-trace{
-    fill:none;
-    stroke:rgba(61,107,79,.08);
-    stroke-width:6;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    stroke-dasharray:1.4 32;
-    opacity:.75;
-    animation:traceSweep 16s linear infinite;
-  }
-
-  .gis-line{
-    fill:none;
-    stroke:rgba(61,107,79,.78);
-    stroke-width:2.4;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    stroke-dasharray:13 20;
-    filter:drop-shadow(0 0 6px rgba(61,107,79,.12));
-    animation:lineFlow 12.6s linear infinite;
-  }
-
-  /* manchas de ocupação do solo, à semelhança da COS */
-  .gis-cover{
-    opacity:0;
-    animation:coverBreathe 13s ease-in-out infinite;
-  }
-  .gis-cover.forest{      fill:rgba(45,82,60,.55);   animation-delay:0s;    }
-  .gis-cover.agriculture{ fill:rgba(189,158,84,.42);  animation-delay:1.6s;  }
-  .gis-cover.urban{       fill:rgba(194,112,61,.4);   animation-delay:3.2s;  }
-
-  /* divisões administrativas internas (freguesias) */
-  .gis-parish{
-    fill:none;
-    stroke:rgba(110,114,106,.4);
-    stroke-width:1.1;
-    stroke-dasharray:3 5;
-    opacity:.5;
-  }
-
-  /* rede hidrográfica */
-  .gis-river{
-    fill:none;
-    stroke:rgba(70,112,142,.62);
-    stroke-width:2.1;
-    stroke-linecap:round;
-    stroke-dasharray:9 11;
-    filter:drop-shadow(0 0 5px rgba(70,112,142,.18));
-    animation:riverFlow 9s linear infinite;
-  }
-
-  /* marcadores de resultados (município pesquisado/selecionado) */
-  .gis-marker{
-    opacity:0;
-    transform:translateY(-54px) scale(.5);
-    animation:markerDrop 9.6s ease-in-out infinite;
-  }
-  .gis-marker.m1{ animation-delay:.2s;  transform-origin:190px 132px; }
-  .gis-marker.m2{ animation-delay:2.6s; transform-origin:322px 150px; }
-  .gis-marker.m3{ animation-delay:5s;   transform-origin:248px 222px; }
-
-  .pin-body{ fill:var(--ochre); filter:drop-shadow(0 3px 6px rgba(194,112,61,.32)); }
-  .pin-core{ fill:var(--paper-elevated); }
-
-  .gis-pulse{
-    fill:none;
-    stroke:rgba(194,112,61,.42);
-    stroke-width:2;
-    opacity:0;
-    transform-origin:center;
-    animation:pulseRing 9.6s ease-out infinite;
-  }
-  .gis-marker.m1 .gis-pulse{ animation-delay:.2s;  }
-  .gis-marker.m2 .gis-pulse{ animation-delay:2.6s; }
-  .gis-marker.m3 .gis-pulse{ animation-delay:5s;   }
-
-  /* leitura de coordenadas */
-  .gis-coord{
-    position:absolute;
-    top:14px; left:16px;
-    z-index:2;
-    display:flex;
+    top:14px;
+    left:14px;
+    z-index:650;
+    display:inline-flex;
     align-items:center;
-    gap:6px;
+    gap:8px;
+    padding:7px 13px;
+    border-radius:999px;
+    background:rgba(252,250,245,.92);
+    border:1px solid rgba(61,107,79,.16);
+    box-shadow:0 6px 18px rgba(23,49,36,.1);
+    backdrop-filter:blur(4px);
     font-family:'IBM Plex Mono', monospace;
     font-size:10.5px;
     letter-spacing:.04em;
     color:var(--green-deep);
-    background:rgba(252,250,245,.72);
-    padding:5px 9px;
-    border-radius:999px;
-    border:1px solid rgba(61,107,79,.14);
-    backdrop-filter:blur(4px);
+    max-width:calc(100% - 28px);
+    pointer-events:none;
   }
 
-  .gis-live-dot{
+  .hero-demo-dot{
     width:6px; height:6px;
     border-radius:50%;
     background:var(--ochre);
-    box-shadow:0 0 0 2px rgba(194,112,61,.18);
-    animation:liveDotPulse 2.4s ease-in-out infinite;
+    flex:none;
+    animation:liveDotPulse 1.8s ease-in-out infinite;
   }
 
-  /* rosa-dos-ventos */
-  .gis-compass{
-    position:absolute;
-    top:14px; right:16px;
-    z-index:2;
-    width:34px; height:34px;
-    opacity:.85;
-  }
-  .gis-compass svg{
-    width:100%; height:100%;
-    animation:compassSway 9s ease-in-out infinite;
-    transform-origin:50% 60%;
-  }
-  .gis-compass path{ fill:var(--green); }
-  .gis-compass text{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:9px;
-    font-weight:600;
-    fill:var(--green-deep);
+  #hero-demo-badge-text{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 
-  /* escala gráfica */
-  .gis-scalebar{
+  /* etiqueta com o nome do concelho-alvo, aparece quando o zoom termina */
+  .hero-demo-tag{
     position:absolute;
-    bottom:14px; left:16px;
-    z-index:2;
+    left:50%;
+    bottom:16%;
+    transform:translate(-50%, 6px);
+    z-index:650;
     display:flex;
-    flex-direction:column;
-    gap:4px;
+    align-items:center;
+    gap:7px;
+    padding:7px 14px;
+    border-radius:999px;
+    background:rgba(252,250,245,.92);
+    border:1px solid rgba(61,107,79,.16);
+    box-shadow:0 6px 18px rgba(23,49,36,.1);
+    backdrop-filter:blur(4px);
     font-family:'IBM Plex Mono', monospace;
-    font-size:9.5px;
-    color:var(--stone);
-  }
-
-  .gis-scalebar-ticks{
-    position:relative;
-    width:86px;
-    height:6px;
-    border-left:1px solid var(--stone);
-    border-right:1px solid var(--stone);
-    border-bottom:1px solid var(--stone);
-  }
-  .gis-scalebar-ticks::before{
-    content:'';
-    position:absolute;
-    left:50%; bottom:0;
-    width:1px; height:4px;
-    background:var(--stone);
-  }
-
-  .gis-scan{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(180deg, transparent, rgba(255,255,255,.04), transparent);
-    opacity:.22;
-    animation:scanLine 7s linear infinite;
+    font-size:11px;
+    letter-spacing:.03em;
+    color:var(--green-deep);
+    white-space:nowrap;
+    opacity:0;
     pointer-events:none;
+    transition:opacity .5s ease, transform .5s ease;
+  }
+
+  .hero-demo-tag.show{
+    opacity:1;
+    transform:translate(-50%, 0);
+  }
+
+  .hero-demo-tag-dot{
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--ochre);
+    box-shadow:0 0 0 3px rgba(194,112,61,.18);
+    flex:none;
+  }
+
+  .hero-demo-tag strong{ color:var(--ink); font-family:'Spectral', serif; font-size:12.5px; font-weight:600; }
+
+  /* pontos de progresso do carrossel de pré-visualizações (CAOP/COS/BGRI/MDT/OSM) */
+  .hero-demo-progress{
+    position:absolute;
+    left:50%;
+    bottom:6%;
+    transform:translateX(-50%);
+    z-index:650;
+    display:flex;
+    gap:6px;
+    pointer-events:none;
+  }
+
+  .hero-demo-progress span{
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--line-strong);
+    transition:background .3s ease, transform .3s ease;
+  }
+
+  .hero-demo-progress span.active{
+    background:var(--ochre);
+    transform:scale(1.3);
   }
 
   @keyframes heroReveal{
@@ -958,71 +800,9 @@
     }
   }
 
-  @keyframes territoryBreathe{
-    0%, 100%{ opacity:.74; }
-    50%{ opacity:.94; }
-  }
-
-  @keyframes coverBreathe{
-    0%, 100%{ opacity:.14; }
-    45%{ opacity:.62; }
-    72%{ opacity:.32; }
-  }
-
-  @keyframes riverFlow{
-    0%{ stroke-dashoffset:0; opacity:.3; }
-    50%{ opacity:.78; }
-    100%{ stroke-dashoffset:-200; opacity:.3; }
-  }
-
-  @keyframes markerDrop{
-    0%, 4%{ opacity:0; transform:translateY(-54px) scale(.5); }
-    11%{ opacity:1; transform:translateY(5px) scale(1.08); }
-    16%{ opacity:1; transform:translateY(-3px) scale(.97); }
-    20%, 66%{ opacity:1; transform:translateY(0) scale(1); }
-    78%{ opacity:0; transform:translateY(-8px) scale(.82); }
-    100%{ opacity:0; transform:translateY(-54px) scale(.5); }
-  }
-
-  @keyframes compassSway{
-    0%, 100%{ transform:rotate(-3deg); }
-    50%{ transform:rotate(3deg); }
-  }
-
   @keyframes liveDotPulse{
-    0%, 100%{ opacity:.4; transform:scale(.85); }
-    50%{ opacity:1; transform:scale(1.15); }
-  }
-
-  @keyframes traceSweep{
-    0%{ stroke-dashoffset:0; opacity:.08; }
-    18%{ opacity:.2; }
-    42%{ opacity:.6; }
-    72%{ opacity:.26; }
-    100%{ stroke-dashoffset:-360; opacity:.08; }
-  }
-
-  @keyframes lineFlow{
-    0%{ stroke-dashoffset:0; opacity:.08; }
-    12%{ opacity:.18; }
-    30%{ opacity:.76; }
-    54%{ opacity:.4; }
-    80%{ opacity:.88; }
-    100%{ stroke-dashoffset:-360; opacity:.08; }
-  }
-
-  @keyframes pulseRing{
-    0%, 18%{ opacity:0; transform:scale(.5); }
-    24%{ opacity:.5; transform:scale(1); }
-    46%{ opacity:.22; transform:scale(2); }
-    68%{ opacity:.1; transform:scale(2.8); }
-    100%{ opacity:0; transform:scale(3.4); }
-  }
-
-  @keyframes scanLine{
-    0%{ transform:translateY(-100%); }
-    50%{ transform:translateY(0); }
-    100%{ transform:translateY(100%); }
+    0%, 100%{ opacity:.5; transform:scale(.9); }
+    50%{ opacity:1; transform:scale(1.1); }
   }
 
   @keyframes slideGrid{
@@ -1036,24 +816,9 @@
     100%{ transform:translate3d(0,0,0); }
   }
 
-  @keyframes svgDrift{
-    0%,100%{ transform:translate3d(0,0,0) scale(1); }
-    50%{ transform:translate3d(0,-8px,0) scale(1.03); }
-  }
-
-  @keyframes globeBreathe{
-    0%, 100%{ transform:translate(-50%, -50%) scale(1); opacity:.76; }
-    50%{ transform:translate(-50%, -50%) scale(1.035); opacity:.92; }
-  }
-
-  @keyframes parallelGlow{
-    0%, 100%{ opacity:.18; }
-    50%{ opacity:.4; }
-  }
-
   @keyframes floatPanel{
     0%,100%{ transform:translateY(0px); }
-    50%{ transform:translateY(-9px); }
+    50%{ transform:translateY(-5px); }
   }
 
   @keyframes buttonPop{
@@ -1096,8 +861,8 @@
     .hero-content h2{ font-size:3rem; }
     .hero-panel{ padding:18px; }
     .hero-preview-stats{ left:10px; right:10px; bottom:10px; }
-    .gis-compass, .gis-scalebar{ display:none; }
-    .gis-coord{ font-size:9.5px; padding:4px 8px; }
+    .hero-demo-badge{ font-size:9.5px; padding:5px 10px; }
+    .hero-demo-tag{ font-size:9.5px; padding:5px 10px; }
   }
 
   /* ── LANDING DETAILS ─────────────────────── */
@@ -2152,108 +1917,19 @@
   <div class="hero-preview">
     <div class="hero-panel">
       <div class="hero-preview-map">
-        <div class="preview-grid"></div>
-        <div class="gis-globe">
-          <svg class="gis-globe-svg" viewBox="0 0 200 200" aria-hidden="true">
-            <defs>
-              <radialGradient id="globeShade" cx="36%" cy="32%" r="75%">
-                <stop offset="0%"  stop-color="rgba(255,255,255,.6)"/>
-                <stop offset="45%" stop-color="rgba(223,219,208,.24)"/>
-                <stop offset="100%" stop-color="rgba(110,114,106,.22)"/>
-              </radialGradient>
-              <radialGradient id="globeShadeDark" cx="36%" cy="32%" r="75%">
-                <stop offset="0%"  stop-color="rgba(159,203,174,.38)"/>
-                <stop offset="45%" stop-color="rgba(127,184,148,.16)"/>
-                <stop offset="100%" stop-color="rgba(20,25,18,.4)"/>
-              </radialGradient>
-            </defs>
+        <div id="hero-demo-map" class="hero-demo-map" aria-hidden="true"></div>
 
-            <circle class="globe-body" cx="100" cy="100" r="92"/>
-
-            <!-- paralelos -->
-            <ellipse class="globe-line parallel p1" cx="100" cy="58"  rx="86" ry="20"/>
-            <ellipse class="globe-line parallel p2" cx="100" cy="100" rx="92" ry="5"/>
-            <ellipse class="globe-line parallel p3" cx="100" cy="142" rx="86" ry="20"/>
-
-            <!-- meridianos a girar (ilusão de rotação do globo) -->
-            <ellipse class="globe-line merid" cx="100" cy="100" rx="3" ry="92">
-              <animate attributeName="rx" values="3;92;3" dur="16s" begin="0s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values=".42;.04;.42" dur="16s" begin="0s" repeatCount="indefinite"/>
-            </ellipse>
-            <ellipse class="globe-line merid" cx="100" cy="100" rx="3" ry="92">
-              <animate attributeName="rx" values="3;92;3" dur="16s" begin="-4s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values=".42;.04;.42" dur="16s" begin="-4s" repeatCount="indefinite"/>
-            </ellipse>
-            <ellipse class="globe-line merid" cx="100" cy="100" rx="3" ry="92">
-              <animate attributeName="rx" values="3;92;3" dur="16s" begin="-8s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values=".42;.04;.42" dur="16s" begin="-8s" repeatCount="indefinite"/>
-            </ellipse>
-            <ellipse class="globe-line merid" cx="100" cy="100" rx="3" ry="92">
-              <animate attributeName="rx" values="3;92;3" dur="16s" begin="-12s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values=".42;.04;.42" dur="16s" begin="-12s" repeatCount="indefinite"/>
-            </ellipse>
-
-            <circle class="globe-edge" cx="100" cy="100" r="92"/>
-          </svg>
-        </div>
-        <div class="gis-scan"></div>
-
-        <svg class="gis-animation-svg" viewBox="0 0 520 360" aria-hidden="true">
-          <defs>
-            <radialGradient id="gisLandGrad" cx="42%" cy="32%" r="75%">
-              <stop offset="0%" stop-color="rgba(110,154,124,.24)"/>
-              <stop offset="100%" stop-color="rgba(61,107,79,.05)"/>
-            </radialGradient>
-          </defs>
-
-          <!-- território (limite administrativo, à semelhança da CAOP) -->
-          <path class="gis-territory" d="M92 84L168 54L248 42L322 56L392 46L452 82L472 138L454 190L468 230L418 264L350 282L278 270L206 286L142 256L96 222L70 168L86 122Z"/>
-          <path class="gis-trace"     d="M92 84L168 54L248 42L322 56L392 46L452 82L472 138L454 190L468 230L418 264L350 282L278 270L206 286L142 256L96 222L70 168L86 122Z"/>
-          <path class="gis-line a"    d="M92 84L168 54L248 42L322 56L392 46L452 82L472 138L454 190L468 230L418 264L350 282L278 270L206 286L142 256L96 222L70 168L86 122Z"/>
-
-          <!-- manchas de ocupação do solo, à semelhança da COS -->
-          <path class="gis-cover forest"      d="M150 110L210 95L246 118L226 160L172 168L138 140Z"/>
-          <path class="gis-cover agriculture" d="M260 120L330 105L368 140L350 190L292 196L256 160Z"/>
-          <path class="gis-cover urban"       d="M222 198L262 194L280 226L250 246L212 232Z"/>
-
-          <!-- divisões de freguesia -->
-          <path class="gis-parish" d="M176 60L188 280"/>
-          <path class="gis-parish" d="M312 52L326 276"/>
-
-          <!-- rede hidrográfica -->
-          <path class="gis-river" d="M196 86C218 124 188 158 222 196C246 224 234 254 268 276"/>
-
-          <!-- marcadores de resultados (município pesquisado/selecionado) -->
-          <g class="gis-marker m1">
-            <circle class="gis-pulse" cx="190" cy="132" r="9"/>
-            <path class="pin-body" d="M0,-20C-8,-20 -14,-13 -14,-5C-14,5 0,18 0,18C0,18 14,5 14,-5C14,-13 8,-20 0,-20Z" transform="translate(190,114)"/>
-            <circle class="pin-core" cx="190" cy="109" r="3.6"/>
-          </g>
-          <g class="gis-marker m2">
-            <circle class="gis-pulse" cx="322" cy="150" r="9"/>
-            <path class="pin-body" d="M0,-20C-8,-20 -14,-13 -14,-5C-14,5 0,18 0,18C0,18 14,5 14,-5C14,-13 8,-20 0,-20Z" transform="translate(322,132)"/>
-            <circle class="pin-core" cx="322" cy="127" r="3.6"/>
-          </g>
-          <g class="gis-marker m3">
-            <circle class="gis-pulse" cx="248" cy="222" r="9"/>
-            <path class="pin-body" d="M0,-20C-8,-20 -14,-13 -14,-5C-14,5 0,18 0,18C0,18 14,5 14,-5C14,-13 8,-20 0,-20Z" transform="translate(248,204)"/>
-            <circle class="pin-core" cx="248" cy="199" r="3.6"/>
-          </g>
-        </svg>
-
-        <div class="gis-coord"><span class="gis-live-dot"></span>41.14&deg; N &middot; 8.61&deg; O</div>
-
-        <div class="gis-compass" aria-hidden="true">
-          <svg viewBox="0 0 40 40">
-            <path d="M20 4L25 20L20 36L15 20Z"/>
-            <text x="20" y="13" text-anchor="middle">N</text>
-          </svg>
+        <div class="hero-demo-badge" id="hero-demo-badge">
+          <span class="hero-demo-dot"></span>
+          <span id="hero-demo-badge-text">A carregar pré-visualização…</span>
         </div>
 
-        <div class="gis-scalebar" aria-hidden="true">
-          <div class="gis-scalebar-ticks"></div>
-          <span>0 — 25 km</span>
+        <div class="hero-demo-tag" id="hero-demo-tag">
+          <span class="hero-demo-tag-dot"></span>
+          <span id="hero-demo-tag-text">Cabeceiras de Basto</span>
         </div>
+
+        <div class="hero-demo-progress" id="hero-demo-progress"></div>
       </div>
     </div>
   </div>
@@ -2587,6 +2263,14 @@ let selectedLayer    = null;
 let osmOverlayLayer  = null;
 let activeMunicipio  = null;
 let unavailablePaths  = new Set();
+
+// demo automática no hero (mapa duplicado, não-interativo, "tipo display")
+let heroMap           = null;
+let heroBaseLayer     = null;
+let heroGeoLayer      = null;
+let heroHighlightLayer = null;
+let heroPreviewLayer  = null;
+let heroDemoTimer     = null;
 
 const estiloNormal      = { color:'#6E9A7C', weight:1,   fillColor:'#3D6B4F', fillOpacity:0.08 };
 const estiloHover       = { color:'#3D6B4F', weight:1.5, fillColor:'#3D6B4F', fillOpacity:0.18 };
@@ -3035,6 +2719,7 @@ function aplicarTema(tema){
   document.documentElement.setAttribute('data-theme', tema);
   themeToggleBtn.setAttribute('aria-pressed', tema === 'dark' ? 'true' : 'false');
   baseTileLayer.setUrl(tema === 'dark' ? TILE_DARK : TILE_LIGHT);
+  if(heroBaseLayer) heroBaseLayer.setUrl(tema === 'dark' ? TILE_DARK : TILE_LIGHT);
 }
 
 function temaPreferido(){
@@ -3170,6 +2855,230 @@ searchInput.addEventListener('keydown', e => {
     searchResults.classList.remove('active');
   }
 });
+
+// ── DEMO AUTOMÁTICA NO HERO ───────────────────────────────────────────────────
+// Duplica o mapa principal num mini-mapa Leaflet não-interativo (sem cliques,
+// sem zoom/drag do utilizador) e corre um ciclo automático "tipo display",
+// sempre com os dados reais do site: Portugal → zoom a Cabeceiras de Basto →
+// carrossel das pré-visualizações reais desse município (CAOP/COS/BGRI/MDT/OSM)
+// → regressa a Portugal → repete.
+
+const HERO_MUNICIPIO_DEMO = 'Cabeceiras de Basto';
+
+function heroSetBadge(texto){
+  const el = document.getElementById('hero-demo-badge-text');
+  if(el) el.textContent = texto;
+}
+
+function heroSetTagText(texto){
+  const el = document.getElementById('hero-demo-tag-text');
+  if(el) el.innerHTML = texto;
+}
+
+function heroSetTagVisible(visivel){
+  const el = document.getElementById('hero-demo-tag');
+  if(el) el.classList.toggle('show', visivel);
+}
+
+function heroSetProgress(total, ativo){
+  const wrap = document.getElementById('hero-demo-progress');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  for(let i = 0; i < total; i++){
+    const dot = document.createElement('span');
+    if(i === ativo) dot.classList.add('active');
+    wrap.appendChild(dot);
+  }
+}
+
+function heroClearPreview(){
+  if(heroPreviewLayer){ heroMap.removeLayer(heroPreviewLayer); heroPreviewLayer = null; }
+}
+
+function heroWait(ms){
+  return new Promise(resolve => { heroDemoTimer = setTimeout(resolve, ms); });
+}
+
+// determina, a partir dos dados reais do município, que pré-visualizações existem
+function heroPreviewsDisponiveis(municipio){
+  const lista = [];
+  if(municipio.caop_preview) lista.push(['caop', 'CAOP 2025']);
+  if(municipio.cos_preview)  lista.push(['cos',  'COS 2023']);
+  if(municipio.bgri_preview) lista.push(['bgri', 'BGRI 2021']);
+  if(municipio.mdt_preview && municipio.mdt_preview.image && municipio.mdt_preview.bounds){
+    lista.push(['mdt', 'MDT']);
+  }
+  const camadasOsm  = Array.isArray(municipio.selected_layers) ? municipio.selected_layers : [];
+  const osmPreviews = municipio.osm_previews || {};
+  const camadaComPreview = camadasOsm.find(l => osmPreviews[l]);
+  if(camadaComPreview) lista.push(['osm:' + camadaComPreview, osmMeta(camadaComPreview).nome]);
+  return lista;
+}
+
+// mostra, no mini-mapa, a pré-visualização real (mesma lógica do togglePreview do mapa principal)
+async function heroShowPreview(tipo, label, municipio){
+  heroClearPreview();
+
+  if(tipo === 'mdt'){
+    const mdt = municipio.mdt_preview;
+    const imgPath = mdt && caminhoRelativoPreview(mdt.image);
+    if(!imgPath || !mdt.bounds) return false;
+    heroPreviewLayer = L.imageOverlay(imgPath, mdt.bounds, { opacity:.85 }).addTo(heroMap);
+    heroMap.flyToBounds(mdt.bounds, { padding:[28,28], duration:1.1 });
+    heroSetBadge(`Pré-visualização · ${label}`);
+    return true;
+  }
+
+  const rawPath = tipo.startsWith('osm:')
+    ? (municipio.osm_previews || {})[tipo.slice(4)]
+    : municipio[`${tipo}_preview`];
+  const relPath = caminhoRelativoPreview(rawPath);
+  if(!relPath) return false;
+
+  try{
+    const r = await fetch(relPath);
+    if(!r.ok) return false;
+    const geojson = await r.json();
+    const estilo  = PREVIEW_STYLES[tipo] || { color:'#6E726A', weight:1.5, fillOpacity:.12 };
+    heroPreviewLayer = L.geoJSON(geojson, {
+      style: estilo,
+      pointToLayer:(f, latlng) => L.circleMarker(latlng, { radius:3, color:estilo.color, weight:1, fillOpacity:.8 })
+    }).addTo(heroMap);
+    const b = heroPreviewLayer.getBounds();
+    if(b.isValid()) heroMap.flyToBounds(b, { padding:[28,28], duration:1.1 });
+    heroSetBadge(`Pré-visualização · ${label}`);
+    return true;
+  } catch(err){
+    return false;
+  }
+}
+
+// ciclo principal: Portugal → zoom ao concelho → carrossel de previews → repete
+async function heroRunCycle(municipio, layer, boundsPortugal){
+  if(!heroMap) return;
+
+  // 1) vista geral de Portugal
+  heroSetTagVisible(false);
+  heroClearPreview();
+  heroSetProgress(0, -1);
+  heroSetBadge('Portal geográfico · 261 municípios');
+  if(heroHighlightLayer) heroHighlightLayer.setStyle(estiloNormal);
+  heroMap.flyToBounds(boundsPortugal, { padding:[16,16], duration:1.2 });
+  await heroWait(2800);
+  if(!heroMap) return;
+
+  // 2) zoom suave até ao concelho selecionado, com destaque real (mesmo estilo do mapa principal)
+  heroSetBadge(`A explorar · ${municipio.municipio}`);
+  if(layer){
+    layer.setStyle(estiloSelecionado);
+    heroHighlightLayer = layer;
+    heroMap.flyToBounds(layer.getBounds(), { padding:[40,40], duration:1.5, maxZoom:11 });
+  }
+  await heroWait(1500);
+  if(!heroMap) return;
+  heroSetTagText(`${municipio.municipio}${municipio.distrito ? ` · <strong>${municipio.distrito}</strong>` : ''}`);
+  heroSetTagVisible(true);
+  await heroWait(1700);
+  if(!heroMap) return;
+
+  // 3) carrossel automático das pré-visualizações reais deste município
+  const disponiveis = heroPreviewsDisponiveis(municipio);
+  if(disponiveis.length){
+    heroSetProgress(disponiveis.length, -1);
+    for(let i = 0; i < disponiveis.length; i++){
+      const [tipo, label] = disponiveis[i];
+      heroSetProgress(disponiveis.length, i);
+      const ok = await heroShowPreview(tipo, label, municipio);
+      if(!heroMap) return;
+      if(ok) await heroWait(2400);
+      if(!heroMap) return;
+    }
+  } else {
+    await heroWait(1500);
+  }
+
+  heroClearPreview();
+  heroSetTagVisible(false);
+  await heroWait(700);
+  if(!heroMap) return;
+
+  heroRunCycle(municipio, layer, boundsPortugal); // repete indefinidamente, tipo display
+}
+
+// inicializa o mini-mapa: dados reais (municipios.json + municipios_geom.geojson),
+// totalmente não-interativo (sem zoom/drag/click do utilizador)
+async function initHeroDemo(){
+  const mapEl = document.getElementById('hero-demo-map');
+  if(!mapEl || typeof L === 'undefined') return;
+
+  heroMap = L.map(mapEl, {
+    zoomControl:false,
+    attributionControl:false,
+    dragging:false,
+    scrollWheelZoom:false,
+    doubleClickZoom:false,
+    boxZoom:false,
+    keyboard:false,
+    tap:false,
+    touchZoom:false,
+    inertia:false,
+    preferCanvas:true,
+    fadeAnimation:true
+  }).setView([39.6, -8.2], 7);
+
+  const temaEscuro = document.documentElement.getAttribute('data-theme') === 'dark';
+  heroBaseLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom:19 }).addTo(heroMap);
+
+  try{
+    const [resMunicipios, resGeojson] = await Promise.all([
+      fetch('data/municipios.json'),
+      fetch('data/municipios_geom.geojson')
+    ]);
+    if(!resMunicipios.ok || !resGeojson.ok) throw new Error('dados indisponíveis para a demo do hero');
+
+    const listaMunicipios = await resMunicipios.json();
+    const geojson         = await resGeojson.json();
+
+    const porNome = {};
+    listaMunicipios.forEach(m => porNome[normalizarNome(m.municipio)] = m);
+
+    const chaveAlvo = normalizarNome(HERO_MUNICIPIO_DEMO);
+    let alvoLayer = null;
+    let alvoMeta  = null;
+
+    heroGeoLayer = L.geoJSON(geojson, {
+      style: estiloNormal,
+      onEachFeature:(feature, layer) => {
+        const nome = feature.properties.municipio;
+        if(normalizarNome(nome) === chaveAlvo){
+          alvoLayer = layer;
+          alvoMeta  = porNome[chaveAlvo] || { municipio: nome };
+        }
+      }
+    }).addTo(heroMap);
+
+    const boundsPortugal = heroGeoLayer.getBounds();
+    if(boundsPortugal.isValid()) heroMap.fitBounds(boundsPortugal, { padding:[16,16] });
+
+    setTimeout(() => heroMap && heroMap.invalidateSize(), 250);
+
+    if(!alvoLayer || !alvoMeta){
+      heroSetBadge('Portal geográfico · 261 municípios');
+      return; // concelho de demonstração não encontrado nos dados — fica só a vista geral
+    }
+
+    heroRunCycle(alvoMeta, alvoLayer, boundsPortugal);
+  } catch(err){
+    console.error('demo do hero:', err);
+    heroSetBadge('Pré-visualização indisponível');
+  }
+}
+
+window.addEventListener('load',   () => heroMap && heroMap.invalidateSize());
+window.addEventListener('resize', () => heroMap && heroMap.invalidateSize());
+
+initHeroDemo();
+
 </script>
 
 <style>
