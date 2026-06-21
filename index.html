@@ -451,6 +451,54 @@
       color: var(--ink);
     }
 
+    /* ── botão hambúrguer (só visível em mobile, ver media query) ── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--paper-elevated, var(--white));
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s ease, background .15s ease;
+    }
+
+    .nav-toggle:hover {
+      border-color: var(--green);
+    }
+
+    .nav-toggle-bar {
+      display: block;
+      width: 18px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--ink);
+      transition: transform .25s ease, opacity .2s ease;
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-toggle-bar {
+        transition: none;
+      }
+    }
+
     .brand-mark {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -1558,7 +1606,61 @@
       }
 
       header {
-        padding: 14px 20px;
+        padding: 14px 16px;
+        gap: 10px;
+      }
+
+      /* subtítulo de metadados passa a ocupar a sua própria linha,
+         abaixo do brand+toggles, em vez de tentar caber ao lado */
+      header .subtitle {
+        order: 3;
+        width: 100%;
+        font-size: 10.5px;
+        white-space: normal;
+        line-height: 1.5;
+      }
+
+      .nav-toggle {
+        display: flex;
+        order: 2;
+      }
+
+      .theme-toggle {
+        order: 1;
+      }
+
+      /* nav-links deixa de estar em linha e passa a painel dropdown,
+         escondido por defeito, ancorado abaixo do header */
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 16px;
+        right: 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        background: var(--paper-elevated, var(--white));
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 8px;
+        box-shadow: var(--shadow, 0 18px 40px rgba(23,49,36,.12));
+        margin-top: 8px;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 11px 12px;
+        border-radius: 9px;
+        font-size: 13px;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:active {
+        background: var(--paper-deep);
       }
     }
 
@@ -2774,13 +2876,19 @@
       <div class="brand">
         <h1>Dados geográficos por Município</h1>
       </div>
-      <nav class="nav-links">
+      <nav class="nav-links" id="nav-links">
         <a href="#map">Mapa</a>
         <a href="#workflow">Como funciona</a>
         <a href="#methodology">Metodologia</a>
         <a href="#site-footer">Termos e condições</a>
         <a href="estatisticas.html" > Estatísticas (beta)</a>
       </nav>
+      <button type="button" class="nav-toggle" id="nav-toggle" title="Abrir menu"
+        aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
       <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro"
         aria-label="Alternar tema claro/escuro">
         <span class="icon-sun">&#9728;</span>
@@ -3813,6 +3921,48 @@
       themeToggleBtn._transitionTimeout = setTimeout(() => {
         document.documentElement.classList.remove('theme-transition');
       }, 1200);
+    });
+
+    // ── MENU MOBILE (hambúrguer) ──────────────────────────────────────────────────
+    const navToggleBtn = document.getElementById('nav-toggle');
+    const navLinksEl = document.getElementById('nav-links');
+
+    function fecharMenuMobile() {
+      navLinksEl.classList.remove('open');
+      navToggleBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    function abrirMenuMobile() {
+      navLinksEl.classList.add('open');
+      navToggleBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    navToggleBtn.addEventListener('click', () => {
+      const aberto = navLinksEl.classList.contains('open');
+      if (aberto) fecharMenuMobile(); else abrirMenuMobile();
+    });
+
+    // fecha ao escolher um link (a página navega/scrolla para a âncora)
+    navLinksEl.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', fecharMenuMobile);
+    });
+
+    // fecha ao clicar fora do menu/botão
+    document.addEventListener('click', e => {
+      if (!navLinksEl.classList.contains('open')) return;
+      if (navLinksEl.contains(e.target) || navToggleBtn.contains(e.target)) return;
+      fecharMenuMobile();
+    });
+
+    // fecha com Esc
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') fecharMenuMobile();
+    });
+
+    // fecha automaticamente se a janela voltar a desktop (evita ficar "aberto"
+    // por engano se o utilizador rodar o ecrã ou redimensionar a janela)
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) fecharMenuMobile();
     });
 
     // ── ATALHO "/" PARA FOCAR A PESQUISA ──────────────────────────────────────────
