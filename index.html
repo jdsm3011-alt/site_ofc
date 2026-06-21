@@ -3029,7 +3029,8 @@ searchInput.addEventListener('keydown', e => {
 // carrossel das pré-visualizações reais desse município (CAOP/COS/BGRI/MDT/OSM)
 // → regressa a Portugal → repete.
 
-const HERO_MUNICIPIO_DEMO = 'Cabeceiras de Basto';
+// Município de fallback caso o sorteio aleatório falhe (ex.: nenhum concelho com previews disponíveis)
+const HERO_MUNICIPIO_FALLBACK = 'Cabeceiras de Basto';
 
 function heroSetBadge(texto){
   const el = document.getElementById('hero-demo-badge-text');
@@ -3093,6 +3094,18 @@ function heroPreviewsDisponiveis(municipio){
   return lista;
 }
 
+// sorteia aleatoriamente um município (entre os que têm pelo menos uma pré-visualização
+// disponível, para o carrossel do hero nunca ficar vazio), evitando repetir o último
+function heroSortearMunicipio(candidatos, excluirChave){
+  if(!candidatos || !candidatos.length) return null;
+  let pool = candidatos;
+  if(candidatos.length > 1 && excluirChave){
+    const semRepetir = candidatos.filter(c => c.chave !== excluirChave);
+    if(semRepetir.length) pool = semRepetir;
+  }
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
 // mostra, no mini-mapa, a pré-visualização real (mesma lógica do togglePreview do mapa principal)
 async function heroShowPreview(tipo, label, municipio){
   heroClearPreview();
@@ -3154,8 +3167,8 @@ async function heroShowPreview(tipo, label, municipio){
   }
 }
 
-// ciclo principal: Portugal → zoom ao concelho → carrossel de previews → repete
-async function heroRunCycle(municipio, layer, boundsPortugal){
+// ciclo principal: Portugal → zoom a um concelho sorteado → carrossel de previews → repete com outro sorteio
+async function heroRunCycle(municipio, layer, boundsPortugal, candidatos){
   if(!heroMap) return;
 
   // 1) vista geral de Portugal
@@ -3168,7 +3181,7 @@ async function heroRunCycle(municipio, layer, boundsPortugal){
   await heroWait(4200);
   if(!heroMap) return;
 
-  // 2) zoom suave até ao concelho selecionado, com destaque real (mesmo estilo do mapa principal)
+  // 2) zoom suave até ao concelho sorteado, com destaque real (mesmo estilo do mapa principal)
   heroFadeBadge(`A explorar · ${municipio.municipio}`);
   if(layer){
     layer.setStyle(estiloSelecionado);
@@ -3206,7 +3219,10 @@ async function heroRunCycle(municipio, layer, boundsPortugal){
   await heroWait(1100);
   if(!heroMap) return;
 
-  heroRunCycle(municipio, layer, boundsPortugal); // repete indefinidamente, tipo display
+  // sorteia o próximo concelho a mostrar, evitando repetir o atual seguidamente
+  const proximo = heroSortearMunicipio(candidatos, normalizarNome(municipio.municipio)) ||
+                   { meta: municipio, layer, chave: normalizarNome(municipio.municipio) };
+  heroRunCycle(proximo.meta, proximo.layer, boundsPortugal, candidatos); // repete indefinidamente, tipo display, com município novo
 }
 
 // inicializa o mini-mapa: dados reais (municipios.json + municipios_geom.geojson),
@@ -3246,17 +3262,24 @@ async function initHeroDemo(){
     const porNome = {};
     listaMunicipios.forEach(m => porNome[normalizarNome(m.municipio)] = m);
 
-    const chaveAlvo = normalizarNome(HERO_MUNICIPIO_DEMO);
-    let alvoLayer = null;
-    let alvoMeta  = null;
+    const chaveFallback = normalizarNome(HERO_MUNICIPIO_FALLBACK);
+    let fallbackLayer = null;
+    let fallbackMeta  = null;
+    const candidatos  = []; // { meta, layer, chave } — só municípios com pelo menos 1 preview real
 
     heroGeoLayer = L.geoJSON(geojson, {
       style: estiloNormal,
       onEachFeature:(feature, layer) => {
-        const nome = feature.properties.municipio;
-        if(normalizarNome(nome) === chaveAlvo){
-          alvoLayer = layer;
-          alvoMeta  = porNome[chaveAlvo] || { municipio: nome };
+        const nome  = feature.properties.municipio;
+        const chave = normalizarNome(nome);
+        const meta  = porNome[chave] || { municipio: nome };
+
+        if(chave === chaveFallback){
+          fallbackLayer = layer;
+          fallbackMeta  = meta;
+        }
+        if(heroPreviewsDisponiveis(meta).length){
+          candidatos.push({ meta, layer, chave });
         }
       }
     }).addTo(heroMap);
@@ -3266,12 +3289,17 @@ async function initHeroDemo(){
 
     setTimeout(() => heroMap && heroMap.invalidateSize(), 250);
 
-    if(!alvoLayer || !alvoMeta){
+    // sorteia o concelho de arranque entre os que têm pré-visualizações reais;
+    // se por algum motivo não houver nenhum, recorre ao município de fallback fixo
+    const primeiro = heroSortearMunicipio(candidatos, null) ||
+                      (fallbackLayer && fallbackMeta ? { meta: fallbackMeta, layer: fallbackLayer, chave: chaveFallback } : null);
+
+    if(!primeiro){
       heroSetBadge('Portal geográfico · 261 municípios');
-      return; // concelho de demonstração não encontrado nos dados — fica só a vista geral
+      return; // nenhum concelho com dados suficientes para a demo — fica só a vista geral
     }
 
-    heroRunCycle(alvoMeta, alvoLayer, boundsPortugal);
+    heroRunCycle(primeiro.meta, primeiro.layer, boundsPortugal, candidatos);
   } catch(err){
     console.error('demo do hero:', err);
     heroSetBadge('Pré-visualização indisponível');
