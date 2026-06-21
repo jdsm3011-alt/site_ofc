@@ -178,6 +178,10 @@
     border-color:var(--line);
   }
 
+  html[data-theme="dark"] .nav-toggle span{
+    background:var(--ink);
+  }
+
   html[data-theme="dark"] .preview-grid{
     background-image:
       linear-gradient(rgba(159,203,174,.06) 1px, transparent 1px),
@@ -345,6 +349,39 @@
   }
 
   .brand{ display:flex; align-items:center; gap:14px; }
+
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    width:38px;
+    height:38px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--paper-elevated);
+    cursor:pointer;
+    flex-shrink:0;
+    padding:0;
+  }
+  .nav-toggle span{
+    display:block;
+    width:16px;
+    height:1.5px;
+    background:var(--ink);
+    border-radius:1px;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){ transform:translateY(5.5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){ transform:translateY(-5.5px) rotate(-45deg); }
 
   .nav-links{
     display:flex;
@@ -1071,6 +1108,58 @@
     .gis-coord{ font-size:9.5px; padding:4px 8px; }
   }
 
+  /* ── NAV MOBILE (menu hambúrguer) ─────────── */
+  @media (max-width: 760px){
+    header{
+      padding:14px 18px;
+      gap:8px;
+    }
+
+    .brand h1{
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .nav-toggle{ display:flex; order:2; }
+
+    .header-actions{ order:2; }
+
+    .subtitle{
+      display:none;
+    }
+
+    .nav-links{
+      flex-basis:100%;
+      order:5;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      gap:2px;
+      max-height:0;
+      overflow:hidden;
+      opacity:0;
+      transition:max-height .3s ease, opacity .25s ease;
+      width:100%;
+    }
+
+    .nav-links.open{
+      max-height:320px;
+      opacity:1;
+      margin-top:6px;
+    }
+
+    .nav-links a{
+      padding:12px 6px;
+      font-size:13px;
+      border-bottom:1px solid var(--line);
+      width:100%;
+    }
+
+    .nav-links a:last-child{ border-bottom:none; }
+
+    .theme-toggle{ width:36px; height:36px; }
+  }
+
   /* ── LANDING DETAILS ─────────────────────── */
   .landing-details{
     position:relative;
@@ -1604,6 +1693,21 @@
     }
   }
 
+  @media (max-width: 480px){
+    .map-thumb-card{
+      max-width:calc(100% - 175px);
+      padding:7px 9px;
+      gap:7px;
+    }
+    .map-thumb-preview{ width:32px; height:32px; }
+    .map-thumb-meta small{ font-size:8.5px; }
+    .map-thumb-meta span{
+      font-size:10.5px;
+      white-space:normal;
+      line-height:1.25;
+    }
+  }
+
   .site-footer{
     position:relative;
     z-index:1;
@@ -1733,6 +1837,11 @@
     transition:opacity .15s ease;
   }
   .search-kbd-hint.hidden{ opacity:0; }
+
+  @media (max-width: 760px){
+    /* não há teclado físico em mobile, por isso o atalho "/" não faz sentido */
+    .search-kbd-hint{ display:none; }
+  }
 
   .search-results{
     position:absolute; left:0; right:0;
@@ -2093,16 +2202,21 @@
   <div class="brand">
     <h1>Dados geográficos por Município</h1>
   </div>
-  <nav class="nav-links">
+  <nav class="nav-links" id="nav-links">
     <a href="#map">Mapa</a>
     <a href="#workflow">Como funciona</a>
     <a href="#methodology">Metodologia</a>
     <a href="#site-footer">Termos</a>
   </nav>
-  <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
-    <span class="icon-sun">&#9728;</span>
-    <span class="icon-moon">&#9789;</span>
-  </button>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
+      <span class="icon-sun">&#9728;</span>
+      <span class="icon-moon">&#9789;</span>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
   <div class="subtitle">CAOP 2025 &middot; COS 2023 &middot; INE 2021 &middot; OSM &middot; Dados Abertos</div>
 </header>
 
@@ -2521,6 +2635,42 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
+// ── MENU MOBILE (hambúrguer) ──────────────────────────────────────────────────
+// Corre antes de tudo o resto para garantir que a navegação básica funciona
+// mesmo que o mapa (Leaflet) falhe a carregar por falta de rede.
+(function(){
+  const navToggleBtn = document.getElementById('nav-toggle');
+  const navLinksEl   = document.getElementById('nav-links');
+  if(!navToggleBtn || !navLinksEl) return;
+
+  function fecharMenuMobile(){
+    navLinksEl.classList.remove('open');
+    navToggleBtn.setAttribute('aria-expanded', 'false');
+    navToggleBtn.setAttribute('aria-label', 'Abrir menu');
+  }
+
+  function abrirMenuMobile(){
+    navLinksEl.classList.add('open');
+    navToggleBtn.setAttribute('aria-expanded', 'true');
+    navToggleBtn.setAttribute('aria-label', 'Fechar menu');
+  }
+
+  navToggleBtn.addEventListener('click', () => {
+    const aberto = navToggleBtn.getAttribute('aria-expanded') === 'true';
+    if(aberto) fecharMenuMobile(); else abrirMenuMobile();
+  });
+
+  // fecha o menu ao escolher uma secção, para já ir direto ao conteúdo
+  navLinksEl.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', fecharMenuMobile);
+  });
+
+  // se o ecrã crescer para desktop com o menu aberto, repõe o estado
+  window.addEventListener('resize', () => {
+    if(window.innerWidth > 760) fecharMenuMobile();
+  });
+})();
+
 // ── MAPA BASE ────────────────────────────────────────────────────────────────
 const map = L.map('map', {
   zoomControl:false,
