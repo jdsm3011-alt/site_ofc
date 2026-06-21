@@ -398,6 +398,10 @@
     text-align:right;
     white-space:nowrap;
   }
+  .pr-pct-na{
+    font-style:italic;
+    opacity:.75;
+  }
   @media (max-width:640px){
     .pr-item{ grid-template-columns:18px 1fr; row-gap:4px; }
     .pr-area, .pr-pct{ text-align:left; grid-column:2; }
@@ -582,6 +586,14 @@
     width:54px;
     text-align:right;
   }
+  .cos-nota-excluidas{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed var(--line);
+    font-size:12px;
+    color:var(--stone);
+    line-height:1.5;
+  }
 
   .suspeitos-toggle{
     font-family:'IBM Plex Mono', monospace;
@@ -679,11 +691,13 @@
     <div class="aviso-global" id="aviso-global" style="display:none">
       <span>⚠</span>
       <div>
-        <b>Aviso sobre a qualidade dos dados nesta página:</b> Estamos ainda a desenvolver e a aperfeiçoar esta componente. 
-           Em alguns municípios, a soma das percentagens das classes COS relativamente à área do CAOP ultrapassa 
-           os 100%, o que poderá resultar de sobreposições geométricas ou de imprecisões residuais no cálculo de 
-           área de alguns registos. Estamos a trabalhar na correção e validação destes casos na origem. 
-           Até essa revisão estar concluída, os valores de área e percentagem associados à COS devem ser interpretados com alguma reserva.
+        <b>Nota sobre o cálculo das percentagens da COS:</b> Estamos ainda a desenvolver e a aperfeiçoar esta componente.
+           As percentagens de cada classe são calculadas relativamente à área total classificada na própria COS
+           (já com a correção de registos identificados como suspeitos — geometrias que transbordam a fronteira do
+           município ou cujo atributo de área está dessincronizado da geometria), e não diretamente relativamente à
+           área oficial do CAOP. Por isso a soma das percentagens de cada município é sempre 100%, mas a área total
+           classificada na COS pode diferir ligeiramente da área oficial do CAOP — essa diferença está disponível
+           para consulta nos dados de cada município. Estamos a trabalhar na validação destes casos na origem.
       </div>
     </div>
 
@@ -933,7 +947,7 @@
         if(score === 0) return;
         var c = v.cos.classes[nomeClasse];
         if(!melhor || score > melhorScore || (score === melhorScore && c.area_ha > melhor.area_ha)){
-          melhor = { classe: nomeClasse, area_ha: c.area_ha, pct: c.percentagem_area_caop };
+          melhor = { classe: nomeClasse, area_ha: c.area_ha, pct: c.percentagem_area_cos };
           melhorScore = score;
         }
       });
@@ -971,6 +985,9 @@
       return;
     }
     caixaPergunta.innerHTML = r.resultados.map(function(item, i){
+      var pctHtml = (item.pct === null || item.pct === undefined)
+        ? '<span class="pr-pct pr-pct-na" title="Classe de água/oceano, fora do cálculo percentual">excl.</span>'
+        : '<span class="pr-pct">' + fmt(item.pct, 1) + '%</span>';
       return '<div class="pr-item" data-chave="' + item.chave + '">' +
         '<span class="pr-pos">' + (i + 1) + '</span>' +
         '<span class="pr-nomes">' +
@@ -978,7 +995,7 @@
           '<span class="pr-distrito-classe">' + item.distrito.replace(/_/g, ' ') + ' · ' + item.classe + '</span>' +
         '</span>' +
         '<span class="pr-area">' + fmt(item.area_ha, 1) + ' ha</span>' +
-        '<span class="pr-pct">' + fmt(item.pct, 1) + '%</span>' +
+        pctHtml +
         '</div>';
     }).join('');
     caixaPergunta.querySelectorAll('.pr-item').forEach(function(it){
@@ -1094,9 +1111,18 @@
     badge.style.display = foraDe100 ? 'inline-block' : 'none';
     badge.textContent = 'soma ' + fmt(cos.soma_percentagens, 1) + '%';
 
-    var classes = Object.keys(cos.classes).map(function(nome){
-      return { nome: nome, area: cos.classes[nome].area_ha, pct: cos.classes[nome].percentagem_area_caop };
-    }).sort(function(a,b){ return b.area - a.area; }).slice(0, 15);
+    var todasClasses = Object.keys(cos.classes).map(function(nome){
+      return { nome: nome, area: cos.classes[nome].area_ha, pct: cos.classes[nome].percentagem_area_cos };
+    });
+
+    // classes de água/oceano (percentagem null) ficam fora do ranking
+    // principal -- ver diagnostico_classes_excluidas no JSON. Mostram-se
+    // como nota aparte, com a área, mas sem entrar nas barras percentuais
+    // nem no top 15 (caso contrário dominariam visualmente o painel sem
+    // contribuir percentagem nenhuma).
+    var classesExcluidas = todasClasses.filter(function(c){ return c.pct === null || c.pct === undefined; });
+    var classes = todasClasses.filter(function(c){ return c.pct !== null && c.pct !== undefined; })
+      .sort(function(a,b){ return b.area - a.area; }).slice(0, 15);
 
     var maxPct = Math.max.apply(null, classes.map(function(c){ return c.pct || 0; }).concat([1]));
 
@@ -1109,6 +1135,13 @@
         '<span class="barra-pct">' + fmt(c.pct, 1) + '%</span>' +
         '</div>';
     }).join('');
+
+    if(classesExcluidas.length){
+      barrasEl.innerHTML += '<div class="cos-nota-excluidas">' +
+        '<span title="Áreas de água marítima/oceano excluídas do cálculo percentual por cobrirem águas territoriais muito além da fronteira do município">' +
+        ' ' + classesExcluidas.map(function(c){ return c.nome + ' (' + fmt(c.area, 0) + ' ha, fora do cálculo)'; }).join(', ') +
+        '</span></div>';
+    }
 
     // anima o crescimento das barras COS (do 0% até ao valor real)
     requestAnimationFrame(function(){
