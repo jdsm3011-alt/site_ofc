@@ -34,6 +34,15 @@
     --radius-lg:22px;
   }
 
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+
   *{ margin:0; padding:0; box-sizing:border-box; }
 
   html,body{
@@ -1470,6 +1479,22 @@
   }
   .search-clear:hover{ color:var(--ink); }
 
+  .search-kbd-hint{
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    display:flex; align-items:center; justify-content:center;
+    width:18px; height:18px;
+    border:1px solid var(--line-strong);
+    border-radius:4px;
+    background:var(--paper-deep);
+    color:var(--stone);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    line-height:1;
+    pointer-events:none;
+    transition:opacity .15s ease;
+  }
+  .search-kbd-hint.hidden{ opacity:0; }
+
   .search-results{
     position:absolute; left:0; right:0;
     top:calc(100% + 4px);
@@ -1625,7 +1650,22 @@
   .osm-section-header{
     display:flex; align-items:center; justify-content:space-between;
     margin-bottom:8px;
+    cursor:pointer;
+    user-select:none;
   }
+
+  .osm-toggle-icon{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--stone);
+    transition:transform .2s ease;
+    margin-right:auto;
+    margin-left:8px;
+  }
+
+  .osm-section.collapsed .osm-toggle-icon{ transform:rotate(-90deg); }
+  .osm-section.collapsed #osm-list,
+  .osm-section.collapsed #osm-note{ display:none !important; }
 
   .osm-title{
     font-family:'IBM Plex Mono', monospace;
@@ -2056,8 +2096,9 @@
       <div class="eyebrow" style="margin-bottom:8px;">Selecionar município</div>
       <div class="search-box">
         <input type="text" id="search-input" placeholder="Escreve o nome do município..." autocomplete="off">
+        <span class="search-kbd-hint" id="search-kbd-hint" aria-hidden="true">/</span>
         <button class="search-clear" id="search-clear" title="Limpar">✕</button>
-        <div class="search-results" id="search-results"></div>
+        <div class="search-results" id="search-results" role="listbox" aria-live="polite"></div>
       </div>
     </div>
 
@@ -2138,9 +2179,10 @@
           </div>
 
           <!-- OSM -->
-          <div class="osm-section">
-            <div class="osm-section-header">
+          <div class="osm-section" id="osm-section">
+            <div class="osm-section-header" id="osm-section-header" role="button" tabindex="0" aria-expanded="true" aria-controls="osm-list">
               <span class="osm-title">Dados OSM (OpenStreetMap)</span>
+              <span class="osm-toggle-icon">&#9662;</span>
               <span class="osm-badge">© ODbL</span>
             </div>
             <div id="osm-list"></div>
@@ -2285,7 +2327,7 @@ function hideLoading(){
   setTimeout(() => {
     ov.classList.add('hide');
     setTimeout(() => ov.style.display = 'none', 700);
-  }, 650);
+  }, 2000);
 }
 
 function ajustarMapaAoTerritorio(){
@@ -2437,9 +2479,10 @@ let activePreviewBtn = null;
 
 const PREVIEW_LABELS = { caop:'CAOP', cos:'COS', bgri:'BGRI', mdt:'MDT' };
 const PREVIEW_STYLES = {
-  caop: { color:'#c2703d', weight:2, fillOpacity:0.04 },
-  cos:  { color:'#34a853', weight:1, fillOpacity:0.28 },
-  bgri: { color:'#2563eb', weight:1, fillOpacity:0.12 }
+  caop: { color:'#C2703D', weight:2,   fillOpacity:0.05 }, // ochre — limites administrativos
+  cos:  { color:'#3D6B4F', weight:1,   fillOpacity:0.22 }, // verde — uso do solo
+  bgri: { color:'#46637A', weight:1,   fillOpacity:0.16 }, // azul-ardósia — censos/BGRI
+  mdt:  { color:'#8B5E3C', weight:1.2, fillOpacity:0.20 }  // siena — modelo de terreno
 };
 
 function caminhoRelativoPreview(p){
@@ -2500,7 +2543,7 @@ function togglePreview(tipo, btnEl){
   fetch(relPath)
     .then(r => { if(!r.ok) throw new Error('preview não encontrada'); return r.json(); })
     .then(geojson => {
-      const estilo = PREVIEW_STYLES[tipo] || { color:'#2563eb', weight:1.5, fillOpacity:0.1 };
+      const estilo = PREVIEW_STYLES[tipo] || { color:'#6E726A', weight:1.5, fillOpacity:0.12 };
       previewLayer = L.geoJSON(geojson, {
         style: estilo,
         pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius:4, color:estilo.color, weight:1, fillOpacity:0.8 })
@@ -2679,21 +2722,60 @@ function deselectMunicipio(){
   document.getElementById('empty-state').style.display       = 'flex';
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').style.display = 'none';
+  document.getElementById('search-kbd-hint').classList.remove('hidden');
 }
 
 // ── FECHAR SELEÇÃO ────────────────────────────────────────────────────────────
 document.getElementById('btn-close-sel').addEventListener('click', deselectMunicipio);
 
+// ── COLAPSAR/EXPANDIR SECÇÃO OSM ──────────────────────────────────────────────
+const osmSection       = document.getElementById('osm-section');
+const osmSectionHeader = document.getElementById('osm-section-header');
+
+function toggleOsmSection(){
+  const collapsed = osmSection.classList.toggle('collapsed');
+  osmSectionHeader.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+}
+
+osmSectionHeader.addEventListener('click', toggleOsmSection);
+osmSectionHeader.addEventListener('keydown', e => {
+  if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    toggleOsmSection();
+  }
+});
+
+// ── ATALHO "/" PARA FOCAR A PESQUISA ──────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toLowerCase();
+  const isTyping = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+  if(e.key === '/' && !isTyping){
+    e.preventDefault();
+    document.getElementById('search-input').focus();
+  }
+});
+
 // ── PESQUISA ─────────────────────────────────────────────────────────────────
 const searchInput   = document.getElementById('search-input');
 const searchResults = document.getElementById('search-results');
 const searchClear   = document.getElementById('search-clear');
+const searchKbdHint = document.getElementById('search-kbd-hint');
+
+function atualizarKbdHint(){
+  const temTexto = searchInput.value.trim().length > 0;
+  const focado   = document.activeElement === searchInput;
+  searchKbdHint.classList.toggle('hidden', temTexto || focado);
+}
+
+searchInput.addEventListener('focus', atualizarKbdHint);
+searchInput.addEventListener('blur',  atualizarKbdHint);
 
 searchInput.addEventListener('input', () => {
   const raw = searchInput.value.trim();
   const q   = normalizarNome(raw);
 
   searchClear.style.display = raw.length > 0 ? 'block' : 'none';
+  atualizarKbdHint();
 
   if(q.length < 1){
     searchResults.classList.remove('active');
