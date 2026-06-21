@@ -56,6 +56,7 @@
     background:
       radial-gradient(circle at top, rgba(127,184,148,.05), transparent 16%),
       linear-gradient(180deg, #171a16 0%, #11140e 100%);
+    background-attachment:fixed;
   }
 
   html[data-theme="dark"] .hero,
@@ -83,6 +84,33 @@
 
   html[data-theme="dark"] .osm-badge{
     background:#0d2230; color:#7dc4ec; border-color:#1c3a4d;
+  }
+
+  html[data-theme="dark"] .btn-secondary{
+    background:rgba(255,255,255,.06);
+  }
+
+  html[data-theme="dark"] .btn-secondary:hover{
+    background:rgba(255,255,255,.1);
+  }
+
+  html[data-theme="dark"] .map-controls{
+    background:rgba(20,24,17,.88);
+  }
+
+  html[data-theme="dark"] .site-footer{
+    background:
+      linear-gradient(180deg, var(--paper-deep), #0c0e0a),
+      radial-gradient(circle at top, rgba(127,184,148,.05), transparent 18%);
+  }
+
+  html[data-theme="dark"] body::before,
+  html[data-theme="dark"] body::after{
+    display:none;
+  }
+
+  html[data-theme="dark"] .page-shell{
+    background:var(--paper-deep);
   }
 
   html[data-theme="dark"] .search-kbd-hint{
@@ -255,6 +283,7 @@
     background:
       radial-gradient(circle at top, rgba(61,107,79,.05), transparent 16%),
       linear-gradient(180deg, #f7f5ef 0%, #f3eee0 100%);
+    background-attachment:fixed;
     color:var(--ink);
     scroll-behavior:smooth;
   }
