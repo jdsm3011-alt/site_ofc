@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://datagispt.gispt.workers.dev/sitemap.xml
