@@ -1594,6 +1594,8 @@
         position: relative;
         height: auto;
         min-height: 0;
+        width: calc(100% - 24px);
+        margin: 12px auto;
         max-height: none;
         overflow: visible;
       }
@@ -1734,6 +1736,11 @@
       font-size: 11px !important;
       padding: 4px 9px !important;
       box-shadow: var(--shadow) !important;
+    }
+
+    .muni-tooltip-indisponivel {
+      background: #b42318 !important;
+      color: #fff !important;
     }
 
     /* zoom controls estilizados */
@@ -1929,6 +1936,60 @@
       .stats-fab-note {
         font-size: 8.5px;
       }
+
+      /* legenda centrada — em mobile vai para baixo do counter */
+      .map-legend {
+        bottom: 42px;
+        left: 14px;
+        transform: none;
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+
+      /* counter fica colado ao canto */
+      .map-counter {
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+
+      /* touch targets no painel */
+      .search-box input {
+        height: 44px;
+        font-size: 14px;
+        padding: 0 40px 0 14px;
+      }
+
+      .search-result-item {
+        padding: 11px 14px;
+        min-height: 44px;
+      }
+
+      .download-item {
+        padding: 10px 12px;
+        min-height: 48px;
+      }
+
+      .btn-preview {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+
+      .btn-download-all {
+        padding: 11px 16px;
+        font-size: 12px;
+        min-height: 44px;
+      }
+
+      .osm-section-header {
+        padding: 12px 14px;
+        min-height: 44px;
+      }
+
+      .osm-item {
+        padding: 10px 12px;
+        min-height: 44px;
+      }
     }
 
 
@@ -1947,6 +2008,37 @@
       border-radius: 2px;
       pointer-events: none;
     }
+
+    .map-legend {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 800;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--stone);
+      padding: 4px 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .map-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    .map-legend-dot.green  { background: #3D6B4F; opacity: .55; }
+    .map-legend-dot.red    { background: #b42318; opacity: .70; }
 
 
     /* ── PANEL ───────────────────────────────── */
@@ -3036,6 +3128,10 @@
           <button onclick="limparPreview()">✕ fechar</button>
         </div>
         <div class="map-counter" id="map-counter">250+ municípios</div>
+        <div class="map-legend" aria-hidden="true">
+          <span class="map-legend-dot green"></span>com dados
+          <span class="map-legend-dot red" style="margin-left:6px"></span>sem dados
+        </div>
       </div>
 
       <aside class="panel">
@@ -3392,6 +3488,22 @@
         const estiloNormal = { color: '#6E9A7C', weight: 1, fillColor: '#3D6B4F', fillOpacity: 0.08 };
         const estiloHover = { color: '#3D6B4F', weight: 1.5, fillColor: '#3D6B4F', fillOpacity: 0.18 };
         const estiloSelecionado = { color: '#C2703D', weight: 2.5, fillColor: '#C2703D', fillOpacity: 0.18 };
+        const estiloIndisponivel = { color: '#b42318', weight: 1, fillColor: '#b42318', fillOpacity: 0.10 };
+        const estiloIndisponivelHover = { color: '#8c1a12', weight: 1.5, fillColor: '#b42318', fillOpacity: 0.20 };
+
+        function municipioSemDados(m) {
+          if (!m) return true;
+          return (!m.caop_zip || m.caop_zip === '#') &&
+                 (!m.cos_zip  || m.cos_zip  === '#') &&
+                 (!m.bgri_zip || m.bgri_zip === '#') &&
+                 (!m.mdt_zip  || m.mdt_zip  === '#');
+        }
+
+        function estiloAtualPara(layer) {
+          const nome = layer.feature && layer.feature.properties && layer.feature.properties.municipio;
+          const m = nome ? municipiosPorNome[normalizarNome(nome)] : null;
+          return municipioSemDados(m) ? estiloIndisponivel : estiloNormal;
+        }
 
         // ── UTILS ────────────────────────────────────────────────────────────────────
         function normalizarNome(txt) {
@@ -3669,9 +3781,12 @@
                   const nome = feature.properties.municipio;
                   const chave = normalizarNome(nome);
                   const m = municipiosPorNome[chave];
-                  layer.bindTooltip(nome, { className: 'muni-tooltip', sticky: true, direction: 'top' });
-                  layer.on('mouseover', () => layer !== selectedLayer && layer.setStyle(estiloHover));
-                  layer.on('mouseout', () => layer !== selectedLayer && layer.setStyle(estiloNormal));
+                  const semDados = municipioSemDados(m);
+                  const tooltipClass = semDados ? 'muni-tooltip muni-tooltip-indisponivel' : 'muni-tooltip';
+                  layer.bindTooltip(nome, { className: tooltipClass, sticky: true, direction: 'top' });
+                  if (semDados) layer.setStyle(estiloIndisponivel);
+                  layer.on('mouseover', () => layer !== selectedLayer && layer.setStyle(semDados ? estiloIndisponivelHover : estiloHover));
+                  layer.on('mouseout', () => layer !== selectedLayer && layer.setStyle(estiloAtualPara(layer)));
                   layer.on('click', () => selectMunicipio(m || { municipio: nome }, layer));
                 }
               }).addTo(map);
@@ -3785,7 +3900,7 @@
 
           atualizarBtnBaixarTudo();
 
-          if (selectedLayer) selectedLayer.setStyle(estiloNormal);
+          if (selectedLayer) selectedLayer.setStyle(estiloAtualPara(selectedLayer));
           if (layer) {
             layer.setStyle(estiloSelecionado);
             selectedLayer = layer;
@@ -3863,7 +3978,7 @@
         }
 
         function deselectMunicipio() {
-          if (selectedLayer) { selectedLayer.setStyle(estiloNormal); selectedLayer = null; }
+          if (selectedLayer) { selectedLayer.setStyle(estiloAtualPara(selectedLayer)); selectedLayer = null; }
           limparOsmOverlay();
           limparPreview();
           activeMunicipio = null;
