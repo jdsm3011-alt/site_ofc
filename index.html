@@ -343,6 +343,42 @@
       }
     }
 
+    /* ── EXPANDING CIRCLE TRANSITION (stats-fab) ────────────── */
+    #stats-circle-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2147483647;
+      overflow: hidden;
+    }
+
+    #stats-circle-overlay .circle-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--green, #3a7d44);
+      transform: scale(0);
+      transform-origin: center center;
+      transition: transform .55s cubic-bezier(.4, 0, .2, 1),
+                  opacity .15s ease .45s;
+      opacity: 1;
+      width: 1px;
+      height: 1px;
+    }
+
+    #stats-circle-overlay.is-expanding .circle-ripple {
+      transform: scale(var(--ripple-scale, 4000));
+    }
+
+    #stats-circle-overlay.is-done .circle-ripple {
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #stats-circle-overlay .circle-ripple {
+        transition: none;
+      }
+    }
+
     /* ── TRANSIÇÃO ANIMADA ENTRE TEMA CLARO/ESCURO ─────────── */
     html.theme-transition,
     html.theme-transition body,
@@ -4969,6 +5005,7 @@
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         var a = e.target.closest('a');
         if (!isLinkNavegavel(a)) return;
+        if (a.classList.contains('stats-fab')) return; // tem transição própria
         e.preventDefault();
         document.body.classList.add('page-leaving');
         setTimeout(function () { window.location.href = a.href; }, 260);
@@ -4989,6 +5026,57 @@
       outline-offset: -1px;
     }
   </style>
+
+  <!-- Expanding circle overlay para transição do stats-fab -->
+  <div id="stats-circle-overlay" aria-hidden="true">
+    <div class="circle-ripple"></div>
+  </div>
+
+  <script>
+    (function () {
+      var overlay = document.getElementById('stats-circle-overlay');
+      var ripple = overlay ? overlay.querySelector('.circle-ripple') : null;
+      var statsFab = document.querySelector('a.stats-fab');
+
+      if (!overlay || !ripple || !statsFab) return;
+
+      statsFab.addEventListener('click', function (e) {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        e.stopPropagation(); // impede o handler global de disparar também
+
+        var rect = statsFab.getBoundingClientRect();
+        var cx = rect.left + rect.width / 2;
+        var cy = rect.top + rect.height / 2;
+
+        // diagonal máxima do viewport = raio mínimo necessário para cobrir tudo
+        var maxDist = Math.sqrt(
+          Math.pow(Math.max(cx, window.innerWidth - cx), 2) +
+          Math.pow(Math.max(cy, window.innerHeight - cy), 2)
+        );
+        // scale necessário: o elemento tem 1px, queremos maxDist * 2 de diâmetro
+        var scale = Math.ceil(maxDist * 2);
+
+        ripple.style.left = cx + 'px';
+        ripple.style.top  = cy + 'px';
+        ripple.style.marginLeft = '-.5px';
+        ripple.style.marginTop  = '-.5px';
+        overlay.style.setProperty('--ripple-scale', scale);
+
+        // reset limpo antes de animar
+        overlay.classList.remove('is-expanding', 'is-done');
+        // força reflow
+        void overlay.offsetWidth;
+
+        overlay.classList.add('is-expanding');
+
+        var dest = statsFab.href;
+        setTimeout(function () {
+          window.location.href = dest;
+        }, 520); // ligeiramente antes do fim da transição CSS
+      });
+    })();
+  </script>
 </body>
 
 </html>
