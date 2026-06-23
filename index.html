@@ -2905,37 +2905,76 @@
       position: absolute;
       top: 14px;
       left: 14px;
+      right: 14px;
       z-index: 600;
       display: none;
       align-items: center;
-      gap: 8px;
-      background: rgba(3, 105, 161, .94);
-      color: #fff;
-      padding: 6px 8px 6px 12px;
-      border-radius: 999px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      letter-spacing: .04em;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .preview-map-badge.visible {
       display: flex;
     }
 
-    .preview-map-badge button {
-      border: none;
-      background: rgba(255, 255, 255, .15);
-      color: #fff;
-      border-radius: 999px;
-      padding: 3px 9px;
-      font-size: 10px;
-      cursor: pointer;
-      font-family: 'IBM Plex Mono', monospace;
+    .preview-badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
-    .preview-map-badge button:hover {
-      background: rgba(255, 255, 255, .3);
+    .preview-badge-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(3, 105, 161, .94);
+      color: #fff;
+      padding: 6px 6px 6px 12px;
+      border-radius: 999px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .04em;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+      white-space: nowrap;
+    }
+
+    .preview-badge-chip button {
+      border: none;
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+      border-radius: 999px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    .preview-badge-chip button:hover {
+      background: rgba(255, 255, 255, .32);
+    }
+
+    .preview-badge-fechartudo {
+      border: 1px solid rgba(255, 255, 255, .5);
+      background: rgba(0, 0, 0, .25);
+      color: #fff;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 10px;
+      letter-spacing: .04em;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      white-space: nowrap;
+    }
+
+    .preview-badge-fechartudo:hover {
+      background: rgba(0, 0, 0, .4);
     }
 
     .osm-actions .download-status {
@@ -3085,7 +3124,7 @@
         <a href="#workflow">Como funciona</a>
         <a href="#site-footer">Termos e condições</a>
         <a href="estatisticas.html"> Estatísticas (beta)</a>
-        <a href="BGRI_vier.html"> visualizador BGRI (beta)</a>
+        <a href="BGRI_vier.html"> Explorador BGRI (beta)</a>
         <a href="#site-footer">Sobre</a>
         <h1></h1>
       </nav>
@@ -3243,8 +3282,9 @@
             <button onclick="limparOsmOverlay()">✕ fechar</button>
           </div>
           <div class="preview-map-badge" id="preview-map-badge">
-            <span id="preview-badge-label">—</span>
-            <button onclick="limparPreview()">✕ fechar</button>
+            <div class="preview-badge-list" id="preview-badge-list"></div>
+            <button type="button" class="preview-badge-fechartudo" id="preview-badge-fechartudo"
+              onclick="limparTodasPreviews()" title="Fechar todas as pré-visualizações" style="display:none;">✕ todas</button>
           </div>
           <div class="map-counter" id="map-counter">250+ municípios</div>
           <div class="map-legend" aria-hidden="true">
@@ -4170,9 +4210,10 @@
       if (activeOsmBtn) { activeOsmBtn.classList.remove('active'); activeOsmBtn = null; }
     }
 
-    // ── PRÉ-VISUALIZAÇÃO DE DADOS ────────────────────────────────────────────────
-    let previewLayer = null;
-    let activePreviewBtn = null;
+    // ── PRÉ-VISUALIZAÇÃO DE DADOS (várias camadas em simultâneo) ────────────────────
+    // Cada camada ativa fica guardada por "tipo" (caop / cos / bgri / mdt / osm:xxx),
+    // o que permite ter, por exemplo, CAOP + COS + BGRI sobrepostos ao mesmo tempo.
+    const activePreviews = new Map(); // tipo -> { layer, btnEl, label }
 
     const PREVIEW_LABELS = { caop: 'CAOP', cos: 'COS', bgri: 'BGRI', mdt: 'MDT' };
     const PREVIEW_STYLES = {
@@ -4189,16 +4230,52 @@
       return idx === -1 ? norm : norm.slice(idx);
     }
 
-    function limparPreview() {
-      if (previewLayer) { map.removeLayer(previewLayer); previewLayer = null; }
-      document.getElementById('preview-map-badge').classList.remove('visible');
-      if (activePreviewBtn) { activePreviewBtn.classList.remove('active'); activePreviewBtn = null; }
+    function atualizarPreviewBadges() {
+      const badge = document.getElementById('preview-map-badge');
+      const lista = document.getElementById('preview-badge-list');
+      const btnFecharTudo = document.getElementById('preview-badge-fechartudo');
+
+      if (activePreviews.size === 0) {
+        badge.classList.remove('visible');
+        lista.innerHTML = '';
+        return;
+      }
+
+      badge.classList.add('visible');
+      lista.innerHTML = '';
+      activePreviews.forEach((entry, tipo) => {
+        const chip = document.createElement('span');
+        chip.className = 'preview-badge-chip';
+        chip.innerHTML = `<span>${entry.label}</span>
+          <button type="button" title="Remover esta camada" onclick="removerPreview('${tipo}')">✕</button>`;
+        lista.appendChild(chip);
+      });
+      btnFecharTudo.style.display = activePreviews.size > 1 ? 'inline-flex' : 'none';
+    }
+
+    function removerPreview(tipo) {
+      const entry = activePreviews.get(tipo);
+      if (!entry) return;
+      map.removeLayer(entry.layer);
+      if (entry.btnEl) entry.btnEl.classList.remove('active');
+      activePreviews.delete(tipo);
+      atualizarPreviewBadges();
+    }
+
+    function limparTodasPreviews() {
+      activePreviews.forEach(entry => {
+        map.removeLayer(entry.layer);
+        if (entry.btnEl) entry.btnEl.classList.remove('active');
+      });
+      activePreviews.clear();
+      atualizarPreviewBadges();
     }
 
     function togglePreview(tipo, btnEl) {
       if (!activeMunicipio || btnEl.classList.contains('unavailable')) return;
-      if (activePreviewBtn === btnEl && previewLayer) { limparPreview(); return; }
-      limparPreview();
+
+      // já está ativa → este clique desliga só esta camada (as outras ficam)
+      if (activePreviews.has(tipo)) { removerPreview(tipo); return; }
 
       btnEl.classList.add('loading');
 
@@ -4210,13 +4287,12 @@
           showToast('⚠ Pré-visualização indisponível', 2500);
           return;
         }
-        previewLayer = L.imageOverlay(imgPath, mdt.bounds, { opacity: 0.85, zIndex: 550 }).addTo(map);
+        const layer = L.imageOverlay(imgPath, mdt.bounds, { opacity: 0.85, zIndex: 550 }).addTo(map);
         map.fitBounds(mdt.bounds, { padding: [40, 40] });
-        document.getElementById('preview-badge-label').textContent = 'Pré-visualização · MDT';
-        document.getElementById('preview-map-badge').classList.add('visible');
         btnEl.classList.add('active');
         btnEl.classList.remove('loading');
-        activePreviewBtn = btnEl;
+        activePreviews.set(tipo, { layer, btnEl, label: 'MDT' });
+        atualizarPreviewBadges();
         return;
       }
 
@@ -4241,16 +4317,15 @@
         .then(r => { if (!r.ok) throw new Error('preview não encontrada'); return r.json(); })
         .then(geojson => {
           const estilo = PREVIEW_STYLES[tipo] || { color: '#6E726A', weight: 1.5, fillOpacity: 0.12 };
-          previewLayer = L.geoJSON(geojson, {
+          const layer = L.geoJSON(geojson, {
             style: estilo,
             pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius: 4, color: estilo.color, weight: 1, fillOpacity: 0.8 })
           }).addTo(map);
-          const b = previewLayer.getBounds();
+          const b = layer.getBounds();
           if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
-          document.getElementById('preview-badge-label').textContent = `Pré-visualização · ${label}`;
-          document.getElementById('preview-map-badge').classList.add('visible');
           btnEl.classList.add('active');
-          activePreviewBtn = btnEl;
+          activePreviews.set(tipo, { layer, btnEl, label });
+          atualizarPreviewBadges();
         })
         .catch(err => {
           console.error(err);
@@ -4317,7 +4392,7 @@
 
       activeMunicipio = m || { municipio, distrito, caop_zip: caopZip, cos_zip: cosZip, bgri_zip: bgriZip, mdt_zip: mdtZip };
       limparOsmOverlay();
-      limparPreview();
+      limparTodasPreviews();
 
       function aplicarPreviewBtn(id, disponivel) {
         const btn = document.getElementById(id);
@@ -4482,7 +4557,7 @@
     function deselectMunicipio() {
       if (selectedLayer) { selectedLayer.setStyle(estiloAtualPara(selectedLayer)); selectedLayer = null; }
       limparOsmOverlay();
-      limparPreview();
+      limparTodasPreviews();
       activeMunicipio = null;
       document.getElementById('selection-content').style.display = 'none';
       document.getElementById('empty-state').style.display = 'flex';
