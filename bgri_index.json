@@ -1,0 +1,1672 @@
+{
+  "municipios": [
+    {
+      "id": "abrantes",
+      "nome": "Abrantes",
+      "geojson": "dados/BGRI_2021_Abrantes.geojson",
+      "asset": "BGRI_2021_Abrantes.geojson"
+    },
+    {
+      "id": "aguiar-da-beira",
+      "nome": "Aguiar da Beira",
+      "geojson": "dados/BGRI_2021_Aguiar_da_Beira.geojson",
+      "asset": "BGRI_2021_Aguiar_da_Beira.geojson"
+    },
+    {
+      "id": "alandroal",
+      "nome": "Alandroal",
+      "geojson": "dados/BGRI_2021_Alandroal.geojson",
+      "asset": "BGRI_2021_Alandroal.geojson"
+    },
+    {
+      "id": "albergaria-a-velha",
+      "nome": "Albergaria-a-Velha",
+      "geojson": "dados/BGRI_2021_Albergaria-a-Velha.geojson",
+      "asset": "BGRI_2021_Albergaria-a-Velha.geojson"
+    },
+    {
+      "id": "albufeira",
+      "nome": "Albufeira",
+      "geojson": "dados/BGRI_2021_Albufeira.geojson",
+      "asset": "BGRI_2021_Albufeira.geojson"
+    },
+    {
+      "id": "alcanena",
+      "nome": "Alcanena",
+      "geojson": "dados/BGRI_2021_Alcanena.geojson",
+      "asset": "BGRI_2021_Alcanena.geojson"
+    },
+    {
+      "id": "alcoba-a",
+      "nome": "Alcobaça",
+      "geojson": "dados/BGRI_2021_Alcobaça.geojson",
+      "asset": "BGRI_2021_Alcobaça.geojson"
+    },
+    {
+      "id": "alcochete",
+      "nome": "Alcochete",
+      "geojson": "dados/BGRI_2021_Alcochete.geojson",
+      "asset": "BGRI_2021_Alcochete.geojson"
+    },
+    {
+      "id": "alcoutim",
+      "nome": "Alcoutim",
+      "geojson": "dados/BGRI_2021_Alcoutim.geojson",
+      "asset": "BGRI_2021_Alcoutim.geojson"
+    },
+    {
+      "id": "alc-cer-do-sal",
+      "nome": "Alcácer do Sal",
+      "geojson": "dados/BGRI_2021_Alcácer_do_Sal.geojson",
+      "asset": "BGRI_2021_Alcácer_do_Sal.geojson"
+    },
+    {
+      "id": "alenquer",
+      "nome": "Alenquer",
+      "geojson": "dados/BGRI_2021_Alenquer.geojson",
+      "asset": "BGRI_2021_Alenquer.geojson"
+    },
+    {
+      "id": "alf-ndega-da-f",
+      "nome": "Alfândega da Fé",
+      "geojson": "dados/BGRI_2021_Alfândega_da_Fé.geojson",
+      "asset": "BGRI_2021_Alfândega_da_Fé.geojson"
+    },
+    {
+      "id": "alij",
+      "nome": "Alijó",
+      "geojson": "dados/BGRI_2021_Alijó.geojson",
+      "asset": "BGRI_2021_Alijó.geojson"
+    },
+    {
+      "id": "aljezur",
+      "nome": "Aljezur",
+      "geojson": "dados/BGRI_2021_Aljezur.geojson",
+      "asset": "BGRI_2021_Aljezur.geojson"
+    },
+    {
+      "id": "aljustrel",
+      "nome": "Aljustrel",
+      "geojson": "dados/BGRI_2021_Aljustrel.geojson",
+      "asset": "BGRI_2021_Aljustrel.geojson"
+    },
+    {
+      "id": "almada",
+      "nome": "Almada",
+      "geojson": "dados/BGRI_2021_Almada.geojson",
+      "asset": "BGRI_2021_Almada.geojson"
+    },
+    {
+      "id": "almeida",
+      "nome": "Almeida",
+      "geojson": "dados/BGRI_2021_Almeida.geojson",
+      "asset": "BGRI_2021_Almeida.geojson"
+    },
+    {
+      "id": "almeirim",
+      "nome": "Almeirim",
+      "geojson": "dados/BGRI_2021_Almeirim.geojson",
+      "asset": "BGRI_2021_Almeirim.geojson"
+    },
+    {
+      "id": "almod-var",
+      "nome": "Almodôvar",
+      "geojson": "dados/BGRI_2021_Almodôvar.geojson",
+      "asset": "BGRI_2021_Almodôvar.geojson"
+    },
+    {
+      "id": "alpiar-a",
+      "nome": "Alpiarça",
+      "geojson": "dados/BGRI_2021_Alpiarça.geojson",
+      "asset": "BGRI_2021_Alpiarça.geojson"
+    },
+    {
+      "id": "alter-do-ch-o",
+      "nome": "Alter do Chão",
+      "geojson": "dados/BGRI_2021_Alter_do_Chão.geojson",
+      "asset": "BGRI_2021_Alter_do_Chão.geojson"
+    },
+    {
+      "id": "alvai-zere",
+      "nome": "Alvaiázere",
+      "geojson": "dados/BGRI_2021_Alvaiázere.geojson",
+      "asset": "BGRI_2021_Alvaiázere.geojson"
+    },
+    {
+      "id": "alvito",
+      "nome": "Alvito",
+      "geojson": "dados/BGRI_2021_Alvito.geojson",
+      "asset": "BGRI_2021_Alvito.geojson"
+    },
+    {
+      "id": "amadora",
+      "nome": "Amadora",
+      "geojson": "dados/BGRI_2021_Amadora.geojson",
+      "asset": "BGRI_2021_Amadora.geojson"
+    },
+    {
+      "id": "amarante",
+      "nome": "Amarante",
+      "geojson": "dados/BGRI_2021_Amarante.geojson",
+      "asset": "BGRI_2021_Amarante.geojson"
+    },
+    {
+      "id": "amares",
+      "nome": "Amares",
+      "geojson": "dados/BGRI_2021_Amares.geojson",
+      "asset": "BGRI_2021_Amares.geojson"
+    },
+    {
+      "id": "anadia",
+      "nome": "Anadia",
+      "geojson": "dados/BGRI_2021_Anadia.geojson",
+      "asset": "BGRI_2021_Anadia.geojson"
+    },
+    {
+      "id": "ansi-o",
+      "nome": "Ansião",
+      "geojson": "dados/BGRI_2021_Ansião.geojson",
+      "asset": "BGRI_2021_Ansião.geojson"
+    },
+    {
+      "id": "arcos-de-valdevez",
+      "nome": "Arcos de Valdevez",
+      "geojson": "dados/BGRI_2021_Arcos_de_Valdevez.geojson",
+      "asset": "BGRI_2021_Arcos_de_Valdevez.geojson"
+    },
+    {
+      "id": "arganil",
+      "nome": "Arganil",
+      "geojson": "dados/BGRI_2021_Arganil.geojson",
+      "asset": "BGRI_2021_Arganil.geojson"
+    },
+    {
+      "id": "armamar",
+      "nome": "Armamar",
+      "geojson": "dados/BGRI_2021_Armamar.geojson",
+      "asset": "BGRI_2021_Armamar.geojson"
+    },
+    {
+      "id": "arouca",
+      "nome": "Arouca",
+      "geojson": "dados/BGRI_2021_Arouca.geojson",
+      "asset": "BGRI_2021_Arouca.geojson"
+    },
+    {
+      "id": "arraiolos",
+      "nome": "Arraiolos",
+      "geojson": "dados/BGRI_2021_Arraiolos.geojson",
+      "asset": "BGRI_2021_Arraiolos.geojson"
+    },
+    {
+      "id": "arronches",
+      "nome": "Arronches",
+      "geojson": "dados/BGRI_2021_Arronches.geojson",
+      "asset": "BGRI_2021_Arronches.geojson"
+    },
+    {
+      "id": "arruda-dos-vinhos",
+      "nome": "Arruda dos Vinhos",
+      "geojson": "dados/BGRI_2021_Arruda_dos_Vinhos.geojson",
+      "asset": "BGRI_2021_Arruda_dos_Vinhos.geojson"
+    },
+    {
+      "id": "aveiro",
+      "nome": "Aveiro",
+      "geojson": "dados/BGRI_2021_Aveiro.geojson",
+      "asset": "BGRI_2021_Aveiro.geojson"
+    },
+    {
+      "id": "avis",
+      "nome": "Avis",
+      "geojson": "dados/BGRI_2021_Avis.geojson",
+      "asset": "BGRI_2021_Avis.geojson"
+    },
+    {
+      "id": "azambuja",
+      "nome": "Azambuja",
+      "geojson": "dados/BGRI_2021_Azambuja.geojson",
+      "asset": "BGRI_2021_Azambuja.geojson"
+    },
+    {
+      "id": "bai-o",
+      "nome": "Baião",
+      "geojson": "dados/BGRI_2021_Baião.geojson",
+      "asset": "BGRI_2021_Baião.geojson"
+    },
+    {
+      "id": "barcelos",
+      "nome": "Barcelos",
+      "geojson": "dados/BGRI_2021_Barcelos.geojson",
+      "asset": "BGRI_2021_Barcelos.geojson"
+    },
+    {
+      "id": "barrancos",
+      "nome": "Barrancos",
+      "geojson": "dados/BGRI_2021_Barrancos.geojson",
+      "asset": "BGRI_2021_Barrancos.geojson"
+    },
+    {
+      "id": "barreiro",
+      "nome": "Barreiro",
+      "geojson": "dados/BGRI_2021_Barreiro.geojson",
+      "asset": "BGRI_2021_Barreiro.geojson"
+    },
+    {
+      "id": "batalha",
+      "nome": "Batalha",
+      "geojson": "dados/BGRI_2021_Batalha.geojson",
+      "asset": "BGRI_2021_Batalha.geojson"
+    },
+    {
+      "id": "beja",
+      "nome": "Beja",
+      "geojson": "dados/BGRI_2021_Beja.geojson",
+      "asset": "BGRI_2021_Beja.geojson"
+    },
+    {
+      "id": "belmonte",
+      "nome": "Belmonte",
+      "geojson": "dados/BGRI_2021_Belmonte.geojson",
+      "asset": "BGRI_2021_Belmonte.geojson"
+    },
+    {
+      "id": "benavente",
+      "nome": "Benavente",
+      "geojson": "dados/BGRI_2021_Benavente.geojson",
+      "asset": "BGRI_2021_Benavente.geojson"
+    },
+    {
+      "id": "bombarral",
+      "nome": "Bombarral",
+      "geojson": "dados/BGRI_2021_Bombarral.geojson",
+      "asset": "BGRI_2021_Bombarral.geojson"
+    },
+    {
+      "id": "borba",
+      "nome": "Borba",
+      "geojson": "dados/BGRI_2021_Borba.geojson",
+      "asset": "BGRI_2021_Borba.geojson"
+    },
+    {
+      "id": "boticas",
+      "nome": "Boticas",
+      "geojson": "dados/BGRI_2021_Boticas.geojson",
+      "asset": "BGRI_2021_Boticas.geojson"
+    },
+    {
+      "id": "braga",
+      "nome": "Braga",
+      "geojson": "dados/BGRI_2021_Braga.geojson",
+      "asset": "BGRI_2021_Braga.geojson"
+    },
+    {
+      "id": "bragan-a",
+      "nome": "Bragança",
+      "geojson": "dados/BGRI_2021_Bragança.geojson",
+      "asset": "BGRI_2021_Bragança.geojson"
+    },
+    {
+      "id": "cabeceiras-de-basto",
+      "nome": "Cabeceiras de Basto",
+      "geojson": "dados/BGRI_2021_Cabeceiras_de_Basto.geojson",
+      "asset": "BGRI_2021_Cabeceiras_de_Basto.geojson"
+    },
+    {
+      "id": "cadaval",
+      "nome": "Cadaval",
+      "geojson": "dados/BGRI_2021_Cadaval.geojson",
+      "asset": "BGRI_2021_Cadaval.geojson"
+    },
+    {
+      "id": "caldas-da-rainha",
+      "nome": "Caldas da Rainha",
+      "geojson": "dados/BGRI_2021_Caldas_da_Rainha.geojson",
+      "asset": "BGRI_2021_Caldas_da_Rainha.geojson"
+    },
+    {
+      "id": "caminha",
+      "nome": "Caminha",
+      "geojson": "dados/BGRI_2021_Caminha.geojson",
+      "asset": "BGRI_2021_Caminha.geojson"
+    },
+    {
+      "id": "campo-maior",
+      "nome": "Campo Maior",
+      "geojson": "dados/BGRI_2021_Campo_Maior.geojson",
+      "asset": "BGRI_2021_Campo_Maior.geojson"
+    },
+    {
+      "id": "cantanhede",
+      "nome": "Cantanhede",
+      "geojson": "dados/BGRI_2021_Cantanhede.geojson",
+      "asset": "BGRI_2021_Cantanhede.geojson"
+    },
+    {
+      "id": "carrazeda-de-ansi-es",
+      "nome": "Carrazeda de Ansiães",
+      "geojson": "dados/BGRI_2021_Carrazeda_de_Ansiães.geojson",
+      "asset": "BGRI_2021_Carrazeda_de_Ansiães.geojson"
+    },
+    {
+      "id": "carregal-do-sal",
+      "nome": "Carregal do Sal",
+      "geojson": "dados/BGRI_2021_Carregal_do_Sal.geojson",
+      "asset": "BGRI_2021_Carregal_do_Sal.geojson"
+    },
+    {
+      "id": "cartaxo",
+      "nome": "Cartaxo",
+      "geojson": "dados/BGRI_2021_Cartaxo.geojson",
+      "asset": "BGRI_2021_Cartaxo.geojson"
+    },
+    {
+      "id": "cascais",
+      "nome": "Cascais",
+      "geojson": "dados/BGRI_2021_Cascais.geojson",
+      "asset": "BGRI_2021_Cascais.geojson"
+    },
+    {
+      "id": "castanheira-de-p-ra",
+      "nome": "Castanheira de Pêra",
+      "geojson": "dados/BGRI_2021_Castanheira_de_Pêra.geojson",
+      "asset": "BGRI_2021_Castanheira_de_Pêra.geojson"
+    },
+    {
+      "id": "castelo-branco",
+      "nome": "Castelo Branco",
+      "geojson": "dados/BGRI_2021_Castelo_Branco.geojson",
+      "asset": "BGRI_2021_Castelo_Branco.geojson"
+    },
+    {
+      "id": "castelo-de-paiva",
+      "nome": "Castelo de Paiva",
+      "geojson": "dados/BGRI_2021_Castelo_de_Paiva.geojson",
+      "asset": "BGRI_2021_Castelo_de_Paiva.geojson"
+    },
+    {
+      "id": "castelo-de-vide",
+      "nome": "Castelo de Vide",
+      "geojson": "dados/BGRI_2021_Castelo_de_Vide.geojson",
+      "asset": "BGRI_2021_Castelo_de_Vide.geojson"
+    },
+    {
+      "id": "castro-daire",
+      "nome": "Castro Daire",
+      "geojson": "dados/BGRI_2021_Castro_Daire.geojson",
+      "asset": "BGRI_2021_Castro_Daire.geojson"
+    },
+    {
+      "id": "castro-marim",
+      "nome": "Castro Marim",
+      "geojson": "dados/BGRI_2021_Castro_Marim.geojson",
+      "asset": "BGRI_2021_Castro_Marim.geojson"
+    },
+    {
+      "id": "castro-verde",
+      "nome": "Castro Verde",
+      "geojson": "dados/BGRI_2021_Castro_Verde.geojson",
+      "asset": "BGRI_2021_Castro_Verde.geojson"
+    },
+    {
+      "id": "celorico-da-beira",
+      "nome": "Celorico da Beira",
+      "geojson": "dados/BGRI_2021_Celorico_da_Beira.geojson",
+      "asset": "BGRI_2021_Celorico_da_Beira.geojson"
+    },
+    {
+      "id": "celorico-de-basto",
+      "nome": "Celorico de Basto",
+      "geojson": "dados/BGRI_2021_Celorico_de_Basto.geojson",
+      "asset": "BGRI_2021_Celorico_de_Basto.geojson"
+    },
+    {
+      "id": "chamusca",
+      "nome": "Chamusca",
+      "geojson": "dados/BGRI_2021_Chamusca.geojson",
+      "asset": "BGRI_2021_Chamusca.geojson"
+    },
+    {
+      "id": "chaves",
+      "nome": "Chaves",
+      "geojson": "dados/BGRI_2021_Chaves.geojson",
+      "asset": "BGRI_2021_Chaves.geojson"
+    },
+    {
+      "id": "cinf-es",
+      "nome": "Cinfães",
+      "geojson": "dados/BGRI_2021_Cinfães.geojson",
+      "asset": "BGRI_2021_Cinfães.geojson"
+    },
+    {
+      "id": "coimbra",
+      "nome": "Coimbra",
+      "geojson": "dados/BGRI_2021_Coimbra.geojson",
+      "asset": "BGRI_2021_Coimbra.geojson"
+    },
+    {
+      "id": "condeixa-a-nova",
+      "nome": "Condeixa-a-Nova",
+      "geojson": "dados/BGRI_2021_Condeixa-a-Nova.geojson",
+      "asset": "BGRI_2021_Condeixa-a-Nova.geojson"
+    },
+    {
+      "id": "const-ncia",
+      "nome": "Constância",
+      "geojson": "dados/BGRI_2021_Constância.geojson",
+      "asset": "BGRI_2021_Constância.geojson"
+    },
+    {
+      "id": "coruche",
+      "nome": "Coruche",
+      "geojson": "dados/BGRI_2021_Coruche.geojson",
+      "asset": "BGRI_2021_Coruche.geojson"
+    },
+    {
+      "id": "covilh",
+      "nome": "Covilhã",
+      "geojson": "dados/BGRI_2021_Covilhã.geojson",
+      "asset": "BGRI_2021_Covilhã.geojson"
+    },
+    {
+      "id": "crato",
+      "nome": "Crato",
+      "geojson": "dados/BGRI_2021_Crato.geojson",
+      "asset": "BGRI_2021_Crato.geojson"
+    },
+    {
+      "id": "cuba",
+      "nome": "Cuba",
+      "geojson": "dados/BGRI_2021_Cuba.geojson",
+      "asset": "BGRI_2021_Cuba.geojson"
+    },
+    {
+      "id": "elvas",
+      "nome": "Elvas",
+      "geojson": "dados/BGRI_2021_Elvas.geojson",
+      "asset": "BGRI_2021_Elvas.geojson"
+    },
+    {
+      "id": "entroncamento",
+      "nome": "Entroncamento",
+      "geojson": "dados/BGRI_2021_Entroncamento.geojson",
+      "asset": "BGRI_2021_Entroncamento.geojson"
+    },
+    {
+      "id": "espinho",
+      "nome": "Espinho",
+      "geojson": "dados/BGRI_2021_Espinho.geojson",
+      "asset": "BGRI_2021_Espinho.geojson"
+    },
+    {
+      "id": "esposende",
+      "nome": "Esposende",
+      "geojson": "dados/BGRI_2021_Esposende.geojson",
+      "asset": "BGRI_2021_Esposende.geojson"
+    },
+    {
+      "id": "estarreja",
+      "nome": "Estarreja",
+      "geojson": "dados/BGRI_2021_Estarreja.geojson",
+      "asset": "BGRI_2021_Estarreja.geojson"
+    },
+    {
+      "id": "estremoz",
+      "nome": "Estremoz",
+      "geojson": "dados/BGRI_2021_Estremoz.geojson",
+      "asset": "BGRI_2021_Estremoz.geojson"
+    },
+    {
+      "id": "fafe",
+      "nome": "Fafe",
+      "geojson": "dados/BGRI_2021_Fafe.geojson",
+      "asset": "BGRI_2021_Fafe.geojson"
+    },
+    {
+      "id": "faro",
+      "nome": "Faro",
+      "geojson": "dados/BGRI_2021_Faro.geojson",
+      "asset": "BGRI_2021_Faro.geojson"
+    },
+    {
+      "id": "felgueiras",
+      "nome": "Felgueiras",
+      "geojson": "dados/BGRI_2021_Felgueiras.geojson",
+      "asset": "BGRI_2021_Felgueiras.geojson"
+    },
+    {
+      "id": "ferreira-do-alentejo",
+      "nome": "Ferreira do Alentejo",
+      "geojson": "dados/BGRI_2021_Ferreira_do_Alentejo.geojson",
+      "asset": "BGRI_2021_Ferreira_do_Alentejo.geojson"
+    },
+    {
+      "id": "ferreira-do-z-zere",
+      "nome": "Ferreira do Zêzere",
+      "geojson": "dados/BGRI_2021_Ferreira_do_Zêzere.geojson",
+      "asset": "BGRI_2021_Ferreira_do_Zêzere.geojson"
+    },
+    {
+      "id": "figueira-da-foz",
+      "nome": "Figueira da Foz",
+      "geojson": "dados/BGRI_2021_Figueira_da_Foz.geojson",
+      "asset": "BGRI_2021_Figueira_da_Foz.geojson"
+    },
+    {
+      "id": "figueira-de-castelo-rodrigo",
+      "nome": "Figueira de Castelo Rodrigo",
+      "geojson": "dados/BGRI_2021_Figueira_de_Castelo_Rodrigo.geojson",
+      "asset": "BGRI_2021_Figueira_de_Castelo_Rodrigo.geojson"
+    },
+    {
+      "id": "figueir-dos-vinhos",
+      "nome": "Figueiró dos Vinhos",
+      "geojson": "dados/BGRI_2021_Figueiró_dos_Vinhos.geojson",
+      "asset": "BGRI_2021_Figueiró_dos_Vinhos.geojson"
+    },
+    {
+      "id": "fornos-de-algodres",
+      "nome": "Fornos de Algodres",
+      "geojson": "dados/BGRI_2021_Fornos_de_Algodres.geojson",
+      "asset": "BGRI_2021_Fornos_de_Algodres.geojson"
+    },
+    {
+      "id": "freixo-de-espada-cinta",
+      "nome": "Freixo de Espada à Cinta",
+      "geojson": "dados/BGRI_2021_Freixo_de_Espada_à_Cinta.geojson",
+      "asset": "BGRI_2021_Freixo_de_Espada_à_Cinta.geojson"
+    },
+    {
+      "id": "fronteira",
+      "nome": "Fronteira",
+      "geojson": "dados/BGRI_2021_Fronteira.geojson",
+      "asset": "BGRI_2021_Fronteira.geojson"
+    },
+    {
+      "id": "fund-o",
+      "nome": "Fundão",
+      "geojson": "dados/BGRI_2021_Fundão.geojson",
+      "asset": "BGRI_2021_Fundão.geojson"
+    },
+    {
+      "id": "gavi-o",
+      "nome": "Gavião",
+      "geojson": "dados/BGRI_2021_Gavião.geojson",
+      "asset": "BGRI_2021_Gavião.geojson"
+    },
+    {
+      "id": "goleg",
+      "nome": "Golegã",
+      "geojson": "dados/BGRI_2021_Golegã.geojson",
+      "asset": "BGRI_2021_Golegã.geojson"
+    },
+    {
+      "id": "gondomar",
+      "nome": "Gondomar",
+      "geojson": "dados/BGRI_2021_Gondomar.geojson",
+      "asset": "BGRI_2021_Gondomar.geojson"
+    },
+    {
+      "id": "gouveia",
+      "nome": "Gouveia",
+      "geojson": "dados/BGRI_2021_Gouveia.geojson",
+      "asset": "BGRI_2021_Gouveia.geojson"
+    },
+    {
+      "id": "gr-ndola",
+      "nome": "Grândola",
+      "geojson": "dados/BGRI_2021_Grândola.geojson",
+      "asset": "BGRI_2021_Grândola.geojson"
+    },
+    {
+      "id": "guarda",
+      "nome": "Guarda",
+      "geojson": "dados/BGRI_2021_Guarda.geojson",
+      "asset": "BGRI_2021_Guarda.geojson"
+    },
+    {
+      "id": "bgri-2021-guimaraes",
+      "nome": "bgri 2021 guimaraes",
+      "geojson": "dados/bgri_2021_guimaraes.geojson",
+      "asset": "bgri_2021_guimaraes.geojson"
+    },
+    {
+      "id": "g-is",
+      "nome": "Góis",
+      "geojson": "dados/BGRI_2021_Góis.geojson",
+      "asset": "BGRI_2021_Góis.geojson"
+    },
+    {
+      "id": "idanha-a-nova",
+      "nome": "Idanha-a-Nova",
+      "geojson": "dados/BGRI_2021_Idanha-a-Nova.geojson",
+      "asset": "BGRI_2021_Idanha-a-Nova.geojson"
+    },
+    {
+      "id": "lagoa",
+      "nome": "Lagoa",
+      "geojson": "dados/BGRI_2021_Lagoa.geojson",
+      "asset": "BGRI_2021_Lagoa.geojson"
+    },
+    {
+      "id": "lagos",
+      "nome": "Lagos",
+      "geojson": "dados/BGRI_2021_Lagos.geojson",
+      "asset": "BGRI_2021_Lagos.geojson"
+    },
+    {
+      "id": "lamego",
+      "nome": "Lamego",
+      "geojson": "dados/BGRI_2021_Lamego.geojson",
+      "asset": "BGRI_2021_Lamego.geojson"
+    },
+    {
+      "id": "leiria",
+      "nome": "Leiria",
+      "geojson": "dados/BGRI_2021_Leiria.geojson",
+      "asset": "BGRI_2021_Leiria.geojson"
+    },
+    {
+      "id": "lisboa",
+      "nome": "Lisboa",
+      "geojson": "dados/BGRI_2021_Lisboa.geojson",
+      "asset": "BGRI_2021_Lisboa.geojson"
+    },
+    {
+      "id": "loul",
+      "nome": "Loulé",
+      "geojson": "dados/BGRI_2021_Loulé.geojson",
+      "asset": "BGRI_2021_Loulé.geojson"
+    },
+    {
+      "id": "loures",
+      "nome": "Loures",
+      "geojson": "dados/BGRI_2021_Loures.geojson",
+      "asset": "BGRI_2021_Loures.geojson"
+    },
+    {
+      "id": "lourinh",
+      "nome": "Lourinhã",
+      "geojson": "dados/BGRI_2021_Lourinhã.geojson",
+      "asset": "BGRI_2021_Lourinhã.geojson"
+    },
+    {
+      "id": "lousada",
+      "nome": "Lousada",
+      "geojson": "dados/BGRI_2021_Lousada.geojson",
+      "asset": "BGRI_2021_Lousada.geojson"
+    },
+    {
+      "id": "lous",
+      "nome": "Lousã",
+      "geojson": "dados/BGRI_2021_Lousã.geojson",
+      "asset": "BGRI_2021_Lousã.geojson"
+    },
+    {
+      "id": "macedo-de-cavaleiros",
+      "nome": "Macedo de Cavaleiros",
+      "geojson": "dados/BGRI_2021_Macedo_de_Cavaleiros.geojson",
+      "asset": "BGRI_2021_Macedo_de_Cavaleiros.geojson"
+    },
+    {
+      "id": "mafra",
+      "nome": "Mafra",
+      "geojson": "dados/BGRI_2021_Mafra.geojson",
+      "asset": "BGRI_2021_Mafra.geojson"
+    },
+    {
+      "id": "maia",
+      "nome": "Maia",
+      "geojson": "dados/BGRI_2021_Maia.geojson",
+      "asset": "BGRI_2021_Maia.geojson"
+    },
+    {
+      "id": "mangualde",
+      "nome": "Mangualde",
+      "geojson": "dados/BGRI_2021_Mangualde.geojson",
+      "asset": "BGRI_2021_Mangualde.geojson"
+    },
+    {
+      "id": "manteigas",
+      "nome": "Manteigas",
+      "geojson": "dados/BGRI_2021_Manteigas.geojson",
+      "asset": "BGRI_2021_Manteigas.geojson"
+    },
+    {
+      "id": "marco-de-canaveses",
+      "nome": "Marco de Canaveses",
+      "geojson": "dados/BGRI_2021_Marco_de_Canaveses.geojson",
+      "asset": "BGRI_2021_Marco_de_Canaveses.geojson"
+    },
+    {
+      "id": "marinha-grande",
+      "nome": "Marinha Grande",
+      "geojson": "dados/BGRI_2021_Marinha_Grande.geojson",
+      "asset": "BGRI_2021_Marinha_Grande.geojson"
+    },
+    {
+      "id": "marv-o",
+      "nome": "Marvão",
+      "geojson": "dados/BGRI_2021_Marvão.geojson",
+      "asset": "BGRI_2021_Marvão.geojson"
+    },
+    {
+      "id": "matosinhos",
+      "nome": "Matosinhos",
+      "geojson": "dados/BGRI_2021_Matosinhos.geojson",
+      "asset": "BGRI_2021_Matosinhos.geojson"
+    },
+    {
+      "id": "ma-o",
+      "nome": "Mação",
+      "geojson": "dados/BGRI_2021_Mação.geojson",
+      "asset": "BGRI_2021_Mação.geojson"
+    },
+    {
+      "id": "mealhada",
+      "nome": "Mealhada",
+      "geojson": "dados/BGRI_2021_Mealhada.geojson",
+      "asset": "BGRI_2021_Mealhada.geojson"
+    },
+    {
+      "id": "melga-o",
+      "nome": "Melgaço",
+      "geojson": "dados/BGRI_2021_Melgaço.geojson",
+      "asset": "BGRI_2021_Melgaço.geojson"
+    },
+    {
+      "id": "mes-o-frio",
+      "nome": "Mesão Frio",
+      "geojson": "dados/BGRI_2021_Mesão_Frio.geojson",
+      "asset": "BGRI_2021_Mesão_Frio.geojson"
+    },
+    {
+      "id": "mira",
+      "nome": "Mira",
+      "geojson": "dados/BGRI_2021_Mira.geojson",
+      "asset": "BGRI_2021_Mira.geojson"
+    },
+    {
+      "id": "miranda-do-corvo",
+      "nome": "Miranda do Corvo",
+      "geojson": "dados/BGRI_2021_Miranda_do_Corvo.geojson",
+      "asset": "BGRI_2021_Miranda_do_Corvo.geojson"
+    },
+    {
+      "id": "miranda-do-douro",
+      "nome": "Miranda do Douro",
+      "geojson": "dados/BGRI_2021_Miranda_do_Douro.geojson",
+      "asset": "BGRI_2021_Miranda_do_Douro.geojson"
+    },
+    {
+      "id": "mirandela",
+      "nome": "Mirandela",
+      "geojson": "dados/BGRI_2021_Mirandela.geojson",
+      "asset": "BGRI_2021_Mirandela.geojson"
+    },
+    {
+      "id": "mogadouro",
+      "nome": "Mogadouro",
+      "geojson": "dados/BGRI_2021_Mogadouro.geojson",
+      "asset": "BGRI_2021_Mogadouro.geojson"
+    },
+    {
+      "id": "moimenta-da-beira",
+      "nome": "Moimenta da Beira",
+      "geojson": "dados/BGRI_2021_Moimenta_da_Beira.geojson",
+      "asset": "BGRI_2021_Moimenta_da_Beira.geojson"
+    },
+    {
+      "id": "moita",
+      "nome": "Moita",
+      "geojson": "dados/BGRI_2021_Moita.geojson",
+      "asset": "BGRI_2021_Moita.geojson"
+    },
+    {
+      "id": "monchique",
+      "nome": "Monchique",
+      "geojson": "dados/BGRI_2021_Monchique.geojson",
+      "asset": "BGRI_2021_Monchique.geojson"
+    },
+    {
+      "id": "mondim-de-basto",
+      "nome": "Mondim de Basto",
+      "geojson": "dados/BGRI_2021_Mondim_de_Basto.geojson",
+      "asset": "BGRI_2021_Mondim_de_Basto.geojson"
+    },
+    {
+      "id": "monforte",
+      "nome": "Monforte",
+      "geojson": "dados/BGRI_2021_Monforte.geojson",
+      "asset": "BGRI_2021_Monforte.geojson"
+    },
+    {
+      "id": "montalegre",
+      "nome": "Montalegre",
+      "geojson": "dados/BGRI_2021_Montalegre.geojson",
+      "asset": "BGRI_2021_Montalegre.geojson"
+    },
+    {
+      "id": "montemor-o-novo",
+      "nome": "Montemor-o-Novo",
+      "geojson": "dados/BGRI_2021_Montemor-o-Novo.geojson",
+      "asset": "BGRI_2021_Montemor-o-Novo.geojson"
+    },
+    {
+      "id": "montemor-o-velho",
+      "nome": "Montemor-o-Velho",
+      "geojson": "dados/BGRI_2021_Montemor-o-Velho.geojson",
+      "asset": "BGRI_2021_Montemor-o-Velho.geojson"
+    },
+    {
+      "id": "montijo",
+      "nome": "Montijo",
+      "geojson": "dados/BGRI_2021_Montijo.geojson",
+      "asset": "BGRI_2021_Montijo.geojson"
+    },
+    {
+      "id": "mon-o",
+      "nome": "Monção",
+      "geojson": "dados/BGRI_2021_Monção.geojson",
+      "asset": "BGRI_2021_Monção.geojson"
+    },
+    {
+      "id": "mora",
+      "nome": "Mora",
+      "geojson": "dados/BGRI_2021_Mora.geojson",
+      "asset": "BGRI_2021_Mora.geojson"
+    },
+    {
+      "id": "mort-gua",
+      "nome": "Mortágua",
+      "geojson": "dados/BGRI_2021_Mortágua.geojson",
+      "asset": "BGRI_2021_Mortágua.geojson"
+    },
+    {
+      "id": "moura",
+      "nome": "Moura",
+      "geojson": "dados/BGRI_2021_Moura.geojson",
+      "asset": "BGRI_2021_Moura.geojson"
+    },
+    {
+      "id": "mour-o",
+      "nome": "Mourão",
+      "geojson": "dados/BGRI_2021_Mourão.geojson",
+      "asset": "BGRI_2021_Mourão.geojson"
+    },
+    {
+      "id": "murtosa",
+      "nome": "Murtosa",
+      "geojson": "dados/BGRI_2021_Murtosa.geojson",
+      "asset": "BGRI_2021_Murtosa.geojson"
+    },
+    {
+      "id": "mur-a",
+      "nome": "Murça",
+      "geojson": "dados/BGRI_2021_Murça.geojson",
+      "asset": "BGRI_2021_Murça.geojson"
+    },
+    {
+      "id": "m-rtola",
+      "nome": "Mértola",
+      "geojson": "dados/BGRI_2021_Mértola.geojson",
+      "asset": "BGRI_2021_Mértola.geojson"
+    },
+    {
+      "id": "m-da",
+      "nome": "Mêda",
+      "geojson": "dados/BGRI_2021_Mêda.geojson",
+      "asset": "BGRI_2021_Mêda.geojson"
+    },
+    {
+      "id": "nazar",
+      "nome": "Nazaré",
+      "geojson": "dados/BGRI_2021_Nazaré.geojson",
+      "asset": "BGRI_2021_Nazaré.geojson"
+    },
+    {
+      "id": "nelas",
+      "nome": "Nelas",
+      "geojson": "dados/BGRI_2021_Nelas.geojson",
+      "asset": "BGRI_2021_Nelas.geojson"
+    },
+    {
+      "id": "nisa",
+      "nome": "Nisa",
+      "geojson": "dados/BGRI_2021_Nisa.geojson",
+      "asset": "BGRI_2021_Nisa.geojson"
+    },
+    {
+      "id": "odemira",
+      "nome": "Odemira",
+      "geojson": "dados/BGRI_2021_Odemira.geojson",
+      "asset": "BGRI_2021_Odemira.geojson"
+    },
+    {
+      "id": "odivelas",
+      "nome": "Odivelas",
+      "geojson": "dados/BGRI_2021_Odivelas.geojson",
+      "asset": "BGRI_2021_Odivelas.geojson"
+    },
+    {
+      "id": "oeiras",
+      "nome": "Oeiras",
+      "geojson": "dados/BGRI_2021_Oeiras.geojson",
+      "asset": "BGRI_2021_Oeiras.geojson"
+    },
+    {
+      "id": "oleiros",
+      "nome": "Oleiros",
+      "geojson": "dados/BGRI_2021_Oleiros.geojson",
+      "asset": "BGRI_2021_Oleiros.geojson"
+    },
+    {
+      "id": "olh-o",
+      "nome": "Olhão",
+      "geojson": "dados/BGRI_2021_Olhão.geojson",
+      "asset": "BGRI_2021_Olhão.geojson"
+    },
+    {
+      "id": "oliveira-de-azem-is",
+      "nome": "Oliveira de Azeméis",
+      "geojson": "dados/BGRI_2021_Oliveira_de_Azeméis.geojson",
+      "asset": "BGRI_2021_Oliveira_de_Azeméis.geojson"
+    },
+    {
+      "id": "oliveira-de-frades",
+      "nome": "Oliveira de Frades",
+      "geojson": "dados/BGRI_2021_Oliveira_de_Frades.geojson",
+      "asset": "BGRI_2021_Oliveira_de_Frades.geojson"
+    },
+    {
+      "id": "oliveira-do-bairro",
+      "nome": "Oliveira do Bairro",
+      "geojson": "dados/BGRI_2021_Oliveira_do_Bairro.geojson",
+      "asset": "BGRI_2021_Oliveira_do_Bairro.geojson"
+    },
+    {
+      "id": "oliveira-do-hospital",
+      "nome": "Oliveira do Hospital",
+      "geojson": "dados/BGRI_2021_Oliveira_do_Hospital.geojson",
+      "asset": "BGRI_2021_Oliveira_do_Hospital.geojson"
+    },
+    {
+      "id": "ourique",
+      "nome": "Ourique",
+      "geojson": "dados/BGRI_2021_Ourique.geojson",
+      "asset": "BGRI_2021_Ourique.geojson"
+    },
+    {
+      "id": "our-m",
+      "nome": "Ourém",
+      "geojson": "dados/BGRI_2021_Ourém.geojson",
+      "asset": "BGRI_2021_Ourém.geojson"
+    },
+    {
+      "id": "ovar",
+      "nome": "Ovar",
+      "geojson": "dados/BGRI_2021_Ovar.geojson",
+      "asset": "BGRI_2021_Ovar.geojson"
+    },
+    {
+      "id": "palmela",
+      "nome": "Palmela",
+      "geojson": "dados/BGRI_2021_Palmela.geojson",
+      "asset": "BGRI_2021_Palmela.geojson"
+    },
+    {
+      "id": "pampilhosa-da-serra",
+      "nome": "Pampilhosa da Serra",
+      "geojson": "dados/BGRI_2021_Pampilhosa_da_Serra.geojson",
+      "asset": "BGRI_2021_Pampilhosa_da_Serra.geojson"
+    },
+    {
+      "id": "paredes",
+      "nome": "Paredes",
+      "geojson": "dados/BGRI_2021_Paredes.geojson",
+      "asset": "BGRI_2021_Paredes.geojson"
+    },
+    {
+      "id": "paredes-de-coura",
+      "nome": "Paredes de Coura",
+      "geojson": "dados/BGRI_2021_Paredes_de_Coura.geojson",
+      "asset": "BGRI_2021_Paredes_de_Coura.geojson"
+    },
+    {
+      "id": "pa-os-de-ferreira",
+      "nome": "Paços de Ferreira",
+      "geojson": "dados/BGRI_2021_Paços_de_Ferreira.geojson",
+      "asset": "BGRI_2021_Paços_de_Ferreira.geojson"
+    },
+    {
+      "id": "pedr-g-o-grande",
+      "nome": "Pedrógão Grande",
+      "geojson": "dados/BGRI_2021_Pedrógão_Grande.geojson",
+      "asset": "BGRI_2021_Pedrógão_Grande.geojson"
+    },
+    {
+      "id": "penacova",
+      "nome": "Penacova",
+      "geojson": "dados/BGRI_2021_Penacova.geojson",
+      "asset": "BGRI_2021_Penacova.geojson"
+    },
+    {
+      "id": "penafiel",
+      "nome": "Penafiel",
+      "geojson": "dados/BGRI_2021_Penafiel.geojson",
+      "asset": "BGRI_2021_Penafiel.geojson"
+    },
+    {
+      "id": "penalva-do-castelo",
+      "nome": "Penalva do Castelo",
+      "geojson": "dados/BGRI_2021_Penalva_do_Castelo.geojson",
+      "asset": "BGRI_2021_Penalva_do_Castelo.geojson"
+    },
+    {
+      "id": "penamacor",
+      "nome": "Penamacor",
+      "geojson": "dados/BGRI_2021_Penamacor.geojson",
+      "asset": "BGRI_2021_Penamacor.geojson"
+    },
+    {
+      "id": "penedono",
+      "nome": "Penedono",
+      "geojson": "dados/BGRI_2021_Penedono.geojson",
+      "asset": "BGRI_2021_Penedono.geojson"
+    },
+    {
+      "id": "penela",
+      "nome": "Penela",
+      "geojson": "dados/BGRI_2021_Penela.geojson",
+      "asset": "BGRI_2021_Penela.geojson"
+    },
+    {
+      "id": "peniche",
+      "nome": "Peniche",
+      "geojson": "dados/BGRI_2021_Peniche.geojson",
+      "asset": "BGRI_2021_Peniche.geojson"
+    },
+    {
+      "id": "peso-da-r-gua",
+      "nome": "Peso da Régua",
+      "geojson": "dados/BGRI_2021_Peso_da_Régua.geojson",
+      "asset": "BGRI_2021_Peso_da_Régua.geojson"
+    },
+    {
+      "id": "pinhel",
+      "nome": "Pinhel",
+      "geojson": "dados/BGRI_2021_Pinhel.geojson",
+      "asset": "BGRI_2021_Pinhel.geojson"
+    },
+    {
+      "id": "pombal",
+      "nome": "Pombal",
+      "geojson": "dados/BGRI_2021_Pombal.geojson",
+      "asset": "BGRI_2021_Pombal.geojson"
+    },
+    {
+      "id": "ponte-da-barca",
+      "nome": "Ponte da Barca",
+      "geojson": "dados/BGRI_2021_Ponte_da_Barca.geojson",
+      "asset": "BGRI_2021_Ponte_da_Barca.geojson"
+    },
+    {
+      "id": "ponte-de-lima",
+      "nome": "Ponte de Lima",
+      "geojson": "dados/BGRI_2021_Ponte_de_Lima.geojson",
+      "asset": "BGRI_2021_Ponte_de_Lima.geojson"
+    },
+    {
+      "id": "ponte-de-sor",
+      "nome": "Ponte de Sor",
+      "geojson": "dados/BGRI_2021_Ponte_de_Sor.geojson",
+      "asset": "BGRI_2021_Ponte_de_Sor.geojson"
+    },
+    {
+      "id": "portalegre",
+      "nome": "Portalegre",
+      "geojson": "dados/BGRI_2021_Portalegre.geojson",
+      "asset": "BGRI_2021_Portalegre.geojson"
+    },
+    {
+      "id": "portel",
+      "nome": "Portel",
+      "geojson": "dados/BGRI_2021_Portel.geojson",
+      "asset": "BGRI_2021_Portel.geojson"
+    },
+    {
+      "id": "portim-o",
+      "nome": "Portimão",
+      "geojson": "dados/BGRI_2021_Portimão.geojson",
+      "asset": "BGRI_2021_Portimão.geojson"
+    },
+    {
+      "id": "porto",
+      "nome": "Porto",
+      "geojson": "dados/BGRI_2021_Porto.geojson",
+      "asset": "BGRI_2021_Porto.geojson"
+    },
+    {
+      "id": "porto-de-m-s",
+      "nome": "Porto de Mós",
+      "geojson": "dados/BGRI_2021_Porto_de_Mós.geojson",
+      "asset": "BGRI_2021_Porto_de_Mós.geojson"
+    },
+    {
+      "id": "proen-a-a-nova",
+      "nome": "Proença-a-Nova",
+      "geojson": "dados/BGRI_2021_Proença-a-Nova.geojson",
+      "asset": "BGRI_2021_Proença-a-Nova.geojson"
+    },
+    {
+      "id": "p-voa-de-lanhoso",
+      "nome": "Póvoa de Lanhoso",
+      "geojson": "dados/BGRI_2021_Póvoa_de_Lanhoso.geojson",
+      "asset": "BGRI_2021_Póvoa_de_Lanhoso.geojson"
+    },
+    {
+      "id": "p-voa-de-varzim",
+      "nome": "Póvoa de Varzim",
+      "geojson": "dados/BGRI_2021_Póvoa_de_Varzim.geojson",
+      "asset": "BGRI_2021_Póvoa_de_Varzim.geojson"
+    },
+    {
+      "id": "redondo",
+      "nome": "Redondo",
+      "geojson": "dados/BGRI_2021_Redondo.geojson",
+      "asset": "BGRI_2021_Redondo.geojson"
+    },
+    {
+      "id": "reguengos-de-monsaraz",
+      "nome": "Reguengos de Monsaraz",
+      "geojson": "dados/BGRI_2021_Reguengos_de_Monsaraz.geojson",
+      "asset": "BGRI_2021_Reguengos_de_Monsaraz.geojson"
+    },
+    {
+      "id": "resende",
+      "nome": "Resende",
+      "geojson": "dados/BGRI_2021_Resende.geojson",
+      "asset": "BGRI_2021_Resende.geojson"
+    },
+    {
+      "id": "ribeira-de-pena",
+      "nome": "Ribeira de Pena",
+      "geojson": "dados/BGRI_2021_Ribeira_de_Pena.geojson",
+      "asset": "BGRI_2021_Ribeira_de_Pena.geojson"
+    },
+    {
+      "id": "rio-maior",
+      "nome": "Rio Maior",
+      "geojson": "dados/BGRI_2021_Rio_Maior.geojson",
+      "asset": "BGRI_2021_Rio_Maior.geojson"
+    },
+    {
+      "id": "sabrosa",
+      "nome": "Sabrosa",
+      "geojson": "dados/BGRI_2021_Sabrosa.geojson",
+      "asset": "BGRI_2021_Sabrosa.geojson"
+    },
+    {
+      "id": "sabugal",
+      "nome": "Sabugal",
+      "geojson": "dados/BGRI_2021_Sabugal.geojson",
+      "asset": "BGRI_2021_Sabugal.geojson"
+    },
+    {
+      "id": "salvaterra-de-magos",
+      "nome": "Salvaterra de Magos",
+      "geojson": "dados/BGRI_2021_Salvaterra_de_Magos.geojson",
+      "asset": "BGRI_2021_Salvaterra_de_Magos.geojson"
+    },
+    {
+      "id": "santa-comba-d-o",
+      "nome": "Santa Comba Dão",
+      "geojson": "dados/BGRI_2021_Santa_Comba_Dão.geojson",
+      "asset": "BGRI_2021_Santa_Comba_Dão.geojson"
+    },
+    {
+      "id": "santa-maria-da-feira",
+      "nome": "Santa Maria da Feira",
+      "geojson": "dados/BGRI_2021_Santa_Maria_da_Feira.geojson",
+      "asset": "BGRI_2021_Santa_Maria_da_Feira.geojson"
+    },
+    {
+      "id": "santa-marta-de-penagui-o",
+      "nome": "Santa Marta de Penaguião",
+      "geojson": "dados/BGRI_2021_Santa_Marta_de_Penaguião.geojson",
+      "asset": "BGRI_2021_Santa_Marta_de_Penaguião.geojson"
+    },
+    {
+      "id": "santar-m",
+      "nome": "Santarém",
+      "geojson": "dados/BGRI_2021_Santarém.geojson",
+      "asset": "BGRI_2021_Santarém.geojson"
+    },
+    {
+      "id": "santiago-do-cac-m",
+      "nome": "Santiago do Cacém",
+      "geojson": "dados/BGRI_2021_Santiago_do_Cacém.geojson",
+      "asset": "BGRI_2021_Santiago_do_Cacém.geojson"
+    },
+    {
+      "id": "santo-tirso",
+      "nome": "Santo Tirso",
+      "geojson": "dados/BGRI_2021_Santo_Tirso.geojson",
+      "asset": "BGRI_2021_Santo_Tirso.geojson"
+    },
+    {
+      "id": "sardoal",
+      "nome": "Sardoal",
+      "geojson": "dados/BGRI_2021_Sardoal.geojson",
+      "asset": "BGRI_2021_Sardoal.geojson"
+    },
+    {
+      "id": "seia",
+      "nome": "Seia",
+      "geojson": "dados/BGRI_2021_Seia.geojson",
+      "asset": "BGRI_2021_Seia.geojson"
+    },
+    {
+      "id": "seixal",
+      "nome": "Seixal",
+      "geojson": "dados/BGRI_2021_Seixal.geojson",
+      "asset": "BGRI_2021_Seixal.geojson"
+    },
+    {
+      "id": "sernancelhe",
+      "nome": "Sernancelhe",
+      "geojson": "dados/BGRI_2021_Sernancelhe.geojson",
+      "asset": "BGRI_2021_Sernancelhe.geojson"
+    },
+    {
+      "id": "serpa",
+      "nome": "Serpa",
+      "geojson": "dados/BGRI_2021_Serpa.geojson",
+      "asset": "BGRI_2021_Serpa.geojson"
+    },
+    {
+      "id": "sert",
+      "nome": "Sertã",
+      "geojson": "dados/BGRI_2021_Sertã.geojson",
+      "asset": "BGRI_2021_Sertã.geojson"
+    },
+    {
+      "id": "sesimbra",
+      "nome": "Sesimbra",
+      "geojson": "dados/BGRI_2021_Sesimbra.geojson",
+      "asset": "BGRI_2021_Sesimbra.geojson"
+    },
+    {
+      "id": "set-bal",
+      "nome": "Setúbal",
+      "geojson": "dados/BGRI_2021_Setúbal.geojson",
+      "asset": "BGRI_2021_Setúbal.geojson"
+    },
+    {
+      "id": "sever-do-vouga",
+      "nome": "Sever do Vouga",
+      "geojson": "dados/BGRI_2021_Sever_do_Vouga.geojson",
+      "asset": "BGRI_2021_Sever_do_Vouga.geojson"
+    },
+    {
+      "id": "silves",
+      "nome": "Silves",
+      "geojson": "dados/BGRI_2021_Silves.geojson",
+      "asset": "BGRI_2021_Silves.geojson"
+    },
+    {
+      "id": "sines",
+      "nome": "Sines",
+      "geojson": "dados/BGRI_2021_Sines.geojson",
+      "asset": "BGRI_2021_Sines.geojson"
+    },
+    {
+      "id": "sintra",
+      "nome": "Sintra",
+      "geojson": "dados/BGRI_2021_Sintra.geojson",
+      "asset": "BGRI_2021_Sintra.geojson"
+    },
+    {
+      "id": "sobral-de-monte-agra-o",
+      "nome": "Sobral de Monte Agraço",
+      "geojson": "dados/BGRI_2021_Sobral_de_Monte_Agraço.geojson",
+      "asset": "BGRI_2021_Sobral_de_Monte_Agraço.geojson"
+    },
+    {
+      "id": "soure",
+      "nome": "Soure",
+      "geojson": "dados/BGRI_2021_Soure.geojson",
+      "asset": "BGRI_2021_Soure.geojson"
+    },
+    {
+      "id": "sousel",
+      "nome": "Sousel",
+      "geojson": "dados/BGRI_2021_Sousel.geojson",
+      "asset": "BGRI_2021_Sousel.geojson"
+    },
+    {
+      "id": "s-t-o",
+      "nome": "Sátão",
+      "geojson": "dados/BGRI_2021_Sátão.geojson",
+      "asset": "BGRI_2021_Sátão.geojson"
+    },
+    {
+      "id": "s-o-br-s-de-alportel",
+      "nome": "São Brás de Alportel",
+      "geojson": "dados/BGRI_2021_São_Brás_de_Alportel.geojson",
+      "asset": "BGRI_2021_São_Brás_de_Alportel.geojson"
+    },
+    {
+      "id": "s-o-jo-o-da-madeira",
+      "nome": "São João da Madeira",
+      "geojson": "dados/BGRI_2021_São_João_da_Madeira.geojson",
+      "asset": "BGRI_2021_São_João_da_Madeira.geojson"
+    },
+    {
+      "id": "s-o-jo-o-da-pesqueira",
+      "nome": "São João da Pesqueira",
+      "geojson": "dados/BGRI_2021_São_João_da_Pesqueira.geojson",
+      "asset": "BGRI_2021_São_João_da_Pesqueira.geojson"
+    },
+    {
+      "id": "s-o-pedro-do-sul",
+      "nome": "São Pedro do Sul",
+      "geojson": "dados/BGRI_2021_São_Pedro_do_Sul.geojson",
+      "asset": "BGRI_2021_São_Pedro_do_Sul.geojson"
+    },
+    {
+      "id": "tabua-o",
+      "nome": "Tabuaço",
+      "geojson": "dados/BGRI_2021_Tabuaço.geojson",
+      "asset": "BGRI_2021_Tabuaço.geojson"
+    },
+    {
+      "id": "tarouca",
+      "nome": "Tarouca",
+      "geojson": "dados/BGRI_2021_Tarouca.geojson",
+      "asset": "BGRI_2021_Tarouca.geojson"
+    },
+    {
+      "id": "tavira",
+      "nome": "Tavira",
+      "geojson": "dados/BGRI_2021_Tavira.geojson",
+      "asset": "BGRI_2021_Tavira.geojson"
+    },
+    {
+      "id": "terras-de-bouro",
+      "nome": "Terras de Bouro",
+      "geojson": "dados/BGRI_2021_Terras_de_Bouro.geojson",
+      "asset": "BGRI_2021_Terras_de_Bouro.geojson"
+    },
+    {
+      "id": "tomar",
+      "nome": "Tomar",
+      "geojson": "dados/BGRI_2021_Tomar.geojson",
+      "asset": "BGRI_2021_Tomar.geojson"
+    },
+    {
+      "id": "tondela",
+      "nome": "Tondela",
+      "geojson": "dados/BGRI_2021_Tondela.geojson",
+      "asset": "BGRI_2021_Tondela.geojson"
+    },
+    {
+      "id": "torre-de-moncorvo",
+      "nome": "Torre de Moncorvo",
+      "geojson": "dados/BGRI_2021_Torre_de_Moncorvo.geojson",
+      "asset": "BGRI_2021_Torre_de_Moncorvo.geojson"
+    },
+    {
+      "id": "torres-novas",
+      "nome": "Torres Novas",
+      "geojson": "dados/BGRI_2021_Torres_Novas.geojson",
+      "asset": "BGRI_2021_Torres_Novas.geojson"
+    },
+    {
+      "id": "torres-vedras",
+      "nome": "Torres Vedras",
+      "geojson": "dados/BGRI_2021_Torres_Vedras.geojson",
+      "asset": "BGRI_2021_Torres_Vedras.geojson"
+    },
+    {
+      "id": "trancoso",
+      "nome": "Trancoso",
+      "geojson": "dados/BGRI_2021_Trancoso.geojson",
+      "asset": "BGRI_2021_Trancoso.geojson"
+    },
+    {
+      "id": "trofa",
+      "nome": "Trofa",
+      "geojson": "dados/BGRI_2021_Trofa.geojson",
+      "asset": "BGRI_2021_Trofa.geojson"
+    },
+    {
+      "id": "t-bua",
+      "nome": "Tábua",
+      "geojson": "dados/BGRI_2021_Tábua.geojson",
+      "asset": "BGRI_2021_Tábua.geojson"
+    },
+    {
+      "id": "vagos",
+      "nome": "Vagos",
+      "geojson": "dados/BGRI_2021_Vagos.geojson",
+      "asset": "BGRI_2021_Vagos.geojson"
+    },
+    {
+      "id": "vale-de-cambra",
+      "nome": "Vale de Cambra",
+      "geojson": "dados/BGRI_2021_Vale_de_Cambra.geojson",
+      "asset": "BGRI_2021_Vale_de_Cambra.geojson"
+    },
+    {
+      "id": "valen-a",
+      "nome": "Valença",
+      "geojson": "dados/BGRI_2021_Valença.geojson",
+      "asset": "BGRI_2021_Valença.geojson"
+    },
+    {
+      "id": "valongo",
+      "nome": "Valongo",
+      "geojson": "dados/BGRI_2021_Valongo.geojson",
+      "asset": "BGRI_2021_Valongo.geojson"
+    },
+    {
+      "id": "valpa-os",
+      "nome": "Valpaços",
+      "geojson": "dados/BGRI_2021_Valpaços.geojson",
+      "asset": "BGRI_2021_Valpaços.geojson"
+    },
+    {
+      "id": "vendas-novas",
+      "nome": "Vendas Novas",
+      "geojson": "dados/BGRI_2021_Vendas_Novas.geojson",
+      "asset": "BGRI_2021_Vendas_Novas.geojson"
+    },
+    {
+      "id": "viana-do-alentejo",
+      "nome": "Viana do Alentejo",
+      "geojson": "dados/BGRI_2021_Viana_do_Alentejo.geojson",
+      "asset": "BGRI_2021_Viana_do_Alentejo.geojson"
+    },
+    {
+      "id": "viana-do-castelo",
+      "nome": "Viana do Castelo",
+      "geojson": "dados/BGRI_2021_Viana_do_Castelo.geojson",
+      "asset": "BGRI_2021_Viana_do_Castelo.geojson"
+    },
+    {
+      "id": "vidigueira",
+      "nome": "Vidigueira",
+      "geojson": "dados/BGRI_2021_Vidigueira.geojson",
+      "asset": "BGRI_2021_Vidigueira.geojson"
+    },
+    {
+      "id": "vieira-do-minho",
+      "nome": "Vieira do Minho",
+      "geojson": "dados/BGRI_2021_Vieira_do_Minho.geojson",
+      "asset": "BGRI_2021_Vieira_do_Minho.geojson"
+    },
+    {
+      "id": "vila-de-rei",
+      "nome": "Vila de Rei",
+      "geojson": "dados/BGRI_2021_Vila_de_Rei.geojson",
+      "asset": "BGRI_2021_Vila_de_Rei.geojson"
+    },
+    {
+      "id": "vila-do-bispo",
+      "nome": "Vila do Bispo",
+      "geojson": "dados/BGRI_2021_Vila_do_Bispo.geojson",
+      "asset": "BGRI_2021_Vila_do_Bispo.geojson"
+    },
+    {
+      "id": "vila-do-conde",
+      "nome": "Vila do Conde",
+      "geojson": "dados/BGRI_2021_Vila_do_Conde.geojson",
+      "asset": "BGRI_2021_Vila_do_Conde.geojson"
+    },
+    {
+      "id": "vila-flor",
+      "nome": "Vila Flor",
+      "geojson": "dados/BGRI_2021_Vila_Flor.geojson",
+      "asset": "BGRI_2021_Vila_Flor.geojson"
+    },
+    {
+      "id": "vila-franca-de-xira",
+      "nome": "Vila Franca de Xira",
+      "geojson": "dados/BGRI_2021_Vila_Franca_de_Xira.geojson",
+      "asset": "BGRI_2021_Vila_Franca_de_Xira.geojson"
+    },
+    {
+      "id": "vila-nova-da-barquinha",
+      "nome": "Vila Nova da Barquinha",
+      "geojson": "dados/BGRI_2021_Vila_Nova_da_Barquinha.geojson",
+      "asset": "BGRI_2021_Vila_Nova_da_Barquinha.geojson"
+    },
+    {
+      "id": "vila-nova-de-cerveira",
+      "nome": "Vila Nova de Cerveira",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Cerveira.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Cerveira.geojson"
+    },
+    {
+      "id": "vila-nova-de-famalic-o",
+      "nome": "Vila Nova de Famalicão",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Famalicão.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Famalicão.geojson"
+    },
+    {
+      "id": "vila-nova-de-foz-c-a",
+      "nome": "Vila Nova de Foz Côa",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Foz_Côa.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Foz_Côa.geojson"
+    },
+    {
+      "id": "vila-nova-de-gaia",
+      "nome": "Vila Nova de Gaia",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Gaia.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Gaia.geojson"
+    },
+    {
+      "id": "vila-nova-de-paiva",
+      "nome": "Vila Nova de Paiva",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Paiva.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Paiva.geojson"
+    },
+    {
+      "id": "vila-nova-de-poiares",
+      "nome": "Vila Nova de Poiares",
+      "geojson": "dados/BGRI_2021_Vila_Nova_de_Poiares.geojson",
+      "asset": "BGRI_2021_Vila_Nova_de_Poiares.geojson"
+    },
+    {
+      "id": "vila-pouca-de-aguiar",
+      "nome": "Vila Pouca de Aguiar",
+      "geojson": "dados/BGRI_2021_Vila_Pouca_de_Aguiar.geojson",
+      "asset": "BGRI_2021_Vila_Pouca_de_Aguiar.geojson"
+    },
+    {
+      "id": "vila-real",
+      "nome": "Vila Real",
+      "geojson": "dados/BGRI_2021_Vila_Real.geojson",
+      "asset": "BGRI_2021_Vila_Real.geojson"
+    },
+    {
+      "id": "vila-real-de-santo-ant-nio",
+      "nome": "Vila Real de Santo António",
+      "geojson": "dados/BGRI_2021_Vila_Real_de_Santo_António.geojson",
+      "asset": "BGRI_2021_Vila_Real_de_Santo_António.geojson"
+    },
+    {
+      "id": "vila-velha-de-r-d-o",
+      "nome": "Vila Velha de Ródão",
+      "geojson": "dados/BGRI_2021_Vila_Velha_de_Ródão.geojson",
+      "asset": "BGRI_2021_Vila_Velha_de_Ródão.geojson"
+    },
+    {
+      "id": "vila-verde",
+      "nome": "Vila Verde",
+      "geojson": "dados/BGRI_2021_Vila_Verde.geojson",
+      "asset": "BGRI_2021_Vila_Verde.geojson"
+    },
+    {
+      "id": "vila-vi-osa",
+      "nome": "Vila Viçosa",
+      "geojson": "dados/BGRI_2021_Vila_Viçosa.geojson",
+      "asset": "BGRI_2021_Vila_Viçosa.geojson"
+    },
+    {
+      "id": "vimioso",
+      "nome": "Vimioso",
+      "geojson": "dados/BGRI_2021_Vimioso.geojson",
+      "asset": "BGRI_2021_Vimioso.geojson"
+    },
+    {
+      "id": "vinhais",
+      "nome": "Vinhais",
+      "geojson": "dados/BGRI_2021_Vinhais.geojson",
+      "asset": "BGRI_2021_Vinhais.geojson"
+    },
+    {
+      "id": "viseu",
+      "nome": "Viseu",
+      "geojson": "dados/BGRI_2021_Viseu.geojson",
+      "asset": "BGRI_2021_Viseu.geojson"
+    },
+    {
+      "id": "vizela",
+      "nome": "Vizela",
+      "geojson": "dados/BGRI_2021_Vizela.geojson",
+      "asset": "BGRI_2021_Vizela.geojson"
+    },
+    {
+      "id": "vouzela",
+      "nome": "Vouzela",
+      "geojson": "dados/BGRI_2021_Vouzela.geojson",
+      "asset": "BGRI_2021_Vouzela.geojson"
+    },
+    {
+      "id": "gueda",
+      "nome": "Águeda",
+      "geojson": "dados/BGRI_2021_Águeda.geojson",
+      "asset": "BGRI_2021_Águeda.geojson"
+    },
+    {
+      "id": "vora",
+      "nome": "Évora",
+      "geojson": "dados/BGRI_2021_Évora.geojson",
+      "asset": "BGRI_2021_Évora.geojson"
+    },
+    {
+      "id": "lhavo",
+      "nome": "Ílhavo",
+      "geojson": "dados/BGRI_2021_Ílhavo.geojson",
+      "asset": "BGRI_2021_Ílhavo.geojson"
+    },
+    {
+      "id": "bidos",
+      "nome": "Óbidos",
+      "geojson": "dados/BGRI_2021_Óbidos.geojson",
+      "asset": "BGRI_2021_Óbidos.geojson"
+    }
+  ]
+}

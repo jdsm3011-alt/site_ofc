@@ -197,7 +197,7 @@
     padding:24px 24px 40px;
     display:flex;
     flex-direction:column;
-    gap:18px;
+    gap:22px;
   }
 
   /* ── estado de carregamento / erro ── */
@@ -236,6 +236,8 @@
 
   /* ── barra de controlos ── */
   .controlos{
+    position:relative;
+    z-index:2000;
     display:flex;
     flex-wrap:wrap;
     align-items:flex-end;
@@ -282,26 +284,104 @@
   select:focus{ border-color:var(--green); box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 18%, transparent); }
   select:disabled{ opacity:.55; cursor:not-allowed; }
 
+  /* ── pesquisa direta de município ── */
+  .campo-pesquisa{ display:flex; flex-direction:column; gap:6px; }
+  .campo-pesquisa .input-wrap{ position:relative; }
+  #pesquisa-municipio{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    padding:11px 40px 11px 14px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+    box-sizing:border-box;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  #pesquisa-municipio:focus{ border-color:var(--green); box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 18%, transparent); }
+  #pesquisa-municipio::placeholder{ color:var(--stone); opacity:.75; }
+  .pesquisa-icon{
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    width:15px;
+    height:15px;
+    display:flex;
+    color:var(--stone);
+    opacity:.75;
+    pointer-events:none;
+  }
+  .pesquisa-icon svg{ width:100%; height:100%; display:block; }
+  .pesquisa-sugestoes{
+    position:absolute;
+    left:0; right:0; top:calc(100% + 6px);
+    max-height:280px;
+    overflow-y:auto;
+    background:var(--white);
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    box-shadow:0 8px 24px rgba(0,0,0,.12);
+    z-index:3000;
+    display:none;
+  }
+  .pesquisa-sugestoes.aberta{ display:block; }
+  .pesquisa-sugestoes .item{
+    padding:9px 14px;
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+  .pesquisa-sugestoes .item:hover,
+  .pesquisa-sugestoes .item.ativo{
+    background:color-mix(in srgb, var(--green) 12%, transparent);
+  }
+  .pesquisa-sugestoes .item mark{
+    background:none;
+    color:var(--green);
+    font-weight:600;
+  }
+  .pesquisa-sugestoes .item .id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--stone);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .pesquisa-sugestoes .vazio{
+    padding:12px 14px;
+    font-size:13px;
+    color:var(--stone);
+  }
+
   .chip{
     display:inline-flex;
     align-items:center;
     gap:6px;
     font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
+    font-size:10.5px;
     letter-spacing:.05em;
     text-transform:uppercase;
     color:var(--stone);
     border:1px solid var(--line);
     background:var(--paper-elevated);
     border-radius:999px;
-    padding:4px 10px;
+    padding:6px 13px;
+    line-height:1.4;
   }
   .chip.piloto{ color:var(--ochre); border-color:var(--ochre-soft); }
 
   .faixa-info{
     display:flex;
     flex-wrap:wrap;
-    gap:8px;
+    gap:10px;
+    margin-top:4px;
+    margin-bottom:6px;
     animation:fadeUp .5s ease backwards;
     animation-delay:.06s;
   }
@@ -324,6 +404,10 @@
     font-family:'IBM Plex Mono', monospace !important;
     font-size:10px !important;
   }
+
+  /* Garante que os controlos do mapa (zoom +/-, etc.) nunca ficam por
+     cima da lista de sugestões de pesquisa de município. */
+  .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
 
   /* ── controlo flutuante (legenda / info) ── */
   .painel-flutuante{
@@ -552,9 +636,26 @@
   <div id="conteudo" style="display:none">
 
     <div class="controlos">
-      <div class="campo">
-        <label for="select-municipio">Município</label>
-        <select id="select-municipio"></select>
+      <div class="campo campo-pesquisa">
+        <label for="pesquisa-municipio">Município</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="pesquisa-municipio"
+            autocomplete="off"
+            placeholder="Procurar município…"
+            aria-expanded="false"
+            aria-autocomplete="list"
+            role="combobox"
+          />
+          <span class="pesquisa-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.3-4.3"/>
+            </svg>
+          </span>
+          <div class="pesquisa-sugestoes" id="pesquisa-sugestoes" role="listbox"></div>
+        </div>
       </div>
       <div class="campo" style="flex:2 1 320px;">
         <label for="select-atributo">Atributo</label>
@@ -572,7 +673,7 @@
 
 </main>
 
-<footer>DataGis · BGRI 2021 — INE, I.P. · Piloto</footer>
+<footer>Classificado em Natural Breaks · DataGis · BGRI 2021 — INE, I.P.</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -620,25 +721,32 @@
 
   /* =========================================================
      2. CONFIGURAÇÃO
-     -- Piloto: apenas "Cabeceiras de Basto". A estrutura em
-        array permite adicionar mais municípios no futuro,
-        bastando acrescentar uma entrada com o seu próprio
-        ficheiro GeoJSON (já convertido para EPSG:4326).
+     -- Carregada dinamicamente a partir de bgri_index.json,
+        gerado pelo script gerar_bgri_index.py.
+        Basta correr o script sempre que se adicionem
+        novos ficheiros GeoJSON à pasta dados/.
      ========================================================= */
-  var CONFIG = {
-    municipios: [
-      {
-        id: 'cabeceiras-basto',
-        nome: 'Cabeceiras de Basto',
-        distrito: 'Braga',
-        geojson: 'data/bgri_cabeceiras_basto.geojson',
-        centroInicial: [41.5167, -7.9833],
-        zoomInicial: 12
-      }
-      // Para adicionar outro município no futuro, basta acrescentar
-      // aqui um novo objeto com {id, nome, distrito, geojson, centroInicial, zoomInicial}
-    ]
+  var CONFIG = { municipios: [] };
+
+  // Fallback: se o GeoJSON não existir localmente (pasta dados/), vai buscar
+  // à release do GitHub indicada abaixo. O ficheiro na release tem de ter
+  // exatamente o mesmo nome (basename) do que está em "dados/".
+  var GITHUB_RELEASE_FALLBACK = {
+    ativo: true,
+    owner: 'jdsm3011-alt',
+    repo: 'site_ofc',
+    tag: 'teste_bgri'
   };
+
+  function urlGithubRelease(nomeFicheiro){
+    return 'https://github.com/' + GITHUB_RELEASE_FALLBACK.owner + '/' +
+      GITHUB_RELEASE_FALLBACK.repo + '/releases/download/' +
+      GITHUB_RELEASE_FALLBACK.tag + '/' + encodeURIComponent(nomeFicheiro);
+  }
+
+  function nomeBaseFicheiro(caminho){
+    return caminho.split('/').pop().split('\\').pop();
+  }
 
   var N_CLASSES = 5;
   var RAMPA = ['#EAF2EA', '#BBDCC2', '#86C295', '#4F9C6C', '#234635'];
@@ -1005,47 +1113,94 @@
     document.getElementById('conteudo').style.display = 'none';
   }
 
+  function buscarGeojson(municipio){
+    // 1ª tentativa: ficheiro local (pasta dados/)
+    return fetch(municipio.geojson)
+      .then(function(resp){
+        if(!resp.ok) throw new Error('HTTP ' + resp.status);
+        return resp.json();
+      })
+      .catch(function(erroLocal){
+        if(!GITHUB_RELEASE_FALLBACK.ativo){
+          throw erroLocal;
+        }
+        // 2ª tentativa: ficheiro na release do GitHub.
+        // Usa o campo "asset" do índice, se existir (nome exato do ficheiro
+        // tal como foi enviado para a release); caso contrário, deriva o
+        // nome a partir do caminho local em "dados/".
+        var nome = municipio.asset || nomeBaseFicheiro(municipio.geojson);
+        var url = urlGithubRelease(nome);
+        return fetch(url)
+          .then(function(resp){
+            if(!resp.ok) throw new Error('HTTP ' + resp.status + ' (release GitHub)');
+            return resp.json();
+          })
+          .catch(function(erroRelease){
+            // Junta as duas mensagens de erro para facilitar diagnóstico
+            throw new Error(
+              'Local: ' + erroLocal.message + ' | Release GitHub: ' + erroRelease.message
+            );
+          });
+      });
+  }
+
   function carregarMunicipio(municipio){
     document.getElementById('estado').style.display = 'flex';
     document.getElementById('estado').classList.remove('erro');
     document.getElementById('conteudo').style.display = 'none';
     subseccaoFixada = null;
 
-    fetch(municipio.geojson)
-      .then(function(resp){
-        if(!resp.ok) throw new Error('HTTP ' + resp.status);
-        return resp.json();
-      })
+    buscarGeojson(municipio)
       .then(function(geojson){
         dadosAtuais = geojson;
 
         if(!mapa){
-          inicializarMapa(municipio.centroInicial, municipio.zoomInicial);
+          // Centro provisório em Portugal continental; fitBounds vai ajustar logo a seguir
+          inicializarMapa([39.6, -8.0], 7);
         }
         if(camadaGeoJSON){ mapa.removeLayer(camadaGeoJSON); }
 
-        var primeiroAtributo = construirSeletorAtributos(geojson.features);
+        // Filtrar features sem geometria para não corromper os bounds do Leaflet
+        var featuresValidas = (geojson.features || []).filter(function(f){
+          return f && f.geometry && f.geometry.coordinates && f.geometry.coordinates.length > 0;
+        });
+        if(!featuresValidas.length){
+          mostrarErro('O GeoJSON não contém geometrias válidas.', 'Todas as features têm geometria nula ou em falta.');
+          return;
+        }
+        var geojsonFiltrado = { type: 'FeatureCollection', features: featuresValidas };
+        dadosAtuais = geojsonFiltrado;
+
+        var primeiroAtributo = construirSeletorAtributos(featuresValidas);
         if(!primeiroAtributo){
           mostrarErro('Não foram encontrados atributos numéricos no ficheiro.', 'Verifique se o GeoJSON tem colunas numéricas além dos códigos administrativos.');
           return;
         }
         atributoAtual = primeiroAtributo;
 
-        camadaGeoJSON = L.geoJSON(geojson, {
+        camadaGeoJSON = L.geoJSON(geojsonFiltrado, {
           style: estiloFeature,
           onEachFeature: aoCadaFeature
         }).addTo(mapa);
 
-        mapa.fitBounds(camadaGeoJSON.getBounds(), { padding: [16,16] });
+        var bounds = camadaGeoJSON.getBounds();
+        if(bounds && bounds.isValid()){
+          // maxZoom evita que municípios pequenos/subsecções únicas façam o
+          // mapa aproximar-se demasiado (ex.: parecer "zoom numa subsecção").
+          // Ajusta o valor (ex.: 11, 12, 13) se quiseres ver mais ou menos detalhe.
+          mapa.fitBounds(bounds, { padding: [16,16], maxZoom: 12 });
+        }
 
         document.getElementById('select-atributo').value = primeiroAtributo;
         aplicarAtributo(primeiroAtributo);
 
         var n = geojson.features.length;
+        var nMunic = CONFIG.municipios.length;
+        var labelMunic = nMunic === 1 ? '1 município' : nMunic + ' municípios';
         document.getElementById('faixa-info').innerHTML =
           '<span class="chip">' + n + ' subsecções</span>' +
           '<span class="chip">Fonte: INE — Censos 2021 (BGRI)</span>' +
-          '<span class="chip piloto">Piloto · 1 município</span>';
+          '<span class="chip piloto">' + labelMunic + ' disponíveis</span>';
 
         document.getElementById('estado').style.display = 'none';
         document.getElementById('conteudo').style.display = 'block';
@@ -1054,29 +1209,152 @@
       .catch(function(err){
         mostrarErro(
           'Não foi possível carregar os dados da BGRI.',
-          'Ficheiro esperado em <code>' + municipio.geojson + '</code> (GeoJSON em EPSG:4326). Detalhe técnico: ' + err.message
+          'Ficheiro esperado em <code>' + municipio.geojson + '</code> ou na release do GitHub (' +
+          'GeoJSON em EPSG:4326). Detalhe técnico: ' + err.message
         );
       });
   }
 
 
   /* =========================================================
-     13. SELETOR DE MUNICÍPIO
+     13. PESQUISA DIRETA DE MUNICÍPIO
      ========================================================= */
+  function normalizarTexto(s){
+    return (s || '')
+      .toString()
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, ''); // remove acentos
+  }
+
+  function realcarOcorrencia(nome, termo){
+    if(!termo) return nome;
+    var nomeNorm = normalizarTexto(nome);
+    var termoNorm = normalizarTexto(termo);
+    var idx = nomeNorm.indexOf(termoNorm);
+    if(idx === -1) return nome;
+    return nome.slice(0, idx) +
+      '<mark>' + nome.slice(idx, idx + termo.length) + '</mark>' +
+      nome.slice(idx + termo.length);
+  }
+
   function construirSeletorMunicipios(){
-    var select = document.getElementById('select-municipio');
-    select.innerHTML = '';
-    CONFIG.municipios.forEach(function(m){
-      var opt = document.createElement('option');
-      opt.value = m.id;
-      opt.textContent = m.nome + (m.distrito ? ' (' + m.distrito + ')' : '');
-      select.appendChild(opt);
+    var input = document.getElementById('pesquisa-municipio');
+    var lista = document.getElementById('pesquisa-sugestoes');
+    var municipioAtual = null;
+    var indiceAtivo = -1;
+    var resultadosAtuais = [];
+
+    if(CONFIG.municipios.length <= 1) input.setAttribute('disabled', 'disabled');
+
+    function obterResultados(termo){
+      var termoNorm = normalizarTexto(termo);
+      if(!termoNorm) return CONFIG.municipios.slice(0, 12);
+      return CONFIG.municipios
+        .filter(function(m){ return normalizarTexto(m.nome).indexOf(termoNorm) !== -1; })
+        .slice(0, 12);
+    }
+
+    function renderSugestoes(termo){
+      resultadosAtuais = obterResultados(termo);
+      indiceAtivo = -1;
+
+      if(!resultadosAtuais.length){
+        lista.innerHTML = '<div class="vazio">Nenhum município encontrado.</div>';
+      } else {
+        lista.innerHTML = resultadosAtuais.map(function(m, i){
+          return '<div class="item" role="option" data-idx="' + i + '">' +
+            '<span>' + realcarOcorrencia(m.nome, termo) + '</span>' +
+            (m.distrito ? '<span class="id">' + m.distrito + '</span>' : '') +
+            '</div>';
+        }).join('');
+      }
+      abrirSugestoes();
+    }
+
+    function abrirSugestoes(){
+      lista.classList.add('aberta');
+      input.setAttribute('aria-expanded', 'true');
+    }
+    function fecharSugestoes(){
+      lista.classList.remove('aberta');
+      input.setAttribute('aria-expanded', 'false');
+      indiceAtivo = -1;
+    }
+
+    function marcarAtivo(){
+      var itens = lista.querySelectorAll('.item');
+      itens.forEach(function(el, i){
+        el.classList.toggle('ativo', i === indiceAtivo);
+      });
+      if(indiceAtivo >= 0 && itens[indiceAtivo]){
+        itens[indiceAtivo].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function escolherMunicipio(m){
+      if(!m) return;
+      municipioAtual = m;
+      input.value = m.nome;
+      fecharSugestoes();
+      carregarMunicipio(m);
+    }
+
+    input.addEventListener('input', function(){
+      renderSugestoes(input.value);
     });
-    if(CONFIG.municipios.length <= 1) select.setAttribute('title', 'Mais municípios em breve');
-    select.addEventListener('change', function(){
-      var m = CONFIG.municipios.filter(function(x){ return x.id === select.value; })[0];
-      if(m) carregarMunicipio(m);
+
+    input.addEventListener('focus', function(){
+      renderSugestoes(input.value);
     });
+
+    input.addEventListener('keydown', function(e){
+      if(!lista.classList.contains('aberta') &&
+        (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+        renderSugestoes(input.value);
+        return;
+      }
+      if(e.key === 'ArrowDown'){
+        e.preventDefault();
+        indiceAtivo = Math.min(indiceAtivo + 1, resultadosAtuais.length - 1);
+        marcarAtivo();
+      } else if(e.key === 'ArrowUp'){
+        e.preventDefault();
+        indiceAtivo = Math.max(indiceAtivo - 1, 0);
+        marcarAtivo();
+      } else if(e.key === 'Enter'){
+        e.preventDefault();
+        if(indiceAtivo >= 0 && resultadosAtuais[indiceAtivo]){
+          escolherMunicipio(resultadosAtuais[indiceAtivo]);
+        } else if(resultadosAtuais.length === 1){
+          escolherMunicipio(resultadosAtuais[0]);
+        }
+      } else if(e.key === 'Escape'){
+        fecharSugestoes();
+        if(municipioAtual) input.value = municipioAtual.nome;
+      }
+    });
+
+    lista.addEventListener('click', function(e){
+      var item = e.target.closest('.item');
+      if(!item) return;
+      var idx = parseInt(item.getAttribute('data-idx'), 10);
+      escolherMunicipio(resultadosAtuais[idx]);
+    });
+
+    document.addEventListener('click', function(e){
+      if(e.target !== input && !lista.contains(e.target)){
+        fecharSugestoes();
+        if(municipioAtual && input.value !== municipioAtual.nome){
+          input.value = municipioAtual.nome;
+        }
+      }
+    });
+
+    // Seleciona automaticamente o primeiro município ao carregar a página
+    if(CONFIG.municipios.length){
+      municipioAtual = CONFIG.municipios[0];
+      input.value = municipioAtual.nome;
+    }
   }
 
   document.getElementById('select-atributo').addEventListener('change', function(e){
@@ -1085,10 +1363,22 @@
 
 
   /* =========================================================
-     14. ARRANQUE
+     14. ARRANQUE — carrega índice e depois inicializa
      ========================================================= */
-  construirSeletorMunicipios();
-  carregarMunicipio(CONFIG.municipios[0]);
+  fetch('bgri_index.json')
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(idx){
+      CONFIG.municipios = idx.municipios;
+      construirSeletorMunicipios();
+      if(CONFIG.municipios.length) carregarMunicipio(CONFIG.municipios[0]);
+      else mostrarErro('Nenhum município encontrado.', 'Verifica se o ficheiro bgri_index.json existe e tem entradas válidas.');
+    })
+    .catch(function(err){
+      mostrarErro('Não foi possível carregar o índice de municípios.', 'Ficheiro esperado: <code>bgri_index.json</code>. Detalhe: ' + err.message);
+    });
 
 })();
 </script>
