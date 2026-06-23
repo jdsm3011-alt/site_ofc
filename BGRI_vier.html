@@ -673,7 +673,7 @@
 
 </main>
 
-<footer>Classificado em Natural Breaks · DataGis · BGRI 2021 — INE, I.P.</footer>
+<footer>Classificado em Natural Breaks · DataGis · BGRI 2021 — INE, I.P. · Piloto</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -729,19 +729,22 @@
   var CONFIG = { municipios: [] };
 
   // Fallback: se o GeoJSON não existir localmente (pasta dados/), vai buscar
-  // à release do GitHub indicada abaixo. O ficheiro na release tem de ter
-  // exatamente o mesmo nome (basename) do que está em "dados/".
-  var GITHUB_RELEASE_FALLBACK = {
+  // ao repositório GitHub (branch "main", pasta "dados_bgri/"), servido via
+  // raw.githubusercontent.com. Este método não tem problemas de CORS,
+  // ao contrário dos assets de releases do GitHub (que redirecionam para
+  // um CDN sem cabeçalhos CORS e bloqueiam o fetch() do browser).
+  var GITHUB_RAW_FALLBACK = {
     ativo: true,
     owner: 'jdsm3011-alt',
     repo: 'site_ofc',
-    tag: 'teste_bgri'
+    branch: 'main',
+    pasta: 'dados_bgri'
   };
 
-  function urlGithubRelease(nomeFicheiro){
-    return 'https://github.com/' + GITHUB_RELEASE_FALLBACK.owner + '/' +
-      GITHUB_RELEASE_FALLBACK.repo + '/releases/download/' +
-      GITHUB_RELEASE_FALLBACK.tag + '/' + encodeURIComponent(nomeFicheiro);
+  function urlGithubRaw(nomeFicheiro){
+    return 'https://raw.githubusercontent.com/' + GITHUB_RAW_FALLBACK.owner + '/' +
+      GITHUB_RAW_FALLBACK.repo + '/' + GITHUB_RAW_FALLBACK.branch + '/' +
+      GITHUB_RAW_FALLBACK.pasta + '/' + encodeURIComponent(nomeFicheiro);
   }
 
   function nomeBaseFicheiro(caminho){
@@ -1121,24 +1124,24 @@
         return resp.json();
       })
       .catch(function(erroLocal){
-        if(!GITHUB_RELEASE_FALLBACK.ativo){
+        if(!GITHUB_RAW_FALLBACK.ativo){
           throw erroLocal;
         }
-        // 2ª tentativa: ficheiro na release do GitHub.
-        // Usa o campo "asset" do índice, se existir (nome exato do ficheiro
-        // tal como foi enviado para a release); caso contrário, deriva o
-        // nome a partir do caminho local em "dados/".
+        // 2ª tentativa: ficheiro no repositório GitHub (pasta dados_bgri/),
+        // servido via raw.githubusercontent.com.
+        // Usa o campo "asset" do índice, se existir (nome exato do ficheiro);
+        // caso contrário, deriva o nome a partir do caminho local em "dados/".
         var nome = municipio.asset || nomeBaseFicheiro(municipio.geojson);
-        var url = urlGithubRelease(nome);
+        var url = urlGithubRaw(nome);
         return fetch(url)
           .then(function(resp){
-            if(!resp.ok) throw new Error('HTTP ' + resp.status + ' (release GitHub)');
+            if(!resp.ok) throw new Error('HTTP ' + resp.status + ' (GitHub raw)');
             return resp.json();
           })
-          .catch(function(erroRelease){
+          .catch(function(erroRemoto){
             // Junta as duas mensagens de erro para facilitar diagnóstico
             throw new Error(
-              'Local: ' + erroLocal.message + ' | Release GitHub: ' + erroRelease.message
+              'Local: ' + erroLocal.message + ' | GitHub: ' + erroRemoto.message
             );
           });
       });
@@ -1209,7 +1212,7 @@
       .catch(function(err){
         mostrarErro(
           'Não foi possível carregar os dados da BGRI.',
-          'Ficheiro esperado em <code>' + municipio.geojson + '</code> ou na release do GitHub (' +
+          'Ficheiro esperado em <code>' + municipio.geojson + '</code> ou no repositório GitHub (' +
           'GeoJSON em EPSG:4326). Detalhe técnico: ' + err.message
         );
       });
