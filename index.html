@@ -4253,10 +4253,48 @@
 
     const PREVIEW_LABELS = { caop: 'CAOP', cos: 'COS', bgri: 'BGRI', mdt: 'MDT' };
     const PREVIEW_STYLES = {
-      caop: { color: '#C2703D', weight: 2, fillOpacity: 0.05 }, // ochre — limites administrativos
-      cos: { color: '#3D6B4F', weight: 1, fillOpacity: 0.22 }, // verde — uso do solo
-      bgri: { color: '#46637A', weight: 1, fillOpacity: 0.16 }, // azul-ardósia — censos/BGRI
-      mdt: { color: '#8B5E3C', weight: 1.2, fillOpacity: 0.20 }  // siena — modelo de terreno
+      // ── Camadas principais ────────────────────────────────────────────────────
+      caop: { color: '#C2703D', weight: 2,   fillOpacity: 0.05 }, // laranja-ocre — limites administrativos
+      cos:  { color: '#5A8F45', weight: 1,   fillOpacity: 0.22 }, // verde — uso do solo (COS)
+      bgri: { color: '#4472A8', weight: 1,   fillOpacity: 0.16 }, // azul-ardósia — censos/BGRI
+      mdt:  { color: '#8B6914', weight: 1.2, fillOpacity: 0.20 }, // amarelo-siena — modelo de terreno
+
+      // ── OSM: Água ─────────────────────────────────────────────────────────────
+      'osm:gis_osm_water_a_free_1':    { color: '#2E86C1', weight: 1,   fillColor: '#AED6F1', fillOpacity: 0.55 }, // azul — massas de água
+      'osm:gis_osm_waterways_free_1':  { color: '#1A6FA8', weight: 2,   fillOpacity: 0 },                          // azul escuro — cursos de água (linhas)
+
+      // ── OSM: Vegetação / Natureza ─────────────────────────────────────────────
+      'osm:gis_osm_natural_a_free_1':  { color: '#27AE60', weight: 1,   fillColor: '#A9DFBF', fillOpacity: 0.45 }, // verde — natureza (áreas)
+      'osm:gis_osm_natural_free_1':    { color: '#1E8449', weight: 1,   fillColor: '#52BE80', fillOpacity: 0.80 }, // verde escuro — natureza (pontos)
+
+      // ── OSM: Uso do solo ──────────────────────────────────────────────────────
+      'osm:gis_osm_landuse_a_free_1':  { color: '#7D9E4E', weight: 1,   fillColor: '#D5E8C4', fillOpacity: 0.45 }, // verde-oliva — uso do solo
+
+      // ── OSM: Construído ───────────────────────────────────────────────────────
+      'osm:gis_osm_buildings_a_free_1':{ color: '#884EA0', weight: 1,   fillColor: '#D7BDE2', fillOpacity: 0.50 }, // violeta — edifícios
+
+      // ── OSM: Infraestruturas ──────────────────────────────────────────────────
+      'osm:gis_osm_roads_free_1':      { color: '#E67E22', weight: 1.5, fillOpacity: 0 },                          // laranja — estradas (linhas)
+      'osm:gis_osm_railways_free_1':   { color: '#717D7E', weight: 2,   fillOpacity: 0, dashArray: '6,4' },        // cinzento — caminhos de ferro
+
+      // ── OSM: Lugares / POI ────────────────────────────────────────────────────
+      'osm:gis_osm_places_a_free_1':   { color: '#C0392B', weight: 1,   fillColor: '#F1948A', fillOpacity: 0.35 }, // vermelho — lugares (áreas)
+      'osm:gis_osm_places_free_1':     { color: '#C0392B', weight: 1.5, fillColor: '#E74C3C', fillOpacity: 0.85 }, // vermelho — lugares (pontos)
+      'osm:gis_osm_pois_a_free_1':     { color: '#D35400', weight: 1,   fillColor: '#FAD7A0', fillOpacity: 0.40 }, // laranja-escuro — POI (áreas)
+      'osm:gis_osm_pois_free_1':       { color: '#D35400', weight: 1.5, fillColor: '#F39C12', fillOpacity: 0.85 }, // laranja — POI (pontos)
+
+      // ── OSM: Culto ────────────────────────────────────────────────────────────
+      'osm:gis_osm_pofw_a_free_1':     { color: '#7D6608', weight: 1,   fillColor: '#F9E79F', fillOpacity: 0.40 }, // dourado — culto (áreas)
+      'osm:gis_osm_pofw_free_1':       { color: '#7D6608', weight: 1.5, fillColor: '#F4D03F', fillOpacity: 0.85 }, // dourado — culto (pontos)
+
+      // ── OSM: Áreas Protegidas ─────────────────────────────────────────────────
+      'osm:gis_osm_protected_areas_a_free_1': { color: '#117A65', weight: 1.5, fillColor: '#A2D9CE', fillOpacity: 0.40 }, // verde-teal — áreas protegidas
+
+      // ── OSM: Tráfego / Transportes ────────────────────────────────────────────
+      'osm:gis_osm_traffic_a_free_1':  { color: '#922B21', weight: 1,   fillColor: '#F5B7B1', fillOpacity: 0.40 }, // vermelho-escuro — tráfego (áreas)
+      'osm:gis_osm_traffic_free_1':    { color: '#922B21', weight: 1.5, fillColor: '#EC7063', fillOpacity: 0.85 }, // vermelho — tráfego (pontos)
+      'osm:gis_osm_transport_a_free_1':{ color: '#1F618D', weight: 1,   fillColor: '#AED6F1', fillOpacity: 0.40 }, // azul-aço — transportes (áreas)
+      'osm:gis_osm_transport_free_1':  { color: '#1F618D', weight: 1.5, fillColor: '#5DADE2', fillOpacity: 0.85 }, // azul — transportes (pontos)
     };
 
     function caminhoRelativoPreview(p) {
@@ -4323,7 +4361,7 @@
           showToast('⚠ Pré-visualização indisponível', 2500);
           return;
         }
-        const layer = L.imageOverlay(imgPath, mdt.bounds, { opacity: 0.85, zIndex: 550 }).addTo(map);
+        const layer = L.imageOverlay(imgPath, mdt.bounds, { opacity: 0.85, zIndex: 100 }).addTo(map);
         map.fitBounds(mdt.bounds, { padding: [40, 40] });
         btnEl.classList.add('active');
         btnEl.classList.remove('loading');
@@ -4352,10 +4390,10 @@
       fetch(relPath)
         .then(r => { if (!r.ok) throw new Error('preview não encontrada'); return r.json(); })
         .then(geojson => {
-          const estilo = PREVIEW_STYLES[tipo] || { color: '#6E726A', weight: 1.5, fillOpacity: 0.12 };
+          const estilo = PREVIEW_STYLES[tipo] || { color: '#6E726A', weight: 1.5, fillOpacity: 0.12, fillColor: '#9E9E9E' };
           const layer = L.geoJSON(geojson, {
             style: estilo,
-            pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius: 4, color: estilo.color, weight: 1, fillOpacity: 0.8 })
+            pointToLayer: (feature, latlng) => L.circleMarker(latlng, { radius: 4, color: estilo.color, fillColor: estilo.fillColor || estilo.color, weight: 1, fillOpacity: estilo.fillOpacity > 0 ? estilo.fillOpacity : 0.8 })
           }).addTo(map);
           const b = layer.getBounds();
           if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
