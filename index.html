@@ -206,6 +206,34 @@
     }
 
     /* ── TOGGLE DE TEMA ─────────────────────── */
+    .feedback-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-elevated);
+      color: var(--ink);
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease, color .15s ease;
+      flex-shrink: 0;
+      margin-left: auto;
+      order: 2;
+    }
+
+    .feedback-nav-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    html[data-theme="dark"] .feedback-nav-btn {
+      background: var(--paper-elevated);
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
     .theme-toggle {
       display: flex;
       align-items: center;
@@ -220,8 +248,8 @@
       font-size: 15px;
       transition: border-color .15s ease, transform .15s ease, background .15s ease;
       flex-shrink: 0;
-      margin-left: auto;
-      order: 2;
+      margin-left: 6px;
+      order: 3;
     }
 
     .theme-toggle:hover {
@@ -1287,8 +1315,9 @@
       max-width: 1120px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0;
+      justify-content: center;
     }
 
     .stats-item {
@@ -3134,6 +3163,9 @@
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
+      <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
       <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro"
         aria-label="Alternar tema claro/escuro">
         <span class="icon-sun">&#9728;</span>
@@ -3220,10 +3252,6 @@
         <div class="stats-item">
           <strong>2</strong>
           <span>Catálogos principais</span>
-        </div>
-        <div class="stats-item">
-          <strong>08</strong>
-          <span>Camadas OSM</span>
         </div>
         <div class="stats-item">
           <strong>100%</strong>
@@ -3762,6 +3790,14 @@
 
       var closeBtn = document.getElementById('feedback-toast-close');
       if (closeBtn) closeBtn.addEventListener('click', dismiss);
+
+      var navFeedbackBtn = document.getElementById('feedback-nav-btn');
+      if (navFeedbackBtn) {
+        navFeedbackBtn.addEventListener('click', function () {
+          clearTimeout(showTimer);
+          toast.classList.add('is-visible');
+        });
+      }
 
       var form = document.getElementById('feedback-toast-form');
       var thanks = document.getElementById('feedback-toast-thanks');
