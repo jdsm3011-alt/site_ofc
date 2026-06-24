@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recortes SIG — CAOP &amp; COS por Município</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F7F5EF;
+    --paper-deep:#EFEBE0;
+    --ink:#1A2E1E;
+    --green:#3D6B4F;
+    --green-soft:#6E9A7C;
+    --ochre:#C2703D;
+    --stone:#8B8378;
+    --line:#D8D2C2;
+    --white:#FFFFFF;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, var(--line) 39px, var(--line) 40px);
+    opacity:.35;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  header{
+    position:relative;
+    z-index:2;
+    padding:28px 36px 20px;
+    border-bottom:1px solid var(--line);
+    background:var(--paper);
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+
+  .brand-mark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.18em;
+    color:var(--green);
+    border:1px solid var(--green);
+    padding:3px 8px;
+    border-radius:2px;
+    text-transform:uppercase;
+  }
+
+  h1{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:26px;
+    letter-spacing:.01em;
+  }
+
+  h1 em{
+    font-style:normal;
+    color:var(--green);
+  }
+
+  .subtitle{
+    font-size:13px;
+    color:var(--stone);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:.04em;
+  }
+
+  .layout{
+    position:relative;
+    z-index:1;
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    height:calc(100vh - 89px);
+  }
+
+  @media (max-width: 880px){
+    .layout{ grid-template-columns: 1fr; height:auto; }
+    #map{ height:55vh; }
+  }
+
+  #map{
+    background:var(--paper-deep);
+    border-right:1px solid var(--line);
+  }
+
+  .leaflet-container{
+    background:var(--paper-deep);
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+
+  .leaflet-popup-content-wrapper{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:2px;
+  }
+  .leaflet-popup-content{ font-family:'IBM Plex Mono', monospace; font-size:12px; margin:8px 12px;}
+  .leaflet-popup-tip{ background:var(--ink); }
+
+  .panel{
+    padding:28px 28px 24px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--stone);
+  }
+
+  .search-box{
+    position:relative;
+  }
+
+  .search-box input{
+    width:100%;
+    padding:13px 14px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    border:1px solid var(--line);
+    border-radius:2px;
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease;
+  }
+
+  .search-box input:focus{
+    border-color:var(--green);
+  }
+
+  .search-results{
+    margin-top:6px;
+    border:1px solid var(--line);
+    border-radius:2px;
+    background:var(--white);
+    max-height:180px;
+    overflow-y:auto;
+    display:none;
+  }
+
+  .search-results.active{ display:block; }
+
+  .search-result-item{
+    padding:10px 14px;
+    font-size:14px;
+    cursor:pointer;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .search-result-item:last-child{ border-bottom:none; }
+  .search-result-item:hover{ background:var(--paper-deep); }
+  .search-result-item .dist{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--stone);
+  }
+
+  .selection-card{
+    border:1px solid var(--line);
+    border-radius:2px;
+    background:var(--white);
+    padding:22px;
+    display:none;
+  }
+  .selection-card.active{ display:flex; flex-direction:column; gap:16px; }
+
+  .selection-card .empty-state{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-start;
+    color:var(--stone);
+  }
+
+  .empty-state .glyph{
+    font-family:'Spectral', serif;
+    font-size:34px;
+    color:var(--green-soft);
+    line-height:1;
+  }
+
+  .empty-state p{
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  .sel-header{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+  }
+
+  .sel-header .dist-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--green);
+  }
+
+  .sel-header h2{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:24px;
+  }
+
+  .download-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .download-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 16px;
+    border:1px solid var(--line);
+    border-radius:2px;
+    background:var(--paper);
+    text-decoration:none;
+    color:var(--ink);
+    transition:border-color .15s ease, background .15s ease;
+  }
+
+  .download-item:hover{
+    border-color:var(--ochre);
+    background:var(--white);
+  }
+
+  .download-item .di-left{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .download-item .di-name{
+    font-size:14px;
+    font-weight:500;
+  }
+
+  .download-item .di-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--stone);
+  }
+
+  .download-item .di-arrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:18px;
+    color:var(--ochre);
+    flex-shrink:0;
+  }
+
+  .osm-section{
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+  }
+
+  .osm-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--stone);
+    margin-bottom:8px;
+  }
+
+  .download-all{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:13px 16px;
+    border:1px solid var(--green);
+    border-radius:2px;
+    background:var(--green);
+    color:var(--paper);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:.02em;
+    transition:background .15s ease;
+  }
+  .download-all:hover{ background:var(--ink); }
+
+  .attribution{
+    margin-top:auto;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    color:var(--stone);
+    line-height:1.6;
+  }
+  .attribution a{ color:var(--green); text-decoration:none; border-bottom:1px dotted var(--green-soft); }
+  .attribution a:hover{ color:var(--ochre); border-color:var(--ochre); }
+
+  .signature{
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--green-soft);
+    opacity:.7;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-mark">PT · 1:25.000</span>
+    <h1>Recortes <em>SIG</em> por Município</h1>
+  </div>
+  <div class="subtitle">CAOP 2025 &middot; COS 2023 &middot; OSM &middot; Dados Abertos</div>
+</header>
+
+<div class="layout">
+  <div id="map"></div>
+
+  <aside class="panel">
+    <div>
+      <div class="eyebrow" style="margin-bottom:10px;">Selecionar município</div>
+      <div class="search-box">
+        <input type="text" id="search-input" placeholder="Escreve o nome do município..." autocomplete="off">
+        <div class="search-results" id="search-results"></div>
+      </div>
+    </div>
+
+    <div class="selection-card active" id="selection-card">
+      <div class="empty-state" id="empty-state">
+        <div class="glyph">&#9678;</div>
+        <p>Pesquisa ou clica num ponto do mapa para veres os ficheiros disponíveis.</p>
+      </div>
+
+      <div id="selection-content" style="display:none; flex-direction:column; gap:16px;">
+        <div class="sel-header">
+          <span class="dist-tag" id="sel-distrito">Distrito</span>
+          <h2 id="sel-municipio">Município</h2>
+        </div>
+
+        <div class="download-list">
+          <a class="download-item" id="link-caop" href="#" download>
+            <div class="di-left">
+              <span class="di-name">Limite administrativo (CAOP)</span>
+              <span class="di-meta" id="size-caop">Shapefile · — </span>
+            </div>
+            <span class="di-arrow">&darr;</span>
+          </a>
+
+          <a class="download-item" id="link-cos" href="#" download>
+            <div class="di-left">
+              <span class="di-name">Carta de Uso e Ocupação do Solo (COS)</span>
+              <span class="di-meta" id="size-cos">Shapefile · — </span>
+            </div>
+            <span class="di-arrow">&darr;</span>
+          </a>
+
+          <!-- Nova secção OSM -->
+          <div class="osm-section">
+            <div class="osm-title">Dados OSM (OpenStreetMap)</div>
+            <div id="osm-list" class="download-list"></div>
+          </div>
+
+          <div class="download-item" style="opacity:.55;cursor:default;border-style:dashed;">
+            <div class="di-left">
+              <span class="di-name" style="font-style:italic;">Mais camadas em breve...</span>
+              <span class="di-meta">em desenvolvimento</span>
+            </div>
+            <span class="di-arrow" style="font-size:11px;">&#8987;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="attribution">
+      Dados disponibilizados ao abrigo da política de dados abertos da
+      <a href="https://www.dgterritorio.gov.pt/dados-abertos" target="_blank" rel="noopener">Direção-Geral do Território (DGT)</a> —
+      CAOP 2025 e COS 2023. OSM layers extraídos da comunidade.
+      Projeto não-oficial.
+      <div class="signature" style="display:flex;align-items:center;gap:8px;"><img src="data:image/png;base64,/9j/..." style="width:52px;height:52px;object-fit:contain;">made by oce_vart</div>
+    </div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+  const map = L.map('map', { zoomControl: true }).setView([39.6, -8.2], 7);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO',
+    maxZoom: 19
+  }).addTo(map);
+
+  let municipios = [];
+  let municipiosPorNome = {};
+  let geojsonLayer = null;
+  let selectedLayer = null;
+
+  const estiloNormal = { color: '#6E9A7C', weight: 1, fillColor: '#3D6B4F', fillOpacity: 0.08 };
+  const estiloHover = { color: '#3D6B4F', weight: 1.5, fillOpacity: 0.18 };
+  const estiloSelecionado = { color: '#C2703D', weight: 2.5, fillColor: '#C2703D', fillOpacity: 0.18 };
+
+  function normalizarNome(txt){
+    return txt.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  fetch('data/municipios.json')
+    .then(r => r.json())
+    .then(data => {
+      municipios = data;
+      municipios.forEach(m => municipiosPorNome[normalizarNome(m.municipio)] = m);
+      carregarGeometrias();
+    });
+
+  function carregarGeometrias(){
+    fetch('data/municipios_geom.geojson')
+      .then(r => r.json())
+      .then(geojson => {
+        geojsonLayer = L.geoJSON(geojson, {
+          style: estiloNormal,
+          onEachFeature: (feature, layer) => {
+            const nome = feature.properties.municipio;
+            const chave = normalizarNome(nome);
+            const m = municipiosPorNome[chave];
+            if(!m) return;
+
+            layer.bindTooltip(nome, { className: 'muni-tooltip', sticky: true });
+            layer.on('mouseover', () => layer !== selectedLayer && layer.setStyle(estiloHover));
+            layer.on('mouseout', () => layer !== selectedLayer && layer.setStyle(estiloNormal));
+            layer.on('click', () => selectMunicipio(m, layer));
+          }
+        }).addTo(map);
+        map.fitBounds(geojsonLayer.getBounds(), { padding: [12, 12] });
+      });
+  }
+
+  function selectMunicipio(m, layer){
+    document.getElementById('empty-state').style.display = 'none';
+    const content = document.getElementById('selection-content');
+    content.style.display = 'flex';
+
+    document.getElementById('sel-distrito').textContent = m.distrito;
+    document.getElementById('sel-municipio').textContent = m.municipio;
+
+    // CAOP
+    document.getElementById('link-caop').href = m.caop_zip;
+    document.getElementById('size-caop').textContent = `Shapefile (.zip) · ${m.caop_size}`;
+
+    // COS
+    document.getElementById('link-cos').href = m.cos_zip;
+    document.getElementById('size-cos').textContent = `Shapefile (.zip) · ${m.cos_size}`;
+
+    // OSM Layers
+    const osmList = document.getElementById('osm-list');
+    osmList.innerHTML = '';
+    m.selected_layers.forEach(layerName => {
+      const niceName = layerName
+        .replace('gis_osm_', '')
+        .replace('_free_1', '')
+        .replace('_a_free_1', '')
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+
+      const a = document.createElement('a');
+      a.className = 'download-item';
+      a.innerHTML = `
+        <div class="di-left">
+          <span class="di-name">${niceName}</span>
+          <span class="di-meta">GeoPackage / Shapefile</span>
+        </div>
+        <span class="di-arrow">&darr;</span>
+      `;
+      // Aqui podes adicionar o link real quando tiveres os ficheiros
+      // a.href = `data/OSM/${m.municipio}/${layerName}.zip`;
+      osmList.appendChild(a);
+    });
+
+    if(selectedLayer) selectedLayer.setStyle(estiloNormal);
+    if(layer){
+      layer.setStyle(estiloSelecionado);
+      selectedLayer = layer;
+      map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 11 });
+    }
+
+    document.getElementById('search-results').classList.remove('active');
+  }
+
+  // Pesquisa (mantida igual)
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+
+  searchInput.addEventListener('input', () => {
+    const q = normalizarNome(searchInput.value.trim());
+    if(q.length < 1){
+      searchResults.classList.remove('active');
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    const matches = municipios.filter(m => normalizarNome(m.municipio).includes(q)).slice(0, 8);
+
+    searchResults.innerHTML = matches.length === 0 
+      ? '<div class="search-result-item" style="cursor:default;">Nenhum município encontrado</div>'
+      : matches.map(m => `<div class="search-result-item" data-nome="${m.municipio}"><span>${m.municipio}</span><span class="dist">${m.distrito}</span></div>`).join('');
+
+    searchResults.classList.add('active');
+
+    searchResults.querySelectorAll('.search-result-item[data-nome]').forEach(el => {
+      el.addEventListener('click', () => {
+        const nome = el.dataset.nome;
+        const m = municipiosPorNome[normalizarNome(nome)];
+        searchInput.value = nome;
+
+        let layerEncontrada = null;
+        geojsonLayer.eachLayer(l => {
+          if(normalizarNome(l.feature.properties.municipio) === normalizarNome(nome)) layerEncontrada = l;
+        });
+
+        selectMunicipio(m, layerEncontrada);
+      });
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if(!searchResults.contains(e.target) && e.target !== searchInput) searchResults.classList.remove('active');
+  });
+</script>
+</body>
+</html>
