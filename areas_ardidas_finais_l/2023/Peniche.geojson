@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Peniche",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 92572, "Cod_SGIF": "20230751383", "Cod_ANEPC": "20230751383", "Ano": 2023, "DH_Inicio": "2023-06-23T00:00:00", "DH_1Interv": "2023-06-23T00:00:00", "DH_Fim": "2023-06-23T00:00:00", "Duracao_m": 78.0, "PI_DICOFRE": "101405", "PI_NUTS3": "Oeste", "PI_Distrit": "Leiria", "PI_Conc": "Peniche", "PI_Freg": "Serra d'El-Rei", "PI_Local": "Saibrais (Talhos da Charneca)", "Causa_Cod": "449", "Causa_Tipo": "Intencional", "Causa_Desc": "Incendiarismo - Imputáveis", "AreaHaSIG": 0.64614969, "AreaHaSGIF": 0.66, "AreaHaPov": 0.66, "AreaHaMato": 0.0, "AreaHaAgri": 0.0, "Edicao": "2023-07-17T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -9.294409562531024, 39.361020208287307 ], [ -9.294436405447085, 39.359978337702117 ], [ -9.295058289584363, 39.360016659301799 ], [ -9.295071770195351, 39.360659356379493 ], [ -9.29508025289477, 39.361063718723756 ], [ -9.294409562531024, 39.361020208287307 ] ] ] } }
+]
+}
