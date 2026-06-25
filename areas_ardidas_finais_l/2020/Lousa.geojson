@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Lousa",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "BL220236", "Cod_ANEPC": "2020060026593", "Ano": 2020, "DH_Inicio": "2020-07-11T00:00:00", "DH_1Interv": "2020-07-11T00:00:00", "DH_Fim": "2020-07-11T00:00:00", "Duracao_m": 309.0, "PI_DICOFRE": "060708", "PI_NUTS3": "Região de Coimbra", "PI_Distrit": "Coimbra", "PI_Conc": "Lousã", "PI_Freg": "União das freguesias de Lousã e Vilarinho", "PI_Local": "Serra da Lousã (Selada das Poças)", "Causa_Cod": "51", "Causa_Tipo": "Natural", "Causa_Desc": "Naturais", "AreaHaSIG": 2.75639032, "AreaHaSGIF": 2.75, "AreaHaPov": 0.5, "AreaHaMato": 2.25, "AreaHaAgri": 0.0, "Edicao": "2021-04-23T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.197443571187602, 40.070627282845507 ], [ -8.197934897262055, 40.071152492550077 ], [ -8.198015888148179, 40.071529662644537 ], [ -8.198559445071782, 40.071995765822095 ], [ -8.198429592040442, 40.072441232363595 ], [ -8.198136573492096, 40.07276756788108 ], [ -8.197409740517095, 40.072870479934721 ], [ -8.196771772432175, 40.071649096449335 ], [ -8.196073142942518, 40.070964536530248 ], [ -8.196534463516498, 40.07080702598892 ], [ -8.196920286447005, 40.070687135819554 ], [ -8.197443571187602, 40.070627282845507 ] ] ] } }
+]
+}
