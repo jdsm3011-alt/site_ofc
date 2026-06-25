@@ -1722,6 +1722,58 @@
       z-index: 1;
     }
 
+    .map-plane-flyover {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 62px;
+      height: 62px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 620;
+      transform: translate3d(var(--plane-x-start, -80px), var(--plane-y-start, 50%), 0) rotate(var(--plane-angle, 0deg));
+      will-change: transform, opacity;
+    }
+
+    .map-plane-flyover.is-flying {
+      animation: mapPlaneFlight var(--plane-duration, 18s) linear forwards;
+    }
+
+    .map-plane-flyover svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      color: rgba(34, 59, 43, .82);
+      filter: drop-shadow(0 5px 10px rgba(24, 38, 30, .22));
+    }
+
+    html[data-theme="dark"] .map-plane-flyover svg {
+      color: rgba(222, 232, 219, .78);
+    }
+
+    @keyframes mapPlaneFlight {
+      0% {
+        opacity: 0;
+        transform: translate3d(var(--plane-x-start), var(--plane-y-start), 0) rotate(var(--plane-angle)) scale(.78);
+      }
+
+      12%,
+      82% {
+        opacity: .5;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate3d(var(--plane-x-end), var(--plane-y-end), 0) rotate(var(--plane-angle)) scale(.78);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .map-plane-flyover {
+        display: none;
+      }
+    }
+
     @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
@@ -3413,6 +3465,23 @@
 
       <div class="layout">
         <div id="map">
+          <div class="map-plane-flyover" id="map-plane-flyover" aria-hidden="true">
+            <svg viewBox="0 0 96 96" focusable="false">
+              <path d="M87 48c0 3.1-24.4 7.8-39.4 7.8S9 51.1 9 48s23.6-7.8 38.6-7.8S87 44.9 87 48Z"
+                fill="currentColor" opacity=".18" />
+              <path d="M83.5 47.8c0 2.6-5.5 5.1-15.6 7.1L43.8 77.3c-1.8 1.6-4.5.5-4.7-1.9L37.7 58c-6.2.1-12.6-.1-18.8-.7l-8 8.9c-1.4 1.5-3.9.7-4.1-1.4l-.8-7.6 7.8-7.3c-1.8-.7-2.8-1.4-2.8-2.1s1-1.4 2.8-2.1L6 38.4l.8-7.6c.2-2.1 2.7-2.9 4.1-1.4l8 8.9c6.2-.6 12.6-.8 18.8-.7l1.4-17.4c.2-2.4 2.9-3.5 4.7-1.9l24.1 22.4c10.1 2 15.6 4.5 15.6 7.1Z"
+                fill="currentColor" stroke="rgba(255,255,255,.82)" stroke-width="2.4" stroke-linejoin="round" />
+              <path d="M62 43.1c6.5 1.3 10.2 2.9 10.2 4.7S68.5 51.2 62 52.5" fill="none"
+                stroke="rgba(255,255,255,.72)" stroke-width="2" stroke-linecap="round" />
+              <circle cx="30.5" cy="45.1" r="1.4" fill="rgba(255,255,255,.9)" />
+              <circle cx="36.2" cy="44.5" r="1.4" fill="rgba(255,255,255,.9)" />
+              <circle cx="42" cy="44.3" r="1.4" fill="rgba(255,255,255,.9)" />
+              <circle cx="47.8" cy="44.5" r="1.4" fill="rgba(255,255,255,.9)" />
+              <circle cx="53.5" cy="45.1" r="1.4" fill="rgba(255,255,255,.9)" />
+              <path d="M68.4 44.2c3.5.8 5.6 2.1 5.6 3.6s-2.1 2.8-5.6 3.6" fill="none"
+                stroke="rgba(15,29,20,.35)" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </div>
           <div class="map-controls" aria-label="Controlo do mapa">
             <button id="map-fit-all" title="Ajustar ao território">⌖</button>
             <button id="map-zoom-in" title="Aumentar zoom">+</button>
@@ -4205,6 +4274,69 @@
     let osmOverlayLayer = null;
     let activeMunicipio = null;
     let unavailablePaths = new Set();
+
+    const mapPlaneFlyover = document.getElementById('map-plane-flyover');
+    const mapPlaneReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mapPlaneInitialDelay = { min: 30000, max: 30000 };
+    const mapPlaneDelay = { min: 150000, max: 240000 };
+
+    function randomBetween(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function escolherRotaAviaoMapa() {
+      const mapEl = document.getElementById('map');
+      if (!mapEl) return null;
+
+      const width = mapEl.clientWidth;
+      const height = mapEl.clientHeight;
+      if (width < 280 || height < 260) return null;
+
+      const panel = document.querySelector('.panel');
+      const panelWidth = window.innerWidth > 900 && panel ? panel.offsetWidth : 0;
+      const usableWidth = Math.max(260, width - panelWidth);
+      const pad = 70;
+      const yMin = Math.max(70, height * .16);
+      const yMax = Math.max(yMin + 40, height * .82);
+      const routes = [
+        { sx: -pad, sy: randomBetween(yMin, yMax), ex: usableWidth + pad, ey: randomBetween(yMin, yMax) },
+        { sx: usableWidth + pad, sy: randomBetween(yMin, yMax), ex: -pad, ey: randomBetween(yMin, yMax) },
+        { sx: randomBetween(60, usableWidth - 40), sy: -pad, ex: randomBetween(60, usableWidth - 40), ey: height + pad },
+        { sx: randomBetween(60, usableWidth - 40), sy: height + pad, ex: randomBetween(60, usableWidth - 40), ey: -pad }
+      ];
+      const route = routes[Math.floor(Math.random() * routes.length)];
+      route.angle = Math.atan2(route.ey - route.sy, route.ex - route.sx) * 180 / Math.PI;
+      route.duration = `${Math.round(randomBetween(18000, 24000))}ms`;
+      return route;
+    }
+
+    function animarAviaoMapa() {
+      if (!mapPlaneFlyover || mapPlaneReducedMotion || document.hidden) return;
+      if (document.getElementById('terms-consent-overlay')?.classList.contains('visible')) return;
+
+      const route = escolherRotaAviaoMapa();
+      if (!route) return;
+
+      mapPlaneFlyover.classList.remove('is-flying');
+      mapPlaneFlyover.style.setProperty('--plane-x-start', `${route.sx}px`);
+      mapPlaneFlyover.style.setProperty('--plane-y-start', `${route.sy}px`);
+      mapPlaneFlyover.style.setProperty('--plane-x-end', `${route.ex}px`);
+      mapPlaneFlyover.style.setProperty('--plane-y-end', `${route.ey}px`);
+      mapPlaneFlyover.style.setProperty('--plane-angle', `${route.angle}deg`);
+      mapPlaneFlyover.style.setProperty('--plane-duration', route.duration);
+      void mapPlaneFlyover.offsetWidth;
+      mapPlaneFlyover.classList.add('is-flying');
+    }
+
+    function agendarAviaoMapa(delay) {
+      if (!mapPlaneFlyover || mapPlaneReducedMotion) return;
+      window.setTimeout(() => {
+        animarAviaoMapa();
+        agendarAviaoMapa(randomBetween(mapPlaneDelay.min, mapPlaneDelay.max));
+      }, delay);
+    }
+
+    agendarAviaoMapa(randomBetween(mapPlaneInitialDelay.min, mapPlaneInitialDelay.max));
 
     // demo automática no hero (mapa duplicado, não-interativo, "tipo display")
     let heroMap = null;
