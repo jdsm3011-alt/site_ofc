@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Fundao",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": null, "Cod_ANEPC": null, "Ano": 2014, "DH_Inicio": null, "DH_1Interv": null, "DH_Fim": null, "Duracao_m": null, "PI_DICOFRE": null, "PI_NUTS3": null, "PI_Distrit": null, "PI_Conc": null, "PI_Freg": null, "PI_Local": null, "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 13.7008269, "AreaHaSGIF": null, "AreaHaPov": null, "AreaHaMato": null, "AreaHaAgri": null, "Edicao": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.2736348945414, 40.265355239471631 ], [ -7.273643408070193, 40.2658659616555 ], [ -7.273579541246534, 40.265745928695729 ], [ -7.273073246165955, 40.265706510790025 ], [ -7.273034743375196, 40.265645888786452 ], [ -7.272971890880799, 40.265522048262056 ], [ -7.272930491716993, 40.26543951834455 ], [ -7.27289648917492, 40.265367309800844 ], [ -7.272893187416609, 40.265349455936999 ], [ -7.272889470073578, 40.265344112300482 ], [ -7.2736348945414, 40.265355239471631 ] ] ] } }
+]
+}

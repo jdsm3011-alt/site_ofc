@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Fornos_de_Algodres",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "BI114229", "Cod_ANEPC": "2014090016349", "Ano": 2014, "DH_Inicio": "2014-06-23T00:00:00", "DH_1Interv": "2014-06-23T00:00:00", "DH_Fim": "2014-06-23T00:00:00", "Duracao_m": 196.0, "PI_DICOFRE": "090324", "PI_NUTS3": "Beiras e Serra da Estrela", "PI_Distrit": "Guarda", "PI_Conc": "Celorico da Beira", "PI_Freg": "União das freguesias de Celorico (São Pedro e Santa Maria) e Vila Boa do Mondego", "PI_Local": "Abelheira - Barco", "Causa_Cod": "51", "Causa_Tipo": "Natural", "Causa_Desc": "Naturais", "AreaHaSIG": 0.51724537, "AreaHaSGIF": 0.5, "AreaHaPov": 0.0, "AreaHaMato": 0.5, "AreaHaAgri": 0.0, "Edicao": "2014-06-25T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.445993999815996, 40.647955000209606 ], [ -7.445893000269508, 40.64788499966523 ], [ -7.445723000212831, 40.647713999675418 ], [ -7.445491000165441, 40.647564999792507 ], [ -7.445218999564599, 40.647316000089859 ], [ -7.445473999858186, 40.647170999779988 ], [ -7.445697999697804, 40.647102999679809 ], [ -7.445869999724382, 40.647242999899063 ], [ -7.446030000593763, 40.647444999639561 ], [ -7.446312999547658, 40.647546999851031 ], [ -7.446504999940471, 40.647641000313769 ], [ -7.446615000352381, 40.647803999854887 ], [ -7.446471999880035, 40.647873000288783 ], [ -7.446318999814908, 40.647934000384382 ], [ -7.445993999815996, 40.647955000209606 ] ] ] } }
+]
+}

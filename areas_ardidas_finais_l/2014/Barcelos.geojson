@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Barcelos",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "DM414328", "Cod_ANEPC": "2014030031327", "Ano": 2014, "DH_Inicio": "2014-05-18T00:00:00", "DH_1Interv": "2014-05-18T00:00:00", "DH_Fim": "2014-05-18T00:00:00", "Duracao_m": 43.0, "PI_DICOFRE": "031259", "PI_NUTS3": "Ave", "PI_Distrit": "Braga", "PI_Conc": "Vila Nova de Famalicão", "PI_Freg": "União das freguesias de Vale (São Cosme), Telhado e Portela", "PI_Local": "L. COVA (Bouça Cova)", "Causa_Cod": "620", "Causa_Tipo": "Desconhecida", "Causa_Desc": "Indeterminadas", "AreaHaSIG": 0.01048466, "AreaHaSGIF": 0.05, "AreaHaPov": 0.0, "AreaHaMato": 0.05, "AreaHaAgri": 0.0, "Edicao": "2014-05-28T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.579330178224561, 41.424390785276358 ], [ -8.579362302594083, 41.424419585660345 ], [ -8.579360454157186, 41.424420764352689 ], [ -8.579330178224561, 41.424390785276358 ] ] ] } }
+]
+}
