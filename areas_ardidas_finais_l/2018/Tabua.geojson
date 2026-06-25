@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Tabua",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "BL218815", "Cod_ANEPC": "2018060044284", "Ano": 2018, "DH_Inicio": "2018-09-23T00:00:00", "DH_1Interv": "2018-09-23T00:00:00", "DH_Fim": "2018-09-23T00:00:00", "Duracao_m": 39.0, "PI_DICOFRE": "061619", "PI_NUTS3": "Região de Coimbra", "PI_Distrit": "Coimbra", "PI_Conc": "Tábua", "PI_Freg": "União das freguesias de Pinheiro de Coja e Meda de Mouros", "PI_Local": "COJA COJA_BARRIL_ALVA CBR#ARGANIL 3305: @COJA (SF#157041) (PINHEIRO DE COJA)", "Causa_Cod": "152", "Causa_Tipo": "Negligente", "Causa_Desc": "Uso do fogo - Fumar", "AreaHaSIG": 0.23244832, "AreaHaSGIF": 1.0, "AreaHaPov": 0.1, "AreaHaMato": 0.9, "AreaHaAgri": 0.0, "Edicao": "2019-05-09T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.999662787699338, 40.293597479970764 ], [ -7.998719442549449, 40.293633996967159 ], [ -7.998730939916415, 40.2933947918294 ], [ -7.998713618590374, 40.293225506176213 ], [ -7.999159834570087, 40.293334307708356 ], [ -7.999161553510729, 40.293317885034632 ], [ -7.999375268819056, 40.293383178892554 ], [ -7.999343204758623, 40.293311726330288 ], [ -7.999325310595814, 40.293293203353691 ], [ -7.999662787699338, 40.293597479970764 ] ] ] } }
+]
+}

@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Santa_Maria_da_Feira",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "BL318636", "Cod_ANEPC": "2018010033941", "Ano": 2018, "DH_Inicio": "2018-04-23T00:00:00", "DH_1Interv": "2018-04-23T00:00:00", "DH_Fim": "2018-04-23T00:00:00", "Duracao_m": 190.0, "PI_DICOFRE": "010933", "PI_NUTS3": "Área Metropolitana do Porto", "PI_Distrit": "Aveiro", "PI_Conc": "Santa Maria da Feira", "PI_Freg": "União das freguesias de Canedo, Vale e Vila Maior", "PI_Local": "Pena Alem (Santa Cristina)", "Causa_Cod": "124", "Causa_Tipo": "Negligente", "Causa_Desc": "Queimas amontoados de sobrantes florestais ou agrícolas", "AreaHaSIG": 20.06288353, "AreaHaSGIF": 20.0, "AreaHaPov": 20.0, "AreaHaMato": 0.0, "AreaHaAgri": 0.0, "Edicao": "2018-07-06T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.429111726227037, 40.986084879720771 ], [ -8.427234515628493, 40.985588316837578 ], [ -8.425557500516431, 40.985510399742033 ], [ -8.425926299566177, 40.98501509971377 ], [ -8.427073199698327, 40.984776900369418 ], [ -8.427268400321905, 40.983220899712066 ], [ -8.426929749164206, 40.983014326908517 ], [ -8.425983935251766, 40.983396002072766 ], [ -8.425139709925748, 40.983090509913922 ], [ -8.425021700115693, 40.982534200093255 ], [ -8.425264768205189, 40.981740708060883 ], [ -8.426135815913423, 40.981041118844765 ], [ -8.427921832119686, 40.980503513550396 ], [ -8.429219699774547, 40.981160300056594 ], [ -8.431721515846515, 40.981568342572558 ], [ -8.429111726227037, 40.986084879720771 ] ] ] } }
+]
+}
