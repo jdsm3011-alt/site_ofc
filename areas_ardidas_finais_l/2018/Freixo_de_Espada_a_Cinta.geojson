@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Freixo_de_Espada_a_Cinta",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "TM218558", "Cod_ANEPC": "2018040024076", "Ano": 2018, "DH_Inicio": "2018-08-15T00:00:00", "DH_1Interv": "2018-08-15T00:00:00", "DH_Fim": "2018-08-15T00:00:00", "Duracao_m": 807.0, "PI_DICOFRE": "040407", "PI_NUTS3": "Douro", "PI_Distrit": "Bragança", "PI_Conc": "Freixo de Espada à Cinta", "PI_Freg": "União das freguesias de Freixo de Espada à Cinta e Mazouco", "PI_Local": "PORRINHELA-PNDI (EN221 (EN221) Km 78)", "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 57.45894746, "AreaHaSGIF": 50.948, "AreaHaPov": 19.948, "AreaHaMato": 31.0, "AreaHaAgri": 0.0, "Edicao": "2018-12-01T00:00:00" }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -6.80023208915518, 41.156518940133871 ], [ -6.799758806601546, 41.156141017923296 ], [ -6.799863722194964, 41.156205394131916 ], [ -6.800364188718786, 41.156588806077416 ], [ -6.800373956896003, 41.156602036163974 ], [ -6.80023208915518, 41.156518940133871 ] ] ], [ [ [ -6.798987658463366, 41.155734534861161 ], [ -6.799321840204334, 41.155968941864806 ], [ -6.799003749153575, 41.156130348837493 ], [ -6.798844033763068, 41.155823026886047 ], [ -6.798987658463366, 41.155734534861161 ] ] ] ] } }
+]
+}

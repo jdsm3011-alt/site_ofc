@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Amarante",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "DM4181755", "Cod_ANEPC": "2018030039963", "Ano": 2018, "DH_Inicio": "2018-05-17T00:00:00", "DH_1Interv": "2018-05-17T00:00:00", "DH_Fim": "2018-05-18T00:00:00", "Duracao_m": 182.0, "PI_DICOFRE": "030510", "PI_NUTS3": "Tâmega e Sousa", "PI_Distrit": "Braga", "PI_Conc": "Celorico de Basto", "PI_Freg": "Fervença", "PI_Local": "Moinho Vedro (Unnamed Road, 4890, Portugal)", "Causa_Cod": "620", "Causa_Tipo": "Desconhecida", "Causa_Desc": "Indeterminadas", "AreaHaSIG": 35.01107921, "AreaHaSGIF": 5.0, "AreaHaPov": 5.0, "AreaHaMato": 0.0, "AreaHaAgri": 0.0, "Edicao": "2018-05-28T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.113144353770835, 41.343985451077515 ], [ -8.113371508826123, 41.344114997070093 ], [ -8.113420905789523, 41.344403294167186 ], [ -8.113476746784276, 41.34455637512886 ], [ -8.113640593140495, 41.344728645898087 ], [ -8.113787507410212, 41.344929395340301 ], [ -8.113923783273925, 41.345097323694041 ], [ -8.112546726833667, 41.343994304037949 ], [ -8.112500161541565, 41.343962226239562 ], [ -8.113144353770835, 41.343985451077515 ] ] ] } }
+]
+}
