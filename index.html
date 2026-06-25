@@ -2779,15 +2779,16 @@
     }
 
     .terms-consent-overlay {
-      position: fixed;
+      position: absolute;
       inset: 0;
-      z-index: 9999;
+      z-index: 80;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      background: rgba(16, 19, 15, .58);
-      backdrop-filter: blur(8px);
+      background: rgba(16, 19, 15, .68);
+      backdrop-filter: blur(18px) saturate(1.08);
+      -webkit-backdrop-filter: blur(18px) saturate(1.08);
     }
 
     .terms-consent-overlay.visible {
@@ -3578,6 +3579,19 @@
           </div>
       </div>
       </aside>
+      <div class="terms-consent-overlay" id="terms-consent-overlay" role="dialog" aria-modal="true"
+        aria-labelledby="terms-consent-title" aria-describedby="terms-consent-text">
+        <div class="terms-consent-dialog">
+          <h3 id="terms-consent-title">Aceitas os Termos e Condi&ccedil;&otilde;es?</h3>
+          <p id="terms-consent-text">
+            Antes de descarregar ficheiros, confirma que leste e concordas com os termos de utiliza&ccedil;&atilde;o dos dados.
+          </p>
+          <div class="terms-consent-actions">
+            <button type="button" class="terms-consent-reject" id="terms-consent-reject">N&atilde;o concordo</button>
+            <button type="button" class="terms-consent-accept" id="terms-consent-accept">Concordo</button>
+          </div>
+        </div>
+      </div>
   </div>
 
   <!-- ===== Caixa flutuante de feedback ===== -->
@@ -3970,20 +3984,6 @@
       }
     })();
   </script>
-
-  <div class="terms-consent-overlay" id="terms-consent-overlay" role="dialog" aria-modal="true"
-    aria-labelledby="terms-consent-title" aria-describedby="terms-consent-text">
-    <div class="terms-consent-dialog">
-      <h3 id="terms-consent-title">Aceitas os Termos e Condições?</h3>
-      <p id="terms-consent-text">
-        Antes de descarregar ficheiros, confirma que leste e concordas com os termos de utilização dos dados.
-      </p>
-      <div class="terms-consent-actions">
-        <button type="button" class="terms-consent-reject" id="terms-consent-reject">Não concordo</button>
-        <button type="button" class="terms-consent-accept" id="terms-consent-accept">Concordo</button>
-      </div>
-    </div>
-  </div>
 
   <footer class="site-footer" id="site-footer">
 
@@ -4804,7 +4804,7 @@
 
       const disponiveis = listarDownloadsDisponiveis();
       countEl.textContent = disponiveis.length > 0 ? `(${disponiveis.length} ficheiros)` : '';
-      btn.disabled = disponiveis.length === 0 || downloadsBloqueadosNestaSessao();
+      btn.disabled = disponiveis.length === 0;
       btn.classList.toggle('downloads-session-blocked', downloadsBloqueadosNestaSessao());
     }
 
@@ -4870,7 +4870,9 @@
       };
 
       const aceitar = () => {
+        sessionStorage.removeItem('downloadTermsDecision');
         fechar();
+        atualizarEstadoDownloadsBloqueados();
         if (typeof onAccept === 'function') onAccept();
       };
 
@@ -4885,14 +4887,7 @@
     }
 
     function pedirConsentimentoTermos(onAccept) {
-      if (downloadsBloqueadosNestaSessao()) {
-        scrollParaTermos();
-        atualizarEstadoDownloadsBloqueados();
-        return false;
-      }
-
-      scrollParaTermos();
-      setTimeout(() => abrirPopupTermos(onAccept), 450);
+      abrirPopupTermos(onAccept);
       return false;
     }
 
@@ -4913,6 +4908,7 @@
       document.querySelectorAll('.download-item-link, .btn-dl').forEach(link => {
         link.classList.toggle('downloads-session-blocked', bloqueado);
         if (bloqueado) link.setAttribute('aria-disabled', 'true');
+        else if (!link.classList.contains('unavailable')) link.setAttribute('aria-disabled', 'false');
       });
       atualizarBtnBaixarTudo();
     }
