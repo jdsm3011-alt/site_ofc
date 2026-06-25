@@ -128,12 +128,24 @@
     justify-content:space-between;
     padding:16px 32px;
     border-bottom:1px solid var(--line);
-    background:color-mix(in srgb, var(--paper-elevated) 88%, transparent);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
     position:sticky;
     top:0;
     z-index:500;
+    isolation:isolate;
+  }
+  /* O blur fica num pseudo-elemento de fundo, separado do elemento
+     sticky. Quando backdrop-filter está no próprio elemento sticky,
+     o Chrome recalcula o blur a cada frame de scroll e o header
+     parece "atrasar-se" em relação à posição correta (lag visível).
+     Isolando o blur aqui, o sticky fica instantâneo. */
+  header::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:color-mix(in srgb, var(--paper-elevated) 88%, transparent);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
   }
 
   .brand{ display:flex; align-items:center; gap:12px; }
@@ -1692,7 +1704,7 @@
       recomendações, vamos ler com atenção.
     </p>
 
-    <form class="feedback-toast-form" id="feedback-toast-form" action="https://formspree.io/f/xvzjojbj" method="POST">
+    <form class="feedback-toast-form" id="feedback-toast-form" action="https://formspree.io/f/xvzjojbj" method="POST" onsubmit="return false">
       <textarea id="feedback-toast-textarea" name="message" rows="3" maxlength="600"
         placeholder="Escreve aqui a tua opinião ou sugestão..." required></textarea>
       <input type="hidden" name="_subject" value="Novo feedback do site">
@@ -1726,37 +1738,24 @@
 
       var showTimer;
 
-      /* O botão do header deve SEMPRE abrir a caixa,
-         mesmo que o utilizador já a tenha dispensado nesta sessão.
-         Registamos o listener ANTES do early-return. */
-      var navFeedbackBtn = document.getElementById('feedback-nav-btn');
-      if (navFeedbackBtn) {
-        navFeedbackBtn.addEventListener('click', function () {
-          clearTimeout(showTimer);
-          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignora */ }
-          toast.classList.remove('is-leaving');
-          toast.classList.add('is-visible');
-        });
-      }
-
-      if (alreadyDismissed) return;
-
-      showTimer = setTimeout(function () {
-        toast.classList.add('is-visible');
-      }, 30000);
-
       function dismiss() {
         clearTimeout(showTimer);
         toast.classList.remove('is-visible');
         toast.classList.add('is-leaving');
-        toast.addEventListener('transitionend', function onEnd(e) {
-          if (e.propertyName !== 'opacity') return;
+        /* setTimeout em vez de transitionend: o transitionend pode
+           nunca disparar (ex. prefers-reduced-motion zera as transições,
+           ou o browser falha um frame), deixando is-leaving "preso"
+           e o popup a bloquear cliques mesmo parecendo fechado. */
+        window.setTimeout(function () {
           toast.classList.remove('is-leaving');
-          toast.removeEventListener('transitionend', onEnd);
-        });
+        }, 320);
         try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignora */ }
       }
 
+      /* Estes listeners (fechar e submeter) são registados sempre,
+         independentemente de o popup já ter sido dispensado nesta sessão —
+         caso contrário, ao reabrir pelo botão do header, o botão fechar
+         e o envio do formulário deixam de responder. */
       var closeBtn = document.getElementById('feedback-toast-close');
       if (closeBtn) closeBtn.addEventListener('click', dismiss);
 
@@ -1793,6 +1792,25 @@
             });
         });
       }
+
+      /* O botão do header deve SEMPRE abrir a caixa,
+         mesmo que o utilizador já a tenha dispensado nesta sessão.
+         Registamos o listener ANTES do early-return. */
+      var navFeedbackBtn = document.getElementById('feedback-nav-btn');
+      if (navFeedbackBtn) {
+        navFeedbackBtn.addEventListener('click', function () {
+          clearTimeout(showTimer);
+          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignora */ }
+          toast.classList.remove('is-leaving');
+          toast.classList.add('is-visible');
+        });
+      }
+
+      if (alreadyDismissed) return;
+
+      showTimer = setTimeout(function () {
+        toast.classList.add('is-visible');
+      }, 30000);
     })();
   </script>
 
