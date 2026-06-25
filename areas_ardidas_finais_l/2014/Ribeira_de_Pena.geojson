@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Ribeira_de_Pena",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "DM414673", "Cod_ANEPC": "2014030055497", "Ano": 2014, "DH_Inicio": "2014-08-31T00:00:00", "DH_1Interv": "2014-08-31T00:00:00", "DH_Fim": "2014-08-31T00:00:00", "Duracao_m": 36.0, "PI_DICOFRE": "030407", "PI_NUTS3": "Ave", "PI_Distrit": "Braga", "PI_Conc": "Cabeceiras de Basto", "PI_Freg": "Cavez", "PI_Local": "AROSA", "Causa_Cod": "446", "Causa_Tipo": "Intencional", "Causa_Desc": "Incendiarismo - Imputáveis", "AreaHaSIG": 0.00818343, "AreaHaSGIF": 0.01, "AreaHaPov": 0.0, "AreaHaMato": 0.01, "AreaHaAgri": 0.0, "Edicao": "2014-09-06T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.893652011775679, 41.508749882056208 ], [ -7.893619322940054, 41.50881010362405 ], [ -7.893585572340168, 41.50881779554048 ], [ -7.893528707452501, 41.508792976900047 ], [ -7.893527834299935, 41.508736752479351 ], [ -7.89356152300897, 41.50871302103188 ], [ -7.893652011775679, 41.508749882056208 ] ] ] } }
+]
+}
