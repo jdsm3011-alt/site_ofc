@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Alvito",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "AT121288", "Cod_ANEPC": "2021070015763", "Ano": 2021, "DH_Inicio": "2021-08-06T00:00:00", "DH_1Interv": "2021-08-06T00:00:00", "DH_Fim": "2021-08-06T00:00:00", "Duracao_m": 114.0, "PI_DICOFRE": "071302", "PI_NUTS3": "Alentejo Central", "PI_Distrit": "Évora", "PI_Conc": "Viana do Alentejo", "PI_Freg": "Viana do Alentejo", "PI_Local": "Herdade do Outeiro dos Negros", "Causa_Cod": "610", "Causa_Tipo": "Desconhecida", "Causa_Desc": "Indeterminadas", "AreaHaSIG": 33.5941615, "AreaHaSGIF": 31.424, "AreaHaPov": 0.0, "AreaHaMato": 0.0, "AreaHaAgri": 31.424, "Edicao": "2021-08-10T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.044510095261534, 38.325885648483805 ], [ -8.044657163396611, 38.325770017238426 ], [ -8.044904210975423, 38.325817552594508 ], [ -8.044988199150009, 38.325983414999612 ], [ -8.044978427019199, 38.325984403451372 ], [ -8.044346842466179, 38.326054562401673 ], [ -8.044344090957724, 38.326054828688321 ], [ -8.044510095261534, 38.325885648483805 ] ] ] } }
+]
+}

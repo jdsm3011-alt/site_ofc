@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Esposende",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "DM421493", "Cod_ANEPC": "2021030026617", "Ano": 2021, "DH_Inicio": "2021-04-19T00:00:00", "DH_1Interv": "2021-04-19T00:00:00", "DH_Fim": "2021-04-19T00:00:00", "Duracao_m": 50.0, "PI_DICOFRE": "030601", "PI_NUTS3": "Cávado", "PI_Distrit": "Braga", "PI_Conc": "Esposende", "PI_Freg": "Antas", "PI_Local": "CM 1005 (Bouça da Vila Nova)", "Causa_Cod": "711", "Causa_Tipo": "Reacendimento", "Causa_Desc": "Reacendimentos", "AreaHaSIG": 1.33890933, "AreaHaSGIF": 1.34, "AreaHaPov": 1.34, "AreaHaMato": 0.0, "AreaHaAgri": 0.0, "Edicao": "2021-04-27T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.756807247234724, 41.586558795485985 ], [ -8.756075406854579, 41.585978850342755 ], [ -8.756287733297654, 41.58546204160421 ], [ -8.756670982160081, 41.585486265127514 ], [ -8.757383883998283, 41.585366568041771 ], [ -8.757803806458984, 41.58603774594016 ], [ -8.757726199743704, 41.586133520756036 ], [ -8.757384240561784, 41.586377001820395 ], [ -8.757520767181434, 41.5866463087211 ], [ -8.756807247234724, 41.586558795485985 ] ] ] } }
+]
+}
