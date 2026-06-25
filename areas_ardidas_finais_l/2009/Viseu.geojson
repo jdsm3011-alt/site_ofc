@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Viseu",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Ano": 2009, "AreaHaSIG": 36.3402114 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.794092052233261, 40.715706099812202 ], [ -7.800331155943113, 40.715879325896324 ], [ -7.799984670291038, 40.722464941753415 ], [ -7.794612117467843, 40.722465012548703 ], [ -7.794092052233261, 40.715706099812202 ] ] ] } }
+]
+}
