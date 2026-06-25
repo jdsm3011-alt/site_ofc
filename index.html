@@ -3793,37 +3793,54 @@
       if (!toast) return;
 
       var STORAGE_KEY = 'datagis-feedback-dismissed';
-      var alreadyDismissed = false;
-      try {
-        alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1';
-      } catch (e) { /* sessionStorage indisponível, ignora */ }
+      var isVisible = false;
+      var showTimer = null;
+      var leaveTimer = null;
 
-      if (alreadyDismissed) return;
-
-      var showTimer = setTimeout(function () {
+      /* ── Mostrar ── */
+      function show() {
+        if (leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
+        toast.classList.remove('is-leaving');
         toast.classList.add('is-visible');
-      }, 30000);
-
-      function dismiss() {
-        clearTimeout(showTimer);
-        toast.classList.remove('is-visible');
-        toast.classList.add('is-leaving');
-        toast.addEventListener('transitionend', function onEnd(e) {
-          if (e.propertyName !== 'opacity') return;
-          toast.classList.remove('is-leaving');
-          toast.removeEventListener('transitionend', onEnd);
-        });
-        try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignora */ }
+        isVisible = true;
       }
 
-      var closeBtn = document.getElementById('feedback-toast-close');
-      if (closeBtn) closeBtn.addEventListener('click', dismiss);
+      /* ── Fechar (robusto: não depende de transitionend) ── */
+      function dismiss(saveSession) {
+        if (showTimer) { clearTimeout(showTimer); showTimer = null; }
+        if (!isVisible) return;
+        isVisible = false;
+        toast.classList.remove('is-visible');
+        toast.classList.add('is-leaving');
+        leaveTimer = setTimeout(function () {
+          toast.classList.remove('is-leaving');
+          leaveTimer = null;
+        }, 500);
+        if (saveSession) {
+          try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignora */ }
+        }
+      }
 
+      /* Aparecer automaticamente após 30 s — só se ainda não foi dispensado nesta sessão */
+      var alreadyDismissed = false;
+      try { alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (e) {}
+      if (!alreadyDismissed) {
+        showTimer = setTimeout(show, 30000);
+      }
+
+      /* ── Botão X (fechar) ── */
+      var closeBtn = document.getElementById('feedback-toast-close');
+      if (closeBtn) closeBtn.addEventListener('click', function () { dismiss(true); });
+
+      /* ── Botão do header (toggle: abre e fecha) ── */
       var navFeedbackBtn = document.getElementById('feedback-nav-btn');
       if (navFeedbackBtn) {
         navFeedbackBtn.addEventListener('click', function () {
-          clearTimeout(showTimer);
-          toast.classList.add('is-visible');
+          if (isVisible) {
+            dismiss(false);
+          } else {
+            show();
+          }
         });
       }
 
@@ -3849,7 +3866,7 @@
                   form.style.display = 'none';
                   if (thanks) thanks.hidden = false;
                 }, 250);
-                setTimeout(dismiss, 3000);
+                setTimeout(function () { dismiss(true); }, 3000);
               } else {
                 throw new Error('Resposta não-ok do servidor');
               }
