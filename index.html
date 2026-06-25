@@ -4809,8 +4809,7 @@
     }
 
     function baixarTudo() {
-      if (!pedirConsentimentoTermos(() => baixarTudoConfirmado())) return;
-      baixarTudoConfirmado();
+      pedirConsentimentoTermos(() => baixarTudoConfirmado());
     }
 
     function baixarTudoConfirmado() {
@@ -4849,6 +4848,10 @@
       return sessionStorage.getItem('downloadTermsDecision') === 'rejected';
     }
 
+    function termosAceitesNestaSessao() {
+      return sessionStorage.getItem('downloadTermsDecision') === 'accepted';
+    }
+
     function scrollParaTermos() {
       const termos = document.getElementById('terms-section') || document.getElementById('site-footer');
       if (termos) termos.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4870,7 +4873,7 @@
       };
 
       const aceitar = () => {
-        sessionStorage.removeItem('downloadTermsDecision');
+        sessionStorage.setItem('downloadTermsDecision', 'accepted');
         fechar();
         atualizarEstadoDownloadsBloqueados();
         if (typeof onAccept === 'function') onAccept();
@@ -4887,6 +4890,11 @@
     }
 
     function pedirConsentimentoTermos(onAccept) {
+      if (termosAceitesNestaSessao()) {
+        if (typeof onAccept === 'function') onAccept();
+        return true;
+      }
+
       abrirPopupTermos(onAccept);
       return false;
     }
