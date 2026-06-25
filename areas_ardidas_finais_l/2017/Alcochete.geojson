@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Alcochete",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "RO317754", "Cod_ANEPC": "2017150051092", "Ano": 2017, "DH_Inicio": "2017-06-12T00:00:00", "DH_1Interv": "2017-06-12T00:00:00", "DH_Fim": "2017-06-12T00:00:00", "Duracao_m": 26.0, "PI_DICOFRE": "150201", "PI_NUTS3": "Península de Setúbal", "PI_Distrit": "Setúbal", "PI_Conc": "Alcochete", "PI_Freg": "Alcochete", "PI_Local": "EN 5, Alto Estanqueiro / Rio Frio (Lagoa Cova)", "Causa_Cod": "630", "Causa_Tipo": "Desconhecida", "Causa_Desc": "Indeterminadas", "AreaHaSIG": 3.55574536, "AreaHaSGIF": 0.1399, "AreaHaPov": 0.0, "AreaHaMato": 0.1399, "AreaHaAgri": 0.0, "Edicao": "2017-07-03T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -8.903741759778248, 38.673011829707562 ], [ -8.903741755288689, 38.673011946842159 ], [ -8.903741619821629, 38.673011958544457 ], [ -8.903136163828153, 38.673011958165503 ], [ -8.903263457890398, 38.672987448897764 ], [ -8.903741759672927, 38.672884608015664 ], [ -8.903741759778248, 38.673011829707562 ] ] ] } }
+]
+}
