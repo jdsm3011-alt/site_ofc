@@ -89,17 +89,28 @@
     transition:background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
   }
 
+  /* O background-attachment:fixed cria um stacking context no body
+     que quebra o position:sticky do header em Chromium.
+     Solução: fundo via ::before fixo, body sem background-attachment. */
   body{
     margin:0;
     font-family:'IBM Plex Sans', sans-serif;
-    background:
-      radial-gradient(circle at top, rgba(194,112,61,.06), transparent 16%),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
-    background-attachment:fixed;
+    background:var(--paper);
     color:var(--ink);
     min-height:100vh;
     opacity:0;
     animation:pageFadeIn .45s ease forwards;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:
+      radial-gradient(circle at top, rgba(194,112,61,.06), transparent 16%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+    pointer-events:none;
   }
   @keyframes pageFadeIn{
     from{ opacity:0; transform:translateY(6px); }
@@ -686,13 +697,15 @@
 
 <header>
   <div class="brand">
-    
     <div class="brand-text">
       <h1>Histórico de Áreas Ardidas</h1>
       <span>Incêndios Florestais · Portugal Continental · Fonte: ICNF </span>
     </div>
   </div>
   <div class="header-actions">
+    <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </button>
     <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
       <span class="icon-sun">&#9728;</span>
       <span class="icon-moon">&#9789;</span>
@@ -1713,6 +1726,292 @@
   })();
 
 })();
+</script>
+
+<!-- ===== Caixa flutuante de feedback ===== -->
+<style>
+  .feedback-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 320px;
+    background: var(--paper-elevated);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18), 0 2px 8px rgba(0,0,0,.10);
+    padding: 20px;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(12px) scale(.97);
+    pointer-events: none;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .feedback-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .feedback-toast.is-leaving {
+    opacity: 0;
+    transform: translateY(12px) scale(.97);
+    pointer-events: none;
+  }
+  .feedback-toast::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20px; right: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, #8B2500, var(--ochre, #C2703D));
+    border-radius: 3px 3px 0 0;
+  }
+  .feedback-toast-close {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: none;
+    border: none;
+    color: var(--stone);
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background .15s, color .15s;
+  }
+  .feedback-toast-close:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+  .feedback-toast-head { margin-bottom: 8px; }
+  .feedback-toast-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ochre, #C2703D);
+    margin-bottom: 4px;
+  }
+  .feedback-toast-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--ochre, #C2703D);
+    animation: feedbackDotPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes feedbackDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.7); }
+  }
+  .feedback-toast-title {
+    font-family: 'Spectral', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+  .feedback-toast-text {
+    font-size: 13px;
+    color: var(--stone);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .feedback-toast-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 10px;
+    resize: vertical;
+    min-height: 72px;
+    transition: border-color .15s;
+    outline: none;
+  }
+  .feedback-toast-form textarea::placeholder { color: var(--stone); opacity: .7; }
+  .feedback-toast-form textarea:focus { border-color: var(--ochre, #C2703D); }
+  .feedback-toast-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .feedback-toast-hint {
+    font-size: 11px;
+    color: var(--stone);
+    opacity: .7;
+  }
+  .feedback-toast-submit {
+    background: linear-gradient(135deg, #8B2500, var(--ochre, #C2703D));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity .15s, transform .1s;
+  }
+  .feedback-toast-submit:hover { opacity: .88; }
+  .feedback-toast-submit:active { transform: scale(.97); }
+  .feedback-toast-submit:disabled { opacity: .5; cursor: not-allowed; }
+  .feedback-toast-form { transition: opacity .25s; }
+  .feedback-toast-form.is-hiding { opacity: 0; }
+  .feedback-toast-error {
+    font-size: 12px;
+    color: #c0392b;
+    margin: 6px 0 0;
+  }
+  .feedback-toast-thanks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0 4px;
+    animation: feedbackThanksIn .4s cubic-bezier(.22,.61,.36,1) .05s forwards;
+    opacity: 0;
+  }
+  @keyframes feedbackThanksIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .feedback-toast-thanks-icon {
+    font-size: 28px;
+    animation: feedbackDotPulse 1.6s ease-in-out infinite;
+  }
+  .feedback-toast-thanks p {
+    font-family: 'Spectral', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0;
+  }
+  @media (max-width: 480px) {
+    .feedback-toast {
+      left: 12px; right: 12px;
+      bottom: 16px;
+      width: auto;
+    }
+  }
+</style>
+
+<div class="feedback-toast" id="feedback-toast" role="dialog" aria-label="Caixa de feedback" aria-live="polite">
+  <button type="button" class="feedback-toast-close" id="feedback-toast-close" aria-label="Fechar">✕</button>
+
+  <div class="feedback-toast-head">
+    <span class="feedback-toast-eyebrow"><span class="feedback-toast-dot" aria-hidden="true"></span>O teu feedback</span>
+    <h3 class="feedback-toast-title">Ajuda-nos a melhorar este site</h3>
+  </div>
+  <p class="feedback-toast-text">
+    Este projeto mantém-se gratuito e em crescimento graças a quem o usa. Deixa a tua opinião e
+    recomendações, vamos ler com atenção.
+  </p>
+
+  <form class="feedback-toast-form" id="feedback-toast-form" action="https://formspree.io/f/xvzjojbj" method="POST">
+    <textarea id="feedback-toast-textarea" name="message" rows="3" maxlength="600"
+      placeholder="Escreve aqui a tua opinião ou sugestão..." required></textarea>
+    <input type="hidden" name="_subject" value="Novo feedback do site">
+    <div class="feedback-toast-actions">
+      <span class="feedback-toast-hint">Resposta anónima</span>
+      <button type="submit" class="feedback-toast-submit" id="feedback-toast-submit">
+        Enviar <span aria-hidden="true">→</span>
+      </button>
+    </div>
+    <p class="feedback-toast-error" id="feedback-toast-error" hidden>
+      Não foi possível enviar agora. Tenta novamente.
+    </p>
+  </form>
+
+  <div class="feedback-toast-thanks" id="feedback-toast-thanks" hidden>
+    <span class="feedback-toast-thanks-icon" aria-hidden="true"></span>
+    <p>Obrigado!</p>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var toast = document.getElementById('feedback-toast');
+    if (!toast) return;
+
+    var STORAGE_KEY = 'datagis-feedback-dismissed';
+    var alreadyDismissed = false;
+    try {
+      alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1';
+    } catch (e) { /* sessionStorage indisponível, ignora */ }
+
+    var showTimer;
+
+    /* O botão do header deve SEMPRE abrir a caixa,
+       mesmo que o utilizador já a tenha dispensado nesta sessão.
+       Registamos o listener ANTES do early-return. */
+    var navFeedbackBtn = document.getElementById('feedback-nav-btn');
+    if (navFeedbackBtn) {
+      navFeedbackBtn.addEventListener('click', function () {
+        clearTimeout(showTimer);
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignora */ }
+        toast.classList.remove('is-leaving');
+        toast.classList.add('is-visible');
+      });
+    }
+
+    if (alreadyDismissed) return;
+
+    showTimer = setTimeout(function () {
+      toast.classList.add('is-visible');
+    }, 30000);
+
+    function dismiss() {
+      clearTimeout(showTimer);
+      toast.classList.remove('is-visible');
+      toast.classList.add('is-leaving');
+      toast.addEventListener('transitionend', function onEnd(e) {
+        if (e.propertyName !== 'opacity') return;
+        toast.classList.remove('is-leaving');
+        toast.removeEventListener('transitionend', onEnd);
+      });
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignora */ }
+    }
+
+    var closeBtn = document.getElementById('feedback-toast-close');
+    if (closeBtn) closeBtn.addEventListener('click', dismiss);
+
+    var form = document.getElementById('feedback-toast-form');
+    var thanks = document.getElementById('feedback-toast-thanks');
+    var errorMsg = document.getElementById('feedback-toast-error');
+    var submitBtn = document.getElementById('feedback-toast-submit');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (errorMsg) errorMsg.hidden = true;
+        if (submitBtn) submitBtn.disabled = true;
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (response) {
+            if (response.ok) {
+              form.classList.add('is-hiding');
+              setTimeout(function () {
+                form.style.display = 'none';
+                if (thanks) thanks.hidden = false;
+              }, 250);
+              setTimeout(dismiss, 3000);
+            } else {
+              throw new Error('Resposta não-ok do servidor');
+            }
+          })
+          .catch(function () {
+            if (errorMsg) errorMsg.hidden = false;
+            if (submitBtn) submitBtn.disabled = false;
+          });
+      });
+    }
+  })();
 </script>
 
 </body>

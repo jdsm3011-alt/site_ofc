@@ -89,17 +89,28 @@
     transition:background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
   }
 
+  /* O background-attachment:fixed cria um stacking context no body
+     que quebra o position:sticky do header em Chromium.
+     Solução: fundo via ::before fixo, body sem background-attachment. */
   body{
     margin:0;
     font-family:'IBM Plex Sans', sans-serif;
-    background:
-      radial-gradient(circle at top, rgba(61,107,79,.06), transparent 16%),
-      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
-    background-attachment:fixed;
+    background:var(--paper);
     color:var(--ink);
     min-height:100vh;
     opacity:0;
     animation:pageFadeIn .45s ease forwards;
+    position:relative;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:
+      radial-gradient(circle at top, rgba(61,107,79,.06), transparent 16%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+    pointer-events:none;
   }
   @keyframes pageFadeIn{
     from{ opacity:0; transform:translateY(6px); }
@@ -620,7 +631,6 @@
 
 <header>
   <div class="brand">
-    
     <div class="brand-text">
       <h1>Explorador BGRI</h1>
       <span>Censos 2021 · Subsecção estatística</span>
@@ -1714,9 +1724,24 @@
         alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1';
       } catch (e) { /* sessionStorage indisponível, ignora */ }
 
+      var showTimer;
+
+      /* O botão do header deve SEMPRE abrir a caixa,
+         mesmo que o utilizador já a tenha dispensado nesta sessão.
+         Registamos o listener ANTES do early-return. */
+      var navFeedbackBtn = document.getElementById('feedback-nav-btn');
+      if (navFeedbackBtn) {
+        navFeedbackBtn.addEventListener('click', function () {
+          clearTimeout(showTimer);
+          try { sessionStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignora */ }
+          toast.classList.remove('is-leaving');
+          toast.classList.add('is-visible');
+        });
+      }
+
       if (alreadyDismissed) return;
 
-      var showTimer = setTimeout(function () {
+      showTimer = setTimeout(function () {
         toast.classList.add('is-visible');
       }, 30000);
 
@@ -1734,14 +1759,6 @@
 
       var closeBtn = document.getElementById('feedback-toast-close');
       if (closeBtn) closeBtn.addEventListener('click', dismiss);
-
-      var navFeedbackBtn = document.getElementById('feedback-nav-btn');
-      if (navFeedbackBtn) {
-        navFeedbackBtn.addEventListener('click', function () {
-          clearTimeout(showTimer);
-          toast.classList.add('is-visible');
-        });
-      }
 
       var form = document.getElementById('feedback-toast-form');
       var thanks = document.getElementById('feedback-toast-thanks');
