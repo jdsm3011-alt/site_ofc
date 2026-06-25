@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Sintra",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "RO215603", "Cod_ANEPC": "2015110095816", "Ano": 2015, "DH_Inicio": "2015-06-09T00:00:00", "DH_1Interv": "2015-06-09T00:00:00", "DH_Fim": "2015-06-09T00:00:00", "Duracao_m": 53.0, "PI_DICOFRE": "111610", "PI_NUTS3": "Grande Lisboa", "PI_Distrit": "Lisboa", "PI_Conc": "Odivelas", "PI_Freg": "União das freguesias de Ramada e Caneças", "PI_Local": "A9 CREL km 13 Cascais/ALverca", "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 0.04777905, "AreaHaSGIF": 0.005, "AreaHaPov": 0.0, "AreaHaMato": 0.005, "AreaHaAgri": 0.0, "Edicao": "2015-06-09T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -9.235332000547993, 38.80804900000134 ], [ -9.23539900016255, 38.808251000317696 ], [ -9.235394731521939, 38.808251810814873 ], [ -9.235311452188578, 38.808063840473956 ], [ -9.235332000547993, 38.80804900000134 ] ] ] } }
+]
+}

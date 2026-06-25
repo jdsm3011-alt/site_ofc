@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Vimioso",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": null, "Cod_ANEPC": null, "Ano": 2015, "DH_Inicio": null, "DH_1Interv": null, "DH_Fim": null, "Duracao_m": null, "PI_DICOFRE": null, "PI_NUTS3": null, "PI_Distrit": null, "PI_Conc": null, "PI_Freg": null, "PI_Local": null, "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 29.54758976, "AreaHaSGIF": null, "AreaHaPov": null, "AreaHaMato": null, "AreaHaAgri": null, "Edicao": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -6.676297264299661, 41.572359693630531 ], [ -6.67585073966332, 41.572553261043872 ], [ -6.674247416957927, 41.573064197049248 ], [ -6.672375843939086, 41.573704521051027 ], [ -6.67031692386904, 41.574807292120539 ], [ -6.6680871088794, 41.575642213372348 ], [ -6.666213900238898, 41.576348823399321 ], [ -6.664983619374035, 41.57600107339681 ], [ -6.666077642004338, 41.574554043555132 ], [ -6.667525256026912, 41.573111511237386 ], [ -6.669333932559465, 41.571341513388852 ], [ -6.671660968761975, 41.570109349856338 ], [ -6.67395803340306, 41.570204937947686 ], [ -6.676318151223732, 41.571430231849163 ], [ -6.676297264299661, 41.572359693630531 ] ] ] } }
+]
+}
