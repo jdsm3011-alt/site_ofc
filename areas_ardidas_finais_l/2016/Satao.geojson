@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Satao",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": null, "Cod_ANEPC": null, "Ano": 2016, "DH_Inicio": null, "DH_1Interv": null, "DH_Fim": null, "Duracao_m": null, "PI_DICOFRE": null, "PI_NUTS3": null, "PI_Distrit": null, "PI_Conc": null, "PI_Freg": null, "PI_Local": null, "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 164.46529696, "AreaHaSGIF": null, "AreaHaPov": null, "AreaHaMato": null, "AreaHaAgri": null, "Edicao": null }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -7.573855048023421, 40.744744112803403 ], [ -7.573607775971414, 40.745268661497441 ], [ -7.572921390274147, 40.745658674259779 ], [ -7.573235939245233, 40.745394190444095 ], [ -7.573666346278134, 40.744668424969504 ], [ -7.573855048023421, 40.744744112803403 ] ] ], [ [ [ -7.571036147099179, 40.749052781181966 ], [ -7.571481235915972, 40.749277573135558 ], [ -7.571556545829559, 40.749819568761325 ], [ -7.570866100015467, 40.749154942693934 ], [ -7.570859336322422, 40.7490856669761 ], [ -7.570847849011573, 40.748969568549555 ], [ -7.571036147099179, 40.749052781181966 ] ] ] ] } }
+]
+}

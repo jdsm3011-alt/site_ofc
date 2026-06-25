@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Sintra",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": null, "Cod_ANEPC": null, "Ano": 2016, "DH_Inicio": null, "DH_1Interv": null, "DH_Fim": null, "Duracao_m": null, "PI_DICOFRE": null, "PI_NUTS3": null, "PI_Distrit": null, "PI_Conc": null, "PI_Freg": null, "PI_Local": null, "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 0.00395829, "AreaHaSGIF": null, "AreaHaPov": null, "AreaHaMato": null, "AreaHaAgri": null, "Edicao": null }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -9.236534503343476, 38.808677807055162 ], [ -9.236556674320125, 38.80858671910152 ], [ -9.236624340790673, 38.808678943811316 ], [ -9.236534503343476, 38.808677807055162 ] ] ] } }
+]
+}
