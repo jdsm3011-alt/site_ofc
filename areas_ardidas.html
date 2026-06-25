@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Explorador cartográfico de Áreas Ardidas — DataGis.">
+<title>Hitórico de Áreas Ardidas — DataGis</title>
+<link rel="icon" type="image/png"
+  href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAACh9ElEqVR42ux9d5gcZbn/8/b31OkzuzvbsiWbZLMpbgIBgxEIEAXBq64VL4oa2+UqYvfqXq/tWq94r/dnLGAvsVwsYEGNqKAgiPQaSghppCfbZuac5/fHOWf27OxsiiaQhHk/n4Hs7syZU97neb7P92kAjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjdVYjXVsL9K4BSfcs6R/x7PF2P8x9nNjNRRAYx2ji4bPj4QC6x3wIZPJR42Ih7IvaOzYfkMpNBRAYz31zyoSTC8ukIQQYIzBM5/5zOyOHTs6t27alOZKZdDzmkfGxnIEifLBp4QQRikFRBxnhEwIpcaklJsmRkcfT2Yyu7XWm17wghfu/PCHPjSKiLWKgoYvv4ESGgqgsZ685xNB+qqFZ4zBihUrivc9+OCiidHRZ5QqlUVeudzp+34rAmQ9z6O+5wMhAD4gAE6ackAEEqEBQoASAoQQoIT6Pvp7pZA7ffQf01rfJ6W8TWvnlhUL5973jZ/+dLfv+/Fz4wdDHo3VUACN9fc/FwYAlRhs53MGBhbt2LLlnFKptLLieYsqlXLS9xF8xFCwASihQAgFRB+AEGCMAiHUQ/QnAANtQIAQIEQAovAioUYMsD761VOghAClFBjnmwTnt2opr7Nd47df/vKjt51+OqnUKAOvgQoaCqCxjoxf74VCTzp7Olfs37n/haVK6fRSuTzH8z0Gng8+AhAKQAgFSsioEHIrpeRhKeUjBMmjTLANo6OjWzOZzGgymRytVCr7PM/zOOfUYx5jHtOje0fdnXt3moY08qVyqbXslfO+D72+X+moVLxmBEx6nhcoEyDAKAVKaUUKcZ9U6leJROKHjz766PWeNwlOYpxBYzVWYx2mxQcAgOXLl+ey2exbLcu6RWmFXAjknKHgHKWSqLXeZ9v2X1Kp1H83NTUNdXV19Q5fNKwJOTL6fHh4WHZ3d7cVi8VnZ7PZSxOJxPcsy7pfKeULwZEzhoxzlEr5tm3fWMgV/mVwcLA59v0s5ro0VgMBNNbBoD4hBE455ZTuBx98cPXIyMgrS6VSs++HMD6A4RukEL/TWq9zXfX7Bx987KE4SYeIrLW1tZkQ0l0ul5s8r9wzNjFhcy5twZhLCNEAPvE8LPu+P1qpVHYLIUZMrXeOjI09whjba6bMx/KJ/PZbb711T42/DxdeeKH1+9//ftG+PfvOLVVKZ1Yq3mLP8wQCAqUUBGdbDcv8bmd75xdu/etf7/WDc2PQiCA0FEBj1V0sgvqnnXZa87333HPZyOjoa0ulcsJHDxhlwDjbpZVcp7j8XlOx/1e33XbdbgAASgicuXJl/s4771w0MTGxrFKuLK54lf6KV2kihDheSABWFQQC4CQLCAAkCClQGikPoJQAIIxxTncRJh4WjN1tSHmTtqzbTz/99HuuuOKKfVU/hVKY1dr6jF179z9vvDQ+5Hlev1fxAAmA4GK/YejvdxWLn/jrXXfdi5OKoEEWNlZjxeH+8PCwbmpqerttm1uFEMg4Ry4EWpb1SC6X+feBgYGuCFZTQqBrTtf8XC73jmQyea1pmjukVCikQC549bNMcI8LUeGCl7kUZSFFmUtZFsGrwoWocCnKXEy+RPB+L3A1ePASHIWUqJRCy7IecRLOdwqFwqtnz549K+5qDA0NGa3Nrc93XfenSqlxShkyxtCyzN25XPZTK1asyMauu+EWNNbTelGAIG7fO6t3pWM7twkhkDGGUgo0TfPBfD5z2ZlnnpmJPjA4ONheKGT/1bbt67XWJSEFslDgQ2EvcyEqQgqPC+ELIQLOQAgUQob/D34vqr8XyGX4EoGwB/8WvpDCE1JURFVBhMqFhwpBqz22bV+dz+dfv2TJkrZIFRBCoLV11tKk665UKo1wIR4ypaQyoABAAqzfAAAA..." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+  :root{
+    --paper:#F7F5EF;
+    --paper-deep:#EFEBE0;
+    --paper-elevated:#FCFAF5;
+    --ink:#173124;
+    --green:#3D6B4F;
+    --green-soft:#6E9A7C;
+    --green-deep:#234635;
+    --ochre:#C2703D;
+    --ochre-soft:#E7A57A;
+    --stone:#6E726A;
+    --line:#D9D3C6;
+    --line-strong:#C6BBAB;
+    --white:#FFFFFF;
+    --shadow:0 18px 50px rgba(23,49,36,.08);
+    --shadow-soft:0 12px 30px rgba(23,49,36,.06);
+    --radius:18px;
+    --radius-sm:12px;
+    --radius-lg:22px;
+    --warn:#B5472B;
+
+    --map-tiles: 'light';
+    --map-stroke: #2A4A38;
+    --map-stroke-hover: #173124;
+    --map-nodata: #D9D3C6;
+  }
+
+  html[data-theme="dark"]{
+    --paper:#171A16;
+    --paper-deep:#10130F;
+    --paper-elevated:#1E2219;
+    --ink:#EAE7DC;
+    --green:#7FB894;
+    --green-soft:#5C8C6E;
+    --green-deep:#9FCBAE;
+    --ochre:#E0935E;
+    --ochre-soft:#C2703D;
+    --stone:#9B9E94;
+    --line:#33392E;
+    --line-strong:#454C3C;
+    --white:#20251C;
+    --shadow:0 18px 50px rgba(0,0,0,.45);
+    --shadow-soft:0 12px 30px rgba(0,0,0,.35);
+    --warn:#E0935E;
+
+    --map-tiles: 'dark';
+    --map-stroke: #BFE0C8;
+    --map-stroke-hover: #EAF2EA;
+    --map-nodata: #33392E;
+  }
+
+  *{ box-sizing:border-box; }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+
+  html.theme-transition,
+  html.theme-transition body,
+  html.theme-transition header,
+  html.theme-transition .painel-flutuante,
+  html.theme-transition select,
+  html.theme-transition .chip,
+  html.theme-transition .back-link,
+  html.theme-transition .theme-toggle,
+  html.theme-transition footer{
+    transition:background-color .5s ease, color .5s ease, border-color .5s ease, box-shadow .5s ease;
+  }
+
+  body{
+    margin:0;
+    font-family:'IBM Plex Sans', sans-serif;
+    background:
+      radial-gradient(circle at top, rgba(194,112,61,.06), transparent 16%),
+      linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    min-height:100vh;
+    opacity:0;
+    animation:pageFadeIn .45s ease forwards;
+  }
+  @keyframes pageFadeIn{
+    from{ opacity:0; transform:translateY(6px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    body{ animation:none; opacity:1; }
+  }
+
+  a{ color:inherit; }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 32px;
+    border-bottom:1px solid var(--line);
+    background:color-mix(in srgb, var(--paper-elevated) 88%, transparent);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    position:sticky;
+    top:0;
+    z-index:500;
+  }
+
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-icon{
+    display:flex; align-items:center; justify-content:center;
+    width:36px; height:36px;
+    border-radius:10px;
+    background:linear-gradient(135deg, #8B2500, #C2703D);
+    color:var(--paper);
+    font-size:18px;
+    flex-shrink:0;
+    box-shadow:var(--shadow-soft);
+  }
+  .brand-text{ display:flex; flex-direction:column; line-height:1.15; }
+  .brand h1{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0;
+    letter-spacing:.01em;
+  }
+  .brand span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    color:var(--stone);
+    text-transform:uppercase;
+  }
+
+  .header-actions{ display:flex; align-items:center; gap:10px; }
+
+  .back-link{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:.06em;
+    text-decoration:none; color:var(--ink);
+    border:1px solid var(--line);
+    background:var(--white);
+    padding:8px 14px;
+    border-radius:999px;
+    transition:background .15s ease, box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .back-link:hover{ background:var(--paper-deep); box-shadow:var(--shadow-soft); border-color:var(--line-strong); transform:translateX(-2px); }
+
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--paper-elevated);
+    color:var(--ink);
+    cursor:pointer;
+    font-size:15px;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+    flex-shrink:0;
+  }
+  .theme-toggle:hover{ border-color:var(--ochre); transform:rotate(-12deg); }
+  .theme-toggle .icon-moon{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon{ display:inline; }
+
+  .feedback-nav-btn{
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:var(--paper-elevated);
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+    flex-shrink:0;
+  }
+  .feedback-nav-btn:hover{ border-color:var(--ochre); color:var(--ochre); }
+
+  @keyframes themeIconSpin{
+    0%{ transform:rotate(0deg) scale(1); opacity:1; }
+    50%{ transform:rotate(160deg) scale(.4); opacity:0; }
+    51%{ transform:rotate(160deg) scale(.4); opacity:0; }
+    100%{ transform:rotate(360deg) scale(1); opacity:1; }
+  }
+  html.theme-transition .theme-toggle span{ animation:themeIconSpin .9s cubic-bezier(.4,0,.2,1); }
+
+  main{
+    max-width:1440px;
+    margin:0 auto;
+    padding:24px 24px 40px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+
+  #estado{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--stone);
+    padding:80px 0;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  #estado.erro{ color:var(--warn); }
+  #estado.erro .estado-detalhe{
+    max-width:480px;
+    font-size:11.5px;
+    line-height:1.6;
+    color:var(--stone);
+  }
+  .estado-spinner{
+    width:22px; height:22px;
+    border-radius:50%;
+    border:2.5px solid var(--line);
+    border-top-color:var(--ochre);
+    animation:spin .8s linear infinite;
+  }
+  #estado.erro .estado-spinner{ display:none; }
+
+  /* ── toast de aviso discreto ── */
+  #toast-aviso{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(12px);
+    z-index:9999;
+    background:color-mix(in srgb, var(--ochre) 14%, var(--paper-elevated));
+    border:1px solid var(--ochre-soft);
+    border-radius:999px;
+    padding:10px 20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ochre);
+    letter-spacing:.04em;
+    white-space:nowrap;
+    box-shadow:0 8px 24px rgba(0,0,0,.12);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  #toast-aviso.visivel{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+  /* spinner inline na faixa-info durante carregamento */
+  .chip-loading{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    color:var(--stone);
+    border:1px solid var(--line);
+    background:var(--paper-elevated);
+    border-radius:999px;
+    padding:6px 13px;
+  }
+  .chip-loading .mini-spin{
+    width:10px; height:10px;
+    border-radius:50%;
+    border:1.5px solid var(--line);
+    border-top-color:var(--ochre);
+    animation:spin .7s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ── barra de controlos ── */
+  .controlos{
+    position:relative;
+    z-index:2000;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:14px;
+    animation:fadeUp .5s ease backwards;
+    animation-delay:.02s;
+  }
+  .campo{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:220px;
+    flex:1 1 240px;
+  }
+  .campo label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--stone);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  select{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    padding:11px 14px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236E726A' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    padding-right:34px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+    cursor:pointer;
+  }
+  select:focus{ border-color:var(--ochre); box-shadow:0 0 0 3px color-mix(in srgb, var(--ochre) 18%, transparent); }
+  select:disabled{ opacity:.55; cursor:not-allowed; }
+  select.a-verificar{ opacity:.75; cursor:wait; border-style:dashed; }
+
+  /* ── pesquisa de município ── */
+  .campo-pesquisa{ display:flex; flex-direction:column; gap:6px; }
+  .campo-pesquisa .input-wrap{ position:relative; }
+  #pesquisa-municipio{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14.5px;
+    padding:11px 40px 11px 14px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+    box-sizing:border-box;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  #pesquisa-municipio:focus{ border-color:var(--ochre); box-shadow:0 0 0 3px color-mix(in srgb, var(--ochre) 18%, transparent); }
+  #pesquisa-municipio::placeholder{ color:var(--stone); opacity:.75; }
+  .pesquisa-icon{
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    width:15px;
+    height:15px;
+    display:flex;
+    color:var(--stone);
+    opacity:.75;
+    pointer-events:none;
+  }
+  .pesquisa-icon svg{ width:100%; height:100%; display:block; }
+  .pesquisa-sugestoes{
+    position:absolute;
+    left:0; right:0; top:calc(100% + 6px);
+    max-height:280px;
+    overflow-y:auto;
+    background:var(--white);
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-sm);
+    box-shadow:0 8px 24px rgba(0,0,0,.12);
+    z-index:3000;
+    display:none;
+  }
+  .pesquisa-sugestoes.aberta{ display:block; }
+  .pesquisa-sugestoes .item{
+    padding:9px 14px;
+    font-size:14px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+  .pesquisa-sugestoes .item:hover,
+  .pesquisa-sugestoes .item.ativo{
+    background:color-mix(in srgb, var(--ochre) 12%, transparent);
+  }
+  .pesquisa-sugestoes .item mark{
+    background:none;
+    color:var(--ochre);
+    font-weight:600;
+  }
+  .pesquisa-sugestoes .item .id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--stone);
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .pesquisa-sugestoes .vazio{
+    padding:12px 14px;
+    font-size:13px;
+    color:var(--stone);
+  }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    color:var(--stone);
+    border:1px solid var(--line);
+    background:var(--paper-elevated);
+    border-radius:999px;
+    padding:6px 13px;
+    line-height:1.4;
+  }
+  .chip.alerta{ color:var(--ochre); border-color:var(--ochre-soft); }
+
+  .faixa-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:4px;
+    margin-bottom:6px;
+    animation:fadeUp .5s ease backwards;
+    animation-delay:.06s;
+  }
+
+  .mapa-wrap{
+    position:relative;
+    width:100%;
+    height:clamp(440px, 72vh, 760px);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    animation:fadeUp .55s ease backwards;
+    animation-delay:.1s;
+  }
+  #mapa{ width:100%; height:100%; background:var(--paper-deep); }
+
+  .leaflet-control-attribution{
+    font-family:'IBM Plex Mono', monospace !important;
+    font-size:10px !important;
+  }
+
+  .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
+
+  .painel-flutuante{
+    background:color-mix(in srgb, var(--paper-elevated) 92%, transparent);
+    backdrop-filter:blur(10px) saturate(1.1);
+    -webkit-backdrop-filter:blur(10px) saturate(1.1);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    box-shadow:var(--shadow-soft);
+    padding:14px 16px;
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    min-width:200px;
+  }
+  .painel-flutuante h4{
+    margin:0 0 8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--stone);
+  }
+
+  .legenda-linha{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    padding:2px 0;
+  }
+  .legenda-cor{
+    width:14px; height:14px;
+    border-radius:4px;
+    flex-shrink:0;
+    border:1px solid rgba(0,0,0,.12);
+  }
+  .legenda-texto{ color:var(--ink); }
+
+  /* painel de informação do incêndio */
+  .info-ardida{ width:260px; }
+  .info-ardida .info-vazio{
+    font-size:12.5px;
+    color:var(--stone);
+    line-height:1.5;
+  }
+  .info-ardida .info-id{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.04em;
+    color:var(--stone);
+    margin-bottom:2px;
+  }
+  .info-ardida .info-local{
+    font-family:'Spectral', serif;
+    font-size:17px;
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.25;
+  }
+  .info-ardida .info-atributo{
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+  }
+  .info-ardida .info-atributo .label{
+    font-size:11px;
+    color:var(--stone);
+    margin-bottom:2px;
+  }
+  .info-ardida .info-atributo .valor{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    font-weight:500;
+    color:#8B2500;
+  }
+  html[data-theme="dark"] .info-ardida .info-atributo .valor{ color:#E0935E; }
+  .info-ardida .info-fixado{
+    margin-top:10px;
+    font-size:10.5px;
+    color:var(--stone);
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:.04em;
+  }
+
+  footer{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    color:var(--stone);
+    padding:10px 0 6px;
+  }
+
+  /* ── botão de download (rodapé) ── */
+  .download-wrap{
+    display:flex;
+    justify-content:center;
+    padding:4px 0 18px;
+  }
+  .btn-download{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:500;
+    font-size:13px;
+    letter-spacing:.01em;
+    color:var(--ink);
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:background .15s ease, box-shadow .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .btn-download:hover{
+    background:var(--paper-deep);
+    border-color:var(--line-strong);
+    box-shadow:var(--shadow-soft);
+    transform:translateY(-1px);
+  }
+  .btn-download svg{ width:16px; height:16px; flex-shrink:0; }
+
+  /* ── modal: download indisponível ── */
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(15,20,14,.45);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:10000;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .modal-overlay.aberto{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .modal-caixa{
+    background:var(--paper-elevated);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    max-width:380px;
+    width:100%;
+    padding:28px 26px 24px;
+    text-align:center;
+    transform:translateY(10px) scale(.97);
+    transition:transform .22s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-overlay.aberto .modal-caixa{
+    transform:translateY(0) scale(1);
+  }
+  .modal-icone{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:48px;
+    height:48px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:color-mix(in srgb, var(--ochre) 16%, var(--paper-elevated));
+    color:var(--ochre);
+  }
+  .modal-icone svg{ width:24px; height:24px; }
+  .modal-titulo{
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size:18px;
+    color:var(--ink);
+    margin:0 0 8px;
+  }
+  .modal-texto{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--stone);
+    margin:0 0 22px;
+  }
+  .modal-fechar{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:500;
+    font-size:13px;
+    color:var(--paper);
+    background:var(--green-deep);
+    border:none;
+    border-radius:999px;
+    padding:10px 26px;
+    cursor:pointer;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .modal-fechar:hover{
+    background:var(--green);
+    transform:translateY(-1px);
+  }
+
+  @media (max-width:640px){
+    header{ padding:12px 16px; }
+    .brand-icon{ width:32px; height:32px; font-size:14px; }
+    .brand h1{ font-size:17px; }
+    .brand span{ display:none; }
+    main{ padding:16px 14px 32px; }
+    .mapa-wrap{ height:clamp(380px, 62vh, 560px); border-radius:var(--radius); }
+    .info-ardida{ width:200px; }
+    .back-link span.txt{ display:none; }
+    .back-link{ padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    
+    <div class="brand-text">
+      <h1>Histórico de Áreas Ardidas</h1>
+      <span>Incêndios Florestais · Portugal Continental · Fonte: ICNF </span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
+      <span class="icon-sun">&#9728;</span>
+      <span class="icon-moon">&#9789;</span>
+    </button>
+    <a class="back-link" href="index.html">← <span class="txt">Voltar ao mapa</span></a>
+  </div>
+</header>
+
+<main>
+
+  <div id="estado"><div class="estado-spinner"></div><span>A carregar índice…</span></div>
+  <div id="toast-aviso" role="status" aria-live="polite"></div>
+
+  <div id="conteudo" style="display:none">
+
+    <div class="controlos">
+      <!-- Seletor de Município -->
+      <div class="campo campo-pesquisa">
+        <label for="pesquisa-municipio">Município</label>
+        <div class="input-wrap">
+          <input
+            type="text"
+            id="pesquisa-municipio"
+            autocomplete="off"
+            placeholder="Procurar município…"
+            aria-expanded="false"
+            aria-autocomplete="list"
+            role="combobox"
+          />
+          <span class="pesquisa-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="M21 21l-4.3-4.3"/>
+            </svg>
+          </span>
+          <div class="pesquisa-sugestoes" id="pesquisa-sugestoes" role="listbox"></div>
+        </div>
+      </div>
+
+      <!-- Seletor de Ano -->
+      <div class="campo" style="max-width:180px; flex:0 1 180px;">
+        <label for="select-ano">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Ano
+        </label>
+        <select id="select-ano" disabled></select>
+      </div>
+
+      <!-- Seletor de Atributo -->
+      <div class="campo" style="flex:2 1 320px;">
+        <label for="select-atributo">Atributo</label>
+        <select id="select-atributo" disabled></select>
+      </div>
+    </div>
+
+    <div class="faixa-info" id="faixa-info"></div>
+
+    <div class="mapa-wrap">
+      <div id="mapa"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<div class="download-wrap">
+  <button type="button" class="btn-download" id="btn-download" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+    Download dos dados
+  </button>
+</div>
+
+<footer>Classificado em Quintis · DataGis · Dados de Incêndios Florestais</footer>
+
+<div class="modal-overlay" id="modal-download" role="dialog" aria-modal="true" aria-labelledby="modal-download-titulo">
+  <div class="modal-caixa">
+    <div class="modal-icone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
+    </div>
+    <h3 class="modal-titulo" id="modal-download-titulo">Download temporariamente indisponível</h3>
+    <p class="modal-texto">Esta funcionalidade está em desenvolvimento e será disponibilizada brevemente. Pedimos desculpa pelo incómodo.</p>
+    <button type="button" class="modal-fechar" id="modal-download-fechar">Entendido</button>
+  </div>
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+
+  /* =========================================================
+     1. TEMA (claro / escuro)
+     ========================================================= */
+  var html = document.documentElement;
+  var THEME_KEY = 'datagis-theme';
+  function aplicarTema(tema, animar){
+    if(animar){
+      html.classList.add('theme-transition');
+      window.setTimeout(function(){ html.classList.remove('theme-transition'); }, 950);
+    }
+    html.setAttribute('data-theme', tema);
+    try{ localStorage.setItem(THEME_KEY, tema); }catch(e){}
+    atualizarTilesTema();
+  }
+  (function(){
+    var guardado = null;
+    try{ guardado = localStorage.getItem(THEME_KEY); }catch(e){}
+    var preferido = guardado || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    html.setAttribute('data-theme', preferido);
+  })();
+  document.getElementById('theme-toggle').addEventListener('click', function(){
+    var atual = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    aplicarTema(atual, true);
+  });
+
+
+  /* =========================================================
+     2. CONFIGURAÇÃO
+     -- Estrutura de dados:
+        areas_ardidas_finais_l/
+          {ano}/
+            {municipio}.geojson
+        O índice (ardidas_index.json) deve ter a forma:
+        {
+          "municipios": [
+            { "nome": "Abrantes", "distrito": "Santarém", "anos": [2000, 2001, ...] }
+          ],
+          "anos": [2000, 2001, ..., 2023]
+        }
+        Se não existir índice, os anos e municípios são
+        configurados manualmente em CONFIG abaixo.
+     ========================================================= */
+
+  var CONFIG = {
+    municipios: [],   // preenchido pelo índice ou manualmente
+    anos: [],         // lista de anos disponíveis
+    basePath: 'areas_ardidas_finais_l'  // pasta raiz
+  };
+
+  // Paleta de fogo (do claro ao escuro)
+  var RAMPA = ['#FFF3E0', '#FFCC80', '#FF7043', '#D84315', '#7F0000'];
+  var N_CLASSES = 5;
+
+
+  /* =========================================================
+     3. CAMPOS A IGNORAR (administrativos / geometria)
+     ========================================================= */
+  var PADROES_IGNORAR = [
+    /^OBJECTID$/i, /^FID$/i, /^ID$/i,
+    /^SHAPE_AREA$/i, /^SHAPE_LENGTH$/i, /^SHAPE_LENG$/i,
+    /^X$/i, /^Y$/i, /^LAT$/i, /^LON(G)?$/i,
+    /^DTMN/i, /^DICOFRE/i, /^GEOCOD/i,
+    /^NUTS/i
+  ];
+
+  /* =========================================================
+     4. DICIONÁRIO DE ATRIBUTOS DE ÁREAS ARDIDAS
+     -- Cobre os campos mais comuns em datasets de incêndios
+        florestais portugueses (ICNF / EFFIS / SGIF).
+        Qualquer campo numérico não reconhecido aparece em
+        "Outros indicadores" com nome humanizado automaticamente.
+     ========================================================= */
+  var DICIONARIO_ATRIBUTOS = {
+    // Área
+    AREA_HA:          { label: 'Área ardida (ha)',              grupo: 'Área' },
+    AREA_TOTAL:       { label: 'Área total ardida (ha)',         grupo: 'Área' },
+    AREA_ARVOREDO:    { label: 'Área de arvoredo ardido (ha)',   grupo: 'Área' },
+    AREA_MATO:        { label: 'Área de mato ardido (ha)',       grupo: 'Área' },
+    AREA_AGRICOLA:    { label: 'Área agrícola ardida (ha)',      grupo: 'Área' },
+    AREA_FLORESTA:    { label: 'Área florestal ardida (ha)',     grupo: 'Área' },
+    AREA_INCULTOS:    { label: 'Área incultos / matos (ha)',     grupo: 'Área' },
+    AREA_OUTRAS:      { label: 'Outras áreas ardidas (ha)',      grupo: 'Área' },
+    SUP_TOTAL:        { label: 'Superfície total (ha)',          grupo: 'Área' },
+    SUP_ARVOREDO:     { label: 'Superfície arvoredo (ha)',       grupo: 'Área' },
+    SUP_MATO:         { label: 'Superfície mato (ha)',           grupo: 'Área' },
+
+    // Ocorrências / Incêndios
+    N_OCORRENCIAS:    { label: 'Nº de ocorrências',             grupo: 'Ocorrências' },
+    N_INCENDIOS:      { label: 'Nº de incêndios',               grupo: 'Ocorrências' },
+    N_FOGACHOS:       { label: 'Nº de fogachos',                grupo: 'Ocorrências' },
+    FREQUENCIA:       { label: 'Frequência de incêndios',       grupo: 'Ocorrências' },
+
+    // Dimensão / Duração
+    DURACAO_H:        { label: 'Duração média (horas)',         grupo: 'Características' },
+    DURACAO_MEDIA:    { label: 'Duração média (horas)',         grupo: 'Características' },
+    AREA_MEDIA:       { label: 'Área média por incêndio (ha)',  grupo: 'Características' },
+    PERIMETRO:        { label: 'Perímetro (m)',                 grupo: 'Características' },
+    PERIMETRO_M:      { label: 'Perímetro (m)',                 grupo: 'Características' },
+
+    // Ano / Período
+    ANO:              { label: 'Ano',                           grupo: 'Temporal' },
+    MES:              { label: 'Mês',                           grupo: 'Temporal' },
+    DIA_INICIO:       { label: 'Dia de início',                 grupo: 'Temporal' },
+    DIA_EXTINCAO:     { label: 'Dia de extinção',               grupo: 'Temporal' }
+  };
+
+  function ignorarCampo(nome){
+    for(var i=0;i<PADROES_IGNORAR.length;i++){
+      if(PADROES_IGNORAR[i].test(nome)) return true;
+    }
+    return false;
+  }
+
+  function humanizar(nome){
+    var t = nome.replace(/_/g, ' ').toLowerCase();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  function grupoAutomatico(nome){
+    var n = nome.toUpperCase();
+    if(/AREA|SUP(ERFICIE)?|HA/.test(n)) return 'Área';
+    if(/OCORR|INCEND|FOGACH|FREQ/.test(n)) return 'Ocorrências';
+    if(/DURACAO|MEDIA|PERIMET/.test(n)) return 'Características';
+    if(/ANO|MES|DIA|DATA/.test(n)) return 'Temporal';
+    return 'Outros indicadores';
+  }
+
+  function infoAtributo(nome){
+    var dic = DICIONARIO_ATRIBUTOS[nome.toUpperCase()];
+    if(dic) return dic;
+    return { label: humanizar(nome), grupo: grupoAutomatico(nome) };
+  }
+
+  var PADROES_IDENTIFICACAO = [
+    /^NOME$/i, /^MUNICIPIO$/i, /^CONCELHO$/i, /^FREGUESIA$/i,
+    /^LUGAR$/i, /^LOCALIDADE$/i, /^DISTRITO$/i, /^CAUSA$/i
+  ];
+
+
+  /* =========================================================
+     5. QUINTIS
+     ========================================================= */
+  function calcularQuantis(valores, classes){
+    var v = valores.filter(function(x){ return typeof x === 'number' && !isNaN(x); }).slice().sort(function(a,b){ return a-b; });
+    if(v.length === 0) return [];
+    var breaks = [v[0]];
+    for(var i=1;i<classes;i++){
+      var pos = (i/classes) * (v.length - 1);
+      var inf = Math.floor(pos), sup = Math.ceil(pos), frac = pos - inf;
+      breaks.push(v[inf] + (v[sup]-v[inf]) * frac);
+    }
+    breaks.push(v[v.length-1]);
+    var unicas = [];
+    for(var j=0;j<breaks.length;j++){
+      if(j===0 || breaks[j] > unicas[unicas.length-1]) unicas.push(breaks[j]);
+    }
+    return unicas;
+  }
+
+  function classeDoValor(valor, breaks){
+    if(typeof valor !== 'number' || isNaN(valor)) return -1;
+    if(breaks.length < 2) return 0;
+    for(var i=1;i<breaks.length;i++){
+      if(valor <= breaks[i]) return Math.min(i-1, RAMPA.length-1);
+    }
+    return RAMPA.length-1;
+  }
+
+  function corDoValor(valor, breaks){
+    if(typeof valor !== 'number' || isNaN(valor)) return getComputedStyle(html).getPropertyValue('--map-nodata').trim() || '#CCC';
+    var nClasses = Math.max(breaks.length - 1, 1);
+    var idx = classeDoValor(valor, breaks);
+    var passo = (RAMPA.length - 1) / Math.max(nClasses - 1, 1);
+    var corIdx = nClasses === 1 ? RAMPA.length - 1 : Math.round(idx * passo);
+    return RAMPA[Math.min(corIdx, RAMPA.length-1)];
+  }
+
+  var fmt = new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 2 });
+
+
+  /* =========================================================
+     6. ESTADO GLOBAL
+     ========================================================= */
+  var mapa, camadaTiles, camadaGeoJSON, camadaLimite;
+  var dadosAtuais = null;
+  var atributoAtual = null;
+  var breaksAtuais = [];
+  var featureFixada = null;
+
+  var controloLegenda, controloInfo;
+  var municipioAtualObj = null;
+  var anoAtual = null;
+
+
+  /* =========================================================
+     7. MAPA — inicialização e tiles
+     ========================================================= */
+  function urlTiles(){
+    var tema = html.getAttribute('data-theme');
+    return tema === 'dark'
+      ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  }
+  function atualizarTilesTema(){
+    if(!mapa || !camadaTiles) return;
+    camadaTiles.setUrl(urlTiles());
+    if(camadaGeoJSON) camadaGeoJSON.setStyle(estiloFeature);
+    if(camadaLimite) camadaLimite.setStyle(estiloLimite());
+  }
+
+  function estiloLimite(){
+    var dark = html.getAttribute('data-theme') === 'dark';
+    return {
+      color: dark ? '#9FCBAE' : '#234635',
+      weight: 2,
+      opacity: 0.7,
+      fillColor: 'transparent',
+      fillOpacity: 0,
+      dashArray: '5 4',
+      interactive: false
+    };
+  }
+
+  function urlLimiteMunicipio(municipio){
+    // previews/{Distrito}/{Municipio}/caop_preview.geojson
+    // Usa underscore em vez de espaço (igual à estrutura de pastas)
+    var distrito = (municipio.distrito || '').trim().replace(/ /g, '_');
+    var nome     = municipio.nome.replace(/ /g, '_');
+    if(!distrito){
+      console.warn('[CAOP] Município sem "distrito" definido no índice:', municipio.nome,
+        '— verifica ardidas_index.json.');
+      return null;
+    }
+    return 'previews/' + distrito + '/' + nome + '/caop_preview.geojson';
+  }
+
+  function carregarLimiteMunicipio(municipio){
+    if(!mapa) return;
+    if(camadaLimite){ mapa.removeLayer(camadaLimite); camadaLimite = null; }
+    if(!municipio) return;
+
+    var url = urlLimiteMunicipio(municipio);
+    if(!url) return; // já avisado em urlLimiteMunicipio
+    console.log('[CAOP] A tentar carregar limite:', url);
+
+    fetch(url)
+      .then(function(r){
+        console.log('[CAOP] Resposta:', r.status, url);
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(gj){
+        console.log('[CAOP] GeoJSON recebido, features:', (gj.features||[]).length);
+        camadaLimite = L.geoJSON(gj, { style: estiloLimite(), interactive: false });
+        camadaLimite.addTo(mapa);
+        if(camadaGeoJSON) camadaGeoJSON.bringToFront();
+      })
+      .catch(function(err){
+        console.warn('[CAOP] Limite não encontrado:', url, err.message);
+      });
+  }
+
+  function inicializarMapa(centro, zoom){
+    mapa = L.map('mapa', { zoomControl: true, attributionControl: true }).setView(centro, zoom);
+    camadaTiles = L.tileLayer(urlTiles(), {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(mapa);
+
+    var PainelFlutuante = L.Control.extend({
+      onAdd: function(){
+        var div = L.DomUtil.create('div', 'painel-flutuante');
+        L.DomEvent.disableClickPropagation(div);
+        return div;
+      }
+    });
+
+    controloLegenda = new PainelFlutuante({ position: 'bottomright' });
+    controloLegenda.addTo(mapa);
+
+    controloInfo = new PainelFlutuante({ position: 'topright' });
+    controloInfo.addTo(mapa);
+    controloInfo.getContainer().classList.add('info-ardida');
+
+    desenharInfoPainel(null);
+  }
+
+
+  /* =========================================================
+     8. ESTILO / EVENTOS DOS POLÍGONOS
+     ========================================================= */
+  function estiloFeature(feature){
+    var valor = feature.properties[atributoAtual];
+    var temaDark = html.getAttribute('data-theme') === 'dark';
+    return {
+      fillColor: corDoValor(valor, breaksAtuais),
+      fillOpacity: 0.80,
+      color: temaDark ? '#E0935E' : '#7F0000',
+      weight: 1,
+      opacity: 0.55
+    };
+  }
+
+  function destacar(layer){
+    layer.setStyle({ weight: 2.5, opacity: 1, fillOpacity: 0.92 });
+    layer.bringToFront();
+  }
+  function removerDestaque(layer){
+    camadaGeoJSON.resetStyle(layer);
+  }
+
+  function nomeLocal(props){
+    for(var i=0;i<PADROES_IDENTIFICACAO.length;i++){
+      for(var k in props){
+        if(PADROES_IDENTIFICACAO[i].test(k) && props[k]) return props[k];
+      }
+    }
+    return null;
+  }
+
+  function idFeature(props){
+    var chaves = ['OBJECTID', 'FID', 'ID', 'COD_SGIF', 'NUM_OCORR', 'ICNF_ID'];
+    for(var i=0;i<chaves.length;i++){
+      if(props[chaves[i]] !== undefined) return props[chaves[i]];
+    }
+    return '—';
+  }
+
+  function desenharInfoPainel(props, fixado){
+    var c = controloInfo.getContainer();
+    if(!props){
+      c.innerHTML = '<h4>Área ardida</h4><div class="info-vazio">Passe o rato sobre o mapa para ver detalhes de cada área ardida.</div>';
+      return;
+    }
+    var local = nomeLocal(props);
+    var info = infoAtributo(atributoAtual);
+    var valor = props[atributoAtual];
+    var valorTxt = (typeof valor === 'number' && !isNaN(valor)) ? fmt.format(valor) : 'Sem dados';
+
+    c.innerHTML =
+      '<h4>Área ardida</h4>' +
+      '<div class="info-id">ID ' + idFeature(props) + '</div>' +
+      '<div class="info-local">' + (local || (municipioAtualObj ? municipioAtualObj.nome : 'Localização')) + '</div>' +
+      '<div class="info-atributo">' +
+        '<div class="label">' + info.label + '</div>' +
+        '<div class="valor">' + valorTxt + '</div>' +
+      '</div>' +
+      (fixado ? '<div class="info-fixado">FIXADO · clique noutra área para alterar</div>' : '');
+  }
+
+  function aoCadaFeature(feature, layer){
+    layer.on('mouseover', function(){
+      destacar(layer);
+      if(!featureFixada) desenharInfoPainel(feature.properties, false);
+    });
+    layer.on('mouseout', function(){
+      removerDestaque(layer);
+      if(!featureFixada) desenharInfoPainel(null);
+      else desenharInfoPainel(featureFixada.properties, true);
+    });
+    layer.on('click', function(){
+      featureFixada = (featureFixada === feature) ? null : feature;
+      if(featureFixada){
+        destacar(layer);
+        desenharInfoPainel(feature.properties, true);
+      } else {
+        removerDestaque(layer);
+        desenharInfoPainel(null);
+      }
+    });
+
+    var info = infoAtributo(atributoAtual);
+    var valor = feature.properties[atributoAtual];
+    var valorTxt = (typeof valor === 'number' && !isNaN(valor)) ? fmt.format(valor) : 'Sem dados';
+    layer.bindTooltip('ID ' + idFeature(feature.properties) + ' · ' + info.label + ': ' + valorTxt, { sticky: true });
+  }
+
+
+  /* =========================================================
+     9. LEGENDA
+     ========================================================= */
+  function desenharLegenda(){
+    var c = controloLegenda.getContainer();
+    var info = infoAtributo(atributoAtual);
+    var html_ = '<h4>' + info.label + '</h4>';
+
+    if(breaksAtuais.length < 2){
+      html_ += '<div class="legenda-linha"><span class="legenda-texto">Sem variação suficiente para classificar</span></div>';
+    } else {
+      var nClasses = breaksAtuais.length - 1;
+      for(var i=0;i<nClasses;i++){
+        var passo = (RAMPA.length - 1) / Math.max(nClasses - 1, 1);
+        var corIdx = nClasses === 1 ? RAMPA.length - 1 : Math.round(i * passo);
+        var cor = RAMPA[Math.min(corIdx, RAMPA.length-1)];
+        var de = breaksAtuais[i], ate = breaksAtuais[i+1];
+        html_ += '<div class="legenda-linha"><span class="legenda-cor" style="background:' + cor + '"></span>' +
+                 '<span class="legenda-texto">' + fmt.format(Math.round(de)) + ' – ' + fmt.format(Math.round(ate)) + '</span></div>';
+      }
+    }
+    html_ += '<div class="legenda-linha"><span class="legenda-cor" style="background:var(--map-nodata)"></span><span class="legenda-texto">Sem dados</span></div>';
+    c.innerHTML = html_;
+  }
+
+
+  /* =========================================================
+     10. APLICAR ATRIBUTO SELECIONADO
+     ========================================================= */
+  function aplicarAtributo(nomeAtributo){
+    atributoAtual = nomeAtributo;
+    var valores = dadosAtuais.features.map(function(f){ return f.properties[nomeAtributo]; });
+    breaksAtuais = calcularQuantis(valores, N_CLASSES);
+
+    camadaGeoJSON.eachLayer(function(layer){
+      layer.setStyle(estiloFeature(layer.feature));
+      var info = infoAtributo(atributoAtual);
+      var valor = layer.feature.properties[atributoAtual];
+      var valorTxt = (typeof valor === 'number' && !isNaN(valor)) ? fmt.format(valor) : 'Sem dados';
+      layer.setTooltipContent('ID ' + idFeature(layer.feature.properties) + ' · ' + info.label + ': ' + valorTxt);
+    });
+
+    desenharLegenda();
+    if(featureFixada) desenharInfoPainel(featureFixada.properties, true);
+  }
+
+
+  /* =========================================================
+     11. CONSTRUÇÃO DO SELETOR DE ATRIBUTOS
+     ========================================================= */
+  function construirSeletorAtributos(features){
+    var amostra = features[0] ? features[0].properties : {};
+    var grupos = {};
+    var ordemGrupos = ['Área', 'Ocorrências', 'Características', 'Temporal', 'Outros indicadores'];
+
+    Object.keys(amostra).forEach(function(campo){
+      if(ignorarCampo(campo)) return;
+      if(typeof amostra[campo] !== 'number') return;
+      var info = infoAtributo(campo);
+      if(!grupos[info.grupo]) grupos[info.grupo] = [];
+      grupos[info.grupo].push({ campo: campo, label: info.label });
+    });
+
+    var select = document.getElementById('select-atributo');
+    select.innerHTML = '';
+    ordemGrupos.forEach(function(nomeGrupo){
+      var lista = grupos[nomeGrupo];
+      if(!lista || !lista.length) return;
+      lista.sort(function(a,b){ return a.label.localeCompare(b.label, 'pt'); });
+      var optgroup = document.createElement('optgroup');
+      optgroup.label = nomeGrupo;
+      lista.forEach(function(item){
+        var opt = document.createElement('option');
+        opt.value = item.campo;
+        opt.textContent = item.label;
+        optgroup.appendChild(opt);
+      });
+      select.appendChild(optgroup);
+    });
+
+    select.disabled = (select.options.length === 0);
+    return select.options.length ? select.options[0].value : null;
+  }
+
+
+  /* =========================================================
+     12. SELETOR DE ANO
+     ========================================================= */
+  function construirSeletorAnos(anos){
+    // "anos" é lista de objetos {chave, label, sort} vindos do índice.
+    // No seletor mostramos do mais recente para o mais antigo.
+    var select = document.getElementById('select-ano');
+    select.innerHTML = '';
+    var ordenados = anos.slice().sort(function(a,b){ return b.sort - a.sort; });
+    ordenados.forEach(function(ano){
+      var opt = document.createElement('option');
+      opt.value       = ano.chave;   // ex: "1990_1999" ou "2009"
+      opt.textContent = ano.label;   // ex: "1990–1999" ou "2009"
+      select.appendChild(opt);
+    });
+    select.disabled = ordenados.length <= 1;
+    if(ordenados.length) select.selectedIndex = 0; // mais recente no topo
+    return ordenados.length ? ordenados[0].chave : null;
+  }
+
+  function atualizarSeletorAnosParaMunicipio(municipio, callback){
+    // municipio.anos é lista de chaves (strings): ["1990_1999", "2000", ...]
+    // CONFIG.anos é lista de objetos {chave, label, sort}
+    // Filtramos os objetos globais pelas chaves do município (ou usamos todos se não houver lista)
+    var chavesMun = (municipio && municipio.anos && municipio.anos.length)
+      ? municipio.anos
+      : null;
+    var objsAnos = chavesMun
+      ? CONFIG.anos.filter(function(a){ return chavesMun.indexOf(a.chave) !== -1; })
+      : CONFIG.anos;
+
+    if(!objsAnos || !objsAnos.length){
+      document.getElementById('select-ano').disabled = true;
+      if(callback) callback(null);
+      return null; // modo síncrono sem callback
+    }
+
+    // Se callback fornecido → verificamos ficheiros em paralelo antes de mostrar anos
+    if(callback){
+      var selectAno = document.getElementById('select-ano');
+      selectAno.innerHTML = '<option disabled selected>A verificar anos disponíveis…</option>';
+      selectAno.disabled = true;
+      selectAno.classList.add('a-verificar');
+
+      var promessas = objsAnos.map(function(ano){
+        var url = urlGeoJSON(municipio.ficheiro || municipio.nome, ano.chave);
+        return fetch(url, { method: 'HEAD' })
+          .then(function(r){ return r.ok ? ano : null; })
+          .catch(function(){ return null; });
+      });
+
+      Promise.all(promessas).then(function(resultados){
+        var anosValidos = resultados.filter(function(a){ return a !== null; });
+        selectAno.classList.remove('a-verificar');
+        if(!anosValidos.length){
+          selectAno.innerHTML = '<option disabled selected>Sem dados disponíveis</option>';
+          selectAno.disabled = true;
+          callback(null);
+          return;
+        }
+        var chave = construirSeletorAnos(anosValidos);
+        callback(chave);
+      });
+      return; // assíncrono
+    }
+
+    // Modo síncrono (arranque inicial, sem verificação de ficheiros)
+    return construirSeletorAnos(objsAnos);
+  }
+
+
+  /* =========================================================
+     13. CAMINHO DO FICHEIRO (ano + município)
+     ========================================================= */
+  function urlGeoJSON(municipioNome, ano){
+    // Ex: areas_ardidas_finais_l/2000/Abrantes_de_Basto.geojson
+    // Usa underscore em vez de espaço (convenção dos ficheiros locais)
+    var nomeSlug = municipioNome.replace(/ /g, '_');
+    return CONFIG.basePath + '/' + ano + '/' + encodeURIComponent(nomeSlug) + '.geojson';
+  }
+
+
+  /* =========================================================
+     14. ERRO
+     ========================================================= */
+  function mostrarErro(msg, detalhe){
+    var el = document.getElementById('estado');
+    el.classList.add('erro');
+    el.innerHTML = '<span>' + msg + '</span>' + (detalhe ? '<div class="estado-detalhe">' + detalhe + '</div>' : '');
+    el.style.display = 'flex';
+    document.getElementById('conteudo').style.display = 'none';
+  }
+
+
+  /* =========================================================
+     15. CARREGAMENTO DO GEOJSON
+     ========================================================= */
+  /* Toast de aviso breve sem destruir o mapa */
+  var _toastTimer = null;
+  function mostrarToast(msg){
+    var el = document.getElementById('toast-aviso');
+    el.textContent = msg;
+    el.classList.add('visivel');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(function(){ el.classList.remove('visivel'); }, 3500);
+  }
+
+  function carregarCombinacao(municipio, ano){
+    var url = urlGeoJSON(municipio.ficheiro || municipio.nome, ano);
+    var mapaJaVisivel = mapa && document.getElementById('conteudo').style.display !== 'none';
+
+    featureFixada = null;
+
+    // Se o mapa ainda não existe, mostra spinner normal a tela inteira
+    if(!mapaJaVisivel){
+      document.getElementById('estado').innerHTML = '<div class="estado-spinner"></div><span>A carregar ' + municipio.nome + ' — ' + ano + '…</span>';
+      document.getElementById('estado').style.display = 'flex';
+      document.getElementById('estado').classList.remove('erro');
+      document.getElementById('conteudo').style.display = 'none';
+    } else {
+      // Mapa já visível — mostra apenas spinner na faixa de chips
+      document.getElementById('faixa-info').innerHTML =
+        '<span class="chip-loading"><span class="mini-spin"></span>' + municipio.nome + ' — ' + ano + '</span>';
+    }
+
+    fetch(url)
+      .then(function(resp){
+        if(!resp.ok) throw new Error('HTTP ' + resp.status + ' — ' + url);
+        return resp.json();
+      })
+      .then(function(geojson){
+        if(!mapa){
+          inicializarMapa([39.6, -8.0], 7);
+        }
+        if(camadaGeoJSON){ mapa.removeLayer(camadaGeoJSON); }
+        // Carrega / actualiza o limite do município (independente do ano)
+        if(!camadaLimite || municipio !== municipioAtualObj){
+          carregarLimiteMunicipio(municipio);
+        }
+
+        var featuresValidas = (geojson.features || []).filter(function(f){
+          return f && f.geometry && f.geometry.coordinates && f.geometry.coordinates.length > 0;
+        });
+
+        if(!featuresValidas.length){
+          // Ficheiro existe mas está vazio — aviso discreto, mapa anterior mantém-se
+          if(mapaJaVisivel){
+            mostrarToast('Sem incêndios registados em ' + municipio.nome + ' (' + ano + ')');
+            document.getElementById('faixa-info').innerHTML =
+              '<span class="chip">Ano: ' + ano + '</span>' +
+              '<span class="chip">' + municipio.nome + '</span>' +
+              '<span class="chip alerta">Sem ocorrências registadas</span>';
+          } else {
+            mostrarErro(
+              'Sem dados de incêndios para ' + municipio.nome + ' em ' + ano + '.',
+              'O ficheiro existe mas não contém geometrias válidas.'
+            );
+          }
+          return;
+        }
+
+        var geojsonFiltrado = { type: 'FeatureCollection', features: featuresValidas };
+        dadosAtuais = geojsonFiltrado;
+
+        var primeiroAtributo = construirSeletorAtributos(featuresValidas);
+        if(!primeiroAtributo){
+          if(mapaJaVisivel){
+            mostrarToast('Ficheiro sem atributos numéricos: ' + ano);
+          } else {
+            mostrarErro('Não foram encontrados atributos numéricos no ficheiro.', 'Caminho: ' + url);
+          }
+          return;
+        }
+        atributoAtual = primeiroAtributo;
+
+        camadaGeoJSON = L.geoJSON(geojsonFiltrado, {
+          style: estiloFeature,
+          onEachFeature: aoCadaFeature
+        }).addTo(mapa);
+
+        var bounds = camadaGeoJSON.getBounds();
+        if(bounds && bounds.isValid()){
+          mapa.fitBounds(bounds, { padding: [16,16], maxZoom: 13 });
+        }
+
+        document.getElementById('select-atributo').value = primeiroAtributo;
+        aplicarAtributo(primeiroAtributo);
+
+        var n = featuresValidas.length;
+        document.getElementById('faixa-info').innerHTML =
+          '<span class="chip">🔥 ' + n + ' polígono' + (n !== 1 ? 's' : '') + '</span>' +
+          '<span class="chip">Ano: ' + ano + '</span>' +
+          '<span class="chip">' + municipio.nome + '</span>' +
+          '<span class="chip alerta">Dados de incêndios florestais</span>';
+
+        document.getElementById('estado').style.display = 'none';
+        document.getElementById('conteudo').style.display = 'block';
+        window.setTimeout(function(){ mapa.invalidateSize(); }, 50);
+      })
+      .catch(function(err){
+        var e404 = err.message && err.message.indexOf('HTTP 404') !== -1 ||
+                   err.message && err.message.indexOf('HTTP 0') !== -1;
+        if(e404 && mapaJaVisivel){
+          // 404 com mapa já visível — toast discreto, não destrói nada
+          mostrarToast('Sem dados para ' + municipio.nome + ' em ' + ano);
+          document.getElementById('faixa-info').innerHTML =
+            '<span class="chip">Ano: ' + ano + '</span>' +
+            '<span class="chip">' + municipio.nome + '</span>' +
+            '<span class="chip alerta">Sem ficheiro para este ano</span>';
+        } else if(e404){
+          // 404 sem mapa ainda — mostra erro completo
+          mostrarErro(
+            'Sem dados para ' + municipio.nome + ' em ' + ano + '.',
+            'Ficheiro não encontrado: <code>' + url + '</code>'
+          );
+        } else {
+          mostrarErro(
+            'Erro ao carregar os dados.',
+            'Caminho: <code>' + url + '</code><br>Detalhe: ' + err.message
+          );
+        }
+      });
+  }
+
+
+  /* =========================================================
+     16. PESQUISA DIRETA DE MUNICÍPIO
+     ========================================================= */
+  function normalizarTexto(s){
+    return (s || '')
+      .toString()
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function realcarOcorrencia(nome, termo){
+    if(!termo) return nome;
+    var nomeNorm = normalizarTexto(nome);
+    var termoNorm = normalizarTexto(termo);
+    var idx = nomeNorm.indexOf(termoNorm);
+    if(idx === -1) return nome;
+    return nome.slice(0, idx) +
+      '<mark>' + nome.slice(idx, idx + termo.length) + '</mark>' +
+      nome.slice(idx + termo.length);
+  }
+
+  function construirSeletorMunicipios(){
+    var input = document.getElementById('pesquisa-municipio');
+    var lista = document.getElementById('pesquisa-sugestoes');
+    var indiceAtivo = -1;
+    var resultadosAtuais = [];
+
+    if(CONFIG.municipios.length <= 1) input.setAttribute('disabled', 'disabled');
+
+    function obterResultados(termo){
+      var termoNorm = normalizarTexto(termo);
+      if(!termoNorm) return CONFIG.municipios.slice(0, 12);
+      return CONFIG.municipios
+        .filter(function(m){ return normalizarTexto(m.nome).indexOf(termoNorm) !== -1; })
+        .slice(0, 12);
+    }
+
+    function renderSugestoes(termo){
+      resultadosAtuais = obterResultados(termo);
+      indiceAtivo = -1;
+
+      if(!resultadosAtuais.length){
+        lista.innerHTML = '<div class="vazio">Nenhum município encontrado.</div>';
+      } else {
+        lista.innerHTML = resultadosAtuais.map(function(m, i){
+          return '<div class="item" role="option" data-idx="' + i + '">' +
+            '<span>' + realcarOcorrencia(m.nome, termo) + '</span>' +
+            (m.distrito ? '<span class="id">' + m.distrito + '</span>' : '') +
+            '</div>';
+        }).join('');
+      }
+      abrirSugestoes();
+    }
+
+    function abrirSugestoes(){
+      lista.classList.add('aberta');
+      input.setAttribute('aria-expanded', 'true');
+    }
+    function fecharSugestoes(){
+      lista.classList.remove('aberta');
+      input.setAttribute('aria-expanded', 'false');
+      indiceAtivo = -1;
+    }
+
+    function marcarAtivo(){
+      var itens = lista.querySelectorAll('.item');
+      itens.forEach(function(el, i){
+        el.classList.toggle('ativo', i === indiceAtivo);
+      });
+      if(indiceAtivo >= 0 && itens[indiceAtivo]){
+        itens[indiceAtivo].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function escolherMunicipio(m){
+      if(!m) return;
+      municipioAtualObj = m;
+      input.value = m.nome;
+      fecharSugestoes();
+
+      // Atualiza o limite do município imediatamente (antes de carregar dados)
+      if(mapa) carregarLimiteMunicipio(m);
+
+      // Verifica anos disponíveis em paralelo (HEAD requests silenciosos)
+      atualizarSeletorAnosParaMunicipio(m, function(anoSelecionado){
+        if(anoSelecionado){
+          anoAtual = anoSelecionado;
+          carregarCombinacao(m, anoAtual);
+        } else {
+          // Nenhum ficheiro encontrado para este município
+          document.getElementById('estado').className = 'erro';
+          document.getElementById('estado').innerHTML =
+            '<span>Sem dados disponíveis para ' + m.nome + '.</span>' +
+            '<div class="estado-detalhe">Não foram encontrados ficheiros GeoJSON para nenhum dos anos configurados. ' +
+            'Verifica se os ficheiros existem em <code>' + CONFIG.basePath + '/{ano}/' + encodeURIComponent(m.ficheiro || m.nome) + '.geojson</code>.</div>';
+          document.getElementById('estado').style.display = 'flex';
+          document.getElementById('conteudo').style.display = 'none';
+        }
+      });
+    }
+
+    input.addEventListener('input', function(){
+      renderSugestoes(input.value);
+    });
+    input.addEventListener('focus', function(){
+      renderSugestoes(input.value);
+    });
+    input.addEventListener('keydown', function(e){
+      if(!lista.classList.contains('aberta') &&
+        (e.key === 'ArrowDown' || e.key === 'ArrowUp')){
+        renderSugestoes(input.value);
+        return;
+      }
+      if(e.key === 'ArrowDown'){
+        e.preventDefault();
+        indiceAtivo = Math.min(indiceAtivo + 1, resultadosAtuais.length - 1);
+        marcarAtivo();
+      } else if(e.key === 'ArrowUp'){
+        e.preventDefault();
+        indiceAtivo = Math.max(indiceAtivo - 1, 0);
+        marcarAtivo();
+      } else if(e.key === 'Enter'){
+        e.preventDefault();
+        if(indiceAtivo >= 0 && resultadosAtuais[indiceAtivo]){
+          escolherMunicipio(resultadosAtuais[indiceAtivo]);
+        } else if(resultadosAtuais.length === 1){
+          escolherMunicipio(resultadosAtuais[0]);
+        }
+      } else if(e.key === 'Escape'){
+        fecharSugestoes();
+        if(municipioAtualObj) input.value = municipioAtualObj.nome;
+      }
+    });
+
+    lista.addEventListener('click', function(e){
+      var item = e.target.closest('.item');
+      if(!item) return;
+      var idx = parseInt(item.getAttribute('data-idx'), 10);
+      escolherMunicipio(resultadosAtuais[idx]);
+    });
+
+    document.addEventListener('click', function(e){
+      if(e.target !== input && !lista.contains(e.target)){
+        fecharSugestoes();
+        if(municipioAtualObj && input.value !== municipioAtualObj.nome){
+          input.value = municipioAtualObj.nome;
+        }
+      }
+    });
+
+    if(CONFIG.municipios.length){
+      municipioAtualObj = CONFIG.municipios[0];
+      input.value = municipioAtualObj.nome;
+    }
+  }
+
+  /* Evento: mudança de atributo */
+  document.getElementById('select-atributo').addEventListener('change', function(e){
+    aplicarAtributo(e.target.value);
+  });
+
+  /* Evento: mudança de ano */
+  document.getElementById('select-ano').addEventListener('change', function(e){
+    anoAtual = e.target.value; // chave: "2009" ou "1990_1999"
+    if(municipioAtualObj && anoAtual){
+      carregarCombinacao(municipioAtualObj, anoAtual);
+    }
+  });
+
+
+  /* =========================================================
+     17. ARRANQUE — carrega índice e depois inicializa
+     ========================================================= */
+  fetch('ardidas_index.json')
+    .then(function(r){
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(idx){
+      CONFIG.municipios = idx.municipios || [];
+      CONFIG.anos       = idx.anos || [];
+      if(idx.base_path) CONFIG.basePath = idx.base_path;
+
+      construirSeletorMunicipios();
+
+      if(CONFIG.municipios.length){
+        municipioAtualObj = CONFIG.municipios[0];
+        document.getElementById('pesquisa-municipio').value = municipioAtualObj.nome;
+
+        // Pré-verifica anos disponíveis para o primeiro município (HEAD requests)
+        atualizarSeletorAnosParaMunicipio(municipioAtualObj, function(anoInicial){
+          if(anoInicial){
+            anoAtual = anoInicial;
+            carregarCombinacao(municipioAtualObj, anoAtual);
+          } else {
+            mostrarErro('Sem anos disponíveis para ' + municipioAtualObj.nome + '.', 'Não foram encontrados ficheiros GeoJSON para nenhum dos anos configurados.');
+          }
+        });
+      } else {
+        mostrarErro('Nenhum município encontrado.', 'Verifica o ficheiro ardidas_index.json.');
+      }
+    })
+    .catch(function(err){
+      /* Fallback: se não existir índice, mostra mensagem de ajuda */
+      mostrarErro(
+        'Índice não encontrado (ardidas_index.json).',
+         + err.message
+      );
+    });
+
+
+  /* =========================================================
+     18. MODAL — Download (temporariamente indisponível)
+     ========================================================= */
+  (function(){
+    var modal     = document.getElementById('modal-download');
+    var btnAbrir  = document.getElementById('btn-download');
+    var btnFechar = document.getElementById('modal-download-fechar');
+    if(!modal || !btnAbrir || !btnFechar) return;
+
+    function abrirModal(){
+      modal.classList.add('aberto');
+      btnFechar.focus();
+      document.addEventListener('keydown', aoPressionarTecla);
+    }
+    function fecharModal(){
+      modal.classList.remove('aberto');
+      document.removeEventListener('keydown', aoPressionarTecla);
+      btnAbrir.focus();
+    }
+    function aoPressionarTecla(e){
+      if(e.key === 'Escape') fecharModal();
+    }
+
+    btnAbrir.addEventListener('click', abrirModal);
+    btnFechar.addEventListener('click', fecharModal);
+    modal.addEventListener('click', function(e){
+      if(e.target === modal) fecharModal();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
