@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Mesao_Frio",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "DM2153434", "Cod_ANEPC": "2015130117344", "Ano": 2015, "DH_Inicio": "2015-08-11T00:00:00", "DH_1Interv": "2015-08-11T00:00:00", "DH_Fim": "2015-08-11T00:00:00", "Duracao_m": 298.0, "PI_DICOFRE": "130226", "PI_NUTS3": "Tâmega e Sousa", "PI_Distrit": "Porto", "PI_Conc": "Baião", "PI_Freg": "União das freguesias de Teixeira e Teixeiró", "PI_Local": "LODEIRO", "Causa_Cod": "449", "Causa_Tipo": "Intencional", "Causa_Desc": "Incendiarismo - Imputáveis", "AreaHaSIG": 14.7415884, "AreaHaSGIF": 12.9, "AreaHaPov": 5.41, "AreaHaMato": 7.49, "AreaHaAgri": 0.0, "Edicao": "2015-08-14T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -7.890500399955563, 41.182541606583449 ], [ -7.890508403893929, 41.182533805890358 ], [ -7.89050534480229, 41.18253777574828 ], [ -7.890496032938005, 41.182551248141102 ], [ -7.890500399955563, 41.182541606583449 ] ] ] } }
+]
+}

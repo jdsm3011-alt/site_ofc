@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "Amadora",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Cod_SGIF": "RO2151497", "Cod_ANEPC": "2015110135340", "Ano": 2015, "DH_Inicio": "2015-08-14T00:00:00", "DH_1Interv": "2015-08-14T00:00:00", "DH_Fim": "2015-08-14T00:00:00", "Duracao_m": 16.0, "PI_DICOFRE": "111608", "PI_NUTS3": "Grande Lisboa", "PI_Distrit": "Lisboa", "PI_Conc": "Odivelas", "PI_Freg": "União das freguesias de Pontinha e Famões", "PI_Local": "pontinha", "Causa_Cod": null, "Causa_Tipo": null, "Causa_Desc": null, "AreaHaSIG": 0.0157253, "AreaHaSGIF": 0.03, "AreaHaPov": 0.0, "AreaHaMato": 0.03, "AreaHaAgri": 0.0, "Edicao": "2015-08-15T00:00:00" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -9.215272000291282, 38.77345099989347 ], [ -9.215133000309732, 38.773592999809729 ], [ -9.215063999451534, 38.773429000378634 ], [ -9.215272000291282, 38.77345099989347 ] ] ] } }
+]
+}
