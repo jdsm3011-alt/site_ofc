@@ -2596,6 +2596,48 @@
       color: var(--paper-deep);
     }
 
+    /* ── Botão Áreas Ardidas ─────────────────── */
+    .btn-ardidas {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 13px 14px;
+      margin-bottom: 2px;
+      border-radius: 12px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #C2703D, #8B2500);
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform .12s ease, box-shadow .15s ease;
+      box-shadow: 0 8px 16px rgba(139, 37, 0, .22);
+    }
+    .btn-ardidas .dla-text {
+      flex: 1;
+    }
+    .btn-ardidas .dla-arrow {
+      font-size: 18px;
+      font-weight: 400;
+      opacity: .8;
+      line-height: 1;
+    }
+    .btn-ardidas:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(139, 37, 0, .32);
+    }
+    .btn-ardidas:active {
+      transform: translateY(0) scale(.99);
+    }
+    html[data-theme="dark"] .btn-ardidas {
+      background: linear-gradient(135deg, #8B2500, #C2703D);
+      color: #FFF3E0;
+    }
+
     .download-item {
       display: flex;
       align-items: center;
@@ -3152,9 +3194,10 @@
         <a href="#map">Mapa</a>
         <a href="#workflow">Como funciona</a>
         <a href="#site-footer">Termos e condições</a>
+        <a href="#site-footer">Sobre                                </a>
         <a href="estatisticas.html"> Estatísticas (beta)</a>
-        <a href="BGRI_vier.html"> Explorador BGRI (novo)</a>
-        <a href="#site-footer">Sobre</a>
+        <a href="BGRI_vier.html"> Explorador BGRI </a>
+        <a href="areas_ardidas.html">Histórico de áreas ardidas</a>
         <h1></h1>
       </nav>
       <button type="button" class="nav-toggle" id="nav-toggle" title="Abrir menu" aria-label="Abrir menu"
@@ -3435,6 +3478,7 @@
                     <span class="osm-badge">© ODbL</span>
                   </div>
                   <div id="osm-list"></div>
+                  
                   <div class="osm-note" id="osm-note" style="display:none;">
                     A pré-visualização dos dados apresentada neste website encontra-se em resolução inferior à dos dados
                     originais, destinando-se exclusivamente a fins de consulta rápida e navegação.
@@ -3443,6 +3487,12 @@
                     Mais dados em breve.
                   </div>
                 </div>
+
+                <!-- ÁREAS ARDIDAS -->
+                <a href="areas_ardidas.html" class="btn-ardidas">
+                  <span class="dla-text">Histórico de Áreas Ardidas</span>
+                  <span class="dla-arrow">›</span>
+                </a>
               </div>
             </div>
           </div>
