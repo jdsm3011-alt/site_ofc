@@ -1744,7 +1744,7 @@
       height: 100%;
       display: block;
       color: rgba(34, 59, 43, .82);
-      filter: drop-shadow(0 5px 10px rgba(24, 38, 30, .22));
+      filter: drop-shadow(0 6px 12px rgba(24, 38, 30, .25));
     }
 
     html[data-theme="dark"] .map-plane-flyover svg {
@@ -3467,19 +3467,40 @@
         <div id="map">
           <div class="map-plane-flyover" id="map-plane-flyover" aria-hidden="true">
             <svg viewBox="0 0 96 96" focusable="false">
-              <path d="M87 48c0 3.1-24.4 7.8-39.4 7.8S9 51.1 9 48s23.6-7.8 38.6-7.8S87 44.9 87 48Z"
-                fill="currentColor" opacity=".18" />
-              <path d="M83.5 47.8c0 2.6-5.5 5.1-15.6 7.1L43.8 77.3c-1.8 1.6-4.5.5-4.7-1.9L37.7 58c-6.2.1-12.6-.1-18.8-.7l-8 8.9c-1.4 1.5-3.9.7-4.1-1.4l-.8-7.6 7.8-7.3c-1.8-.7-2.8-1.4-2.8-2.1s1-1.4 2.8-2.1L6 38.4l.8-7.6c.2-2.1 2.7-2.9 4.1-1.4l8 8.9c6.2-.6 12.6-.8 18.8-.7l1.4-17.4c.2-2.4 2.9-3.5 4.7-1.9l24.1 22.4c10.1 2 15.6 4.5 15.6 7.1Z"
-                fill="currentColor" stroke="rgba(255,255,255,.82)" stroke-width="2.4" stroke-linejoin="round" />
-              <path d="M62 43.1c6.5 1.3 10.2 2.9 10.2 4.7S68.5 51.2 62 52.5" fill="none"
-                stroke="rgba(255,255,255,.72)" stroke-width="2" stroke-linecap="round" />
-              <circle cx="30.5" cy="45.1" r="1.4" fill="rgba(255,255,255,.9)" />
-              <circle cx="36.2" cy="44.5" r="1.4" fill="rgba(255,255,255,.9)" />
-              <circle cx="42" cy="44.3" r="1.4" fill="rgba(255,255,255,.9)" />
-              <circle cx="47.8" cy="44.5" r="1.4" fill="rgba(255,255,255,.9)" />
-              <circle cx="53.5" cy="45.1" r="1.4" fill="rgba(255,255,255,.9)" />
-              <path d="M68.4 44.2c3.5.8 5.6 2.1 5.6 3.6s-2.1 2.8-5.6 3.6" fill="none"
-                stroke="rgba(15,29,20,.35)" stroke-width="1.5" stroke-linecap="round" />
+              <ellipse cx="46" cy="50" rx="42" ry="9" fill="currentColor" opacity=".15" />
+              <path d="M25,44.6 13.8,34 11,34.6 21,47.3 Z" fill="currentColor" />
+              <path d="M25,51.4 13.8,62 11,61.4 21,48.7 Z" fill="currentColor" />
+              <path d="M62,42.8 40,5.2 33,5.6 45,46.2 Z" fill="currentColor" />
+              <path d="M62,53.2 40,90.8 33,90.4 45,49.8 Z" fill="currentColor" />
+              <path d="M40.5,5.4 44.6,46" stroke="rgba(255,255,255,.28)" stroke-width=".7" fill="none"
+                stroke-linecap="round" />
+              <path d="M40.5,90.6 44.6,50" stroke="rgba(255,255,255,.28)" stroke-width=".7" fill="none"
+                stroke-linecap="round" />
+              <path d="M47.3,45.4 42.3,9.4" stroke="rgba(255,255,255,.22)" stroke-width=".6" fill="none"
+                stroke-linecap="round" />
+              <path d="M47.3,50.6 42.3,86.6" stroke="rgba(255,255,255,.22)" stroke-width=".6" fill="none"
+                stroke-linecap="round" />
+              <circle cx="34.4" cy="6.6" r=".95" fill="#e0524a" />
+              <circle cx="34.4" cy="89.4" r=".95" fill="#3fae5c" />
+              <ellipse cx="53.6" cy="24.4" rx="6.1" ry="2.7" fill="currentColor" transform="rotate(-4 53.6 24.4)" />
+              <ellipse cx="53.6" cy="71.6" rx="6.1" ry="2.7" fill="currentColor" transform="rotate(4 53.6 71.6)" />
+              <ellipse cx="50.3" cy="24.3" rx="1.8" ry="1.8" fill="rgba(12,20,14,.5)" />
+              <ellipse cx="50.3" cy="71.7" rx="1.8" ry="1.8" fill="rgba(12,20,14,.5)" />
+              <ellipse cx="56.4" cy="24.4" rx="1.3" ry="1.1" fill="rgba(255,255,255,.4)" />
+              <ellipse cx="56.4" cy="71.6" rx="1.3" ry="1.1" fill="rgba(255,255,255,.4)" />
+              <path
+                d="M93,48 C90,45 86,43.4 81,43.2 L30,44.2 C20,44.6 12,46 7,48 C12,50 20,51.4 30,51.8 L81,52.8 C86,52.6 90,51 93,48 Z"
+                fill="currentColor" stroke="rgba(10,18,12,.22)" stroke-width="1" stroke-linejoin="round" />
+              <path d="M21.5,47 11,47.5 11,48.5 21.5,49 Z" fill="rgba(12,20,14,.28)" />
+              <circle cx="7.6" cy="48" r=".85" fill="#e0524a" />
+              <ellipse cx="84.6" cy="48" rx="3.6" ry="2.2" fill="rgba(12,20,14,.42)" />
+              <ellipse cx="86.6" cy="47.4" rx="1.1" ry=".85" fill="rgba(255,255,255,.5)" />
+              <circle cx="63" cy="46.7" r=".8" fill="rgba(12,20,14,.4)" />
+              <circle cx="68" cy="46.5" r=".8" fill="rgba(12,20,14,.4)" />
+              <circle cx="73" cy="46.4" r=".8" fill="rgba(12,20,14,.4)" />
+              <circle cx="78" cy="46.5" r=".8" fill="rgba(12,20,14,.4)" />
+              <path d="M28,44.6 79,45.6" stroke="rgba(255,255,255,.32)" stroke-width=".9" stroke-linecap="round"
+                fill="none" />
             </svg>
           </div>
           <div class="map-controls" aria-label="Controlo do mapa">
