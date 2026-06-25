@@ -4091,11 +4091,70 @@
     let heroPreviewLayer = null;
     let heroDemoTimer = null;
 
+    // ── 2º ciclo do hero: Áreas Ardidas (independente do ciclo do catálogo, alterna com ele) ──
+    let heroBoundsPortugal = null;          // bounds partilhados pelos dois ciclos (mesma vista geral de Portugal)
+    let heroCandidatosCatalogo = [];        // { meta, layer, chave } — municípios com pré-visualizações do catálogo
+    let heroCandidatosArdidas = [];         // { meta, layer, chave } — municípios com dados de áreas ardidas
+    let heroFallbackCatalogo = null;        // usado só se heroCandidatosCatalogo ficar vazio
+    let heroModoCiclo = 'catalogo';         // 'catalogo' | 'ardidas' — alterna no fim de cada concelho mostrado
+    let heroArdidasBasePath = 'areas_ardidas_finais_l';
+    let heroArdidasAnosPorChave = {};       // chave ("2009", "1990_1999", ...) → { chave, label, sort }
+    let heroArdidasRangeLabel = 'Áreas ardidas';
+
     const estiloNormal = { color: '#6E9A7C', weight: 1, fillColor: '#3D6B4F', fillOpacity: 0.08 };
     const estiloHover = { color: '#3D6B4F', weight: 1.5, fillColor: '#3D6B4F', fillOpacity: 0.18 };
     const estiloSelecionado = { color: '#C2703D', weight: 2.5, fillColor: '#C2703D', fillOpacity: 0.18 };
     const estiloIndisponivel = { color: '#b42318', weight: 1, fillColor: '#b42318', fillOpacity: 0.10 };
     const estiloIndisponivelHover = { color: '#8c1a12', weight: 1.5, fillColor: '#b42318', fillOpacity: 0.20 };
+
+    // ── Áreas Ardidas: mesma rampa de cores e lógica de seleção de atributo de areas_ardidas.html ──
+    const RAMPA_ARDIDAS = ['#FFF3E0', '#FFCC80', '#FF7043', '#D84315', '#7F0000']; // paleta de fogo (do claro ao escuro)
+    const N_CLASSES_ARDIDAS = 5;
+    const COR_ARDIDA_SEM_DADOS = '#C9C2B8';
+
+    const PADROES_IGNORAR_ARDIDAS = [
+      /^OBJECTID$/i, /^FID$/i, /^ID$/i,
+      /^SHAPE_AREA$/i, /^SHAPE_LENGTH$/i, /^SHAPE_LENG$/i,
+      /^X$/i, /^Y$/i, /^LAT$/i, /^LON(G)?$/i,
+      /^DTMN/i, /^DICOFRE/i, /^GEOCOD/i,
+      /^NUTS/i
+    ];
+
+    const DICIONARIO_ATRIBUTOS_ARDIDAS = {
+      // Área
+      AREA_HA:          { label: 'Área ardida (ha)',              grupo: 'Área' },
+      AREA_TOTAL:       { label: 'Área total ardida (ha)',         grupo: 'Área' },
+      AREA_ARVOREDO:    { label: 'Área de arvoredo ardido (ha)',   grupo: 'Área' },
+      AREA_MATO:        { label: 'Área de mato ardido (ha)',       grupo: 'Área' },
+      AREA_AGRICOLA:    { label: 'Área agrícola ardida (ha)',      grupo: 'Área' },
+      AREA_FLORESTA:    { label: 'Área florestal ardida (ha)',     grupo: 'Área' },
+      AREA_INCULTOS:    { label: 'Área incultos / matos (ha)',     grupo: 'Área' },
+      AREA_OUTRAS:      { label: 'Outras áreas ardidas (ha)',      grupo: 'Área' },
+      SUP_TOTAL:        { label: 'Superfície total (ha)',          grupo: 'Área' },
+      SUP_ARVOREDO:     { label: 'Superfície arvoredo (ha)',       grupo: 'Área' },
+      SUP_MATO:         { label: 'Superfície mato (ha)',           grupo: 'Área' },
+
+      // Ocorrências / Incêndios
+      N_OCORRENCIAS:    { label: 'Nº de ocorrências',             grupo: 'Ocorrências' },
+      N_INCENDIOS:      { label: 'Nº de incêndios',               grupo: 'Ocorrências' },
+      N_FOGACHOS:       { label: 'Nº de fogachos',                grupo: 'Ocorrências' },
+      FREQUENCIA:       { label: 'Frequência de incêndios',       grupo: 'Ocorrências' },
+
+      // Dimensão / Duração
+      DURACAO_H:        { label: 'Duração média (horas)',         grupo: 'Características' },
+      DURACAO_MEDIA:    { label: 'Duração média (horas)',         grupo: 'Características' },
+      AREA_MEDIA:       { label: 'Área média por incêndio (ha)',  grupo: 'Características' },
+      PERIMETRO:        { label: 'Perímetro (m)',                 grupo: 'Características' },
+      PERIMETRO_M:      { label: 'Perímetro (m)',                 grupo: 'Características' },
+
+      // Ano / Período
+      ANO:              { label: 'Ano',                           grupo: 'Temporal' },
+      MES:              { label: 'Mês',                           grupo: 'Temporal' },
+      DIA_INICIO:       { label: 'Dia de início',                 grupo: 'Temporal' },
+      DIA_EXTINCAO:     { label: 'Dia de extinção',               grupo: 'Temporal' }
+    };
+
+    const ORDEM_GRUPOS_ARDIDAS = ['Área', 'Ocorrências', 'Características', 'Temporal', 'Outros indicadores'];
 
     function municipioSemDados(m) {
       if (!m) return true;
@@ -5021,8 +5080,173 @@
       }
     }
 
+    // ── Áreas Ardidas: seleção do atributo a colorir (mesma lógica de construirSeletorAtributos) ──
+    function heroArdidaIgnorarCampo(nome) {
+      return PADROES_IGNORAR_ARDIDAS.some(re => re.test(nome));
+    }
+
+    function heroArdidaHumanizar(nome) {
+      const t = nome.replace(/_/g, ' ').toLowerCase();
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    }
+
+    function heroArdidaGrupoAutomatico(nome) {
+      const n = nome.toUpperCase();
+      if (/AREA|SUP(ERFICIE)?|HA/.test(n)) return 'Área';
+      if (/OCORR|INCEND|FOGACH|FREQ/.test(n)) return 'Ocorrências';
+      if (/DURACAO|MEDIA|PERIMET/.test(n)) return 'Características';
+      if (/ANO|MES|DIA|DATA/.test(n)) return 'Temporal';
+      return 'Outros indicadores';
+    }
+
+    function heroArdidaInfoAtributo(nome) {
+      const dic = DICIONARIO_ATRIBUTOS_ARDIDAS[nome.toUpperCase()];
+      if (dic) return dic;
+      return { label: heroArdidaHumanizar(nome), grupo: heroArdidaGrupoAutomatico(nome) };
+    }
+
+    // escolhe o mesmo atributo "por defeito" que areas_ardidas.html selecionaria (primeira opção
+    // do primeiro grupo não vazio, por ordem: Área → Ocorrências → Características → Temporal → Outros)
+    function heroArdidaEscolherAtributo(features) {
+      const amostra = (features[0] && features[0].properties) || {};
+      const grupos = {};
+      Object.keys(amostra).forEach(campo => {
+        if (heroArdidaIgnorarCampo(campo)) return;
+        if (typeof amostra[campo] !== 'number') return;
+        const info = heroArdidaInfoAtributo(campo);
+        (grupos[info.grupo] = grupos[info.grupo] || []).push({ campo, label: info.label });
+      });
+      for (const nomeGrupo of ORDEM_GRUPOS_ARDIDAS) {
+        const lista = grupos[nomeGrupo];
+        if (lista && lista.length) {
+          lista.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+          return lista[0].campo;
+        }
+      }
+      return null;
+    }
+
+    // ── Áreas Ardidas: quintis e rampa de cores (idêntico a calcularQuantis/classeDoValor/corDoValor) ──
+    function heroArdidaCalcularQuantis(valores, classes) {
+      const v = valores.filter(x => typeof x === 'number' && !isNaN(x)).slice().sort((a, b) => a - b);
+      if (!v.length) return [];
+      const breaks = [v[0]];
+      for (let i = 1; i < classes; i++) {
+        const pos = (i / classes) * (v.length - 1);
+        const inf = Math.floor(pos), sup = Math.ceil(pos), frac = pos - inf;
+        breaks.push(v[inf] + (v[sup] - v[inf]) * frac);
+      }
+      breaks.push(v[v.length - 1]);
+      const unicas = [];
+      breaks.forEach((b, j) => { if (j === 0 || b > unicas[unicas.length - 1]) unicas.push(b); });
+      return unicas;
+    }
+
+    function heroArdidaClasseDoValor(valor, breaks) {
+      if (typeof valor !== 'number' || isNaN(valor)) return -1;
+      if (breaks.length < 2) return 0;
+      for (let i = 1; i < breaks.length; i++) {
+        if (valor <= breaks[i]) return Math.min(i - 1, RAMPA_ARDIDAS.length - 1);
+      }
+      return RAMPA_ARDIDAS.length - 1;
+    }
+
+    function heroArdidaCorDoValor(valor, breaks) {
+      if (typeof valor !== 'number' || isNaN(valor)) return COR_ARDIDA_SEM_DADOS;
+      const nClasses = Math.max(breaks.length - 1, 1);
+      const idx = heroArdidaClasseDoValor(valor, breaks);
+      const passo = (RAMPA_ARDIDAS.length - 1) / Math.max(nClasses - 1, 1);
+      const corIdx = nClasses === 1 ? RAMPA_ARDIDAS.length - 1 : Math.round(idx * passo);
+      return RAMPA_ARDIDAS[Math.min(corIdx, RAMPA_ARDIDAS.length - 1)];
+    }
+
+    // estilo do polígono de área ardida — mesmos parâmetros (cor de contorno, opacidades) de estiloFeature
+    function heroArdidaEstiloFeature(atributo, breaks) {
+      return function (feature) {
+        const valor = feature.properties[atributo];
+        const temaDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        return {
+          fillColor: heroArdidaCorDoValor(valor, breaks),
+          fillOpacity: 0.80,
+          color: temaDark ? '#E0935E' : '#7F0000',
+          weight: 1,
+          opacity: 0.55
+        };
+      };
+    }
+
+    // ── Áreas Ardidas: caminho do ficheiro (idêntico a urlGeoJSON) ──
+    function heroArdidaUrlGeoJSON(ficheiroOuNome, ano) {
+      const nomeSlug = ficheiroOuNome.replace(/ /g, '_');
+      return `${heroArdidasBasePath}/${ano}/${encodeURIComponent(nomeSlug)}.geojson`;
+    }
+
+    // obtém o GeoJSON de um município + ano, já filtrado para geometrias válidas
+    async function heroObterGeoJSONArdida(municipio, ano) {
+      try {
+        const url = heroArdidaUrlGeoJSON(municipio.ficheiro || municipio.nome, ano);
+        const r = await fetch(url);
+        if (!r.ok) return null;
+        const geojson = await r.json();
+        const featuresValidas = (geojson.features || []).filter(f =>
+          f && f.geometry && f.geometry.coordinates && f.geometry.coordinates.length > 0);
+        if (!featuresValidas.length) return null;
+        return { type: 'FeatureCollection', features: featuresValidas };
+      } catch (err) {
+        return null;
+      }
+    }
+
+    // confirma (via HEAD) quais dos anos listados no índice têm mesmo ficheiro disponível para
+    // este município — mesma verificação feita em atualizarSeletorAnosParaMunicipio
+    async function heroArdidaAnosValidos(municipio) {
+      const objsAnos = (municipio.anos || []).map(c => heroArdidasAnosPorChave[c]).filter(Boolean);
+      const resultados = await Promise.all(objsAnos.map(async (ano) => {
+        try {
+          const url = heroArdidaUrlGeoJSON(municipio.ficheiro || municipio.nome, ano.chave);
+          const r = await fetch(url, { method: 'HEAD' });
+          return r.ok ? ano : null;
+        } catch (err) {
+          return null;
+        }
+      }));
+      return resultados.filter(Boolean).sort((a, b) => b.sort - a.sort);
+    }
+
+    // mostra, no mini-mapa, a área ardida real de um município/ano (mesma rampa de cores e
+    // mesmo padrão de fade-in usado em heroShowPreview)
+    async function heroMostrarAreaArdida(municipio, ano, label) {
+      heroClearPreview();
+
+      const geojson = await heroObterGeoJSONArdida(municipio, ano);
+      if (!geojson) return false;
+
+      const atributo = heroArdidaEscolherAtributo(geojson.features);
+      if (!atributo) return false;
+
+      const valores = geojson.features.map(f => f.properties[atributo]);
+      const breaks = heroArdidaCalcularQuantis(valores, N_CLASSES_ARDIDAS);
+      const estiloFinal = heroArdidaEstiloFeature(atributo, breaks);
+
+      heroPreviewLayer = L.geoJSON(geojson, {
+        style: feature => ({ ...estiloFinal(feature), opacity: 0, fillOpacity: 0 })
+      }).addTo(heroMap);
+
+      const b = heroPreviewLayer.getBounds();
+      if (b.isValid()) heroMap.flyToBounds(b, { padding: [28, 28], duration: 2.1, easeLinearity: 0.18 });
+      heroFadeBadge(`Áreas ardidas · ${label}`);
+
+      // double rAF: mesmo truque do heroShowPreview, para a transição de opacidade não falhar
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!heroPreviewLayer) return;
+        heroPreviewLayer.eachLayer(l => l.setStyle(estiloFinal(l.feature)));
+      }));
+
+      return true;
+    }
+
     // ciclo principal: Portugal → zoom a um concelho sorteado → carrossel de previews → repete com outro sorteio
-    async function heroRunCycle(municipio, layer, boundsPortugal, candidatos) {
+    async function heroRunCycle(municipio, layer) {
       if (!heroMap) return;
 
       // 1) vista geral de Portugal
@@ -5031,7 +5255,7 @@
       heroSetProgress(0, -1);
       heroFadeBadge('Portal geográfico · 261 municípios');
       if (heroHighlightLayer) heroHighlightLayer.setStyle(estiloNormal);
-      heroMap.flyToBounds(boundsPortugal, { padding: [16, 16], duration: 2.2, easeLinearity: 0.15 });
+      heroMap.flyToBounds(heroBoundsPortugal, { padding: [16, 16], duration: 2.2, easeLinearity: 0.15 });
       await heroWait(4200);
       if (!heroMap) return;
 
@@ -5073,10 +5297,85 @@
       await heroWait(1100);
       if (!heroMap) return;
 
-      // sorteia o próximo concelho a mostrar, evitando repetir o atual seguidamente
-      const proximo = heroSortearMunicipio(candidatos, normalizarNome(municipio.municipio)) ||
-        { meta: municipio, layer, chave: normalizarNome(municipio.municipio) };
-      heroRunCycle(proximo.meta, proximo.layer, boundsPortugal, candidatos); // repete indefinidamente, tipo display, com município novo
+      // fim do ciclo do catálogo → alterna para o ciclo das Áreas Ardidas (ou repete o catálogo
+      // se ainda não houver dados de áreas ardidas disponíveis)
+      heroProximoCiclo(normalizarNome(municipio.municipio));
+    }
+
+    // 2º ciclo do hero: Portugal → zoom a um concelho com áreas ardidas → carrossel de anos → alterna de volta
+    async function heroRunCicloArdidas(municipio, layer) {
+      if (!heroMap) return;
+
+      // 1) vista geral de Portugal (mesmos bounds e mesma animação do ciclo do catálogo)
+      heroSetTagVisible(false);
+      heroClearPreview();
+      heroSetProgress(0, -1);
+      heroFadeBadge(heroArdidasRangeLabel);
+      if (heroHighlightLayer) heroHighlightLayer.setStyle(estiloNormal);
+      heroMap.flyToBounds(heroBoundsPortugal, { padding: [16, 16], duration: 2.2, easeLinearity: 0.15 });
+      await heroWait(4200);
+      if (!heroMap) return;
+
+      // 2) zoom suave até ao concelho sorteado (mesmo destaque do ciclo do catálogo)
+      heroFadeBadge(`A explorar · ${municipio.nome}`);
+      if (layer) {
+        layer.setStyle(estiloSelecionado);
+        heroHighlightLayer = layer;
+        heroMap.flyToBounds(layer.getBounds(), { padding: [40, 40], duration: 2.6, easeLinearity: 0.18, maxZoom: 11 });
+      }
+      await heroWait(2800);
+      if (!heroMap) return;
+      heroSetTagText(`${municipio.nome}${municipio.distrito ? ` · <strong>${municipio.distrito}</strong>` : ''}`);
+      heroSetTagVisible(true);
+      await heroWait(2200);
+      if (!heroMap) return;
+
+      // 3) carrossel automático das áreas ardidas reais deste município, do ano mais recente ao mais antigo
+      const anosValidos = await heroArdidaAnosValidos(municipio);
+      if (!heroMap) return;
+
+      if (anosValidos.length) {
+        const duracaoSlide = anosValidos.length > 6 ? 2600 : 3400;
+        heroSetProgress(anosValidos.length, -1);
+        for (let i = 0; i < anosValidos.length; i++) {
+          const ano = anosValidos[i];
+          heroSetProgress(anosValidos.length, i);
+          const ok = await heroMostrarAreaArdida(municipio, ano.chave, ano.label);
+          if (!heroMap) return;
+          if (ok) await heroWait(duracaoSlide);
+          if (!heroMap) return;
+        }
+      } else {
+        await heroWait(2200);
+      }
+
+      heroClearPreview();
+      heroSetTagVisible(false);
+      await heroWait(1100);
+      if (!heroMap) return;
+
+      // fim do ciclo das Áreas Ardidas → alterna de volta para o ciclo do catálogo
+      heroProximoCiclo();
+    }
+
+    // alterna entre os dois ciclos independentes do hero no fim de cada concelho mostrado
+    function heroProximoCiclo(chaveAnterior) {
+      const podeArdidas = heroCandidatosArdidas.length > 0;
+      heroModoCiclo = podeArdidas
+        ? (heroModoCiclo === 'catalogo' ? 'ardidas' : 'catalogo')
+        : 'catalogo';
+
+      if (heroModoCiclo === 'ardidas') {
+        const proximo = heroSortearMunicipio(heroCandidatosArdidas, null);
+        if (proximo) {
+          heroRunCicloArdidas(proximo.meta, proximo.layer);
+          return;
+        }
+        heroModoCiclo = 'catalogo'; // segurança: nenhum candidato válido, recua para o catálogo
+      }
+
+      const proximo = heroSortearMunicipio(heroCandidatosCatalogo, chaveAnterior) || heroFallbackCatalogo;
+      if (proximo) heroRunCycle(proximo.meta, proximo.layer);
     }
 
     // inicializa o mini-mapa: dados reais (municipios.json + municipios_geom.geojson),
@@ -5113,13 +5412,37 @@
         const listaMunicipios = await resMunicipios.json();
         const geojson = await resGeojson.json();
 
+        // índice de Áreas Ardidas — carregado durante a inicialização do hero, mas de forma
+        // independente: se faltar ou falhar, o ciclo do catálogo continua a funcionar normalmente,
+        // só sem o 2º ciclo (alterna-se sempre para 'catalogo' nesse caso, ver heroProximoCiclo)
+        let ardidasIdx = null;
+        try {
+          const resArdidas = await fetch('ardidas_index.json');
+          if (resArdidas.ok) ardidasIdx = await resArdidas.json();
+        } catch (err) {
+          console.warn('hero: índice de áreas ardidas indisponível', err);
+        }
+
+        const ardidasPorNome = {};
+        if (ardidasIdx) {
+          if (ardidasIdx.base_path) heroArdidasBasePath = ardidasIdx.base_path;
+          (ardidasIdx.anos || []).forEach(a => { heroArdidasAnosPorChave[a.chave] = a; });
+          (ardidasIdx.municipios || []).forEach(m => { ardidasPorNome[normalizarNome(m.nome)] = m; });
+
+          if (ardidasIdx.anos && ardidasIdx.anos.length) {
+            const anosOrdenados = ardidasIdx.anos.slice().sort((a, b) => a.sort - b.sort);
+            const primeiroAno = anosOrdenados[0].sort;
+            const ultimoAno = anosOrdenados[anosOrdenados.length - 1].sort;
+            heroArdidasRangeLabel = `Áreas ardidas · ${primeiroAno}–${ultimoAno}`;
+          }
+        }
+
         const porNome = {};
         listaMunicipios.forEach(m => porNome[normalizarNome(m.municipio)] = m);
 
         const chaveFallback = normalizarNome(HERO_MUNICIPIO_FALLBACK);
         let fallbackLayer = null;
         let fallbackMeta = null;
-        const candidatos = []; // { meta, layer, chave } — só municípios com pelo menos 1 preview real
 
         heroGeoLayer = L.geoJSON(geojson, {
           style: estiloNormal,
@@ -5133,27 +5456,37 @@
               fallbackMeta = meta;
             }
             if (heroPreviewsDisponiveis(meta).length) {
-              candidatos.push({ meta, layer, chave });
+              heroCandidatosCatalogo.push({ meta, layer, chave });
+            }
+
+            // 2º ciclo: município com dados de áreas ardidas (índice) E geometria válida no mapa
+            const metaArdida = ardidasPorNome[chave];
+            if (metaArdida && metaArdida.anos && metaArdida.anos.length) {
+              heroCandidatosArdidas.push({ meta: metaArdida, layer, chave });
             }
           }
         }).addTo(heroMap);
 
-        const boundsPortugal = heroGeoLayer.getBounds();
-        if (boundsPortugal.isValid()) heroMap.fitBounds(boundsPortugal, { padding: [16, 16] });
+        heroBoundsPortugal = heroGeoLayer.getBounds();
+        if (heroBoundsPortugal.isValid()) heroMap.fitBounds(heroBoundsPortugal, { padding: [16, 16] });
 
         setTimeout(() => heroMap && heroMap.invalidateSize(), 250);
 
-        // sorteia o concelho de arranque entre os que têm pré-visualizações reais;
+        if (fallbackLayer && fallbackMeta) {
+          heroFallbackCatalogo = { meta: fallbackMeta, layer: fallbackLayer, chave: chaveFallback };
+        }
+
+        // sorteia o concelho de arranque entre os que têm pré-visualizações reais do catálogo;
         // se por algum motivo não houver nenhum, recorre ao município de fallback fixo
-        const primeiro = heroSortearMunicipio(candidatos, null) ||
-          (fallbackLayer && fallbackMeta ? { meta: fallbackMeta, layer: fallbackLayer, chave: chaveFallback } : null);
+        // (o ciclo arranca sempre pelo catálogo — o ciclo das Áreas Ardidas entra a seguir, alternado)
+        const primeiro = heroSortearMunicipio(heroCandidatosCatalogo, null) || heroFallbackCatalogo;
 
         if (!primeiro) {
           heroSetBadge('Portal geográfico · 261 municípios');
           return; // nenhum concelho com dados suficientes para a demo — fica só a vista geral
         }
 
-        heroRunCycle(primeiro.meta, primeiro.layer, boundsPortugal, candidatos);
+        heroRunCycle(primeiro.meta, primeiro.layer);
       } catch (err) {
         console.error('demo do hero:', err);
         heroSetBadge('Pré-visualização indisponível');
