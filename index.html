@@ -2,6 +2,10 @@
 <html lang="pt-PT">
 
 <head>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
@@ -387,7 +391,7 @@
       transform: scale(0);
       transform-origin: center center;
       transition: transform .55s cubic-bezier(.4, 0, .2, 1),
-                  opacity .15s ease .45s;
+        opacity .15s ease .45s;
       opacity: 1;
       width: 1px;
       height: 1px;
@@ -2673,22 +2677,27 @@
       transition: transform .12s ease, box-shadow .15s ease;
       box-shadow: 0 8px 16px rgba(139, 37, 0, .22);
     }
+
     .btn-ardidas .dla-text {
       flex: 1;
     }
+
     .btn-ardidas .dla-arrow {
       font-size: 18px;
       font-weight: 400;
       opacity: .8;
       line-height: 1;
     }
+
     .btn-ardidas:hover {
       transform: translateY(-1px);
       box-shadow: 0 12px 22px rgba(139, 37, 0, .32);
     }
+
     .btn-ardidas:active {
       transform: translateY(0) scale(.99);
     }
+
     html[data-theme="dark"] .btn-ardidas {
       background: linear-gradient(135deg, #8B2500, #C2703D);
       color: #FFF3E0;
@@ -3338,10 +3347,10 @@
     <header>
 
       <nav class="nav-links" id="nav-links">
-        
-        
+
+
         <a href="#site-footer">Termos e condições</a>
-        <a href="#site-footer">Sobre                                </a>
+        <a href="#site-footer">Sobre </a>
         <a href="estatisticas.html"> Estatísticas (beta)</a>
         <a href="BGRI_vier.html"> Explorador BGRI </a>
         <a href="areas_ardidas.html">Histórico de áreas ardidas</a>
@@ -3353,8 +3362,12 @@
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-      <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback"
+        aria-label="Dar feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
       </button>
       <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro"
         aria-label="Alternar tema claro/escuro">
@@ -3385,7 +3398,7 @@
           </a>
         </div>
         <div class="hero-highlights">
-          
+
         </div>
       </div>
       <div class="hero-preview">
@@ -3413,7 +3426,8 @@
       <article class="detail-card">
         <div class="eyebrow">Como funciona</div>
         <h3>Dados abertos</h3>
-        <p>Combina informação administrativa, ocupação do solo e camadas geográficas abertas para apoiar uma análise rápida
+        <p>Combina informação administrativa, ocupação do solo e camadas geográficas abertas para apoiar uma análise
+          rápida
           e de qualidade.</p>
       </article>
       <article class="detail-card">
@@ -3515,7 +3529,8 @@
           <div class="preview-map-badge" id="preview-map-badge">
             <div class="preview-badge-list" id="preview-badge-list"></div>
             <button type="button" class="preview-badge-fechartudo" id="preview-badge-fechartudo"
-              onclick="limparTodasPreviews()" title="Fechar todas as pré-visualizações" style="display:none;">✕ todas</button>
+              onclick="limparTodasPreviews()" title="Fechar todas as pré-visualizações" style="display:none;">✕
+              todas</button>
           </div>
           <div class="map-counter" id="map-counter">250+ municípios</div>
           <div class="map-legend" aria-hidden="true">
@@ -3638,7 +3653,7 @@
                     <span class="osm-badge">© ODbL</span>
                   </div>
                   <div id="osm-list"></div>
-                  
+
                   <div class="osm-note" id="osm-note" style="display:none;">
                     A pré-visualização dos dados apresentada neste website encontra-se em resolução inferior à dos dados
                     originais, destinando-se exclusivamente a fins de consulta rápida e navegação.
@@ -3674,7 +3689,8 @@
         <div class="terms-consent-dialog">
           <h3 id="terms-consent-title">Aceitas os Termos e Condi&ccedil;&otilde;es?</h3>
           <p id="terms-consent-text">
-            Antes de descarregar ficheiros, confirma que leste e concordas com os termos de utiliza&ccedil;&atilde;o dos dados.
+            Antes de descarregar ficheiros, confirma que leste e concordas com os termos de utiliza&ccedil;&atilde;o dos
+            dados.
           </p>
           <div class="terms-consent-actions">
             <button type="button" class="terms-consent-reject" id="terms-consent-reject">N&atilde;o concordo</button>
@@ -4018,7 +4034,7 @@
 
       /* Aparecer automaticamente após 30 s — só se ainda não foi dispensado nesta sessão */
       var alreadyDismissed = false;
-      try { alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (e) {}
+      try { alreadyDismissed = sessionStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { }
       if (!alreadyDismissed) {
         showTimer = setTimeout(show, 30000);
       }
@@ -4126,7 +4142,8 @@
                     2023 e dados LiDAR originais), do Instituto Nacional de Estatística (BGRI 2021), da Faculdade de
                     Ciências
                     da Universidade do Porto (MDT 10 m derivado de dados LiDAR da DGT), dos contribuidores do
-                    OpenStreetMap, e dados de incêndios florestais (áreas ardidas) do Instituto da Conservação da Natureza e das Florestas (ICNF).
+                    OpenStreetMap, e dados de incêndios florestais (áreas ardidas) do Instituto da Conservação da
+                    Natureza e das Florestas (ICNF).
                   </li>
                   <li>Qualquer redistribuição deve indicar claramente a origem dos dados, a data de acesso e, quando
                     aplicável, a respetiva licença ou termos de utilização.</li>
@@ -4398,36 +4415,36 @@
 
     const DICIONARIO_ATRIBUTOS_ARDIDAS = {
       // Área
-      AREA_HA:          { label: 'Área ardida (ha)',              grupo: 'Área' },
-      AREA_TOTAL:       { label: 'Área total ardida (ha)',         grupo: 'Área' },
-      AREA_ARVOREDO:    { label: 'Área de arvoredo ardido (ha)',   grupo: 'Área' },
-      AREA_MATO:        { label: 'Área de mato ardido (ha)',       grupo: 'Área' },
-      AREA_AGRICOLA:    { label: 'Área agrícola ardida (ha)',      grupo: 'Área' },
-      AREA_FLORESTA:    { label: 'Área florestal ardida (ha)',     grupo: 'Área' },
-      AREA_INCULTOS:    { label: 'Área incultos / matos (ha)',     grupo: 'Área' },
-      AREA_OUTRAS:      { label: 'Outras áreas ardidas (ha)',      grupo: 'Área' },
-      SUP_TOTAL:        { label: 'Superfície total (ha)',          grupo: 'Área' },
-      SUP_ARVOREDO:     { label: 'Superfície arvoredo (ha)',       grupo: 'Área' },
-      SUP_MATO:         { label: 'Superfície mato (ha)',           grupo: 'Área' },
+      AREA_HA: { label: 'Área ardida (ha)', grupo: 'Área' },
+      AREA_TOTAL: { label: 'Área total ardida (ha)', grupo: 'Área' },
+      AREA_ARVOREDO: { label: 'Área de arvoredo ardido (ha)', grupo: 'Área' },
+      AREA_MATO: { label: 'Área de mato ardido (ha)', grupo: 'Área' },
+      AREA_AGRICOLA: { label: 'Área agrícola ardida (ha)', grupo: 'Área' },
+      AREA_FLORESTA: { label: 'Área florestal ardida (ha)', grupo: 'Área' },
+      AREA_INCULTOS: { label: 'Área incultos / matos (ha)', grupo: 'Área' },
+      AREA_OUTRAS: { label: 'Outras áreas ardidas (ha)', grupo: 'Área' },
+      SUP_TOTAL: { label: 'Superfície total (ha)', grupo: 'Área' },
+      SUP_ARVOREDO: { label: 'Superfície arvoredo (ha)', grupo: 'Área' },
+      SUP_MATO: { label: 'Superfície mato (ha)', grupo: 'Área' },
 
       // Ocorrências / Incêndios
-      N_OCORRENCIAS:    { label: 'Nº de ocorrências',             grupo: 'Ocorrências' },
-      N_INCENDIOS:      { label: 'Nº de incêndios',               grupo: 'Ocorrências' },
-      N_FOGACHOS:       { label: 'Nº de fogachos',                grupo: 'Ocorrências' },
-      FREQUENCIA:       { label: 'Frequência de incêndios',       grupo: 'Ocorrências' },
+      N_OCORRENCIAS: { label: 'Nº de ocorrências', grupo: 'Ocorrências' },
+      N_INCENDIOS: { label: 'Nº de incêndios', grupo: 'Ocorrências' },
+      N_FOGACHOS: { label: 'Nº de fogachos', grupo: 'Ocorrências' },
+      FREQUENCIA: { label: 'Frequência de incêndios', grupo: 'Ocorrências' },
 
       // Dimensão / Duração
-      DURACAO_H:        { label: 'Duração média (horas)',         grupo: 'Características' },
-      DURACAO_MEDIA:    { label: 'Duração média (horas)',         grupo: 'Características' },
-      AREA_MEDIA:       { label: 'Área média por incêndio (ha)',  grupo: 'Características' },
-      PERIMETRO:        { label: 'Perímetro (m)',                 grupo: 'Características' },
-      PERIMETRO_M:      { label: 'Perímetro (m)',                 grupo: 'Características' },
+      DURACAO_H: { label: 'Duração média (horas)', grupo: 'Características' },
+      DURACAO_MEDIA: { label: 'Duração média (horas)', grupo: 'Características' },
+      AREA_MEDIA: { label: 'Área média por incêndio (ha)', grupo: 'Características' },
+      PERIMETRO: { label: 'Perímetro (m)', grupo: 'Características' },
+      PERIMETRO_M: { label: 'Perímetro (m)', grupo: 'Características' },
 
       // Ano / Período
-      ANO:              { label: 'Ano',                           grupo: 'Temporal' },
-      MES:              { label: 'Mês',                           grupo: 'Temporal' },
-      DIA_INICIO:       { label: 'Dia de início',                 grupo: 'Temporal' },
-      DIA_EXTINCAO:     { label: 'Dia de extinção',               grupo: 'Temporal' }
+      ANO: { label: 'Ano', grupo: 'Temporal' },
+      MES: { label: 'Mês', grupo: 'Temporal' },
+      DIA_INICIO: { label: 'Dia de início', grupo: 'Temporal' },
+      DIA_EXTINCAO: { label: 'Dia de extinção', grupo: 'Temporal' }
     };
 
     const ORDEM_GRUPOS_ARDIDAS = ['Área', 'Ocorrências', 'Características', 'Temporal', 'Outros indicadores'];
@@ -4617,47 +4634,47 @@
     const PREVIEW_LABELS = { caop: 'CAOP', cos: 'COS', bgri: 'BGRI', mdt: 'MDT' };
     const PREVIEW_STYLES = {
       // ── Camadas principais ────────────────────────────────────────────────────
-      caop: { color: '#C2703D', weight: 2,   fillOpacity: 0.05 }, // laranja-ocre — limites administrativos
-      cos:  { color: '#5A8F45', weight: 1,   fillOpacity: 0.22 }, // verde — uso do solo (COS)
-      bgri: { color: '#4472A8', weight: 1,   fillOpacity: 0.16 }, // azul-ardósia — censos/BGRI
-      mdt:  { color: '#8B6914', weight: 1.2, fillOpacity: 0.20 }, // amarelo-siena — modelo de terreno
+      caop: { color: '#C2703D', weight: 2, fillOpacity: 0.05 }, // laranja-ocre — limites administrativos
+      cos: { color: '#5A8F45', weight: 1, fillOpacity: 0.22 }, // verde — uso do solo (COS)
+      bgri: { color: '#4472A8', weight: 1, fillOpacity: 0.16 }, // azul-ardósia — censos/BGRI
+      mdt: { color: '#8B6914', weight: 1.2, fillOpacity: 0.20 }, // amarelo-siena — modelo de terreno
 
       // ── OSM: Água ─────────────────────────────────────────────────────────────
-      'osm:gis_osm_water_a_free_1':    { color: '#2E86C1', weight: 1,   fillColor: '#AED6F1', fillOpacity: 0.55 }, // azul — massas de água
-      'osm:gis_osm_waterways_free_1':  { color: '#1A6FA8', weight: 2,   fillOpacity: 0 },                          // azul escuro — cursos de água (linhas)
+      'osm:gis_osm_water_a_free_1': { color: '#2E86C1', weight: 1, fillColor: '#AED6F1', fillOpacity: 0.55 }, // azul — massas de água
+      'osm:gis_osm_waterways_free_1': { color: '#1A6FA8', weight: 2, fillOpacity: 0 },                          // azul escuro — cursos de água (linhas)
 
       // ── OSM: Vegetação / Natureza ─────────────────────────────────────────────
-      'osm:gis_osm_natural_a_free_1':  { color: '#27AE60', weight: 1,   fillColor: '#A9DFBF', fillOpacity: 0.45 }, // verde — natureza (áreas)
-      'osm:gis_osm_natural_free_1':    { color: '#1E8449', weight: 1,   fillColor: '#52BE80', fillOpacity: 0.80 }, // verde escuro — natureza (pontos)
+      'osm:gis_osm_natural_a_free_1': { color: '#27AE60', weight: 1, fillColor: '#A9DFBF', fillOpacity: 0.45 }, // verde — natureza (áreas)
+      'osm:gis_osm_natural_free_1': { color: '#1E8449', weight: 1, fillColor: '#52BE80', fillOpacity: 0.80 }, // verde escuro — natureza (pontos)
 
       // ── OSM: Uso do solo ──────────────────────────────────────────────────────
-      'osm:gis_osm_landuse_a_free_1':  { color: '#7D9E4E', weight: 1,   fillColor: '#D5E8C4', fillOpacity: 0.45 }, // verde-oliva — uso do solo
+      'osm:gis_osm_landuse_a_free_1': { color: '#7D9E4E', weight: 1, fillColor: '#D5E8C4', fillOpacity: 0.45 }, // verde-oliva — uso do solo
 
       // ── OSM: Construído ───────────────────────────────────────────────────────
-      'osm:gis_osm_buildings_a_free_1':{ color: '#884EA0', weight: 1,   fillColor: '#D7BDE2', fillOpacity: 0.50 }, // violeta — edifícios
+      'osm:gis_osm_buildings_a_free_1': { color: '#884EA0', weight: 1, fillColor: '#D7BDE2', fillOpacity: 0.50 }, // violeta — edifícios
 
       // ── OSM: Infraestruturas ──────────────────────────────────────────────────
-      'osm:gis_osm_roads_free_1':      { color: '#E67E22', weight: 1.5, fillOpacity: 0 },                          // laranja — estradas (linhas)
-      'osm:gis_osm_railways_free_1':   { color: '#717D7E', weight: 2,   fillOpacity: 0, dashArray: '6,4' },        // cinzento — caminhos de ferro
+      'osm:gis_osm_roads_free_1': { color: '#E67E22', weight: 1.5, fillOpacity: 0 },                          // laranja — estradas (linhas)
+      'osm:gis_osm_railways_free_1': { color: '#717D7E', weight: 2, fillOpacity: 0, dashArray: '6,4' },        // cinzento — caminhos de ferro
 
       // ── OSM: Lugares / POI ────────────────────────────────────────────────────
-      'osm:gis_osm_places_a_free_1':   { color: '#C0392B', weight: 1,   fillColor: '#F1948A', fillOpacity: 0.35 }, // vermelho — lugares (áreas)
-      'osm:gis_osm_places_free_1':     { color: '#C0392B', weight: 1.5, fillColor: '#E74C3C', fillOpacity: 0.85 }, // vermelho — lugares (pontos)
-      'osm:gis_osm_pois_a_free_1':     { color: '#D35400', weight: 1,   fillColor: '#FAD7A0', fillOpacity: 0.40 }, // laranja-escuro — POI (áreas)
-      'osm:gis_osm_pois_free_1':       { color: '#D35400', weight: 1.5, fillColor: '#F39C12', fillOpacity: 0.85 }, // laranja — POI (pontos)
+      'osm:gis_osm_places_a_free_1': { color: '#C0392B', weight: 1, fillColor: '#F1948A', fillOpacity: 0.35 }, // vermelho — lugares (áreas)
+      'osm:gis_osm_places_free_1': { color: '#C0392B', weight: 1.5, fillColor: '#E74C3C', fillOpacity: 0.85 }, // vermelho — lugares (pontos)
+      'osm:gis_osm_pois_a_free_1': { color: '#D35400', weight: 1, fillColor: '#FAD7A0', fillOpacity: 0.40 }, // laranja-escuro — POI (áreas)
+      'osm:gis_osm_pois_free_1': { color: '#D35400', weight: 1.5, fillColor: '#F39C12', fillOpacity: 0.85 }, // laranja — POI (pontos)
 
       // ── OSM: Culto ────────────────────────────────────────────────────────────
-      'osm:gis_osm_pofw_a_free_1':     { color: '#7D6608', weight: 1,   fillColor: '#F9E79F', fillOpacity: 0.40 }, // dourado — culto (áreas)
-      'osm:gis_osm_pofw_free_1':       { color: '#7D6608', weight: 1.5, fillColor: '#F4D03F', fillOpacity: 0.85 }, // dourado — culto (pontos)
+      'osm:gis_osm_pofw_a_free_1': { color: '#7D6608', weight: 1, fillColor: '#F9E79F', fillOpacity: 0.40 }, // dourado — culto (áreas)
+      'osm:gis_osm_pofw_free_1': { color: '#7D6608', weight: 1.5, fillColor: '#F4D03F', fillOpacity: 0.85 }, // dourado — culto (pontos)
 
       // ── OSM: Áreas Protegidas ─────────────────────────────────────────────────
       'osm:gis_osm_protected_areas_a_free_1': { color: '#117A65', weight: 1.5, fillColor: '#A2D9CE', fillOpacity: 0.40 }, // verde-teal — áreas protegidas
 
       // ── OSM: Tráfego / Transportes ────────────────────────────────────────────
-      'osm:gis_osm_traffic_a_free_1':  { color: '#922B21', weight: 1,   fillColor: '#F5B7B1', fillOpacity: 0.40 }, // vermelho-escuro — tráfego (áreas)
-      'osm:gis_osm_traffic_free_1':    { color: '#922B21', weight: 1.5, fillColor: '#EC7063', fillOpacity: 0.85 }, // vermelho — tráfego (pontos)
-      'osm:gis_osm_transport_a_free_1':{ color: '#1F618D', weight: 1,   fillColor: '#AED6F1', fillOpacity: 0.40 }, // azul-aço — transportes (áreas)
-      'osm:gis_osm_transport_free_1':  { color: '#1F618D', weight: 1.5, fillColor: '#5DADE2', fillOpacity: 0.85 }, // azul — transportes (pontos)
+      'osm:gis_osm_traffic_a_free_1': { color: '#922B21', weight: 1, fillColor: '#F5B7B1', fillOpacity: 0.40 }, // vermelho-escuro — tráfego (áreas)
+      'osm:gis_osm_traffic_free_1': { color: '#922B21', weight: 1.5, fillColor: '#EC7063', fillOpacity: 0.85 }, // vermelho — tráfego (pontos)
+      'osm:gis_osm_transport_a_free_1': { color: '#1F618D', weight: 1, fillColor: '#AED6F1', fillOpacity: 0.40 }, // azul-aço — transportes (áreas)
+      'osm:gis_osm_transport_free_1': { color: '#1F618D', weight: 1.5, fillColor: '#5DADE2', fillOpacity: 0.85 }, // azul — transportes (pontos)
     };
 
     function caminhoRelativoPreview(p) {
@@ -5940,9 +5957,9 @@
         var scale = Math.ceil(maxDist * 2);
 
         ripple.style.left = cx + 'px';
-        ripple.style.top  = cy + 'px';
+        ripple.style.top = cy + 'px';
         ripple.style.marginLeft = '-.5px';
-        ripple.style.marginTop  = '-.5px';
+        ripple.style.marginTop = '-.5px';
         overlay.style.setProperty('--ripple-scale', scale);
 
         // reset limpo antes de animar
