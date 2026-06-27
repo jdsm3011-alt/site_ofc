@@ -663,6 +663,54 @@
     text-transform:uppercase;
   }
 
+  /* ── Panorama nacional ── */
+  .seccao-nacional{
+    margin-top:8px;
+    padding-top:24px;
+    border-left:none;
+    border-top:1px solid var(--line);
+  }
+  section.seccao h3 .badge-info{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.05em;
+    color:var(--green);
+    border:1px solid var(--green-soft);
+    border-radius:999px;
+    padding:2px 8px;
+    text-transform:uppercase;
+  }
+  .panorama-intro{
+    font-size:13px;
+    color:var(--stone);
+    margin:-4px 0 18px;
+  }
+  .panorama-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    margin-bottom:24px;
+  }
+  .panorama-coluna h4{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin:0 0 10px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  .panorama-subnota{
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--stone);
+    font-size:11px;
+  }
+  @media (max-width:760px){
+    .panorama-grid{ grid-template-columns:1fr; gap:20px; }
+  }
+
   .barra-linha{
     display:grid;
     grid-template-columns:minmax(160px, 280px) 1fr auto;
@@ -698,6 +746,11 @@
     color:var(--stone);
     width:54px;
     text-align:right;
+    white-space:nowrap;
+  }
+  .barra-pct.num{
+    width:auto;
+    min-width:54px;
   }
   .cos-nota-excluidas{
     margin-top:10px;
@@ -869,6 +922,35 @@
       </section>
     </div>
 
+    <section class="seccao seccao-nacional" id="sec-panorama-nacional">
+      <h3>Panorama nacional <span class="badge-info">Censos 2021 · BGRI</span></h3>
+      <p class="panorama-intro">Visão agregada dos 278 municípios processados, com base nos dados do BGRI 2021.</p>
+
+      <div class="grid-blocos" id="panorama-kpis"></div>
+
+      <div class="panorama-grid">
+        <div class="panorama-coluna">
+          <h4>Distritos por população</h4>
+          <div id="panorama-distritos-pop"></div>
+        </div>
+        <div class="panorama-coluna">
+          <h4>Top 10 municípios por população</h4>
+          <div id="panorama-top-municipios"></div>
+        </div>
+      </div>
+
+      <div class="panorama-grid">
+        <div class="panorama-coluna">
+          <h4>Distritos por densidade de edifícios <span class="panorama-subnota">(edifícios por 1000 habitantes)</span></h4>
+          <div id="panorama-distritos-densidade"></div>
+        </div>
+        <div class="panorama-coluna">
+          <h4>Top 10 municípios por alojamentos / edifício</h4>
+          <div id="panorama-top-alojamentos"></div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
 </main>
@@ -961,6 +1043,7 @@
       }).sort(function(a,b){ return a.municipio.localeCompare(b.municipio, 'pt'); });
 
       montarKPIs();
+      montarPanoramaNacional();
       document.getElementById('estado').style.display = 'none';
       document.getElementById('conteudo').style.display = 'block';
     })
@@ -975,13 +1058,16 @@
     var nMunic = lista.length;
     var areaTotal = 0, popTotal = 0;
     lista.forEach(function(v){
-      if(v.caop) areaTotal += v.caop.area_ha;
+      // nota: a chave "caop" não vem preenchida nos dados atuais; usa-se a
+      // área total classificada da COS como proxy da área do município
+      // (na prática cobre quase toda a área municipal).
+      if(v.cos && v.cos.area_total_classificada_ha) areaTotal += v.cos.area_total_classificada_ha;
       if(v.bgri && v.bgri.populacao_total) popTotal += v.bgri.populacao_total;
     });
 
     var kpis = [
       { valor: nMunic, label: 'Municípios processados' },
-      { valor: fmt(areaTotal/1000, 1) + ' mil ha', label: 'Área total (CAOP)' },
+      { valor: fmt(areaTotal/1000, 1) + ' mil ha', label: 'Área classificada (COS)' },
       { valor: fmt(popTotal), label: 'População total (BGRI 2021)' },
     ];
 
@@ -990,6 +1076,113 @@
       html += '<div class="kpi-card"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
     });
     document.getElementById('kpis').innerHTML = html;
+  }
+
+  // ── Panorama nacional (agregados sobretudo a partir do BGRI 2021) ──
+  function montarPanoramaNacional(){
+    var lista = Object.values(dados);
+
+    // ---- KPIs agregados ----
+    var popTotal = 0, edifTotal = 0, alojTotal = 0, subseccoesTotal = 0;
+    var nDistritos = {};
+    lista.forEach(function(v){
+      if(!v.bgri) return;
+      popTotal += v.bgri.populacao_total || 0;
+      edifTotal += v.bgri.edificios_total || 0;
+      alojTotal += v.bgri.alojamentos_total || 0;
+      subseccoesTotal += v.bgri.num_subseccoes || 0;
+      if(v.distrito) nDistritos[v.distrito] = true;
+    });
+
+    var kpisNacionais = [
+      { valor: fmt(popTotal), label: 'População total' },
+      { valor: fmt(edifTotal), label: 'Edifícios (total)' },
+      { valor: fmt(alojTotal), label: 'Alojamentos (total)' },
+      { valor: fmt(alojTotal && edifTotal ? alojTotal/edifTotal : 0, 2).replace('.',','), label: 'Alojamentos por edifício' },
+      { valor: Object.keys(nDistritos).length, label: 'Distritos representados' },
+    ];
+    document.getElementById('panorama-kpis').innerHTML = kpisNacionais.map(function(k){
+      return '<div class="bloco"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
+    }).join('');
+
+    // ---- agregação por distrito ----
+    var porDistrito = {};
+    lista.forEach(function(v){
+      if(!v.distrito || !v.bgri) return;
+      var d = porDistrito[v.distrito] || (porDistrito[v.distrito] = { nome: v.distrito, pop: 0, edif: 0, aloj: 0, nMunic: 0 });
+      d.pop += v.bgri.populacao_total || 0;
+      d.edif += v.bgri.edificios_total || 0;
+      d.aloj += v.bgri.alojamentos_total || 0;
+      d.nMunic += 1;
+    });
+    var distritos = Object.values(porDistrito).map(function(d){
+      return {
+        nome: d.nome.replace(/_/g, ' '),
+        pop: d.pop,
+        edif: d.edif,
+        // edifícios por 1000 habitantes, como indicador de densidade de edificado
+        densidade: d.pop > 0 ? (d.edif / d.pop) * 1000 : 0
+      };
+    });
+
+    // ranking de distritos por população
+    var distritosPop = distritos.slice().sort(function(a,b){ return b.pop - a.pop; });
+    renderBarrasGenerico('panorama-distritos-pop', distritosPop, function(d){ return d.nome; }, function(d){ return d.pop; }, function(v){ return fmt(v); });
+
+    // ranking de distritos por densidade de edifícios
+    var distritosDensidade = distritos.slice().sort(function(a,b){ return b.densidade - a.densidade; });
+    renderBarrasGenerico('panorama-distritos-densidade', distritosDensidade, function(d){ return d.nome; }, function(d){ return d.densidade; }, function(v){ return fmt(v, 1); }, true);
+
+    // ---- top municípios ----
+    var municipios = lista.filter(function(v){ return v.bgri; }).map(function(v){
+      return {
+        nome: (v.municipio || '').replace(/_/g, ' '),
+        pop: v.bgri.populacao_total || 0,
+        edif: v.bgri.edificios_total || 0,
+        aloj: v.bgri.alojamentos_total || 0,
+        rateAlojEdif: v.bgri.edificios_total ? (v.bgri.alojamentos_total || 0) / v.bgri.edificios_total : 0
+      };
+    });
+
+    var topPop = municipios.slice().sort(function(a,b){ return b.pop - a.pop; }).slice(0, 10);
+    renderBarrasGenerico('panorama-top-municipios', topPop, function(m){ return m.nome; }, function(m){ return m.pop; }, function(v){ return fmt(v); });
+
+    var topAloj = municipios.slice().sort(function(a,b){ return b.rateAlojEdif - a.rateAlojEdif; }).slice(0, 10);
+    renderBarrasGenerico('panorama-top-alojamentos', topAloj, function(m){ return m.nome; }, function(m){ return m.rateAlojEdif; }, function(v){ return fmt(v, 2).replace('.',','); }, true);
+  }
+
+  // renderiza uma lista de itens como barras horizontais (estilo .barra-linha),
+  // reaproveitando a mesma classe visual já usada na secção COS do painel de
+  // município. "ochre" pinta as barras a laranja em vez de verde (para
+  // distinguir visualmente rankings de natureza diferente, ex.: proporções
+  // em vez de totais absolutos).
+  function renderBarrasGenerico(idContentor, itens, getNome, getValor, formatarValor, ochre){
+    var el = document.getElementById(idContentor);
+    if(!el) return;
+    if(!itens.length){
+      el.innerHTML = '<p style="color:var(--stone); font-size:13px;">Sem dados.</p>';
+      return;
+    }
+    var maxValor = Math.max.apply(null, itens.map(getValor).concat([1]));
+    el.innerHTML = itens.map(function(item){
+      var valor = getValor(item);
+      var largura = maxValor > 0 ? Math.min(100, (valor / maxValor) * 100) : 0;
+      var corOchre = ochre ? ' ochre' : '';
+      var nome = getNome(item);
+      return '<div class="barra-linha">' +
+        '<span class="barra-nome" title="' + nome + '">' + nome + '</span>' +
+        '<span class="barra-pista"><span class="barra-fill' + corOchre + '" data-largura="' + largura + '" style="width:0%"></span></span>' +
+        '<span class="barra-pct num">' + formatarValor(valor) + '</span>' +
+        '</div>';
+    }).join('');
+
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        el.querySelectorAll('.barra-fill').forEach(function(barraEl){
+          barraEl.style.width = barraEl.getAttribute('data-largura') + '%';
+        });
+      });
+    });
   }
 
   // ── pesquisa ──
