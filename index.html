@@ -1739,6 +1739,11 @@
       will-change: transform, opacity;
     }
 
+    .map-plane-f16 {
+      width: 72px;
+      height: 46px;
+    }
+
     .map-plane-flyover.is-flying {
       animation: mapPlaneFlight var(--plane-duration, 18s) linear forwards;
     }
@@ -1751,8 +1756,16 @@
       filter: drop-shadow(0 6px 12px rgba(24, 38, 30, .25));
     }
 
+    .map-plane-f16 svg {
+      color: rgba(50, 62, 55, .88);
+    }
+
     html[data-theme="dark"] .map-plane-flyover svg {
       color: rgba(222, 232, 219, .78);
+    }
+
+    html[data-theme="dark"] .map-plane-f16 svg {
+      color: rgba(195, 210, 200, .82);
     }
 
     @keyframes mapPlaneFlight {
@@ -3479,6 +3492,7 @@
 
       <div class="layout">
         <div id="map">
+          <!-- Avião comercial -->
           <div class="map-plane-flyover" id="map-plane-flyover" aria-hidden="true">
             <svg viewBox="0 0 96 96" focusable="false">
               <ellipse cx="46" cy="50" rx="42" ry="9" fill="currentColor" opacity=".15" />
@@ -3515,6 +3529,182 @@
               <circle cx="78" cy="46.5" r=".8" fill="rgba(12,20,14,.4)" />
               <path d="M28,44.6 79,45.6" stroke="rgba(255,255,255,.32)" stroke-width=".9" stroke-linecap="round"
                 fill="none" />
+            </svg>
+          </div>
+          <!-- F-16 Fighting Falcon — vista top-down realista -->
+          <div class="map-plane-flyover map-plane-f16" id="map-plane-f16" aria-hidden="true">
+            <svg viewBox="-88 -56 176 112" focusable="false" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="f16_ab" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"   stop-color="#ffcc44" stop-opacity=".95"/>
+                  <stop offset="35%"  stop-color="#ff6010" stop-opacity=".65"/>
+                  <stop offset="100%" stop-color="#ff2800" stop-opacity="0"/>
+                </linearGradient>
+                <radialGradient id="f16_ab_core" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%"   stop-color="#fff8c0" stop-opacity="1"/>
+                  <stop offset="50%"  stop-color="#ffcc44" stop-opacity=".85"/>
+                  <stop offset="100%" stop-color="#ff6010" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- pluma afterburner (atrás do avião, lado esquerdo no viewBox pois voa para a direita) -->
+              <path d="M -64,-1.2 L -86,-2 L -88,0 L -86,2 L -64,1.2 Z" fill="url(#f16_ab)" opacity=".75"/>
+              <ellipse cx="-64" cy="0" rx="5" ry="3.5" fill="url(#f16_ab_core)" opacity=".6"/>
+
+              <!-- sombra projetada subtil -->
+              <ellipse cx="2" cy="3" rx="52" ry="18" fill="rgba(0,0,0,.18)"/>
+
+              <!-- ASA DELTA — bordo de ataque varrimento ~40°, bordo de fuga quase perpendicular -->
+              <!-- asa superior -->
+              <path d="M 30,-4  C 18,-9  6,-18  -4,-19  L -38,-48  C -40,-50 -40,-50 -38,-49  L -16,-32  C -6,-24  4,-16  14,-10  L 26,-5 Z"
+                fill="currentColor" opacity=".93"/>
+              <!-- asa inferior -->
+              <path d="M 30,4  C 18,9  6,18  -4,19  L -38,48  C -40,50 -40,50 -38,49  L -16,32  C -6,24  4,16  14,10  L 26,5 Z"
+                fill="currentColor" opacity=".93"/>
+
+              <!-- flaperons (bordo de fuga) -->
+              <path d="M -38,-49 L -16,-32 L -16,-27 L -40,-45 Z" fill="currentColor" opacity=".6"/>
+              <path d="M -38,49  L -16,32  L -16,27  L -40,45  Z" fill="currentColor" opacity=".6"/>
+
+              <!-- reflexo especular no bordo de ataque da asa -->
+              <path d="M 30,-4 C 18,-9.8 6,-19 -4,-20 L -38,-50 L -40,-47 C -32,-40 -18,-28 -4,-18 C 8,-10 18,-5 30,-4 Z"
+                fill="rgba(255,255,255,.07)"/>
+              <path d="M 30,4  C 18,9.8  6,19  -4,20  L -38,50  L -40,47  C -32,40  -18,28  -4,18  C 8,10  18,5  30,4  Z"
+                fill="rgba(255,255,255,.07)"/>
+
+              <!-- LERX — Leading Edge Root Extensions (característica icónica do F-16) -->
+              <path d="M 42,-3.5  C 30,-6  18,-12  6,-19  L -4,-19  C 8,-13  20,-7  32,-4 Z"
+                fill="currentColor" opacity=".82"/>
+              <path d="M 42,3.5  C 30,6  18,12  6,19  L -4,19  C 8,13  20,7  32,4 Z"
+                fill="currentColor" opacity=".82"/>
+
+              <!-- ESTABILIZADORES HORIZONTAIS — varrimento agressivo, cauda -->
+              <path d="M -42,-9  L -60,-30  C -62,-33 -62,-33 -60,-31  L -44,-14 Z"
+                fill="currentColor" opacity=".88"/>
+              <path d="M -42,9   L -60,30  C -62,33  -62,33  -60,31  L -44,14  Z"
+                fill="currentColor" opacity=".88"/>
+              <!-- reflexo estabilizador -->
+              <path d="M -42,-9 L -60,-30 L -58,-32 L -44,-12 Z" fill="rgba(255,255,255,.06)"/>
+              <path d="M -42,9  L -60,30  L -58,32  L -44,12  Z" fill="rgba(255,255,255,.06)"/>
+
+              <!-- FUSELAGEM — perfil real: nariz longo, barriga larga, cauda estreita -->
+              <path d="
+                M 66,0
+                C 62,-1.4  54,-2.4  44,-2.8
+                L 20,-3.4
+                C  8,-3.8  -4,-4.8  -18,-6
+                C -30,-7   -42,-8.2  -50,-9
+                L -56,-9.6  -60,-9.8
+                L -60,9.8
+                L -56,9.6  -50,9
+                C -42,8.2  -30,7  -18,6
+                C  -4,4.8   8,3.8  20,3.4
+                L  44,2.8
+                C  54,2.4  62,1.4  66,0
+                Z
+              " fill="currentColor" stroke="rgba(0,0,0,.2)" stroke-width=".5"/>
+
+              <!-- nariz — radome e tubo de Pitot -->
+              <path d="M 66,0 L 78,0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".7"/>
+              <circle cx="78.5" cy="0" r=".7" fill="rgba(180,160,60,.9)"/>
+
+              <!-- BOCAL do motor (nozzle) — pétalas convergentes -->
+              <circle cx="-62" cy="0" r="7.2" fill="rgba(10,12,18,.88)" stroke="rgba(30,32,40,.7)" stroke-width=".5"/>
+              <circle cx="-62" cy="0" r="5.8" fill="rgba(16,16,26,.92)" stroke="rgba(40,44,56,.5)" stroke-width=".4"/>
+              <!-- pétalas do nozzle -->
+              <g fill="rgba(35,35,50,.95)" stroke="rgba(55,58,72,.7)" stroke-width=".3">
+                <ellipse cx="-62" cy="-4.8" rx="1.8" ry=".7"/>
+                <ellipse cx="-62" cy="4.8"  rx="1.8" ry=".7"/>
+                <ellipse cx="-65.2" cy="-3.2" rx="1.8" ry=".7" transform="rotate(32 -65.2 -3.2)"/>
+                <ellipse cx="-65.2" cy="3.2"  rx="1.8" ry=".7" transform="rotate(-32 -65.2 3.2)"/>
+                <ellipse cx="-66" cy="0"    rx="1.8" ry=".7"/>
+                <ellipse cx="-58.8" cy="-3.2" rx="1.8" ry=".7" transform="rotate(-32 -58.8 -3.2)"/>
+                <ellipse cx="-58.8" cy="3.2"  rx="1.8" ry=".7" transform="rotate(32 -58.8 3.2)"/>
+              </g>
+              <!-- afterburner core -->
+              <circle cx="-62" cy="0" r="4.6" fill="rgba(255,140,20,.58)"/>
+              <circle cx="-62" cy="0" r="3"   fill="rgba(255,210,60,.78)"/>
+              <circle cx="-62" cy="0" r="1.6" fill="rgba(255,248,180,.95)"/>
+
+              <!-- INTAKE DSI — sem cone de divisão (característica do Bloco 50+) -->
+              <path d="
+                M 38,5
+                C 28,7  18,10  10,13
+                L  4,15
+                C 10,12  20,9  30,7
+                L 38,6
+                Z
+              " fill="rgba(8,10,20,.78)" stroke="rgba(20,22,32,.6)" stroke-width=".4"/>
+              <!-- lábio do intake (reflexo) -->
+              <path d="M 38,5 C 28,7 18,10 10,13 L 4,15 L 4,13.2 C 10,10.5 20,7.8 30,5.8 L 38,4.5 Z"
+                fill="rgba(255,255,255,.08)"/>
+
+              <!-- COCKPIT bubble canopy — icónico no F-16 (frameless, 360° visibility) -->
+              <ellipse cx="48" cy="0" rx="11" ry="5" fill="rgba(12,18,38,.82)" stroke="rgba(20,28,50,.6)" stroke-width=".5"/>
+              <!-- frame dianteiro do canopy -->
+              <path d="M 59,0 C 57,-3.5 53,-5 48,-5 L 44,-5 C 46,-5 50,-4 54.5,0 Z"
+                fill="rgba(30,35,30,.6)"/>
+              <!-- reflexo principal -->
+              <ellipse cx="51" cy="-1.8" rx="5.5" ry="1.6" fill="rgba(160,210,255,.20)" transform="rotate(-10 51 -1.8)"/>
+              <!-- reflexo secundário (sky highlight) -->
+              <ellipse cx="47" cy="-2.5" rx="2.5" ry=".9" fill="rgba(200,230,255,.13)"/>
+              <!-- HUD verde -->
+              <rect x="43" y="-1.2" width="7" height=".5" rx=".25" fill="rgba(80,255,100,.55)"/>
+
+              <!-- PROJEÇÃO da deriva vertical (vista de cima — sombra/espessura) -->
+              <path d="M -26,-1.8 L -56,-3.8 L -60,-2 L -60,2 L -56,3.8 L -26,1.8 Z"
+                fill="rgba(0,0,0,.20)"/>
+              <path d="M -28,-1.2 L -56,-2.8 L -60,0 L -56,2.8 L -28,1.2 Z"
+                fill="currentColor" opacity=".45" stroke="rgba(0,0,0,.15)" stroke-width=".3"/>
+
+              <!-- PAINÉIS de acesso e linhas de estrutura na fuselagem -->
+              <line x1="10" y1="-2.4" x2="58" y2="-1.6" stroke="rgba(255,255,255,.10)" stroke-width=".55" stroke-dasharray="5,3"/>
+              <line x1="10" y1="2.4"  x2="58" y2="1.6"  stroke="rgba(255,255,255,.10)" stroke-width=".55" stroke-dasharray="5,3"/>
+              <line x1="-5" y1="-3.2" x2="-38" y2="-5"  stroke="rgba(255,255,255,.07)" stroke-width=".4"  stroke-dasharray="3,4"/>
+              <line x1="-5" y1="3.2"  x2="-38" y2="5"   stroke="rgba(255,255,255,.07)" stroke-width=".4"  stroke-dasharray="3,4"/>
+              <!-- linha central da fuselagem (curvatura ventral) -->
+              <line x1="-20" y1="0" x2="40" y2="0" stroke="rgba(255,255,255,.06)" stroke-width=".4" stroke-dasharray="6,4"/>
+
+              <!-- MÍSSEIS AIM-120 AMRAAM nas semi-asa interna -->
+              <g transform="translate(-18,-36) rotate(42)">
+                <rect x="-8" y="-1.1" width="16" height="2.2" rx="1.1" fill="rgba(155,158,175,.85)"/>
+                <rect x="-8" y="-1.1" width="3"  height="2.2" rx=".8" fill="rgba(185,188,205,.9)"/>
+                <path d="M 8,-1.1 L 10.5,0 L 8,1.1 Z" fill="rgba(130,132,148,.9)"/>
+                <rect x="-3" y="-3.5" width="2.5" height="2.4" rx=".4" fill="rgba(130,133,150,.8)"/>
+                <rect x="-3" y="1.1"  width="2.5" height="2.4" rx=".4" fill="rgba(130,133,150,.8)"/>
+              </g>
+              <g transform="translate(-18,36) rotate(-42)">
+                <rect x="-8" y="-1.1" width="16" height="2.2" rx="1.1" fill="rgba(155,158,175,.85)"/>
+                <rect x="-8" y="-1.1" width="3"  height="2.2" rx=".8" fill="rgba(185,188,205,.9)"/>
+                <path d="M 8,-1.1 L 10.5,0 L 8,1.1 Z" fill="rgba(130,132,148,.9)"/>
+                <rect x="-3" y="-3.5" width="2.5" height="2.4" rx=".4" fill="rgba(130,133,150,.8)"/>
+                <rect x="-3" y="1.1"  width="2.5" height="2.4" rx=".4" fill="rgba(130,133,150,.8)"/>
+              </g>
+
+              <!-- AIM-9X Sidewinder nas pontas das asas -->
+              <g transform="translate(-34,-46) rotate(46)">
+                <rect x="-6" y="-.9" width="12" height="1.8" rx=".9" fill="rgba(165,168,185,.8)"/>
+                <path d="M 6,-.9 L 8.2,0 L 6,.9 Z" fill="rgba(140,142,158,.85)"/>
+                <rect x="-4.5" y="-2.8" width="2" height="1.9" rx=".3" fill="rgba(140,142,158,.75)"/>
+                <rect x="-4.5" y=".9"   width="2" height="1.9" rx=".3" fill="rgba(140,142,158,.75)"/>
+              </g>
+              <g transform="translate(-34,46) rotate(-46)">
+                <rect x="-6" y="-.9" width="12" height="1.8" rx=".9" fill="rgba(165,168,185,.8)"/>
+                <path d="M 6,-.9 L 8.2,0 L 6,.9 Z" fill="rgba(140,142,158,.85)"/>
+                <rect x="-4.5" y="-2.8" width="2" height="1.9" rx=".3" fill="rgba(140,142,158,.75)"/>
+                <rect x="-4.5" y=".9"   width="2" height="1.9" rx=".3" fill="rgba(140,142,158,.75)"/>
+              </g>
+
+              <!-- LUZES de posição -->
+              <!-- asa esquerda — vermelha -->
+              <circle cx="-38" cy="-49" r="1.5" fill="#ff2222" opacity=".92"/>
+              <circle cx="-38" cy="-49" r="2.8" fill="rgba(255,34,34,.18)"/>
+              <!-- asa direita — verde -->
+              <circle cx="-38" cy="49"  r="1.5" fill="#00ee55" opacity=".92"/>
+              <circle cx="-38" cy="49"  r="2.8" fill="rgba(0,238,85,.18)"/>
+              <!-- anti-colisão dorsal (branco estroboscópico) -->
+              <circle cx="-8" cy="0"  r="1.1" fill="rgba(255,255,255,.88)"/>
+              <circle cx="-8" cy="0"  r="2.4" fill="rgba(255,255,255,.14)"/>
             </svg>
           </div>
           <div class="map-controls" aria-label="Controlo do mapa">
@@ -4314,6 +4504,7 @@
     let unavailablePaths = new Set();
 
     const mapPlaneFlyover = document.getElementById('map-plane-flyover');
+    const mapPlaneF16 = document.getElementById('map-plane-f16');
     const mapPlaneReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mapPlaneInitialDelay = { min: 30000, max: 30000 };
     const mapPlaneDelay = { min: 150000, max: 240000 };
@@ -4322,7 +4513,7 @@
       return min + Math.random() * (max - min);
     }
 
-    function escolherRotaAviaoMapa() {
+    function escolherRotaAviaoMapa(isF16) {
       const mapEl = document.getElementById('map');
       if (!mapEl) return null;
 
@@ -4344,7 +4535,11 @@
       ];
       const route = routes[Math.floor(Math.random() * routes.length)];
       route.angle = Math.atan2(route.ey - route.sy, route.ex - route.sx) * 180 / Math.PI;
-      route.duration = `${Math.round(randomBetween(18000, 24000))}ms`;
+      // F-16 é muito mais rápido — 4x a 6x
+      const durationMs = isF16
+        ? Math.round(randomBetween(3500, 6000))
+        : Math.round(randomBetween(18000, 24000));
+      route.duration = `${durationMs}ms`;
       return route;
     }
 
@@ -4352,19 +4547,45 @@
       if (!mapPlaneFlyover || mapPlaneReducedMotion || document.hidden) return;
       if (document.getElementById('terms-consent-overlay')?.classList.contains('visible')) return;
 
-      const route = escolherRotaAviaoMapa();
+      // ~25% de probabilidade de ser o F-16
+      const isF16 = mapPlaneF16 && Math.random() < 0.25;
+      const el = isF16 ? mapPlaneF16 : mapPlaneFlyover;
+
+      const route = escolherRotaAviaoMapa(isF16);
       if (!route) return;
 
-      mapPlaneFlyover.classList.remove('is-flying');
-      mapPlaneFlyover.style.setProperty('--plane-x-start', `${route.sx}px`);
-      mapPlaneFlyover.style.setProperty('--plane-y-start', `${route.sy}px`);
-      mapPlaneFlyover.style.setProperty('--plane-x-end', `${route.ex}px`);
-      mapPlaneFlyover.style.setProperty('--plane-y-end', `${route.ey}px`);
-      mapPlaneFlyover.style.setProperty('--plane-angle', `${route.angle}deg`);
-      mapPlaneFlyover.style.setProperty('--plane-duration', route.duration);
-      void mapPlaneFlyover.offsetWidth;
-      mapPlaneFlyover.classList.add('is-flying');
+      el.classList.remove('is-flying');
+      el.style.setProperty('--plane-x-start', `${route.sx}px`);
+      el.style.setProperty('--plane-y-start', `${route.sy}px`);
+      el.style.setProperty('--plane-x-end', `${route.ex}px`);
+      el.style.setProperty('--plane-y-end', `${route.ey}px`);
+      el.style.setProperty('--plane-angle', `${route.angle}deg`);
+      el.style.setProperty('--plane-duration', route.duration);
+      void el.offsetWidth;
+      el.classList.add('is-flying');
     }
+
+    function animarF16Imediato() {
+      if (!mapPlaneF16 || mapPlaneReducedMotion || document.hidden) return;
+      const route = escolherRotaAviaoMapa(true);
+      if (!route) return;
+      mapPlaneF16.classList.remove('is-flying');
+      mapPlaneF16.style.setProperty('--plane-x-start', `${route.sx}px`);
+      mapPlaneF16.style.setProperty('--plane-y-start', `${route.sy}px`);
+      mapPlaneF16.style.setProperty('--plane-x-end', `${route.ex}px`);
+      mapPlaneF16.style.setProperty('--plane-y-end', `${route.ey}px`);
+      mapPlaneF16.style.setProperty('--plane-angle', `${route.angle}deg`);
+      mapPlaneF16.style.setProperty('--plane-duration', route.duration);
+      void mapPlaneF16.offsetWidth;
+      mapPlaneF16.classList.add('is-flying');
+    }
+
+    // Shift → F-16 imediato
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift' && !e.repeat && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        animarF16Imediato();
+      }
+    });
 
     function agendarAviaoMapa(delay) {
       if (!mapPlaneFlyover || mapPlaneReducedMotion) return;
