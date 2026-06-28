@@ -711,6 +711,78 @@
     .panorama-grid{ grid-template-columns:1fr; gap:20px; }
   }
 
+  /* ── Donut SVG (distribuição de uso do solo) ── */
+  .donut-bloco{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    flex-wrap:wrap;
+  }
+  .panorama-donut-secao{
+    margin-bottom:24px;
+  }
+  .donut-svg{
+    flex-shrink:0;
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,.08));
+  }
+  .donut-arco{
+    stroke-linecap:butt;
+  }
+  .donut-legenda{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    font-size:12.5px;
+  }
+  .donut-legenda-item{
+    display:flex;
+    align-items:baseline;
+    gap:7px;
+    white-space:nowrap;
+  }
+  .donut-legenda-dot{
+    width:9px; height:9px;
+    border-radius:50%;
+    display:inline-block;
+    flex-shrink:0;
+  }
+  .donut-legenda-pct{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--stone);
+    margin-left:auto;
+    padding-left:10px;
+  }
+
+  /* ── micro-interações nas barras (hover) ── */
+  .barra-linha{
+    transition:background .15s ease;
+    border-radius:6px;
+  }
+  .barra-linha:hover{
+    background:color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+  .barra-linha:hover .barra-fill{
+    filter:brightness(1.08);
+  }
+  .barra-fill{
+    transition:width .7s cubic-bezier(.2,.8,.2,1), filter .15s ease;
+  }
+
+  /* ── animação de entrada das secções ao chegar em viewport ── */
+  .secao-animavel{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .secao-animavel.visivel{
+    opacity:1;
+    transform:translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .secao-animavel{ opacity:1; transform:none; transition:none; }
+    .barra-fill, .donut-arco{ transition:none !important; }
+  }
+
   /* ── Comparador de municípios ── */
   .comparador-chips{
     display:flex;
@@ -853,6 +925,16 @@
     border:1px solid var(--line);
   }
   .comparador-cos-barra span{ height:100%; }
+  .comparador-donuts{
+    align-items:center;
+  }
+  .comparador-donut-item{
+    display:flex;
+    justify-content:center;
+  }
+  .comparador-donut-item .donut-svg{
+    filter:none;
+  }
   .comparador-cos-legenda{
     font-size:11px;
     color:var(--stone);
@@ -1075,11 +1157,32 @@
       </section>
     </div>
 
+    <section class="seccao seccao-nacional" id="sec-comparador">
+      <h3>Comparador de municípios <span class="badge-info">2 a 4 municípios</span></h3>
+      <p class="panorama-intro">Escolhe entre 2 e 4 municípios para comparar lado a lado: uso do solo, demografia, edificado e terreno.</p>
+
+      <div class="comparador-chips" id="comparador-chips"></div>
+
+      <div class="seletor" id="comparador-seletor">
+        <input type="text" id="comparador-pesquisa" placeholder="Adicionar município à comparação…" autocomplete="off">
+        <div class="resultados" id="comparador-resultados"></div>
+      </div>
+
+      <div id="comparador-aviso" class="comparador-aviso">Escolhe pelo menos 2 municípios para começar a comparação.</div>
+
+      <div id="comparador-tabela" class="comparador-tabela"></div>
+    </section>
+
     <section class="seccao seccao-nacional" id="sec-panorama-nacional">
       <h3>Panorama nacional <span class="badge-info">Censos 2021 · BGRI</span></h3>
       <p class="panorama-intro">Visão agregada dos 278 municípios processados, com base nos dados do BGRI 2021.</p>
 
       <div class="grid-blocos" id="panorama-kpis"></div>
+
+      <div class="panorama-coluna panorama-donut-secao">
+        <h4>Uso do solo (COS 2023) <span class="panorama-subnota">distribuição nacional agregada</span></h4>
+        <div id="panorama-donut-cos"></div>
+      </div>
 
       <div class="panorama-grid">
         <div class="panorama-coluna">
@@ -1102,22 +1205,6 @@
           <div id="panorama-top-alojamentos"></div>
         </div>
       </div>
-    </section>
-
-    <section class="seccao seccao-nacional" id="sec-comparador">
-      <h3>Comparador de municípios <span class="badge-info">2 a 4 municípios</span></h3>
-      <p class="panorama-intro">Escolhe entre 2 e 4 municípios para comparar lado a lado: uso do solo, demografia, edificado e terreno.</p>
-
-      <div class="comparador-chips" id="comparador-chips"></div>
-
-      <div class="seletor" id="comparador-seletor">
-        <input type="text" id="comparador-pesquisa" placeholder="Adicionar município à comparação…" autocomplete="off">
-        <div class="resultados" id="comparador-resultados"></div>
-      </div>
-
-      <div id="comparador-aviso" class="comparador-aviso">Escolhe pelo menos 2 municípios para começar a comparação.</div>
-
-      <div id="comparador-tabela" class="comparador-tabela"></div>
     </section>
 
   </div>
@@ -1199,6 +1286,105 @@
     return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: casas||0, maximumFractionDigits: casas||0 });
   }
 
+  // ── animação de contagem (count-up) para valores de KPI ──
+  // anima de 0 até ao valor final quando o elemento entra em viewport.
+  // o texto final pode ter prefixo/sufixo (ex: "mil ha", "%"); por isso
+  // recebe o número puro e uma função de formatação à parte.
+  function animarContagem(el, valorFinal, formatarFn, duracaoMs){
+    duracaoMs = duracaoMs || 900;
+    if(prefereReducedMotion()){ el.textContent = formatarFn(valorFinal); return; }
+    var inicio = null;
+    function passo(timestamp){
+      if(inicio === null) inicio = timestamp;
+      var progresso = Math.min((timestamp - inicio) / duracaoMs, 1);
+      var facilitado = 1 - Math.pow(1 - progresso, 3); // ease-out cubic
+      el.textContent = formatarFn(valorFinal * facilitado);
+      if(progresso < 1) requestAnimationFrame(passo);
+    }
+    requestAnimationFrame(passo);
+  }
+
+  function prefereReducedMotion(){
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  // observa um conjunto de elementos e chama callback(elemento) uma única vez,
+  // na primeira vez que cada um entra em viewport. usado para disparar
+  // animações de barras/donuts/contagens só quando o utilizador realmente
+  // chega a essa secção, em vez de tudo animar de uma vez ao carregar a página.
+  function observarEntradaViewport(seletor, callback, opts){
+    var elementos = document.querySelectorAll(seletor);
+    if(!elementos.length) return;
+    if(!('IntersectionObserver' in window)){
+      elementos.forEach(callback);
+      return;
+    }
+    var observer = new IntersectionObserver(function(entradas){
+      entradas.forEach(function(entrada){
+        if(entrada.isIntersecting){
+          callback(entrada.target);
+          observer.unobserve(entrada.target);
+        }
+      });
+    }, Object.assign({ threshold: 0.2 }, opts || {}));
+    elementos.forEach(function(el){ observer.observe(el); });
+  }
+
+  // ── donut SVG reutilizável para distribuições por categoria ──
+  // recebe um objeto { categoria: percentagem, ... } e devolve markup SVG
+  // de um anel (não um círculo cheio, para deixar respirar o número central)
+  // com cada categoria como um arco de cor própria. anima-se à parte via
+  // CSS, atribuindo a classe "animar" depois de inserido no DOM.
+  function svgDonut(dist, cores, raio, espessura){
+    raio = raio || 58;
+    espessura = espessura || 22;
+    var centro = raio + espessura/2 + 2;
+    var tamanho = centro * 2;
+    var circunferencia = 2 * Math.PI * raio;
+    var offsetAcumulado = 0;
+    var categorias = Object.keys(dist).filter(function(k){ return dist[k] > 0.05; });
+
+    var arcosHtml = categorias.map(function(cat, i){
+      var pct = dist[cat];
+      var tamanhoArco = (pct / 100) * circunferencia;
+      var offsetFixo = -offsetAcumulado;
+      offsetAcumulado += tamanhoArco;
+      return '<circle class="donut-arco" cx="' + centro + '" cy="' + centro + '" r="' + raio + '" ' +
+        'fill="none" stroke="' + cores[cat] + '" stroke-width="' + espessura + '" ' +
+        'stroke-dasharray="0 ' + circunferencia.toFixed(2) + '" ' +
+        'stroke-dashoffset="' + offsetFixo.toFixed(2) + '" ' +
+        'data-arco-comprimento="' + tamanhoArco.toFixed(2) + '" ' +
+        'data-circunferencia="' + circunferencia.toFixed(2) + '" ' +
+        'style="transition-delay:' + (i * 90) + 'ms" ' +
+        'transform="rotate(-90 ' + centro + ' ' + centro + ')">' +
+        '<title>' + cat + ': ' + fmt(pct, 1) + '%</title></circle>';
+    }).join('');
+
+    return '<svg class="donut-svg" viewBox="0 0 ' + tamanho + ' ' + tamanho + '" width="' + tamanho + '" height="' + tamanho + '">' +
+      '<circle cx="' + centro + '" cy="' + centro + '" r="' + raio + '" fill="none" stroke="var(--line)" stroke-width="' + espessura + '" opacity="0.35"></circle>' +
+      arcosHtml +
+      '</svg>';
+  }
+
+  // dispara a animação de desenho do donut: o traço de cada arco cresce de
+  // comprimento 0 até ao comprimento final (dasharray), mantendo o
+  // dashoffset (posição angular) sempre fixo. evita lidar com offsets
+  // negativos, que tornariam uma animação baseada em dashoffset incorreta
+  // para qualquer segmento que não seja o primeiro do anel.
+  function animarDonut(containerEl){
+    var arcos = containerEl.querySelectorAll('.donut-arco');
+    arcos.forEach(function(arco){
+      var comprimentoFinal = arco.getAttribute('data-arco-comprimento');
+      var circunferencia = arco.getAttribute('data-circunferencia');
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          arco.style.transition = 'stroke-dasharray .9s cubic-bezier(.2,.8,.2,1)';
+          arco.setAttribute('stroke-dasharray', comprimentoFinal + ' ' + circunferencia);
+        });
+      });
+    });
+  }
+
   fetch('data/estatisticas_municipios.json')
     .then(function(r){
       if(!r.ok) throw new Error('HTTP ' + r.status);
@@ -1235,16 +1421,30 @@
     });
 
     var kpis = [
-      { valor: nMunic, label: 'Municípios processados' },
-      { valor: fmt(areaTotal/1000, 1) + ' mil ha', label: 'Área classificada (COS)' },
-      { valor: fmt(popTotal), label: 'População total (BGRI 2021)' },
+      { valor: nMunic, casas: 0, sufixo: '', label: 'Municípios processados' },
+      { valor: areaTotal/1000, casas: 1, sufixo: ' mil ha', label: 'Área classificada (COS)' },
+      { valor: popTotal, casas: 0, sufixo: '', label: 'População total (BGRI 2021)' },
     ];
 
     var html = '';
-    kpis.forEach(function(k){
-      html += '<div class="kpi-card"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
+    kpis.forEach(function(k, i){
+      html += '<div class="kpi-card kpi-contagem" data-valor="' + k.valor + '" data-casas="' + k.casas + '" data-sufixo="' + k.sufixo + '">' +
+        '<div class="valor">0</div><div class="label">' + k.label + '</div></div>';
     });
     document.getElementById('kpis').innerHTML = html;
+    ativarContagensKPI('#kpis .kpi-contagem');
+  }
+
+  // ativa a animação count-up para todos os cartões de KPI dentro do
+  // seletor indicado, disparando quando entram em viewport.
+  function ativarContagensKPI(seletor){
+    observarEntradaViewport(seletor, function(card){
+      var valorEl = card.querySelector('.valor');
+      var valor = parseFloat(card.getAttribute('data-valor'));
+      var casas = parseInt(card.getAttribute('data-casas'), 10) || 0;
+      var sufixo = card.getAttribute('data-sufixo') || '';
+      animarContagem(valorEl, valor, function(v){ return fmt(v, casas) + sufixo; });
+    });
   }
 
   // ── Panorama nacional (agregados sobretudo a partir do BGRI 2021) ──
@@ -1264,15 +1464,20 @@
     });
 
     var kpisNacionais = [
-      { valor: fmt(popTotal), label: 'População total' },
-      { valor: fmt(edifTotal), label: 'Edifícios (total)' },
-      { valor: fmt(alojTotal), label: 'Alojamentos (total)' },
-      { valor: fmt(alojTotal && edifTotal ? alojTotal/edifTotal : 0, 2).replace('.',','), label: 'Alojamentos por edifício' },
-      { valor: Object.keys(nDistritos).length, label: 'Distritos representados' },
+      { valor: popTotal, casas: 0, sufixo: '', label: 'População total' },
+      { valor: edifTotal, casas: 0, sufixo: '', label: 'Edifícios (total)' },
+      { valor: alojTotal, casas: 0, sufixo: '', label: 'Alojamentos (total)' },
+      { valor: alojTotal && edifTotal ? alojTotal/edifTotal : 0, casas: 2, sufixo: '', label: 'Alojamentos por edifício' },
+      { valor: Object.keys(nDistritos).length, casas: 0, sufixo: '', label: 'Distritos representados' },
     ];
     document.getElementById('panorama-kpis').innerHTML = kpisNacionais.map(function(k){
-      return '<div class="bloco"><div class="valor">' + k.valor + '</div><div class="label">' + k.label + '</div></div>';
+      return '<div class="bloco kpi-contagem" data-valor="' + k.valor + '" data-casas="' + k.casas + '" data-sufixo="' + k.sufixo + '">' +
+        '<div class="valor">0</div><div class="label">' + k.label + '</div></div>';
     }).join('');
+    ativarContagensKPI('#panorama-kpis .kpi-contagem');
+
+    // ---- donut nacional de uso do solo (agregado das 93 classes COS) ----
+    montarDonutNacionalCOS(lista);
 
     // ---- agregação por distrito ----
     var porDistrito = {};
@@ -1320,11 +1525,64 @@
     renderBarrasGenerico('panorama-top-alojamentos', topAloj, function(m){ return m.nome; }, function(m){ return m.rateAlojEdif; }, function(v){ return fmt(v, 2).replace('.',','); }, true);
   }
 
+  // agrega a área de todas as classes COS de todos os municípios nas 5
+  // categorias amplas (floresta/agrícola/urbano/água/outros) e desenha o
+  // donut nacional. usa as mesmas funções de categorização do comparador
+  // (categoriaCOS/COR_CATEGORIA_COS/LABEL_CATEGORIA_COS), definidas mais
+  // abaixo neste ficheiro — seguro porque só corre depois do fetch resolver,
+  // quando o script inteiro já foi avaliado.
+  function montarDonutNacionalCOS(lista){
+    var areasPorCategoria = { floresta: 0, agricola: 0, urbano: 0, agua: 0, outros: 0 };
+    var totalArea = 0;
+    lista.forEach(function(v){
+      if(!v.cos || !v.cos.classes) return;
+      Object.keys(v.cos.classes).forEach(function(nome){
+        var area = v.cos.classes[nome].area_ha || 0;
+        areasPorCategoria[categoriaCOS(nome)] += area;
+        totalArea += area;
+      });
+    });
+    if(totalArea <= 0){
+      document.getElementById('panorama-donut-cos').innerHTML = '<p style="color:var(--stone); font-size:13px;">Sem dados suficientes.</p>';
+      return;
+    }
+    var distPct = {};
+    Object.keys(areasPorCategoria).forEach(function(k){ distPct[k] = (areasPorCategoria[k] / totalArea) * 100; });
+
+    var corResolvida = {};
+    Object.keys(COR_CATEGORIA_COS).forEach(function(k){
+      // resolve var(--xxx) para um valor de cor real, já que SVG <circle
+      // stroke não recalcula custom properties dentro de atributos inline
+      // tão bem em todos os browsers — mais seguro passar a cor resolvida.
+      corResolvida[k] = COR_CATEGORIA_COS[k];
+    });
+
+    var donutHtml = svgDonut(distPct, corResolvida, 64, 24);
+    var legendaHtml = Object.keys(LABEL_CATEGORIA_COS)
+      .filter(function(k){ return distPct[k] > 0.05; })
+      .sort(function(a,b){ return distPct[b] - distPct[a]; })
+      .map(function(k){
+        return '<div class="donut-legenda-item">' +
+          '<span class="donut-legenda-dot" style="background:' + COR_CATEGORIA_COS[k] + '"></span>' +
+          '<span>' + LABEL_CATEGORIA_COS[k] + '</span>' +
+          '<span class="donut-legenda-pct">' + fmt(distPct[k], 1) + '%</span>' +
+          '</div>';
+      }).join('');
+
+    document.getElementById('panorama-donut-cos').innerHTML =
+      '<div class="donut-bloco"><div class="donut-svg-wrap">' + donutHtml + '</div>' +
+      '<div class="donut-legenda">' + legendaHtml + '</div></div>';
+
+    observarEntradaViewport('#panorama-donut-cos', function(el){ animarDonut(el); });
+  }
+
   // renderiza uma lista de itens como barras horizontais (estilo .barra-linha),
   // reaproveitando a mesma classe visual já usada na secção COS do painel de
   // município. "ochre" pinta as barras a laranja em vez de verde (para
   // distinguir visualmente rankings de natureza diferente, ex.: proporções
-  // em vez de totais absolutos).
+  // em vez de totais absolutos). a animação de largura só dispara quando o
+  // bloco entra em viewport, com um pequeno desfasamento por linha (stagger),
+  // em vez de animar tudo de uma vez ao carregar a página.
   function renderBarrasGenerico(idContentor, itens, getNome, getValor, formatarValor, ochre){
     var el = document.getElementById(idContentor);
     if(!el) return;
@@ -1333,23 +1591,25 @@
       return;
     }
     var maxValor = Math.max.apply(null, itens.map(getValor).concat([1]));
-    el.innerHTML = itens.map(function(item){
+    el.innerHTML = itens.map(function(item, i){
       var valor = getValor(item);
       var largura = maxValor > 0 ? Math.min(100, (valor / maxValor) * 100) : 0;
       var corOchre = ochre ? ' ochre' : '';
       var nome = getNome(item);
-      return '<div class="barra-linha">' +
+      return '<div class="barra-linha" style="transition-delay:' + Math.min(i * 35, 350) + 'ms">' +
         '<span class="barra-nome" title="' + nome + '">' + nome + '</span>' +
         '<span class="barra-pista"><span class="barra-fill' + corOchre + '" data-largura="' + largura + '" style="width:0%"></span></span>' +
         '<span class="barra-pct num">' + formatarValor(valor) + '</span>' +
         '</div>';
     }).join('');
 
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        el.querySelectorAll('.barra-fill').forEach(function(barraEl){
+    observarEntradaViewport('#' + idContentor, function(container){
+      container.querySelectorAll('.barra-fill').forEach(function(barraEl, i){
+        var linhaEl = barraEl.closest('.barra-linha');
+        var atraso = linhaEl ? parseFloat(linhaEl.style.transitionDelay) || 0 : 0;
+        setTimeout(function(){
           barraEl.style.width = barraEl.getAttribute('data-largura') + '%';
-        });
+        }, atraso);
       });
     });
   }
@@ -1513,18 +1773,13 @@
     // ---- grupo: uso do solo (COS) ----
     html += '<div class="comparador-grupo"><h4>Uso do solo (COS 2023)</h4>';
 
-    // barra de distribuição por categoria, uma por município
+    // donut de distribuição por categoria, um por município
     html += '<div class="comparador-linha"><div class="comparador-label">Distribuição do território</div>' +
-      '<div class="comparador-valores" style="--n-municipios:' + n + '">' +
+      '<div class="comparador-valores comparador-donuts" style="--n-municipios:' + n + '">' +
       vs.map(function(v){
         var dist = distribuicaoCOS(v);
         if(!dist) return '<div class="comparador-valor">—</div>';
-        var barraHtml = Object.keys(dist).filter(function(k){ return dist[k] > 0; })
-          .sort(function(a,b){ return dist[b] - dist[a]; })
-          .map(function(k){
-            return '<span style="width:' + dist[k] + '%; background:' + COR_CATEGORIA_COS[k] + ';" title="' + LABEL_CATEGORIA_COS[k] + ': ' + fmt(dist[k],1) + '%"></span>';
-          }).join('');
-        return '<div><div class="comparador-cos-barra">' + barraHtml + '</div></div>';
+        return '<div class="comparador-donut-item">' + svgDonut(dist, COR_CATEGORIA_COS, 34, 13) + '</div>';
       }).join('') +
       '</div></div>';
 
@@ -1594,6 +1849,7 @@
     html += '</div>';
 
     tabelaEl.innerHTML = html;
+    tabelaEl.querySelectorAll('.comparador-donut-item').forEach(function(item){ animarDonut(item); });
   }
 
   function renderComparador(){
