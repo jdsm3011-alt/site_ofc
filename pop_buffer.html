@@ -949,8 +949,20 @@ function mostrarResultados() {
       <div class="total-meta">${totalInter} subsecções intersectadas</div>
     </div>
     ${breakdownHtml}
-    <div class="aviso"><b>⚠ areal weighting  </b> — assume distribuição uniforme por subsecção. Menos preciso em zonas rurais com subsecções grandes.</div>
-  `;
+    <div class="aviso" style="line-height: 1.6;">
+      <b>⚠ Areal Weighting</b> — assume distribuição uniforme por subsecção. Menos preciso em zonas rurais com subsecções grandes. 
+      <br><br>
+      <b>Fórmula de cálculo:</b> 
+      <div style="display: inline-flex; align-items: center; gap: 4px; margin-left: 5px; font-family: monospace, serif; font-size: 1.05em;">
+        P̂<sub>t</sub> = &sum;<sub>s</sub> ( P<sub>s</sub> &times; 
+        <table style="display: inline-table; border-collapse: collapse; text-align: center; vertical-align: middle; margin: 0 2px; font-size: 0.9em;">
+          <tr><td style="border-bottom: 1px solid currentColor; padding: 0 2px; line-height: 1.1;">A<sub>st</sub></td></tr>
+          <tr><td style="padding: 0 2px; line-height: 1.1;">A<sub>s</sub></td></tr>
+        </table> )
+      </div>
+    </div>
+`;
+
 
   BGRI_GRUPOS.forEach((g, gi) => {
     const colapsado = gruposColapsados.has(gi);
