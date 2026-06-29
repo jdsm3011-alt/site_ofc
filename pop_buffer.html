@@ -1127,9 +1127,13 @@ header {
 // ── DRAWER MÓVEL ──
 (function () {
   var isMobile = window.matchMedia('(max-width: 900px)');
+  var initialized = false; // garante que os listeners só são associados uma vez
 
   function initDrawer() {
-    if (!isMobile.matches) return;
+    // Não inicializa em desktop, mas também não bloqueia tentativas futuras:
+    // se a janela passar a mobile mais tarde (resize/rotação), o listener
+    // de matchMedia mais abaixo volta a chamar initDrawer().
+    if (!isMobile.matches || initialized) return;
     var sidebar = document.querySelector('.sidebar');
     var overlay = document.getElementById('drawerOverlay');
     var fab = document.getElementById('drawerFab');
@@ -1137,7 +1141,9 @@ header {
     var tabs = document.querySelectorAll('.drawer-tab');
     var panels = document.querySelectorAll('.drawer-panel');
     var statusChip = document.getElementById('mapStatusChip');
-    if (!sidebar) return;
+    if (!sidebar) return; // DOM ainda não está pronto — tenta de novo depois
+
+    initialized = true;
 
     var isOpen = false;
     var HANDLE_PX = 56; // altura visível quando fechado (handle + tabs)
@@ -1273,6 +1279,15 @@ header {
   }
 
   document.addEventListener('DOMContentLoaded', initDrawer);
+  // Tenta de novo se a janela mudar de desktop → mobile (resize, rotação,
+  // ou mudança de zoom) depois do load inicial. addListener é o fallback
+  // para Safari/browsers mais antigos que não suportam addEventListener aqui.
+  if (isMobile.addEventListener) isMobile.addEventListener('change', initDrawer);
+  else if (isMobile.addListener) isMobile.addListener(initDrawer);
+  // Rede de segurança final: corre também já depois de tudo carregado,
+  // caso o DOMContentLoaded tenha disparado antes do <aside class="sidebar">
+  // existir por algum motivo de ordem de scripts.
+  window.addEventListener('load', initDrawer);
 })();
 </script>
 </head>
