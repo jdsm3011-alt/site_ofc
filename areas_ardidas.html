@@ -585,35 +585,83 @@
     padding:10px 0 6px;
   }
 
-  /* ── botão de download (rodapé) ── */
-  .download-wrap{
-    display:flex;
-    justify-content:center;
-    padding:4px 0 18px;
+  /* ── botão de download (sobreposto no mapa) ── */
+  .map-dl-wrap{
+    position:absolute;
+    bottom:14px;
+    left:14px;
+    z-index:450; /* acima dos controlos Leaflet (z=400) */
+    pointer-events:none; /* a wrap não intercepta clicks no mapa */
   }
   .btn-download{
     display:inline-flex;
     align-items:center;
-    gap:9px;
+    gap:8px;
     font-family:'IBM Plex Sans', sans-serif;
     font-weight:500;
-    font-size:13px;
+    font-size:12.5px;
     letter-spacing:.01em;
     color:var(--ink);
-    background:var(--white);
+    background:color-mix(in srgb, var(--paper-elevated) 94%, transparent);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
     border:1px solid var(--line);
     border-radius:999px;
-    padding:10px 20px;
+    padding:9px 16px;
     cursor:pointer;
+    pointer-events:auto; /* o botão em si intercepta */
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
     transition:background .15s ease, box-shadow .15s ease, border-color .15s ease, transform .15s ease;
   }
   .btn-download:hover{
-    background:var(--paper-deep);
+    background:var(--paper-elevated);
     border-color:var(--line-strong);
-    box-shadow:var(--shadow-soft);
+    box-shadow:0 4px 16px rgba(0,0,0,.15);
     transform:translateY(-1px);
   }
-  .btn-download svg{ width:16px; height:16px; flex-shrink:0; }
+  .btn-download svg{ width:15px; height:15px; flex-shrink:0; }
+
+  /* ── termos e condições modal ── */
+  .termos-secao{
+    border-left:3px solid var(--line);
+    padding-left:12px;
+  }
+  .termos-titulo-sec{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:11.5px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--stone);
+    margin:0 0 5px;
+  }
+  .termos-texto{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--ink);
+    margin:0;
+  }
+  .termos-lista{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:12.5px;
+    line-height:1.65;
+    color:var(--ink);
+    margin:0;
+    padding-left:16px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .termos-lista li{ padding-left:2px; }
+  .termos-link{
+    color:var(--green-deep);
+    text-decoration:underline;
+    text-underline-offset:2px;
+    text-decoration-color:color-mix(in srgb, var(--green-deep) 40%, transparent);
+    transition:text-decoration-color .15s;
+  }
+  .termos-link:hover{ text-decoration-color:var(--green-deep); }
 
   /* ── modal: download ── */
   .modal-overlay{
@@ -1045,20 +1093,108 @@
 
     <div class="mapa-wrap">
       <div id="mapa"></div>
+      <div class="map-dl-wrap">
+        <button type="button" class="btn-download" id="btn-download" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          Download
+        </button>
+      </div>
     </div>
 
   </div>
 
 </main>
 
-<div class="download-wrap">
-  <button type="button" class="btn-download" id="btn-download" aria-haspopup="dialog">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-    Download dos dados
-  </button>
-</div>
-
 <footer>Classificado em Quintis · DataGis · Dados de Incêndios Florestais</footer>
+
+<!-- MODAL: Termos e Condições de Download -->
+<div class="modal-overlay" id="modal-termos" role="dialog" aria-modal="true" aria-labelledby="modal-termos-titulo">
+  <div class="modal-caixa">
+
+    <!-- cabeçalho -->
+    <div class="dl-header">
+      <div class="dl-header-icon" style="background:color-mix(in srgb, var(--ochre) 14%, var(--paper-elevated)); color:var(--ochre);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="dl-header-text">
+        <h3 id="modal-termos-titulo">Termos e Condições de Utilização</h3>
+        <p>Leia antes de descarregar os dados</p>
+      </div>
+      <button type="button" class="dl-fechar-x" id="modal-termos-fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- corpo com os termos -->
+    <div class="dl-body" id="termos-corpo">
+      <div class="dl-aviso" style="border-color:color-mix(in srgb, var(--green-deep) 30%, transparent); background:color-mix(in srgb, var(--green-deep) 8%, var(--paper-elevated));">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p>Ao descarregar dados desta plataforma, declara ter lido e aceite os presentes Termos e Condições na íntegra.</p>
+      </div>
+
+      <div class="termos-secao">
+        <p class="termos-titulo-sec">1. Utilização dos dados</p>
+        <ul class="termos-lista">
+          <li>Os dados são fornecidos apenas para consulta, análise e fins informativos.</li>
+          <li>É responsabilidade do utilizador verificar a pertinência, atualização e adequação dos conteúdos ao contexto pretendido.</li>
+          <li>Não é permitido utilizar os dados para fins ilegais, discriminatórios, fraudulentos ou que violem direitos de terceiros.</li>
+          <li>As visualizações e recortes apresentados servem de apoio à interpretação e não substituem análise técnica especializada.</li>
+          <li>Este website não recolhe dados pessoais para fins comerciais, nem utiliza mecanismos invasivos de monitorização.</li>
+        </ul>
+      </div>
+
+      <div class="termos-secao">
+        <p class="termos-titulo-sec">2. Redistribuição e reutilização</p>
+        <ul class="termos-lista">
+          <li>A reutilização deve manter a atribuição correta às respetivas entidades produtoras dos dados.</li>
+          <li>Os dados apresentados neste portal incluem informação da <strong>Direção-Geral do Território</strong> (CAOP 2025, COS 2023 e dados LiDAR originais), do <strong>Instituto Nacional de Estatística</strong> (BGRI 2021), da <strong>Faculdade de Ciências da Universidade do Porto</strong> (MDT 10 m derivado de dados LiDAR da DGT), dos contribuidores do <strong>OpenStreetMap</strong>, e dados de incêndios florestais (áreas ardidas) do <strong>Instituto da Conservação da Natureza e das Florestas (ICNF)</strong>.</li>
+          <li>Qualquer redistribuição deve indicar claramente a origem dos dados, a data de acesso e, quando aplicável, a respetiva licença ou termos de utilização.</li>
+          <li>É recomendado verificar a atualização dos ficheiros antes de integrar informação num projeto, relatório ou produto institucional.</li>
+          <li>Não é permitido apresentar os dados como se fossem originais, completos ou oficialmente emitidos por terceiros sem a devida referência.</li>
+        </ul>
+      </div>
+
+      <div class="termos-secao">
+        <p class="termos-titulo-sec">3. Legislação aplicável</p>
+        <ul class="termos-lista">
+          <li>Políticas e licenças de Dados Abertos da Direção-Geral do Território (DGT).</li>
+          <li>Licença <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" class="termos-link">Creative Commons Attribution 4.0 International (CC BY 4.0)</a>, aplicável aos dados LiDAR da DGT e aos respetivos produtos derivados disponibilizados pela FCUP.</li>
+          <li>Licença <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener" class="termos-link">Open Database License (ODbL) 1.0</a>, aplicável aos dados do OpenStreetMap.</li>
+          <li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj" target="_blank" rel="noopener" class="termos-link">Regulamento (UE) 2016/679</a> (RGPD), sempre que sejam tratados dados pessoais ou elementos identificáveis.</li>
+          <li><a href="https://diariodarepublica.pt/dr/detalhe/lei/58-2019-123815982" target="_blank" rel="noopener" class="termos-link">Lei n.º 58/2019</a>, de 8 de agosto, que assegura a execução do RGPD na ordem jurídica portuguesa.</li>
+          <li><a href="https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32007L0002" target="_blank" rel="noopener" class="termos-link">Diretiva 2007/2/CE (INSPIRE)</a>, relativa à criação de uma Infraestrutura de Informação Geográfica na Comunidade Europeia.</li>
+          <li><a href="https://diariodarepublica.pt/dr/detalhe/decreto-lei/83-2018-116132760" target="_blank" rel="noopener" class="termos-link">Decreto-Lei n.º 83/2018</a>, que estabelece a Infraestrutura Nacional de Informação Geográfica (SNIG) e transpõe a Diretiva INSPIRE para o ordenamento jurídico nacional.</li>
+          <li><a href="https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32019L1024" target="_blank" rel="noopener" class="termos-link">Diretiva (UE) 2019/1024</a>, relativa aos dados abertos e à reutilização de informação do setor público, transposta para Portugal pela <a href="https://diariodarepublica.pt/dr/detalhe/lei/68-2021-169723842" target="_blank" rel="noopener" class="termos-link">Lei n.º 68/2021</a>.</li>
+          <li><a href="https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1985-34475475" target="_blank" rel="noopener" class="termos-link">Código do Direito de Autor e dos Direitos Conexos</a>, aplicável à utilização, reprodução e distribuição dos conteúdos disponibilizados.</li>
+        </ul>
+      </div>
+
+      <div class="termos-secao">
+        <p class="termos-titulo-sec">4. Isenção de responsabilidade</p>
+        <ul class="termos-lista">
+          <li>O portal e os seus autores não garantem a ausência de erros, atualizações imediatas ou integridade total dos dados.</li>
+          <li>O utilizador assume integral responsabilidade pela utilização que fizer dos dados consultados ou descarregados.</li>
+          <li>Qualquer decisão baseada nestes dados deve ser confirmada junto das entidades produtoras ou através de fontes oficiais adequadas.</li>
+          <li>Os recortes geográficos, análises, visualizações e produtos derivados disponibilizados neste portal são da exclusiva responsabilidade dos seus autores e não representam posições oficiais da DGT, da FCUP, do INE, do ICNF ou do OpenStreetMap.</li>
+          <li>Em caso de discrepâncias entre o portal e as fontes originais, prevalecem as informações oficiais publicadas pelas entidades produtoras.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- rodapé com decisão -->
+    <div class="dl-footer" style="gap:12px; flex-wrap:wrap;">
+      <span class="dl-footer-info" style="font-size:11.5px;">Ao aceitar, prossegue para a seleção de dados.</span>
+      <div class="dl-footer-btns">
+        <button type="button" class="dl-btn-cancelar" id="termos-recusar">Recusar</button>
+        <button type="button" class="dl-btn-download-ok" id="termos-aceitar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Aceitar e continuar
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <div class="modal-overlay" id="modal-download" role="dialog" aria-modal="true" aria-labelledby="modal-download-titulo">
   <div class="modal-caixa">
@@ -2042,7 +2178,7 @@
 
 
   /* =========================================================
-     18. MODAL — Download de dados
+     18. MODAL — Download de dados (com termos e condições)
      ========================================================= */
   (function(){
     var modal       = document.getElementById('modal-download');
@@ -2060,16 +2196,50 @@
     var progBar     = document.getElementById('dl-prog-bar');
     var footerInfo  = document.getElementById('dl-footer-info');
 
+    // modal de termos
+    var modalTermos      = document.getElementById('modal-termos');
+    var btnTermosFechar  = document.getElementById('modal-termos-fechar');
+    var btnTermosRecusar = document.getElementById('termos-recusar');
+    var btnTermosAceitar = document.getElementById('termos-aceitar');
+
     if(!modal || !btnAbrir) return;
 
-    var munSelecionado = null;  // objeto município escolhido
+    // Verificar se o utilizador já aceitou os termos nesta sessão
+    var CHAVE_TERMOS = 'datagis-termos-aceites';
+    function termosAceites(){ return sessionStorage.getItem(CHAVE_TERMOS) === '1'; }
+    function aceitarTermos(){ try{ sessionStorage.setItem(CHAVE_TERMOS, '1'); }catch(e){} }
+
+    var munSelecionado = null;
     var aEmDownload    = false;
 
-    /* ── abrir/fechar ── */
+    /* ── termos: abrir/fechar ── */
+    function abrirTermos(){
+      modalTermos.classList.add('aberto');
+      document.addEventListener('keydown', aoTeclaTermos);
+      setTimeout(function(){ btnTermosAceitar && btnTermosAceitar.focus(); }, 80);
+    }
+    function fecharTermos(){
+      modalTermos.classList.remove('aberto');
+      document.removeEventListener('keydown', aoTeclaTermos);
+      btnAbrir && btnAbrir.focus();
+    }
+    function aoTeclaTermos(e){ if(e.key === 'Escape') fecharTermos(); }
+
+    btnTermosFechar  && btnTermosFechar.addEventListener('click', fecharTermos);
+    btnTermosRecusar && btnTermosRecusar.addEventListener('click', fecharTermos);
+    modalTermos && modalTermos.addEventListener('click', function(e){ if(e.target === modalTermos) fecharTermos(); });
+
+    btnTermosAceitar && btnTermosAceitar.addEventListener('click', function(){
+      aceitarTermos();
+      fecharTermos();
+      // abre o modal de download a seguir
+      setTimeout(abrirModal, 80);
+    });
+
+    /* ── abrir/fechar download modal ── */
     function abrirModal(){
       modal.classList.add('aberto');
       document.addEventListener('keydown', aoTecla);
-      // pré-preencher com município atual do mapa
       if(municipioAtualObj && !munSelecionado){
         selecionarMunicipio(municipioAtualObj);
       }
@@ -2086,7 +2256,14 @@
       if(e.key === 'Escape') fecharModal();
     }
 
-    btnAbrir.addEventListener('click', abrirModal);
+    // Clique no botão de download: verifica termos primeiro
+    btnAbrir.addEventListener('click', function(){
+      if(termosAceites()){
+        abrirModal();
+      } else {
+        abrirTermos();
+      }
+    });
     btnFechar && btnFechar.addEventListener('click', fecharModal);
     btnCancelar && btnCancelar.addEventListener('click', fecharModal);
     modal.addEventListener('click', function(e){ if(e.target === modal) fecharModal(); });
