@@ -814,6 +814,17 @@ header {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
+/* ── ELEMENTOS EXCLUSIVOS DE MOBILE ──
+   Escondidos por defeito; só ganham `display` dentro da media query
+   (max-width: 900px) mais abaixo. Sem isto, em desktop estes elementos
+   ficam no fluxo normal do documento (soltos no <body>, antes do header)
+   em vez de flutuarem sobre o mapa. */
+.map-status-chip,
+.result-card,
+.drawer-fab {
+  display: none;
+}
+
 /* ── OTIMIZAÇÕES TÁCTEIS GERAIS ── */
 @media (pointer: coarse) {
   button, .muni-suggestion, .ponto-del, .theme-toggle, .back-link {
@@ -825,7 +836,7 @@ header {
 }
 
 /* ── DRAWER MÓVEL (portrait + landscape em ecrãs ≤900px) ── */
-@media (max-width: 900px) and (pointer: coarse) {
+@media (max-width: 900px) {
   /* Header compacto */
   header { padding: 8px 12px; gap: 10px; }
   .page-title { display: none; }
@@ -971,6 +982,8 @@ header {
   /* Chip de estado flutuante sobre o mapa */
   .map-status-chip {
     position: fixed;
+    display: flex;
+    align-items: center;
     bottom: 68px;
     left: 14px;
     background: var(--surface);
@@ -991,6 +1004,74 @@ header {
     transition: opacity .2s;
   }
   .map-status-chip.hidden { opacity: 0; }
+
+  /* Card flutuante de resultados, no topo do mapa — aparece depois de
+     processar, sem bloquear o mapa nem forçar a abertura do drawer. */
+  .result-card {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 0px) + 64px);
+    left: 14px;
+    right: 14px;
+    z-index: 1998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-14px) scale(.97);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .32s cubic-bezier(.2,1,.3,1), opacity .26s ease;
+  }
+  .result-card.visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .result-card-icon {
+    flex: 0 0 auto;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--accent);
+  }
+  .result-card-body { flex: 1; min-width: 0; }
+  .result-card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-muted);
+  }
+  .result-card-value {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .result-card-chevron {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    display: flex;
+    transition: transform .2s ease;
+  }
+  .result-card:active .result-card-chevron { transform: translateX(2px); }
+  .result-card-close {
+    flex: 0 0 auto;
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .result-card-close:active { background: var(--bg); }
 
   /* Esconde fab e chip quando o drawer está aberto */
   .sidebar.drawer-open ~ .drawer-fab { opacity: 0; pointer-events: none; }
@@ -1018,12 +1099,12 @@ header {
 }
 
 /* Portrait específico: handle mais gordo */
-@media (max-width: 900px) and (pointer: coarse) and (orientation: portrait) {
+@media (max-width: 900px) and (orientation: portrait) {
   .sidebar { transform: translateY(calc(100% - 60px)); }
 }
 
 /* Landscape: drawer mais pequeno (há menos altura) */
-@media (max-width: 900px) and (pointer: coarse) and (orientation: landscape) {
+@media (max-width: 900px) and (orientation: landscape) {
   .sidebar { max-height: 90vh; transform: translateY(calc(100% - 52px)); }
   .drawer-fab { bottom: 60px; }
   .map-status-chip { bottom: 60px; }
@@ -1034,7 +1115,7 @@ header {
 
 /* Ecrãs desktop (>900px ou pointer:fine): esconde elementos móveis */
 @media (min-width: 901px), (pointer: fine) {
-  .drawer-handle, .drawer-tabs, .drawer-fab, .drawer-overlay, .map-status-chip { display: none !important; }
+  .drawer-handle, .drawer-tabs, .drawer-fab, .drawer-overlay, .map-status-chip, .result-card { display: none !important; }
   .drawer-panels { display: contents; }
   .drawer-panel { display: contents !important; }
 }
@@ -1045,7 +1126,7 @@ header {
 <script>
 // ── DRAWER MÓVEL ──
 (function () {
-  var isMobile = window.matchMedia('(max-width: 900px) and (pointer: coarse)');
+  var isMobile = window.matchMedia('(max-width: 900px)');
 
   function initDrawer() {
     if (!isMobile.matches) return;
@@ -1185,6 +1266,10 @@ header {
       if (text) { statusChip.textContent = text; statusChip.classList.remove('hidden'); }
       else statusChip.classList.add('hidden');
     };
+
+    // exposto para permitir abrir o drawer a partir de outras partes da
+    // app (ex: card flutuante de resultados), sem forçar isso automaticamente
+    window._abrirDrawer = openDrawer;
   }
 
   document.addEventListener('DOMContentLoaded', initDrawer);
@@ -1198,6 +1283,24 @@ header {
 
 <!-- Chip de estado flutuante sobre o mapa (só mobile) -->
 <div class="map-status-chip hidden" id="mapStatusChip">Seleciona município…</div>
+
+<!-- Card flutuante de resultados (só mobile) — aparece após processar,
+     sem bloquear o mapa. Toca para ver o detalhe completo na tab Resultados. -->
+<div class="result-card" id="resultCard">
+  <div class="result-card-icon">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+  </div>
+  <div class="result-card-body">
+    <div class="result-card-label">População estimada</div>
+    <div class="result-card-value" id="resultCardValue">—</div>
+  </div>
+  <div class="result-card-chevron">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+  </div>
+  <button class="result-card-close" id="resultCardClose" aria-label="Fechar" title="Fechar">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
 
 <!-- FAB para abrir drawer (só mobile) -->
 <button class="drawer-fab" id="drawerFab" aria-label="Abrir painel">
@@ -2274,22 +2377,6 @@ function mostrarResultados() {
   const content = document.getElementById('resultsContent');
   content.classList.add('visible');
 
-  // Em mobile, muda automaticamente para a tab de resultados
-  const isMob = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches;
-  if (isMob) {
-    document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('active'));
-    const tabRes = document.querySelector('.drawer-tab[data-panel="resultados"]');
-    const panelRes = document.getElementById('panel-resultados');
-    if (tabRes) tabRes.classList.add('active');
-    if (panelRes) panelRes.classList.add('active');
-    // Abre o drawer
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.getElementById('drawerOverlay');
-    if (sidebar) sidebar.classList.add('drawer-open');
-    if (overlay) overlay.classList.add('visible');
-  }
-
   // Total agregado: calculado sobre a UNIÃO geométrica dos buffers, não
   // pela soma dos resultados individuais — isso evita contar duas vezes
   // a população das zonas onde buffers de pontos diferentes se sobrepõem.
@@ -2300,6 +2387,15 @@ function mostrarResultados() {
   const popTotal = Math.round(totaisGlobais['N_INDIVIDUOS'] || 0);
   const raioLabel = currentRadius >= 1000 ? `${(currentRadius/1000).toFixed(1)} km` : `${currentRadius} m`;
   const nPontos = pontos.length;
+
+  // Em mobile: nunca força a navegação para fora do mapa. Mostra um
+  // resumo num card flutuante por cima do mapa; o utilizador decide se
+  // quer tocar para ver o detalhe completo na tab Resultados.
+  const isMob = window.matchMedia('(max-width: 900px)').matches;
+  if (isMob) {
+    mostrarResultCard(popTotal);
+  }
+
 
   // Breakdown por ponto
   const popsIndividuais = pontos.map(p => p.resultado ? Math.round(p.resultado.totais['N_INDIVIDUOS'] || 0) : 0);
@@ -2387,6 +2483,46 @@ function esconderResultados() {
   const c = document.getElementById('resultsContent');
   c.classList.remove('visible');
   c.innerHTML = '';
+  escondeResultCard();
+}
+
+// ── CARD FLUTUANTE DE RESULTADOS (mobile) ──
+// Mostra um resumo discreto sobre o mapa após processar, sem tirar o
+// utilizador do mapa nem abrir o drawer à força. Toque = ver detalhe.
+let resultCardInit = false;
+function mostrarResultCard(popTotal) {
+  const card = document.getElementById('resultCard');
+  if (!card) return;
+  document.getElementById('resultCardValue').textContent = popTotal.toLocaleString('pt-PT') + ' hab.';
+  card.classList.add('visible');
+
+  if (!resultCardInit) {
+    resultCardInit = true;
+    // Toque no corpo do card → abre o drawer já na tab Resultados
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('.result-card-close')) return;
+      abrirTabResultados();
+    });
+    document.getElementById('resultCardClose').addEventListener('click', (e) => {
+      e.stopPropagation();
+      escondeResultCard();
+    });
+  }
+}
+function escondeResultCard() {
+  const card = document.getElementById('resultCard');
+  if (card) card.classList.remove('visible');
+}
+// Abre o drawer mobile diretamente na tab Resultados — usado quando o
+// utilizador escolhe explicitamente ver o detalhe (toque no card ou na tab).
+function abrirTabResultados() {
+  document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('active'));
+  const tabRes = document.querySelector('.drawer-tab[data-panel="resultados"]');
+  const panelRes = document.getElementById('panel-resultados');
+  if (tabRes) tabRes.classList.add('active');
+  if (panelRes) panelRes.classList.add('active');
+  if (window._abrirDrawer) window._abrirDrawer();
 }
 
 // ── INSTRUÇÃO ──
