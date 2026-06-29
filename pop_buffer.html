@@ -634,9 +634,10 @@ header {
   }
 }
 
-@media (max-width: 900px) {
+/* ── MÓVEL PORTRAIT: empilha verticalmente ── */
+@media (max-width: 900px) and (orientation: portrait) {
   header { padding: 9px 12px; gap: 10px; }
-  .page-title { display: none; } /* poupa espaço horizontal no telemóvel */
+  .page-title { display: none; }
   .back-link .txt { display: none; }
   .back-link { padding: 7px 10px; }
 
@@ -648,14 +649,57 @@ header {
     border-bottom: 1px solid var(--border);
   }
   .map-wrap { min-height: 40vh; }
-
-  /* slider de raio mais alto = mais fácil de arrastar com o dedo */
   .radius-slider { height: 26px; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 480px) and (orientation: portrait) {
   .sb-section { padding: 11px 11px 8px; }
   .sidebar { max-height: 50vh; }
+}
+
+/* ── MÓVEL LANDSCAPE: sidebar 30% | mapa 70%, similar ao desktop ── */
+@media (max-width: 900px) and (pointer: coarse) and (orientation: landscape) {
+  header { padding: 7px 12px; gap: 8px; }
+  .page-title { display: none; }
+  .back-link .txt { display: none; }
+  .back-link { padding: 6px 9px; }
+
+  /* layout horizontal igual ao desktop */
+  .main {
+    flex-direction: row;
+    height: calc(100vh - 48px); /* ajusta à altura do header reduzido */
+  }
+  .sidebar {
+    width: 30%;
+    min-width: 220px;
+    max-width: 320px;
+    max-height: none;
+    height: 100%;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+    overflow-y: auto;
+  }
+  .map-wrap {
+    flex: 1;
+    min-height: 0;
+    height: 100%;
+  }
+
+  /* fontes e espaçamento mais compactos para caber no ecrã pequeno */
+  .sb-section { padding: 10px 11px 8px; }
+  .sb-section-title {
+    font-size: 10px;
+    letter-spacing: .06em;
+  }
+  .muni-input, .radius-input, .coord-input { font-size: 14px; }
+  .group-header { font-size: 12px; padding: 7px 10px; }
+  .var-row { font-size: 12px; padding: 4px 10px; }
+  .var-name { font-size: 11.5px; }
+  .var-val { font-size: 12px; }
+  .radius-slider { height: 24px; }
+
+  /* resultado compacto */
+  #resultsContent { font-size: 12px; }
 }
 </style>
 <script>
@@ -820,7 +864,7 @@ let municipioMaskBbox = null; // bbox de municipioMask, cacheado uma vez por mun
 let subsecsCache = []; // [{ feat, bbox, area }] — pré-calculado uma vez por município, evita repetir turf.bbox/turf.area em cada recálculo
 let currentRadius = 500;
 let pontos = []; // [{ latlng, marker, bufferLayer, resultado, idx }]
-let gruposColapsados = new Set();
+let gruposColapsados = new Set([1, 2, 3]); // grupos 1,2,3 colapsados por defeito; 0 (População) aberto
 
 // ── RAIO ──
 const radiusInput = document.getElementById('radiusInput');
