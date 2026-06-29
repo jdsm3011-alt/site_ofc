@@ -169,23 +169,64 @@ header {
   margin-bottom: 7px;
 }
 
-/* select município */
-.muni-select {
+/* combobox município (input de texto + sugestões) */
+.muni-combo {
+  position: relative;
+}
+.muni-input {
   width: 100%;
-  padding: 7px 28px 7px 9px;
+  padding: 7px 9px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
   font-size: 13px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a756c'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 9px center;
 }
-.muni-select:focus { outline: none; border-color: var(--accent); }
+.muni-input::placeholder { color: var(--text-muted); }
+.muni-input:focus { outline: none; border-color: var(--accent); }
+.muni-combo.invalid .muni-input { border-color: var(--warn); }
+
+.muni-suggestions {
+  position: absolute;
+  z-index: 1000;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  display: none;
+}
+.muni-suggestions.visible { display: block; }
+.muni-suggestion {
+  padding: 7px 10px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.muni-suggestion:hover,
+.muni-suggestion.active {
+  background: var(--accent-light);
+  color: var(--accent-deep);
+}
+.muni-suggestion mark {
+  background: none;
+  color: var(--accent);
+  font-weight: 600;
+}
+.muni-suggestion.empty {
+  color: var(--text-muted);
+  cursor: default;
+}
+.muni-suggestion.empty:hover { background: none; color: var(--text-muted); }
 
 /* raio */
 .radius-row {
@@ -535,9 +576,16 @@ header {
     <!-- MUNICÍPIO + RAIO -->
     <div class="sb-section">
       <div class="sb-label">Município</div>
-      <select class="muni-select" id="muniSelect">
-        <option value="">— Seleciona um município —</option>
-      </select>
+      <div class="muni-combo" id="muniCombo">
+        <input
+          class="muni-input"
+          id="muniInput"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Escreve o nome do município…">
+        <div class="muni-suggestions" id="muniSuggestions"></div>
+      </div>
 
       <div class="radius-row">
         <label>Raio</label>
@@ -622,6 +670,7 @@ const CORES = [
 // ── ESTADO ──
 let bgriLayer = null;
 let bgriData = null;
+let municipioMask = null; // contorno (união) do município, só para recorte estético dos buffers
 let currentRadius = 500;
 let pontos = []; // [{ latlng, marker, bufferLayer, resultado, idx }]
 let gruposColapsados = new Set();
@@ -647,6 +696,40 @@ function urlGithubRaw(nome) {
 }
 function nomeBase(caminho) { return caminho.split('/').pop().split('\\').pop(); }
 
+// ── CONTORNO DO MUNICÍPIO (apenas estético, para recortar os buffers) ──
+// Faz a união de todas as subsecções BGRI para obter o limite exterior do
+// município. Usado apenas para desenhar os buffers visualmente contidos
+// dentro do município — o CÁLCULO de população usa sempre o buffer
+// circular completo (calcularPonto/calcularTotalCombinado), nunca esta máscara.
+function construirContornoMunicipio(dados) {
+  const feats = (dados.features || []).filter(f => f.geometry);
+  if (feats.length === 0) return null;
+
+  // Em municípios com muitas subsecções, a união polígono-a-polígono pode
+  // ficar lenta. Acima deste limite, usa-se o invólucro convexo (convex
+  // hull) como aproximação — serve perfeitamente para o efeito puramente
+  // estético de recortar os buffers, sem afetar o cálculo de população.
+  const LIMITE_UNIAO = 1500;
+  if (feats.length > LIMITE_UNIAO) {
+    try {
+      return turf.convex({ type: 'FeatureCollection', features: feats });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  let uniao = feats[0];
+  for (let i = 1; i < feats.length; i++) {
+    try {
+      const u = turf.union(uniao, feats[i]);
+      if (u) uniao = u;
+    } catch (e) {
+      // ignora falhas pontuais de topologia e continua com a união acumulada
+    }
+  }
+  return uniao;
+}
+
 async function buscarGeojson(municipio) {
   try {
     const r = await fetch(municipio.geojson);
@@ -661,32 +744,135 @@ async function buscarGeojson(municipio) {
   return r2.json();
 }
 
+// ── COMBOBOX MUNICÍPIO (escrever para procurar) ──
+const muniCombo = document.getElementById('muniCombo');
+const muniInput = document.getElementById('muniInput');
+const muniSuggestions = document.getElementById('muniSuggestions');
+let municipioAtual = null; // { nome, geojson, asset? } do município efetivamente carregado
+let sugestoesAtuais = [];
+let sugestaoAtivaIdx = -1;
+
 // ── LOAD MUNICÍPIOS ──
+let listaMunicipios = [];
 async function loadMunis() {
-  const sel = document.getElementById('muniSelect');
   try {
     const r = await fetch('bgri_index.json');
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const idx = await r.json();
-    const lista = (idx.municipios || []).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
-    lista.forEach(m => {
-      const o = document.createElement('option');
-      o.value = m.nome;
-      o.textContent = m.nome;
-      o.dataset.municipio = JSON.stringify(m);
-      sel.appendChild(o);
-    });
+    listaMunicipios = (idx.municipios || []).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
   } catch(e) {
-    sel.innerHTML = '<option value="">⚠ bgri_index.json não encontrado</option>';
+    listaMunicipios = [];
+    muniInput.placeholder = '⚠ bgri_index.json não encontrado';
+    muniInput.disabled = true;
   }
 }
 loadMunis();
 
-// ── SELECT MUNICÍPIO ──
-document.getElementById('muniSelect').addEventListener('change', async function() {
-  const opt = this.options[this.selectedIndex];
-  if (!opt.value) return;
-  const municipio = JSON.parse(opt.dataset.municipio);
+function normalizarTexto(s) {
+  return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function destacarOcorrencia(nome, termo) {
+  if (!termo) return nome;
+  const nNome = normalizarTexto(nome);
+  const nTermo = normalizarTexto(termo);
+  const pos = nNome.indexOf(nTermo);
+  if (pos === -1) return nome;
+  return nome.slice(0, pos) + '<mark>' + nome.slice(pos, pos + termo.length) + '</mark>' + nome.slice(pos + termo.length);
+}
+
+function renderSugestoes(termo) {
+  const t = normalizarTexto(termo);
+  sugestoesAtuais = t
+    ? listaMunicipios.filter(m => normalizarTexto(m.nome).includes(t)).slice(0, 30)
+    : listaMunicipios.slice(0, 30);
+  sugestaoAtivaIdx = -1;
+
+  if (sugestoesAtuais.length === 0) {
+    muniSuggestions.innerHTML = `<div class="muni-suggestion empty">Nenhum município encontrado</div>`;
+  } else {
+    muniSuggestions.innerHTML = sugestoesAtuais.map((m, i) =>
+      `<div class="muni-suggestion" data-idx="${i}">${destacarOcorrencia(m.nome, termo)}</div>`
+    ).join('');
+  }
+  muniSuggestions.classList.add('visible');
+}
+
+function esconderSugestoes() {
+  muniSuggestions.classList.remove('visible');
+  sugestaoAtivaIdx = -1;
+}
+
+function marcarAtiva(idx) {
+  sugestaoAtivaIdx = idx;
+  muniSuggestions.querySelectorAll('.muni-suggestion').forEach(el => {
+    el.classList.toggle('active', Number(el.dataset.idx) === idx);
+  });
+  const activeEl = muniSuggestions.querySelector('.muni-suggestion.active');
+  if (activeEl) activeEl.scrollIntoView({ block: 'nearest' });
+}
+
+muniInput.addEventListener('focus', () => renderSugestoes(muniInput.value));
+muniInput.addEventListener('input', () => {
+  muniCombo.classList.remove('invalid');
+  renderSugestoes(muniInput.value);
+});
+
+muniInput.addEventListener('keydown', (e) => {
+  if (!muniSuggestions.classList.contains('visible')) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (sugestoesAtuais.length === 0) return;
+    marcarAtiva((sugestaoAtivaIdx + 1) % sugestoesAtuais.length);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (sugestoesAtuais.length === 0) return;
+    marcarAtiva((sugestaoAtivaIdx - 1 + sugestoesAtuais.length) % sugestoesAtuais.length);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (sugestaoAtivaIdx >= 0 && sugestoesAtuais[sugestaoAtivaIdx]) {
+      selecionarMunicipio(sugestoesAtuais[sugestaoAtivaIdx]);
+    } else if (sugestoesAtuais.length === 1) {
+      selecionarMunicipio(sugestoesAtuais[0]);
+    }
+  } else if (e.key === 'Escape') {
+    esconderSugestoes();
+  }
+});
+
+muniSuggestions.addEventListener('mousedown', (e) => {
+  // mousedown (não click) para disparar antes do blur do input
+  const el = e.target.closest('.muni-suggestion');
+  if (!el || el.classList.contains('empty')) return;
+  const idx = Number(el.dataset.idx);
+  if (sugestoesAtuais[idx]) selecionarMunicipio(sugestoesAtuais[idx]);
+});
+
+document.addEventListener('click', (e) => {
+  if (!muniCombo.contains(e.target)) esconderSugestoes();
+});
+
+// Ao perder o foco sem ter escolhido um município válido, repõe o nome
+// do município atualmente carregado (ou limpa o campo).
+muniInput.addEventListener('blur', () => {
+  setTimeout(() => {
+    if (!municipioAtual) {
+      if (muniInput.value.trim()) muniCombo.classList.add('invalid');
+      return;
+    }
+    if (normalizarTexto(muniInput.value) !== normalizarTexto(municipioAtual.nome)) {
+      muniInput.value = municipioAtual.nome;
+    }
+    muniCombo.classList.remove('invalid');
+  }, 120);
+});
+
+async function selecionarMunicipio(municipio) {
+  muniInput.value = municipio.nome;
+  municipioAtual = municipio;
+  muniCombo.classList.remove('invalid');
+  esconderSugestoes();
+  muniInput.blur();
 
   setInstrucao('loading');
   document.getElementById('mapLoading').classList.add('visible');
@@ -696,6 +882,7 @@ document.getElementById('muniSelect').addEventListener('change', async function(
   limparTodosPontos();
   if (bgriLayer) { map.removeLayer(bgriLayer); bgriLayer = null; }
   bgriData = null;
+  municipioMask = null;
   esconderResultados();
 
   try {
@@ -709,6 +896,7 @@ document.getElementById('muniSelect').addEventListener('change', async function(
 
     bgriLayer = L.geoJSON(bgriData, { style: estiloSubsec }).addTo(map);
     map.fitBounds(bgriLayer.getBounds(), { padding: [20, 20] });
+    municipioMask = construirContornoMunicipio(bgriData);
     setInstrucao('ready');
     // Activar botão de coordenadas se campos preenchidos
     if (coordsPreenchidas()) btnAddCoords.disabled = false;
@@ -719,7 +907,7 @@ document.getElementById('muniSelect').addEventListener('change', async function(
     document.getElementById('mapLoading').classList.remove('visible');
     document.getElementById('map').classList.remove('loading');
   }
-});
+}
 
 // ── CLICK NO MAPA ──
 map.on('click', function(e) {
@@ -764,8 +952,20 @@ function calcularPonto(ponto) {
   const pt = turf.point([ponto.latlng.lng, ponto.latlng.lat]);
   const buf = turf.buffer(pt, currentRadius / 1000, { units: 'kilometers', steps: 64 });
 
+  // Desenho: recorta o buffer ao contorno do município apenas por estética
+  // (o cálculo abaixo continua a usar "buf" completo, não este recorte).
+  let bufDesenho = buf;
+  if (municipioMask) {
+    try {
+      const clip = turf.intersect(buf, municipioMask);
+      if (clip) bufDesenho = clip;
+    } catch (e) {
+      // se o recorte falhar, mantém o círculo completo no desenho
+    }
+  }
+
   if (ponto.bufferLayer) map.removeLayer(ponto.bufferLayer);
-  ponto.bufferLayer = L.geoJSON(buf, {
+  ponto.bufferLayer = L.geoJSON(bufDesenho, {
     style: {
       fillColor: ponto.cor.light,
       fillOpacity: 1,
@@ -1146,9 +1346,6 @@ btnAddCoords.addEventListener('click', () => {
 coordLng.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !btnAddCoords.disabled) btnAddCoords.click();
 });
-
-// Actualizar estado do botão quando município muda
-const _origLoadMunis = loadMunis;
 
 // ── CAMPOS BGRI ──
 const BGRI_GRUPOS = [
