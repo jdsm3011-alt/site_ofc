@@ -270,9 +270,61 @@ header {
   background: var(--bg);
   border-radius: var(--radius);
   border-left: 3px solid var(--border);
+  transition: border-color .2s ease, color .2s ease;
 }
 .instrucao.ready { color: var(--text); border-left-color: var(--accent); }
-.instrucao.error { border-left-color: var(--warn); }
+.instrucao.error { border-left-color: var(--warn); animation: instrucaoShake .42s ease; }
+@keyframes instrucaoShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+/* ── PING DE CLIQUE INVÁLIDO (fora da área BGRI) ── */
+.ping-invalido {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 650;
+}
+.ping-ring {
+  position: absolute;
+  left: 0; top: 0;
+  width: 14px; height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  border: 2px solid var(--warn, #e5484d);
+  opacity: 0.9;
+  animation: pingExpand .8s cubic-bezier(.2,.7,.3,1) forwards;
+}
+.ping-ring-delay { animation-delay: .15s; }
+@keyframes pingExpand {
+  0%   { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(3.4); opacity: 0; }
+}
+.ping-icon {
+  position: absolute;
+  left: 0; top: 0;
+  width: 22px; height: 22px;
+  margin: -11px 0 0 -11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--warn, #e5484d);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  animation: pingIconPop .55s cubic-bezier(.2,1.4,.4,1) forwards;
+}
+@keyframes pingIconPop {
+  0%   { transform: scale(0); opacity: 0; }
+  55%  { transform: scale(1.18); opacity: 1; }
+  75%  { transform: scale(1); }
+  100% { transform: scale(0.85); opacity: 0; }
+}
 
 /* ── COORDS INPUT ── */
 .coords-row {
@@ -398,6 +450,7 @@ header {
 
 /* ── BTN PROCESSAR ── */
 .btn-processar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,23 +468,95 @@ header {
   letter-spacing: .06em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background .15s, opacity .15s, transform .1s;
+  overflow: hidden;
+  isolation: isolate;
+  transition: background .2s ease, opacity .2s ease, transform .12s ease, box-shadow .2s ease;
   box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .btn-processar:hover:not(:disabled) {
   background: var(--accent-deep);
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.btn-processar:active:not(:disabled) { transform: translateY(0); }
+.btn-processar:active:not(:disabled) { transform: translateY(0) scale(.98); }
 .btn-processar:disabled {
   opacity: 0.38;
   cursor: not-allowed;
   box-shadow: none;
 }
 .btn-processar.processando {
-  opacity: 0.7;
+  opacity: 1;
   pointer-events: none;
 }
+.btn-processar.sucesso {
+  background: var(--ok, #2da44e);
+  pointer-events: none;
+}
+/* conteúdo do botão fica por cima da barra de progresso e do ripple */
+.btn-processar .btn-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+/* barra de progresso indeterminada durante o cálculo */
+.btn-processar .btn-progress {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.28) 45%,
+    rgba(255,255,255,.28) 55%,
+    transparent
+  );
+  background-size: 60% 100%;
+  background-repeat: no-repeat;
+  background-position: -60% 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-processar.processando .btn-progress {
+  opacity: 1;
+  animation: btnProgressSweep 1.1s ease-in-out infinite;
+}
+@keyframes btnProgressSweep {
+  0%   { background-position: -60% 0; }
+  100% { background-position: 160% 0; }
+}
+/* ripple ao clicar */
+.btn-processar .btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  transform: scale(0);
+  opacity: .6;
+  pointer-events: none;
+  z-index: 1;
+  animation: btnRipple .55s ease-out forwards;
+}
+@keyframes btnRipple {
+  to { transform: scale(2.6); opacity: 0; }
+}
+/* ícone de sucesso (check) que substitui o seta/spinner */
+.btn-processar .btn-check {
+  display: inline-flex;
+  animation: btnCheckPop .38s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes btnCheckPop {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes btnPulseOnce {
+  0%   { box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent); }
+  40%  { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent); }
+  100% { box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent); }
+}
+.btn-processar.pulse { animation: btnPulseOnce .5s ease-out; }
 /* badge de pontos pendentes */
 .processar-badge {
   display: inline-flex;
@@ -1136,8 +1261,11 @@ header {
           <div class="instrucao" id="instrucao">Seleciona um município para começar.</div>
 
           <button class="btn-processar" id="btnProcessar" disabled>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Processar
+            <span class="btn-progress"></span>
+            <span class="btn-content">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Processar
+            </span>
           </button>
         </div>
 
@@ -1666,10 +1794,29 @@ map.on('click', function(e) {
   }
   if (!pontoDentroMunicipio(e.latlng)) {
     setInstrucao('fora');
+    mostrarPingInvalido(e.latlng);
     return;
   }
   adicionarPontoVisual(e.latlng);
 });
+
+// ── FEEDBACK VISUAL: clique fora da área BGRI ──
+function mostrarPingInvalido(latlng) {
+  const ponto = map.latLngToLayerPoint(latlng);
+  const container = map.getPanes().overlayPane;
+  const wrap = document.createElement('div');
+  wrap.className = 'ping-invalido';
+  wrap.style.left = ponto.x + 'px';
+  wrap.style.top = ponto.y + 'px';
+  wrap.innerHTML = `
+    <span class="ping-ring"></span>
+    <span class="ping-ring ping-ring-delay"></span>
+    <span class="ping-icon">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </span>`;
+  container.appendChild(wrap);
+  setTimeout(() => wrap.remove(), 900);
+}
 
 // ── ESTADO PENDENTE ──
 let processamentoPendente = false;
@@ -1685,34 +1832,57 @@ function atualizarBotaoProcessar() {
   if (!btn) return;
   const temPontos = pontos.length > 0 && bgriData;
   btn.disabled = !temPontos;
-  if (temPontos && processamentoPendente) {
-    btn.innerHTML = `
+  const badge = temPontos && processamentoPendente
+    ? `<span class="processar-badge">${pontos.length}</span>` : '';
+  btn.innerHTML = `
+    <span class="btn-progress"></span>
+    <span class="btn-content">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Processar
-      <span class="processar-badge">${pontos.length}</span>`;
-  } else if (temPontos) {
-    btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Processar
-      <span class="processar-badge">${pontos.length}</span>`;
-  } else {
-    btn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Processar`;
-  }
+      Processar${badge}
+    </span>`;
 }
 
-document.getElementById('btnProcessar').addEventListener('click', () => {
+document.getElementById('btnProcessar').addEventListener('click', (ev) => {
   if (pontos.length === 0 || !bgriData) return;
   const btn = document.getElementById('btnProcessar');
+
+  // ripple a partir do ponto exato do clique/toque
+  const rect = btn.getBoundingClientRect();
+  const x = (ev.clientX ?? rect.left + rect.width / 2) - rect.left;
+  const y = (ev.clientY ?? rect.top + rect.height / 2) - rect.top;
+  const ripple = document.createElement('span');
+  ripple.className = 'btn-ripple';
+  const size = Math.max(rect.width, rect.height) * 1.3;
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (x - size / 2) + 'px';
+  ripple.style.top = (y - size / 2) + 'px';
+  btn.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+
   btn.classList.add('processando');
-  btn.innerHTML = `<span class="spinner" style="border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span> A calcular…`;
+  const contentEl = btn.querySelector('.btn-content');
+  if (contentEl) {
+    contentEl.innerHTML = `<span class="spinner" style="border-color:rgba(255,255,255,0.3);border-top-color:#fff"></span> A calcular…`;
+  }
+
   // Pequeno timeout para o browser pintar o estado antes do cálculo pesado
   setTimeout(() => {
     recalcularTodos();
     processamentoPendente = false;
     btn.classList.remove('processando');
-    atualizarBotaoProcessar();
+
+    // Estado de sucesso breve antes de voltar ao normal
+    btn.classList.add('sucesso');
+    const content2 = btn.querySelector('.btn-content');
+    if (content2) {
+      content2.innerHTML = `
+        <span class="btn-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        Calculado`;
+    }
+    setTimeout(() => {
+      btn.classList.remove('sucesso');
+      atualizarBotaoProcessar();
+    }, 850);
   }, 30);
 });
 
@@ -1754,6 +1924,12 @@ function adicionarPontoVisual(latlng) {
   processamentoPendente = true;
   renderizarPontosVisual();
   atualizarBotaoProcessar();
+  const btnP = document.getElementById('btnProcessar');
+  if (btnP) {
+    btnP.classList.remove('pulse');
+    requestAnimationFrame(() => btnP.classList.add('pulse'));
+    btnP.addEventListener('animationend', () => btnP.classList.remove('pulse'), { once: true });
+  }
   if (pontos.length < 5) setInstrucao('ready');
   else setInstrucao('max');
 }
