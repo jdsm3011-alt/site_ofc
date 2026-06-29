@@ -1113,8 +1113,8 @@ header {
   .basemap-toggle { top: 10px; right: 10px; }
 }
 
-/* Ecrãs desktop (>900px ou pointer:fine): esconde elementos móveis */
-@media (min-width: 901px), (pointer: fine) {
+/* Ecrãs desktop (>900px): esconde elementos móveis */
+@media (min-width: 901px) {
   .drawer-handle, .drawer-tabs, .drawer-fab, .drawer-overlay, .map-status-chip, .result-card { display: none !important; }
   .drawer-panels { display: contents; }
   .drawer-panel { display: contents !important; }
