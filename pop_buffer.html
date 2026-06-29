@@ -543,13 +543,88 @@ header {
 }
 .map-loading.visible { display: block; }
 
+/* ── LEAFLET CONTROLS ── */
+.leaflet-control-zoom a {
+  font-family: var(--mono) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--text) !important;
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  transition: background .15s, color .15s !important;
+}
+.leaflet-control-zoom a:hover {
+  background: var(--surface-deep) !important;
+  color: var(--accent-deep) !important;
+}
+.leaflet-control-zoom {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-soft) !important;
+  overflow: hidden;
+}
+.leaflet-control-zoom-in { border-bottom: 1px solid var(--border) !important; }
+.leaflet-bar { border: none !important; }
+.leaflet-control-attribution {
+  background: color-mix(in srgb, var(--surface) 88%, transparent) !important;
+  color: var(--text-muted) !important;
+  font-size: 9px !important;
+  border-radius: 6px 0 0 0 !important;
+  backdrop-filter: blur(4px);
+  border-top: 1px solid var(--border) !important;
+  border-left: 1px solid var(--border) !important;
+}
+.leaflet-control-attribution a { color: var(--accent) !important; }
+
 /* dark leaflet */
-[data-theme="dark"] .leaflet-tile { filter: brightness(0.85) saturate(0.8); }
+[data-theme="dark"] .leaflet-tile.basemap-carta { filter: brightness(0.82) saturate(0.75) hue-rotate(3deg); }
 [data-theme="dark"] .leaflet-control-zoom a {
   background: var(--surface) !important;
   color: var(--text) !important;
   border-color: var(--border) !important;
 }
+
+/* ── BASEMAP TOGGLE ── */
+.basemap-toggle {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 450;
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  gap: 0;
+}
+.basemap-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 13px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: background .15s, color .15s;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.basemap-btn + .basemap-btn { border-left: 1px solid var(--border); }
+.basemap-btn svg { flex-shrink: 0; }
+.basemap-btn.active {
+  background: var(--accent-light);
+  color: var(--accent-deep);
+}
+.basemap-btn:hover:not(.active) { background: var(--surface-deep); color: var(--text); }
 
 .spinner {
   display: inline-block;
@@ -776,6 +851,8 @@ header {
   .drawer-fab { bottom: 60px; }
   .map-status-chip { bottom: 60px; }
   header { padding: 6px 12px; }
+  /* toggle de basemap: sobe um pouco no landscape para dar espaço ao zoom */
+  .basemap-toggle { top: 10px; right: 10px; }
 }
 
 /* Ecrãs desktop (>900px ou pointer:fine): esconde elementos móveis */
@@ -784,6 +861,9 @@ header {
   .drawer-panels { display: contents; }
   .drawer-panel { display: contents !important; }
 }
+
+/* dark mode: satélite não precisa de filter */
+[data-theme="dark"] .basemap-satelite { filter: none; }
 </style>
 <script>
 // ── DRAWER MÓVEL ──
@@ -968,6 +1048,23 @@ header {
   <!-- MAPA -->
   <div class="map-wrap">
     <div id="map"></div>
+    <!-- Toggle de basemap -->
+    <div class="basemap-toggle" id="basemapToggle">
+      <button class="basemap-btn active" data-basemap="carta" title="Carta base">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+          <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
+        </svg>
+        Carta
+      </button>
+      <button class="basemap-btn" data-basemap="satelite" title="Imagem de satélite">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        Satélite
+      </button>
+    </div>
     <div class="map-loading" id="mapLoading"><span class="spinner"></span> A carregar BGRI…</div>
   </div>
 </div>
@@ -988,14 +1085,66 @@ themeBtn.addEventListener('click', () => {
 });
 
 // ── MAPA ──
-const map = L.map('map', { zoomControl: true }).setView([39.6, -8.0], 7);
+const map = L.map('map', {
+  zoomControl: false,
+  attributionControl: true
+}).setView([39.6, -8.0], 7);
 window.leafletMap = map;
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap, © CartoDB', maxZoom: 19
-}).addTo(map);
+
+// Zoom control — canto inferior direito para não colidir com o toggle
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+// ── BASEMAPS ──
+const BASEMAPS = {
+  carta: L.tileLayer(
+    'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
+      maxZoom: 19,
+      className: 'basemap-carta'
+    }
+  ),
+  satelite: L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+      attribution: '© <a href="https://www.esri.com/">Esri</a>, Maxar, Earthstar Geographics',
+      maxZoom: 19,
+      className: 'basemap-satelite'
+    }
+  )
+};
+
+let basemapAtivo = 'carta';
+BASEMAPS.carta.addTo(map);
+
+// Rótulos sobre satélite (estradas/lugares, sem fundo)
+const labelLayer = L.tileLayer(
+  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',
+  { maxZoom: 19, opacity: 0.9, zIndex: 10 }
+);
+
+function mudarBasemap(nome) {
+  if (nome === basemapAtivo) return;
+  map.removeLayer(BASEMAPS[basemapAtivo]);
+  if (basemapAtivo === 'satelite') map.removeLayer(labelLayer);
+  basemapAtivo = nome;
+  BASEMAPS[nome].addTo(map);
+  if (nome === 'satelite') labelLayer.addTo(map);
+  // actualiza botões
+  document.querySelectorAll('.basemap-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.basemap === nome);
+  });
+  // re-estiliza subsecções e buffers para o novo basemap
+  reestilarCamadas();
+}
 
 // Ao rodar o telemóvel (ex.: sair do aviso de rotação) o contentor do mapa
 // muda de tamanho; sem isto o Leaflet só percebe ao interagir manualmente.
+// Basemap toggle events
+document.querySelectorAll('.basemap-btn').forEach(btn => {
+  btn.addEventListener('click', () => mudarBasemap(btn.dataset.basemap));
+});
+
 function atualizarTamanhoMapa() {
   setTimeout(() => map.invalidateSize(), 250);
 }
@@ -1363,14 +1512,7 @@ function calcularPonto(ponto) {
 
   if (ponto.bufferLayer) map.removeLayer(ponto.bufferLayer);
   ponto.bufferLayer = L.geoJSON(bufDesenho, {
-    style: {
-      fillColor: ponto.cor.light,
-      fillOpacity: 1,
-      color: ponto.cor.cor,
-      weight: 1.8,
-      opacity: 0.85,
-      dashArray: '5 4'
-    }
+    style: estiloBuffer(ponto.cor)
   }).addTo(map);
 
   // Areal weighting
@@ -1504,7 +1646,7 @@ function removerPonto(idx) {
     pt.idx = i;
     pt.cor = CORES[i];
     pt.marker.setStyle({ fillColor: pt.cor.cor });
-    pt.bufferLayer?.setStyle({ color: pt.cor.cor, fillColor: pt.cor.light });
+    pt.bufferLayer?.setStyle(estiloBuffer(pt.cor));
     // Re-tooltip
     pt.marker.setTooltipContent(String(i + 1));
   });
@@ -1727,9 +1869,52 @@ function setInstrucao(state) {
   }
 }
 
-// ── ESTILO SUBSECÇÕES ──
+// ── ESTILO SUBSECÇÕES (adapta ao basemap) ──
 function estiloSubsec() {
+  if (basemapAtivo === 'satelite') {
+    return {
+      fillColor: '#ffffff',
+      fillOpacity: 0.06,
+      color: '#ffffff',
+      weight: 0.9,
+      opacity: 0.55
+    };
+  }
   return { fillColor: '#6b8cba', fillOpacity: 0.1, color: '#6b8cba', weight: 0.7, opacity: 0.45 };
+}
+
+// ── ESTILO BUFFER (adapta ao basemap) ──
+function estiloBuffer(cor) {
+  if (basemapAtivo === 'satelite') {
+    return {
+      fillColor: cor.cor,
+      fillOpacity: 0.22,
+      color: '#ffffff',
+      weight: 2.5,
+      opacity: 1,
+      dashArray: '6 4'
+    };
+  }
+  return {
+    fillColor: cor.light,
+    fillOpacity: 1,
+    color: cor.cor,
+    weight: 1.8,
+    opacity: 0.85,
+    dashArray: '5 4'
+  };
+}
+
+// ── RE-ESTILIZAR TUDO ao mudar basemap ──
+function reestilarCamadas() {
+  if (bgriLayer) bgriLayer.setStyle(estiloSubsec());
+  pontos.forEach(p => {
+    if (p.bufferLayer) p.bufferLayer.setStyle(estiloBuffer(p.cor));
+    if (p.marker) {
+      const corBorda = basemapAtivo === 'satelite' ? '#ffffff' : '#ffffff';
+      p.marker.setStyle({ color: corBorda, weight: basemapAtivo === 'satelite' ? 2.5 : 2 });
+    }
+  });
 }
 
 // ── COORDENADAS MANUAIS ──
