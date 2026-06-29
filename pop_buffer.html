@@ -567,177 +567,305 @@ header {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ── AVISO DE ROTAÇÃO (apenas em telemóveis/tablets em retrato) ── */
-/* CSS puro: aparece/desaparece instantaneamente ao rodar o dispositivo,
-   sem depender de JS a correr a tempo. Só ativo em ecrãs pequenos (telemóvel),
-   nunca em desktop, mesmo que a janela seja estreita. */
-.rotate-overlay { display: none; }
-@media (max-width: 900px) and (pointer: coarse) and (orientation: portrait) {
-  .rotate-overlay {
-    display: flex;
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-    background: var(--bg);
-    color: var(--text);
-    text-align: center;
-    padding: 32px;
-  }
-  .rotate-overlay .rotate-icon {
-    width: 64px; height: 64px;
-    color: var(--accent);
-    animation: rotate-hint 1.6s ease-in-out infinite;
-  }
-  .rotate-overlay h2 {
-    font-family: var(--serif);
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-  }
-  .rotate-overlay p {
-    font-family: var(--sans);
-    font-size: 13.5px;
-    color: var(--text-muted);
-    max-width: 280px;
-    line-height: 1.5;
-    margin: 0;
-  }
-  /* esconde o resto da app por trás do aviso para evitar scroll/zoom acidental */
-  body.aviso-rotacao-ativo {
-    overflow: hidden;
-  }
-  body.aviso-rotacao-ativo > header,
-  body.aviso-rotacao-ativo > .main {
-    display: none;
-  }
-}
-@keyframes rotate-hint {
-  0%, 100% { transform: rotate(0deg); }
-  50% { transform: rotate(-90deg); }
-}
-
-/* ── OTIMIZAÇÕES MÓVEIS (telemóvel/tablet em paisagem, e geral pointer:coarse) ── */
+/* ── OTIMIZAÇÕES TÁCTEIS GERAIS ── */
 @media (pointer: coarse) {
-  /* alvos de toque maiores e sem highlight azul ao tocar */
   button, .muni-suggestion, .ponto-del, .theme-toggle, .back-link {
     -webkit-tap-highlight-color: transparent;
   }
   .theme-toggle { width: 38px; height: 38px; }
-  .ponto-del { min-width: 26px; min-height: 26px; }
-  /* inputs com 16px+ para o iOS Safari não fazer zoom automático ao focar */
-  .muni-input, .radius-input, .coord-input {
-    font-size: 16px;
-  }
+  .ponto-del { min-width: 28px; min-height: 28px; }
+  .muni-input, .radius-input, .coord-input { font-size: 16px; }
 }
 
-/* ── MÓVEL PORTRAIT: empilha verticalmente ── */
-@media (max-width: 900px) and (orientation: portrait) {
-  header { padding: 9px 12px; gap: 10px; }
+/* ── DRAWER MÓVEL (portrait + landscape em ecrãs ≤900px) ── */
+@media (max-width: 900px) and (pointer: coarse) {
+  /* Header compacto */
+  header { padding: 8px 12px; gap: 10px; }
   .page-title { display: none; }
   .back-link .txt { display: none; }
   .back-link { padding: 7px 10px; }
 
-  .main { flex-direction: column; }
+  /* Layout: mapa ocupa tudo, sidebar vira drawer */
+  .main { flex-direction: row; position: relative; overflow: hidden; }
+  .map-wrap { position: absolute; inset: 0; min-height: 0; }
+  #map { position: absolute; inset: 0; }
+
+  /* ── SIDEBAR → DRAWER ── */
   .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
     width: 100%;
-    max-height: 46vh;
+    max-width: 100%;
+    height: auto;
+    max-height: 80vh;
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 32px rgba(0,0,0,.18);
+    z-index: 2000;
+    transform: translateY(calc(100% - 56px)); /* mostra só o handle + tabs */
+    transition: transform 0.32s cubic-bezier(.32,1,.46,1);
+    overflow: hidden;
+    flex-direction: column;
+    display: flex;
   }
-  .map-wrap { min-height: 40vh; }
-  .radius-slider { height: 26px; }
-}
-
-@media (max-width: 480px) and (orientation: portrait) {
-  .sb-section { padding: 11px 11px 8px; }
-  .sidebar { max-height: 50vh; }
-}
-
-/* ── MÓVEL LANDSCAPE: sidebar 30% | mapa 70%, similar ao desktop ── */
-@media (max-width: 900px) and (pointer: coarse) and (orientation: landscape) {
-  header { padding: 7px 12px; gap: 8px; }
-  .page-title { display: none; }
-  .back-link .txt { display: none; }
-  .back-link { padding: 6px 9px; }
-
-  /* layout horizontal igual ao desktop */
-  .main {
-    flex-direction: row;
-    height: calc(100vh - 48px); /* ajusta à altura do header reduzido */
-  }
-  .sidebar {
-    width: 30%;
-    min-width: 220px;
-    max-width: 320px;
-    max-height: none;
-    height: 100%;
-    border-right: 1px solid var(--border);
-    border-bottom: none;
-    overflow-y: auto;
-  }
-  .map-wrap {
-    flex: 1;
-    min-height: 0;
-    height: 100%;
+  .sidebar.drawer-open {
+    transform: translateY(0);
   }
 
-  /* fontes e espaçamento mais compactos para caber no ecrã pequeno */
-  .sb-section { padding: 10px 11px 8px; }
-  .sb-section-title {
+  /* Handle de arrasto */
+  .drawer-handle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    touch-action: none;
+    user-select: none;
+  }
+  .drawer-pill {
+    width: 36px; height: 4px;
+    background: var(--border-strong);
+    border-radius: 2px;
+    transition: background .15s;
+  }
+  .drawer-handle:hover .drawer-pill,
+  .drawer-handle:active .drawer-pill { background: var(--accent); }
+
+  /* Tabs de navegação */
+  .drawer-tabs {
+    display: flex;
+    gap: 0;
+    padding: 6px 12px 4px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+  .drawer-tabs::-webkit-scrollbar { display: none; }
+  .drawer-tab {
+    flex-shrink: 0;
+    padding: 5px 13px;
+    font-family: var(--mono);
     font-size: 10px;
+    font-weight: 600;
     letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: none;
+    cursor: pointer;
+    transition: color .15s, background .15s, border-color .15s;
+    white-space: nowrap;
   }
-  .muni-input, .radius-input, .coord-input { font-size: 14px; }
-  .group-header { font-size: 12px; padding: 7px 10px; }
-  .var-row { font-size: 12px; padding: 4px 10px; }
-  .var-name { font-size: 11.5px; }
-  .var-val { font-size: 12px; }
-  .radius-slider { height: 24px; }
+  .drawer-tab.active {
+    color: var(--accent-deep);
+    background: var(--accent-light);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .drawer-tab .tab-badge {
+    display: inline-block;
+    margin-left: 4px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 9px;
+    padding: 0 5px;
+    vertical-align: middle;
+    line-height: 1.6;
+  }
 
-  /* resultado compacto */
-  #resultsContent { font-size: 12px; }
+  /* Painéis de conteúdo das tabs */
+  .drawer-panels {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .drawer-panel { display: none; }
+  .drawer-panel.active { display: block; }
+
+  /* Reorganizar as sb-sections dentro dos painéis */
+  .sb-section { border-bottom: 1px solid var(--border); }
+  .results-area { padding: 12px; }
+
+  /* Botão FAB para abrir/fechar o drawer */
+  .drawer-fab {
+    position: fixed;
+    bottom: 68px; /* acima do handle visível */
+    right: 14px;
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1999;
+    transition: transform .2s, box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .drawer-fab:active { transform: scale(.93); }
+
+  /* Chip de estado flutuante sobre o mapa */
+  .map-status-chip {
+    position: fixed;
+    bottom: 68px;
+    left: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text);
+    box-shadow: var(--shadow-soft);
+    z-index: 1999;
+    max-width: calc(100vw - 80px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+  .map-status-chip.hidden { opacity: 0; }
+
+  /* Esconde fab e chip quando o drawer está aberto */
+  .sidebar.drawer-open ~ .drawer-fab { opacity: 0; pointer-events: none; }
+
+  /* Overlay escuro por baixo do drawer */
+  .drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.35);
+    z-index: 1998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .32s;
+  }
+  .drawer-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* esconde elementos só-desktop que não têm sentido no drawer */
+  .results-placeholder { min-height: 80px; }
+  .radius-slider { height: 28px; }
+  .sb-section { padding: 12px 13px 10px; }
+}
+
+/* Portrait específico: handle mais gordo */
+@media (max-width: 900px) and (pointer: coarse) and (orientation: portrait) {
+  .sidebar { transform: translateY(calc(100% - 60px)); }
+}
+
+/* Landscape: drawer mais pequeno (há menos altura) */
+@media (max-width: 900px) and (pointer: coarse) and (orientation: landscape) {
+  .sidebar { max-height: 90vh; transform: translateY(calc(100% - 52px)); }
+  .drawer-fab { bottom: 60px; }
+  .map-status-chip { bottom: 60px; }
+  header { padding: 6px 12px; }
+}
+
+/* Ecrãs desktop (>900px ou pointer:fine): esconde elementos móveis */
+@media (min-width: 901px), (pointer: fine) {
+  .drawer-handle, .drawer-tabs, .drawer-fab, .drawer-overlay, .map-status-chip { display: none !important; }
+  .drawer-panels { display: contents; }
+  .drawer-panel { display: contents !important; }
 }
 </style>
 <script>
-// ── AVISO DE ROTAÇÃO ──
-// Reforço por JS (além do CSS) para garantir bloqueio de scroll/zoom
-// enquanto o aviso está visível, e remoção limpa quando já não é preciso.
-// Continua a ser apenas estético/UX — não altera nenhum cálculo.
+// ── DRAWER MÓVEL ──
 (function () {
-  function ehMovelPortrait() {
-    const movel = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches;
-    const retrato = window.matchMedia('(orientation: portrait)').matches;
-    return movel && retrato;
+  var isMobile = window.matchMedia('(max-width: 900px) and (pointer: coarse)');
+
+  function initDrawer() {
+    if (!isMobile.matches) return;
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('drawerOverlay');
+    var fab = document.getElementById('drawerFab');
+    var handle = document.getElementById('drawerHandle');
+    var tabs = document.querySelectorAll('.drawer-tab');
+    var panels = document.querySelectorAll('.drawer-panel');
+    var statusChip = document.getElementById('mapStatusChip');
+    if (!sidebar) return;
+
+    var isOpen = false;
+
+    function openDrawer() {
+      isOpen = true;
+      sidebar.classList.add('drawer-open');
+      if (overlay) overlay.classList.add('visible');
+      if (fab) { fab.style.opacity='0'; fab.style.pointerEvents='none'; }
+    }
+    function closeDrawer() {
+      isOpen = false;
+      sidebar.classList.remove('drawer-open');
+      if (overlay) overlay.classList.remove('visible');
+      if (fab) { fab.style.opacity=''; fab.style.pointerEvents=''; }
+      setTimeout(function(){ if (window.leafletMap) window.leafletMap.invalidateSize(); }, 350);
+    }
+    function toggleDrawer() { isOpen ? closeDrawer() : openDrawer(); }
+
+    if (handle) handle.addEventListener('click', toggleDrawer);
+    if (fab) fab.addEventListener('click', openDrawer);
+    if (overlay) overlay.addEventListener('click', closeDrawer);
+
+    // swipe down fecha
+    var ty0 = 0;
+    sidebar.addEventListener('touchstart', function(e){ ty0 = e.touches[0].clientY; }, { passive:true });
+    sidebar.addEventListener('touchend', function(e){
+      if (e.changedTouches[0].clientY - ty0 > 60) closeDrawer();
+    }, { passive:true });
+
+    // tabs
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var target = tab.dataset.panel;
+        tabs.forEach(function(t){ t.classList.remove('active'); });
+        panels.forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active');
+        var panel = document.getElementById('panel-' + target);
+        if (panel) panel.classList.add('active');
+        if (!isOpen) openDrawer();
+      });
+    });
+
+    // chip de estado no mapa
+    window._updateStatusChip = function(text) {
+      if (!statusChip || !isMobile.matches) return;
+      if (text) { statusChip.textContent = text; statusChip.classList.remove('hidden'); }
+      else statusChip.classList.add('hidden');
+    };
   }
-  function atualizarAvisoRotacao() {
-    if (!document.body) return;
-    document.body.classList.toggle('aviso-rotacao-ativo', ehMovelPortrait());
-  }
-  // Este script corre no <head>, antes de document.body existir — adia a
-  // primeira aplicação até o DOM estar pronto; o CSS puro já trata a
-  // exibição visual instantânea, isto é só o reforço de bloqueio de scroll.
-  atualizarAvisoRotacao();
-  document.addEventListener('DOMContentLoaded', atualizarAvisoRotacao);
-  window.addEventListener('resize', atualizarAvisoRotacao);
-  window.addEventListener('orientationchange', atualizarAvisoRotacao);
+
+  document.addEventListener('DOMContentLoaded', initDrawer);
 })();
 </script>
 </head>
 <body>
 
-<!-- AVISO DE ROTAÇÃO (apenas visível em telemóveis em retrato, via CSS) -->
-<div class="rotate-overlay" id="rotateOverlay">
-  <svg class="rotate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="5" y="2" width="14" height="20" rx="2"/>
-    <line x1="12" y1="18" x2="12" y2="18.01"/>
-  </svg>
-  <h2>Roda o ecrã</h2>
-  <p>Este mapa fica mais confortável de usar na horizontal. Vira o teu telemóvel para continuar.</p>
-</div>
+<!-- Overlay escuro atrás do drawer -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- Chip de estado flutuante sobre o mapa (só mobile) -->
+<div class="map-status-chip hidden" id="mapStatusChip">Seleciona município…</div>
+
+<!-- FAB para abrir drawer (só mobile) -->
+<button class="drawer-fab" id="drawerFab" aria-label="Abrir painel">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+</button>
 
 <header>
   <a class="logo-link" href="index.html">DataGis</a>
@@ -754,60 +882,86 @@ header {
 <div class="main">
   <aside class="sidebar">
 
-    <!-- MUNICÍPIO + RAIO -->
-    <div class="sb-section">
-      <div class="sb-label">Município</div>
-      <div class="muni-combo" id="muniCombo">
-        <input
-          class="muni-input"
-          id="muniInput"
-          type="text"
-          autocomplete="off"
-          spellcheck="false"
-          placeholder="Escreve o nome do município…">
-        <div class="muni-suggestions" id="muniSuggestions"></div>
-      </div>
-
-      <div class="radius-row">
-        <label>Raio</label>
-        <input class="radius-input" type="number" id="radiusInput" value="500" min="50" max="20000" step="50">
-        <span class="radius-unit">m</span>
-      </div>
-      <input class="radius-slider" type="range" id="radiusSlider" min="50" max="5000" step="50" value="500">
-
-      <div class="instrucao" id="instrucao">Seleciona um município para começar.</div>
+    <!-- Handle de arrasto (só visível em mobile) -->
+    <div class="drawer-handle" id="drawerHandle" aria-label="Abrir/fechar painel">
+      <div class="drawer-pill"></div>
     </div>
 
-    <!-- COORDENADAS -->
-    <div class="sb-section">
-      <div class="sb-label">Adicionar por coordenadas</div>
-      <div class="coords-row">
-        <input class="coord-input" id="coordLat" type="text" placeholder="Lat. ex: 41.5432">
-        <input class="coord-input" id="coordLng" type="text" placeholder="Lng. ex: -8.4215">
-        <button class="btn-add-coords" id="btnAddCoords" disabled>+</button>
-      </div>
-      <div class="coords-error" id="coordsError">Coordenadas inválidas ou fora de Portugal.</div>
+    <!-- Tabs de navegação (só mobile) -->
+    <div class="drawer-tabs" role="tablist">
+      <button class="drawer-tab active" data-panel="config" role="tab" aria-selected="true">Configurar</button>
+      <button class="drawer-tab" data-panel="pontos" role="tab" aria-selected="false">Pontos <span class="tab-badge" id="tabBadgePontos" style="display:none">0</span></button>
+      <button class="drawer-tab" data-panel="resultados" role="tab" aria-selected="false">Resultados</button>
     </div>
 
-    <!-- PONTOS -->
-    <div class="sb-section">
-      <div class="sb-label">Pontos <span id="pontosCount" style="color:var(--text-muted);font-weight:400">(0 / 5)</span></div>
-      <div class="pontos-lista" id="pontosLista">
-        <div class="pontos-vazio" id="pontosVazio">Clica no mapa para<br>adicionar um ponto.</div>
-      </div>
-      <button class="btn-limpar" id="btnLimpar" style="display:none">Limpar todos os pontos</button>
-    </div>
+    <!-- Painéis (em desktop: display:contents — todos visíveis; em mobile: tabs) -->
+    <div class="drawer-panels">
 
-    <!-- RESULTADOS -->
-    <div class="results-area">
-      <div class="results-placeholder" id="resultsPlaceholder">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
-        </svg>
-        <p>Seleciona município,<br>clica no mapa para<br>calcular a população.</p>
-      </div>
-      <div class="results-content" id="resultsContent"></div>
-    </div>
+      <!-- PAINEL 1: Configurar (município + raio + coords) -->
+      <div class="drawer-panel active" id="panel-config">
+
+        <!-- MUNICÍPIO + RAIO -->
+        <div class="sb-section">
+          <div class="sb-label">Município</div>
+          <div class="muni-combo" id="muniCombo">
+            <input
+              class="muni-input"
+              id="muniInput"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Escreve o nome do município…">
+            <div class="muni-suggestions" id="muniSuggestions"></div>
+          </div>
+
+          <div class="radius-row">
+            <label>Raio</label>
+            <input class="radius-input" type="number" id="radiusInput" value="500" min="50" max="20000" step="50">
+            <span class="radius-unit">m</span>
+          </div>
+          <input class="radius-slider" type="range" id="radiusSlider" min="50" max="5000" step="50" value="500">
+
+          <div class="instrucao" id="instrucao">Seleciona um município para começar.</div>
+        </div>
+
+        <!-- COORDENADAS -->
+        <div class="sb-section">
+          <div class="sb-label">Adicionar por coordenadas</div>
+          <div class="coords-row">
+            <input class="coord-input" id="coordLat" type="text" placeholder="Lat. ex: 41.5432">
+            <input class="coord-input" id="coordLng" type="text" placeholder="Lng. ex: -8.4215">
+            <button class="btn-add-coords" id="btnAddCoords" disabled>+</button>
+          </div>
+          <div class="coords-error" id="coordsError">Coordenadas inválidas ou fora de Portugal.</div>
+        </div>
+
+      </div><!-- /panel-config -->
+
+      <!-- PAINEL 2: Pontos -->
+      <div class="drawer-panel" id="panel-pontos">
+        <div class="sb-section">
+          <div class="sb-label">Pontos <span id="pontosCount" style="color:var(--text-muted);font-weight:400">(0 / 5)</span></div>
+          <div class="pontos-lista" id="pontosLista">
+            <div class="pontos-vazio" id="pontosVazio">Clica no mapa para<br>adicionar um ponto.</div>
+          </div>
+          <button class="btn-limpar" id="btnLimpar" style="display:none">Limpar todos os pontos</button>
+        </div>
+      </div><!-- /panel-pontos -->
+
+      <!-- PAINEL 3: Resultados -->
+      <div class="drawer-panel" id="panel-resultados">
+        <div class="results-area">
+          <div class="results-placeholder" id="resultsPlaceholder">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <p>Seleciona município,<br>clica no mapa para<br>calcular a população.</p>
+          </div>
+          <div class="results-content" id="resultsContent"></div>
+        </div>
+      </div><!-- /panel-resultados -->
+
+    </div><!-- /drawer-panels -->
 
   </aside>
 
@@ -835,6 +989,7 @@ themeBtn.addEventListener('click', () => {
 
 // ── MAPA ──
 const map = L.map('map', { zoomControl: true }).setView([39.6, -8.0], 7);
+window.leafletMap = map;
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap, © CartoDB', maxZoom: 19
 }).addTo(map);
@@ -1100,6 +1255,9 @@ async function selecionarMunicipio(municipio) {
   esconderSugestoes();
   muniInput.blur();
 
+  // Actualiza chip de estado em mobile
+  if (window._updateStatusChip) window._updateStatusChip('A carregar ' + municipio.nome + '…');
+
   setInstrucao('loading');
   document.getElementById('mapLoading').classList.add('visible');
   document.getElementById('map').classList.add('loading');
@@ -1128,10 +1286,12 @@ async function selecionarMunicipio(municipio) {
     municipioMaskBbox = municipioMask ? turf.bbox(municipioMask) : null;
     subsecsCache = construirCacheSubsecs(bgriData);
     setInstrucao('ready');
+    if (window._updateStatusChip) window._updateStatusChip(municipioAtual.nome + ' — clica no mapa para adicionar ponto');
     // Activar botão de coordenadas se campos preenchidos
     if (coordsPreenchidas()) btnAddCoords.disabled = false;
   } catch(e) {
     setInstrucao('error');
+    if (window._updateStatusChip) window._updateStatusChip('Erro ao carregar ' + (municipioAtual ? municipioAtual.nome : ''));
     console.error(e);
   } finally {
     document.getElementById('mapLoading').classList.remove('visible');
@@ -1380,6 +1540,18 @@ function renderizarPontos() {
 
   count.textContent = `(${pontos.length} / 5)`;
 
+  // Badge da tab Pontos (só mobile)
+  const badge = document.getElementById('tabBadgePontos');
+  if (badge) {
+    if (pontos.length > 0) { badge.textContent = pontos.length; badge.style.display = ''; }
+    else badge.style.display = 'none';
+  }
+  // Chip de estado sobre o mapa
+  if (window._updateStatusChip) {
+    if (pontos.length === 0) window._updateStatusChip(municipioAtual ? 'Clica no mapa para adicionar ponto' : 'Seleciona município…');
+    else window._updateStatusChip(pontos.length + ' ponto' + (pontos.length > 1 ? 's' : '') + ' — swipe para ver resultados');
+  }
+
   // Limpar rows existentes (manter o div vazio)
   Array.from(lista.querySelectorAll('.ponto-row')).forEach(el => el.remove());
 
@@ -1418,6 +1590,22 @@ function mostrarResultados() {
   document.getElementById('resultsPlaceholder').style.display = 'none';
   const content = document.getElementById('resultsContent');
   content.classList.add('visible');
+
+  // Em mobile, muda automaticamente para a tab de resultados
+  const isMob = window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches;
+  if (isMob) {
+    document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('active'));
+    const tabRes = document.querySelector('.drawer-tab[data-panel="resultados"]');
+    const panelRes = document.getElementById('panel-resultados');
+    if (tabRes) tabRes.classList.add('active');
+    if (panelRes) panelRes.classList.add('active');
+    // Abre o drawer
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('drawerOverlay');
+    if (sidebar) sidebar.classList.add('drawer-open');
+    if (overlay) overlay.classList.add('visible');
+  }
 
   // Total agregado: calculado sobre a UNIÃO geométrica dos buffers, não
   // pela soma dos resultados individuais — isso evita contar duas vezes
