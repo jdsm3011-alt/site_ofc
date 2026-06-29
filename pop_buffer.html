@@ -814,17 +814,6 @@ header {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ── ELEMENTOS EXCLUSIVOS DE MOBILE ──
-   Escondidos por defeito; só ganham `display` dentro da media query
-   (max-width: 900px) mais abaixo. Sem isto, em desktop estes elementos
-   ficam no fluxo normal do documento (soltos no <body>, antes do header)
-   em vez de flutuarem sobre o mapa. */
-.map-status-chip,
-.result-card,
-.drawer-fab {
-  display: none;
-}
-
 /* ── OTIMIZAÇÕES TÁCTEIS GERAIS ── */
 @media (pointer: coarse) {
   button, .muni-suggestion, .ponto-del, .theme-toggle, .back-link {
@@ -835,7 +824,7 @@ header {
   .muni-input, .radius-input, .coord-input { font-size: 16px; }
 }
 
-/* ── DRAWER MÓVEL (portrait + landscape em ecrãs ≤900px) ── */
+/* ── TAB BAR MÓVEL (≤900px) ── */
 @media (max-width: 900px) {
   /* Header compacto */
   header { padding: 8px 12px; gap: 10px; }
@@ -843,107 +832,38 @@ header {
   .back-link .txt { display: none; }
   .back-link { padding: 7px 10px; }
 
-  /* Layout: mapa ocupa tudo, sidebar vira drawer */
+  /* Layout: mapa ocupa tudo, sidebar sobrepõe quando activa */
   .main { flex-direction: row; position: relative; overflow: hidden; }
   .map-wrap { position: absolute; inset: 0; min-height: 0; }
   #map { position: absolute; inset: 0; }
 
-  /* ── SIDEBAR → DRAWER ── */
+  /* Sidebar: escondida por defeito; aparece quando .sidebar-visible */
   .sidebar {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
+    inset: 0;
+    bottom: 56px; /* deixa espaço para a tab bar */
+    top: calc(env(safe-area-inset-top, 0px) + 52px); /* abaixo do header */
     width: 100%;
     max-width: 100%;
     height: auto;
-    max-height: var(--drawer-max-h, 80vh);
+    max-height: none;
     border-right: none;
     border-top: 1px solid var(--border);
-    border-radius: 16px 16px 0 0;
-    box-shadow: 0 -8px 32px rgba(0,0,0,.18);
+    border-radius: 0;
+    box-shadow: none;
     z-index: 2000;
-    /* --drawer-y: 0 = aberto, 1 = fechado (só handle+tabs visíveis) */
-    transform: translateY(calc(var(--drawer-y, 1) * (100% - 56px)));
-    transition: transform 0.32s cubic-bezier(.32,1,.46,1), max-height 0.32s cubic-bezier(.32,1,.46,1);
+    display: flex;
+    flex-direction: column;
+    /* Escondida por defeito — desloca para fora do ecrã */
+    transform: translateY(100%);
+    transition: transform 0.22s ease;
     overflow: hidden;
-    flex-direction: column;
-    display: flex;
   }
-  /* Durante o arrasto desliga-se a transição para seguir o dedo 1:1 */
-  .sidebar.dragging {
-    transition: none;
-  }
-  .sidebar.drawer-open {
-    --drawer-y: 0;
+  .sidebar.sidebar-visible {
+    transform: translateY(0);
   }
 
-  /* Handle de arrasto */
-  .drawer-handle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 16px 0;
-    cursor: pointer;
-    flex-shrink: 0;
-    touch-action: none;
-    user-select: none;
-  }
-  .drawer-pill {
-    width: 36px; height: 4px;
-    background: var(--border-strong);
-    border-radius: 2px;
-    transition: background .15s;
-  }
-  .drawer-handle:hover .drawer-pill,
-  .drawer-handle:active .drawer-pill { background: var(--accent); }
-
-  /* Tabs de navegação */
-  .drawer-tabs {
-    display: flex;
-    gap: 0;
-    padding: 6px 12px 4px;
-    overflow-x: auto;
-    flex-shrink: 0;
-    scrollbar-width: none;
-  }
-  .drawer-tabs::-webkit-scrollbar { display: none; }
-  .drawer-tab {
-    flex-shrink: 0;
-    padding: 5px 13px;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    background: none;
-    cursor: pointer;
-    transition: color .15s, background .15s, border-color .15s;
-    white-space: nowrap;
-  }
-  .drawer-tab.active {
-    color: var(--accent-deep);
-    background: var(--accent-light);
-    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
-  }
-  .drawer-tab .tab-badge {
-    display: inline-block;
-    margin-left: 4px;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 999px;
-    font-size: 9px;
-    padding: 0 5px;
-    vertical-align: middle;
-    line-height: 1.6;
-  }
-
-  /* Painéis de conteúdo das tabs */
+  /* Painéis */
   .drawer-panels {
     flex: 1;
     overflow-y: auto;
@@ -953,396 +873,178 @@ header {
   .drawer-panel { display: none; }
   .drawer-panel.active { display: block; }
 
-  /* Reorganizar as sb-sections dentro dos painéis */
-  .sb-section { border-bottom: 1px solid var(--border); }
+  /* Ajustes gerais de conteúdo */
+  .sb-section { border-bottom: 1px solid var(--border); padding: 12px 13px 10px; }
   .results-area { padding: 12px; }
-
-  /* Botão FAB para abrir/fechar o drawer */
-  .drawer-fab {
-    position: fixed;
-    bottom: 68px; /* acima do handle visível */
-    right: 14px;
-    width: 46px; height: 46px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text);
-    font-size: 18px;
-    cursor: pointer;
-    z-index: 1999;
-    transition: transform .2s, box-shadow .2s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .drawer-fab:active { transform: scale(.93); }
-
-  /* Chip de estado flutuante sobre o mapa */
-  .map-status-chip {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    bottom: 68px;
-    left: 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 7px 13px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text);
-    box-shadow: var(--shadow-soft);
-    z-index: 1999;
-    max-width: calc(100vw - 80px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity .2s;
-  }
-  .map-status-chip.hidden { opacity: 0; }
-
-  /* Card flutuante de resultados, no topo do mapa — aparece depois de
-     processar, sem bloquear o mapa nem forçar a abertura do drawer. */
-  .result-card {
-    position: fixed;
-    top: calc(env(safe-area-inset-top, 0px) + 64px);
-    left: 14px;
-    right: 14px;
-    z-index: 1998;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 10px 12px;
-    box-shadow: var(--shadow-soft);
-    transform: translateY(-14px) scale(.97);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform .32s cubic-bezier(.2,1,.3,1), opacity .26s ease;
-  }
-  .result-card.visible {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .result-card-icon {
-    flex: 0 0 auto;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: color-mix(in srgb, var(--accent) 16%, transparent);
-    color: var(--accent);
-  }
-  .result-card-body { flex: 1; min-width: 0; }
-  .result-card-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--text-muted);
-  }
-  .result-card-value {
-    font-family: var(--mono);
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .result-card-chevron {
-    flex: 0 0 auto;
-    color: var(--text-muted);
-    display: flex;
-    transition: transform .2s ease;
-  }
-  .result-card:active .result-card-chevron { transform: translateX(2px); }
-  .result-card-close {
-    flex: 0 0 auto;
-    width: 24px; height: 24px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    color: var(--text-muted);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
-  .result-card-close:active { background: var(--bg); }
-
-  /* Esconde fab e chip quando o drawer está aberto */
-  .sidebar.drawer-open ~ .drawer-fab { opacity: 0; pointer-events: none; }
-
-  /* Overlay escuro por baixo do drawer */
-  .drawer-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.35);
-    z-index: 1998;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .32s;
-  }
-  .drawer-overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* esconde elementos só-desktop que não têm sentido no drawer */
   .results-placeholder { min-height: 80px; }
   .radius-slider { height: 28px; }
-  .sb-section { padding: 12px 13px 10px; }
+
+  /* Tab bar fixa no fundo */
+  .mobile-tab-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    z-index: 2100;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.10);
+  }
+  .mobile-tab-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 6px 4px;
+    transition: color .15s;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+  }
+  .mobile-tab-btn.active {
+    color: var(--accent-deep);
+  }
+  .mobile-tab-btn svg {
+    width: 20px; height: 20px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  /* Indicador activo: linha no topo do botão */
+  .mobile-tab-btn.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 0 0 2px 2px;
+  }
+  /* Badge de contagem de pontos */
+  .tab-badge {
+    position: absolute;
+    top: 5px;
+    right: calc(50% - 18px);
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 9px;
+    font-family: var(--mono);
+    padding: 0 4px;
+    line-height: 1.7;
+    min-width: 16px;
+    text-align: center;
+  }
 }
 
-/* Portrait específico: handle mais gordo */
-@media (max-width: 900px) and (orientation: portrait) {
-  .sidebar { transform: translateY(calc(100% - 60px)); }
-}
-
-/* Landscape: drawer mais pequeno (há menos altura) */
+/* Landscape: sidebar usa menos altura, tab bar mantém-se */
 @media (max-width: 900px) and (orientation: landscape) {
-  .sidebar { max-height: 90vh; transform: translateY(calc(100% - 52px)); }
-  .drawer-fab { bottom: 60px; }
-  .map-status-chip { bottom: 60px; }
   header { padding: 6px 12px; }
-  /* toggle de basemap: sobe um pouco no landscape para dar espaço ao zoom */
   .basemap-toggle { top: 10px; right: 10px; }
 }
 
-/* Ecrãs desktop (>900px): esconde elementos móveis */
+/* Desktop (>900px): esconde tab bar, mostra tudo normal */
 @media (min-width: 901px) {
-  .drawer-handle, .drawer-tabs, .drawer-fab, .drawer-overlay, .map-status-chip, .result-card { display: none !important; }
+  .mobile-tab-bar { display: none !important; }
   .drawer-panels { display: contents; }
   .drawer-panel { display: contents !important; }
+  .sidebar { transform: none !important; }
 }
 
 /* dark mode: satélite não precisa de filter */
 [data-theme="dark"] .basemap-satelite { filter: none; }
 </style>
 <script>
-// ── DRAWER MÓVEL ──
+// ── TAB BAR MÓVEL (simples, sem gestos) ──
 (function () {
   var isMobile = window.matchMedia('(max-width: 900px)');
-  var initialized = false; // garante que os listeners só são associados uma vez
 
-  function initDrawer() {
-    // Não inicializa em desktop, mas também não bloqueia tentativas futuras:
-    // se a janela passar a mobile mais tarde (resize/rotação), o listener
-    // de matchMedia mais abaixo volta a chamar initDrawer().
-    if (!isMobile.matches || initialized) return;
+  function initTabBar() {
+    if (!isMobile.matches) return;
     var sidebar = document.querySelector('.sidebar');
-    var overlay = document.getElementById('drawerOverlay');
-    var fab = document.getElementById('drawerFab');
-    var handle = document.getElementById('drawerHandle');
-    var tabs = document.querySelectorAll('.drawer-tab');
-    var panels = document.querySelectorAll('.drawer-panel');
-    var statusChip = document.getElementById('mapStatusChip');
-    if (!sidebar) return; // DOM ainda não está pronto — tenta de novo depois
+    if (!sidebar) return;
 
-    initialized = true;
+    // Estado: qual a tab activa. 'mapa' = sidebar escondida
+    var activeTab = 'mapa';
 
-    var isOpen = false;
-    var HANDLE_PX = 56; // altura visível quando fechado (handle + tabs)
+    var tabBtns = document.querySelectorAll('.mobile-tab-btn');
+    var panels  = document.querySelectorAll('.drawer-panel');
 
-    function setY(frac) {
-      // frac: 0 = totalmente aberto, 1 = totalmente fechado
-      frac = Math.max(0, Math.min(1, frac));
-      sidebar.style.setProperty('--drawer-y', frac);
-      if (overlay) overlay.style.opacity = String(1 - frac);
-      if (overlay) overlay.style.pointerEvents = frac < 0.98 ? 'auto' : 'none';
-    }
+    function activateTab(name) {
+      activeTab = name;
 
-    function openDrawer() {
-      isOpen = true;
-      sidebar.classList.add('drawer-open');
-      setY(0);
-      if (overlay) overlay.classList.add('visible');
-      if (fab) { fab.style.opacity='0'; fab.style.pointerEvents='none'; }
-    }
-    function closeDrawer() {
-      isOpen = false;
-      sidebar.classList.remove('drawer-open');
-      setY(1);
-      if (overlay) overlay.classList.remove('visible');
-      if (fab) { fab.style.opacity=''; fab.style.pointerEvents=''; }
-      setTimeout(function(){ if (window.leafletMap) window.leafletMap.invalidateSize(); }, 350);
-    }
-    function toggleDrawer() { isOpen ? closeDrawer() : openDrawer(); }
-
-    if (fab) fab.addEventListener('click', openDrawer);
-    if (overlay) overlay.addEventListener('click', closeDrawer);
-
-    // ── Arrasto real do handle: segue o dedo 1:1, com snap no fim ──
-    var dragging = false;
-    var startY = 0;
-    var startFrac = 0;
-    var lastY = 0;
-    var lastT = 0;
-    var velocity = 0; // px/ms, positivo = a mover para baixo (a fechar)
-    var moved = false;
-
-    function dragStart(clientY) {
-      dragging = true;
-      moved = false;
-      startY = clientY;
-      lastY = clientY;
-      lastT = performance.now();
-      velocity = 0;
-      startFrac = isOpen ? 0 : 1;
-      sidebar.classList.add('dragging');
-    }
-    function dragMove(clientY) {
-      if (!dragging) return;
-      var dy = clientY - startY;
-      if (Math.abs(dy) > 4) moved = true;
-      var sidebarH = sidebar.getBoundingClientRect().height || (window.innerHeight * 0.8);
-      var travel = Math.max(sidebarH - HANDLE_PX, 1);
-      var frac = startFrac + dy / travel;
-      setY(frac);
-
-      var now = performance.now();
-      var dt = now - lastT;
-      if (dt > 0) velocity = (clientY - lastY) / dt;
-      lastY = clientY;
-      lastT = now;
-    }
-    function dragEnd() {
-      if (!dragging) return;
-      dragging = false;
-      sidebar.classList.remove('dragging');
-
-      var currentFrac = parseFloat(getComputedStyle(sidebar).getPropertyValue('--drawer-y')) || 0;
-      // decide para onde "encaixar": velocidade rápida decide a direção;
-      // caso contrário, decide pela posição (mais de metade do caminho)
-      var FLING = 0.5; // px/ms
-      var deveAbrir;
-      if (velocity < -FLING) deveAbrir = true;
-      else if (velocity > FLING) deveAbrir = false;
-      else deveAbrir = currentFrac < 0.5;
-
-      if (deveAbrir) openDrawer(); else closeDrawer();
-    }
-
-    if (handle) {
-      handle.addEventListener('touchstart', function(e){ dragStart(e.touches[0].clientY); }, { passive:true });
-      handle.addEventListener('touchmove', function(e){ dragMove(e.touches[0].clientY); }, { passive:true });
-      handle.addEventListener('touchend', function(e){
-        dragEnd();
-        if (!moved) toggleDrawer(); // toque simples (sem arrastar) alterna aberto/fechado
-      }, { passive:true });
-
-      // suporte a mouse também (úteis em devtools/emuladores)
-      handle.addEventListener('mousedown', function(e){ dragStart(e.clientY); e.preventDefault(); });
-      window.addEventListener('mousemove', function(e){ if (dragging) dragMove(e.clientY); });
-      window.addEventListener('mouseup', function(){ if (dragging) { dragEnd(); if (!moved) toggleDrawer(); } });
-    }
-
-    // swipe down em qualquer ponto do drawer aberto também fecha
-    // (mas só se o gesto começar fora de áreas com scroll interno ativo)
-    var swipeY0 = 0;
-    var panelsEl = document.querySelector('.drawer-panels');
-    sidebar.addEventListener('touchstart', function(e){ swipeY0 = e.touches[0].clientY; }, { passive:true });
-    sidebar.addEventListener('touchend', function(e){
-      if (!isOpen) return;
-      if (panelsEl && panelsEl.scrollTop > 4) return; // já a fazer scroll do conteúdo, não interfere
-      var dy = e.changedTouches[0].clientY - swipeY0;
-      if (dy > 70) closeDrawer();
-    }, { passive:true });
-
-    // tabs — usa 'click' (rato/desktop) e também 'touchend' explícito,
-    // porque em Safari iOS o 'click' sintético a partir de touch pode
-    // ficar pendente/cancelado quando o elemento está dentro de um
-    // contentor com overflow-x:auto (caso de .drawer-tabs), já que o
-    // browser espera para decidir se o gesto é um toque ou um scroll.
-    function ativarTab(tab) {
-      var target = tab.dataset.panel;
-      tabs.forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-      panels.forEach(function(p){ p.classList.remove('active'); });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      var panel = document.getElementById('panel-' + target);
-      if (panel) panel.classList.add('active');
-      if (!isOpen) openDrawer();
-    }
-    tabs.forEach(function(tab) {
-      var tabTouchY0 = 0;
-      var tabTouchMoved = false;
-      tab.addEventListener('touchstart', function(e){
-        tabTouchY0 = e.touches[0].clientY;
-        tabTouchMoved = false;
-      }, { passive: true });
-      tab.addEventListener('touchmove', function(e){
-        if (Math.abs(e.touches[0].clientY - tabTouchY0) > 8) tabTouchMoved = true;
-      }, { passive: true });
-      tab.addEventListener('touchend', function(e){
-        if (tabTouchMoved) return; // foi scroll horizontal da lista de tabs, não um toque
-        e.preventDefault(); // evita o click sintético duplicado a seguir
-        ativarTab(tab);
+      // Actualiza botões da tab bar
+      tabBtns.forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.tab === name);
       });
-      // Mantém 'click' para rato/teclado/acessibilidade (desktop, ou
-      // qualquer ambiente onde touchend não disparou primeiro).
-      tab.addEventListener('click', function(){ ativarTab(tab); });
+
+      if (name === 'mapa') {
+        // Esconde sidebar — mapa fica visível por baixo
+        sidebar.classList.remove('sidebar-visible');
+      } else {
+        // Mostra sidebar e activa o painel certo
+        sidebar.classList.add('sidebar-visible');
+        panels.forEach(function(p) {
+          p.classList.toggle('active', p.id === 'panel-' + name);
+        });
+        // Faz scroll ao topo do painel ao mudar de tab
+        var activePanel = document.getElementById('panel-' + name);
+        if (activePanel) activePanel.scrollTop = 0;
+      }
+
+      // Diz ao Leaflet que o tamanho pode ter mudado
+      setTimeout(function() {
+        if (window.leafletMap) window.leafletMap.invalidateSize();
+      }, 50);
+    }
+
+    tabBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activateTab(btn.dataset.tab);
+      });
     });
 
-    // chip de estado no mapa
-    window._updateStatusChip = function(text) {
-      if (!statusChip || !isMobile.matches) return;
-      if (text) { statusChip.textContent = text; statusChip.classList.remove('hidden'); }
-      else statusChip.classList.add('hidden');
-    };
+    // API pública: outras partes da app podem mudar de tab
+    window._ativarTab = activateTab;
+    window._getActiveTab = function() { return activeTab; };
 
-    // exposto para permitir abrir o drawer a partir de outras partes da
-    // app (ex: card flutuante de resultados), sem forçar isso automaticamente
-    window._abrirDrawer = openDrawer;
+    // Chip de estado no mapa (compatibilidade)
+    window._updateStatusChip = function() {}; // no-op: chip removido
+
+    // Começa na tab "Configurar" (mais útil que mostrar o mapa vazio)
+    activateTab('config');
   }
 
-  document.addEventListener('DOMContentLoaded', initDrawer);
-  // Tenta de novo se a janela mudar de desktop → mobile (resize, rotação,
-  // ou mudança de zoom) depois do load inicial. addListener é o fallback
-  // para Safari/browsers mais antigos que não suportam addEventListener aqui.
-  if (isMobile.addEventListener) isMobile.addEventListener('change', initDrawer);
-  else if (isMobile.addListener) isMobile.addListener(initDrawer);
-  // Rede de segurança final: corre também já depois de tudo carregado,
-  // caso o DOMContentLoaded tenha disparado antes do <aside class="sidebar">
-  // existir por algum motivo de ordem de scripts.
-  window.addEventListener('load', initDrawer);
+  document.addEventListener('DOMContentLoaded', initTabBar);
+  window.addEventListener('load', initTabBar);
+  if (isMobile.addEventListener) isMobile.addEventListener('change', function() {
+    // Ao passar de mobile → desktop, limpa classes móveis
+    if (!isMobile.matches) {
+      var sidebar = document.querySelector('.sidebar');
+      if (sidebar) sidebar.classList.remove('sidebar-visible');
+    } else {
+      initTabBar();
+    }
+  });
 })();
 </script>
 </head>
 <body>
-
-<!-- Overlay escuro atrás do drawer -->
-<div class="drawer-overlay" id="drawerOverlay"></div>
-
-<!-- Chip de estado flutuante sobre o mapa (só mobile) -->
-<div class="map-status-chip hidden" id="mapStatusChip">Seleciona município…</div>
-
-<!-- Card flutuante de resultados (só mobile) — aparece após processar,
-     sem bloquear o mapa. Toca para ver o detalhe completo na tab Resultados. -->
-<div class="result-card" id="resultCard">
-  <div class="result-card-icon">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-  </div>
-  <div class="result-card-body">
-    <div class="result-card-label">População estimada</div>
-    <div class="result-card-value" id="resultCardValue">—</div>
-  </div>
-  <div class="result-card-chevron">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
-  </div>
-  <button class="result-card-close" id="resultCardClose" aria-label="Fechar" title="Fechar">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-</div>
-
-<!-- FAB para abrir drawer (só mobile) -->
-<button class="drawer-fab" id="drawerFab" aria-label="Abrir painel">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
-</button>
 
 <header>
   <a class="logo-link" href="index.html">DataGis</a>
@@ -1358,18 +1060,6 @@ header {
 
 <div class="main">
   <aside class="sidebar">
-
-    <!-- Handle de arrasto (só visível em mobile) -->
-    <div class="drawer-handle" id="drawerHandle" aria-label="Abrir/fechar painel">
-      <div class="drawer-pill"></div>
-    </div>
-
-    <!-- Tabs de navegação (só mobile) -->
-    <div class="drawer-tabs" role="tablist">
-      <button class="drawer-tab active" data-panel="config" role="tab" aria-selected="true">Configurar</button>
-      <button class="drawer-tab" data-panel="pontos" role="tab" aria-selected="false">Pontos <span class="tab-badge" id="tabBadgePontos" style="display:none">0</span></button>
-      <button class="drawer-tab" data-panel="resultados" role="tab" aria-selected="false">Resultados</button>
-    </div>
 
     <!-- Painéis (em desktop: display:contents — todos visíveis; em mobile: tabs) -->
     <div class="drawer-panels">
@@ -1449,6 +1139,31 @@ header {
     </div><!-- /drawer-panels -->
 
   </aside>
+
+  <!-- TAB BAR FIXA (só mobile) -->
+  <nav class="mobile-tab-bar" role="tablist" aria-label="Navegação móvel">
+    <!-- Mapa -->
+    <button class="mobile-tab-btn" data-tab="mapa" role="tab" aria-label="Mapa">
+      <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+      Mapa
+    </button>
+    <!-- Configurar -->
+    <button class="mobile-tab-btn active" data-tab="config" role="tab" aria-label="Configurar">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Configurar
+    </button>
+    <!-- Pontos -->
+    <button class="mobile-tab-btn" data-tab="pontos" role="tab" aria-label="Pontos">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Pontos
+      <span class="tab-badge" id="tabBadgePontos" style="display:none">0</span>
+    </button>
+    <!-- Resultados -->
+    <button class="mobile-tab-btn" data-tab="resultados" role="tab" aria-label="Resultados">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Resultados
+    </button>
+  </nav>
 
   <!-- MAPA -->
   <div class="map-wrap">
@@ -2523,43 +2238,27 @@ function esconderResultados() {
   escondeResultCard();
 }
 
-// ── CARD FLUTUANTE DE RESULTADOS (mobile) ──
-// Mostra um resumo discreto sobre o mapa após processar, sem tirar o
-// utilizador do mapa nem abrir o drawer à força. Toque = ver detalhe.
-let resultCardInit = false;
+// ── NAVEGAÇÃO PARA RESULTADOS (mobile) ──
+// Após processar, muda automaticamente para a tab Resultados no mobile.
 function mostrarResultCard(popTotal) {
-  const card = document.getElementById('resultCard');
-  if (!card) return;
-  document.getElementById('resultCardValue').textContent = popTotal.toLocaleString('pt-PT') + ' hab.';
-  card.classList.add('visible');
-
-  if (!resultCardInit) {
-    resultCardInit = true;
-    // Toque no corpo do card → abre o drawer já na tab Resultados
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.result-card-close')) return;
-      abrirTabResultados();
-    });
-    document.getElementById('resultCardClose').addEventListener('click', (e) => {
-      e.stopPropagation();
-      escondeResultCard();
-    });
+  // Em mobile, navega directamente para a tab Resultados
+  if (window._ativarTab && window.matchMedia('(max-width: 900px)').matches) {
+    window._ativarTab('resultados');
   }
 }
 function escondeResultCard() {
-  const card = document.getElementById('resultCard');
-  if (card) card.classList.remove('visible');
+  // Já não há card para esconder — no-op
 }
-// Abre o drawer mobile diretamente na tab Resultados — usado quando o
-// utilizador escolhe explicitamente ver o detalhe (toque no card ou na tab).
+// Abre a tab Resultados — usado após processar
 function abrirTabResultados() {
-  document.querySelectorAll('.drawer-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('active'));
-  const tabRes = document.querySelector('.drawer-tab[data-panel="resultados"]');
-  const panelRes = document.getElementById('panel-resultados');
-  if (tabRes) tabRes.classList.add('active');
-  if (panelRes) panelRes.classList.add('active');
-  if (window._abrirDrawer) window._abrirDrawer();
+  if (window._ativarTab) {
+    window._ativarTab('resultados');
+  } else {
+    // Fallback desktop: activa painel directamente
+    document.querySelectorAll('.drawer-panel').forEach(p => p.classList.remove('active'));
+    const panelRes = document.getElementById('panel-resultados');
+    if (panelRes) panelRes.classList.add('active');
+  }
 }
 
 // ── INSTRUÇÃO ──
