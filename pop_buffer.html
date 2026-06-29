@@ -817,6 +817,72 @@ function recalcularTodos() {
   mostrarResultados();
 }
 
+// ── UNIÃO DOS BUFFERS (para evitar dupla contagem em zonas sobrepostas) ──
+// Junta todos os buffers num único polígono (dissolve). Onde dois ou mais
+// buffers se sobrepõem, essa área passa a existir só uma vez na geometria
+// resultante — por isso, ao intersectar as subsecções com esta união em
+// vez de somar os resultados individuais de cada ponto, cada habitante
+// só é contado uma única vez no total agregado.
+function unirBuffers() {
+  if (pontos.length === 0) return null;
+  const geoms = pontos.map(p => turf.point([p.latlng.lng, p.latlng.lat]))
+    .map(pt => turf.buffer(pt, currentRadius / 1000, { units: 'kilometers', steps: 64 }));
+
+  if (geoms.length === 1) return geoms[0];
+
+  let uniao = geoms[0];
+  for (let i = 1; i < geoms.length; i++) {
+    try {
+      const u = turf.union(uniao, geoms[i]);
+      if (u) uniao = u;
+    } catch (e) {
+      // Em caso de falha pontual da união (geometrias inválidas/topologia),
+      // mantém a união acumulada até aqui em vez de abortar todo o cálculo.
+      console.warn('Falha ao unir buffers:', e);
+    }
+  }
+  return uniao;
+}
+
+// ── CALCULAR TOTAL COMBINADO SEM DUPLA CONTAGEM ──
+// Em vez de somar p.resultado.totais de cada ponto (que duplica a
+// população nas zonas onde os buffers se sobrepõem), faz-se o areal
+// weighting uma única vez contra a união geométrica de todos os buffers.
+function calcularTotalCombinado() {
+  const totaisGlobais = {};
+  BGRI_GRUPOS.forEach(g => g.fields.forEach(f => { totaisGlobais[f.key] = 0; }));
+  let nInter = 0;
+
+  const uniao = unirBuffers();
+  if (!uniao || !bgriData) return { totaisGlobais, nInter };
+
+  bgriData.features.forEach(feat => {
+    if (!feat.geometry) return;
+    let inter;
+    try { inter = turf.intersect(feat, uniao); } catch (e) { return; }
+    if (!inter) return;
+
+    let areaSubsec, areaInter;
+    try {
+      areaSubsec = turf.area(feat);
+      areaInter = turf.area(inter);
+    } catch (e) { return; }
+
+    if (areaSubsec <= 0) return;
+    const fracao = Math.min(areaInter / areaSubsec, 1);
+    if (fracao <= 0) return;
+
+    nInter++;
+    const props = feat.properties || {};
+    BGRI_GRUPOS.forEach(g => g.fields.forEach(f => {
+      const val = parseFloat(props[f.key]);
+      if (!isNaN(val)) totaisGlobais[f.key] += val * fracao;
+    }));
+  });
+
+  return { totaisGlobais, nInter };
+}
+
 // ── REMOVER PONTO ──
 function removerPonto(idx) {
   const p = pontos[idx];
@@ -903,19 +969,12 @@ function mostrarResultados() {
   const content = document.getElementById('resultsContent');
   content.classList.add('visible');
 
-  // Soma de todos os pontos
-  const totaisGlobais = {};
-  BGRI_GRUPOS.forEach(g => g.fields.forEach(f => { totaisGlobais[f.key] = 0; }));
-  let totalInter = 0, totalSubsecs = 0;
-
-  pontos.forEach(p => {
-    if (!p.resultado) return;
-    BGRI_GRUPOS.forEach(g => g.fields.forEach(f => {
-      totaisGlobais[f.key] += p.resultado.totais[f.key] || 0;
-    }));
-    totalInter += p.resultado.nInter;
-    totalSubsecs = Math.max(totalSubsecs, p.resultado.nTotal);
-  });
+  // Total agregado: calculado sobre a UNIÃO geométrica dos buffers, não
+  // pela soma dos resultados individuais — isso evita contar duas vezes
+  // a população das zonas onde buffers de pontos diferentes se sobrepõem.
+  const combinado = calcularTotalCombinado();
+  const totaisGlobais = combinado.totaisGlobais;
+  const totalInter = combinado.nInter;
 
   const popTotal = Math.round(totaisGlobais['N_INDIVIDUOS'] || 0);
   const raioLabel = currentRadius >= 1000 ? `${(currentRadius/1000).toFixed(1)} km` : `${currentRadius} m`;
@@ -942,13 +1001,20 @@ function mostrarResultados() {
     breakdownHtml += `</div>`;
   }
 
+  // Soma simples dos pontos individuais (pode incluir sobreposição) — usada
+  // apenas para detetar se há diferença em relação ao total combinado e
+  // mostrar um aviso ao utilizador.
+  const somaIndividuais = popsIndividuais.reduce((a, b) => a + b, 0);
+  const haSobreposicao = nPontos > 1 && somaIndividuais !== popTotal;
+
   let html = `
     <div class="total-box">
       <div class="total-num">${popTotal.toLocaleString('pt-PT')}</div>
-      <div class="total-label">habitantes estimados${nPontos > 1 ? ` (${nPontos} pontos, raio ${raioLabel} cada)` : ` num raio de ${raioLabel}`}</div>
+      <div class="total-label">habitantes estimados${nPontos > 1 ? ` (área combinada de ${nPontos} pontos, raio ${raioLabel} cada)` : ` num raio de ${raioLabel}`}</div>
       <div class="total-meta">${totalInter} subsecções intersectadas</div>
     </div>
     ${breakdownHtml}
+    ${haSobreposicao ? `<div class="aviso" style="line-height:1.5;"><b>ℹ Buffers sobrepostos</b> — a soma dos valores individuais por ponto (${somaIndividuais.toLocaleString('pt-PT')}) é superior ao total combinado acima, porque a área comum a vários buffers só é contada uma vez no total.</div>` : ''}
     <div class="aviso" style="line-height: 1.6;">
       <b>⚠ Areal Weighting</b> — assume distribuição uniforme por subsecção. Menos preciso em zonas rurais com subsecções grandes. 
       <br><br>
@@ -960,6 +1026,7 @@ function mostrarResultados() {
           <tr><td style="padding: 0 2px; line-height: 1.1;">A<sub>s</sub></td></tr>
         </table> )
       </div>
+      ${nPontos > 1 ? `<br><br><b>Nota sobre sobreposição:</b> quando dois ou mais buffers se cruzam, a área sobreposta é unida (dissolve) antes do cálculo, para que cada subsecção (ou parte dela) só contribua uma vez para o total acima, evitando dupla contagem de habitantes.` : ''}
     </div>
 `;
 
