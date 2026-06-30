@@ -168,6 +168,45 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 .export-block{margin-top:auto; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:8px;}
 
+.offline-block{margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
+
+#offline-overlay, #offline-progress-overlay, #offline-prompt-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.45);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1100; padding:20px;
+}
+#offline-overlay.hidden, #offline-progress-overlay.hidden, #offline-prompt-overlay.hidden{display:none;}
+.offline-card{
+  background:var(--paper-elevated); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow); width:min(420px, 100%); padding:26px 28px;
+}
+.offline-card h2{font-size:18px;}
+.offline-card p{font-size:13px; color:var(--stone); line-height:1.5;}
+.offline-stats{
+  background:var(--paper-deep); border:1px solid var(--line); border-radius:var(--radius-sm);
+  padding:12px 14px; font-size:13px; margin:14px 0; font-family:'IBM Plex Mono', monospace;
+}
+.offline-stats div{display:flex; justify-content:space-between; padding:2px 0;}
+.offline-progress-bar{
+  width:100%; height:10px; background:var(--paper-deep); border-radius:999px; overflow:hidden;
+  margin:14px 0 6px; border:1px solid var(--line);
+}
+.offline-progress-fill{
+  height:100%; width:0%; background:linear-gradient(135deg, var(--green-deep), var(--green));
+  transition:width .15s ease;
+}
+.offline-progress-label{font-size:12px; color:var(--stone); text-align:center;}
+.offline-rect-banner{
+  position:fixed; top:74px; left:50%; transform:translateX(-50%);
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:999px;
+  padding:10px 18px; font-size:13px; font-weight:600; box-shadow:var(--shadow-soft);
+  z-index:900; display:flex; align-items:center; gap:12px;
+}
+.offline-rect-banner button{
+  border:none; background:var(--warn); color:#fff; border-radius:999px; padding:4px 12px;
+  font-size:12px; cursor:pointer; font-weight:600;
+}
+
 /* ---------- wizard overlay ---------- */
 #wizard-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.45);
@@ -317,7 +356,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 <header>
   <div class="brand-text">
-    <h1>Digitalização (em desenvolviemnto) </h1>
+    <h1>Digitalização</h1>
     <span></span>
   </div>
   <div class="header-actions">
@@ -347,11 +386,20 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
     <div class="crs-info">
       <b>Sistema de coordenadas</b>
-      O mapa e o desenho funcionam em WGS84 (EPSG:4326), o sistema geográfico nativo da web. As exportações em GeoJSON seguem sempre esta norma; o Shapefile inclui o ficheiro <code>.prj</code> correspondente. Para trabalho em ETRS89 / PT-TM06 (EPSG:3763), reprojeta os ficheiros em qualquer software de Sistema de Informação geográfica após a exportação (ps: ferramenta json to features no Arcgis Pro).
+      O mapa e o desenho funcionam em WGS84 (EPSG:4326), o sistema geográfico nativo da web. As exportações em GeoJSON seguem sempre esta norma; o Shapefile inclui o ficheiro <code>.prj</code> correspondente. Para trabalho em ETRS89 / PT-TM06 (EPSG:3763), reprojeta os ficheiros em qualquer software de Sistema de Informação geográfica após a exportação.
     </div>
 
     <ul class="feat-list" id="feat-list"></ul>
     <p class="sub" id="empty-msg">Ainda não desenhaste nada. Usa as ferramentas no mapa (canto superior esquerdo) para começar.</p>
+
+    <div class="offline-block">
+      <b style="font-size:13px;">Modo Offline</b>
+      <p class="sub" id="offline-status" style="margin:4px 0 8px;">Nenhuma área guardada.</p>
+      <div class="btn-row">
+        <button class="btn" id="btn-offline-define" style="flex:1;">📡 Definir área offline</button>
+        <button class="btn warn" id="btn-offline-clear" style="display:none;">🗑</button>
+      </div>
+    </div>
 
     <div class="export-block">
       <button class="btn" id="btn-reset">↺ Recomeçar configuração</button>
@@ -430,6 +478,50 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ============ OFFLINE: banner durante desenho do retângulo ============ -->
+<div id="offline-rect-banner" class="offline-rect-banner" style="display:none;">
+  Desenha um retângulo no mapa para definir a área offline
+  <button id="offline-rect-cancel">Cancelar</button>
+</div>
+
+<!-- ============ OFFLINE: confirmação / estimativa ============ -->
+<div id="offline-overlay" class="hidden">
+  <div class="offline-card">
+    <h2>Guardar área offline</h2>
+    <p>Esta área ficará disponível no mapa mesmo sem ligação à internet, neste dispositivo.</p>
+    <div class="offline-stats" id="offline-stats"></div>
+    <p id="offline-warning" style="color:var(--warn); font-weight:600; display:none;"></p>
+    <div class="btn-row">
+      <button class="btn" id="offline-confirm-cancel">Cancelar</button>
+      <button class="btn primary" id="offline-confirm-start" style="flex:1;">⬇ Descarregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OFFLINE: progresso do download ============ -->
+<div id="offline-progress-overlay" class="hidden">
+  <div class="offline-card">
+    <h2>A descarregar área offline…</h2>
+    <div class="offline-progress-bar"><div class="offline-progress-fill" id="offline-progress-fill"></div></div>
+    <div class="offline-progress-label" id="offline-progress-label">0 / 0 tiles</div>
+    <div class="btn-row">
+      <button class="btn warn" id="offline-progress-cancel" style="flex:1;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OFFLINE: prompt ao reabrir ============ -->
+<div id="offline-prompt-overlay" class="hidden">
+  <div class="offline-card">
+    <h2>Área offline encontrada</h2>
+    <p id="offline-prompt-detail">Tens uma área guardada para trabalho offline.</p>
+    <div class="btn-row">
+      <button class="btn" id="offline-prompt-no" style="flex:1;">Começar normalmente</button>
+      <button class="btn primary" id="offline-prompt-yes" style="flex:1;">Abrir área offline</button>
+    </div>
   </div>
 </div>
 
@@ -831,6 +923,329 @@ const DEFAULT_COLOR = '#3D6B4F';
 const PALETTE = ['#3D6B4F','#C2703D','#6E726A','#234635','#E7A57A','#7FB894','#B5472B','#9B9E94'];
 
 /* ============================================================
+   MODO OFFLINE
+   ============================================================ */
+let activeBaseLayerKey = 'satelite';
+let offlineDrawing = false;
+let offlineRectLayer = null;
+let offlineCancelDownload = false;
+
+const OFFLINE_MAX_ZOOM = 18;
+const OFFLINE_TILE_LIMIT = 3000; // segurança: bloqueia áreas demasiado grandes
+const BYTES_PER_TILE_ESTIMATE = 22000; // estimativa média (~22KB/tile)
+
+// para cada basemap visível na UI, quais as sub-camadas (chave + template) a cachear
+const BASE_LAYERS_INFO = {
+  satelite: [
+    {key:'satellite', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'},
+    {key:'satelliteLabels', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'}
+  ],
+  claro: [
+    {key:'claro', tpl:'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}
+  ],
+  osm: [
+    {key:'osm', tpl:'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'}
+  ]
+};
+
+/* ---------- IndexedDB ---------- */
+let _idbPromise = null;
+function idbOpen(){
+  if(_idbPromise) return _idbPromise;
+  _idbPromise = new Promise((resolve, reject)=>{
+    const req = indexedDB.open('engenh_offline', 1);
+    req.onupgradeneeded = ()=>{
+      const db = req.result;
+      if(!db.objectStoreNames.contains('tiles')) db.createObjectStore('tiles');
+      if(!db.objectStoreNames.contains('meta')) db.createObjectStore('meta');
+    };
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+  return _idbPromise;
+}
+async function idbPutTile(key, blob){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('tiles', 'readwrite');
+    tx.objectStore('tiles').put(blob, key);
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+async function idbGetTile(key){
+  const db = await idbOpen();
+  return new Promise((resolve)=>{
+    const tx = db.transaction('tiles', 'readonly');
+    const req = tx.objectStore('tiles').get(key);
+    req.onsuccess = ()=> resolve(req.result || null);
+    req.onerror = ()=> resolve(null);
+  });
+}
+async function idbClearTiles(){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('tiles', 'readwrite');
+    tx.objectStore('tiles').clear();
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+async function idbSetMeta(meta){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('meta', 'readwrite');
+    tx.objectStore('meta').put(meta, 'area');
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+async function idbGetMeta(){
+  const db = await idbOpen();
+  return new Promise((resolve)=>{
+    const tx = db.transaction('meta', 'readonly');
+    const req = tx.objectStore('meta').get('area');
+    req.onsuccess = ()=> resolve(req.result || null);
+    req.onerror = ()=> resolve(null);
+  });
+}
+async function idbClearMeta(){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('meta', 'readwrite');
+    tx.objectStore('meta').delete('area');
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+
+/* ---------- camada de tiles com cache offline ---------- */
+const OfflineTileLayer = L.TileLayer.extend({
+  createTile: function(coords, done){
+    const tile = document.createElement('img');
+    tile.alt = '';
+    const z = coords.z, x = coords.x, y = coords.y;
+    const offlineKey = this.options.offlineKey + '_' + z + '_' + x + '_' + y;
+
+    idbGetTile(offlineKey).then(blob=>{
+      if(blob){
+        const url = URL.createObjectURL(blob);
+        tile.onload = ()=>{ URL.revokeObjectURL(url); done(null, tile); };
+        tile.onerror = ()=> done(null, tile);
+        tile.src = url;
+      } else {
+        tile.onload = ()=> done(null, tile);
+        tile.onerror = (e)=> done(e, tile);
+        tile.src = this.getTileUrl(coords);
+      }
+    });
+    return tile;
+  }
+});
+
+/* ---------- utilidades de tiles ---------- */
+function lonLatToTile(lon, lat, z){
+  const n = Math.pow(2, z);
+  const x = Math.floor((lon + 180) / 360 * n);
+  const latRad = lat * Math.PI / 180;
+  const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1/Math.cos(latRad)) / Math.PI) / 2 * n);
+  return {x, y};
+}
+function tileRangeForBounds(bounds, z){
+  const nw = lonLatToTile(bounds.getWest(), bounds.getNorth(), z);
+  const se = lonLatToTile(bounds.getEast(), bounds.getSouth(), z);
+  return {minX: Math.min(nw.x, se.x), maxX: Math.max(nw.x, se.x), minY: Math.min(nw.y, se.y), maxY: Math.max(nw.y, se.y)};
+}
+function buildTilePlan(bounds, minZoom, maxZoom){
+  const plan = [];
+  for(let z=minZoom; z<=maxZoom; z++){
+    const r = tileRangeForBounds(bounds, z);
+    for(let x=r.minX; x<=r.maxX; x++){
+      for(let y=r.minY; y<=r.maxY; y++){
+        plan.push({z, x, y});
+      }
+    }
+  }
+  return plan;
+}
+
+/* ---------- UI: iniciar definição de área ---------- */
+document.getElementById('btn-offline-define').addEventListener('click', ()=>{
+  if(offlineDrawing) return;
+  offlineDrawing = true;
+  document.getElementById('offline-rect-banner').style.display = 'flex';
+  map.pm.enableDraw('Rectangle');
+});
+
+document.getElementById('offline-rect-cancel').addEventListener('click', cancelOfflineDrawing);
+
+function cancelOfflineDrawing(){
+  offlineDrawing = false;
+  document.getElementById('offline-rect-banner').style.display = 'none';
+  if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw('Rectangle');
+}
+
+function setupOfflineMapEvents(){
+  map.on('pm:create', (e)=>{
+    if(!offlineDrawing) return; // não interfere com o desenho normal de geometrias
+    offlineDrawing = false;
+    document.getElementById('offline-rect-banner').style.display = 'none';
+    offlineRectLayer = e.layer;
+    openOfflineEstimate(offlineRectLayer.getBounds());
+  });
+}
+
+/* ---------- estimativa + confirmação ---------- */
+function openOfflineEstimate(bounds){
+  const minZoom = Math.max(0, Math.min(map.getZoom(), OFFLINE_MAX_ZOOM));
+  const maxZoom = OFFLINE_MAX_ZOOM;
+  const layerInfos = BASE_LAYERS_INFO[activeBaseLayerKey];
+
+  let tileCount = 0;
+  for(let z=minZoom; z<=maxZoom; z++){
+    const r = tileRangeForBounds(bounds, z);
+    tileCount += (r.maxX - r.minX + 1) * (r.maxY - r.minY + 1);
+  }
+  tileCount *= layerInfos.length;
+
+  const mb = (tileCount * BYTES_PER_TILE_ESTIMATE / 1024 / 1024).toFixed(1);
+  const statsEl = document.getElementById('offline-stats');
+  statsEl.innerHTML = `
+    <div><span>Zoom</span><b>${minZoom} → ${maxZoom}</b></div>
+    <div><span>Camada</span><b>${activeBaseLayerKey}</b></div>
+    <div><span>Tiles a descarregar</span><b>${tileCount.toLocaleString('pt-PT')}</b></div>
+    <div><span>Tamanho estimado</span><b>~${mb} MB</b></div>
+  `;
+
+  const warnEl = document.getElementById('offline-warning');
+  const startBtn = document.getElementById('offline-confirm-start');
+  if(tileCount > OFFLINE_TILE_LIMIT){
+    warnEl.style.display = 'block';
+    warnEl.textContent = `Área demasiado grande para guardar offline (limite: ${OFFLINE_TILE_LIMIT.toLocaleString('pt-PT')} tiles). Desenha uma área mais pequena ou reduz o zoom inicial.`;
+    startBtn.disabled = true;
+  } else {
+    warnEl.style.display = 'none';
+    startBtn.disabled = false;
+  }
+
+  document.getElementById('offline-overlay').classList.remove('hidden');
+
+  startBtn.onclick = async ()=>{
+    document.getElementById('offline-overlay').classList.add('hidden');
+    await downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos);
+  };
+}
+
+document.getElementById('offline-confirm-cancel').addEventListener('click', ()=>{
+  document.getElementById('offline-overlay').classList.add('hidden');
+  if(offlineRectLayer){ map.removeLayer(offlineRectLayer); offlineRectLayer = null; }
+});
+
+/* ---------- download ---------- */
+async function downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos){
+  offlineCancelDownload = false;
+  const progressOverlay = document.getElementById('offline-progress-overlay');
+  const fill = document.getElementById('offline-progress-fill');
+  const label = document.getElementById('offline-progress-label');
+  progressOverlay.classList.remove('hidden');
+
+  const baseTiles = buildTilePlan(bounds, minZoom, maxZoom);
+  const totalTiles = baseTiles.length * layerInfos.length;
+  let done = 0;
+
+  // se há uma área anterior guardada, substitui-a
+  await idbClearTiles();
+
+  outer:
+  for(const info of layerInfos){
+    for(const t of baseTiles){
+      if(offlineCancelDownload) break outer;
+      const url = info.tpl.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y);
+      try{
+        const resp = await fetch(url);
+        if(resp.ok){
+          const blob = await resp.blob();
+          await idbPutTile(`${info.key}_${t.z}_${t.x}_${t.y}`, blob);
+        }
+      }catch(err){
+        // tile falhada não bloqueia o resto do download
+      }
+      done++;
+      const pct = Math.round(done/totalTiles*100);
+      fill.style.width = pct + '%';
+      label.textContent = `${done.toLocaleString('pt-PT')} / ${totalTiles.toLocaleString('pt-PT')} tiles`;
+    }
+  }
+
+  progressOverlay.classList.add('hidden');
+
+  if(offlineCancelDownload){
+    await idbClearTiles();
+    if(offlineRectLayer){ map.removeLayer(offlineRectLayer); offlineRectLayer = null; }
+    return;
+  }
+
+  await idbSetMeta({
+    bounds: [[bounds.getSouth(), bounds.getWest()], [bounds.getNorth(), bounds.getEast()]],
+    minZoom, maxZoom,
+    layerKey: activeBaseLayerKey,
+    savedAt: Date.now(),
+    tileCount: totalTiles
+  });
+
+  if(offlineRectLayer){ map.removeLayer(offlineRectLayer); offlineRectLayer = null; }
+  refreshOfflineStatus();
+  alert('Área offline guardada com sucesso. Já podes usar este mapa sem ligação à internet, dentro desta área.');
+}
+
+document.getElementById('offline-progress-cancel').addEventListener('click', ()=>{
+  offlineCancelDownload = true;
+});
+
+/* ---------- estado / gestão ---------- */
+async function refreshOfflineStatus(){
+  const meta = await idbGetMeta();
+  const statusEl = document.getElementById('offline-status');
+  const clearBtn = document.getElementById('btn-offline-clear');
+  if(!meta){
+    statusEl.textContent = 'Nenhuma área guardada.';
+    clearBtn.style.display = 'none';
+    return;
+  }
+  const date = new Date(meta.savedAt).toLocaleString('pt-PT');
+  statusEl.innerHTML = `Área guardada (zoom ${meta.minZoom}–${meta.maxZoom}, ${meta.tileCount.toLocaleString('pt-PT')} tiles) <br>desde ${date}.`;
+  clearBtn.style.display = 'inline-flex';
+}
+
+document.getElementById('btn-offline-clear').addEventListener('click', async ()=>{
+  if(!confirm('Apagar a área offline guardada? Vais deixar de conseguir usar o mapa sem internet.')) return;
+  await idbClearTiles();
+  await idbClearMeta();
+  refreshOfflineStatus();
+});
+
+/* ---------- ao reabrir: prompt para usar a área guardada ---------- */
+async function checkOfflineOnLoad(){
+  const meta = await idbGetMeta();
+  refreshOfflineStatus();
+  if(!meta) return;
+
+  const date = new Date(meta.savedAt).toLocaleString('pt-PT');
+  document.getElementById('offline-prompt-detail').textContent =
+    `Tens uma área guardada (camada "${meta.layerKey}", zoom ${meta.minZoom}–${meta.maxZoom}) desde ${date}. Queres abrir o mapa nessa área?`;
+  document.getElementById('offline-prompt-overlay').classList.remove('hidden');
+
+  document.getElementById('offline-prompt-yes').onclick = ()=>{
+    document.getElementById('offline-prompt-overlay').classList.add('hidden');
+    const b = L.latLngBounds(meta.bounds[0], meta.bounds[1]);
+    map.fitBounds(b);
+  };
+  document.getElementById('offline-prompt-no').onclick = ()=>{
+    document.getElementById('offline-prompt-overlay').classList.add('hidden');
+  };
+}
+
+/* ============================================================
    WIZARD — passo 1
    ============================================================ */
 document.querySelectorAll('[data-mode]').forEach(card=>{
@@ -1024,22 +1439,26 @@ function setupSummary(){
 function initMap(){
   map = L.map('map', {zoomControl:true}).setView([39.6, -8.0], 7);
 
-  const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics'
+    attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics',
+    offlineKey: 'satellite'
   });
-  const satelliteLabels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19, pane: 'shadowPane'
+  const satelliteLabels = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19, pane: 'shadowPane',
+    offlineKey: 'satelliteLabels'
   });
   const satelliteGroup = L.layerGroup([satellite, satelliteLabels]).addTo(map);
 
-  const claro = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  const claro = new OfflineTileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    offlineKey: 'claro'
   });
-  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  const osm = new OfflineTileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; OpenStreetMap contributors',
+    offlineKey: 'osm'
   });
 
   L.control.layers({
@@ -1047,6 +1466,14 @@ function initMap(){
     'Mapa claro': claro,
     'Mapa (OSM)': osm
   }, null, {position:'topright', collapsed:true}).addTo(map);
+
+  // regista qual a camada base ativa, para saber o que cachear no modo offline
+  activeBaseLayerKey = 'satelite';
+  map.on('baselayerchange', (e)=>{
+    if(e.layer === claro) activeBaseLayerKey = 'claro';
+    else if(e.layer === osm) activeBaseLayerKey = 'osm';
+    else activeBaseLayerKey = 'satelite';
+  });
 
   drawnGroup = L.featureGroup().addTo(map);
 
@@ -1074,6 +1501,9 @@ function initMap(){
 
   map.on('pm:create', e => onFeatureCreated(e.layer));
   map.on('pm:remove', e => onFeatureRemoved(e.layer));
+
+  setupOfflineMapEvents();
+  checkOfflineOnLoad();
   map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
 }
 
@@ -1081,6 +1511,7 @@ function initMap(){
    CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
    ============================================================ */
 function onFeatureCreated(layer){
+  if(offlineDrawing) return; // o retângulo do modo offline não é uma geometria do utilizador
   drawnGroup.addLayer(layer);
   featureCounter++;
   const id = L.Util.stamp(layer);
