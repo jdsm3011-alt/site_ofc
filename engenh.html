@@ -153,6 +153,44 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .feat-item .actions button:hover{color:var(--warn);}
 .feat-item .props{margin-top:6px; font-size:12px; color:var(--stone);}
 .feat-item .props div{display:flex; justify-content:space-between;}
+.feat-item.has-overlap{border-color:var(--warn);}
+.feat-item .overlap-flag{
+  margin-top:6px; display:flex; align-items:center; gap:6px;
+  font-size:11.5px; font-weight:600; color:var(--warn);
+}
+.feat-item .overlap-flag .dot{width:6px; height:6px; border-radius:50%; background:var(--warn); flex:none;}
+
+@keyframes datagis-marker-pulse{
+  0%{box-shadow:0 0 0 0 rgba(194,112,61,.55);}
+  100%{box-shadow:0 0 0 16px rgba(194,112,61,0);}
+}
+.datagis-point-marker.marker-pulse span{animation:datagis-marker-pulse .9s ease-out;}
+
+/* ---------- mini popup de estatísticas (ao concluir uma geometria) ---------- */
+.leaflet-popup.datagis-stats-popup .leaflet-popup-content-wrapper{
+  background:var(--paper-elevated); color:var(--ink);
+  border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow-soft);
+}
+.leaflet-popup.datagis-stats-popup .leaflet-popup-tip{
+  background:var(--paper-elevated); border:1px solid var(--line-strong); box-shadow:none;
+}
+.leaflet-popup.datagis-stats-popup .leaflet-popup-content{margin:10px 12px; font-family:'IBM Plex Sans', sans-serif;}
+.leaflet-popup.datagis-stats-popup .leaflet-popup-close-button{color:var(--stone);}
+.stats-popup-title{
+  display:flex; align-items:center; gap:6px; font-family:'Spectral', serif;
+  font-size:14px; font-weight:600; margin-bottom:6px; color:var(--green-deep);
+}
+.stats-popup-title .dot{width:7px; height:7px; border-radius:50%; background:var(--green); flex:none;}
+.stats-popup-row{
+  display:flex; justify-content:space-between; gap:14px; font-size:12.5px;
+  padding:3px 0; color:var(--stone);
+}
+.stats-popup-row b{font-family:'IBM Plex Mono', monospace; color:var(--ink); font-weight:500;}
+.stats-popup-warn{
+  margin-top:6px; padding-top:6px; border-top:1px dashed var(--line-strong);
+  font-size:11.5px; font-weight:600; color:var(--warn); display:flex; gap:5px; align-items:flex-start;
+}
 
 .btn{
   border:1px solid var(--line-strong); background:var(--paper-elevated);
@@ -645,6 +683,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://unpkg.com/@mapbox/shp-write@0.3.4/shpwrite.js"></script>
 <script src="https://unpkg.com/proj4@2.9.0/dist/proj4.js"></script>
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
 <script>
 /* ============================================================
@@ -1710,6 +1749,7 @@ function initMap(){
     drawCircle: false,
     drawCircleMarker: false,
     drawRectangle: false,
+    drawText: false,
     drawPolyline: config.geometryType === 'LineString',
     drawPolygon: config.geometryType === 'Polygon',
     drawMarker: config.geometryType === 'Point',
@@ -1722,8 +1762,21 @@ function initMap(){
 
   // usa o marcador circular DataGis (em vez do pin azul padrão) também
   // durante a pré-visualização ao colocar o ponto, antes do clique
+  //
+  // --- Smart snapping ---
+  // snappable      liga o "íman" de desenho: o cursor agarra-se a pontos próximos
+  // snapDistance   raio (em pixels de ecrã) dentro do qual o íman atua
+  // snapSegment    o "smart" do snapping: além de colar aos VÉRTICES de outras
+  //                geometrias (extremos/cantos), também cola a qualquer ponto AO
+  //                LONGO das arestas/segmentos — incluindo os da própria geometria
+  //                que estás a desenhar. É o que permite, por ex., fechar um
+  //                polígono exatamente sobre o lado de outro já existente, sem
+  //                teres de acertar num vértice exato.
   map.pm.setGlobalOptions({
-    markerStyle: { icon: dataGisMarkerIcon(DEFAULT_COLOR) }
+    markerStyle: { icon: dataGisMarkerIcon(DEFAULT_COLOR) },
+    snappable: true,
+    snapDistance: 18,
+    snapSegment: true
   });
 
   const hintText = {
@@ -1751,22 +1804,165 @@ function onFeatureCreated(layer){
   featureCounter++;
   const id = L.Util.stamp(layer);
 
-  const entry = {layer, props:{}, id, label:'Geometria '+featureCounter};
+  const entry = {layer, props:{}, id, label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
   featuresData.set(id, entry);
 
   styleLayerDefault(layer);
+  showStatsPopup(entry);
+
+  // reage a edições posteriores desta geometria (arrastar vértices, mover) para
+  // manter as estatísticas e a verificação de topologia sempre atualizadas
+  layer.on('pm:edit', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:dragend', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
 
   if(config.mode === 'atributos' && config.attributes.length > 0){
     openAttrForm(entry);
   } else {
     refreshFeatList();
   }
+
+  checkAllTopology();
 }
 
 function onFeatureRemoved(layer){
   const id = L.Util.stamp(layer);
   featuresData.delete(id);
   refreshFeatList();
+  checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
+}
+
+/* ============================================================
+   MINI POP-UP DE ESTATÍSTICAS (ao concluir uma geometria)
+   ============================================================ */
+function geometryStatsHTML(entry){
+  const gj = entry.layer.toGeoJSON();
+  const type = gj.geometry.type;
+  let rows = '';
+
+  if(type === 'Point'){
+    const [lng, lat] = gj.geometry.coordinates;
+    rows += `<div class="stats-popup-row"><span>Latitude</span><b>${lat.toFixed(5)}</b></div>`;
+    rows += `<div class="stats-popup-row"><span>Longitude</span><b>${lng.toFixed(5)}</b></div>`;
+  } else if(type === 'LineString'){
+    const km = turf.length(gj, {units:'kilometers'});
+    rows += `<div class="stats-popup-row"><span>Extensão</span><b>${km < 1 ? (km*1000).toFixed(0)+' m' : km.toFixed(3)+' km'}</b></div>`;
+  } else if(type === 'Polygon'){
+    const m2 = turf.area(gj);
+    const km2 = m2 / 1_000_000;
+    const ha = m2 / 10_000;
+    let perimKm = 0;
+    try{ perimKm = turf.length(turf.polygonToLine(gj), {units:'kilometers'}); }catch(err){ perimKm = 0; }
+    rows += `<div class="stats-popup-row"><span>Área</span><b>${km2 < 0.01 ? ha.toFixed(2)+' ha' : km2.toFixed(4)+' km²'}</b></div>`;
+    rows += `<div class="stats-popup-row"><span>Perímetro</span><b>${perimKm < 1 ? (perimKm*1000).toFixed(0)+' m' : perimKm.toFixed(3)+' km'}</b></div>`;
+  }
+
+  let warnHtml = '';
+  if(entry.hasOverlap){
+    warnHtml = `<div class="stats-popup-warn">⚠ Sobreposto a: ${entry.overlapsWith.join(', ')}</div>`;
+  }
+
+  return `
+    <div class="stats-popup-title"><span class="dot"></span>${entry.label}</div>
+    ${rows}
+    ${warnHtml}
+  `;
+}
+
+function showStatsPopup(entry){
+  if(!entry.layer.bindPopup) return;
+  entry.layer.bindPopup(geometryStatsHTML(entry), {
+    className: 'datagis-stats-popup',
+    closeButton: true,
+    autoPan: true
+  });
+  entry.layer.openPopup();
+}
+
+function refreshStatsIfOpen(entry){
+  if(!entry.layer.getPopup || !entry.layer.getPopup()) return;
+  entry.layer.setPopupContent(geometryStatsHTML(entry));
+}
+
+/* ---------- realçar geometria selecionada (botão "olho" na lista) ---------- */
+function flashHighlight(entry){
+  if(entry.layer.setStyle){
+    entry.layer.setStyle({weight:6, color: getHighlightColor(), fillOpacity:.5});
+    setTimeout(()=>{
+      if(entry.hasOverlap){
+        applyTopologyVisual(entry);
+      } else if(config.mode === 'atributos'){
+        styleLayerByClass(entry);
+      } else {
+        styleLayerDefault(entry.layer);
+      }
+    }, 900);
+  } else if(entry.layer._icon){
+    entry.layer._icon.classList.add('marker-pulse');
+    setTimeout(()=> entry.layer._icon && entry.layer._icon.classList.remove('marker-pulse'), 900);
+  }
+}
+
+function getHighlightColor(){
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--ochre').trim();
+  return v || '#C2703D';
+}
+
+/* ============================================================
+   TOPOLOGIA — deteção de polígonos sobrepostos
+   ============================================================ */
+function checkAllTopology(){
+  if(typeof turf === 'undefined') return;
+
+  const polyEntries = [];
+  featuresData.forEach(entry=>{
+    if(entry.layer.toGeoJSON && entry.layer.toGeoJSON().geometry.type === 'Polygon'){
+      entry.hasOverlap = false;
+      entry.overlapsWith = [];
+      polyEntries.push(entry);
+    }
+  });
+
+  for(let i=0; i<polyEntries.length; i++){
+    for(let j=i+1; j<polyEntries.length; j++){
+      const a = polyEntries[i], b = polyEntries[j];
+      let overlaps = false;
+      try{
+        const gjA = a.layer.toGeoJSON(), gjB = b.layer.toGeoJSON();
+        overlaps = turf.booleanOverlap(gjA, gjB) ||
+                   turf.booleanContains(gjA, gjB) ||
+                   turf.booleanContains(gjB, gjA);
+      }catch(err){
+        overlaps = false; // geometria inválida/auto-interseção — ignora em vez de rebentar
+      }
+      if(overlaps){
+        a.hasOverlap = true; a.overlapsWith.push(b.label);
+        b.hasOverlap = true; b.overlapsWith.push(a.label);
+      }
+    }
+  }
+
+  polyEntries.forEach(entry=>{
+    applyTopologyVisual(entry);
+    refreshStatsIfOpen(entry);
+  });
+
+  refreshFeatList();
+}
+
+function getWarnColor(){
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--warn').trim();
+  return v || '#B5472B';
+}
+
+function applyTopologyVisual(entry){
+  if(!entry.layer.setStyle) return;
+  if(entry.hasOverlap){
+    entry.layer.setStyle({color: getWarnColor(), weight:4, dashArray:'8 5', fillOpacity:.25});
+  } else {
+    // repõe o estilo normal (categórico, se aplicável, senão a cor por defeito)
+    styleLayerByClass(entry);
+    if(config.mode !== 'atributos'){ styleLayerDefault(entry.layer); }
+  }
 }
 
 function dataGisMarkerIcon(color){
@@ -1835,6 +2031,7 @@ document.getElementById('feat-form-save').addEventListener('click', ()=>{
     formEntryRef.props[inp.dataset.field] = inp.value;
   });
   styleLayerByClass(formEntryRef);
+  if(formEntryRef.hasOverlap) applyTopologyVisual(formEntryRef);
   document.getElementById('attr-form-overlay').classList.add('hidden');
   refreshFeatList();
 });
@@ -1854,7 +2051,7 @@ function refreshFeatList(){
 
   featuresData.forEach(entry=>{
     const li = document.createElement('li');
-    li.className = 'feat-item';
+    li.className = 'feat-item' + (entry.hasOverlap ? ' has-overlap' : '');
     const catAttr = config.attributes.find(a=>a.type==='categorico');
     const color = catAttr ? (catAttr.classes.find(c=>c.name===entry.props[catAttr.name])?.color || DEFAULT_COLOR) : DEFAULT_COLOR;
 
@@ -1865,27 +2062,38 @@ function refreshFeatList(){
       ).join('') + '</div>';
     }
 
+    const overlapHtml = entry.hasOverlap
+      ? `<div class="overlap-flag"><span class="dot"></span>Sobreposto a ${entry.overlapsWith.join(', ')}</div>`
+      : '';
+
     li.innerHTML = `
       <div class="row1">
         <span class="swatch" style="background:${color}"></span>
         <span class="name">${entry.label}</span>
         <span class="actions">
           ${config.mode === 'atributos' ? '<button data-edit title="Editar atributos">✎</button>' : ''}
+          <button data-highlight title="Realçar e mostrar popup">👁</button>
           <button data-focus title="Centrar no mapa">⌖</button>
           <button data-delete title="Apagar">🗑</button>
         </span>
       </div>
       ${propsHtml}
+      ${overlapHtml}
     `;
     li.querySelector('[data-focus]')?.addEventListener('click', ()=>{
       if(entry.layer.getBounds) map.fitBounds(entry.layer.getBounds(), {maxZoom:16});
       else if(entry.layer.getLatLng) map.setView(entry.layer.getLatLng(), 16);
+    });
+    li.querySelector('[data-highlight]')?.addEventListener('click', ()=>{
+      showStatsPopup(entry);
+      flashHighlight(entry);
     });
     li.querySelector('[data-edit]')?.addEventListener('click', ()=> openAttrForm(entry));
     li.querySelector('[data-delete]').addEventListener('click', ()=>{
       drawnGroup.removeLayer(entry.layer);
       featuresData.delete(entry.id);
       refreshFeatList();
+      checkAllTopology();
     });
     list.appendChild(li);
   });
