@@ -207,6 +207,88 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   font-size:12px; cursor:pointer; font-weight:600;
 }
 
+/* ---------- ligação: "está offline" sobre o mapa ---------- */
+.back-link.is-disabled{
+  pointer-events:none; opacity:.45; cursor:not-allowed;
+}
+#connectivity-overlay{
+  position:absolute; inset:0; z-index:850;
+  background:rgba(23,49,36,.55); backdrop-filter:blur(2px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+#connectivity-overlay.hidden{display:none;}
+.connectivity-card{
+  background:var(--paper-elevated); border-radius:var(--radius-lg); border:1px solid var(--line);
+  box-shadow:var(--shadow); width:min(360px, 100%); padding:24px 26px; text-align:center;
+}
+.connectivity-status{
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  font-size:16px; font-weight:700; color:var(--warn); margin-bottom:8px;
+}
+.connectivity-status .dot{
+  width:9px; height:9px; border-radius:50%; background:var(--warn);
+  box-shadow:0 0 0 0 rgba(181,71,43,.5); animation:connectivity-pulse 1.6s infinite;
+}
+@keyframes connectivity-pulse{
+  0%{box-shadow:0 0 0 0 rgba(181,71,43,.45);}
+  70%{box-shadow:0 0 0 8px rgba(181,71,43,0);}
+  100%{box-shadow:0 0 0 0 rgba(181,71,43,0);}
+}
+.connectivity-card p{font-size:13px; color:var(--stone); line-height:1.5; margin-bottom:16px;}
+.connectivity-offline-menu{
+  margin-top:14px; border-top:1px solid var(--line); padding-top:14px; text-align:left;
+}
+.connectivity-offline-menu.hidden{display:none;}
+.connectivity-offline-item{
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  background:var(--paper-deep); border:1px solid var(--line); border-radius:var(--radius-sm);
+  padding:10px 12px; margin-bottom:8px; cursor:pointer; transition:border-color .15s ease;
+}
+.connectivity-offline-item:hover{border-color:var(--green);}
+.connectivity-offline-item b{font-size:13px; display:block;}
+.connectivity-offline-item span{font-size:11px; color:var(--stone);}
+.connectivity-offline-item button{
+  border:none; background:var(--green); color:#fff; border-radius:999px; padding:6px 12px;
+  font-size:12px; cursor:pointer; font-weight:600; white-space:nowrap;
+}
+.connectivity-offline-empty{font-size:12px; color:var(--stone); text-align:center;}
+.connectivity-active-banner{
+  position:absolute; top:74px; left:50%; transform:translateX(-50%);
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:999px;
+  padding:8px 16px; font-size:12px; font-weight:600; box-shadow:var(--shadow-soft);
+  z-index:840; display:flex; align-items:center; gap:8px; color:var(--warn);
+}
+.connectivity-active-banner.hidden{display:none;}
+.connectivity-active-banner .dot{width:7px; height:7px; border-radius:50%; background:var(--warn); display:inline-block;}
+
+/* ---------- toast: ligação restabelecida ---------- */
+#connectivity-restored-toast{
+  position:fixed; top:22px; left:50%; z-index:2147483000;
+  display:flex; align-items:center; gap:10px;
+  background:var(--paper-elevated); border:1px solid rgba(61,107,79,.18);
+  border-radius:999px; box-shadow:var(--shadow);
+  padding:10px 20px 10px 12px; font-size:13px; font-weight:600; color:var(--ink);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateX(-50%) translateY(-14px) scale(.96);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1), transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear .4s;
+}
+#connectivity-restored-toast.is-visible{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.34,1.4,.4,1), visibility 0s linear 0s;
+}
+#connectivity-restored-toast.is-leaving{
+  opacity:0; visibility:visible; pointer-events:none;
+  transform:translateX(-50%) translateY(-10px) scale(.97);
+  transition:opacity .35s cubic-bezier(.4,0,1,1), transform .35s cubic-bezier(.4,0,1,1), visibility 0s linear .35s;
+}
+#connectivity-restored-toast .check{
+  width:20px; height:20px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg, var(--green), var(--green-deep));
+  display:flex; align-items:center; justify-content:center;
+}
+#connectivity-restored-toast .check svg{width:11px; height:11px;}
+
 /* ---------- wizard overlay ---------- */
 #wizard-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.45);
@@ -367,9 +449,16 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <span class="icon-sun">&#9728;</span>
       <span class="icon-moon">&#9789;</span>
     </button>
-    <a class="back-link" href="index.html">← <span>Voltar ao portal</span></a>
+    <a class="back-link" id="back-link" href="index.html">← <span>Voltar ao portal</span></a>
   </div>
 </header>
+
+<div id="connectivity-restored-toast" role="status" aria-live="polite">
+  <span class="check">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  Ligação à internet restabelecida
+</div>
 
 <main>
   <div id="map">
@@ -377,6 +466,19 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <div class="coord-bar" id="coord-bar">
       <span id="coord-value">— , —</span>
       <button type="button" class="crs-switch" id="crs-switch" title="Alternar sistema de coordenadas">ETRS89 / PT-TM06</button>
+    </div>
+
+    <div class="connectivity-active-banner hidden" id="connectivity-active-banner">
+      <span class="dot"></span> Modo offline ativo<span id="connectivity-active-banner-area"></span>
+    </div>
+
+    <div id="connectivity-overlay" class="hidden">
+      <div class="connectivity-card">
+        <div class="connectivity-status"><span class="dot"></span> Está offline</div>
+        <p>Sem ligação à internet. O mapa está desativado até voltares a ter ligação ou entrares em modo offline com uma área já guardada.</p>
+        <button type="button" class="btn primary" id="connectivity-enter-offline-btn" style="width:100%;">Entrar em modo offline?</button>
+        <div class="connectivity-offline-menu hidden" id="connectivity-offline-menu"></div>
+      </div>
     </div>
   </div>
 
@@ -1229,6 +1331,7 @@ async function checkOfflineOnLoad(){
   const meta = await idbGetMeta();
   refreshOfflineStatus();
   if(!meta) return;
+  if(!navigator.onLine) return; // sem ligação: trata-se no overlay de conectividade, não aqui
 
   const date = new Date(meta.savedAt).toLocaleString('pt-PT');
   document.getElementById('offline-prompt-detail').textContent =
@@ -1244,6 +1347,131 @@ async function checkOfflineOnLoad(){
     document.getElementById('offline-prompt-overlay').classList.add('hidden');
   };
 }
+
+/* ============================================================
+   CONECTIVIDADE — deteta perda de ligação e bloqueia o mapa
+   ============================================================ */
+let offlineSessionActive = false; // true quando o utilizador escolheu trabalhar com uma área guardada
+let offlineBoundaryLayer = null;  // contorno tracejado vermelho da área com tiles guardados
+let offlineMaskLayer = null;      // sombreado vermelho fora dessa área
+let wasOffline = !navigator.onLine; // estado anterior, para detetar a transição offline -> online
+
+function showReconnectedToast(){
+  const toast = document.getElementById('connectivity-restored-toast');
+  if(!toast) return;
+  clearTimeout(toast._hideTimer);
+  toast.classList.remove('is-leaving');
+  // força reflow para reiniciar a animação caso já estivesse a aparecer
+  void toast.offsetWidth;
+  toast.classList.add('is-visible');
+  toast._hideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+    toast.classList.add('is-leaving');
+  }, 3200);
+}
+
+function setBackLinkDisabled(disabled){
+  const link = document.getElementById('back-link');
+  if(!link) return;
+  link.classList.toggle('is-disabled', disabled);
+  if(disabled){
+    link.setAttribute('aria-disabled', 'true');
+    link.title = 'Sem ligação à internet — não é possível voltar ao portal agora.';
+  } else {
+    link.removeAttribute('aria-disabled');
+    link.removeAttribute('title');
+  }
+}
+document.getElementById('back-link').addEventListener('click', (e)=>{
+  if(!navigator.onLine) e.preventDefault();
+});
+
+async function renderConnectivityOfflineMenu(){
+  const menu = document.getElementById('connectivity-offline-menu');
+  const meta = await idbGetMeta();
+  if(!meta){
+    menu.innerHTML = `<p class="connectivity-offline-empty">Ainda não guardaste nenhuma área para usar offline. Liga-te à internet e usa "📡 Definir área offline" na barra lateral.</p>`;
+    return;
+  }
+  const date = new Date(meta.savedAt).toLocaleString('pt-PT');
+  menu.innerHTML = '';
+  const item = document.createElement('div');
+  item.className = 'connectivity-offline-item';
+  item.innerHTML = `
+    <div>
+      <b>Área guardada (${meta.layerKey})</b>
+      <span>zoom ${meta.minZoom}–${meta.maxZoom} · desde ${date}</span>
+    </div>
+    <button type="button">Usar</button>
+  `;
+  item.querySelector('button').addEventListener('click', ()=> enterOfflineSession(meta));
+  item.addEventListener('click', (e)=>{
+    if(e.target.tagName !== 'BUTTON') enterOfflineSession(meta);
+  });
+  menu.appendChild(item);
+}
+
+document.getElementById('connectivity-enter-offline-btn').addEventListener('click', async ()=>{
+  const menu = document.getElementById('connectivity-offline-menu');
+  const willShow = menu.classList.contains('hidden');
+  if(willShow) await renderConnectivityOfflineMenu();
+  menu.classList.toggle('hidden', !willShow);
+});
+
+function enterOfflineSession(meta){
+  offlineSessionActive = true;
+  document.getElementById('connectivity-overlay').classList.add('hidden');
+  document.getElementById('connectivity-offline-menu').classList.add('hidden');
+
+  const banner = document.getElementById('connectivity-active-banner');
+  document.getElementById('connectivity-active-banner-area').textContent = ` — área "${meta.layerKey}"`;
+  banner.classList.remove('hidden');
+
+  const b = L.latLngBounds(meta.bounds[0], meta.bounds[1]);
+  map.fitBounds(b);
+  map.setMaxBounds(b.pad(0.15)); // mantém o utilizador dentro da área com tiles guardados
+
+  // sombreia a vermelho tracejado tudo o que fica fora da área com tiles guardados
+  const outerRing = [[-85,-180], [-85,180], [85,180], [85,-180]];
+  const holeRing = [
+    [b.getSouth(), b.getWest()], [b.getNorth(), b.getWest()],
+    [b.getNorth(), b.getEast()], [b.getSouth(), b.getEast()]
+  ];
+  offlineMaskLayer = L.polygon([outerRing, holeRing], {
+    stroke:false, fillColor:'#B5472B', fillOpacity:.16, interactive:false
+  }).addTo(map);
+  offlineBoundaryLayer = L.rectangle(b, {
+    color:'#B5472B', weight:2, dashArray:'8,6', fill:false, interactive:false
+  }).addTo(map);
+}
+
+function exitOfflineSession(){
+  offlineSessionActive = false;
+  document.getElementById('connectivity-active-banner').classList.add('hidden');
+  map.setMaxBounds(null);
+  if(offlineMaskLayer){ map.removeLayer(offlineMaskLayer); offlineMaskLayer = null; }
+  if(offlineBoundaryLayer){ map.removeLayer(offlineBoundaryLayer); offlineBoundaryLayer = null; }
+}
+
+function updateConnectivityUI(){
+  const overlay = document.getElementById('connectivity-overlay');
+  if(navigator.onLine){
+    overlay.classList.add('hidden');
+    document.getElementById('connectivity-offline-menu').classList.add('hidden');
+    setBackLinkDisabled(false);
+    if(offlineSessionActive) exitOfflineSession();
+    if(wasOffline) showReconnectedToast();
+  } else {
+    setBackLinkDisabled(true);
+    if(!offlineSessionActive){
+      overlay.classList.remove('hidden');
+    }
+  }
+  wasOffline = !navigator.onLine;
+}
+
+window.addEventListener('online', updateConnectivityUI);
+window.addEventListener('offline', updateConnectivityUI);
 
 /* ============================================================
    WIZARD — passo 1
@@ -1492,6 +1720,12 @@ function initMap(){
     rotateMode: false
   });
 
+  // usa o marcador circular DataGis (em vez do pin azul padrão) também
+  // durante a pré-visualização ao colocar o ponto, antes do clique
+  map.pm.setGlobalOptions({
+    markerStyle: { icon: dataGisMarkerIcon(DEFAULT_COLOR) }
+  });
+
   const hintText = {
     Point: 'Bom Trabalho!.',
     LineString: 'Bom Trabalho!.',
@@ -1504,6 +1738,7 @@ function initMap(){
 
   setupOfflineMapEvents();
   checkOfflineOnLoad();
+  updateConnectivityUI();
   map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
 }
 
