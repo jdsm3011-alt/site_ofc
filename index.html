@@ -232,6 +232,30 @@
       color: var(--green);
     }
 
+    .engenh-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-elevated);
+      color: var(--ink);
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1;
+      transition: border-color .15s ease, background .15s ease, color .15s ease;
+      flex-shrink: 0;
+      order: 2;
+    }
+
+    .engenh-nav-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
     html[data-theme="dark"] .feedback-nav-btn {
       background: var(--paper-elevated);
       color: var(--ink);
@@ -3382,6 +3406,8 @@
 
      
 
+
+      <a href="engenh.html" class="engenh-nav-btn" title="criar shapefile (em desenvolvimento)" aria-label="criar shapefile (em desenvolvimento)">🛠️</a>
 
       <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback"
         aria-label="Dar feedback">
