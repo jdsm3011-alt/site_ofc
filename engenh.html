@@ -10,50 +10,50 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@2.18.3/dist/leaflet-geoman.css" />
 
 <style>
 :root{
-  --paper:#F7F5EF;
-  --paper-deep:#EFEBE0;
-  --paper-elevated:#FCFAF5;
-  --ink:#173124;
-  --green:#3D6B4F;
-  --green-soft:#6E9A7C;
-  --green-deep:#234635;
-  --ochre:#C2703D;
-  --ochre-soft:#E7A57A;
-  --stone:#6E726A;
-  --line:#D9D3C6;
-  --line-strong:#C6BBAB;
+  --paper:#F1F2EF;
+  --paper-deep:#E4E6E1;
+  --paper-elevated:#FFFFFF;
+  --ink:#14181A;
+  --green:#1F5C6B;
+  --green-soft:#4C8394;
+  --green-deep:#123B46;
+  --ochre:#A85A24;
+  --ochre-soft:#C98A52;
+  --stone:#5B6560;
+  --line:#D7DAD4;
+  --line-strong:#B9BEB6;
   --white:#FFFFFF;
-  --shadow:0 18px 50px rgba(23,49,36,.08);
-  --shadow-soft:0 12px 30px rgba(23,49,36,.06);
-  --radius:18px;
-  --radius-sm:12px;
-  --radius-lg:22px;
-  --warn:#B5472B;
+  --shadow:0 1px 2px rgba(20,24,26,.05), 0 12px 28px rgba(20,24,26,.06);
+  --shadow-soft:0 1px 2px rgba(20,24,26,.05);
+  --radius:8px;
+  --radius-sm:6px;
+  --radius-lg:12px;
+  --warn:#AC3A2C;
 }
 html[data-theme="dark"]{
-  --paper:#171A16;
-  --paper-deep:#10130F;
-  --paper-elevated:#1E2219;
-  --ink:#EAE7DC;
-  --green:#7FB894;
-  --green-soft:#5C8C6E;
-  --green-deep:#9FCBAE;
-  --ochre:#E0935E;
-  --ochre-soft:#C2703D;
-  --stone:#9B9E94;
-  --line:#33392E;
-  --line-strong:#454C3C;
-  --white:#20251C;
-  --shadow:0 18px 50px rgba(0,0,0,.45);
-  --shadow-soft:0 12px 30px rgba(0,0,0,.35);
-  --warn:#E0935E;
+  --paper:#14181A;
+  --paper-deep:#0D1011;
+  --paper-elevated:#1B2022;
+  --ink:#E7EAE6;
+  --green:#5FA6B8;
+  --green-soft:#3D7A8C;
+  --green-deep:#8FC4D2;
+  --ochre:#D99A63;
+  --ochre-soft:#A85A24;
+  --stone:#8A9490;
+  --line:#282F31;
+  --line-strong:#3A4245;
+  --white:#20262A;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 28px rgba(0,0,0,.4);
+  --shadow-soft:0 1px 2px rgba(0,0,0,.4);
+  --warn:#E0836E;
 }
 *{box-sizing:border-box;}
 html,body{height:100%;margin:0;}
@@ -66,30 +66,30 @@ body{
   transition:background-color .3s ease, color .3s ease;
 }
 a{color:inherit;}
-h1,h2,h3{font-family:'Spectral', serif; margin:0 0 6px;}
+h1,h2,h3{font-family:'IBM Plex Sans', sans-serif; font-weight:700; letter-spacing:-.01em; margin:0 0 6px;}
 button{font-family:inherit;}
 
 /* ---------- header ---------- */
 header{
   display:flex; align-items:center; justify-content:space-between;
-  padding:14px 26px;
+  padding:12px 26px;
   border-bottom:1px solid var(--line);
-  background:color-mix(in srgb, var(--paper-elevated) 88%, transparent);
+  background:var(--paper-elevated);
   position:relative; z-index:50;
-  box-shadow:var(--shadow-soft);
 }
-.brand-text h1{font-size:20px;}
-.brand-text span{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--stone);}
+.brand-text{display:flex; align-items:baseline; gap:10px;}
+.brand-text h1{font-size:17px; font-weight:700; letter-spacing:-.01em;}
+.brand-text span{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--stone); text-transform:uppercase; letter-spacing:.07em;}
 .back-link{
-  text-decoration:none; font-size:13px; font-weight:600;
-  border:1px solid var(--line-strong); padding:8px 14px; border-radius:999px;
+  text-decoration:none; font-size:12.5px; font-weight:600;
+  border:1px solid var(--line-strong); padding:7px 13px; border-radius:var(--radius-sm);
   background:var(--paper-elevated);
 }
-.back-link:hover{border-color:var(--green);}
+.back-link:hover{border-color:var(--green); color:var(--green-deep);}
 
 .theme-toggle{
   display:flex; align-items:center; justify-content:center;
-  width:34px; height:34px; border:1px solid var(--line); border-radius:999px;
+  width:32px; height:32px; border:1px solid var(--line); border-radius:var(--radius-sm);
   background:var(--paper-elevated); color:var(--ink); cursor:pointer; flex-shrink:0;
   transition:border-color .15s ease, color .15s ease;
   font-size:15px; position:relative;
@@ -178,7 +178,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .leaflet-popup.datagis-stats-popup .leaflet-popup-content{margin:10px 12px; font-family:'IBM Plex Sans', sans-serif;}
 .leaflet-popup.datagis-stats-popup .leaflet-popup-close-button{color:var(--stone);}
 .stats-popup-title{
-  display:flex; align-items:center; gap:6px; font-family:'Spectral', serif;
+  display:flex; align-items:center; gap:6px; font-family:'IBM Plex Sans', sans-serif; font-weight:700;
   font-size:14px; font-weight:600; margin-bottom:6px; color:var(--green-deep);
 }
 .stats-popup-title .dot{width:7px; height:7px; border-radius:50%; background:var(--green); flex:none;}
@@ -193,13 +193,14 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 
 .btn{
-  border:1px solid var(--line-strong); background:var(--paper-elevated);
+  border:1px solid var(--line-strong); background:var(--paper-elevated); color:var(--ink);
   border-radius:var(--radius-sm); padding:10px 14px; font-size:13px; font-weight:600;
   cursor:pointer; display:flex; align-items:center; gap:8px; justify-content:center;
+  transition:border-color .12s ease, background-color .12s ease, color .12s ease;
 }
 .btn:hover{border-color:var(--green); color:var(--green-deep);}
-.btn.primary{background:linear-gradient(135deg, var(--green-deep), var(--green)); color:var(--paper); border:none;}
-.btn.primary:hover{filter:brightness(1.08); color:var(--paper);}
+.btn.primary{background:var(--green-deep); color:var(--white); border:1px solid var(--green-deep);}
+.btn.primary:hover{background:var(--green); border-color:var(--green);}
 .btn.warn{color:var(--warn); border-color:var(--warn);}
 .btn:disabled{opacity:.45; cursor:not-allowed;}
 .btn-row{display:flex; gap:8px; margin-top:8px;}
@@ -327,6 +328,33 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #connectivity-restored-toast .check svg{width:11px; height:11px;}
 
+/* ---------- toast: boas-vindas admin ---------- */
+#welcome-toast{
+  position:fixed; top:22px; left:50%; z-index:2147483000;
+  display:flex; align-items:center; gap:10px;
+  background:var(--paper-elevated); border:1px solid rgba(31,92,107,.22);
+  border-radius:999px; box-shadow:var(--shadow);
+  padding:10px 20px 10px 12px; font-size:13px; font-weight:600; color:var(--ink);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateX(-50%) translateY(-14px) scale(.96);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1), transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear .4s;
+}
+#welcome-toast.is-visible{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.34,1.4,.4,1), visibility 0s linear 0s;
+}
+#welcome-toast.is-leaving{
+  opacity:0; visibility:visible; pointer-events:none;
+  transform:translateX(-50%) translateY(-10px) scale(.97);
+  transition:opacity .35s cubic-bezier(.4,0,1,1), transform .35s cubic-bezier(.4,0,1,1), visibility 0s linear .35s;
+}
+#welcome-toast .wave{
+  width:20px; height:20px; border-radius:50%; flex-shrink:0;
+  background:var(--green-deep); color:var(--white);
+  display:flex; align-items:center; justify-content:center; font-size:12px;
+}
+
 /* ---------- wizard overlay ---------- */
 #wizard-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.45);
@@ -335,26 +363,65 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #wizard-overlay.hidden{display:none;}
 .wizard-card{
-  background:var(--paper-elevated); border-radius:var(--radius-lg);
+  position:relative;
+  background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-lg);
   box-shadow:var(--shadow); width:min(640px, 100%); max-height:88vh; overflow-y:auto;
-  padding:28px 30px;
+  padding:32px 34px;
 }
-.wizard-card h2{font-size:22px;}
-.wizard-card .step-tag{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--green); text-transform:uppercase; letter-spacing:.06em;}
+.wizard-card::before{
+  content:"";
+  position:absolute; top:12px; left:12px; right:12px; bottom:12px;
+  pointer-events:none;
+  background:
+    linear-gradient(var(--line-strong),var(--line-strong)) top left / 9px 1px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) top left / 1px 9px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) top right / 9px 1px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) top right / 1px 9px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) bottom left / 9px 1px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) bottom left / 1px 9px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) bottom right / 9px 1px no-repeat,
+    linear-gradient(var(--line-strong),var(--line-strong)) bottom right / 1px 9px no-repeat;
+  opacity:.6;
+}
+.wizard-card h2{font-size:20px;}
+.wizard-card .step-tag{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--green); text-transform:uppercase; letter-spacing:.08em; font-weight:500;}
 .wizard-card p.hint{color:var(--stone); font-size:13px; margin-top:0;}
 
-.choice-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:18px 0;}
-.choice-card{
-  border:2px solid var(--line); border-radius:var(--radius); padding:18px;
-  cursor:pointer; background:var(--white); text-align:center; transition:.15s;
+.intro-card{width:min(680px, 100%);}
+.intro-card .intro-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--green); text-transform:uppercase; letter-spacing:.09em; font-weight:500;}
+.intro-card h2{font-family:'IBM Plex Sans', sans-serif; font-weight:700; font-size:25px; margin:8px 0 12px; letter-spacing:-.015em;}
+.intro-card p.intro-lead{color:var(--stone); font-size:14.5px; line-height:1.6; margin:0 0 22px; max-width:52ch;}
+.intro-features{display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-bottom:20px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden;}
+.intro-feature{
+  padding:15px 16px;
+  background:var(--paper-elevated); display:flex; gap:12px; align-items:flex-start;
 }
-.choice-card:hover{border-color:var(--green-soft);}
-.choice-card.selected{border-color:var(--green); background:color-mix(in srgb, var(--green) 8%, var(--white));}
-.choice-card .ico{font-size:28px; margin-bottom:8px;}
-.choice-card b{display:block; font-size:14px; margin-bottom:4px;}
-.choice-card small{color:var(--stone); font-size:12px;}
+.intro-feature .ico{flex-shrink:0; color:var(--green); display:flex; align-items:center; justify-content:center; width:22px; height:22px; margin-top:1px;}
+.intro-feature b{display:block; font-size:12.5px; font-weight:600; margin-bottom:3px; text-transform:uppercase; letter-spacing:.03em;}
+.intro-feature small{color:var(--stone); font-size:12px; line-height:1.45;}
+.intro-steps{
+  display:flex; align-items:center; gap:7px; margin:0 0 24px; padding:11px 14px;
+  border:1px solid var(--line); border-radius:var(--radius-sm); background:var(--paper);
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--stone); flex-wrap:wrap;
+  text-transform:uppercase; letter-spacing:.04em;
+}
+.intro-steps b{color:var(--ink); font-weight:600;}
+.intro-steps .arrow{color:var(--line-strong); font-family:'IBM Plex Sans', sans-serif;}
 
-.geom-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:18px 0;}
+.choice-grid{display:grid; grid-template-columns:1fr 1fr; gap:1px; margin:20px 0; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden;}
+.choice-card{
+  border:none; border-radius:0; padding:20px 16px;
+  cursor:pointer; background:var(--white); text-align:center; transition:background-color .12s ease;
+  position:relative;
+}
+.choice-card:hover{background:color-mix(in srgb, var(--green) 6%, var(--white));}
+.choice-card.selected{background:color-mix(in srgb, var(--green) 10%, var(--white)); box-shadow:inset 0 0 0 1.5px var(--green);}
+.choice-card .ico{display:flex; align-items:center; justify-content:center; margin:0 auto 10px; color:var(--green); width:24px; height:24px;}
+.choice-card b{display:block; font-size:13.5px; font-weight:600; margin-bottom:4px;}
+.choice-card small{color:var(--stone); font-size:11.5px;}
+
+.geom-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; margin:20px 0; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden;}
+.geom-grid .choice-card{padding:18px 10px;}
 
 .attr-block{
   border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:12px; background:var(--white);
@@ -403,7 +470,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   background:var(--paper-elevated); box-shadow:var(--shadow-soft); flex:none;
 }
 .analysis-title{
-  display:flex; align-items:center; gap:8px; font-family:'Spectral', serif;
+  display:flex; align-items:center; gap:8px; font-family:'IBM Plex Sans', sans-serif; font-weight:700;
   font-size:18px; font-weight:600;
 }
 .analysis-title .dot{width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;}
@@ -641,6 +708,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
         if (user === 'José Fonseca') {
           notify('Acesso - Engenh', 'José Fonseca acedeu à componente Engenh em ' + new Date().toLocaleString('pt-PT') + '.');
+          showWelcomeToast();
         }
       } else {
         errorMsg.style.display = 'block';
@@ -680,7 +748,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 .mobile-block-ico{font-size:36px; margin-bottom:14px;}
 .mobile-block-card h2{
-  font-family:'Spectral', serif; font-size:20px; margin:0 0 10px; color:var(--ink, #173124);
+  font-family:'IBM Plex Sans', sans-serif; font-weight:700; font-size:20px; margin:0 0 10px; color:var(--ink, #173124);
 }
 .mobile-block-card p{
   font-size:14px; line-height:1.5; color:var(--stone, #6E726A); margin:0;
@@ -694,7 +762,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 <header>
   <div class="brand-text">
     <h1>Digitalização</h1>
-    <span></span>
+    <span>Criação de geometrias · DataGIS PT</span>
   </div>
   <div class="header-actions">
     <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
@@ -713,6 +781,11 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   </span>
   Ligação à internet restabelecida
+</div>
+
+<div id="welcome-toast" role="status" aria-live="polite">
+  
+  Seja bem-vindo de volta, administrador José, MEU TRAVEQUINHO!
 </div>
 
 <main>
@@ -773,21 +846,37 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 <!-- ============ WIZARD ============ -->
 <div id="wizard-overlay">
-  <div class="wizard-card" id="wizard-card">
+  <div class="wizard-card intro-card" id="wizard-card">
+
+    <!-- STEP 0: introdução -->
+    <div class="wizard-step" data-step="0">
+      <div class="intro-eyebrow">Digitalização · ferramenta beta</div>
+      <h2>Resumo</h2>
+      <p class="intro-lead">Pronto Zé, essenicalmente esta componente vai servir como se fosse um "mini" arcgis, só que 1000x mais facil de se usar, com exportaçao em shape e Geojson. Neste momento estou a trabalhar na parte de análise espacial, adicionar mais ferramentas, para já só tem buffer.</p>
+
+     
+
+    
+
+      <div class="wizard-nav">
+        <span></span>
+        <button class="btn primary" id="intro-next">Começar →</button>
+      </div>
+    </div>
 
     <!-- STEP 1: modo -->
-    <div class="wizard-step" data-step="1">
+    <div class="wizard-step" data-step="1" style="display:none;">
       <div class="step-tag">Passo 1 de 3</div>
       <h2>Como queres trabalhar?</h2>
       <p class="hint">Escolhe se cada geometria desenhada vai ter apenas a forma, ou se vai ter atributos associados (como no QGIS/ArcGIS).</p>
       <div class="choice-grid">
         <div class="choice-card" data-mode="simples">
-          <div class="ico">✎</div>
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 L11 8 L20 14"/><circle cx="4" cy="18" r="1.7" fill="currentColor" stroke="none"/><circle cx="11" cy="8" r="1.7" fill="currentColor" stroke="none"/><circle cx="20" cy="14" r="1.7" fill="currentColor" stroke="none"/></svg></div>
           <b>Simples</b>
           <small>Apenas desenhar geometrias, sem atributos.</small>
         </div>
         <div class="choice-card" data-mode="atributos">
-          <div class="ico">▦</div>
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.8"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><line x1="10.3" y1="10" x2="10.3" y2="20"/></svg></div>
           <b>Com atributos</b>
           <small>Define até 3 campos, com classes predefinidas se quiseres.</small>
         </div>
@@ -818,17 +907,17 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <p class="hint">Um shapefile só pode conter um tipo de geometria — escolhe o que vais desenhar nesta sessão.</p>
       <div class="geom-grid">
         <div class="choice-card" data-geom="Point">
-          <div class="ico">●</div>
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.2"/><circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none"/><line x1="12" y1="1.8" x2="12" y2="5.2"/><line x1="12" y1="18.8" x2="12" y2="22.2"/><line x1="1.8" y1="12" x2="5.2" y2="12"/><line x1="18.8" y1="12" x2="22.2" y2="12"/></svg></div>
           <b>Pontos</b>
           <small>Localizações</small>
         </div>
         <div class="choice-card" data-geom="LineString">
-          <div class="ico">⟍</div>
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 19 L10 8.5 L15 13.5 L20.5 4.5"/><circle cx="3.5" cy="19" r="1.6" fill="currentColor" stroke="none"/><circle cx="10" cy="8.5" r="1.6" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r="1.6" fill="currentColor" stroke="none"/><circle cx="20.5" cy="4.5" r="1.6" fill="currentColor" stroke="none"/></svg></div>
           <b>Linhas</b>
           <small>Percursos, vias</small>
         </div>
         <div class="choice-card" data-geom="Polygon">
-          <div class="ico">▰</div>
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.2 L20.5 9 L17.5 20 L6.5 20 L3.5 9 Z"/><circle cx="12" cy="3.2" r="1.5" fill="currentColor" stroke="none"/><circle cx="20.5" cy="9" r="1.5" fill="currentColor" stroke="none"/><circle cx="17.5" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="6.5" cy="20" r="1.5" fill="currentColor" stroke="none"/><circle cx="3.5" cy="9" r="1.5" fill="currentColor" stroke="none"/></svg></div>
           <b>Polígonos</b>
           <small>Áreas, zonas</small>
         </div>
@@ -1091,7 +1180,8 @@ function updateCoordBar(lat, lng){
     50% { opacity: 1; transform: scale(1.15); }
   }
   .feedback-toast-title {
-    font-family: 'Spectral', serif;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 700;
     font-size: 18px;
     font-weight: 600;
     color: var(--ink);
@@ -1671,6 +1761,19 @@ function showReconnectedToast(){
   }, 3200);
 }
 
+function showWelcomeToast(){
+  const toast = document.getElementById('welcome-toast');
+  if(!toast) return;
+  clearTimeout(toast._hideTimer);
+  toast.classList.remove('is-leaving');
+  void toast.offsetWidth;
+  toast.classList.add('is-visible');
+  toast._hideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+    toast.classList.add('is-leaving');
+  }, 4200);
+}
+
 function setBackLinkDisabled(disabled){
   const link = document.getElementById('back-link');
   if(!link) return;
@@ -1773,6 +1876,13 @@ function updateConnectivityUI(){
 
 window.addEventListener('online', updateConnectivityUI);
 window.addEventListener('offline', updateConnectivityUI);
+
+/* ============================================================
+   WIZARD — passo 0 (introdução)
+   ============================================================ */
+document.getElementById('intro-next').addEventListener('click', ()=>{
+  showStep(1);
+});
 
 /* ============================================================
    WIZARD — passo 1
@@ -2467,8 +2577,11 @@ document.getElementById('analysis-close').addEventListener('click', closeAnalysi
 
 function initAnalysisMap(){
   analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false});
-  L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-    maxZoom:19, subdomains:'abcd'
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom:19
+  }).addTo(analysisMap);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom:19
   }).addTo(analysisMap);
 
   analysisSourceLayer = L.geoJSON(null, {
