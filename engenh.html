@@ -945,7 +945,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <div class="landing-banner-card">
         <div class="landing-eyebrow"></div>
         <h2>Pronto para começar?</h2>
-        <p>O mapa já está pronto. Configura o modo de trabalho e começa a desenhar geometrias diretamente sobre ele.</p>
+        <p>O mapa já está pronto. Configura o modo de trabalho e começa a vetorizar diretamente sobre o mesmo.</p>
         <button type="button" class="btn primary landing-start-btn" id="btn-start-project">Iniciar projeto →</button>
       </div>
     </div>
@@ -1162,7 +1162,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <aside class="analysis-sidebar">
       <div class="tool-drawer open" data-tool="buffer">
         <button type="button" class="tool-drawer-header" data-drawer-toggle>
-          <span class="tool-drawer-title"><span class="tool-drawer-ico">⬭</span>Buffer</span>
+          <span class="tool-drawer-title"></span>Buffer</span>
           <span class="tool-drawer-chevron">▾</span>
         </button>
         <div class="tool-drawer-body">
@@ -1182,7 +1182,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
           </div>
           <div class="analysis-section">
             <div class="btn-row" style="flex-direction:column;">
-              <button class="btn primary" id="btn-apply-buffer">⬭ Gerar buffer</button>
+              <button class="btn primary" id="btn-apply-buffer">Criar buffer</button>
               <button class="btn" id="btn-clear-buffer">↺ Limpar buffers</button>
             </div>
             <p class="sub" id="buffer-status" style="margin-top:8px; min-height:14px;"></p>
@@ -2111,17 +2111,12 @@ document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
 /* ============================================================
    ATERRAGEM — "Iniciar projeto" + coach-mark da engrenagem
    ============================================================ */
-const GEAR_COACHMARK_KEY = 'engenh-seen-gear-hint';
-
 document.getElementById('btn-start-project').addEventListener('click', ()=>{
   document.getElementById('landing-banner').classList.add('hidden');
-  maybeShowGearCoachmark();
+  showGearCoachmark();
 });
 
-function maybeShowGearCoachmark(){
-  let seen = false;
-  try{ seen = localStorage.getItem(GEAR_COACHMARK_KEY) === '1'; }catch(err){}
-  if(seen) return;
+function showGearCoachmark(){
   positionGearCoachmark();
   document.getElementById('gear-coachmark').classList.remove('hidden');
 }
@@ -2138,10 +2133,7 @@ function positionGearCoachmark(){
 }
 
 function dismissGearCoachmark(){
-  const bubble = document.getElementById('gear-coachmark');
-  if(bubble.classList.contains('hidden')) return;
-  bubble.classList.add('hidden');
-  try{ localStorage.setItem(GEAR_COACHMARK_KEY, '1'); }catch(err){}
+  document.getElementById('gear-coachmark').classList.add('hidden');
 }
 
 document.getElementById('gear-coachmark-close').addEventListener('click', dismissGearCoachmark);
