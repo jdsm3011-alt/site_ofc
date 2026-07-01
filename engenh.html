@@ -106,6 +106,50 @@ main{flex:1; display:flex; position:relative; min-height:0;}
 #map{flex:1; min-height:0;}
 .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
 
+/* ---------- banner de aterragem "Iniciar projeto" ---------- */
+#landing-banner{
+  position:absolute; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px; pointer-events:none;
+}
+#landing-banner.hidden{display:none;}
+.landing-banner-card{
+  pointer-events:auto;
+  max-width:420px; width:100%;
+  background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow); padding:30px 32px; text-align:center;
+  animation:landingIn .45s ease;
+}
+@keyframes landingIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+.landing-eyebrow{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--green);
+  text-transform:uppercase; letter-spacing:.08em; font-weight:500; margin-bottom:10px;
+}
+.landing-banner-card h2{font-family:'IBM Plex Sans', sans-serif; font-weight:700; font-size:23px; margin:0 0 10px; letter-spacing:-.01em;}
+.landing-banner-card p{color:var(--stone); font-size:13.5px; line-height:1.6; margin:0 0 22px;}
+.landing-start-btn{width:100%; font-size:14px; padding:12px;}
+
+/* ---------- coach-mark a apontar para a engrenagem ---------- */
+#gear-coachmark{position:fixed; z-index:1200; max-width:220px;}
+#gear-coachmark.hidden{display:none;}
+.gear-coachmark-arrow{
+  width:12px; height:12px; background:var(--ink); transform:rotate(45deg);
+  position:absolute; top:-5px; right:18px;
+}
+.gear-coachmark-body{
+  background:var(--ink); color:var(--paper); border-radius:10px; padding:10px 22px 10px 14px;
+  font-size:12px; line-height:1.5; box-shadow:var(--shadow); position:relative;
+  animation:coachIn .3s ease;
+}
+@keyframes coachIn{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+.gear-coachmark-body p{margin:0;}
+.gear-coachmark-close{
+  position:absolute; top:5px; right:6px; background:none; border:none; color:var(--paper);
+  opacity:.7; cursor:pointer; font-size:11px; padding:2px; line-height:1;
+}
+.gear-coachmark-close:hover{opacity:1;}
+
+
 .leaflet-control-layers{
   border-radius:var(--radius-sm) !important;
   border:1px solid var(--line) !important;
@@ -897,7 +941,24 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 <main>
   <div id="map">
-    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">A configurar…</span></div>
+    <div id="landing-banner">
+      <div class="landing-banner-card">
+        <div class="landing-eyebrow">DataGIS PT · Digitalização</div>
+        <h2>Pronto para começar?</h2>
+        <p>O mapa já está pronto. Configura o modo de trabalho e começa a desenhar geometrias diretamente sobre ele.</p>
+        <button type="button" class="btn primary landing-start-btn" id="btn-start-project">Iniciar projeto →</button>
+      </div>
+    </div>
+
+    <div id="gear-coachmark" class="hidden">
+      <div class="gear-coachmark-arrow"></div>
+      <div class="gear-coachmark-body">
+        <button type="button" class="gear-coachmark-close" id="gear-coachmark-close" aria-label="Fechar">✕</button>
+        <p>⚙ Configura o ambiente de trabalho aqui antes de começares.</p>
+      </div>
+    </div>
+
+    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">Configura o ambiente para começares</span></div>
     <div class="coord-bar" id="coord-bar">
       <span id="coord-value">— , —</span>
       <button type="button" class="crs-switch" id="crs-switch" title="Alternar sistema de coordenadas">ETRS89 / PT-TM06</button>
@@ -1690,10 +1751,6 @@ function buildTilePlan(bounds, minZoom, maxZoom){
 
 /* ---------- UI: iniciar definição de área ---------- */
 document.getElementById('btn-offline-define').addEventListener('click', ()=>{
-  if(!map){
-    alert('Configura primeiro a geometria (botão de engrenagem no cabeçalho) antes de definires a área offline.');
-    return;
-  }
   if(offlineDrawing) return;
   offlineDrawing = true;
   document.getElementById('offline-rect-banner').style.display = 'flex';
@@ -2048,6 +2105,50 @@ function showStep(n){
 document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
   document.getElementById('wizard-overlay').classList.remove('hidden');
   showStep(0);
+  dismissGearCoachmark();
+});
+
+/* ============================================================
+   ATERRAGEM — "Iniciar projeto" + coach-mark da engrenagem
+   ============================================================ */
+const GEAR_COACHMARK_KEY = 'engenh-seen-gear-hint';
+
+document.getElementById('btn-start-project').addEventListener('click', ()=>{
+  document.getElementById('landing-banner').classList.add('hidden');
+  maybeShowGearCoachmark();
+});
+
+function maybeShowGearCoachmark(){
+  let seen = false;
+  try{ seen = localStorage.getItem(GEAR_COACHMARK_KEY) === '1'; }catch(err){}
+  if(seen) return;
+  positionGearCoachmark();
+  document.getElementById('gear-coachmark').classList.remove('hidden');
+}
+
+function positionGearCoachmark(){
+  const btn = document.getElementById('open-wizard-btn');
+  const bubble = document.getElementById('gear-coachmark');
+  const btnRect = btn.getBoundingClientRect();
+  const bubbleWidth = 220;
+  let left = btnRect.right - bubbleWidth + 12; // alinha a ponta da seta com o centro do botão
+  left = Math.max(10, Math.min(left, window.innerWidth - bubbleWidth - 10));
+  bubble.style.left = left + 'px';
+  bubble.style.top = (btnRect.bottom + 10) + 'px';
+}
+
+function dismissGearCoachmark(){
+  const bubble = document.getElementById('gear-coachmark');
+  if(bubble.classList.contains('hidden')) return;
+  bubble.classList.add('hidden');
+  try{ localStorage.setItem(GEAR_COACHMARK_KEY, '1'); }catch(err){}
+}
+
+document.getElementById('gear-coachmark-close').addEventListener('click', dismissGearCoachmark);
+window.addEventListener('resize', ()=>{
+  if(!document.getElementById('gear-coachmark').classList.contains('hidden')){
+    positionGearCoachmark();
+  }
 });
 
 /* ============================================================
@@ -2186,7 +2287,7 @@ document.getElementById('step3-finish').addEventListener('click', finishWizard);
 function finishWizard(){
   document.getElementById('wizard-overlay').classList.add('hidden');
   setupSummary();
-  initMap();
+  applyGeometryConfig();
 }
 
 document.getElementById('btn-reset').addEventListener('click', ()=>{
@@ -2257,9 +2358,9 @@ function initMap(){
     drawCircleMarker: false,
     drawRectangle: false,
     drawText: false,
-    drawPolyline: config.geometryType === 'LineString',
-    drawPolygon: config.geometryType === 'Polygon',
-    drawMarker: config.geometryType === 'Point',
+    drawPolyline: false,
+    drawPolygon: false,
+    drawMarker: false,
     editMode: true,
     dragMode: true,
     removalMode: true,
@@ -2301,6 +2402,34 @@ function initMap(){
   updateConnectivityUI();
   map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
 }
+
+/* ativa as ferramentas de desenho certas depois do wizard definir o tipo de geometria */
+function applyGeometryConfig(){
+  map.pm.addControls({
+    position: 'topleft',
+    drawCircle: false,
+    drawCircleMarker: false,
+    drawRectangle: false,
+    drawText: false,
+    drawPolyline: config.geometryType === 'LineString',
+    drawPolygon: config.geometryType === 'Polygon',
+    drawMarker: config.geometryType === 'Point',
+    editMode: true,
+    dragMode: true,
+    removalMode: true,
+    cutPolygon: false,
+    rotateMode: false
+  });
+
+  const hintText = {
+    Point: 'Bom Trabalho!.',
+    LineString: 'Bom Trabalho!.',
+    Polygon: 'Bom Trabalho!.'
+  };
+  document.getElementById('toolbar-hint-text').textContent = hintText[config.geometryType];
+}
+
+initMap(); // o mapa fica pronto logo ao carregar a página
 
 /* ============================================================
    CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
@@ -2403,10 +2532,6 @@ function importGeoJSONFeatures(geojson){
 }
 
 document.getElementById('btn-import-geom').addEventListener('click', ()=>{
-  if(!map){
-    alert('Configura primeiro a geometria (botão de engrenagem no cabeçalho) antes de importares um ficheiro.');
-    return;
-  }
   document.getElementById('import-file-input').click();
 });
 
