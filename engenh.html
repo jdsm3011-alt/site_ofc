@@ -832,6 +832,10 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <span>Em desenvolvimento</span>
   </div>
   <div class="header-actions">
+    <button type="button" class="feedback-nav-btn" id="btn-import-geom" title="Importar GeoJSON ou Shapefile (A shape tem de ser em .zip)" aria-label="Importar GeoJSON ou Shapefile (A shape tem de ser em .zip)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+    <input type="file" id="import-file-input" accept=".geojson,.json,.zip" style="display:none;">
     <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Configurar geometria" aria-label="Configurar geometria">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -1102,6 +1106,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 <script src="https://unpkg.com/@mapbox/shp-write@0.4.3/shpwrite.js"></script>
 <script src="https://unpkg.com/proj4@2.9.0/dist/proj4.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://unpkg.com/shpjs@4.0.4/dist/shp.min.js"></script>
 
 <script>
 /* ============================================================
@@ -2274,6 +2279,91 @@ function onFeatureRemoved(layer){
   refreshFeatList();
   checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
 }
+
+/* ============================================================
+   IMPORTAR GEOJSON / SHAPEFILE
+   ============================================================ */
+function baseGeomType(t){
+  if(t === 'MultiPoint') return 'Point';
+  if(t === 'MultiLineString') return 'LineString';
+  if(t === 'MultiPolygon') return 'Polygon';
+  return t;
+}
+
+async function parseImportedFile(file){
+  const name = file.name.toLowerCase();
+  if(name.endsWith('.zip')){
+    const buffer = await file.arrayBuffer();
+    const result = await shp(buffer);
+    if(Array.isArray(result)){
+      return {type:'FeatureCollection', features: result.flatMap(fc => fc.features || [])};
+    }
+    return result;
+  }
+  const text = await file.text();
+  const parsed = JSON.parse(text);
+  if(parsed.type === 'FeatureCollection') return parsed;
+  if(parsed.type === 'Feature') return {type:'FeatureCollection', features:[parsed]};
+  if(parsed.type){ return {type:'FeatureCollection', features:[{type:'Feature', properties:{}, geometry:parsed}]}; }
+  throw new Error('Formato GeoJSON não reconhecido.');
+}
+
+function importGeoJSONFeatures(geojson){
+  const features = (geojson.features || []).filter(f => f && f.geometry);
+  let imported = 0, skipped = 0;
+
+  features.forEach(f=>{
+    let layer;
+    try{ layer = L.geoJSON(f).getLayers()[0]; }
+    catch(err){ skipped++; return; }
+    if(!layer){ skipped++; return; }
+
+    drawnGroup.addLayer(layer);
+    featureCounter++;
+    const id = L.Util.stamp(layer);
+    const entry = {layer, props:{}, id, label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
+    featuresData.set(id, entry);
+
+    styleLayerDefault(layer);
+    layer.on('pm:edit', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:dragend', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+
+    imported++;
+  });
+
+  refreshFeatList();
+  checkAllTopology();
+
+  if(imported > 0){
+    try{ map.fitBounds(drawnGroup.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
+  }
+
+  const msg = skipped > 0
+    ? `Importadas ${imported} geometria(s). ${skipped} geometria(s) inválida(s) ou ilegível(is) foram ignoradas.`
+    : (imported > 0 ? `Importadas ${imported} geometria(s) com sucesso.` : 'Nenhuma geometria válida encontrada no ficheiro.');
+  alert(msg);
+}
+
+document.getElementById('btn-import-geom').addEventListener('click', ()=>{
+  if(!map){
+    alert('Configura primeiro a geometria (botão de engrenagem no cabeçalho) antes de importares um ficheiro.');
+    return;
+  }
+  document.getElementById('import-file-input').click();
+});
+
+document.getElementById('import-file-input').addEventListener('change', async (e)=>{
+  const file = e.target.files[0];
+  e.target.value = '';
+  if(!file) return;
+  try{
+    const geojson = await parseImportedFile(file);
+    importGeoJSONFeatures(geojson);
+  }catch(err){
+    console.error('Erro ao importar ficheiro:', err);
+    alert('Não foi possível importar o ficheiro. Verifica se é um GeoJSON válido ou um .zip de Shapefile (.shp + .dbf + .shx, opcionalmente .prj).');
+  }
+});
 
 /* ============================================================
    MINI POP-UP DE ESTATÍSTICAS (ao concluir uma geometria)
