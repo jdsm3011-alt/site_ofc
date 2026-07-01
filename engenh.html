@@ -2113,7 +2113,8 @@ document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
    ============================================================ */
 document.getElementById('btn-start-project').addEventListener('click', ()=>{
   document.getElementById('landing-banner').classList.add('hidden');
-  showGearCoachmark();
+  map.flyTo([39.6, -8.0], 7, { duration: 2.2, easeLinearity: 0.25 });
+  map.once('moveend', showGearCoachmark);
 });
 
 function showGearCoachmark(){
@@ -2304,7 +2305,7 @@ function setupSummary(){
    MAPA + GEOMAN
    ============================================================ */
 function initMap(){
-  map = L.map('map', {zoomControl:true}).setView([39.6, -8.0], 7);
+  map = L.map('map', {zoomControl:true}).setView([20, 0], 2);
 
   const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
