@@ -498,6 +498,169 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 </head>
 <body>
 
+<!-- ===== Portal de acesso restrito (administradores) ===== -->
+<style>
+  #admin-gate{
+    position:fixed; inset:0; z-index:999999999;
+    background:#000;
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Segoe UI", Tahoma, Arial, Helvetica, sans-serif;
+  }
+  #admin-gate-box{
+    width:300px;
+    background:#d4d4d4;
+    border:1px solid #333;
+    box-shadow:5px 5px 0 rgba(0,0,0,.6);
+  }
+  #admin-gate-titlebar{
+    background:#3a3a3a;
+    color:#eee;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:.4px;
+    padding:6px 10px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid #111;
+  }
+  #admin-gate-titlebar span.dot{
+    display:inline-block; width:8px; height:8px; border-radius:50%;
+    background:#c00; margin-right:6px; vertical-align:middle;
+  }
+  #admin-gate-body{ padding:18px 20px 20px; }
+  #admin-gate-icon{ text-align:center; font-size:26px; margin-bottom:4px; }
+  #admin-gate-heading{
+    text-align:center; font-weight:bold; color:#b00000;
+    font-size:16px; margin-bottom:8px; letter-spacing:.3px;
+  }
+  #admin-gate-body p.desc{
+    font-size:12px; color:#333; margin:0 0 16px; text-align:center; line-height:1.4;
+  }
+  #admin-gate-body label{
+    display:block; font-size:11px; color:#333; margin-bottom:3px; font-weight:bold;
+  }
+  #admin-gate-body input{
+    width:100%; box-sizing:border-box; padding:6px 7px; margin-bottom:12px;
+    border:1px solid #888; background:#fff; font-family:inherit; font-size:13px;
+    outline:none;
+  }
+  #admin-gate-body input:focus{ border-color:#555; background:#fffef2; }
+  #admin-gate-body button{
+    width:100%; padding:7px; background:#c8c8c8; border:1px solid #555;
+    box-shadow:inset 1px 1px 0 #fff, inset -1px -1px 0 #888;
+    cursor:pointer; font-size:13px; font-weight:bold; color:#222;
+  }
+  #admin-gate-body button:hover{ background:#d6d6d6; }
+  #admin-gate-body button:active{
+    box-shadow:inset -1px -1px 0 #fff, inset 1px 1px 0 #888;
+  }
+  #admin-gate-error{
+    display:none; color:#b00000; font-size:11px; margin:10px 0 0; text-align:center;
+  }
+  #admin-gate-back{
+    display:block; text-align:center; font-size:11px; color:#444;
+    margin-top:14px; text-decoration:none; border-top:1px solid #bbb; padding-top:10px;
+  }
+  #admin-gate-back:hover{ color:#000; text-decoration:underline; }
+</style>
+<div id="admin-gate">
+  <div id="admin-gate-box">
+    <div id="admin-gate-titlebar"><span><span class="dot"></span>SISTEMA</span><span>&#128274;</span></div>
+    <div id="admin-gate-body">
+      <div id="admin-gate-icon">&#9888;</div>
+      <div id="admin-gate-heading">ACESSO NEGADO</div>
+      <p class="desc">Esta componente apenas está disponível a administradores.</p>
+      <form id="admin-gate-form">
+        <label for="admin-gate-user">Administrador</label>
+        <input id="admin-gate-user" type="text" autocomplete="off">
+        <label for="admin-gate-pass">Palavra-passe</label>
+        <input id="admin-gate-pass" type="password" autocomplete="off">
+        <button type="submit">Entrar</button>
+        <p id="admin-gate-error">Utilizador ou palavra-passe incorretos.</p>
+      </form>
+      <a id="admin-gate-back" href="index.html">&larr; Voltar ao portal</a>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var ADMINS = {
+    "Daniel Machado": "tunics123",
+    "José Fonseca": "tunics123"
+  };
+  var FORM_ENDPOINT = "https://formspree.io/f/xvzjojbj";
+  var gate = document.getElementById('admin-gate');
+  if(!gate) return;
+
+  var SESSION_KEY = 'engenh-admin-auth';
+
+  var form = document.getElementById('admin-gate-form');
+  var userInput = document.getElementById('admin-gate-user');
+  var passInput = document.getElementById('admin-gate-pass');
+  var errorMsg = document.getElementById('admin-gate-error');
+
+  function notify(subject, message) {
+    try {
+      var fd = new FormData();
+      fd.append('_subject', subject);
+      fd.append('message', message);
+      fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: fd,
+        headers: { 'Accept': 'application/json' }
+      }).catch(function(){ /* falha de rede não deve bloquear o fluxo */ });
+    } catch(e) {}
+  }
+
+  function showGate() {
+    errorMsg.style.display = 'none';
+    passInput.value = '';
+    gate.style.display = 'flex';
+    setTimeout(function(){ userInput.focus(); }, 0);
+  }
+
+  function hideGate() {
+    gate.style.display = 'none';
+  }
+
+  try {
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      hideGate();
+    }
+  } catch(e) {}
+
+  if (form) {
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var user = (userInput.value || '').trim();
+      var pass = passInput.value || '';
+
+      if (ADMINS.hasOwnProperty(user) && ADMINS[user] === pass) {
+        errorMsg.style.display = 'none';
+        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e) {}
+        hideGate();
+
+        if (user === 'José Fonseca') {
+          notify('Acesso - Engenh', 'José Fonseca acedeu à componente Engenh em ' + new Date().toLocaleString('pt-PT') + '.');
+        }
+      } else {
+        errorMsg.style.display = 'block';
+        passInput.value = '';
+        notify('Tentativa de acesso falhada - Engenh', 'Tentativa de acesso falhada. Utilizador introduzido: "' + (user || '(vazio)') + '" em ' + new Date().toLocaleString('pt-PT') + '.');
+      }
+    });
+  }
+
+  /* Atalho Ctrl+Alt+L: bypass direto (atalho pessoal, não faz notificação) */
+  document.addEventListener('keydown', function(e){
+    if (e.ctrlKey && e.altKey && (e.key === 'l' || e.key === 'L')) {
+      e.preventDefault();
+      try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(err) {}
+      hideGate();
+    }
+  });
+})();
+</script>
+
 <div id="mobile-block" style="display:none;">
   <div class="mobile-block-card">
     <div class="mobile-block-ico">🖥️</div>
@@ -580,7 +743,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
     <div class="crs-info">
       <b>Sistema de coordenadas</b>
-      O mapa e o desenho funcionam em WGS84 (EPSG:4326), o sistema geográfico nativo da web. As exportações em GeoJSON seguem sempre esta norma; a Shape inclui o ficheiro <code>.prj</code> correspondente. Para trabalho em ETRS89 / PT-TM06 (EPSG:3763), reprojeta os ficheiros em qualquer software de Sistema de Informação geográfica após a exportação.
+      O mapa e o desenho funcionam em WGS84 (EPSG:4326), o sistema geográfico nativo da web. As exportações em GeoJSON seguem sempre esta norma; o Shapefile inclui o ficheiro <code>.prj</code> correspondente. Para trabalho em ETRS89 / PT-TM06 (EPSG:3763), reprojeta os ficheiros em qualquer software de Sistema de Informação geográfica após a exportação.
     </div>
 
     <ul class="feat-list" id="feat-list"></ul>
