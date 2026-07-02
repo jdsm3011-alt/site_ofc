@@ -3244,8 +3244,12 @@ async function createTeamProject(){
     renderTeamCard();
     showTeamToast('Projeto criado. Agora podes sincronizar.');
   }catch(err){
-    if(err.status === 409){ alert('Já existe um projeto com esse nome. Escolhe outro nome.'); }
-    else { console.error(err); alert('Não foi possível criar o projeto.'); }
+    if(err.status === 409){
+      alert('Já existe um projeto com esse nome. Escolhe outro nome.');
+    } else {
+      console.error('Erro ao criar projeto de equipa:', err);
+      alert('Não foi possível criar o projeto. ' + (err.message || 'Verifica a ligação ao servidor.'));
+    }
   }
 }
 
@@ -3388,6 +3392,8 @@ function showTeamPanel(){
   teamPanelVisible = true;
   const block = document.getElementById('team-block');
   if(block) block.classList.remove('hidden');
+  const wizard = document.getElementById('wizard-overlay');
+  if(wizard) wizard.classList.add('hidden');
   renderTeamCard();
   const card = document.getElementById('team-card');
   if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
