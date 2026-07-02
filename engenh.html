@@ -106,6 +106,50 @@ main{flex:1; display:flex; position:relative; min-height:0;}
 #map{flex:1; min-height:0;}
 .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
 
+/* ---------- banner de aterragem "Iniciar projeto" ---------- */
+#landing-banner{
+  position:absolute; inset:0; z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px; pointer-events:none;
+}
+#landing-banner.hidden{display:none;}
+.landing-banner-card{
+  pointer-events:auto;
+  max-width:420px; width:100%;
+  background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow); padding:30px 32px; text-align:center;
+  animation:landingIn .45s ease;
+}
+@keyframes landingIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+.landing-eyebrow{
+  font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--green);
+  text-transform:uppercase; letter-spacing:.08em; font-weight:500; margin-bottom:10px;
+}
+.landing-banner-card h2{font-family:'IBM Plex Sans', sans-serif; font-weight:700; font-size:23px; margin:0 0 10px; letter-spacing:-.01em;}
+.landing-banner-card p{color:var(--stone); font-size:13.5px; line-height:1.6; margin:0 0 22px;}
+.landing-start-btn{width:100%; font-size:14px; padding:12px;}
+
+/* ---------- coach-mark a apontar para a engrenagem ---------- */
+#gear-coachmark{position:fixed; z-index:1200; max-width:220px;}
+#gear-coachmark.hidden{display:none;}
+.gear-coachmark-arrow{
+  width:12px; height:12px; background:var(--ink); transform:rotate(45deg);
+  position:absolute; top:-5px; right:18px;
+}
+.gear-coachmark-body{
+  background:var(--ink); color:var(--paper); border-radius:10px; padding:10px 22px 10px 14px;
+  font-size:12px; line-height:1.5; box-shadow:var(--shadow); position:relative;
+  animation:coachIn .3s ease;
+}
+@keyframes coachIn{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+.gear-coachmark-body p{margin:0;}
+.gear-coachmark-close{
+  position:absolute; top:5px; right:6px; background:none; border:none; color:var(--paper);
+  opacity:.7; cursor:pointer; font-size:11px; padding:2px; line-height:1;
+}
+.gear-coachmark-close:hover{opacity:1;}
+
+
 .leaflet-control-layers{
   border-radius:var(--radius-sm) !important;
   border:1px solid var(--line) !important;
@@ -457,18 +501,74 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   font-family:inherit; font-size:13px; background:var(--white); color:var(--ink);
 }
 
+/* ---------- limites de município (popover) ---------- */
+.municipios-panel{
+  position:fixed; top:62px; right:26px; z-index:900;
+  width:300px; max-height:calc(100vh - 90px); overflow-y:auto;
+  background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow); padding:16px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.municipios-panel.hidden{display:none;}
+.municipios-panel-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:2px;}
+.municipios-panel-header b{font-size:13.5px;}
+.municipios-panel-close{
+  border:none; background:none; cursor:pointer; color:var(--stone); font-size:13px; line-height:1;
+  padding:4px; border-radius:6px;
+}
+.municipios-panel-close:hover{color:var(--ink); background:var(--paper-deep);}
+#municipios-search{
+  width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px;
+  font-family:inherit; font-size:13px; background:var(--white); color:var(--ink);
+}
+.municipios-results{
+  list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px;
+  max-height:190px; overflow-y:auto;
+}
+.municipios-results li{
+  border:1px solid var(--line); border-radius:7px; background:var(--white);
+  padding:7px 9px; font-size:12.5px; cursor:pointer; display:flex; justify-content:space-between; gap:8px; align-items:baseline;
+}
+.municipios-results li:hover{border-color:var(--green); background:var(--paper-deep);}
+.municipios-results li .distrito{font-size:10.5px; color:var(--stone); font-family:'IBM Plex Mono', monospace; flex:none;}
+.municipios-loaded-section{margin-top:8px; padding-top:10px; border-top:1px solid var(--line);}
+.municipios-loaded-section b{font-size:12px;}
+.municipios-loaded-list{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:5px;}
+.municipios-loaded-list li{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  border:1px solid var(--line); border-radius:7px; background:var(--white);
+  padding:6px 8px; font-size:12px;
+}
+.municipios-loaded-list button{
+  border:none; background:none; cursor:pointer; color:var(--stone); font-size:13px; line-height:1; padding:2px 4px;
+}
+.municipios-loaded-list button:hover{color:var(--warn, #B5472B);}
+#municipios-empty-msg{font-size:11.5px; margin:6px 0 0;}
+
 /* ---------- painel de análise espacial (buffer) ---------- */
 .analysis-block{margin-top:14px; padding-top:14px; border-top:1px solid var(--line);}
 #analysis-overlay{
   position:fixed; inset:0; z-index:1300; background:var(--paper);
   display:flex; flex-direction:column;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:scale(.965);
+  transition: opacity .38s cubic-bezier(.19,1,.22,1), transform .48s cubic-bezier(.19,1,.22,1),
+              visibility 0s linear .42s;
 }
-#analysis-overlay.hidden{display:none;}
+#analysis-overlay.open{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:scale(1);
+  transition: opacity .34s cubic-bezier(.19,1,.22,1), transform .46s cubic-bezier(.19,1,.22,1),
+              visibility 0s linear 0s;
+}
 .analysis-header{
   display:flex; align-items:center; justify-content:space-between;
   padding:14px 22px; border-bottom:1px solid var(--line);
   background:var(--paper-elevated); box-shadow:var(--shadow-soft); flex:none;
+  opacity:0; transform:translateY(-12px);
+  transition: opacity .3s ease, transform .3s cubic-bezier(.19,1,.22,1);
 }
+#analysis-overlay.open .analysis-header{ opacity:1; transform:translateY(0); transition-delay:.06s; }
 .analysis-title{
   display:flex; align-items:center; gap:8px; font-family:'IBM Plex Sans', sans-serif; font-weight:700;
   font-size:18px; font-weight:600;
@@ -483,18 +583,30 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .analysis-sidebar{
   width:300px; flex:none; overflow-y:auto; padding:18px;
   background:var(--paper-elevated); border-right:1px solid var(--line);
-  display:flex; flex-direction:column; gap:18px;
+  display:flex; flex-direction:column; gap:10px;
+  opacity:0; transform:translateX(-16px);
+  transition: opacity .34s ease, transform .38s cubic-bezier(.19,1,.22,1);
 }
+#analysis-overlay.open .analysis-sidebar{ opacity:1; transform:translateX(0); transition-delay:.1s; }
 .analysis-section b{display:block; font-size:13px; margin-bottom:2px;}
 .analysis-section .sub{font-size:11.5px; color:var(--stone); margin:2px 0 0;}
 .analysis-geom-list{
   list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column;
-  gap:6px; max-height:200px; overflow-y:auto;
+  gap:4px; max-height:150px; overflow-y:auto;
 }
 .analysis-geom-list li{
-  border:1px solid var(--line); border-radius:8px; background:var(--white); padding:7px 9px;
+  border:1px solid var(--line); border-radius:7px; background:var(--white); padding:4px 8px;
 }
-.analysis-geom-list label{display:flex; align-items:center; gap:8px; font-size:12.5px; cursor:pointer;}
+.analysis-geom-list label{display:flex; align-items:center; gap:7px; font-size:11.5px; cursor:pointer;}
+.geom-label-tooltip{
+  background:rgba(255,255,255,.72); color:#14181A; border:1px solid rgba(0,0,0,.12);
+  border-radius:5px; padding:1px 6px; font-family:'IBM Plex Mono', monospace; font-size:10.5px;
+  font-weight:600; box-shadow:none; opacity:.85; pointer-events:none;
+}
+.geom-label-tooltip::before{display:none;}
+[data-theme="dark"] .geom-label-tooltip{
+  background:rgba(20,20,20,.68); color:#E7EAE6; border-color:rgba(255,255,255,.16);
+}
 .buffer-slider-row{display:flex; align-items:center; gap:8px; margin-top:8px;}
 .buffer-slider-row input[type=range]{flex:1; accent-color:var(--green);}
 .buffer-slider-row input[type=number]{
@@ -503,8 +615,43 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 .buffer-slider-row .unit{font-size:12px; color:var(--stone); font-weight:600;}
 .analysis-section.export-block{margin-top:auto; padding-top:14px; border-top:1px solid var(--line);}
-.analysis-map-wrap{flex:1; position:relative;}
+.analysis-map-wrap{
+  flex:1; position:relative;
+  opacity:0; transform:scale(1.025);
+  transition: opacity .38s ease, transform .5s cubic-bezier(.19,1,.22,1);
+}
+#analysis-overlay.open .analysis-map-wrap{ opacity:1; transform:scale(1); transition-delay:.14s; }
 #analysis-map{position:absolute; inset:0; background:var(--paper-deep);}
+
+/* ---------- gavetas de ferramentas ---------- */
+.tool-drawer{
+  border:1px solid var(--line); border-radius:10px; overflow:hidden; flex:none;
+  background:var(--white);
+}
+.tool-drawer-header{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:11px 13px; background:var(--paper-elevated); border:none; cursor:pointer;
+  font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:12.5px; color:var(--ink);
+  text-align:left;
+}
+.tool-drawer-header:hover{background:var(--paper-deep);}
+.tool-drawer-header-disabled{cursor:default;}
+.tool-drawer-header-disabled:hover{background:var(--paper-elevated);}
+.tool-drawer-title{display:flex; align-items:center; gap:8px;}
+.tool-drawer-ico{font-size:13px; width:16px; text-align:center; color:var(--green); flex:none;}
+.tool-drawer-chevron{font-size:10px; color:var(--stone); transition:transform .18s ease; flex:none;}
+.tool-drawer.open .tool-drawer-chevron{transform:rotate(180deg);}
+.tool-drawer-badge{
+  font-family:'IBM Plex Mono', monospace; font-size:9px; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--stone); background:var(--paper-deep); border:1px solid var(--line); border-radius:999px;
+  padding:3px 8px; flex:none;
+}
+.tool-drawer-body{
+  display:none; flex-direction:column; gap:16px; padding:14px 13px 15px;
+  border-top:1px solid var(--line);
+}
+.tool-drawer.open .tool-drawer-body{display:flex;}
+.tool-drawer-empty-slot{opacity:.65;}
 
 @media (max-width:860px){
   .analysis-body{flex-direction:column;}
@@ -631,9 +778,9 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 </style>
 <div id="admin-gate">
   <div id="admin-gate-box">
-    <div id="admin-gate-titlebar"><span><span class="dot"></span>SISTEMA</span><span>&#128274;</span></div>
+    <div id="admin-gate-titlebar"><span><span class="dot"></span>SISTEMA</span></div>
     <div id="admin-gate-body">
-      <div id="admin-gate-icon">&#9888;</div>
+      
       <div id="admin-gate-heading">ACESSO NEGADO</div>
       <p class="desc">Esta componente apenas está disponível a administradores.</p>
       <form id="admin-gate-form">
@@ -719,11 +866,78 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   }
 
   /* Atalho Ctrl+Alt+L: bypass direto (atalho pessoal, não faz notificação) */
+  function playBypassAnimation(cb) {
+    var ov = document.createElement('div');
+    ov.id = 'bypass-anim-overlay';
+    ov.innerHTML =
+      '<div class="bypass-noise"></div>' +
+      '<div class="bypass-anim-text">' +
+        '<span class="l1">&gt; auth_check.......... <b>FAIL</b></span>' +
+        '<span class="l2">&gt; override_flag........ <b>SET</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+         '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+        '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
+      '</div>';
+        '<span class="l3">&gt; concedido /b></span>'
+      '</div>';
+    document.body.appendChild(ov);
+
+    if (!document.getElementById('bypass-anim-style')) {
+      var st = document.createElement('style');
+      st.id = 'bypass-anim-style';
+      st.textContent = [
+        '#bypass-anim-overlay{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;',
+        'background:#000;opacity:0;animation:bypassFlicker .6s steps(2,end) forwards;overflow:hidden;}',
+        '#bypass-anim-overlay .bypass-noise{position:absolute;inset:0;',
+        'background:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0px,rgba(255,255,255,.05) 1px,transparent 1px,transparent 3px);',
+        'mix-blend-mode:overlay;animation:bypassScan .12s steps(3,end) infinite;}',
+        '#bypass-anim-overlay .bypass-anim-text{font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.9;',
+        'color:#8f8f8f;text-align:left;display:flex;flex-direction:column;gap:2px;}',
+        '#bypass-anim-overlay .bypass-anim-text b{color:#fff;font-weight:600;}',
+        '#bypass-anim-overlay .l1,#bypass-anim-overlay .l2,#bypass-anim-overlay .l3{opacity:0;transform:translateX(-3px);}',
+        '#bypass-anim-overlay .l1{animation:bypassLine .15s steps(1,end) .05s forwards;}',
+        '#bypass-anim-overlay .l2{animation:bypassLine .15s steps(1,end) .18s forwards;}',
+        '#bypass-anim-overlay .l3{animation:bypassLine .15s steps(1,end) .32s forwards;}',
+        '@keyframes bypassFlicker{0%{opacity:0;}8%{opacity:1;}12%{opacity:.4;}16%{opacity:1;}70%{opacity:1;}100%{opacity:0;}}',
+        '@keyframes bypassScan{0%{transform:translateY(0);}100%{transform:translateY(3px);}}',
+        '@keyframes bypassLine{to{opacity:1;transform:translateX(0);}}'
+      ].join('');
+      document.head.appendChild(st);
+    }
+
+    setTimeout(function(){
+      ov.remove();
+      if (typeof cb === 'function') cb();
+    }, 600);
+  }
+
   document.addEventListener('keydown', function(e){
     if (e.ctrlKey && e.altKey && (e.key === 'l' || e.key === 'L')) {
+      var gateVisible = gate && window.getComputedStyle(gate).display !== 'none';
+      if (!gateVisible) return;
       e.preventDefault();
       try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(err) {}
-      hideGate();
+      playBypassAnimation(hideGate);
     }
   });
 })();
@@ -765,9 +979,37 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <span>Em desenvolvimento</span>
   </div>
   <div class="header-actions">
+    <button type="button" class="feedback-nav-btn" id="btn-import-geom" title="Importar GeoJSON ou Shapefile" aria-label="Importar GeoJSON ou Shapefile">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+    <input type="file" id="import-file-input" accept=".geojson,.json,.zip" style="display:none;">
+    
+ 
+    
+    <button type="button" class="feedback-nav-btn" id="btn-open-municipios" title="Limites de município" aria-label="Limites de município">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l5-6 8 2 4 6-2 9-11 1-4-5z"/></svg>
+    </button>
+    <button type="button" class="feedback-nav-btn" id="btn-open-analysis" title="Análise espacial" aria-label="Análise espacial">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 12-8.5 8.5a2.119 2.119 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m6.3 11.3 1.4 1.4"/><path d="M20.9 11.7q-2.5-1.5-5.4-1.7c-.4 0-.7-.2-1-.5L11 6c-1.5-1.5-2-2-2-3.5 0-1 .5-1.5 1.5-1.5.9 0 2 .5 3 2l2.5 3c.3.3.5.6.5 1 .2 2.9 1.2 4.9 1.7 5.4"/></svg>
+    </button>
+
+    <button type="button" class="feedback-nav-btn" id="btn-offline-define" title="Definir área de trabalho offline" aria-label="Definir área de trabalho offline">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 122.88 122.87" fill="currentColor" aria-hidden="true"><path d="M23.04,53.31c-0.78,0.67-1.76,0.96-2.7,0.88c-0.91-0.07-1.8-0.48-2.46-1.21c-0.06-0.06-0.11-0.12-0.16-0.19 c-0.61-0.76-0.87-1.69-0.8-2.59c0.07-0.91,0.48-1.8,1.21-2.46c0.05-0.05,0.11-0.1,0.17-0.15c6.55-5.6,13.53-9.85,20.76-12.68 c7.31-2.87,14.86-4.3,22.48-4.23c6.18,0.05,12.37,1.09,18.48,3.15l-5.96,5.97c-4.18-1.09-8.39-1.65-12.57-1.69 c-6.67-0.06-13.33,1.22-19.79,3.77C35.2,44.42,28.94,48.25,23.04,53.31L23.04,53.31z M67.48,0.28c-0.96-0.09-1.95-0.16-2.97-0.21 C63.54,0.02,62.52,0,61.44,0c-1.08,0-2.1,0.02-3.06,0.07c-1.02,0.05-2.01,0.12-2.97,0.21c-0.95,0.09-1.93,0.21-2.95,0.36 c-1,0.15-2.01,0.32-3.02,0.52c-0.96,0.19-1.93,0.41-2.89,0.65c-1,0.25-1.96,0.52-2.88,0.8c-1.01,0.31-1.97,0.62-2.89,0.95 c-0.96,0.34-1.88,0.69-2.76,1.06l-0.14,0.06c-0.93,0.39-1.85,0.79-2.73,1.21c-0.92,0.43-1.8,0.88-2.64,1.33 c-0.87,0.46-1.74,0.96-2.62,1.49c-0.87,0.52-1.73,1.07-2.56,1.62c-0.8,0.53-1.6,1.1-2.41,1.7c-0.78,0.58-1.58,1.2-2.4,1.87 c-0.8,0.65-1.57,1.31-2.3,1.97c-0.75,0.68-1.47,1.36-2.15,2.04L18,17.98c-0.73,0.73-1.44,1.48-2.13,2.23 c-0.66,0.73-1.31,1.48-1.93,2.24c-0.63,0.77-1.25,1.56-1.86,2.38c-0.6,0.81-1.18,1.64-1.74,2.48c-0.56,0.83-1.1,1.69-1.62,2.56 c-0.52,0.87-1.02,1.75-1.48,2.61c-0.46,0.86-0.91,1.76-1.35,2.69c-0.43,0.91-0.84,1.83-1.22,2.74l-0.01,0.03 c-0.4,0.97-0.77,1.91-1.1,2.84c-0.34,0.94-0.65,1.89-0.94,2.83c-0.28,0.91-0.54,1.86-0.78,2.85c-0.24,0.96-0.46,1.95-0.66,2.97 c-0.2,1-0.38,2.01-0.52,3.01c-0.15,0.99-0.27,1.95-0.36,2.87L0.28,55.4c-0.09,0.96-0.17,1.95-0.21,2.97C0.02,59.33,0,60.35,0,61.43 c0,1.08,0.02,2.1,0.07,3.06c0.05,1.02,0.12,2,0.21,2.96c0.09,0.96,0.22,1.95,0.37,2.97c0.15,1,0.32,2,0.52,3 c0.2,1.02,0.42,2.01,0.66,2.97c0.25,0.99,0.51,1.94,0.79,2.85c0.28,0.92,0.59,1.87,0.95,2.85c0.33,0.93,0.69,1.87,1.09,2.83 c0.77,1.87,1.63,3.69,2.58,5.46c0.95,1.78,1.98,3.5,3.1,5.17c1.11,1.67,2.31,3.28,3.59,4.83c1.28,1.56,2.64,3.06,4.08,4.49 l0.62,0.63c0.53,0.51,1.05,1.01,1.58,1.48c0.71,0.64,1.47,1.3,2.28,1.96c0.77,0.63,1.56,1.25,2.38,1.86 c0.81,0.6,1.64,1.18,2.47,1.74c0.84,0.56,1.69,1.1,2.57,1.63c0.88,0.53,1.75,1.02,2.62,1.49c0.86,0.46,1.76,0.91,2.69,1.35 c0.71,0.34,1.43,0.66,2.15,0.96l0.62,0.26c0.97,0.4,1.92,0.77,2.85,1.1c0.9,0.32,1.84,0.63,2.82,0.93 c0.91,0.28,1.86,0.54,2.86,0.79c0.96,0.24,1.94,0.46,2.96,0.66c1,0.2,2,0.37,3,0.52c1.02,0.15,2,0.27,2.94,0.37 c0.96,0.09,1.95,0.17,2.97,0.21c0.97,0.05,2,0.07,3.08,0.07c1.08,0,2.11-0.02,3.07-0.07c1.02-0.05,2.01-0.12,2.97-0.21 c0.95-0.09,1.93-0.22,2.95-0.37c1-0.15,2-0.32,3-0.52c1.01-0.2,1.99-0.42,2.95-0.66c0.76-0.19,1.5-0.39,2.21-0.59v-0.01l0.63-0.19 c0.96-0.29,1.92-0.61,2.89-0.95c0.95-0.34,1.86-0.69,2.74-1.05l0.98-0.43l0.01,0.01c0.64-0.28,1.28-0.57,1.9-0.86 c0.91-0.43,1.8-0.88,2.65-1.33c0.87-0.46,1.74-0.96,2.61-1.48c0.87-0.52,1.73-1.07,2.57-1.63c0.84-0.56,1.67-1.14,2.48-1.75 c0.82-0.6,1.61-1.22,2.38-1.85c0.78-0.64,1.54-1.3,2.28-1.97c0.73-0.66,1.46-1.36,2.19-2.09s1.43-1.46,2.09-2.19 c0.64-0.71,1.29-1.47,1.96-2.28c0.63-0.77,1.25-1.56,1.86-2.38c0.6-0.82,1.19-1.65,1.75-2.49c0.56-0.84,1.1-1.69,1.63-2.57 c0.53-0.88,1.02-1.75,1.49-2.62c0.46-0.86,0.91-1.76,1.35-2.68c0.43-0.91,0.84-1.83,1.21-2.74l0.01-0.03 c0.4-0.97,0.77-1.92,1.1-2.84c0.34-0.94,0.65-1.89,0.94-2.83c0.28-0.91,0.54-1.86,0.79-2.85c0.24-0.96,0.46-1.95,0.66-2.96 c0.2-1,0.38-2.01,0.52-3.01c0.15-0.99,0.27-1.95,0.36-2.87l0.01-0.08c0.09-0.96,0.17-1.95,0.21-2.97c0.05-0.96,0.07-1.99,0.07-3.07 c0-1.08-0.02-2.1-0.07-3.06c-0.05-1.02-0.12-2.01-0.21-2.97l-0.01-0.08c-0.09-0.92-0.21-1.88-0.36-2.88 c-0.15-1-0.32-2.01-0.52-3.01c-0.2-1.02-0.42-2.01-0.66-2.96c-0.25-1-0.51-1.95-0.79-2.86c-0.29-0.95-0.61-1.9-0.94-2.85 c-0.34-0.94-0.7-1.89-1.09-2.83c-0.38-0.92-0.79-1.84-1.22-2.76c-0.44-0.93-0.89-1.83-1.35-2.69c-0.46-0.87-0.96-1.74-1.48-2.62 c-0.52-0.87-1.06-1.72-1.62-2.56c-0.56-0.84-1.15-1.67-1.75-2.49c-0.61-0.82-1.22-1.61-1.85-2.38c-0.6-0.74-1.25-1.49-1.94-2.24 c-0.66-0.73-1.37-1.47-2.12-2.21c-0.74-0.74-1.47-1.44-2.21-2.11c-0.74-0.67-1.5-1.33-2.29-1.97c-0.76-0.63-1.56-1.24-2.37-1.85 c-0.81-0.6-1.63-1.18-2.46-1.74c-0.83-0.56-1.69-1.1-2.56-1.62c-0.88-0.52-1.75-1.02-2.62-1.48c-0.86-0.46-1.75-0.91-2.68-1.35 c-0.9-0.43-1.8-0.82-2.7-1.2l-0.08-0.03c-0.97-0.4-1.91-0.77-2.84-1.1c-0.94-0.34-1.88-0.65-2.82-0.93 c-0.91-0.28-1.86-0.54-2.86-0.79c-0.96-0.24-1.95-0.46-2.96-0.66c-1-0.2-2.01-0.37-3-0.52C69.41,0.5,68.43,0.38,67.48,0.28 L67.48,0.28z M31.83,100.1l71.61-71.61L106,32.4c0.2,0.31,0.44,0.68,0.71,1.12l0.24,0.39l0.01-0.01l0.47,0.81 c0.2,0.34,0.41,0.71,0.64,1.14c0.23,0.43,0.46,0.85,0.67,1.25c0.29,0.56,0.57,1.12,0.83,1.68c0.27,0.58,0.52,1.12,0.74,1.64 c0.21,0.49,0.44,1.04,0.67,1.66c0.22,0.57,0.44,1.16,0.65,1.76c0.25,0.7,0.47,1.4,0.68,2.09c0.2,0.67,0.4,1.39,0.6,2.17 c0.2,0.78,0.37,1.51,0.52,2.2c0.15,0.72,0.29,1.45,0.42,2.17c0.13,0.77,0.24,1.51,0.33,2.24c0.09,0.73,0.17,1.46,0.23,2.2 c0.06,0.71,0.11,1.47,0.14,2.26c0.03,0.79,0.05,1.54,0.05,2.24c0,0.81-0.02,1.67-0.07,2.58c-0.04,0.87-0.11,1.75-0.2,2.65 c-0.09,0.92-0.2,1.79-0.31,2.62c-0.13,0.87-0.27,1.71-0.43,2.53c-0.16,0.83-0.35,1.67-0.56,2.51c-0.14,0.56-0.29,1.11-0.45,1.66 l0.02,0l-0.27,0.88c-0.23,0.77-0.51,1.59-0.81,2.44c-0.3,0.84-0.62,1.65-0.94,2.44c-0.33,0.79-0.68,1.59-1.05,2.37 c-0.36,0.76-0.76,1.54-1.17,2.32c-0.42,0.79-0.85,1.55-1.29,2.28c-0.45,0.74-0.91,1.48-1.4,2.2c-0.48,0.72-0.98,1.43-1.5,2.12 c-0.52,0.69-1.05,1.38-1.62,2.06c-0.57,0.69-1.15,1.37-1.75,2.03c-0.62,0.69-1.21,1.31-1.77,1.87c-1.17,1.17-2.48,2.35-3.9,3.52 c-0.68,0.56-1.37,1.1-2.06,1.61c-0.69,0.51-1.4,1.02-2.13,1.5c-0.72,0.48-1.45,0.94-2.18,1.39c-0.73,0.44-1.49,0.87-2.28,1.29 c-0.8,0.43-1.59,0.83-2.36,1.19c-0.79,0.37-1.57,0.72-2.36,1.05l-0.03,0.01c-0.81,0.33-1.63,0.65-2.45,0.95 c-0.85,0.31-1.66,0.58-2.42,0.81c-0.8,0.24-1.63,0.47-2.5,0.69c-0.84,0.21-1.69,0.4-2.55,0.57c-0.82,0.16-1.67,0.31-2.54,0.43 c-0.83,0.12-1.71,0.23-2.62,0.32c-0.9,0.09-1.79,0.15-2.65,0.2c-0.9,0.04-1.75,0.07-2.56,0.07c-0.7,0-1.44-0.02-2.23-0.05 s-1.54-0.08-2.26-0.14c-0.69-0.06-1.42-0.13-2.2-0.23c-0.77-0.1-1.51-0.21-2.23-0.33c-0.72-0.12-1.45-0.26-2.17-0.41 c-0.69-0.15-1.43-0.32-2.21-0.52c-0.78-0.2-1.5-0.4-2.16-0.6c-0.68-0.2-1.38-0.43-2.1-0.69c-0.6-0.21-1.18-0.42-1.75-0.64 c-0.61-0.24-1.17-0.46-1.66-0.67c-0.52-0.22-1.06-0.47-1.64-0.74c-0.56-0.26-1.12-0.54-1.69-0.83c-0.38-0.2-0.78-0.41-1.21-0.64 c-0.42-0.23-0.82-0.45-1.18-0.67c-0.45-0.26-0.85-0.5-1.2-0.72c-0.41-0.26-0.79-0.49-1.12-0.71l-3.92-2.56L31.83,100.1L31.83,100.1 z M94.84,25.41l-72.4,72.4l-2.65-3.34c-0.34-0.42-0.68-0.88-1.04-1.36c-0.34-0.46-0.68-0.94-1.03-1.43 c-0.34-0.49-0.66-0.96-0.96-1.43l-0.48-0.76l-0.01,0l-0.42-0.7c-0.37-0.61-0.73-1.24-1.08-1.87c-0.35-0.64-0.68-1.27-1-1.9 L13.79,85c-0.3-0.6-0.6-1.24-0.89-1.9c-0.29-0.64-0.57-1.31-0.84-1.99c-0.3-0.74-0.59-1.51-0.87-2.33 c-0.27-0.76-0.52-1.57-0.77-2.43c-0.23-0.8-0.45-1.62-0.65-2.45c-0.2-0.83-0.38-1.65-0.53-2.46c-0.15-0.81-0.29-1.64-0.41-2.47 c-0.11-0.8-0.21-1.64-0.29-2.52c-0.08-0.88-0.15-1.74-0.19-2.58c-0.04-0.87-0.06-1.7-0.06-2.47c0-0.81,0.02-1.67,0.07-2.57 c0.04-0.87,0.11-1.75,0.2-2.66c0.09-0.92,0.2-1.8,0.32-2.63c0.13-0.87,0.27-1.71,0.43-2.53c0.17-0.85,0.36-1.7,0.57-2.55 c0.22-0.87,0.45-1.7,0.69-2.5l0.19-0.63h0.02c0.2-0.64,0.41-1.26,0.62-1.85c0.28-0.79,0.59-1.59,0.93-2.41 c0.34-0.81,0.69-1.61,1.05-2.38c0.36-0.77,0.76-1.55,1.18-2.34c0.42-0.79,0.85-1.55,1.29-2.28c0.45-0.74,0.91-1.48,1.4-2.2 c0.48-0.72,0.98-1.43,1.5-2.12c0.51-0.69,1.05-1.38,1.62-2.07c0.55-0.67,1.12-1.34,1.72-1.99c0.51-0.57,1.03-1.11,1.54-1.63v-0.02 l0.26-0.26c0.56-0.56,1.18-1.15,1.87-1.77c0.65-0.59,1.33-1.17,2.02-1.74c0.68-0.56,1.38-1.1,2.07-1.62 c0.69-0.51,1.4-1.02,2.13-1.5c0.75-0.5,1.48-0.97,2.2-1.4c0.72-0.44,1.47-0.86,2.23-1.27c0.76-0.41,1.53-0.8,2.31-1.17 c0.53-0.25,1.06-0.49,1.59-0.72l0.84-0.35c0.79-0.33,1.59-0.64,2.4-0.93c0.77-0.28,1.6-0.55,2.5-0.82 c0.88-0.27,1.73-0.51,2.54-0.71c0.84-0.21,1.67-0.4,2.5-0.56c0.82-0.16,1.67-0.31,2.53-0.43c0.83-0.12,1.71-0.23,2.63-0.32 c0.9-0.09,1.79-0.15,2.65-0.2c0.9-0.05,1.76-0.07,2.56-0.07c0.78,0,1.61,0.02,2.49,0.06c0.83,0.04,1.69,0.1,2.58,0.19 c0.88,0.08,1.73,0.18,2.53,0.29c0.83,0.12,1.65,0.25,2.46,0.41c0.81,0.15,1.63,0.33,2.45,0.53c0.83,0.2,1.65,0.42,2.45,0.65 c0.84,0.24,1.63,0.5,2.39,0.76c0.75,0.26,1.54,0.55,2.36,0.88c0.68,0.27,1.35,0.56,2.02,0.85c0.71,0.32,1.34,0.61,1.9,0.89 c0.63,0.31,1.26,0.65,1.9,1c0.64,0.35,1.27,0.72,1.89,1.09c0.44,0.26,0.91,0.56,1.42,0.89c0.51,0.33,1,0.66,1.46,0.98 c0.49,0.34,0.96,0.68,1.42,1.02c0.44,0.33,0.9,0.68,1.35,1.04l3.34,2.65L94.84,25.41L94.84,25.41z M96.38,41.98 c2.82,1.89,5.6,4.03,8.32,6.41l0.11,0.1c0.71,0.67,1.1,1.55,1.15,2.45c0.06,0.95-0.24,1.92-0.91,2.69 c-0.04,0.04-0.06,0.07-0.1,0.11c-0.67,0.7-1.55,1.09-2.45,1.15c-0.95,0.06-1.92-0.24-2.69-0.91c-2.88-2.51-5.82-4.72-8.8-6.63 L96.38,41.98L96.38,41.98z M61.44,83.06c2.25,0,4.28,0.91,5.75,2.38c1.47,1.47,2.38,3.51,2.38,5.75c0,2.25-0.91,4.28-2.38,5.75 l-0.09,0.08c-1.46,1.42-3.46,2.3-5.66,2.3c-2.25,0-4.28-0.91-5.75-2.38l-0.08-0.09c-1.42-1.47-2.3-3.46-2.3-5.66 c0-2.24,0.91-4.27,2.39-5.75l0,0C57.16,83.97,59.19,83.06,61.44,83.06L61.44,83.06z M71.01,67.36l0.12,0.04 c3.09,1.19,6.12,2.98,9.05,5.37c0.8,0.65,1.26,1.56,1.35,2.5c0.1,0.94-0.17,1.93-0.81,2.72l-0.01,0.01 c-0.65,0.79-1.55,1.25-2.49,1.34c-0.94,0.1-1.93-0.17-2.72-0.81l-0.01,0c-2.28-1.86-4.6-3.24-6.93-4.16 c-1.18-0.46-2.36-0.81-3.53-1.03L71.01,67.36L71.01,67.36z M35.61,66.66c-0.06,0.06-0.12,0.12-0.19,0.16 c-0.75,0.61-1.66,0.88-2.56,0.82c-0.92-0.06-1.82-0.45-2.5-1.18l0,0c-0.06-0.06-0.12-0.13-0.16-0.19 c-0.61-0.75-0.88-1.66-0.82-2.56c0.06-0.92,0.45-1.82,1.18-2.5l0,0c0.05-0.05,0.11-0.1,0.17-0.14c4.91-4.33,9.97-7.6,15.14-9.78 c5.2-2.19,10.5-3.27,15.84-3.18c1.25,0.02,2.5,0.11,3.75,0.26l-7.31,7.31c-3.2,0.32-6.4,1.17-9.57,2.53 C44.19,60.08,39.85,62.91,35.61,66.66L35.61,66.66z M83.31,55.06c3.05,1.95,6.06,4.33,9.04,7.13c0.75,0.7,1.14,1.64,1.17,2.6 c0.03,0.95-0.3,1.91-1.01,2.65c-0.7,0.75-1.64,1.14-2.6,1.17c-0.95,0.03-1.91-0.3-2.66-1.01c-3.1-2.92-6.22-5.29-9.35-7.14 L83.31,55.06L83.31,55.06z"/></svg>
+    </button>
+
+
+    <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Configurar geometria" aria-label="Configurar geometria">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+
+
+
+
     <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
+
+
     <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
       <span class="icon-sun">&#9728;</span>
       <span class="icon-moon">&#9789;</span>
@@ -775,6 +1017,23 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <a class="back-link" id="back-link" href="index.html">← <span>Voltar ao portal</span></a>
   </div>
 </header>
+
+<!-- ============ LIMITES DE MUNICÍPIO (popover) ============ -->
+<div id="municipios-panel" class="municipios-panel hidden">
+  <div class="municipios-panel-header">
+    <b>Limites de município</b>
+    <button type="button" class="municipios-panel-close" id="municipios-panel-close" title="Fechar" aria-label="Fechar">✕</button>
+  </div>
+  <input type="text" id="municipios-search" placeholder="Escreve o nome do município…" autocomplete="off">
+  <ul class="municipios-results" id="municipios-results"></ul>
+  <p class="sub" id="municipios-status" style="min-height:14px; margin:2px 0 0;"></p>
+
+  <div class="municipios-loaded-section">
+    <b>Carregados</b>
+    <ul class="municipios-loaded-list" id="municipios-loaded-list"></ul>
+    <p class="sub" id="municipios-empty-msg">Nenhum limite carregado ainda.</p>
+  </div>
+</div>
 
 <div id="connectivity-restored-toast" role="status" aria-live="polite">
   <span class="check">
@@ -785,12 +1044,29 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 <div id="welcome-toast" role="status" aria-live="polite">
   
-  Seja bem-vindo de volta, administrador José Fonsi.
+  Seja bem-vindo de volta, administrador José, MEU TRAVEQUINHO!
 </div>
 
 <main>
   <div id="map">
-    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">A configurar…</span></div>
+    <div id="landing-banner">
+      <div class="landing-banner-card">
+        <div class="landing-eyebrow"></div>
+        <h2>Pronto para começar?</h2>
+        <p>O mapa já está pronto. Configura o modo de trabalho e começa a vetorizar diretamente sobre o mesmo.</p>
+        <button type="button" class="btn primary landing-start-btn" id="btn-start-project">Iniciar projeto →</button>
+      </div>
+    </div>
+
+    <div id="gear-coachmark" class="hidden">
+      <div class="gear-coachmark-arrow"></div>
+      <div class="gear-coachmark-body">
+        <button type="button" class="gear-coachmark-close" id="gear-coachmark-close" aria-label="Fechar">✕</button>
+        <p>⚙ Configura o ambiente de trabalho aqui antes de começares.</p>
+      </div>
+    </div>
+
+    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">Configura o ambiente para começares</span></div>
     <div class="coord-bar" id="coord-bar">
       <span id="coord-value">— , —</span>
       <button type="button" class="crs-switch" id="crs-switch" title="Alternar sistema de coordenadas">ETRS89 / PT-TM06</button>
@@ -814,10 +1090,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <h2>Geometrias desenhadas</h2>
     <div class="sub" id="config-summary"></div>
 
-    <div class="crs-info">
-      <b>Sistema de coordenadas</b>
-      O mapa e o desenho funcionam em WGS84 (EPSG:4326), o sistema geográfico nativo da web. As exportações em GeoJSON seguem sempre esta norma; o Shapefile inclui o ficheiro <code>.prj</code> correspondente. Para trabalho em ETRS89 / PT-TM06 (EPSG:3763), reprojeta os ficheiros em qualquer software de Sistema de Informação geográfica após a exportação.
-    </div>
+    
 
     <ul class="feat-list" id="feat-list"></ul>
     <p class="sub" id="empty-msg">Ainda não desenhaste nada. Usa as ferramentas no mapa (canto superior esquerdo) para começar.</p>
@@ -826,13 +1099,8 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <b style="font-size:13px;">Modo Offline</b>
       <p class="sub" id="offline-status" style="margin:4px 0 8px;">Nenhuma área guardada.</p>
       <div class="btn-row">
-        <button class="btn" id="btn-offline-define" style="flex:1;"> Definir área de trabalho offline</button>
         <button class="btn warn" id="btn-offline-clear" style="display:none;">🗑</button>
       </div>
-    </div>
-
-    <div class="analysis-block">
-      <button class="btn" id="btn-open-analysis" style="width:100%;">Análise espacial </button>
     </div>
 
     <div class="export-block">
@@ -845,14 +1113,14 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 
 <!-- ============ WIZARD ============ -->
-<div id="wizard-overlay">
+<div id="wizard-overlay" class="hidden">
   <div class="wizard-card intro-card" id="wizard-card">
 
     <!-- STEP 0: introdução -->
     <div class="wizard-step" data-step="0">
-      <div class="intro-eyebrow">Digitalização · ferramenta beta</div>
+      <div class="intro-eyebrow">Digitalização</div>
       <h2>Resumo</h2>
-      <p class="intro-lead">Pronto Zé, essenicalmente esta componente vai servir como se fosse um "mini" arcgis, só que 1000x mais facil de se usar, com exportaçao em shape e Geojson. Neste momento estou a trabalhar na parte de análise espacial, adicionar mais ferramentas, para já só tem buffer.</p>
+      <p class="intro-lead">Pronto, essenicalmente esta componente vai servir como se fosse um "mini" arcgis, só que 1000x mais facil de se usar, com exportaçao em shape e Geojson. Neste momento estou a trabalhar na parte de análise espacial, adicionar mais ferramentas, para já só tem buffer.</p>
 
      
 
@@ -989,38 +1257,129 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 </div>
 
 <!-- ============ ANÁLISE ESPACIAL (BUFFER) ============ -->
-<div id="analysis-overlay" class="hidden">
+<div id="analysis-overlay">
   <div class="analysis-header">
     <div class="analysis-title"><span class="dot"></span>Análise Espacial </div>
     <button class="analysis-close" id="analysis-close" title="Fechar">✕</button>
   </div>
   <div class="analysis-body">
     <aside class="analysis-sidebar">
-      <div class="analysis-section">
-        <b>Geometrias incluídas</b>
-        <p class="sub">Desmarca as que não queres incluir no buffer.</p>
-        <ul class="analysis-geom-list" id="analysis-geom-list"></ul>
-      </div>
-      <div class="analysis-section">
-        <b>Distância do buffer</b>
-        <p class="sub">Arrasta o slider ou escreve o valor exato.</p>
-        <div class="buffer-slider-row">
-          <input type="range" id="buffer-distance-range" min="0" max="2000" step="10" value="100">
-          <input type="number" id="buffer-distance-number" min="0" step="10" value="100">
-          <span class="unit">m</span>
+      <div class="tool-drawer open" data-tool="buffer">
+        <button type="button" class="tool-drawer-header" data-drawer-toggle>
+          <span class="tool-drawer-title"></span>Buffer</span>
+          <span class="tool-drawer-chevron">▾</span>
+        </button>
+        <div class="tool-drawer-body">
+          <div class="analysis-section">
+            <b>Geometrias incluídas</b>
+            <p class="sub">Desmarca as que não queres incluir no buffer.</p>
+            <ul class="analysis-geom-list" id="analysis-geom-list"></ul>
+          </div>
+          <div class="analysis-section">
+            <b>Distância do buffer</b>
+            <p class="sub">Arrasta o slider ou escreve o valor exato.</p>
+            <div class="buffer-slider-row">
+              <input type="range" id="buffer-distance-range" min="0" max="2000" step="10" value="100">
+              <input type="number" id="buffer-distance-number" min="0" step="10" value="100">
+              <span class="unit">m</span>
+            </div>
+          </div>
+          <div class="analysis-section">
+            <div class="btn-row" style="flex-direction:column;">
+              <button class="btn primary" id="btn-apply-buffer">Criar buffer</button>
+              <button class="btn" id="btn-clear-buffer">↺ Limpar buffers</button>
+            </div>
+            <p class="sub" id="buffer-status" style="margin-top:8px; min-height:14px;"></p>
+          </div>
+          <div class="analysis-section export-block">
+            <b>Exportar resultado do buffer</b>
+            <button class="btn primary" id="btn-export-buffer-geojson">⬇ Exportar GeoJSON</button>
+            <button class="btn" id="btn-export-buffer-shp">⬇ Exportar Shapefile (.zip)</button>
+          </div>
         </div>
       </div>
-      <div class="analysis-section">
-        <div class="btn-row" style="flex-direction:column;">
-          <button class="btn primary" id="btn-apply-buffer">⬭ Gerar buffer</button>
-          <button class="btn" id="btn-clear-buffer">↺ Limpar buffers</button>
+
+      <div class="tool-drawer" data-tool="intersect">
+        <button type="button" class="tool-drawer-header" data-drawer-toggle>
+          <span class="tool-drawer-title"></span>Intersect</span>
+          <span class="tool-drawer-chevron">▾</span>
+        </button>
+        <div class="tool-drawer-body">
+          <div class="analysis-section">
+            <b>Geometrias a intersetar</b>
+            <p class="sub">Seleciona pelo menos 2 polígonos. O resultado é a área comum a todos.</p>
+            <ul class="analysis-geom-list" id="analysis-geom-list-intersect"></ul>
+          </div>
+          <div class="analysis-section">
+            <div class="btn-row" style="flex-direction:column;">
+              <button class="btn primary" id="btn-run-intersect">Intersetar</button>
+              <button class="btn" id="btn-clear-intersect">↺ Limpar</button>
+            </div>
+            <p class="sub" id="intersect-status" style="margin-top:8px; min-height:14px;"></p>
+          </div>
+          <div class="analysis-section export-block">
+            <b>Exportar resultado</b>
+            <button class="btn primary" id="btn-export-intersect-geojson">⬇ Exportar GeoJSON</button>
+            <button class="btn" id="btn-export-intersect-shp">⬇ Exportar Shapefile (.zip)</button>
+          </div>
         </div>
-        <p class="sub" id="buffer-status" style="margin-top:8px; min-height:14px;"></p>
       </div>
-      <div class="analysis-section export-block">
-        <b>Exportar resultado do buffer</b>
-        <button class="btn primary" id="btn-export-buffer-geojson">⬇ Exportar GeoJSON</button>
-        <button class="btn" id="btn-export-buffer-shp">⬇ Exportar Shapefile (.zip)</button>
+
+      <div class="tool-drawer" data-tool="union">
+        <button type="button" class="tool-drawer-header" data-drawer-toggle>
+          <span class="tool-drawer-title"></span>Union</span>
+          <span class="tool-drawer-chevron">▾</span>
+        </button>
+        <div class="tool-drawer-body">
+          <div class="analysis-section">
+            <b>Geometrias a unir</b>
+            <p class="sub">Seleciona pelo menos 2 polígonos. O resultado funde tudo numa só geometria.</p>
+            <ul class="analysis-geom-list" id="analysis-geom-list-union"></ul>
+          </div>
+          <div class="analysis-section">
+            <div class="btn-row" style="flex-direction:column;">
+              <button class="btn primary" id="btn-run-union">Unir</button>
+              <button class="btn" id="btn-clear-union">↺ Limpar</button>
+            </div>
+            <p class="sub" id="union-status" style="margin-top:8px; min-height:14px;"></p>
+          </div>
+          <div class="analysis-section export-block">
+            <b>Exportar resultado</b>
+            <button class="btn primary" id="btn-export-union-geojson">⬇ Exportar GeoJSON</button>
+            <button class="btn" id="btn-export-union-shp">⬇ Exportar Shapefile (.zip)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-drawer" data-tool="difference">
+        <button type="button" class="tool-drawer-header" data-drawer-toggle>
+          <span class="tool-drawer-title"></span>Clip</span>
+          <span class="tool-drawer-chevron">▾</span>
+        </button>
+        <div class="tool-drawer-body">
+          <div class="analysis-section">
+            <b>Geometria base</b>
+            <p class="sub">Esta é a geometria que fica (a que vai ser recortada).</p>
+            <ul class="analysis-geom-list" id="analysis-geom-list-diff-base"></ul>
+          </div>
+          <div class="analysis-section">
+            <b>Subtrair estas geometrias</b>
+            <p class="sub">O resultado é a base menos as geometrias marcadas.</p>
+            <ul class="analysis-geom-list" id="analysis-geom-list-diff-subtract"></ul>
+          </div>
+          <div class="analysis-section">
+            <div class="btn-row" style="flex-direction:column;">
+              <button class="btn primary" id="btn-run-difference">Subtrair</button>
+              <button class="btn" id="btn-clear-difference">↺ Limpar</button>
+            </div>
+            <p class="sub" id="difference-status" style="margin-top:8px; min-height:14px;"></p>
+          </div>
+          <div class="analysis-section export-block">
+            <b>Exportar resultado</b>
+            <button class="btn primary" id="btn-export-difference-geojson">⬇ Exportar GeoJSON</button>
+            <button class="btn" id="btn-export-difference-shp">⬇ Exportar Shapefile (.zip)</button>
+          </div>
+        </div>
       </div>
     </aside>
     <div class="analysis-map-wrap">
@@ -1035,6 +1394,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 <script src="https://unpkg.com/@mapbox/shp-write@0.4.3/shpwrite.js"></script>
 <script src="https://unpkg.com/proj4@2.9.0/dist/proj4.js"></script>
 <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+<script src="https://unpkg.com/shpjs@4.0.4/dist/shp.min.js"></script>
 
 <script>
 /* ============================================================
@@ -1412,8 +1772,13 @@ const featuresData = new Map(); // leafletLayerId -> {layer, props}
 let drawnGroup;
 let map;
 
-const DEFAULT_COLOR = '#3D6B4F';
-const PALETTE = ['#3D6B4F','#C2703D','#6E726A','#234635','#E7A57A','#7FB894','#B5472B','#9B9E94'];
+const DEFAULT_COLOR = '#F5821F';
+const PALETTE = ['#F5821F','#C2703D','#6E726A','#234635','#E7A57A','#7FB894','#B5472B','#9B9E94'];
+
+// ---------- limites de município (CAOP preview via GitHub) ----------
+const MUNICIPIOS_GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/jdsm3011-alt/site_ofc/main/';
+const MUNICIPIOS_INDEX = [{"m":"Albergaria-a-Velha","d":"Aveiro","p":"previews/Aveiro/Albergaria-a-Velha/caop_preview.geojson"},{"m":"Anadia","d":"Aveiro","p":"previews/Aveiro/Anadia/caop_preview.geojson"},{"m":"Arouca","d":"Aveiro","p":"previews/Aveiro/Arouca/caop_preview.geojson"},{"m":"Aveiro","d":"Aveiro","p":"previews/Aveiro/Aveiro/caop_preview.geojson"},{"m":"Castelo de Paiva","d":"Aveiro","p":"previews/Aveiro/Castelo_de_Paiva/caop_preview.geojson"},{"m":"Estarreja","d":"Aveiro","p":"previews/Aveiro/Estarreja/caop_preview.geojson"},{"m":"Mealhada","d":"Aveiro","p":"previews/Aveiro/Mealhada/caop_preview.geojson"},{"m":"Murtosa","d":"Aveiro","p":"previews/Aveiro/Murtosa/caop_preview.geojson"},{"m":"Oliveira de Azeméis","d":"Aveiro","p":"previews/Aveiro/Oliveira_de_Azeméis/caop_preview.geojson"},{"m":"Oliveira do Bairro","d":"Aveiro","p":"previews/Aveiro/Oliveira_do_Bairro/caop_preview.geojson"},{"m":"Ovar","d":"Aveiro","p":"previews/Aveiro/Ovar/caop_preview.geojson"},{"m":"Santa Maria da Feira","d":"Aveiro","p":"previews/Aveiro/Santa_Maria_da_Feira/caop_preview.geojson"},{"m":"Sever do Vouga","d":"Aveiro","p":"previews/Aveiro/Sever_do_Vouga/caop_preview.geojson"},{"m":"São João da Madeira","d":"Aveiro","p":"previews/Aveiro/São_João_da_Madeira/caop_preview.geojson"},{"m":"Vagos","d":"Aveiro","p":"previews/Aveiro/Vagos/caop_preview.geojson"},{"m":"Vale de Cambra","d":"Aveiro","p":"previews/Aveiro/Vale_de_Cambra/caop_preview.geojson"},{"m":"Águeda","d":"Aveiro","p":"previews/Aveiro/Águeda/caop_preview.geojson"},{"m":"Ílhavo","d":"Aveiro","p":"previews/Aveiro/Ílhavo/caop_preview.geojson"},{"m":"Aljustrel","d":"Beja","p":"previews/Beja/Aljustrel/caop_preview.geojson"},{"m":"Almodôvar","d":"Beja","p":"previews/Beja/Almodôvar/caop_preview.geojson"},{"m":"Alvito","d":"Beja","p":"previews/Beja/Alvito/caop_preview.geojson"},{"m":"Barrancos","d":"Beja","p":"previews/Beja/Barrancos/caop_preview.geojson"},{"m":"Beja","d":"Beja","p":"previews/Beja/Beja/caop_preview.geojson"},{"m":"Castro Verde","d":"Beja","p":"previews/Beja/Castro_Verde/caop_preview.geojson"},{"m":"Cuba","d":"Beja","p":"previews/Beja/Cuba/caop_preview.geojson"},{"m":"Ferreira do Alentejo","d":"Beja","p":"previews/Beja/Ferreira_do_Alentejo/caop_preview.geojson"},{"m":"Moura","d":"Beja","p":"previews/Beja/Moura/caop_preview.geojson"},{"m":"Mértola","d":"Beja","p":"previews/Beja/Mértola/caop_preview.geojson"},{"m":"Serpa","d":"Beja","p":"previews/Beja/Serpa/caop_preview.geojson"},{"m":"Vidigueira","d":"Beja","p":"previews/Beja/Vidigueira/caop_preview.geojson"},{"m":"Amares","d":"Braga","p":"previews/Braga/Amares/caop_preview.geojson"},{"m":"Barcelos","d":"Braga","p":"previews/Braga/Barcelos/caop_preview.geojson"},{"m":"Guimarães","d":"Braga","p":"previews/Braga/Guimarães/caop_preview.geojson"},{"m":"Braga","d":"Braga","p":"previews/Braga/Braga/caop_preview.geojson"},{"m":"Cabeceiras de Basto","d":"Braga","p":"previews/Braga/Cabeceiras_de_Basto/caop_preview.geojson"},{"m":"Celorico de Basto","d":"Braga","p":"previews/Braga/Celorico_de_Basto/caop_preview.geojson"},{"m":"Esposende","d":"Braga","p":"previews/Braga/Esposende/caop_preview.geojson"},{"m":"Fafe","d":"Braga","p":"previews/Braga/Fafe/caop_preview.geojson"},{"m":"Póvoa de Lanhoso","d":"Braga","p":"previews/Braga/Póvoa_de_Lanhoso/caop_preview.geojson"},{"m":"Terras de Bouro","d":"Braga","p":"previews/Braga/Terras_de_Bouro/caop_preview.geojson"},{"m":"Vieira do Minho","d":"Braga","p":"previews/Braga/Vieira_do_Minho/caop_preview.geojson"},{"m":"Vila Nova de Famalicão","d":"Braga","p":"previews/Braga/Vila_Nova_de_Famalicão/caop_preview.geojson"},{"m":"Vila Verde","d":"Braga","p":"previews/Braga/Vila_Verde/caop_preview.geojson"},{"m":"Vizela","d":"Braga","p":"previews/Braga/Vizela/caop_preview.geojson"},{"m":"Alfândega da Fé","d":"Bragança","p":"previews/Bragança/Alfândega_da_Fé/caop_preview.geojson"},{"m":"Bragança","d":"Bragança","p":"previews/Bragança/Bragança/caop_preview.geojson"},{"m":"Carrazeda de Ansiães","d":"Bragança","p":"previews/Bragança/Carrazeda_de_Ansiães/caop_preview.geojson"},{"m":"Freixo de Espada à Cinta","d":"Bragança","p":"previews/Bragança/Freixo_de_Espada_à_Cinta/caop_preview.geojson"},{"m":"Macedo de Cavaleiros","d":"Bragança","p":"previews/Bragança/Macedo_de_Cavaleiros/caop_preview.geojson"},{"m":"Miranda do Douro","d":"Bragança","p":"previews/Bragança/Miranda_do_Douro/caop_preview.geojson"},{"m":"Mirandela","d":"Bragança","p":"previews/Bragança/Mirandela/caop_preview.geojson"},{"m":"Mogadouro","d":"Bragança","p":"previews/Bragança/Mogadouro/caop_preview.geojson"},{"m":"Torre de Moncorvo","d":"Bragança","p":"previews/Bragança/Torre_de_Moncorvo/caop_preview.geojson"},{"m":"Vila Flor","d":"Bragança","p":"previews/Bragança/Vila_Flor/caop_preview.geojson"},{"m":"Vimioso","d":"Bragança","p":"previews/Bragança/Vimioso/caop_preview.geojson"},{"m":"Vinhais","d":"Bragança","p":"previews/Bragança/Vinhais/caop_preview.geojson"},{"m":"Belmonte","d":"Castelo Branco","p":"previews/Castelo_Branco/Belmonte/caop_preview.geojson"},{"m":"Castelo Branco","d":"Castelo Branco","p":"previews/Castelo_Branco/Castelo_Branco/caop_preview.geojson"},{"m":"Covilhã","d":"Castelo Branco","p":"previews/Castelo_Branco/Covilhã/caop_preview.geojson"},{"m":"Fundão","d":"Castelo Branco","p":"previews/Castelo_Branco/Fundão/caop_preview.geojson"},{"m":"Idanha-a-Nova","d":"Castelo Branco","p":"previews/Castelo_Branco/Idanha-a-Nova/caop_preview.geojson"},{"m":"Oleiros","d":"Castelo Branco","p":"previews/Castelo_Branco/Oleiros/caop_preview.geojson"},{"m":"Penamacor","d":"Castelo Branco","p":"previews/Castelo_Branco/Penamacor/caop_preview.geojson"},{"m":"Proença-a-Nova","d":"Castelo Branco","p":"previews/Castelo_Branco/Proença-a-Nova/caop_preview.geojson"},{"m":"Sertã","d":"Castelo Branco","p":"previews/Castelo_Branco/Sertã/caop_preview.geojson"},{"m":"Vila Velha de Ródão","d":"Castelo Branco","p":"previews/Castelo_Branco/Vila_Velha_de_Ródão/caop_preview.geojson"},{"m":"Vila de Rei","d":"Castelo Branco","p":"previews/Castelo_Branco/Vila_de_Rei/caop_preview.geojson"},{"m":"Arganil","d":"Coimbra","p":"previews/Coimbra/Arganil/caop_preview.geojson"},{"m":"Cantanhede","d":"Coimbra","p":"previews/Coimbra/Cantanhede/caop_preview.geojson"},{"m":"Coimbra","d":"Coimbra","p":"previews/Coimbra/Coimbra/caop_preview.geojson"},{"m":"Condeixa-a-Nova","d":"Coimbra","p":"previews/Coimbra/Condeixa-a-Nova/caop_preview.geojson"},{"m":"Figueira da Foz","d":"Coimbra","p":"previews/Coimbra/Figueira_da_Foz/caop_preview.geojson"},{"m":"Góis","d":"Coimbra","p":"previews/Coimbra/Góis/caop_preview.geojson"},{"m":"Lousã","d":"Coimbra","p":"previews/Coimbra/Lousã/caop_preview.geojson"},{"m":"Miranda do Corvo","d":"Coimbra","p":"previews/Coimbra/Miranda_do_Corvo/caop_preview.geojson"},{"m":"Montemor-o-Velho","d":"Coimbra","p":"previews/Coimbra/Montemor-o-Velho/caop_preview.geojson"},{"m":"Oliveira do Hospital","d":"Coimbra","p":"previews/Coimbra/Oliveira_do_Hospital/caop_preview.geojson"},{"m":"Pampilhosa da Serra","d":"Coimbra","p":"previews/Coimbra/Pampilhosa_da_Serra/caop_preview.geojson"},{"m":"Penacova","d":"Coimbra","p":"previews/Coimbra/Penacova/caop_preview.geojson"},{"m":"Penela","d":"Coimbra","p":"previews/Coimbra/Penela/caop_preview.geojson"},{"m":"Soure","d":"Coimbra","p":"previews/Coimbra/Soure/caop_preview.geojson"},{"m":"Tábua","d":"Coimbra","p":"previews/Coimbra/Tábua/caop_preview.geojson"},{"m":"Vila Nova de Poiares","d":"Coimbra","p":"previews/Coimbra/Vila_Nova_de_Poiares/caop_preview.geojson"},{"m":"Albufeira","d":"Faro","p":"previews/Faro/Albufeira/caop_preview.geojson"},{"m":"Alcoutim","d":"Faro","p":"previews/Faro/Alcoutim/caop_preview.geojson"},{"m":"Aljezur","d":"Faro","p":"previews/Faro/Aljezur/caop_preview.geojson"},{"m":"Castro Marim","d":"Faro","p":"previews/Faro/Castro_Marim/caop_preview.geojson"},{"m":"Faro","d":"Faro","p":"previews/Faro/Faro/caop_preview.geojson"},{"m":"Lagoa","d":"Faro","p":"previews/Faro/Lagoa/caop_preview.geojson"},{"m":"Loulé","d":"Faro","p":"previews/Faro/Loulé/caop_preview.geojson"},{"m":"Monchique","d":"Faro","p":"previews/Faro/Monchique/caop_preview.geojson"},{"m":"Olhão","d":"Faro","p":"previews/Faro/Olhão/caop_preview.geojson"},{"m":"Portimão","d":"Faro","p":"previews/Faro/Portimão/caop_preview.geojson"},{"m":"Silves","d":"Faro","p":"previews/Faro/Silves/caop_preview.geojson"},{"m":"São Brás de Alportel","d":"Faro","p":"previews/Faro/São_Brás_de_Alportel/caop_preview.geojson"},{"m":"Tavira","d":"Faro","p":"previews/Faro/Tavira/caop_preview.geojson"},{"m":"Vila Real de Santo António","d":"Faro","p":"previews/Faro/Vila_Real_de_Santo_António/caop_preview.geojson"},{"m":"Aguiar da Beira","d":"Guarda","p":"previews/Guarda/Aguiar_da_Beira/caop_preview.geojson"},{"m":"Almeida","d":"Guarda","p":"previews/Guarda/Almeida/caop_preview.geojson"},{"m":"Celorico da Beira","d":"Guarda","p":"previews/Guarda/Celorico_da_Beira/caop_preview.geojson"},{"m":"Fornos de Algodres","d":"Guarda","p":"previews/Guarda/Fornos_de_Algodres/caop_preview.geojson"},{"m":"Gouveia","d":"Guarda","p":"previews/Guarda/Gouveia/caop_preview.geojson"},{"m":"Guarda","d":"Guarda","p":"previews/Guarda/Guarda/caop_preview.geojson"},{"m":"Manteigas","d":"Guarda","p":"previews/Guarda/Manteigas/caop_preview.geojson"},{"m":"Mêda","d":"Guarda","p":"previews/Guarda/Mêda/caop_preview.geojson"},{"m":"Pinhel","d":"Guarda","p":"previews/Guarda/Pinhel/caop_preview.geojson"},{"m":"Sabugal","d":"Guarda","p":"previews/Guarda/Sabugal/caop_preview.geojson"},{"m":"Seia","d":"Guarda","p":"previews/Guarda/Seia/caop_preview.geojson"},{"m":"Trancoso","d":"Guarda","p":"previews/Guarda/Trancoso/caop_preview.geojson"},{"m":"Alcobaça","d":"Leiria","p":"previews/Leiria/Alcobaça/caop_preview.geojson"},{"m":"Alvaiázere","d":"Leiria","p":"previews/Leiria/Alvaiázere/caop_preview.geojson"},{"m":"Ansião","d":"Leiria","p":"previews/Leiria/Ansião/caop_preview.geojson"},{"m":"Batalha","d":"Leiria","p":"previews/Leiria/Batalha/caop_preview.geojson"},{"m":"Bombarral","d":"Leiria","p":"previews/Leiria/Bombarral/caop_preview.geojson"},{"m":"Castanheira de Pêra","d":"Leiria","p":"previews/Leiria/Castanheira_de_Pêra/caop_preview.geojson"},{"m":"Figueiró dos Vinhos","d":"Leiria","p":"previews/Leiria/Figueiró_dos_Vinhos/caop_preview.geojson"},{"m":"Leiria","d":"Leiria","p":"previews/Leiria/Leiria/caop_preview.geojson"},{"m":"Marinha Grande","d":"Leiria","p":"previews/Leiria/Marinha_Grande/caop_preview.geojson"},{"m":"Nazaré","d":"Leiria","p":"previews/Leiria/Nazaré/caop_preview.geojson"},{"m":"Pedrógão Grande","d":"Leiria","p":"previews/Leiria/Pedrógão_Grande/caop_preview.geojson"},{"m":"Pombal","d":"Leiria","p":"previews/Leiria/Pombal/caop_preview.geojson"},{"m":"Porto de Mós","d":"Leiria","p":"previews/Leiria/Porto_de_Mós/caop_preview.geojson"},{"m":"Óbidos","d":"Leiria","p":"previews/Leiria/Óbidos/caop_preview.geojson"},{"m":"Alenquer","d":"Lisboa","p":"previews/Lisboa/Alenquer/caop_preview.geojson"},{"m":"Amadora","d":"Lisboa","p":"previews/Lisboa/Amadora/caop_preview.geojson"},{"m":"Arruda dos Vinhos","d":"Lisboa","p":"previews/Lisboa/Arruda_dos_Vinhos/caop_preview.geojson"},{"m":"Azambuja","d":"Lisboa","p":"previews/Lisboa/Azambuja/caop_preview.geojson"},{"m":"Cadaval","d":"Lisboa","p":"previews/Lisboa/Cadaval/caop_preview.geojson"},{"m":"Cascais","d":"Lisboa","p":"previews/Lisboa/Cascais/caop_preview.geojson"},{"m":"Lisboa","d":"Lisboa","p":"previews/Lisboa/Lisboa/caop_preview.geojson"},{"m":"Loures","d":"Lisboa","p":"previews/Lisboa/Loures/caop_preview.geojson"},{"m":"Lourinhã","d":"Lisboa","p":"previews/Lisboa/Lourinhã/caop_preview.geojson"},{"m":"Odivelas","d":"Lisboa","p":"previews/Lisboa/Odivelas/caop_preview.geojson"},{"m":"Oeiras","d":"Lisboa","p":"previews/Lisboa/Oeiras/caop_preview.geojson"},{"m":"Sintra","d":"Lisboa","p":"previews/Lisboa/Sintra/caop_preview.geojson"},{"m":"Sobral de Monte Agraço","d":"Lisboa","p":"previews/Lisboa/Sobral_de_Monte_Agraço/caop_preview.geojson"},{"m":"Vila Franca de Xira","d":"Lisboa","p":"previews/Lisboa/Vila_Franca_de_Xira/caop_preview.geojson"},{"m":"Alter do Chão","d":"Portalegre","p":"previews/Portalegre/Alter_do_Chão/caop_preview.geojson"},{"m":"Arronches","d":"Portalegre","p":"previews/Portalegre/Arronches/caop_preview.geojson"},{"m":"Avis","d":"Portalegre","p":"previews/Portalegre/Avis/caop_preview.geojson"},{"m":"Campo Maior","d":"Portalegre","p":"previews/Portalegre/Campo_Maior/caop_preview.geojson"},{"m":"Castelo de Vide","d":"Portalegre","p":"previews/Portalegre/Castelo_de_Vide/caop_preview.geojson"},{"m":"Crato","d":"Portalegre","p":"previews/Portalegre/Crato/caop_preview.geojson"},{"m":"Elvas","d":"Portalegre","p":"previews/Portalegre/Elvas/caop_preview.geojson"},{"m":"Fronteira","d":"Portalegre","p":"previews/Portalegre/Fronteira/caop_preview.geojson"},{"m":"Gavião","d":"Portalegre","p":"previews/Portalegre/Gavião/caop_preview.geojson"},{"m":"Marvão","d":"Portalegre","p":"previews/Portalegre/Marvão/caop_preview.geojson"},{"m":"Monforte","d":"Portalegre","p":"previews/Portalegre/Monforte/caop_preview.geojson"},{"m":"Nisa","d":"Portalegre","p":"previews/Portalegre/Nisa/caop_preview.geojson"},{"m":"Ponte de Sor","d":"Portalegre","p":"previews/Portalegre/Ponte_de_Sor/caop_preview.geojson"},{"m":"Portalegre","d":"Portalegre","p":"previews/Portalegre/Portalegre/caop_preview.geojson"},{"m":"Sousel","d":"Portalegre","p":"previews/Portalegre/Sousel/caop_preview.geojson"},{"m":"Amarante","d":"Porto","p":"previews/Porto/Amarante/caop_preview.geojson"},{"m":"Baião","d":"Porto","p":"previews/Porto/Baião/caop_preview.geojson"},{"m":"Felgueiras","d":"Porto","p":"previews/Porto/Felgueiras/caop_preview.geojson"},{"m":"Gondomar","d":"Porto","p":"previews/Porto/Gondomar/caop_preview.geojson"},{"m":"Lousada","d":"Porto","p":"previews/Porto/Lousada/caop_preview.geojson"},{"m":"Maia","d":"Porto","p":"previews/Porto/Maia/caop_preview.geojson"},{"m":"Marco de Canaveses","d":"Porto","p":"previews/Porto/Marco_de_Canaveses/caop_preview.geojson"},{"m":"Matosinhos","d":"Porto","p":"previews/Porto/Matosinhos/caop_preview.geojson"},{"m":"Paredes","d":"Porto","p":"previews/Porto/Paredes/caop_preview.geojson"},{"m":"Paços de Ferreira","d":"Porto","p":"previews/Porto/Paços_de_Ferreira/caop_preview.geojson"},{"m":"Penafiel","d":"Porto","p":"previews/Porto/Penafiel/caop_preview.geojson"},{"m":"Porto","d":"Porto","p":"previews/Porto/Porto/caop_preview.geojson"},{"m":"Póvoa de Varzim","d":"Porto","p":"previews/Porto/Póvoa_de_Varzim/caop_preview.geojson"},{"m":"Santo Tirso","d":"Porto","p":"previews/Porto/Santo_Tirso/caop_preview.geojson"},{"m":"Trofa","d":"Porto","p":"previews/Porto/Trofa/caop_preview.geojson"},{"m":"Valongo","d":"Porto","p":"previews/Porto/Valongo/caop_preview.geojson"},{"m":"Vila do Conde","d":"Porto","p":"previews/Porto/Vila_do_Conde/caop_preview.geojson"},{"m":"Abrantes","d":"Santarém","p":"previews/Santarém/Abrantes/caop_preview.geojson"},{"m":"Almeirim","d":"Santarém","p":"previews/Santarém/Almeirim/caop_preview.geojson"},{"m":"Alpiarça","d":"Santarém","p":"previews/Santarém/Alpiarça/caop_preview.geojson"},{"m":"Benavente","d":"Santarém","p":"previews/Santarém/Benavente/caop_preview.geojson"},{"m":"Cartaxo","d":"Santarém","p":"previews/Santarém/Cartaxo/caop_preview.geojson"},{"m":"Chamusca","d":"Santarém","p":"previews/Santarém/Chamusca/caop_preview.geojson"},{"m":"Constância","d":"Santarém","p":"previews/Santarém/Constância/caop_preview.geojson"},{"m":"Coruche","d":"Santarém","p":"previews/Santarém/Coruche/caop_preview.geojson"},{"m":"Entroncamento","d":"Santarém","p":"previews/Santarém/Entroncamento/caop_preview.geojson"},{"m":"Ferreira do Zêzere","d":"Santarém","p":"previews/Santarém/Ferreira_do_Zêzere/caop_preview.geojson"},{"m":"Golegã","d":"Santarém","p":"previews/Santarém/Golegã/caop_preview.geojson"},{"m":"Mação","d":"Santarém","p":"previews/Santarém/Mação/caop_preview.geojson"},{"m":"Ourém","d":"Santarém","p":"previews/Santarém/Ourém/caop_preview.geojson"},{"m":"Rio Maior","d":"Santarém","p":"previews/Santarém/Rio_Maior/caop_preview.geojson"},{"m":"Salvaterra de Magos","d":"Santarém","p":"previews/Santarém/Salvaterra_de_Magos/caop_preview.geojson"},{"m":"Santarém","d":"Santarém","p":"previews/Santarém/Santarém/caop_preview.geojson"},{"m":"Sardoal","d":"Santarém","p":"previews/Santarém/Sardoal/caop_preview.geojson"},{"m":"Tomar","d":"Santarém","p":"previews/Santarém/Tomar/caop_preview.geojson"},{"m":"Torres Novas","d":"Santarém","p":"previews/Santarém/Torres_Novas/caop_preview.geojson"},{"m":"Vila Nova da Barquinha","d":"Santarém","p":"previews/Santarém/Vila_Nova_da_Barquinha/caop_preview.geojson"},{"m":"Alcochete","d":"Setúbal","p":"previews/Setúbal/Alcochete/caop_preview.geojson"},{"m":"Alcácer do Sal","d":"Setúbal","p":"previews/Setúbal/Alcácer_do_Sal/caop_preview.geojson"},{"m":"Almada","d":"Setúbal","p":"previews/Setúbal/Almada/caop_preview.geojson"},{"m":"Barreiro","d":"Setúbal","p":"previews/Setúbal/Barreiro/caop_preview.geojson"},{"m":"Grândola","d":"Setúbal","p":"previews/Setúbal/Grândola/caop_preview.geojson"},{"m":"Moita","d":"Setúbal","p":"previews/Setúbal/Moita/caop_preview.geojson"},{"m":"Montijo","d":"Setúbal","p":"previews/Setúbal/Montijo/caop_preview.geojson"},{"m":"Palmela","d":"Setúbal","p":"previews/Setúbal/Palmela/caop_preview.geojson"},{"m":"Santiago do Cacém","d":"Setúbal","p":"previews/Setúbal/Santiago_do_Cacém/caop_preview.geojson"},{"m":"Seixal","d":"Setúbal","p":"previews/Setúbal/Seixal/caop_preview.geojson"},{"m":"Setúbal","d":"Setúbal","p":"previews/Setúbal/Setúbal/caop_preview.geojson"},{"m":"Arcos de Valdevez","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Arcos_de_Valdevez/caop_preview.geojson"},{"m":"Caminha","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Caminha/caop_preview.geojson"},{"m":"Melgaço","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Melgaço/caop_preview.geojson"},{"m":"Monção","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Monção/caop_preview.geojson"},{"m":"Paredes de Coura","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Paredes_de_Coura/caop_preview.geojson"},{"m":"Ponte da Barca","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Ponte_da_Barca/caop_preview.geojson"},{"m":"Ponte de Lima","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Ponte_de_Lima/caop_preview.geojson"},{"m":"Valença","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Valença/caop_preview.geojson"},{"m":"Viana do Castelo","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Viana_do_Castelo/caop_preview.geojson"},{"m":"Vila Nova de Cerveira","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Vila_Nova_de_Cerveira/caop_preview.geojson"},{"m":"Alijó","d":"Vila Real","p":"previews/Vila_Real/Alijó/caop_preview.geojson"},{"m":"Boticas","d":"Vila Real","p":"previews/Vila_Real/Boticas/caop_preview.geojson"},{"m":"Chaves","d":"Vila Real","p":"previews/Vila_Real/Chaves/caop_preview.geojson"},{"m":"Mesão Frio","d":"Vila Real","p":"previews/Vila_Real/Mesão_Frio/caop_preview.geojson"},{"m":"Mondim de Basto","d":"Vila Real","p":"previews/Vila_Real/Mondim_de_Basto/caop_preview.geojson"},{"m":"Montalegre","d":"Vila Real","p":"previews/Vila_Real/Montalegre/caop_preview.geojson"},{"m":"Murça","d":"Vila Real","p":"previews/Vila_Real/Murça/caop_preview.geojson"},{"m":"Peso da Régua","d":"Vila Real","p":"previews/Vila_Real/Peso_da_Régua/caop_preview.geojson"},{"m":"Ribeira de Pena","d":"Vila Real","p":"previews/Vila_Real/Ribeira_de_Pena/caop_preview.geojson"},{"m":"Sabrosa","d":"Vila Real","p":"previews/Vila_Real/Sabrosa/caop_preview.geojson"},{"m":"Santa Marta de Penaguião","d":"Vila Real","p":"previews/Vila_Real/Santa_Marta_de_Penaguião/caop_preview.geojson"},{"m":"Valpaços","d":"Vila Real","p":"previews/Vila_Real/Valpaços/caop_preview.geojson"},{"m":"Vila Pouca de Aguiar","d":"Vila Real","p":"previews/Vila_Real/Vila_Pouca_de_Aguiar/caop_preview.geojson"},{"m":"Vila Real","d":"Vila Real","p":"previews/Vila_Real/Vila_Real/caop_preview.geojson"},{"m":"Armamar","d":"Viseu","p":"previews/Viseu/Armamar/caop_preview.geojson"},{"m":"Carregal do Sal","d":"Viseu","p":"previews/Viseu/Carregal_do_Sal/caop_preview.geojson"},{"m":"Castro Daire","d":"Viseu","p":"previews/Viseu/Castro_Daire/caop_preview.geojson"},{"m":"Cinfães","d":"Viseu","p":"previews/Viseu/Cinfães/caop_preview.geojson"},{"m":"Lamego","d":"Viseu","p":"previews/Viseu/Lamego/caop_preview.geojson"},{"m":"Mangualde","d":"Viseu","p":"previews/Viseu/Mangualde/caop_preview.geojson"},{"m":"Moimenta da Beira","d":"Viseu","p":"previews/Viseu/Moimenta_da_Beira/caop_preview.geojson"},{"m":"Mortágua","d":"Viseu","p":"previews/Viseu/Mortágua/caop_preview.geojson"},{"m":"Nelas","d":"Viseu","p":"previews/Viseu/Nelas/caop_preview.geojson"},{"m":"Oliveira de Frades","d":"Viseu","p":"previews/Viseu/Oliveira_de_Frades/caop_preview.geojson"},{"m":"Penalva do Castelo","d":"Viseu","p":"previews/Viseu/Penalva_do_Castelo/caop_preview.geojson"},{"m":"Penedono","d":"Viseu","p":"previews/Viseu/Penedono/caop_preview.geojson"},{"m":"Resende","d":"Viseu","p":"previews/Viseu/Resende/caop_preview.geojson"},{"m":"Santa Comba Dão","d":"Viseu","p":"previews/Viseu/Santa_Comba_Dão/caop_preview.geojson"},{"m":"Sernancelhe","d":"Viseu","p":"previews/Viseu/Sernancelhe/caop_preview.geojson"},{"m":"Sátão","d":"Viseu","p":"previews/Viseu/Sátão/caop_preview.geojson"},{"m":"São João da Pesqueira","d":"Viseu","p":"previews/Viseu/São_João_da_Pesqueira/caop_preview.geojson"},{"m":"São Pedro do Sul","d":"Viseu","p":"previews/Viseu/São_Pedro_do_Sul/caop_preview.geojson"},{"m":"Tabuaço","d":"Viseu","p":"previews/Viseu/Tabuaço/caop_preview.geojson"},{"m":"Tarouca","d":"Viseu","p":"previews/Viseu/Tarouca/caop_preview.geojson"},{"m":"Tondela","d":"Viseu","p":"previews/Viseu/Tondela/caop_preview.geojson"},{"m":"Vila Nova de Paiva","d":"Viseu","p":"previews/Viseu/Vila_Nova_de_Paiva/caop_preview.geojson"},{"m":"Viseu","d":"Viseu","p":"previews/Viseu/Viseu/caop_preview.geojson"},{"m":"Vouzela","d":"Viseu","p":"previews/Viseu/Vouzela/caop_preview.geojson"},{"m":"Alandroal","d":"Évora","p":"previews/Évora/Alandroal/caop_preview.geojson"},{"m":"Arraiolos","d":"Évora","p":"previews/Évora/Arraiolos/caop_preview.geojson"},{"m":"Borba","d":"Évora","p":"previews/Évora/Borba/caop_preview.geojson"},{"m":"Estremoz","d":"Évora","p":"previews/Évora/Estremoz/caop_preview.geojson"},{"m":"Montemor-o-Novo","d":"Évora","p":"previews/Évora/Montemor-o-Novo/caop_preview.geojson"},{"m":"Mora","d":"Évora","p":"previews/Évora/Mora/caop_preview.geojson"},{"m":"Mourão","d":"Évora","p":"previews/Évora/Mourão/caop_preview.geojson"},{"m":"Portel","d":"Évora","p":"previews/Évora/Portel/caop_preview.geojson"},{"m":"Redondo","d":"Évora","p":"previews/Évora/Redondo/caop_preview.geojson"},{"m":"Reguengos de Monsaraz","d":"Évora","p":"previews/Évora/Reguengos_de_Monsaraz/caop_preview.geojson"},{"m":"Vendas Novas","d":"Évora","p":"previews/Évora/Vendas_Novas/caop_preview.geojson"},{"m":"Viana do Alentejo","d":"Évora","p":"previews/Évora/Viana_do_Alentejo/caop_preview.geojson"},{"m":"Vila Viçosa","d":"Évora","p":"previews/Évora/Vila_Viçosa/caop_preview.geojson"},{"m":"Évora","d":"Évora","p":"previews/Évora/Évora/caop_preview.geojson"}];
+
 
 /* ============================================================
    MODO OFFLINE
@@ -1794,7 +2159,7 @@ async function renderConnectivityOfflineMenu(){
   const menu = document.getElementById('connectivity-offline-menu');
   const meta = await idbGetMeta();
   if(!meta){
-    menu.innerHTML = `<p class="connectivity-offline-empty">Ainda não guardaste nenhuma área para usar offline. Liga-te à internet e usa "📡 Definir área offline" na barra lateral.</p>`;
+    menu.innerHTML = `<p class="connectivity-offline-empty">Ainda não guardaste nenhuma área para usar offline. Liga-te à internet e usa o botão de definir área offline no cabeçalho.</p>`;
     return;
   }
   const date = new Date(meta.savedAt).toLocaleString('pt-PT');
@@ -1914,6 +2279,48 @@ function showStep(n){
     s.style.display = (s.dataset.step == n) ? '' : 'none';
   });
 }
+
+document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
+  document.getElementById('wizard-overlay').classList.remove('hidden');
+  showStep(0);
+  dismissGearCoachmark();
+});
+
+/* ============================================================
+   ATERRAGEM — "Iniciar projeto" + coach-mark da engrenagem
+   ============================================================ */
+document.getElementById('btn-start-project').addEventListener('click', ()=>{
+  document.getElementById('landing-banner').classList.add('hidden');
+  map.flyTo([39.6, -8.0], 7, { duration: 2.2, easeLinearity: 0.25 });
+  map.once('moveend', showGearCoachmark);
+});
+
+function showGearCoachmark(){
+  positionGearCoachmark();
+  document.getElementById('gear-coachmark').classList.remove('hidden');
+}
+
+function positionGearCoachmark(){
+  const btn = document.getElementById('open-wizard-btn');
+  const bubble = document.getElementById('gear-coachmark');
+  const btnRect = btn.getBoundingClientRect();
+  const bubbleWidth = 220;
+  let left = btnRect.right - bubbleWidth + 12; // alinha a ponta da seta com o centro do botão
+  left = Math.max(10, Math.min(left, window.innerWidth - bubbleWidth - 10));
+  bubble.style.left = left + 'px';
+  bubble.style.top = (btnRect.bottom + 10) + 'px';
+}
+
+function dismissGearCoachmark(){
+  document.getElementById('gear-coachmark').classList.add('hidden');
+}
+
+document.getElementById('gear-coachmark-close').addEventListener('click', dismissGearCoachmark);
+window.addEventListener('resize', ()=>{
+  if(!document.getElementById('gear-coachmark').classList.contains('hidden')){
+    positionGearCoachmark();
+  }
+});
 
 /* ============================================================
    WIZARD — passo 2 (atributos)
@@ -2051,7 +2458,7 @@ document.getElementById('step3-finish').addEventListener('click', finishWizard);
 function finishWizard(){
   document.getElementById('wizard-overlay').classList.add('hidden');
   setupSummary();
-  initMap();
+  applyGeometryConfig();
 }
 
 document.getElementById('btn-reset').addEventListener('click', ()=>{
@@ -2076,7 +2483,7 @@ function setupSummary(){
    MAPA + GEOMAN
    ============================================================ */
 function initMap(){
-  map = L.map('map', {zoomControl:true}).setView([39.6, -8.0], 7);
+  map = L.map('map', {zoomControl:true}).setView([20, 0], 2);
 
   const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
@@ -2122,9 +2529,9 @@ function initMap(){
     drawCircleMarker: false,
     drawRectangle: false,
     drawText: false,
-    drawPolyline: config.geometryType === 'LineString',
-    drawPolygon: config.geometryType === 'Polygon',
-    drawMarker: config.geometryType === 'Point',
+    drawPolyline: false,
+    drawPolygon: false,
+    drawMarker: false,
     editMode: true,
     dragMode: true,
     removalMode: true,
@@ -2167,6 +2574,34 @@ function initMap(){
   map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
 }
 
+/* ativa as ferramentas de desenho certas depois do wizard definir o tipo de geometria */
+function applyGeometryConfig(){
+  map.pm.addControls({
+    position: 'topleft',
+    drawCircle: false,
+    drawCircleMarker: false,
+    drawRectangle: false,
+    drawText: false,
+    drawPolyline: config.geometryType === 'LineString',
+    drawPolygon: config.geometryType === 'Polygon',
+    drawMarker: config.geometryType === 'Point',
+    editMode: true,
+    dragMode: true,
+    removalMode: true,
+    cutPolygon: false,
+    rotateMode: false
+  });
+
+  const hintText = {
+    Point: 'Bom Trabalho!.',
+    LineString: 'Bom Trabalho!.',
+    Polygon: 'Bom Trabalho!.'
+  };
+  document.getElementById('toolbar-hint-text').textContent = hintText[config.geometryType];
+}
+
+initMap(); // o mapa fica pronto logo ao carregar a página
+
 /* ============================================================
    CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
    ============================================================ */
@@ -2202,6 +2637,87 @@ function onFeatureRemoved(layer){
   refreshFeatList();
   checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
 }
+
+/* ============================================================
+   IMPORTAR GEOJSON / SHAPEFILE
+   ============================================================ */
+function baseGeomType(t){
+  if(t === 'MultiPoint') return 'Point';
+  if(t === 'MultiLineString') return 'LineString';
+  if(t === 'MultiPolygon') return 'Polygon';
+  return t;
+}
+
+async function parseImportedFile(file){
+  const name = file.name.toLowerCase();
+  if(name.endsWith('.zip')){
+    const buffer = await file.arrayBuffer();
+    const result = await shp(buffer);
+    if(Array.isArray(result)){
+      return {type:'FeatureCollection', features: result.flatMap(fc => fc.features || [])};
+    }
+    return result;
+  }
+  const text = await file.text();
+  const parsed = JSON.parse(text);
+  if(parsed.type === 'FeatureCollection') return parsed;
+  if(parsed.type === 'Feature') return {type:'FeatureCollection', features:[parsed]};
+  if(parsed.type){ return {type:'FeatureCollection', features:[{type:'Feature', properties:{}, geometry:parsed}]}; }
+  throw new Error('Formato GeoJSON não reconhecido.');
+}
+
+function importGeoJSONFeatures(geojson){
+  const features = (geojson.features || []).filter(f => f && f.geometry);
+  let imported = 0, skipped = 0;
+
+  features.forEach(f=>{
+    let layer;
+    try{ layer = L.geoJSON(f).getLayers()[0]; }
+    catch(err){ skipped++; return; }
+    if(!layer){ skipped++; return; }
+
+    drawnGroup.addLayer(layer);
+    featureCounter++;
+    const id = L.Util.stamp(layer);
+    const entry = {layer, props:{}, id, label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
+    featuresData.set(id, entry);
+
+    styleLayerDefault(layer);
+    layer.on('pm:edit', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:dragend', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+
+    imported++;
+  });
+
+  refreshFeatList();
+  checkAllTopology();
+
+  if(imported > 0){
+    try{ map.fitBounds(drawnGroup.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
+  }
+
+  const msg = skipped > 0
+    ? `Importadas ${imported} geometria(s). ${skipped} geometria(s) inválida(s) ou ilegível(is) foram ignoradas.`
+    : (imported > 0 ? `Importadas ${imported} geometria(s) com sucesso.` : 'Nenhuma geometria válida encontrada no ficheiro.');
+  alert(msg);
+}
+
+document.getElementById('btn-import-geom').addEventListener('click', ()=>{
+  document.getElementById('import-file-input').click();
+});
+
+document.getElementById('import-file-input').addEventListener('change', async (e)=>{
+  const file = e.target.files[0];
+  e.target.value = '';
+  if(!file) return;
+  try{
+    const geojson = await parseImportedFile(file);
+    importGeoJSONFeatures(geojson);
+  }catch(err){
+    console.error('Erro ao importar ficheiro:', err);
+    alert('Não foi possível importar o ficheiro. Verifica se é um GeoJSON válido ou um .zip de Shapefile (.shp + .dbf + .shx, opcionalmente .prj).');
+  }
+});
 
 /* ============================================================
    MINI POP-UP DE ESTATÍSTICAS (ao concluir uma geometria)
@@ -2277,6 +2793,31 @@ function flashHighlight(entry){
 function getHighlightColor(){
   const v = getComputedStyle(document.documentElement).getPropertyValue('--ochre').trim();
   return v || '#C2703D';
+}
+
+// gera (uma única vez) um padrão SVG de tracejado obliquo, usado como
+// preenchimento de qualquer resultado de análise espacial (buffer, intersect,
+// union, clip) para se destacar claramente da área original desenhada
+function ensureResultHatchPattern(){
+  let defsSvg = document.getElementById('result-hatch-defs');
+  if(!defsSvg){
+    defsSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    defsSvg.setAttribute('id', 'result-hatch-defs');
+    defsSvg.setAttribute('width', '0');
+    defsSvg.setAttribute('height', '0');
+    defsSvg.style.position = 'absolute';
+    defsSvg.innerHTML = `
+      <defs>
+        <pattern id="result-hatch-pattern" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(45)">
+          <rect width="9" height="9" fill="rgba(0,0,0,0)"></rect>
+          <line x1="0" y1="0" x2="0" y2="9" stroke-width="4"></line>
+        </pattern>
+      </defs>`;
+    document.body.appendChild(defsSvg);
+  }
+  const line = defsSvg.querySelector('#result-hatch-pattern line');
+  if(line) line.setAttribute('stroke', getHighlightColor());
+  return 'url(#result-hatch-pattern)';
 }
 
 /* ============================================================
@@ -2543,6 +3084,16 @@ let analysisSelection = new Set();   // ids (L.Util.stamp) das geometrias inclu�
 let lastBufferFeatures = [];          // resultado do último buffer gerado, para exportação
 let bufferDebounceTimer = null;
 
+// ---------- overlay: intersect / union / difference ----------
+let intersectLayerGroup = null, unionLayerGroup = null, differenceLayerGroup = null;
+let intersectSelection = new Set();
+let unionSelection = new Set();
+let diffBaseId = null;
+let diffSubtractSelection = new Set();
+let lastIntersectFeatures = [];
+let lastUnionFeatures = [];
+let lastDifferenceFeatures = [];
+
 function buildAnalysisFeatureList(){
   const arr = [];
   featuresData.forEach(entry=>{
@@ -2558,22 +3109,171 @@ function openAnalysisPanel(){
     alert('Ainda não desenhaste nenhuma geometria para analisar. Desenha pelo menos uma antes de abrir a análise espacial.');
     return;
   }
-  document.getElementById('analysis-overlay').classList.remove('hidden');
+  document.getElementById('analysis-overlay').classList.add('open');
   if(!analysisMap){
     initAnalysisMap();
   } else {
     syncAnalysisSourceLayer();
   }
   renderAnalysisGeomList();
-  setTimeout(()=>{ if(analysisMap) analysisMap.invalidateSize(); }, 60);
+  renderCheckboxGeomList('analysis-geom-list-intersect', intersectSelection);
+  renderCheckboxGeomList('analysis-geom-list-union', unionSelection);
+  renderDiffLists();
+  setTimeout(()=>{ if(analysisMap) analysisMap.invalidateSize(); }, 480);
 }
 
 function closeAnalysisPanel(){
-  document.getElementById('analysis-overlay').classList.add('hidden');
+  document.getElementById('analysis-overlay').classList.remove('open');
 }
 
 document.getElementById('btn-open-analysis').addEventListener('click', openAnalysisPanel);
+
+/* ============================================================
+   LIMITES DE MUNICÍPIO (CAOP preview via GitHub raw)
+   ============================================================ */
+let municipioBoundariesGroup = null;
+const municipioLayers = new Map(); // chave "Município|Distrito" -> {layer, entry}
+
+function normalizeAccents(s){
+  return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+function getBoundaryColor(){
+  return '#2D6FE0';
+}
+
+function openMunicipiosPanel(){
+  document.getElementById('municipios-panel').classList.remove('hidden');
+  const search = document.getElementById('municipios-search');
+  search.value = '';
+  document.getElementById('municipios-results').innerHTML = '';
+  document.getElementById('municipios-status').textContent = '';
+  search.focus();
+}
+
+function closeMunicipiosPanel(){
+  document.getElementById('municipios-panel').classList.add('hidden');
+}
+
+document.getElementById('btn-open-municipios').addEventListener('click', e=>{
+  e.stopPropagation();
+  const panel = document.getElementById('municipios-panel');
+  if(panel.classList.contains('hidden')) openMunicipiosPanel();
+  else closeMunicipiosPanel();
+});
+document.getElementById('municipios-panel-close').addEventListener('click', closeMunicipiosPanel);
+document.getElementById('municipios-panel').addEventListener('click', e=> e.stopPropagation());
+document.addEventListener('click', ()=> closeMunicipiosPanel());
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape') closeMunicipiosPanel();
+});
+
+document.getElementById('municipios-search').addEventListener('input', e=>{
+  const q = normalizeAccents(e.target.value.trim());
+  const resultsEl = document.getElementById('municipios-results');
+  resultsEl.innerHTML = '';
+  if(q.length === 0) return;
+
+  const matches = MUNICIPIOS_INDEX
+    .filter(it => normalizeAccents(it.m).includes(q))
+    .slice(0, 8);
+
+  if(matches.length === 0){
+    const li = document.createElement('li');
+    li.style.cursor = 'default';
+    li.innerHTML = `<span>Nenhum município encontrado.</span>`;
+    resultsEl.appendChild(li);
+    return;
+  }
+
+  matches.forEach(it=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${it.m}</span><span class="distrito">${it.d}</span>`;
+    li.addEventListener('click', ()=> loadMunicipioBoundary(it));
+    resultsEl.appendChild(li);
+  });
+});
+
+async function loadMunicipioBoundary(entry){
+  const statusEl = document.getElementById('municipios-status');
+  const key = entry.m + '|' + entry.d;
+
+  if(municipioLayers.has(key)){
+    try{ map.fitBounds(municipioLayers.get(key).layer.getBounds(), {padding:[30,30]}); }catch(err){ /* ignora */ }
+    return;
+  }
+
+  if(!municipioBoundariesGroup){ municipioBoundariesGroup = L.layerGroup().addTo(map); }
+
+  statusEl.textContent = `A carregar ${entry.m}…`;
+  try{
+    const res = await fetch(MUNICIPIOS_GITHUB_RAW_BASE + entry.p);
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const gj = await res.json();
+
+    const layer = L.geoJSON(gj, {
+      style: ()=>({color:getBoundaryColor(), weight:4, opacity:1, fill:false}),
+      onEachFeature: (feature, lyr)=>{
+        lyr.bindTooltip(entry.m, {permanent:true, direction:'center', className:'geom-label-tooltip', opacity:.85});
+      }
+    }).addTo(municipioBoundariesGroup);
+
+    municipioLayers.set(key, {layer, entry});
+    try{ map.fitBounds(layer.getBounds(), {padding:[30,30]}); }catch(err){ /* bounds inválidos, ignora */ }
+
+    document.getElementById('municipios-search').value = '';
+    document.getElementById('municipios-results').innerHTML = '';
+    statusEl.textContent = '';
+    renderLoadedMunicipiosList();
+  }catch(err){
+    console.error('Erro ao carregar limite de município:', err);
+    statusEl.textContent = `⚠ Não foi possível carregar o limite de ${entry.m}.`;
+  }
+}
+
+function removeMunicipioBoundary(key){
+  const entryData = municipioLayers.get(key);
+  if(!entryData) return;
+  municipioBoundariesGroup.removeLayer(entryData.layer);
+  municipioLayers.delete(key);
+  renderLoadedMunicipiosList();
+}
+
+function renderLoadedMunicipiosList(){
+  const list = document.getElementById('municipios-loaded-list');
+  const emptyMsg = document.getElementById('municipios-empty-msg');
+  list.innerHTML = '';
+
+  if(municipioLayers.size === 0){
+    emptyMsg.style.display = 'block';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+
+  municipioLayers.forEach((data, key)=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${data.entry.m}</span>`;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.title = 'Remover';
+    btn.setAttribute('aria-label', 'Remover ' + data.entry.m);
+    btn.textContent = '✕';
+    btn.addEventListener('click', ()=> removeMunicipioBoundary(key));
+    li.appendChild(btn);
+    li.addEventListener('click', (e)=>{
+      if(e.target === btn) return;
+      try{ map.fitBounds(data.layer.getBounds(), {padding:[30,30]}); }catch(err){ /* ignora */ }
+    });
+    list.appendChild(li);
+  });
+}
 document.getElementById('analysis-close').addEventListener('click', closeAnalysisPanel);
+
+document.querySelectorAll('.tool-drawer-header[data-drawer-toggle]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.closest('.tool-drawer').classList.toggle('open');
+  });
+});
 
 function initAnalysisMap(){
   analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false});
@@ -2586,10 +3286,25 @@ function initAnalysisMap(){
 
   analysisSourceLayer = L.geoJSON(null, {
     pointToLayer:(f, latlng)=> L.circleMarker(latlng, {radius:6, color:DEFAULT_COLOR, weight:2, fillColor:DEFAULT_COLOR, fillOpacity:.85}),
-    style: ()=>({color:DEFAULT_COLOR, weight:3, fillColor:DEFAULT_COLOR, fillOpacity:.2})
+    style: ()=>({color:DEFAULT_COLOR, weight:3, fillColor:DEFAULT_COLOR, fillOpacity:.2}),
+    onEachFeature: (feature, layer)=>{
+      const t = feature.geometry && feature.geometry.type;
+      if(t !== 'LineString' && t !== 'MultiLineString' && t !== 'Polygon' && t !== 'MultiPolygon') return;
+      const label = feature.properties && feature.properties._origem;
+      if(!label) return;
+      layer.bindTooltip(label, {
+        permanent: true,
+        direction: 'center',
+        className: 'geom-label-tooltip',
+        opacity: .85
+      });
+    }
   }).addTo(analysisMap);
 
   bufferLayerGroup = L.layerGroup().addTo(analysisMap);
+  intersectLayerGroup = L.layerGroup().addTo(analysisMap);
+  unionLayerGroup = L.layerGroup().addTo(analysisMap);
+  differenceLayerGroup = L.layerGroup().addTo(analysisMap);
 
   syncAnalysisSourceLayer();
 
@@ -2628,6 +3343,66 @@ function initAnalysisMap(){
       document.getElementById('btn-export-buffer-shp')
     );
   });
+
+  // ---- intersect ----
+  document.getElementById('btn-run-intersect').addEventListener('click', runIntersect);
+  document.getElementById('btn-clear-intersect').addEventListener('click', ()=>{
+    intersectLayerGroup.clearLayers();
+    lastIntersectFeatures = [];
+    document.getElementById('intersect-status').textContent = '';
+  });
+  document.getElementById('btn-export-intersect-geojson').addEventListener('click', ()=>{
+    if(lastIntersectFeatures.length === 0){ alert('Gera primeiro uma interseção para poderes exportar.'); return; }
+    downloadGeoJSON({type:'FeatureCollection', features:lastIntersectFeatures}, 'engenh_intersect.geojson');
+  });
+  document.getElementById('btn-export-intersect-shp').addEventListener('click', async ()=>{
+    if(lastIntersectFeatures.length === 0){ alert('Gera primeiro uma interseção para poderes exportar.'); return; }
+    await exportShapefileZip(
+      {type:'FeatureCollection', features:lastIntersectFeatures},
+      'engenh_intersect',
+      document.getElementById('btn-export-intersect-shp')
+    );
+  });
+
+  // ---- union ----
+  document.getElementById('btn-run-union').addEventListener('click', runUnion);
+  document.getElementById('btn-clear-union').addEventListener('click', ()=>{
+    unionLayerGroup.clearLayers();
+    lastUnionFeatures = [];
+    document.getElementById('union-status').textContent = '';
+  });
+  document.getElementById('btn-export-union-geojson').addEventListener('click', ()=>{
+    if(lastUnionFeatures.length === 0){ alert('Gera primeiro uma união para poderes exportar.'); return; }
+    downloadGeoJSON({type:'FeatureCollection', features:lastUnionFeatures}, 'engenh_union.geojson');
+  });
+  document.getElementById('btn-export-union-shp').addEventListener('click', async ()=>{
+    if(lastUnionFeatures.length === 0){ alert('Gera primeiro uma união para poderes exportar.'); return; }
+    await exportShapefileZip(
+      {type:'FeatureCollection', features:lastUnionFeatures},
+      'engenh_union',
+      document.getElementById('btn-export-union-shp')
+    );
+  });
+
+  // ---- difference ----
+  document.getElementById('btn-run-difference').addEventListener('click', runDifference);
+  document.getElementById('btn-clear-difference').addEventListener('click', ()=>{
+    differenceLayerGroup.clearLayers();
+    lastDifferenceFeatures = [];
+    document.getElementById('difference-status').textContent = '';
+  });
+  document.getElementById('btn-export-difference-geojson').addEventListener('click', ()=>{
+    if(lastDifferenceFeatures.length === 0){ alert('Gera primeiro uma diferença para poderes exportar.'); return; }
+    downloadGeoJSON({type:'FeatureCollection', features:lastDifferenceFeatures}, 'engenh_difference.geojson');
+  });
+  document.getElementById('btn-export-difference-shp').addEventListener('click', async ()=>{
+    if(lastDifferenceFeatures.length === 0){ alert('Gera primeiro uma diferença para poderes exportar.'); return; }
+    await exportShapefileZip(
+      {type:'FeatureCollection', features:lastDifferenceFeatures},
+      'engenh_difference',
+      document.getElementById('btn-export-difference-shp')
+    );
+  });
 }
 
 function syncAnalysisSourceLayer(){
@@ -2664,6 +3439,182 @@ function renderAnalysisGeomList(){
     });
     list.appendChild(li);
   });
+}
+
+// lista genérica de checkboxes, reutilizada por intersect e union
+function renderCheckboxGeomList(listId, selectionSet){
+  const list = document.getElementById(listId);
+  if(!list) return;
+  list.innerHTML = '';
+  const items = buildAnalysisFeatureList();
+
+  items.forEach(it => selectionSet.add(it.id));
+  [...selectionSet].forEach(id=>{
+    if(!items.find(it=>it.id===id)) selectionSet.delete(id);
+  });
+
+  items.forEach(it=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<label>
+      <input type="checkbox" data-id="${it.id}" ${selectionSet.has(it.id) ? 'checked' : ''}>
+      <span>${it.label}</span>
+    </label>`;
+    li.querySelector('input').addEventListener('change', e=>{
+      if(e.target.checked) selectionSet.add(it.id);
+      else selectionSet.delete(it.id);
+    });
+    list.appendChild(li);
+  });
+}
+
+// listas da ferramenta difference: uma geometria base (radio) + várias a subtrair (checkboxes)
+function renderDiffLists(){
+  const items = buildAnalysisFeatureList();
+
+  if(!diffBaseId || !items.find(it=>it.id === diffBaseId)){
+    diffBaseId = items.length ? items[0].id : null;
+  }
+  [...diffSubtractSelection].forEach(id=>{
+    if(!items.find(it=>it.id===id) || id===diffBaseId) diffSubtractSelection.delete(id);
+  });
+
+  const baseList = document.getElementById('analysis-geom-list-diff-base');
+  if(baseList){
+    baseList.innerHTML = '';
+    items.forEach(it=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<label>
+        <input type="radio" name="diff-base" data-id="${it.id}" ${diffBaseId === it.id ? 'checked' : ''}>
+        <span>${it.label}</span>
+      </label>`;
+      li.querySelector('input').addEventListener('change', ()=>{
+        diffBaseId = it.id;
+        diffSubtractSelection.delete(it.id);
+        renderDiffLists();
+      });
+      baseList.appendChild(li);
+    });
+  }
+
+  const subList = document.getElementById('analysis-geom-list-diff-subtract');
+  if(subList){
+    subList.innerHTML = '';
+    items.filter(it => it.id !== diffBaseId).forEach(it=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<label>
+        <input type="checkbox" data-id="${it.id}" ${diffSubtractSelection.has(it.id) ? 'checked' : ''}>
+        <span>${it.label}</span>
+      </label>`;
+      li.querySelector('input').addEventListener('change', e=>{
+        if(e.target.checked) diffSubtractSelection.add(it.id);
+        else diffSubtractSelection.delete(it.id);
+      });
+      subList.appendChild(li);
+    });
+  }
+}
+
+function isPolygonal(geojson){
+  const t = geojson && geojson.geometry && geojson.geometry.type;
+  return t === 'Polygon' || t === 'MultiPolygon';
+}
+
+function runIntersect(){
+  const statusEl = document.getElementById('intersect-status');
+  if(typeof turf === 'undefined'){ statusEl.textContent = '⚠ A biblioteca Turf.js não carregou.'; return; }
+  intersectLayerGroup.clearLayers();
+  lastIntersectFeatures = [];
+
+  const items = buildAnalysisFeatureList().filter(it => intersectSelection.has(it.id));
+  const polyItems = items.filter(it => isPolygonal(it.geojson));
+
+  if(items.length < 2){ statusEl.textContent = 'Seleciona pelo menos 2 geometrias à esquerda.'; return; }
+  if(polyItems.length < 2){ statusEl.textContent = '⚠ A interseção só funciona com polígonos (mín. 2 selecionados).'; return; }
+
+  let result = polyItems[0].geojson;
+  for(let i=1; i<polyItems.length; i++){
+    try{ result = turf.intersect(result, polyItems[i].geojson); }
+    catch(err){ console.error('Erro ao intersetar', err); result = null; }
+    if(!result) break;
+  }
+
+  if(!result){ statusEl.textContent = '⚠ Estas geometrias não se intersetam entre si.'; return; }
+
+  result.properties = {...result.properties, origem: 'intersect', geometrias: polyItems.map(it=>it.label).join(' + ')};
+  lastIntersectFeatures = [result];
+
+  const layer = L.geoJSON(result, {
+    style: ()=>({color:getHighlightColor(), weight:2, dashArray:'6 4', fillColor:ensureResultHatchPattern(), fillOpacity:.55})
+  }).addTo(intersectLayerGroup);
+  try{ analysisMap.fitBounds(layer.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
+
+  statusEl.textContent = `✓ Interseção gerada a partir de ${polyItems.length} geometria(s).`;
+}
+
+function runUnion(){
+  const statusEl = document.getElementById('union-status');
+  if(typeof turf === 'undefined'){ statusEl.textContent = '⚠ A biblioteca Turf.js não carregou.'; return; }
+  unionLayerGroup.clearLayers();
+  lastUnionFeatures = [];
+
+  const items = buildAnalysisFeatureList().filter(it => unionSelection.has(it.id));
+  const polyItems = items.filter(it => isPolygonal(it.geojson));
+
+  if(items.length < 2){ statusEl.textContent = 'Seleciona pelo menos 2 geometrias à esquerda.'; return; }
+  if(polyItems.length < 2){ statusEl.textContent = '⚠ A união só funciona com polígonos (mín. 2 selecionados).'; return; }
+
+  let result = polyItems[0].geojson;
+  for(let i=1; i<polyItems.length; i++){
+    try{ result = turf.union(result, polyItems[i].geojson); }
+    catch(err){ console.error('Erro ao unir', err); }
+  }
+
+  if(!result){ statusEl.textContent = '⚠ Não foi possível unir estas geometrias.'; return; }
+
+  result.properties = {...result.properties, origem: 'union', geometrias: polyItems.map(it=>it.label).join(' + ')};
+  lastUnionFeatures = [result];
+
+  const layer = L.geoJSON(result, {
+    style: ()=>({color:getHighlightColor(), weight:2, dashArray:'6 4', fillColor:ensureResultHatchPattern(), fillOpacity:.55})
+  }).addTo(unionLayerGroup);
+  try{ analysisMap.fitBounds(layer.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
+
+  statusEl.textContent = `✓ União gerada a partir de ${polyItems.length} geometria(s).`;
+}
+
+function runDifference(){
+  const statusEl = document.getElementById('difference-status');
+  if(typeof turf === 'undefined'){ statusEl.textContent = '⚠ A biblioteca Turf.js não carregou.'; return; }
+  differenceLayerGroup.clearLayers();
+  lastDifferenceFeatures = [];
+
+  const items = buildAnalysisFeatureList();
+  const base = items.find(it => it.id === diffBaseId);
+
+  if(!base){ statusEl.textContent = 'Escolhe uma geometria base à esquerda.'; return; }
+  if(!isPolygonal(base.geojson)){ statusEl.textContent = '⚠ A geometria base tem de ser um polígono.'; return; }
+
+  const subtractItems = items.filter(it => diffSubtractSelection.has(it.id) && it.id !== diffBaseId && isPolygonal(it.geojson));
+  if(subtractItems.length === 0){ statusEl.textContent = 'Seleciona pelo menos uma geometria a subtrair.'; return; }
+
+  let result = base.geojson;
+  for(const it of subtractItems){
+    try{ result = turf.difference(result, it.geojson); }
+    catch(err){ console.error('Erro ao subtrair', err); result = null; }
+    if(!result) break;
+  }
+
+  if(!result){ statusEl.textContent = '⚠ Resultado vazio: a subtração cobre toda a geometria base.'; return; }
+
+  result.properties = {...result.properties, origem: 'difference', base: base.label, subtraidas: subtractItems.map(it=>it.label).join(' + ')};
+  lastDifferenceFeatures = [result];
+
+  const layer = L.geoJSON(result, {
+    style: ()=>({color:getHighlightColor(), weight:2, dashArray:'6 4', fillColor:ensureResultHatchPattern(), fillOpacity:.55})
+  }).addTo(differenceLayerGroup);
+  try{ analysisMap.fitBounds(layer.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
+
+  statusEl.textContent = `✓ Diferença gerada: ${base.label} − ${subtractItems.length} geometria(s).`;
 }
 
 function scheduleBufferUpdate(){
@@ -2709,7 +3660,7 @@ function applyBuffer(){
   }
 
   const bufferGeoLayer = L.geoJSON({type:'FeatureCollection', features:lastBufferFeatures}, {
-    style: ()=>({color:getHighlightColor(), weight:2, dashArray:'6 4', fillColor:getHighlightColor(), fillOpacity:.22})
+    style: ()=>({color:getHighlightColor(), weight:2, dashArray:'6 4', fillColor:ensureResultHatchPattern(), fillOpacity:.55})
   }).addTo(bufferLayerGroup);
 
   // ajusta sempre o zoom ao resultado: um buffer pequeno sobre uma geometria
