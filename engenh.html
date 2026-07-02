@@ -1857,6 +1857,7 @@ let teamState = {
   password: null,
   connected: false,
   lastSync: null,
+  deletedFids: new Map(), // fid -> timestamp de eliminação (só nesta sessão)
   usedBytes: 0,
   sizeLimit: 200 * 1024 * 1024,
   status: 'idle'
@@ -2694,13 +2695,17 @@ initTeamUI();
 /* ============================================================
    CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
    ============================================================ */
+function genFid(){
+  return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('fid-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+}
+
 function onFeatureCreated(layer){
   if(offlineDrawing) return; // o retângulo do modo offline não é uma geometria do utilizador
   drawnGroup.addLayer(layer);
   featureCounter++;
   const id = L.Util.stamp(layer);
 
-  const entry = {layer, props:{}, id, label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
+  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
   featuresData.set(id, entry);
 
   styleLayerDefault(layer);
@@ -2708,8 +2713,8 @@ function onFeatureCreated(layer){
 
   // reage a edições posteriores desta geometria (arrastar vértices, mover) para
   // manter as estatísticas e a verificação de topologia sempre atualizadas
-  layer.on('pm:edit', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
-  layer.on('pm:dragend', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
 
   if(config.mode === 'atributos' && config.attributes.length > 0){
     openAttrForm(entry);
@@ -2722,6 +2727,8 @@ function onFeatureCreated(layer){
 
 function onFeatureRemoved(layer){
   const id = L.Util.stamp(layer);
+  const entry = featuresData.get(id);
+  if(entry && entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
   featuresData.delete(id);
   refreshFeatList();
   checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
@@ -2768,14 +2775,19 @@ function importGeoJSONFeatures(geojson){
     drawnGroup.addLayer(layer);
     featureCounter++;
     const id = L.Util.stamp(layer);
-    const props = f.properties && typeof f.properties === 'object' ? {...f.properties} : {};
+    const rawProps = f.properties && typeof f.properties === 'object' ? {...f.properties} : {};
+    const fid = rawProps.__fid || genFid();
+    const updatedAt = rawProps.__updatedAt || Date.now();
+    delete rawProps.__fid;
+    delete rawProps.__updatedAt;
+    const props = rawProps;
     const label = props.name || props.label || 'Geometria '+featureCounter;
-    const entry = {layer, props, id, label, hasOverlap:false, overlapsWith:[]};
+    const entry = {layer, props, id, fid, updatedAt, label, hasOverlap:false, overlapsWith:[]};
     featuresData.set(id, entry);
 
     styleLayerDefault(layer);
-    layer.on('pm:edit', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
-    layer.on('pm:dragend', ()=>{ refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
 
     imported++;
   });
@@ -3034,6 +3046,7 @@ document.getElementById('feat-form-save').addEventListener('click', ()=>{
   fieldsWrap.querySelectorAll('[data-field]').forEach(inp=>{
     formEntryRef.props[inp.dataset.field] = inp.value;
   });
+  formEntryRef.updatedAt = Date.now();
   styleLayerByClass(formEntryRef);
   if(formEntryRef.hasOverlap) applyTopologyVisual(formEntryRef);
   document.getElementById('attr-form-overlay').classList.add('hidden');
@@ -3094,6 +3107,7 @@ function refreshFeatList(){
     });
     li.querySelector('[data-edit]')?.addEventListener('click', ()=> openAttrForm(entry));
     li.querySelector('[data-delete]').addEventListener('click', ()=>{
+      if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
       drawnGroup.removeLayer(entry.layer);
       featuresData.delete(entry.id);
       refreshFeatList();
@@ -3106,11 +3120,18 @@ function refreshFeatList(){
 /* ============================================================
    EXPORTAÇÃO
    ============================================================ */
-function buildGeoJSON(){
+function buildGeoJSON(includeSyncMeta){
   const features = [];
   featuresData.forEach(entry=>{
     const gj = entry.layer.toGeoJSON();
-    gj.properties = {...entry.props};
+    const cleanProps = {...entry.props};
+    delete cleanProps.__fid;
+    delete cleanProps.__updatedAt;
+    gj.properties = cleanProps;
+    if(includeSyncMeta){
+      gj.properties.__fid = entry.fid || genFid();
+      gj.properties.__updatedAt = entry.updatedAt || Date.now();
+    }
     features.push(gj);
   });
   return {type:'FeatureCollection', features};
@@ -3141,7 +3162,7 @@ function clearTeamProject(){
   try{ localStorage.removeItem(TEAM_STORAGE_KEY); }catch(err){ }
   teamState = {
     savedSlug: '', savedName: '', slug: '', name: '', password: null,
-    connected: false, lastSync: null, usedBytes: 0, sizeLimit: 200 * 1024 * 1024, status: 'idle'
+    connected: false, lastSync: null, deletedFids: new Map(), usedBytes: 0, sizeLimit: 200 * 1024 * 1024, status: 'idle'
   };
 }
 
@@ -3222,7 +3243,7 @@ function renderTeamCard(){
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
-  const statusLabel = teamState.status === 'syncing' ? 'A sincronizar…' : 'Pronto para sincronizar';
+  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
   const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
 
   container.innerHTML = `
@@ -3309,30 +3330,11 @@ async function resumeTeamProject(){
 async function loadTeamGeometries(resumeData){
   teamState.status = 'syncing'; renderTeamCard();
   try{
-    let geojson;
-    if(resumeData.geojson){
-      geojson = resumeData.geojson;
-    } else {
-      const chunkCount = Array.isArray(resumeData.manifest?.chunks)
-        ? resumeData.manifest.chunks.length
-        : (resumeData.manifest?.chunkCount || 0);
-      if(!chunkCount || chunkCount <= 0){
-        teamState.status = 'idle'; renderTeamCard();
-        showTeamToast('Projeto retomado. Ainda não há geometrias guardadas.');
-        return;
-      }
-      let text = '';
-      for(let index = 0; index < chunkCount; index++){
-        const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`, undefined, {'X-Project-Password': teamState.password});
-        if(typeof chunkResponse === 'string'){
-          text += chunkResponse;
-        } else if(chunkResponse.data){
-          text += chunkResponse.data;
-        } else {
-          throw new Error('Resposta inválida ao carregar bloco ' + index);
-        }
-      }
-      geojson = JSON.parse(text);
+    const geojson = await downloadTeamGeoJSON(resumeData);
+    if(!geojson.features || geojson.features.length === 0){
+      teamState.status = 'idle'; renderTeamCard();
+      showTeamToast('Projeto retomado. Ainda não há geometrias guardadas.');
+      return;
     }
     drawnGroup.clearLayers();
     featuresData.clear();
@@ -3347,6 +3349,70 @@ async function loadTeamGeometries(resumeData){
     renderTeamCard();
     showTeamToast('Projeto retomado, mas falhou o carregamento das geometrias.');
   }
+}
+
+async function downloadTeamGeoJSON(resumeData){
+  if(resumeData.geojson) return resumeData.geojson;
+
+  const chunkCount = Array.isArray(resumeData.manifest?.chunks)
+    ? resumeData.manifest.chunks.length
+    : (resumeData.manifest?.chunkCount || 0);
+  if(!chunkCount || chunkCount <= 0){
+    return {type:'FeatureCollection', features:[], __deletedFids:[]};
+  }
+
+  let text = '';
+  for(let index = 0; index < chunkCount; index++){
+    const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`, undefined, {'X-Project-Password': teamState.password});
+    if(typeof chunkResponse === 'string'){
+      text += chunkResponse;
+    } else if(chunkResponse.data){
+      text += chunkResponse.data;
+    } else {
+      throw new Error('Resposta inválida ao carregar bloco ' + index);
+    }
+  }
+  return JSON.parse(text);
+}
+
+/*
+ * Junta o estado local com o estado atual do servidor, geometria a geometria (por __fid):
+ * - geometrias só locais ou só no servidor entram sempre no resultado
+ * - geometrias eliminadas (localmente ou já removidas no servidor) ficam de fora
+ * - geometrias presentes em ambos: fica a versão com __updatedAt mais recente
+ * Isto permite que dois utilizadores sincronizem quase ao mesmo tempo sem perderem
+ * o trabalho um do outro, desde que não editem exatamente a mesma geometria.
+ */
+function mergeTeamGeoJSON(localGeojson, serverGeojson){
+  const deleted = new Set(serverGeojson.__deletedFids || []);
+  teamState.deletedFids.forEach((ts, fid)=> deleted.add(fid));
+
+  const byFid = new Map();
+
+  (serverGeojson.features || []).forEach(f=>{
+    const fid = f.properties && f.properties.__fid;
+    if(!fid || deleted.has(fid)) return;
+    byFid.set(fid, f);
+  });
+
+  (localGeojson.features || []).forEach(f=>{
+    const fid = f.properties && f.properties.__fid;
+    if(!fid || deleted.has(fid)) return;
+    const existing = byFid.get(fid);
+    if(!existing){
+      byFid.set(fid, f);
+    } else {
+      const localTs = f.properties.__updatedAt || 0;
+      const serverTs = (existing.properties && existing.properties.__updatedAt) || 0;
+      if(localTs >= serverTs) byFid.set(fid, f);
+    }
+  });
+
+  return {
+    type: 'FeatureCollection',
+    features: [...byFid.values()],
+    __deletedFids: [...deleted]
+  };
 }
 
 function splitTextToChunks(text, maxBytes){
@@ -3370,12 +3436,20 @@ function splitTextToChunks(text, maxBytes){
 
 async function syncTeamProject(){
   if(!teamState.connected){ alert('Retoma ou cria um projeto de equipa antes de sincronizar.'); return; }
-  if(featuresData.size === 0){ alert('Ainda não tens geometrias para sincronizar.'); return; }
+  if(featuresData.size === 0 && teamState.deletedFids.size === 0){ alert('Ainda não tens geometrias para sincronizar.'); return; }
   teamState.status = 'syncing'; renderTeamCard();
 
   try{
-    const geojson = buildGeoJSON();
-    const text = JSON.stringify(geojson);
+    // 1. buscar o estado atual do servidor (pode ter sido alterado por outra pessoa entretanto)
+    const resumeData = await apiRequest('POST', '/api/projects/resume', {name: teamState.name, password: teamState.password});
+    const serverGeojson = await downloadTeamGeoJSON(resumeData);
+
+    // 2. juntar com o que temos localmente, geometria a geometria
+    const localGeojson = buildGeoJSON(true);
+    const merged = mergeTeamGeoJSON(localGeojson, serverGeojson);
+
+    // 3. enviar o resultado do merge
+    const text = JSON.stringify(merged);
     const chunks = splitTextToChunks(text, 2.5 * 1024 * 1024);
 
     for(let index = 0; index < chunks.length; index++){
@@ -3392,12 +3466,19 @@ async function syncTeamProject(){
       totalChunks: chunks.length
     });
 
+    // 4. atualizar o mapa local com o resultado já unido (pode incluir geometrias de outra pessoa)
+    drawnGroup.clearLayers();
+    featuresData.clear();
+    featureCounter = 0;
+    importGeoJSONFeatures(merged);
+    teamState.deletedFids.clear();
+
     teamState.usedBytes = new TextEncoder().encode(text).length;
     teamState.lastSync = Date.now();
     teamState.status = 'idle';
     saveTeamProject();
     renderTeamCard();
-    showTeamToast('Sincronização concluída.');
+    showTeamToast('Sincronização concluída (com o trabalho de todos).');
   }catch(err){
     console.error(err);
     teamState.status = 'idle';
@@ -3408,30 +3489,8 @@ async function syncTeamProject(){
 
 async function fetchTeamProjectGeoJSON(){
   const resumeData = await apiRequest('POST', '/api/projects/resume', {name: teamState.name, password: teamState.password});
-  if(resumeData.geojson){
-    updateTeamMetadata(resumeData);
-    return resumeData.geojson;
-  }
-
-  const chunkCount = Array.isArray(resumeData.manifest?.chunks)
-    ? resumeData.manifest.chunks.length
-    : (resumeData.manifest?.chunkCount || 0);
-  if(!chunkCount || chunkCount <= 0){ throw new Error('Manifest inválido.'); }
-
-  let text = '';
-  for(let index = 0; index < chunkCount; index++){
-    const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`, undefined, {'X-Project-Password': teamState.password});
-    if(typeof chunkResponse === 'string'){
-      text += chunkResponse;
-    } else if(chunkResponse.data){
-      text += chunkResponse.data;
-    } else {
-      throw new Error('Resposta inválida ao carregar bloco ' + index);
-    }
-  }
-
   updateTeamMetadata(resumeData);
-  return JSON.parse(text);
+  return downloadTeamGeoJSON(resumeData);
 }
 
 async function downloadTeamProject(){
