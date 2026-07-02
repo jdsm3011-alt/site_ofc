@@ -1,0 +1,12 @@
+name = "datagis-equipa"
+main = "worker.js"
+compatibility_date = "2026-07-01"
+
+[vars]
+GITHUB_OWNER = "jdsm3011-alt"
+GITHUB_REPO = "site_ofc"
+GITHUB_BRANCH = "main"
+
+# Secrets (NÃO colocar aqui — definir via CLI):
+#   wrangler secret put GITHUB_TOKEN
+#   wrangler secret put PASSWORD_SALT
