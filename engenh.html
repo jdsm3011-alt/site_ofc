@@ -253,6 +253,20 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 .offline-block{margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
 
+.team-block{margin-top:18px;}
+.team-block.hidden{display:none;}
+.team-card{background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px;}
+.team-card .team-status-row{display:flex; justify-content:space-between; gap:10px; font-size:13px; margin-bottom:10px;}
+.team-card .team-status-row span{color:var(--stone);}
+.team-card .team-progress-bar{width:100%; height:10px; background:var(--paper-deep); border:1px solid var(--line); border-radius:999px; overflow:hidden; margin:10px 0;}
+.team-card .team-progress-fill{height:100%; width:0%; background:linear-gradient(135deg, var(--green-deep), var(--green)); transition:width .2s ease;}
+.team-card .team-card-actions{display:flex; flex-direction:column; gap:8px;}
+.team-sync-card{background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-top:16px;}
+.team-sync-title{font-size:14px; font-weight:700; margin-bottom:8px;}
+.team-sync-support .sub{margin:0 0 12px;}
+.team-card input{width:100%; border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:10px; background:var(--white); color:var(--ink);}
+.team-card label{display:block; font-size:12px; color:var(--stone); margin-bottom:4px;}
+
 #offline-overlay, #offline-progress-overlay, #offline-prompt-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.45);
   display:flex; align-items:center; justify-content:center;
@@ -361,6 +375,26 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.34,1.4,.4,1), visibility 0s linear 0s;
 }
 #connectivity-restored-toast.is-leaving{
+  opacity:0; visibility:visible; pointer-events:none;
+  transform:translateX(-50%) translateY(-10px) scale(.97);
+  transition:opacity .35s cubic-bezier(.4,0,1,1), transform .35s cubic-bezier(.4,0,1,1), visibility 0s linear .35s;
+}
+#team-sync-toast{
+  position:fixed; top:22px; left:50%; z-index:2147483000;
+  display:flex; align-items:center; gap:10px;
+  background:var(--paper-elevated); border:1px solid rgba(31,92,107,.22);
+  border-radius:999px; box-shadow:var(--shadow);
+  padding:10px 20px 10px 12px; font-size:13px; font-weight:600; color:var(--ink);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateX(-50%) translateY(-14px) scale(.96);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1), transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear .4s;
+}
+#team-sync-toast.is-visible{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.34,1.4,.4,1), visibility 0s linear 0s;
+}
+#team-sync-toast.is-leaving{
   opacity:0; visibility:visible; pointer-events:none;
   transform:translateX(-50%) translateY(-10px) scale(.97);
   transition:opacity .35s cubic-bezier(.4,0,1,1), transform .35s cubic-bezier(.4,0,1,1), visibility 0s linear .35s;
@@ -1047,6 +1081,13 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   Seja bem-vindo de volta, administrador José, MEU TRAVEQUINHO!
 </div>
 
+<div id="team-sync-toast" role="status" aria-live="polite">
+  <span class="check">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </span>
+  <span class="message">Sincronização concluída com sucesso</span>
+</div>
+
 <main>
   <div id="map">
     <div id="landing-banner">
@@ -1090,7 +1131,11 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <h2>Geometrias desenhadas</h2>
     <div class="sub" id="config-summary"></div>
 
-    
+    <div class="team-block hidden" id="team-block">
+      <div class="team-card" id="team-card">
+        <div id="team-card-content"></div>
+      </div>
+    </div>
 
     <ul class="feat-list" id="feat-list"></ul>
     <p class="sub" id="empty-msg">Ainda não desenhaste nada. Usa as ferramentas no mapa (canto superior esquerdo) para começar.</p>
@@ -1147,6 +1192,15 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.8"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><line x1="10.3" y1="10" x2="10.3" y2="20"/></svg></div>
           <b>Com atributos</b>
           <small>Define até 3 campos, com classes predefinidas se quiseres.</small>
+        </div>
+      </div>
+      <div class="team-sync-support">
+        <div class="team-sync-card">
+          <div class="team-sync-title">Trabalhar em equipa</div>
+          <p class="sub">Sincroniza apenas as geometrias (GeoJSON). Cria ou retoma um projeto no Worker para partilhar o trabalho.</p>
+          <div class="btn-row">
+            <button type="button" class="btn primary" id="btn-open-team-panel">Abrir painel de equipa</button>
+          </div>
         </div>
       </div>
       <div class="wizard-nav">
@@ -1773,6 +1827,20 @@ let drawnGroup;
 let map;
 
 const DEFAULT_COLOR = '#F5821F';
+const TEAM_STORAGE_KEY = 'engenh-team-project';
+let teamPanelVisible = false;
+let teamState = {
+  savedSlug: '',
+  savedName: '',
+  slug: '',
+  name: '',
+  password: null,
+  connected: false,
+  lastSync: null,
+  usedBytes: 0,
+  sizeLimit: 200 * 1024 * 1024,
+  status: 'idle'
+};
 const PALETTE = ['#F5821F','#C2703D','#6E726A','#234635','#E7A57A','#7FB894','#B5472B','#9B9E94'];
 
 // ---------- limites de município (CAOP preview via GitHub) ----------
@@ -2601,6 +2669,7 @@ function applyGeometryConfig(){
 }
 
 initMap(); // o mapa fica pronto logo ao carregar a página
+initTeamUI();
 
 /* ============================================================
    CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
@@ -2679,7 +2748,9 @@ function importGeoJSONFeatures(geojson){
     drawnGroup.addLayer(layer);
     featureCounter++;
     const id = L.Util.stamp(layer);
-    const entry = {layer, props:{}, id, label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
+    const props = f.properties && typeof f.properties === 'object' ? {...f.properties} : {};
+    const label = props.name || props.label || 'Geometria '+featureCounter;
+    const entry = {layer, props, id, label, hasOverlap:false, overlapsWith:[]};
     featuresData.set(id, entry);
 
     styleLayerDefault(layer);
@@ -3023,6 +3094,309 @@ function buildGeoJSON(){
     features.push(gj);
   });
   return {type:'FeatureCollection', features};
+}
+
+function loadSavedTeam(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(TEAM_STORAGE_KEY));
+    if(saved && saved.slug){
+      teamState.savedSlug = saved.slug;
+      teamState.savedName = saved.name || '';
+      teamState.slug = saved.slug;
+      teamState.name = saved.name || '';
+      teamState.connected = false;
+    }
+  }catch(err){
+    console.warn('Não foi possível ler o projeto de equipa guardado.', err);
+  }
+}
+
+function saveTeamProject(){
+  try{
+    localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify({slug: teamState.slug, name: teamState.name}));
+  }catch(err){ console.warn('Não foi possível guardar o estado da equipa.', err); }
+}
+
+function clearTeamProject(){
+  try{ localStorage.removeItem(TEAM_STORAGE_KEY); }catch(err){ }
+  teamState = {
+    savedSlug: '', savedName: '', slug: '', name: '', password: null,
+    connected: false, lastSync: null, usedBytes: 0, sizeLimit: 200 * 1024 * 1024, status: 'idle'
+  };
+}
+
+function showTeamToast(message){
+  const toast = document.getElementById('team-sync-toast');
+  if(!toast) return;
+  toast.querySelector('.message').textContent = message;
+  toast.classList.remove('is-leaving');
+  void toast.offsetWidth;
+  toast.classList.add('is-visible');
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+    toast.classList.add('is-leaving');
+  }, 3200);
+}
+
+async function apiRequest(method, path, data){
+  const options = {method, headers:{'Content-Type':'application/json'}};
+  if(data !== undefined) options.body = JSON.stringify(data);
+  const res = await fetch(path, options);
+  const text = await res.text();
+  let result = null;
+  try{
+    result = text ? JSON.parse(text) : null;
+  }catch(e){
+    result = text;
+  }
+  if(!res.ok){
+    const err = new Error((result && result.message) || `Erro ${res.status}`);
+    err.status = res.status;
+    err.body = result;
+    throw err;
+  }
+  return result;
+}
+
+function normalizeTeamProjectName(name){
+  return (name || '').trim();
+}
+
+function renderTeamCard(){
+  const container = document.getElementById('team-card-content');
+  if(!container) return;
+
+  if(!teamState.connected){
+    const savedInfo = teamState.slug ? `<div class="team-status-row"><span>Projeto guardado</span><b>${teamState.name || '—'}</b></div>` : '';
+    container.innerHTML = `
+      ${savedInfo}
+      <label for="team-project-name">Nome do projeto</label>
+      <input type="text" id="team-project-name" placeholder="Ex: meu-projeto" value="${teamState.name || ''}" autocomplete="off">
+      <label for="team-project-password">Password</label>
+      <input type="password" id="team-project-password" autocomplete="new-password">
+      <div class="btn-row">
+        <button type="button" class="btn primary" id="team-create-btn">Criar projeto</button>
+        <button type="button" class="btn" id="team-resume-btn">Retomar projeto</button>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn warn" id="team-clear-btn">Limpar projeto guardado</button>
+      </div>
+      <p class="sub">O nome do projeto fica guardado localmente. A password apenas em memória enquanto permaneceres nesta página.</p>
+    `;
+    container.querySelector('#team-create-btn')?.addEventListener('click', createTeamProject);
+    container.querySelector('#team-resume-btn')?.addEventListener('click', resumeTeamProject);
+    container.querySelector('#team-clear-btn')?.addEventListener('click', ()=>{
+      clearTeamProject(); renderTeamCard();
+    });
+    return;
+  }
+
+  const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
+  const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
+  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
+  const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
+
+  container.innerHTML = `
+    <div class="team-status-row"><span>Projeto</span><b>${teamState.name}</b></div>
+    <div class="team-status-row"><span>Estado</span><b>${statusLabel}</b></div>
+    <div class="team-status-row"><span>Última sincronização</span><b>${lastSyncLabel}</b></div>
+    <div class="team-status-row"><span>Espaço usado</span><b>${usedLabel} / 200 MB</b></div>
+    <div class="team-progress-bar"><div class="team-progress-fill" style="width:${percent}%"></div></div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="team-sync-btn">Sincronizar</button>
+      <button type="button" class="btn" id="team-download-btn">Descarregar/Atualizar</button>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn warn" id="team-leave-btn">Sair do projeto</button>
+    </div>
+  `;
+
+  container.querySelector('#team-sync-btn')?.addEventListener('click', syncTeamProject);
+  container.querySelector('#team-download-btn')?.addEventListener('click', downloadTeamProject);
+  container.querySelector('#team-leave-btn')?.addEventListener('click', leaveTeamProject);
+}
+
+function updateTeamMetadata(result){
+  if(result && result.manifest){
+    const manifest = result.manifest;
+    teamState.lastSync = manifest.updatedAt ? new Date(manifest.updatedAt).getTime() : teamState.lastSync || Date.now();
+    teamState.usedBytes = manifest.size || manifest.bytes || teamState.usedBytes;
+  }
+}
+
+async function createTeamProject(){
+  const nameInput = document.getElementById('team-project-name');
+  const passInput = document.getElementById('team-project-password');
+  const projectName = normalizeTeamProjectName(nameInput?.value);
+  const password = passInput?.value || '';
+  if(!projectName || !password){ alert('Fornece um nome de projeto e password.'); return; }
+
+  try{
+    const result = await apiRequest('POST', '/api/projects/create', {name: projectName, password});
+    teamState.slug = result.slug || projectName;
+    teamState.name = projectName;
+    teamState.password = password;
+    teamState.connected = true;
+    teamState.savedSlug = teamState.slug;
+    teamState.savedName = teamState.name;
+    saveTeamProject();
+    renderTeamCard();
+    showTeamToast('Projeto criado. Agora podes sincronizar.');
+  }catch(err){
+    if(err.status === 409){ alert('Já existe um projeto com esse nome. Escolhe outro nome.'); }
+    else { console.error(err); alert('Não foi possível criar o projeto.'); }
+  }
+}
+
+async function resumeTeamProject(){
+  const nameInput = document.getElementById('team-project-name');
+  const passInput = document.getElementById('team-project-password');
+  const projectName = normalizeTeamProjectName(nameInput?.value || teamState.name);
+  const password = passInput?.value || '';
+  if(!projectName || !password){ alert('Fornece o nome do projeto e a password para retomar.'); return; }
+
+  try{
+    const result = await apiRequest('POST', '/api/projects/resume', {name: projectName, password});
+    teamState.slug = result.slug || teamState.slug || projectName;
+    teamState.name = projectName;
+    teamState.password = password;
+    teamState.connected = true;
+    teamState.savedSlug = teamState.slug;
+    teamState.savedName = teamState.name;
+    updateTeamMetadata(result);
+    saveTeamProject();
+    renderTeamCard();
+    showTeamToast('Projeto retomado. Podes sincronizar ou descarregar.');
+  }catch(err){
+    if(err.status === 401){ alert('Password incorreta.'); }
+    else { console.error(err); alert('Não foi possível retomar o projeto.'); }
+  }
+}
+
+function splitTextToChunks(text, maxBytes){
+  const encoder = new TextEncoder();
+  const chunks = [];
+  let pos = 0;
+  while(pos < text.length){
+    let end = Math.min(text.length, pos + 16384);
+    let slice = text.slice(pos, end);
+    while(encoder.encode(slice).length > maxBytes){
+      end = pos + Math.floor((end - pos) / 2);
+      if(end <= pos) break;
+      slice = text.slice(pos, end);
+    }
+    if(!slice.length){ throw new Error('Não foi possível criar os blocos de sincronização.'); }
+    chunks.push(slice);
+    pos += slice.length;
+  }
+  return chunks;
+}
+
+async function syncTeamProject(){
+  if(!teamState.connected){ alert('Retoma ou cria um projeto de equipa antes de sincronizar.'); return; }
+  if(featuresData.size === 0){ alert('Ainda não tens geometrias para sincronizar.'); return; }
+  teamState.status = 'syncing'; renderTeamCard();
+
+  try{
+    const geojson = buildGeoJSON();
+    const text = JSON.stringify(geojson);
+    const chunks = splitTextToChunks(text, 2.5 * 1024 * 1024);
+
+    for(let index = 0; index < chunks.length; index++){
+      await apiRequest('POST', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk`, {
+        index,
+        chunk: chunks[index],
+        password: teamState.password,
+        totalChunks: chunks.length
+      });
+    }
+
+    await apiRequest('POST', `/api/projects/${encodeURIComponent(teamState.slug)}/finalize`, {
+      password: teamState.password,
+      totalChunks: chunks.length
+    });
+
+    teamState.usedBytes = new TextEncoder().encode(text).length;
+    teamState.lastSync = Date.now();
+    teamState.status = 'idle';
+    saveTeamProject();
+    renderTeamCard();
+    showTeamToast('Sincronização concluída.');
+  }catch(err){
+    console.error(err);
+    teamState.status = 'idle';
+    renderTeamCard();
+    alert('Falha na sincronização. Tenta novamente.');
+  }
+}
+
+async function fetchTeamProjectGeoJSON(){
+  const resumeData = await apiRequest('POST', '/api/projects/resume', {name: teamState.name, password: teamState.password});
+  if(resumeData.geojson){
+    updateTeamMetadata(resumeData);
+    return resumeData.geojson;
+  }
+
+  const chunkCount = resumeData.manifest?.chunkCount || resumeData.manifest?.chunks;
+  if(!chunkCount || chunkCount <= 0){ throw new Error('Manifest inválido.'); }
+
+  let text = '';
+  for(let index = 0; index < chunkCount; index++){
+    const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`);
+    if(typeof chunkResponse === 'string'){
+      text += chunkResponse;
+    } else if(chunkResponse.chunk){
+      text += chunkResponse.chunk;
+    } else {
+      throw new Error('Resposta inválida ao carregar bloco ' + index);
+    }
+  }
+
+  updateTeamMetadata(resumeData);
+  return JSON.parse(text);
+}
+
+async function downloadTeamProject(){
+  if(!teamState.connected){ alert('Retoma ou cria um projeto de equipa antes de descarregar.'); return; }
+  teamState.status = 'syncing'; renderTeamCard();
+
+  try{
+    const geojson = await fetchTeamProjectGeoJSON();
+    drawnGroup.clearLayers();
+    featuresData.clear();
+    featureCounter = 0;
+    importGeoJSONFeatures(geojson);
+    renderTeamCard();
+    showTeamToast('Projeto descarregado e atualizado com sucesso.');
+  }catch(err){
+    console.error(err);
+    teamState.status = 'idle';
+    renderTeamCard();
+    alert('Falha ao descarregar o projeto.');
+  }
+}
+
+function leaveTeamProject(){
+  if(!confirm('Sais do projeto de equipa? O nome do projeto será removido localmente.')) return;
+  clearTeamProject();
+  renderTeamCard();
+  showTeamToast('Saíste do projeto de equipa.');
+}
+
+function showTeamPanel(){
+  teamPanelVisible = true;
+  const block = document.getElementById('team-block');
+  if(block) block.classList.remove('hidden');
+  renderTeamCard();
+  const card = document.getElementById('team-card');
+  if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function initTeamUI(){
+  document.getElementById('btn-open-team-panel')?.addEventListener('click', showTeamPanel);
+  loadSavedTeam();
+  renderTeamCard();
 }
 
 document.getElementById('btn-export-geojson').addEventListener('click', ()=>{
