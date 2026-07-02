@@ -840,6 +840,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   if(!gate) return;
 
   var SESSION_KEY = 'engenh-admin-auth';
+  var pendingAuthCallback = null;
 
   var form = document.getElementById('admin-gate-form');
   var userInput = document.getElementById('admin-gate-user');
@@ -890,6 +891,12 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
         if (user === 'José Fonseca') {
           notify('Acesso - Engenh', 'José Fonseca acedeu à componente Engenh em ' + new Date().toLocaleString('pt-PT') + '.');
           showWelcomeToast();
+        }
+
+        if (typeof pendingAuthCallback === 'function') {
+          var cb = pendingAuthCallback;
+          pendingAuthCallback = null;
+          cb();
         }
       } else {
         errorMsg.style.display = 'block';
@@ -971,9 +978,22 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       if (!gateVisible) return;
       e.preventDefault();
       try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(err) {}
-      playBypassAnimation(hideGate);
+      playBypassAnimation(function(){
+        hideGate();
+        if (typeof pendingAuthCallback === 'function') {
+          var cb = pendingAuthCallback;
+          pendingAuthCallback = null;
+          cb();
+        }
+      });
     }
   });
+
+  /* Hook público: pede reautenticação com o mesmo modal antes de correr onSuccess */
+  window.adminGateRequireAuth = function(onSuccess){
+    pendingAuthCallback = onSuccess;
+    showGate();
+  };
 })();
 </script>
 
@@ -3139,10 +3159,12 @@ function showTeamToast(message){
   }, 3200);
 }
 
-async function apiRequest(method, path, data){
-  const options = {method, headers:{'Content-Type':'application/json'}};
+const TEAM_API_BASE = 'https://datagis-equipa.gispt.workers.dev';
+
+async function apiRequest(method, path, data, extraHeaders){
+  const options = {method, headers:{'Content-Type':'application/json', ...(extraHeaders || {})}};
   if(data !== undefined) options.body = JSON.stringify(data);
-  const res = await fetch(path, options);
+  const res = await fetch(TEAM_API_BASE + path, options);
   const text = await res.text();
   let result = null;
   try{
@@ -3184,7 +3206,13 @@ function renderTeamCard(){
       </div>
       <p class="sub">O nome do projeto fica guardado localmente. A password apenas em memória enquanto permaneceres nesta página.</p>
     `;
-    container.querySelector('#team-create-btn')?.addEventListener('click', createTeamProject);
+    container.querySelector('#team-create-btn')?.addEventListener('click', ()=>{
+      if (typeof window.adminGateRequireAuth === 'function') {
+        window.adminGateRequireAuth(createTeamProject);
+      } else {
+        createTeamProject();
+      }
+    });
     container.querySelector('#team-resume-btn')?.addEventListener('click', resumeTeamProject);
     container.querySelector('#team-clear-btn')?.addEventListener('click', ()=>{
       clearTeamProject(); renderTeamCard();
@@ -3194,7 +3222,7 @@ function renderTeamCard(){
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
-  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
+  const statusLabel = teamState.status === 'syncing' ? 'A sincronizar…' : 'Pronto para sincronizar';
   const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
 
   container.innerHTML = `
@@ -3221,7 +3249,7 @@ function updateTeamMetadata(result){
   if(result && result.manifest){
     const manifest = result.manifest;
     teamState.lastSync = manifest.updatedAt ? new Date(manifest.updatedAt).getTime() : teamState.lastSync || Date.now();
-    teamState.usedBytes = manifest.size || manifest.bytes || teamState.usedBytes;
+    teamState.usedBytes = manifest.total_bytes || manifest.size || manifest.bytes || teamState.usedBytes;
   }
 }
 
@@ -3271,10 +3299,53 @@ async function resumeTeamProject(){
     updateTeamMetadata(result);
     saveTeamProject();
     renderTeamCard();
-    showTeamToast('Projeto retomado. Podes sincronizar ou descarregar.');
+    await loadTeamGeometries(result);
   }catch(err){
     if(err.status === 401){ alert('Password incorreta.'); }
     else { console.error(err); alert('Não foi possível retomar o projeto.'); }
+  }
+}
+
+async function loadTeamGeometries(resumeData){
+  teamState.status = 'syncing'; renderTeamCard();
+  try{
+    let geojson;
+    if(resumeData.geojson){
+      geojson = resumeData.geojson;
+    } else {
+      const chunkCount = Array.isArray(resumeData.manifest?.chunks)
+        ? resumeData.manifest.chunks.length
+        : (resumeData.manifest?.chunkCount || 0);
+      if(!chunkCount || chunkCount <= 0){
+        teamState.status = 'idle'; renderTeamCard();
+        showTeamToast('Projeto retomado. Ainda não há geometrias guardadas.');
+        return;
+      }
+      let text = '';
+      for(let index = 0; index < chunkCount; index++){
+        const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`, undefined, {'X-Project-Password': teamState.password});
+        if(typeof chunkResponse === 'string'){
+          text += chunkResponse;
+        } else if(chunkResponse.data){
+          text += chunkResponse.data;
+        } else {
+          throw new Error('Resposta inválida ao carregar bloco ' + index);
+        }
+      }
+      geojson = JSON.parse(text);
+    }
+    drawnGroup.clearLayers();
+    featuresData.clear();
+    featureCounter = 0;
+    importGeoJSONFeatures(geojson);
+    teamState.status = 'idle';
+    renderTeamCard();
+    showTeamToast('Projeto retomado e geometrias carregadas.');
+  }catch(err){
+    console.error('Erro ao carregar geometrias do projeto:', err);
+    teamState.status = 'idle';
+    renderTeamCard();
+    showTeamToast('Projeto retomado, mas falhou o carregamento das geometrias.');
   }
 }
 
@@ -3310,7 +3381,7 @@ async function syncTeamProject(){
     for(let index = 0; index < chunks.length; index++){
       await apiRequest('POST', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk`, {
         index,
-        chunk: chunks[index],
+        data: chunks[index],
         password: teamState.password,
         totalChunks: chunks.length
       });
@@ -3342,16 +3413,18 @@ async function fetchTeamProjectGeoJSON(){
     return resumeData.geojson;
   }
 
-  const chunkCount = resumeData.manifest?.chunkCount || resumeData.manifest?.chunks;
+  const chunkCount = Array.isArray(resumeData.manifest?.chunks)
+    ? resumeData.manifest.chunks.length
+    : (resumeData.manifest?.chunkCount || 0);
   if(!chunkCount || chunkCount <= 0){ throw new Error('Manifest inválido.'); }
 
   let text = '';
   for(let index = 0; index < chunkCount; index++){
-    const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`);
+    const chunkResponse = await apiRequest('GET', `/api/projects/${encodeURIComponent(teamState.slug)}/chunk/${index}`, undefined, {'X-Project-Password': teamState.password});
     if(typeof chunkResponse === 'string'){
       text += chunkResponse;
-    } else if(chunkResponse.chunk){
-      text += chunkResponse.chunk;
+    } else if(chunkResponse.data){
+      text += chunkResponse.data;
     } else {
       throw new Error('Resposta inválida ao carregar bloco ' + index);
     }
