@@ -3254,7 +3254,7 @@ function renderTeamCard(){
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
-  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
+  const statusLabel = teamState.status === 'syncing' ? 'Sincronização em curso…' : 'Pronto para sincronizar';
   const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
 
   container.innerHTML = `
