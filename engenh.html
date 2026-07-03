@@ -826,7 +826,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
         <button type="submit">Entrar</button>
         <p id="admin-gate-error">Utilizador ou palavra-passe incorretos.</p>
       </form>
-      <a id="admin-gate-back" href="index.html">&larr; Voltar ao portal</a>
+      <a id="admin-gate-back" href="index.html">&larr; Voltar</a>
     </div>
   </div>
 </div>
@@ -834,7 +834,10 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 (function(){
   var ADMINS = {
     "Daniel Machado": "tunics123",
-    "José Fonseca": "tunics123"
+    "José Fonseca": "tunics123",
+    "Ruben Alves": "admin51",
+    "Nuno Barbosa": "admin51",
+    "Philips": "admin51"
   };
   var FORM_ENDPOINT = "https://formspree.io/f/xvzjojbj";
   var gate = document.getElementById('admin-gate');
@@ -889,8 +892,9 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
         try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e) {}
         hideGate();
 
+        notify('Acesso - Engenh', user + ' acedeu à componente Engenh em ' + new Date().toLocaleString('pt-PT') + '.');
+
         if (user === 'José Fonseca') {
-          notify('Acesso - Engenh', 'José Fonseca acedeu à componente Engenh em ' + new Date().toLocaleString('pt-PT') + '.');
           showWelcomeToast();
         }
 
@@ -939,8 +943,6 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
         '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
         '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
         '<span class="l3">&gt; bypass_______________ <b>OK</b></span>' +
-      '</div>';
-        '<span class="l3">&gt; concedido /b></span>'
       '</div>';
     document.body.appendChild(ov);
 
@@ -1069,7 +1071,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <span class="icon-sun">&#9728;</span>
       <span class="icon-moon">&#9789;</span>
     </button>
-    <a class="back-link" id="back-link" href="index.html">← <span>Voltar ao portal</span></a>
+    <a class="back-link" id="back-link" href="index.html">← <span>Voltar</span></a>
   </div>
 </header>
 
@@ -3254,7 +3256,7 @@ function renderTeamCard(){
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
-  const statusLabel = teamState.status === 'syncing' ? 'Sincronização em curso…' : 'Pronto para sincronizar';
+  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
   const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
 
   container.innerHTML = `
