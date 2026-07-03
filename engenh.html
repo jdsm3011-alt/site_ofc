@@ -264,6 +264,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .team-sync-card{background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; margin-top:16px;}
 .team-sync-title{font-size:14px; font-weight:700; margin-bottom:8px;}
 .team-sync-support .sub{margin:0 0 12px;}
+.team-sync-support.hidden{display:none;}
 .team-card input{width:100%; border:1px solid var(--line); border-radius:var(--radius-sm); padding:10px 12px; margin-bottom:10px; background:var(--white); color:var(--ink);}
 .team-card label{display:block; font-size:12px; color:var(--stone); margin-bottom:4px;}
 
@@ -1214,12 +1215,21 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
           <small>Define até 3 campos, com classes predefinidas se quiseres.</small>
         </div>
       </div>
-      <div class="team-sync-support">
+      <div class="team-sync-support" id="team-sync-support">
         <div class="team-sync-card">
           <div class="team-sync-title">Trabalhar em equipa</div>
           <p class="sub">Sincroniza apenas as geometrias (GeoJSON). Cria ou retoma um projeto no Worker para partilhar o trabalho.</p>
           <div class="btn-row">
             <button type="button" class="btn primary" id="btn-open-team-panel">Abrir painel de equipa</button>
+          </div>
+        </div>
+      </div>
+      <div class="team-sync-support hidden" id="team-sync-connected-note">
+        <div class="team-sync-card">
+          <div class="team-sync-title">Já estás ligado a um projeto</div>
+          <p class="sub">Estás ligado ao projeto "<span id="team-sync-connected-name"></span>". Para ligares a outro, sai primeiro do projeto atual no painel de equipa.</p>
+          <div class="btn-row">
+            <button type="button" class="btn" id="btn-open-team-panel-connected">Abrir painel de equipa</button>
           </div>
         </div>
       </div>
@@ -2373,6 +2383,7 @@ document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
   document.getElementById('wizard-overlay').classList.remove('hidden');
   showStep(0);
   dismissGearCoachmark();
+  updateTeamSyncSupportVisibility();
 });
 
 /* ============================================================
@@ -3291,6 +3302,7 @@ async function createTeamProject(){
     teamState.savedName = teamState.name;
     saveTeamProject();
     renderTeamCard();
+    updateTeamSyncSupportVisibility();
     showTeamToast('Projeto criado. Agora podes sincronizar.');
   }catch(err){
     if(err.status === 409){
@@ -3320,6 +3332,7 @@ async function resumeTeamProject(){
     updateTeamMetadata(result);
     saveTeamProject();
     renderTeamCard();
+    updateTeamSyncSupportVisibility();
     await loadTeamGeometries(result);
   }catch(err){
     if(err.status === 401){ alert('Password incorreta.'); }
@@ -3517,7 +3530,12 @@ function leaveTeamProject(){
   if(!confirm('Sais do projeto de equipa? O nome do projeto será removido localmente.')) return;
   clearTeamProject();
   renderTeamCard();
+  updateTeamSyncSupportVisibility();
   showTeamToast('Saíste do projeto de equipa.');
+
+  teamPanelVisible = false;
+  const block = document.getElementById('team-block');
+  if(block) block.classList.add('hidden');
 }
 
 function showTeamPanel(){
@@ -3531,10 +3549,27 @@ function showTeamPanel(){
   if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
+function updateTeamSyncSupportVisibility(){
+  const connectCard = document.getElementById('team-sync-support');
+  const connectedNote = document.getElementById('team-sync-connected-note');
+  const nameSpan = document.getElementById('team-sync-connected-name');
+  if(!connectCard || !connectedNote) return;
+  if(teamState.connected){
+    connectCard.classList.add('hidden');
+    connectedNote.classList.remove('hidden');
+    if(nameSpan) nameSpan.textContent = teamState.name || '';
+  } else {
+    connectCard.classList.remove('hidden');
+    connectedNote.classList.add('hidden');
+  }
+}
+
 function initTeamUI(){
   document.getElementById('btn-open-team-panel')?.addEventListener('click', showTeamPanel);
+  document.getElementById('btn-open-team-panel-connected')?.addEventListener('click', showTeamPanel);
   loadSavedTeam();
   renderTeamCard();
+  updateTeamSyncSupportVisibility();
 }
 
 document.getElementById('btn-export-geojson').addEventListener('click', ()=>{
