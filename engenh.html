@@ -99,6 +99,9 @@ header{
 html[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
 html[data-theme="dark"] .theme-toggle .icon-moon{display:inline;}
 
+.header-left{display:flex; align-items:center; gap:16px;}
+.header-left-actions{display:flex; align-items:center; gap:8px; padding-left:16px; border-left:1px solid var(--line);}
+
 .header-actions{display:flex; align-items:center; gap:10px;}
 
 /* ---------- layout ---------- */
@@ -167,7 +170,8 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 #sidebar{
   width:340px; min-width:340px;
-  border-left:1px solid var(--line);
+  order:-1;
+  border-right:1px solid var(--line);
   background:var(--paper-elevated);
   display:flex; flex-direction:column;
   padding:18px;
@@ -235,6 +239,15 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   margin-top:6px; padding-top:6px; border-top:1px dashed var(--line-strong);
   font-size:11.5px; font-weight:600; color:var(--warn); display:flex; gap:5px; align-items:flex-start;
 }
+.stats-popup-quickattr{
+  margin-top:8px; padding-top:8px; border-top:1px dashed var(--line-strong);
+}
+.stats-popup-quickattr label{display:block; font-size:11px; color:var(--stone); margin-bottom:4px;}
+.stats-popup-quickattr + .stats-popup-quickattr{margin-top:6px; padding-top:6px; border-top:none;}
+.quick-attr-field{
+  width:100%; padding:6px 8px; border:1px solid var(--line-strong); border-radius:6px;
+  font-family:inherit; font-size:12.5px; background:var(--paper); color:var(--ink);
+}
 
 .btn{
   border:1px solid var(--line-strong); background:var(--paper-elevated); color:var(--ink);
@@ -255,7 +268,15 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 .team-block{margin-top:18px;}
 .team-block.hidden{display:none;}
-.team-card{background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px;}
+.team-card{background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-sm); padding:16px; position:relative;}
+.team-card-close{
+  position:absolute; top:10px; right:10px; z-index:2;
+  width:24px; height:24px; border-radius:6px; border:1px solid var(--line-strong);
+  background:var(--paper-elevated); color:var(--stone); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:12px; line-height:1;
+  transition:border-color .15s ease, color .15s ease;
+}
+.team-card-close:hover{border-color:var(--warn); color:var(--warn);}
 .team-card .team-status-row{display:flex; justify-content:space-between; gap:10px; font-size:13px; margin-bottom:10px;}
 .team-card .team-status-row span{color:var(--stone);}
 .team-card .team-progress-bar{width:100%; height:10px; background:var(--paper-deep); border:1px solid var(--line); border-radius:999px; overflow:hidden; margin:10px 0;}
@@ -441,12 +462,67 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   z-index:1000; padding:20px;
 }
 #wizard-overlay.hidden{display:none;}
+
+#start-project-overlay, #local-projects-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.45);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000; padding:20px;
+}
+#start-project-overlay.hidden, #local-projects-overlay.hidden{display:none;}
+
+#exit-confirm-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.5);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1200; padding:20px;
+}
+#exit-confirm-overlay.hidden{display:none;}
+
+#attr-table-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.45);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000; padding:20px;
+}
+#attr-table-overlay.hidden{display:none;}
+
+#export-menu-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.45);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1000; padding:20px;
+}
+#export-menu-overlay.hidden{display:none;}
+#export-menu-card .choice-card small{display:block; margin-top:2px;}
+.attr-table-card{max-width:min(900px, 94vw); width:100%;}
+.attr-table-wrap{max-height:56vh; overflow:auto; border:1px solid var(--line); border-radius:var(--radius-sm); margin:16px 0;}
+.attr-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+.attr-table th, .attr-table td{padding:9px 12px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap;}
+.attr-table thead th{position:sticky; top:0; background:var(--paper-elevated); font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--stone); z-index:1;}
+.attr-table tbody tr:last-child td{border-bottom:none;}
+.attr-table tbody tr:hover{background:color-mix(in srgb, var(--green) 5%, transparent);}
+.attr-table tbody tr.has-overlap td{background:color-mix(in srgb, var(--warn) 8%, transparent);}
+.attr-table td.id-cell{font-family:'IBM Plex Mono', monospace; font-weight:600;}
+.attr-table td.actions-cell{display:flex; gap:4px; white-space:nowrap;}
+.attr-table td.actions-cell button{
+  border:1px solid var(--line-strong); background:var(--paper-elevated); border-radius:6px;
+  width:26px; height:26px; cursor:pointer; font-size:12.5px; line-height:1;
+  display:flex; align-items:center; justify-content:center; color:var(--ink);
+}
+.attr-table td.actions-cell button:hover{border-color:var(--green); color:var(--green);}
+.attr-table td.actions-cell button.danger:hover{border-color:var(--warn); color:var(--warn);}
+#attr-table-empty{padding:18px; text-align:center; color:var(--stone); font-size:12.5px;}
 .wizard-card{
   position:relative;
   background:var(--paper-elevated); border:1px solid var(--line); border-radius:var(--radius-lg);
   box-shadow:var(--shadow); width:min(640px, 100%); max-height:88vh; overflow-y:auto;
   padding:32px 34px;
 }
+.wizard-close-btn{
+  position:absolute; top:14px; right:14px; z-index:3;
+  width:26px; height:26px; border-radius:6px; border:1px solid var(--line-strong);
+  background:var(--paper-elevated); color:var(--stone); cursor:pointer;
+  display:flex; align-items:center; justify-content:center; font-size:13px; line-height:1;
+  transition:border-color .15s ease, color .15s ease;
+}
+.wizard-close-btn:hover{border-color:var(--warn); color:var(--warn);}
 .wizard-card::before{
   content:"";
   position:absolute; top:12px; left:12px; right:12px; bottom:12px;
@@ -519,6 +595,70 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .small-link{font-size:12px; color:var(--green-deep); cursor:pointer; font-weight:600; background:none; border:none; padding:0;}
 
 .wizard-nav{display:flex; justify-content:space-between; margin-top:22px; gap:10px;}
+
+/* ---------- escolha inicial: criar projeto ou trabalhar sem projeto ---------- */
+#start-project-name-row.hidden{display:none;}
+#start-project-warning.hidden{display:none;}
+/* ---------- painel da shape ativa (nome + colorir por atributo) ---------- */
+#shape-panel.hidden{display:none;}
+.shape-name-display{
+  display:flex; align-items:center; gap:8px;
+  font-size:15px; font-weight:700; color:var(--ink);
+  padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm);
+  background:var(--paper-elevated);
+}
+.shape-name-display .shape-geom-badge{
+  flex:none; font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--green-deep); background:var(--paper-deep);
+  padding:2px 7px; border-radius:999px; border:1px solid var(--line);
+}
+#shape-color-attr-row{margin-top:12px;}
+#shape-color-attr-row.hidden{display:none;}
+#shape-color-attr-row label{display:block; font-size:12px; color:var(--stone); margin-bottom:6px;}
+#shape-color-attr-select{
+  width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px;
+  font-family:inherit; font-size:13px; background:var(--paper); color:var(--ink);
+}
+.shape-color-legend{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:5px;}
+.shape-color-legend li{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink);}
+.shape-color-legend .swatch{
+  flex:none; width:12px; height:12px; border-radius:3px; border:1px solid var(--line-strong);
+}
+#start-project-name-row input[type=text]{
+  width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:8px;
+  font-family:inherit; font-size:13.5px; background:var(--paper); color:var(--ink);
+}
+#start-project-name-row label{display:block; font-size:12px; color:var(--stone); margin-bottom:6px;}
+#start-project-name-error{color:var(--warn); font-size:12px; margin:6px 0 0; display:none;}
+
+/* ---------- nome da shape (wizard passo 1) ---------- */
+#wizard-shape-name-row{margin-bottom:14px;}
+#wizard-shape-name-row label{display:block; font-size:12px; color:var(--stone); margin-bottom:6px;}
+#wizard-shape-name-row input[type=text]{
+  width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:8px;
+  font-family:inherit; font-size:13.5px; background:var(--paper); color:var(--ink);
+}
+#wizard-shape-name-error{color:var(--warn); font-size:12px; margin:6px 0 0; display:none;}
+
+/* ---------- lista de projetos locais guardados ---------- */
+.local-project-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 2px; border-bottom:1px solid var(--line);
+}
+.local-project-row:last-child{border-bottom:none;}
+.local-project-row .info b{display:block; font-size:13.5px; font-weight:600;}
+.local-project-row .info span{font-size:11.5px; color:var(--stone);}
+.local-project-row .actions{display:flex; gap:6px; flex-shrink:0;}
+.local-project-row .actions .btn{padding:7px 12px; font-size:12px;}
+#local-projects-list .sub{margin:8px 0 0;}
+
+/* ---------- badge do projeto ativo, junto ao título ---------- */
+#project-status-badge{
+  display:none; align-items:center; gap:5px;
+  font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:.05em;
+  color:var(--green-deep); margin-top:2px;
+}
+#project-status-badge .dot{width:5px; height:5px; border-radius:50%; background:var(--green); flex:none;}
 
 /* ---------- feature attribute form modal ---------- */
 #attr-form-overlay{
@@ -738,7 +878,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 @media (max-width:860px){
   main{flex-direction:column;}
-  #sidebar{width:100%; min-width:0; max-height:42vh; border-left:none; border-top:1px solid var(--line);}
+  #sidebar{width:100%; min-width:0; max-height:42vh; order:1; border-right:none; border-top:1px solid var(--line);}
   .choice-grid{grid-template-columns:1fr;}
   .geom-grid{grid-template-columns:1fr;}
   .coord-bar{left:8px; right:8px; bottom:8px; justify-content:space-between;}
@@ -1031,15 +1171,46 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 
 <header>
-  <div class="brand-text">
-    <h1>Digitalização</h1>
-    <span>Em desenvolvimento</span>
+  <div class="header-left">
+    <div class="brand-text">
+      <h1>Digitalização</h1>
+      <span>Em desenvolvimento</span>
+      <div id="project-status-badge"><span class="dot"></span><span id="project-status-badge-text"></span></div>
+    </div>
+
+    <div class="header-left-actions">
+      <button type="button" class="feedback-nav-btn" id="btn-save-project" title="Guardar projeto" aria-label="Guardar projeto">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      </button>
+
+      <button type="button" class="feedback-nav-btn" id="btn-open-local-projects" title="Projetos guardados" aria-label="Ver projetos guardados">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+      </button>
+
+      <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Modo equipa" aria-label="Ligar modo equipa">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+      </button>
+    </div>
   </div>
+
   <div class="header-actions">
+
+    <button type="button" class="feedback-nav-btn" id="btn-open-attr-table" title="Tabela de atributos" aria-label="Tabela de atributos">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+    </button>
+
+    <button type="button" class="feedback-nav-btn" id="open-feature-wizard-btn" title="Vetorizar" aria-label="Vetorizar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    </button>
+
     <button type="button" class="feedback-nav-btn" id="btn-import-geom" title="Importar GeoJSON ou Shapefile" aria-label="Importar GeoJSON ou Shapefile">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
     </button>
     <input type="file" id="import-file-input" accept=".geojson,.json,.zip" style="display:none;">
+
+    <button type="button" class="feedback-nav-btn" id="btn-open-export-menu" title="Exportar / download de camadas" aria-label="Exportar / download de camadas">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
     
  
     
@@ -1055,12 +1226,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     </button>
 
 
-    <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Configurar geometria" aria-label="Configurar geometria">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
-
-
-
+  
 
     <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback" aria-label="Dar feedback">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -1126,7 +1292,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       <div class="gear-coachmark-arrow"></div>
       <div class="gear-coachmark-body">
         <button type="button" class="gear-coachmark-close" id="gear-coachmark-close" aria-label="Fechar">✕</button>
-        <p>⚙ Configura o ambiente de trabalho aqui antes de começares.</p>
+        <p>✛ Cria a tua primeira feature aqui</p>
       </div>
     </div>
 
@@ -1151,17 +1317,27 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   </div>
 
   <aside id="sidebar">
-    <h2>Geometrias desenhadas</h2>
+    <h2>Camadas</h2>
     <div class="sub" id="config-summary"></div>
 
     <div class="team-block hidden" id="team-block">
       <div class="team-card" id="team-card">
+        <button type="button" class="team-card-close" id="team-card-close" title="Fechar painel de equipa" aria-label="Fechar painel de equipa">✕</button>
         <div id="team-card-content"></div>
       </div>
     </div>
 
-    <ul class="feat-list" id="feat-list"></ul>
-    <p class="sub" id="empty-msg">Ainda não desenhaste nada. Usa as ferramentas no mapa (canto superior esquerdo) para começar.</p>
+    <div class="feat-summary" id="feat-summary">
+      <p class="sub" id="empty-msg">Ainda não configuraste nenhuma shape. Usa o botão "Vetorizar" para começar.</p>
+      <div class="hidden" id="shape-panel">
+        <div class="shape-name-display" id="shape-name-display"></div>
+        <div class="hidden" id="shape-color-attr-row">
+          <label for="shape-color-attr-select">Colorir por</label>
+          <select id="shape-color-attr-select"></select>
+          <ul class="shape-color-legend" id="shape-color-legend"></ul>
+        </div>
+      </div>
+    </div>
 
     <div class="offline-block">
       <b style="font-size:13px;">Modo Offline</b>
@@ -1171,39 +1347,148 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
       </div>
     </div>
 
-    <div class="export-block">
-      <button class="btn" id="btn-reset">↺ Recomeçar configuração</button>
-      <button class="btn primary" id="btn-export-geojson">⬇ Exportar GeoJSON</button>
-      <button class="btn" id="btn-export-shp">⬇ Exportar Shapefile (.zip)</button>
-    </div>
   </aside>
 </main>
 
 
 <!-- ============ WIZARD ============ -->
-<div id="wizard-overlay" class="hidden">
-  <div class="wizard-card intro-card" id="wizard-card">
+<div id="attr-table-overlay" class="hidden">
+  <div class="wizard-card intro-card attr-table-card" id="attr-table-card">
+    <div class="step-tag">Geometrias desenhadas</div>
+    <h2>Tabela de atributos</h2>
+    <p class="hint">Uma linha por geometria. O ID é sequencial e não é guardado no GeoJSON.</p>
+    <div class="attr-table-wrap">
+      <table class="attr-table" id="attr-table">
+        <thead><tr id="attr-table-head"></tr></thead>
+        <tbody id="attr-table-body"></tbody>
+      </table>
+    </div>
+    <div class="wizard-nav">
+      <button class="btn" id="attr-table-close">Fechar</button>
+      <span></span>
+    </div>
+  </div>
+</div>
 
-    <!-- STEP 0: introdução -->
-    <div class="wizard-step" data-step="0">
-      <div class="intro-eyebrow">Digitalização</div>
-      <h2>Resumo</h2>
-      <p class="intro-lead">Pronto, essenicalmente esta componente vai servir como se fosse um "mini" arcgis, só que 1000x mais facil de se usar, com exportaçao em shape e Geojson. Neste momento estou a trabalhar na parte de análise espacial, adicionar mais ferramentas, para já só tem buffer.</p>
+<div id="export-menu-overlay" class="hidden">
+  <div class="wizard-card" id="export-menu-card">
+    <button type="button" class="wizard-close-btn" id="export-menu-close-x" title="Fechar" aria-label="Fechar">✕</button>
+    <div class="step-tag">Download</div>
+    <h2>Exportar camadas</h2>
+    <p class="hint">Seleciona as camadas e o formato para download.</p>
 
-     
+    <div id="export-menu-empty" class="hidden" style="padding:18px 0; text-align:center; color:var(--stone); font-size:12.5px;">
+      Ainda não tens geometrias nem resultados de análise para exportar.
+    </div>
 
-    
+    <div id="export-menu-body" class="hidden">
+      <div id="export-layer-list" style="display:flex; flex-direction:column; gap:8px; margin:16px 0;"></div>
 
-      <div class="wizard-nav">
-        <span></span>
-        <button class="btn primary" id="intro-next">Começar →</button>
+      <div class="attr-block" style="margin-bottom:0;">
+        <div class="attr-head"><b>Formato</b></div>
+        <div class="choice-grid" style="margin:0;">
+          <label class="choice-card" id="export-format-geojson-label" style="cursor:pointer;">
+            <input type="radio" name="export-format" value="geojson" id="export-format-geojson" checked style="margin-bottom:6px;">
+            <b>GeoJSON</b>
+            <small>.geojson</small>
+          </label>
+          <label class="choice-card" id="export-format-shp-label" style="cursor:pointer;">
+            <input type="radio" name="export-format" value="shp" id="export-format-shp" style="margin-bottom:6px;">
+            <b>Shapefile</b>
+            <small>.zip</small>
+          </label>
+        </div>
       </div>
     </div>
+
+    <div class="wizard-nav">
+      <button class="btn" id="export-menu-cancel">Cancelar</button>
+      <button class="btn primary" id="export-menu-download">⬇ Fazer download</button>
+    </div>
+  </div>
+</div>
+
+<div id="start-project-overlay" class="hidden">
+  <div class="wizard-card intro-card" id="start-project-card">
+    <div class="step-tag">Antes de começar</div>
+    <h2>Como queres trabalhar?</h2>
+    <p class="hint">Podes criar um projeto novo, continuar um já guardado neste dispositivo, ou trabalhar sem gravar.</p>
+
+    <div class="choice-grid geom-grid">
+      <div class="choice-card" data-start-choice="novo">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="9.5" y1="13.5" x2="14.5" y2="13.5"/></svg></div>
+        <b>Criar projeto</b>
+        <small>Dás um nome e o trabalho fica guardado na aplicação.</small>
+      </div>
+      <div class="choice-card" data-start-choice="continuar">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><path d="M9 12h6"/></svg></div>
+        <b>Continuar projeto</b>
+        <small>Abre um projeto que já tens guardado neste dispositivo.</small>
+      </div>
+      <div class="choice-card" data-start-choice="sem">
+        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 L11 8 L20 14"/><circle cx="4" cy="18" r="1.7" fill="currentColor" stroke="none"/><circle cx="11" cy="8" r="1.7" fill="currentColor" stroke="none"/><circle cx="20" cy="14" r="1.7" fill="currentColor" stroke="none"/></svg></div>
+        <b>Sem projeto</b>
+        <small>Trabalhas livremente, nada é guardado automaticamente.</small>
+      </div>
+    </div>
+
+    <div class="hidden" id="start-project-name-row">
+      <label for="start-project-name">Nome do projeto</label>
+      <input type="text" id="start-project-name" placeholder="Ex: levantamento-braga" autocomplete="off">
+      <p id="start-project-name-error"></p>
+    </div>
+
+    <p class="hint hidden" id="start-project-warning" style="color:var(--warn); margin-top:10px;"></p>
+
+    <div class="wizard-nav">
+      <span></span>
+      <button class="btn primary" id="start-project-continue" disabled>Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<div id="local-projects-overlay" class="hidden">
+  <div class="wizard-card intro-card" id="local-projects-card">
+    <div class="step-tag">Projetos guardados</div>
+    <h2>Projetos locais</h2>
+    <p class="hint">Guardados neste dispositivo e navegador. Abrir um projeto substitui as geometrias atuais no mapa pelas do projeto escolhido.</p>
+    <div id="local-projects-list"></div>
+    <div class="wizard-nav">
+      <button class="btn" id="local-projects-close">Fechar</button>
+      <span></span>
+    </div>
+  </div>
+</div>
+
+<div id="exit-confirm-overlay" class="hidden">
+  <div class="wizard-card intro-card" id="exit-confirm-card">
+    <div class="step-tag">Alterações por guardar</div>
+    <h2>Guardar o projeto antes de continuar?</h2>
+    <p class="hint">Tens geometrias desenhadas ou editadas que ainda não foram guardadas neste dispositivo. Se saíres sem guardar, este trabalho perde-se.</p>
+    <div class="wizard-nav" style="flex-wrap:wrap; gap:8px;">
+      <button class="btn" id="exit-confirm-cancel">Cancelar</button>
+      <span style="flex:1 1 auto;"></span>
+      <button class="btn warn" id="exit-confirm-discard">Sair sem guardar</button>
+      <button class="btn primary" id="exit-confirm-save">Guardar e sair</button>
+    </div>
+  </div>
+</div>
+
+<div id="wizard-overlay" class="hidden">
+  <div class="wizard-card intro-card" id="wizard-card">
+    <button type="button" class="wizard-close-btn" id="wizard-close-btn" title="Fechar" aria-label="Fechar">✕</button>
 
     <!-- STEP 1: modo -->
     <div class="wizard-step" data-step="1" style="display:none;">
       <div class="step-tag">Passo 1 de 3</div>
       <h2>Como queres trabalhar?</h2>
+
+      <div id="wizard-shape-name-row">
+        <label for="wizard-shape-name">Nome desta camada</label>
+        <input type="text" id="wizard-shape-name" placeholder="Ex: estradas" autocomplete="off">
+        <p id="wizard-shape-name-error">Dá um nome a esta shape para continuares.</p>
+      </div>
+
       <p class="hint">Escolhe se cada geometria desenhada vai ter apenas a forma, ou se vai ter atributos associados (como no QGIS/ArcGIS).</p>
       <div class="choice-grid">
         <div class="choice-card" data-mode="simples">
@@ -1215,24 +1500,6 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="1.8"/><line x1="3.5" y1="10" x2="20.5" y2="10"/><line x1="10.3" y1="10" x2="10.3" y2="20"/></svg></div>
           <b>Com atributos</b>
           <small>Define até 3 campos, com classes predefinidas se quiseres.</small>
-        </div>
-      </div>
-      <div class="team-sync-support" id="team-sync-support">
-        <div class="team-sync-card">
-          <div class="team-sync-title">Trabalhar em equipa</div>
-          <p class="sub">Sincroniza apenas as geometrias (GeoJSON). Cria ou retoma um projeto no Worker para partilhar o trabalho.</p>
-          <div class="btn-row">
-            <button type="button" class="btn primary" id="btn-open-team-panel">Abrir painel de equipa</button>
-          </div>
-        </div>
-      </div>
-      <div class="team-sync-support hidden" id="team-sync-connected-note">
-        <div class="team-sync-card">
-          <div class="team-sync-title">Já estás ligado a um projeto</div>
-          <p class="sub">Estás ligado ao projeto "<span id="team-sync-connected-name"></span>". Para ligares a outro, sai primeiro do projeto atual no painel de equipa.</p>
-          <div class="btn-row">
-            <button type="button" class="btn" id="btn-open-team-panel-connected">Abrir painel de equipa</button>
-          </div>
         </div>
       </div>
       <div class="wizard-nav">
@@ -1332,8 +1599,13 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 <!-- ============ FORM DE ATRIBUTOS POR FEATURE ============ -->
 <div id="attr-form-overlay" class="hidden">
   <div class="attr-form-card">
-    <h3 style="margin-bottom:4px;">Preencher atributos</h3>
-    <p class="sub" style="margin:0 0 4px; color:var(--stone); font-size:12px;">Geometria nº <span id="feat-form-index"></span></p>
+    <h3 id="feat-form-title" style="margin-bottom:4px;">Nova geometria</h3>
+    <p class="sub" style="margin:0 0 4px; color:var(--stone); font-size:12px;" id="feat-form-type-line"></p>
+
+    <label for="feat-form-name">Nome da geometria</label>
+    <input type="text" id="feat-form-name" placeholder="Ex: poço-1" autocomplete="off">
+    <p id="feat-form-name-error" style="color:var(--warn); font-size:11.5px; margin:4px 0 0; display:none;"></p>
+
     <div id="feat-form-fields"></div>
     <div class="btn-row">
       <button class="btn" id="feat-form-cancel">Cancelar</button>
@@ -1848,9 +2120,11 @@ function updateCoordBar(lat, lng){
    ESTADO GLOBAL
    ============================================================ */
 const config = {
+  shapeName: null,      // nome dado à "shape"/camada (ex: "Estradas") — mostrado no painel
   mode: null,          // 'simples' | 'atributos'
   attributes: [],       // [{name, type:'texto'|'numero'|'categorico', classes:[{name,color}]}]
-  geometryType: null    // 'Point' | 'LineString' | 'Polygon'
+  geometryType: null,    // 'Point' | 'LineString' | 'Polygon'
+  colorAttr: null       // nome do atributo categórico atualmente usado para colorir a shape
 };
 
 let featureCounter = 0;
@@ -2252,8 +2526,50 @@ function setBackLinkDisabled(disabled){
     link.removeAttribute('title');
   }
 }
+let pendingExitAction = null;
+
+// se houver alterações por guardar, mostra o modal antes de executar a ação (sair/recomeçar);
+// caso contrário executa-a de imediato
+function requestExit(action){
+  if(projectDirty && featuresData.size > 0){
+    pendingExitAction = action;
+    document.getElementById('exit-confirm-overlay').classList.remove('hidden');
+  } else {
+    action();
+  }
+}
+
+document.getElementById('exit-confirm-cancel').addEventListener('click', ()=>{
+  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  pendingExitAction = null;
+});
+document.getElementById('exit-confirm-discard').addEventListener('click', ()=>{
+  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  const action = pendingExitAction;
+  pendingExitAction = null;
+  if(action) action();
+});
+document.getElementById('exit-confirm-save').addEventListener('click', ()=>{
+  const saved = saveCurrentProject();
+  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  const action = pendingExitAction;
+  pendingExitAction = null;
+  if(saved && action) action();
+});
+
 document.getElementById('back-link').addEventListener('click', (e)=>{
-  if(!navigator.onLine) e.preventDefault();
+  if(!navigator.onLine){ e.preventDefault(); return; }
+  e.preventDefault();
+  requestExit(()=>{ window.location.href = 'index.html'; });
+});
+
+// aviso nativo do browser ao fechar o separador/janela ou recarregar a página
+window.addEventListener('beforeunload', (e)=>{
+  if(projectDirty && featuresData.size > 0){
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
 });
 
 async function renderConnectivityOfflineMenu(){
@@ -2344,13 +2660,6 @@ window.addEventListener('online', updateConnectivityUI);
 window.addEventListener('offline', updateConnectivityUI);
 
 /* ============================================================
-   WIZARD — passo 0 (introdução)
-   ============================================================ */
-document.getElementById('intro-next').addEventListener('click', ()=>{
-  showStep(1);
-});
-
-/* ============================================================
    WIZARD — passo 1
    ============================================================ */
 document.querySelectorAll('[data-mode]').forEach(card=>{
@@ -2358,11 +2667,28 @@ document.querySelectorAll('[data-mode]').forEach(card=>{
     document.querySelectorAll('[data-mode]').forEach(c=>c.classList.remove('selected'));
     card.classList.add('selected');
     config.mode = card.dataset.mode;
-    document.getElementById('step1-next').disabled = false;
+    validateStep1Continue();
   });
 });
 
+document.getElementById('wizard-shape-name').addEventListener('input', ()=>{
+  document.getElementById('wizard-shape-name-error').style.display = 'none';
+  validateStep1Continue();
+});
+
+function validateStep1Continue(){
+  const hasName = document.getElementById('wizard-shape-name').value.trim().length > 0;
+  document.getElementById('step1-next').disabled = !(hasName && config.mode);
+}
+
 document.getElementById('step1-next').addEventListener('click', ()=>{
+  const name = document.getElementById('wizard-shape-name').value.trim();
+  if(!name){
+    document.getElementById('wizard-shape-name-error').style.display = 'block';
+    return;
+  }
+  config.shapeName = name;
+
   if(config.mode === 'atributos'){
     if(config.attributes.length === 0) addAttributeBlock();
     document.getElementById('step3-total').textContent = '3';
@@ -2382,20 +2708,291 @@ function showStep(n){
 }
 
 document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
-  document.getElementById('wizard-overlay').classList.remove('hidden');
-  showStep(0);
   dismissGearCoachmark();
-  updateTeamSyncSupportVisibility();
+  showTeamPanel();
+});
+
+/* ============================================================
+   PROJETOS LOCAIS (guardados na aplicação, neste dispositivo)
+   ============================================================ */
+const LOCAL_PROJECTS_KEY = 'engenh-local-projects';
+let localProjectState = { name: null, active: false };
+let startProjectChoice = null; // 'novo' | 'sem'
+
+// marca que há alterações nas geometrias ainda não guardadas no projeto local;
+// usado para avisar o utilizador antes de sair/fechar/recomeçar
+let projectDirty = false;
+function markProjectDirty(){ projectDirty = true; }
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function getLocalProjects(){
+  try{
+    return JSON.parse(localStorage.getItem(LOCAL_PROJECTS_KEY)) || {};
+  }catch(err){
+    console.warn('Não foi possível ler os projetos locais guardados.', err);
+    return {};
+  }
+}
+
+function saveLocalProjects(projects){
+  try{
+    localStorage.setItem(LOCAL_PROJECTS_KEY, JSON.stringify(projects));
+  }catch(err){
+    console.warn('Não foi possível guardar os projetos locais.', err);
+    alert('Não foi possível guardar o projeto localmente (armazenamento cheio ou indisponível).');
+  }
+}
+
+function updateProjectStatusUI(){
+  const badge = document.getElementById('project-status-badge');
+  const badgeText = document.getElementById('project-status-badge-text');
+  if(localProjectState.active && localProjectState.name){
+    badge.style.display = 'inline-flex';
+    badgeText.textContent = 'Projeto: ' + localProjectState.name;
+  } else {
+    badge.style.display = 'none';
+    badgeText.textContent = '';
+  }
+  const saveBtn = document.getElementById('btn-save-project');
+  if(saveBtn){
+    saveBtn.title = (localProjectState.active && localProjectState.name)
+      ? `Guardar em "${localProjectState.name}"`
+      : 'Guardar projeto';
+  }
+}
+
+/* ---------- modal de escolha ao iniciar ---------- */
+document.getElementById('btn-start-project').addEventListener('click', ()=>{
+  hideStartProjectWarning();
+  document.getElementById('start-project-overlay').classList.remove('hidden');
+});
+
+function hideStartProjectWarning(){
+  const warning = document.getElementById('start-project-warning');
+  warning.classList.add('hidden');
+  warning.textContent = '';
+}
+
+document.querySelectorAll('[data-start-choice]').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-start-choice]').forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    startProjectChoice = card.dataset.startChoice;
+    hideStartProjectWarning();
+
+    const nameRow = document.getElementById('start-project-name-row');
+    const nameError = document.getElementById('start-project-name-error');
+    nameError.style.display = 'none';
+    if(startProjectChoice === 'novo'){
+      nameRow.classList.remove('hidden');
+      document.getElementById('start-project-name').focus();
+    } else {
+      nameRow.classList.add('hidden');
+    }
+    validateStartProjectContinue();
+  });
+});
+
+document.getElementById('start-project-name').addEventListener('input', validateStartProjectContinue);
+
+function validateStartProjectContinue(){
+  const btn = document.getElementById('start-project-continue');
+  if(startProjectChoice === 'sem' || startProjectChoice === 'continuar'){ btn.disabled = false; return; }
+  if(startProjectChoice === 'novo'){
+    btn.disabled = document.getElementById('start-project-name').value.trim().length === 0;
+    return;
+  }
+  btn.disabled = true;
+}
+
+document.getElementById('start-project-continue').addEventListener('click', ()=>{
+  if(startProjectChoice === 'continuar'){
+    const projects = getLocalProjects();
+    if(Object.keys(projects).length === 0){
+      const warning = document.getElementById('start-project-warning');
+      warning.textContent = 'Ainda não tens nenhum projeto guardado neste dispositivo. Cria um projeto novo ou trabalha sem gravar.';
+      warning.classList.remove('hidden');
+      return; // fica no mesmo modal, não avança
+    }
+    // equivale a abrir diretamente o painel de "Projetos guardados"
+    document.getElementById('start-project-overlay').classList.add('hidden');
+    proceedToMap();
+    renderLocalProjectsList();
+    document.getElementById('local-projects-overlay').classList.remove('hidden');
+    return;
+  }
+
+  if(startProjectChoice === 'novo'){
+    const rawName = document.getElementById('start-project-name').value.trim();
+    if(!rawName) return;
+
+    const projects = getLocalProjects();
+    if(!projects[rawName]){
+      projects[rawName] = { name: rawName, updatedAt: Date.now(), config: null, geojson: {type:'FeatureCollection', features:[]} };
+      saveLocalProjects(projects);
+    }
+    localProjectState.name = rawName;
+    localProjectState.active = true;
+  } else {
+    localProjectState.name = null;
+    localProjectState.active = false;
+  }
+
+  updateProjectStatusUI();
+  document.getElementById('start-project-overlay').classList.add('hidden');
+  proceedToMap();
+});
+
+/* ---------- guardar projeto ---------- */
+// devolve true se guardou com sucesso, false se o utilizador cancelou (ex: não deu nome)
+function saveCurrentProject(){
+  if(!localProjectState.active || !localProjectState.name){
+    const name = prompt('Ainda não tens um projeto ativo. Dá um nome para guardares o trabalho:');
+    if(!name || !name.trim()) return false;
+    localProjectState.name = name.trim();
+    localProjectState.active = true;
+    updateProjectStatusUI();
+  }
+
+  const projects = getLocalProjects();
+  projects[localProjectState.name] = {
+    name: localProjectState.name,
+    updatedAt: Date.now(),
+    config: {mode: config.mode, attributes: config.attributes, geometryType: config.geometryType, shapeName: config.shapeName, colorAttr: config.colorAttr},
+    geojson: buildGeoJSON(false)
+  };
+  saveLocalProjects(projects);
+  projectDirty = false;
+  showTeamToast(`Projeto "${localProjectState.name}" guardado.`);
+  return true;
+}
+document.getElementById('btn-save-project').addEventListener('click', saveCurrentProject);
+
+/* ---------- consultar / abrir / eliminar projetos guardados ---------- */
+document.getElementById('btn-open-local-projects').addEventListener('click', ()=>{
+  renderLocalProjectsList();
+  document.getElementById('local-projects-overlay').classList.remove('hidden');
+});
+document.getElementById('local-projects-close').addEventListener('click', ()=>{
+  document.getElementById('local-projects-overlay').classList.add('hidden');
+});
+
+function renderLocalProjectsList(){
+  const container = document.getElementById('local-projects-list');
+  const projects = getLocalProjects();
+  const names = Object.keys(projects).sort((a,b)=> (projects[b].updatedAt||0) - (projects[a].updatedAt||0));
+
+  if(names.length === 0){
+    container.innerHTML = '<p class="sub">Ainda não guardaste nenhum projeto neste dispositivo.</p>';
+    return;
+  }
+
+  container.innerHTML = names.map(name=>{
+    const p = projects[name];
+    const count = (p.geojson && p.geojson.features) ? p.geojson.features.length : 0;
+    const date = p.updatedAt ? new Date(p.updatedAt).toLocaleString('pt-PT') : '—';
+    const isActive = localProjectState.active && localProjectState.name === name;
+    return `
+      <div class="local-project-row">
+        <div class="info">
+          <b>${escapeHtml(name)}${isActive ? ' <span style="color:var(--green);">(ativo)</span>' : ''}</b>
+          <span>${count} geometria(s) · guardado em ${date}</span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-open-local="${escapeHtml(name)}">Abrir</button>
+          <button type="button" class="btn warn" data-delete-local="${escapeHtml(name)}" title="Eliminar">🗑</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('[data-open-local]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openLocalProject(btn.dataset.openLocal));
+  });
+  container.querySelectorAll('[data-delete-local]').forEach(btn=>{
+    btn.addEventListener('click', ()=> deleteLocalProject(btn.dataset.deleteLocal));
+  });
+}
+
+function openLocalProject(name){
+  const projects = getLocalProjects();
+  const p = projects[name];
+  if(!p) return;
+
+  if(featuresData.size > 0 && !confirm('Abrir este projeto vai substituir as geometrias atuais no mapa. Continuar?')) return;
+
+  featuresData.forEach(entry=> drawnGroup.removeLayer(entry.layer));
+  featuresData.clear();
+
+  if(p.config){
+    config.mode = p.config.mode || null;
+    config.attributes = p.config.attributes || [];
+    config.geometryType = p.config.geometryType || null;
+    config.shapeName = p.config.shapeName || null;
+    config.colorAttr = p.config.colorAttr || null;
+  }
+
+  localProjectState.name = name;
+  localProjectState.active = true;
+  projectDirty = false;
+
+  if(document.getElementById('landing-banner') && !document.getElementById('landing-banner').classList.contains('hidden')){
+    document.getElementById('landing-banner').classList.add('hidden');
+  }
+
+  if(p.geojson && p.geojson.features && p.geojson.features.length){
+    importGeoJSONFeatures(p.geojson);
+  } else {
+    refreshFeatList();
+  }
+
+  if(config.geometryType){
+    applyGeometryConfig();
+    setupSummary();
+  }
+
+  updateProjectStatusUI();
+  document.getElementById('local-projects-overlay').classList.add('hidden');
+  showTeamToast(`Projeto "${name}" aberto.`);
+}
+
+function deleteLocalProject(name){
+  if(!confirm(`Eliminar o projeto "${name}" guardado neste dispositivo? Esta ação não pode ser desfeita.`)) return;
+  const projects = getLocalProjects();
+  delete projects[name];
+  saveLocalProjects(projects);
+  if(localProjectState.name === name){
+    localProjectState.name = null;
+    localProjectState.active = false;
+    updateProjectStatusUI();
+  }
+  renderLocalProjectsList();
+}
+
+document.getElementById('open-feature-wizard-btn').addEventListener('click', ()=>{
+  document.getElementById('wizard-overlay').classList.remove('hidden');
+  document.getElementById('config-summary').innerHTML = '';
+  document.getElementById('wizard-shape-name').value = config.shapeName || '';
+  document.getElementById('wizard-shape-name-error').style.display = 'none';
+  validateStep1Continue();
+  showStep(1);
+  dismissGearCoachmark();
+});
+
+document.getElementById('wizard-close-btn').addEventListener('click', ()=>{
+  document.getElementById('wizard-overlay').classList.add('hidden');
 });
 
 /* ============================================================
    ATERRAGEM — "Iniciar projeto" + coach-mark da engrenagem
    ============================================================ */
-document.getElementById('btn-start-project').addEventListener('click', ()=>{
+function proceedToMap(){
   document.getElementById('landing-banner').classList.add('hidden');
   map.flyTo([39.6, -8.0], 7, { duration: 2.2, easeLinearity: 0.25 });
   map.once('moveend', showGearCoachmark);
-});
+}
 
 function showGearCoachmark(){
   positionGearCoachmark();
@@ -2403,7 +3000,7 @@ function showGearCoachmark(){
 }
 
 function positionGearCoachmark(){
-  const btn = document.getElementById('open-wizard-btn');
+  const btn = document.getElementById('open-feature-wizard-btn');
   const bubble = document.getElementById('gear-coachmark');
   const btnRect = btn.getBoundingClientRect();
   const bubbleWidth = 220;
@@ -2561,12 +3158,8 @@ function finishWizard(){
   document.getElementById('wizard-overlay').classList.add('hidden');
   setupSummary();
   applyGeometryConfig();
+  refreshFeatList();
 }
-
-document.getElementById('btn-reset').addEventListener('click', ()=>{
-  if(!confirm('Recomeçar a configuração? As geometrias desenhadas serão perdidas.')) return;
-  location.reload();
-});
 
 function setupSummary(){
   const labels = {Point:'Pontos', LineString:'Linhas', Polygon:'Polígonos'};
@@ -2718,22 +3311,21 @@ function onFeatureCreated(layer){
   featureCounter++;
   const id = L.Util.stamp(layer);
 
-  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, hasOverlap:false, overlapsWith:[]};
+  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, hasOverlap:false, overlapsWith:[]};
   featuresData.set(id, entry);
+  markProjectDirty();
 
   styleLayerDefault(layer);
   showStatsPopup(entry);
 
   // reage a edições posteriores desta geometria (arrastar vértices, mover) para
   // manter as estatísticas e a verificação de topologia sempre atualizadas
-  layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
-  layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
 
-  if(config.mode === 'atributos' && config.attributes.length > 0){
-    openAttrForm(entry);
-  } else {
-    refreshFeatList();
-  }
+  // sem popup ao criar: a geometria fica logo com o nome genérico "Geometria N"
+  // e aparece de imediato na lista/tabela; atributos (se o modo os tiver) editam-se na tabela
+  refreshFeatList();
 
   checkAllTopology();
 }
@@ -2743,6 +3335,7 @@ function onFeatureRemoved(layer){
   const entry = featuresData.get(id);
   if(entry && entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
   featuresData.delete(id);
+  markProjectDirty();
   refreshFeatList();
   checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
 }
@@ -2795,12 +3388,13 @@ function importGeoJSONFeatures(geojson){
     delete rawProps.__updatedAt;
     const props = rawProps;
     const label = props.name || props.label || 'Geometria '+featureCounter;
-    const entry = {layer, props, id, fid, updatedAt, label, hasOverlap:false, overlapsWith:[]};
+    const geomType = baseGeomType(f.geometry.type);
+    const entry = {layer, props, id, fid, updatedAt, label, geomType, hasOverlap:false, overlapsWith:[]};
     featuresData.set(id, entry);
 
     styleLayerDefault(layer);
-    layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
-    layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
+    layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
 
     imported++;
   });
@@ -2829,6 +3423,7 @@ document.getElementById('import-file-input').addEventListener('change', async (e
   try{
     const geojson = await parseImportedFile(file);
     importGeoJSONFeatures(geojson);
+    markProjectDirty();
   }catch(err){
     console.error('Erro ao importar ficheiro:', err);
     alert('Não foi possível importar o ficheiro. Verifica se é um GeoJSON válido ou um .zip de Shapefile (.shp + .dbf + .shx, opcionalmente .prj).');
@@ -2865,9 +3460,38 @@ function geometryStatsHTML(entry){
     warnHtml = `<div class="stats-popup-warn">⚠ Sobreposto a: ${entry.overlapsWith.join(', ')}</div>`;
   }
 
+  // mini edição de atributos: ao desenhar uma geometria, permite já preencher aqui
+  // os atributos definidos na shape (categóricos como dropdown, texto/número como campo),
+  // sem precisar de abrir a tabela de atributos
+  let quickAttrHtml = '';
+  if(config.mode === 'atributos'){
+    quickAttrHtml = config.attributes.map(attr=>{
+      if(attr.type === 'categorico'){
+        const opts = attr.classes.map(c=>
+          `<option value="${escapeHtml(c.name)}" ${entry.props[attr.name]===c.name?'selected':''}>${escapeHtml(c.name)}</option>`
+        ).join('');
+        return `
+          <div class="stats-popup-quickattr">
+            <label>${escapeHtml(attr.name)}</label>
+            <select class="quick-attr-field" data-entry-id="${entry.id}" data-attr-name="${escapeHtml(attr.name)}">
+              <option value="">—</option>
+              ${opts}
+            </select>
+          </div>`;
+      }
+      const val = entry.props[attr.name] ?? '';
+      return `
+        <div class="stats-popup-quickattr">
+          <label>${escapeHtml(attr.name)}</label>
+          <input class="quick-attr-field" type="${attr.type==='numero'?'number':'text'}" data-entry-id="${entry.id}" data-attr-name="${escapeHtml(attr.name)}" value="${escapeHtml(String(val))}">
+        </div>`;
+    }).join('');
+  }
+
   return `
     <div class="stats-popup-title"><span class="dot"></span>${entry.label}</div>
     ${rows}
+    ${quickAttrHtml}
     ${warnHtml}
   `;
 }
@@ -2886,6 +3510,25 @@ function refreshStatsIfOpen(entry){
   if(!entry.layer.getPopup || !entry.layer.getPopup()) return;
   entry.layer.setPopupContent(geometryStatsHTML(entry));
 }
+
+// mini edição de atributos dentro do popup (dropdown para categóricos, campo para
+// texto/número), delegado no document porque o popup é recriado a cada abertura
+function handleQuickAttrEdit(e){
+  const field = e.target.closest('.quick-attr-field');
+  if(!field) return;
+  const entry = featuresData.get(Number(field.dataset.entryId));
+  if(!entry) return;
+  entry.props[field.dataset.attrName] = field.value;
+  entry.updatedAt = Date.now();
+  markProjectDirty();
+  styleLayerByClass(entry);
+  if(entry.hasOverlap) applyTopologyVisual(entry);
+  const tableOverlay = document.getElementById('attr-table-overlay');
+  if(tableOverlay && !tableOverlay.classList.contains('hidden')) renderAttrTable();
+}
+// 'change' cobre os dropdowns (categórico); 'input' cobre texto/número enquanto se escreve
+document.addEventListener('change', handleQuickAttrEdit);
+document.addEventListener('input', handleQuickAttrEdit);
 
 /* ---------- realçar geometria selecionada (botão "olho" na lista) ---------- */
 function flashHighlight(entry){
@@ -3018,8 +3661,9 @@ function styleLayerDefault(layer){
 
 function styleLayerByClass(entry){
   if(config.mode !== 'atributos') return;
-  const catAttr = config.attributes.find(a=>a.type==='categorico');
-  if(!catAttr) return;
+  const catAttr = config.attributes.find(a=>a.type==='categorico' && a.name === config.colorAttr)
+    || config.attributes.find(a=>a.type==='categorico');
+  if(!catAttr){ styleLayerDefault(entry.layer); return; }
   const val = entry.props[catAttr.name];
   const cls = catAttr.classes.find(c=>c.name === val);
   const color = cls ? cls.color : DEFAULT_COLOR;
@@ -3031,9 +3675,21 @@ function styleLayerByClass(entry){
 }
 
 let formEntryRef = null;
-function openAttrForm(entry){
+let formIsNewFeature = false;
+const GEOM_TYPE_LABELS = {Point:'Ponto', LineString:'Linha', Polygon:'Polígono'};
+
+function openAttrForm(entry, isNew){
   formEntryRef = entry;
-  document.getElementById('feat-form-index').textContent = entry.label;
+  formIsNewFeature = !!isNew;
+
+  document.getElementById('feat-form-title').textContent = formIsNewFeature ? 'Nova geometria' : 'Editar geometria';
+  const typeLabel = GEOM_TYPE_LABELS[entry.geomType] || '—';
+  document.getElementById('feat-form-type-line').textContent = 'Tipo: ' + typeLabel;
+
+  const nameInput = document.getElementById('feat-form-name');
+  nameInput.value = formIsNewFeature ? '' : (entry.label || '');
+  document.getElementById('feat-form-name-error').style.display = 'none';
+
   const fieldsWrap = document.getElementById('feat-form-fields');
   fieldsWrap.innerHTML = '';
   config.attributes.forEach(attr=>{
@@ -3041,12 +3697,15 @@ function openAttrForm(entry){
     if(attr.type === 'categorico'){
       const opts = attr.classes.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
       wrap.innerHTML = `<label>${attr.name}</label><select data-field="${attr.name}"><option value="">—</option>${opts}</select>`;
+      if(!formIsNewFeature) wrap.querySelector('select').value = entry.props[attr.name] || '';
     } else {
       wrap.innerHTML = `<label>${attr.name}</label><input type="${attr.type==='numero'?'number':'text'}" data-field="${attr.name}">`;
+      if(!formIsNewFeature) wrap.querySelector('input').value = entry.props[attr.name] || '';
     }
     fieldsWrap.appendChild(wrap);
   });
   document.getElementById('attr-form-overlay').classList.remove('hidden');
+  nameInput.focus();
 }
 
 document.getElementById('feat-form-cancel').addEventListener('click', ()=>{
@@ -3055,11 +3714,16 @@ document.getElementById('feat-form-cancel').addEventListener('click', ()=>{
 });
 
 document.getElementById('feat-form-save').addEventListener('click', ()=>{
+  const name = document.getElementById('feat-form-name').value.trim();
+  // nome é opcional: se não preenchido, mantém-se o nome genérico já atribuído (Geometria N)
+  if(name) formEntryRef.label = name;
+
   const fieldsWrap = document.getElementById('feat-form-fields');
   fieldsWrap.querySelectorAll('[data-field]').forEach(inp=>{
     formEntryRef.props[inp.dataset.field] = inp.value;
   });
   formEntryRef.updatedAt = Date.now();
+  markProjectDirty();
   styleLayerByClass(formEntryRef);
   if(formEntryRef.hasOverlap) applyTopologyVisual(formEntryRef);
   document.getElementById('attr-form-overlay').classList.add('hidden');
@@ -3070,65 +3734,143 @@ document.getElementById('feat-form-save').addEventListener('click', ()=>{
    LISTA DE GEOMETRIAS (sidebar)
    ============================================================ */
 function refreshFeatList(){
-  const list = document.getElementById('feat-list');
+  updateFeatSummary();
+}
+
+function updateFeatSummary(){
   const emptyMsg = document.getElementById('empty-msg');
-  list.innerHTML = '';
-  if(featuresData.size === 0){
+  const shapePanel = document.getElementById('shape-panel');
+  const tableBtn = document.getElementById('btn-open-attr-table');
+
+  if(!config.geometryType){
     emptyMsg.style.display = '';
+    shapePanel.classList.add('hidden');
+  } else {
+    emptyMsg.style.display = 'none';
+    shapePanel.classList.remove('hidden');
+    renderShapePanel();
+  }
+
+  tableBtn.disabled = featuresData.size === 0;
+
+  const tableOverlay = document.getElementById('attr-table-overlay');
+  if(tableOverlay && !tableOverlay.classList.contains('hidden')){
+    renderAttrTable();
+  }
+}
+
+/* painel da shape ativa: mostra só o nome da shape (as geometrias individuais,
+   contagem e edição de atributos ficam na tabela de atributos, já existente).
+   Se a shape tiver um atributo categórico, mostra um seletor para escolher qual
+   usar para colorir + a legenda de cores desse atributo. */
+function renderShapePanel(){
+  const nameDisplay = document.getElementById('shape-name-display');
+  const typeLabel = GEOM_TYPE_LABELS[config.geometryType] || '—';
+  nameDisplay.innerHTML = `${escapeHtml(config.shapeName || 'Shape sem nome')} <span class="shape-geom-badge">${typeLabel}</span>`;
+
+  const row = document.getElementById('shape-color-attr-row');
+  const select = document.getElementById('shape-color-attr-select');
+  const legend = document.getElementById('shape-color-legend');
+
+  const catAttrs = config.mode === 'atributos' ? config.attributes.filter(a=>a.type==='categorico') : [];
+
+  if(catAttrs.length === 0){
+    row.classList.add('hidden');
     return;
   }
-  emptyMsg.style.display = 'none';
+  row.classList.remove('hidden');
 
+  if(!config.colorAttr || !catAttrs.some(a=>a.name === config.colorAttr)){
+    config.colorAttr = catAttrs[0].name;
+  }
+
+  select.innerHTML = catAttrs.map(a=>
+    `<option value="${escapeHtml(a.name)}" ${a.name===config.colorAttr?'selected':''}>${escapeHtml(a.name)}</option>`
+  ).join('');
+
+  const activeAttr = catAttrs.find(a=>a.name === config.colorAttr);
+  legend.innerHTML = activeAttr.classes.map(c=>`
+    <li><span class="swatch" style="background:${escapeHtml(c.color)};"></span>${escapeHtml(c.name)}</li>
+  `).join('');
+}
+
+document.getElementById('shape-color-attr-select').addEventListener('change', (e)=>{
+  config.colorAttr = e.target.value;
+  restyleAllLayers();
+  renderShapePanel();
+});
+
+// reaplica a cor de todas as geometrias já desenhadas quando o atributo de cor muda
+function restyleAllLayers(){
   featuresData.forEach(entry=>{
-    const li = document.createElement('li');
-    li.className = 'feat-item' + (entry.hasOverlap ? ' has-overlap' : '');
-    const catAttr = config.attributes.find(a=>a.type==='categorico');
-    const color = catAttr ? (catAttr.classes.find(c=>c.name===entry.props[catAttr.name])?.color || DEFAULT_COLOR) : DEFAULT_COLOR;
-
-    let propsHtml = '';
     if(config.mode === 'atributos'){
-      propsHtml = '<div class="props">' + config.attributes.map(a=>
-        `<div><span>${a.name}</span><b>${entry.props[a.name] || '—'}</b></div>`
-      ).join('') + '</div>';
+      styleLayerByClass(entry);
+      if(entry.hasOverlap) applyTopologyVisual(entry);
     }
+  });
+}
 
-    const overlapHtml = entry.hasOverlap
-      ? `<div class="overlap-flag"><span class="dot"></span>Sobreposto a ${entry.overlapsWith.join(', ')}</div>`
-      : '';
+function renderAttrTable(){
+  const head = document.getElementById('attr-table-head');
+  const body = document.getElementById('attr-table-body');
+  const attrCols = config.mode === 'atributos' ? config.attributes : [];
 
-    li.innerHTML = `
-      <div class="row1">
-        <span class="swatch" style="background:${color}"></span>
-        <span class="name">${entry.label}</span>
-        <span class="actions">
-          ${config.mode === 'atributos' ? '<button data-edit title="Editar atributos">✎</button>' : ''}
+  head.innerHTML = '<th>ID</th>' + attrCols.map(a=>`<th>${escapeHtml(a.name)}</th>`).join('') + '<th>Ações</th>';
+
+  if(featuresData.size === 0){
+    body.innerHTML = `<tr><td colspan="${attrCols.length + 2}" id="attr-table-empty">Ainda não desenhaste nenhuma geometria.</td></tr>`;
+    return;
+  }
+
+  let i = 0;
+  const rows = [];
+  featuresData.forEach(entry=>{
+    i++;
+    const attrCells = attrCols.map(a=>`<td>${escapeHtml(entry.props[a.name] ?? '—')}</td>`).join('');
+    rows.push(`
+      <tr data-row-id="${entry.id}" class="${entry.hasOverlap ? 'has-overlap' : ''}">
+        <td class="id-cell">${i}${entry.hasOverlap ? ' ⚠' : ''}</td>
+        ${attrCells}
+        <td class="actions-cell">
           <button data-highlight title="Realçar e mostrar popup">👁</button>
           <button data-focus title="Centrar no mapa">⌖</button>
-          <button data-delete title="Apagar">🗑</button>
-        </span>
-      </div>
-      ${propsHtml}
-      ${overlapHtml}
-    `;
-    li.querySelector('[data-focus]')?.addEventListener('click', ()=>{
+          ${config.mode === 'atributos' ? '<button data-edit title="Editar atributos">✎</button>' : ''}
+          <button data-delete class="danger" title="Apagar">🗑</button>
+        </td>
+      </tr>`);
+  });
+  body.innerHTML = rows.join('');
+
+  body.querySelectorAll('tr[data-row-id]').forEach(tr=>{
+    const entry = featuresData.get(Number(tr.dataset.rowId));
+    if(!entry) return;
+    tr.querySelector('[data-focus]')?.addEventListener('click', ()=>{
       if(entry.layer.getBounds) map.fitBounds(entry.layer.getBounds(), {maxZoom:16});
       else if(entry.layer.getLatLng) map.setView(entry.layer.getLatLng(), 16);
     });
-    li.querySelector('[data-highlight]')?.addEventListener('click', ()=>{
+    tr.querySelector('[data-highlight]')?.addEventListener('click', ()=>{
       showStatsPopup(entry);
       flashHighlight(entry);
     });
-    li.querySelector('[data-edit]')?.addEventListener('click', ()=> openAttrForm(entry));
-    li.querySelector('[data-delete]').addEventListener('click', ()=>{
+    tr.querySelector('[data-edit]')?.addEventListener('click', ()=> openAttrForm(entry));
+    tr.querySelector('[data-delete]')?.addEventListener('click', ()=>{
       if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
       drawnGroup.removeLayer(entry.layer);
       featuresData.delete(entry.id);
+      markProjectDirty();
       refreshFeatList();
       checkAllTopology();
     });
-    list.appendChild(li);
   });
 }
+
+document.getElementById('btn-open-attr-table').addEventListener('click', ()=>{
+  renderAttrTable();
+  document.getElementById('attr-table-overlay').classList.remove('hidden');
+});
+document.getElementById('attr-table-close').addEventListener('click', ()=>{
+  document.getElementById('attr-table-overlay').classList.add('hidden');
+});
 
 /* ============================================================
    EXPORTAÇÃO
@@ -3256,7 +3998,7 @@ function renderTeamCard(){
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
-  const statusLabel = teamState.status === 'syncing' ? 'Sincronizando…' : 'Pronto para sincronizar';
+  const statusLabel = teamState.status === 'syncing' ? 'a sincronizar…' : 'Pronto para sincronizar';
   const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
 
   container.innerHTML = `
@@ -3551,6 +4293,13 @@ function showTeamPanel(){
   if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
+function hideTeamPanel(){
+  teamPanelVisible = false;
+  const block = document.getElementById('team-block');
+  if(block) block.classList.add('hidden');
+}
+document.getElementById('team-card-close').addEventListener('click', hideTeamPanel);
+
 function updateTeamSyncSupportVisibility(){
   const connectCard = document.getElementById('team-sync-support');
   const connectedNote = document.getElementById('team-sync-connected-note');
@@ -3573,16 +4322,6 @@ function initTeamUI(){
   renderTeamCard();
   updateTeamSyncSupportVisibility();
 }
-
-document.getElementById('btn-export-geojson').addEventListener('click', ()=>{
-  if(featuresData.size === 0){ alert('Ainda não desenhaste nenhuma geometria.'); return; }
-  downloadGeoJSON(buildGeoJSON(), 'engenh_dados.geojson');
-});
-
-document.getElementById('btn-export-shp').addEventListener('click', async ()=>{
-  if(featuresData.size === 0){ alert('Ainda não desenhaste nenhuma geometria.'); return; }
-  await exportShapefileZip(buildGeoJSON(), 'engenh_dados', document.getElementById('btn-export-shp'));
-});
 
 const WGS84_WKT = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]';
 
@@ -3622,6 +4361,132 @@ async function exportShapefileZip(gj, folderName, btn){
     if(btn){ btn.disabled = false; btn.textContent = originalText; }
   }
 }
+
+/* ============================================================
+   MENU DE EXPORTAÇÃO / DOWNLOAD (camadas)
+   ============================================================ */
+function getExportableLayers(){
+  const layers = [];
+  if(featuresData.size > 0){
+    layers.push({
+      id: 'main',
+      label: config.shapeName ? `Geometrias — ${config.shapeName}` : 'Geometrias desenhadas',
+      filename: 'engenh_dados',
+      getGeoJSON: () => buildGeoJSON()
+    });
+  }
+  if(typeof lastBufferFeatures !== 'undefined' && lastBufferFeatures.length > 0){
+    layers.push({
+      id: 'buffer',
+      label: 'Resultado do buffer',
+      filename: 'engenh_buffer',
+      getGeoJSON: () => ({type:'FeatureCollection', features: lastBufferFeatures})
+    });
+  }
+  if(typeof lastIntersectFeatures !== 'undefined' && lastIntersectFeatures.length > 0){
+    layers.push({
+      id: 'intersect',
+      label: 'Resultado da interseção',
+      filename: 'engenh_intersect',
+      getGeoJSON: () => ({type:'FeatureCollection', features: lastIntersectFeatures})
+    });
+  }
+  if(typeof lastUnionFeatures !== 'undefined' && lastUnionFeatures.length > 0){
+    layers.push({
+      id: 'union',
+      label: 'Resultado da união',
+      filename: 'engenh_union',
+      getGeoJSON: () => ({type:'FeatureCollection', features: lastUnionFeatures})
+    });
+  }
+  if(typeof lastDifferenceFeatures !== 'undefined' && lastDifferenceFeatures.length > 0){
+    layers.push({
+      id: 'difference',
+      label: 'Resultado da diferença',
+      filename: 'engenh_difference',
+      getGeoJSON: () => ({type:'FeatureCollection', features: lastDifferenceFeatures})
+    });
+  }
+  return layers;
+}
+
+function openExportMenu(){
+  const layers = getExportableLayers();
+  const emptyEl = document.getElementById('export-menu-empty');
+  const bodyEl = document.getElementById('export-menu-body');
+  const listEl = document.getElementById('export-layer-list');
+  const downloadBtn = document.getElementById('export-menu-download');
+
+  listEl.innerHTML = '';
+
+  if(layers.length === 0){
+    emptyEl.classList.remove('hidden');
+    bodyEl.classList.add('hidden');
+    downloadBtn.style.display = 'none';
+  } else {
+    emptyEl.classList.add('hidden');
+    bodyEl.classList.remove('hidden');
+    downloadBtn.style.display = '';
+
+    layers.forEach(l=>{
+      const row = document.createElement('label');
+      row.style.cssText = 'display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); cursor:pointer; font-size:13.5px;';
+      row.innerHTML = `<input type="checkbox" data-layer-id="${l.id}" checked style="width:16px; height:16px;"><span>${l.label}</span>`;
+      listEl.appendChild(row);
+    });
+  }
+
+  document.getElementById('export-menu-overlay').classList.remove('hidden');
+}
+
+function closeExportMenu(){
+  document.getElementById('export-menu-overlay').classList.add('hidden');
+}
+
+document.getElementById('btn-open-export-menu').addEventListener('click', openExportMenu);
+document.getElementById('export-menu-cancel').addEventListener('click', closeExportMenu);
+document.getElementById('export-menu-close-x').addEventListener('click', closeExportMenu);
+document.getElementById('export-menu-overlay').addEventListener('click', (e)=>{
+  if(e.target.id === 'export-menu-overlay') closeExportMenu();
+});
+
+['export-format-geojson-label','export-format-shp-label'].forEach(id=>{
+  const label = document.getElementById(id);
+  const input = label.querySelector('input');
+  const sync = () => label.classList.toggle('selected', input.checked);
+  input.addEventListener('change', ()=>{
+    document.getElementById('export-format-geojson-label').classList.toggle('selected', document.getElementById('export-format-geojson').checked);
+    document.getElementById('export-format-shp-label').classList.toggle('selected', document.getElementById('export-format-shp').checked);
+  });
+  sync();
+});
+
+document.getElementById('export-menu-download').addEventListener('click', async ()=>{
+  const layers = getExportableLayers();
+  const checkedIds = Array.from(document.querySelectorAll('#export-layer-list input[type=checkbox]:checked')).map(cb=>cb.dataset.layerId);
+  if(checkedIds.length === 0){ alert('Seleciona pelo menos uma camada para download.'); return; }
+  const format = document.querySelector('input[name="export-format"]:checked').value;
+
+  const downloadBtn = document.getElementById('export-menu-download');
+  const originalText = downloadBtn.textContent;
+  downloadBtn.disabled = true;
+
+  for(const id of checkedIds){
+    const layer = layers.find(l=>l.id === id);
+    if(!layer) continue;
+    const gj = layer.getGeoJSON();
+    if(format === 'geojson'){
+      downloadGeoJSON(gj, layer.filename + '.geojson');
+    } else {
+      downloadBtn.textContent = `⏳ A gerar ${layer.label}…`;
+      await exportShapefileZip(gj, layer.filename, null);
+    }
+  }
+
+  downloadBtn.disabled = false;
+  downloadBtn.textContent = originalText;
+  closeExportMenu();
+});
 
 /* ============================================================
    ANÁLISE ESPACIAL — BUFFER
