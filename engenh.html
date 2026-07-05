@@ -599,21 +599,59 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 /* ---------- escolha inicial: criar projeto ou trabalhar sem projeto ---------- */
 #start-project-name-row.hidden{display:none;}
 #start-project-warning.hidden{display:none;}
-/* ---------- painel da shape ativa (nome + colorir por atributo) ---------- */
+/* ---------- painel: lista de camadas (várias, simultâneas) ---------- */
 #shape-panel.hidden{display:none;}
-.shape-name-display{
+.layers-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+.layer-row{
   display:flex; align-items:center; gap:8px;
-  font-size:15px; font-weight:700; color:var(--ink);
-  padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm);
-  background:var(--paper-elevated);
+  font-size:13.5px; font-weight:700; color:var(--ink);
+  padding:9px 10px; border:1px solid var(--line); border-radius:var(--radius-sm);
+  background:var(--paper-elevated); cursor:context-menu; user-select:none;
 }
-.shape-name-display .shape-geom-badge{
+.layer-row.is-active{box-shadow:inset 0 0 0 1.5px var(--green);}
+.layer-row.is-hidden-layer{opacity:.45;}
+.layer-row .layer-eye-btn{
+  flex:none; width:24px; height:24px; border-radius:6px; border:1px solid var(--line-strong);
+  background:var(--paper); color:var(--stone); cursor:pointer; font-size:12.5px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.layer-row .layer-eye-btn:hover{border-color:var(--green); color:var(--green);}
+.layer-row .layer-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.layer-row .shape-geom-badge{
   flex:none; font-family:'IBM Plex Mono', monospace; font-size:10px; font-weight:600; text-transform:uppercase;
   letter-spacing:.05em; color:var(--green-deep); background:var(--paper-deep);
   padding:2px 7px; border-radius:999px; border:1px solid var(--line);
 }
-#shape-color-attr-row{margin-top:12px;}
+.layer-row .layer-active-tag{
+  flex:none; font-family:'IBM Plex Mono', monospace; font-size:9.5px; font-weight:600; text-transform:uppercase;
+  letter-spacing:.05em; color:var(--stone);
+}
+#layer-context-menu{
+  position:fixed; z-index:2000; min-width:210px;
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow); padding:6px; display:flex; flex-direction:column; gap:2px;
+}
+#layer-context-menu.hidden{display:none;}
+#layer-context-menu button{
+  display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+  border:none; background:none; padding:8px 10px; border-radius:6px; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--ink);
+}
+#layer-context-menu button:hover{background:var(--paper-deep);}
+#layer-context-menu button.danger:hover{color:var(--warn);}
+#shape-color-attr-row{
+  position:absolute; bottom:14px; right:14px; z-index:460; width:240px; max-width:calc(100% - 28px);
+  border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px; background:var(--paper-elevated);
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
 #shape-color-attr-row.hidden{display:none;}
+.symbology-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.symbology-header span{font-size:12.5px; font-weight:700; color:var(--ink);}
+#symbology-close-btn{
+  flex:none; width:22px; height:22px; border-radius:6px; border:1px solid var(--line-strong);
+  background:var(--paper); color:var(--stone); cursor:pointer; font-size:12px; line-height:1;
+}
+#symbology-close-btn:hover{border-color:var(--warn); color:var(--warn);}
 #shape-color-attr-row label{display:block; font-size:12px; color:var(--stone); margin-bottom:6px;}
 #shape-color-attr-select{
   width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px;
@@ -838,7 +876,9 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   background:var(--paper-elevated); border:1px solid var(--line); border-radius:999px;
   padding:8px 16px; font-size:12px; font-family:'IBM Plex Mono', monospace; box-shadow:var(--shadow-soft);
   display:flex; align-items:center; gap:8px;
+  transition:opacity .5s ease, transform .5s ease;
 }
+.toolbar-hint.hint-hidden{ opacity:0; transform:translateY(-8px); pointer-events:none; }
 .toolbar-hint .dot{width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;}
 
 /* ---------- barra de coordenadas ---------- */
@@ -875,6 +915,123 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   flex-shrink:0;
 }
 .feedback-nav-btn:hover{ border-color:var(--green); color:var(--green); }
+
+/* ---------- ícones modernos da barra de desenho (Leaflet-Geoman) ---------- */
+/* cada botão é agora um círculo individual e flutuante (como os ícones do cabeçalho),
+   em vez de uma cápsula com cantos a meio caminho — evita o aspeto "deformado" */
+.leaflet-pm-toolbar{ background:transparent!important; border:none!important; box-shadow:none!important; }
+.leaflet-pm-toolbar .button-container{ margin-bottom:8px!important; }
+.leaflet-pm-toolbar .button-container:last-child{ margin-bottom:0!important; }
+.leaflet-pm-toolbar .button-container a.leaflet-buttons-control-button{
+  background:var(--paper-elevated)!important; width:36px!important; height:36px!important;
+  border:1px solid var(--line)!important; border-bottom:1px solid var(--line)!important;
+  border-radius:999px!important; box-shadow:var(--shadow-soft);
+  transition:background .15s ease, border-color .15s ease;
+  display:flex!important; align-items:center!important; justify-content:center!important;
+}
+.leaflet-pm-toolbar .button-container a.leaflet-buttons-control-button:hover{
+  background:var(--paper-deep)!important; border-color:var(--green)!important;
+}
+.leaflet-pm-toolbar .button-container.active a.leaflet-buttons-control-button{
+  background:var(--green)!important; border-color:var(--green)!important; box-shadow:none!important;
+}
+.leaflet-pm-toolbar .control-icon{ width:18px!important; height:18px!important; margin:0!important; background-size:contain!important; background-repeat:no-repeat!important; background-position:center!important; }
+
+.leaflet-pm-toolbar .leaflet-pm-icon-marker{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2021s-7-6.2-7-11a7%207%200%200%201%2014%200c0%204.8-7%2011-7%2011Z%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%222.3%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-marker{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2021s-7-6.2-7-11a7%207%200%200%201%2014%200c0%204.8-7%2011-7%2011Z%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%222.3%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-marker{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2021s-7-6.2-7-11a7%207%200%200%201%2014%200c0%204.8-7%2011-7%2011Z%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%222.3%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-marker{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2021s-7-6.2-7-11a7%207%200%200%201%2014%200c0%204.8-7%2011-7%2011Z%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%222.3%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .leaflet-pm-icon-polyline{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%225%22%20cy%3D%2218%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2219%22%20cy%3D%226%22%20r%3D%222%22/%3E%3Cpath%20d%3D%22M6.6%2016.6%2017.4%207.4%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-polyline{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%225%22%20cy%3D%2218%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2219%22%20cy%3D%226%22%20r%3D%222%22/%3E%3Cpath%20d%3D%22M6.6%2016.6%2017.4%207.4%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-polyline{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%225%22%20cy%3D%2218%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2219%22%20cy%3D%226%22%20r%3D%222%22/%3E%3Cpath%20d%3D%22M6.6%2016.6%2017.4%207.4%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-polyline{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%225%22%20cy%3D%2218%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2219%22%20cy%3D%226%22%20r%3D%222%22/%3E%3Cpath%20d%3D%22M6.6%2016.6%2017.4%207.4%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .leaflet-pm-icon-polygon{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203%2021%209.3%2017.8%2020H6.2L3%209.3Z%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-polygon{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203%2021%209.3%2017.8%2020H6.2L3%209.3Z%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-polygon{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203%2021%209.3%2017.8%2020H6.2L3%209.3Z%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-polygon{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%203%2021%209.3%2017.8%2020H6.2L3%209.3Z%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .leaflet-pm-icon-edit{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2020h9%22/%3E%3Cpath%20d%3D%22M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4Z%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-edit{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2020h9%22/%3E%3Cpath%20d%3D%22M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4Z%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-edit{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2020h9%22/%3E%3Cpath%20d%3D%22M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4Z%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-edit{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2020h9%22/%3E%3Cpath%20d%3D%22M16.5%203.5a2.1%202.1%200%200%201%203%203L7%2019l-4%201%201-4Z%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .leaflet-pm-icon-drag{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%225%209%202%2012%205%2015%22/%3E%3Cpolyline%20points%3D%229%205%2012%202%2015%205%22/%3E%3Cpolyline%20points%3D%2215%2019%2012%2022%209%2019%22/%3E%3Cpolyline%20points%3D%2219%209%2022%2012%2019%2015%22/%3E%3Cline%20x1%3D%222%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22/%3E%3Cline%20x1%3D%2212%22%20y1%3D%222%22%20x2%3D%2212%22%20y2%3D%2222%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-drag{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%225%209%202%2012%205%2015%22/%3E%3Cpolyline%20points%3D%229%205%2012%202%2015%205%22/%3E%3Cpolyline%20points%3D%2215%2019%2012%2022%209%2019%22/%3E%3Cpolyline%20points%3D%2219%209%2022%2012%2019%2015%22/%3E%3Cline%20x1%3D%222%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22/%3E%3Cline%20x1%3D%2212%22%20y1%3D%222%22%20x2%3D%2212%22%20y2%3D%2222%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-drag{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%225%209%202%2012%205%2015%22/%3E%3Cpolyline%20points%3D%229%205%2012%202%2015%205%22/%3E%3Cpolyline%20points%3D%2215%2019%2012%2022%209%2019%22/%3E%3Cpolyline%20points%3D%2219%209%2022%2012%2019%2015%22/%3E%3Cline%20x1%3D%222%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22/%3E%3Cline%20x1%3D%2212%22%20y1%3D%222%22%20x2%3D%2212%22%20y2%3D%2222%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-drag{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%225%209%202%2012%205%2015%22/%3E%3Cpolyline%20points%3D%229%205%2012%202%2015%205%22/%3E%3Cpolyline%20points%3D%2215%2019%2012%2022%209%2019%22/%3E%3Cpolyline%20points%3D%2219%209%2022%2012%2019%2015%22/%3E%3Cline%20x1%3D%222%22%20y1%3D%2212%22%20x2%3D%2222%22%20y2%3D%2212%22/%3E%3Cline%20x1%3D%2212%22%20y1%3D%222%22%20x2%3D%2212%22%20y2%3D%2222%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .leaflet-pm-icon-delete{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2314181A%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%206h18%22/%3E%3Cpath%20d%3D%22M8%206V4a2%202%200%200%201%202-2h4a2%202%200%200%201%202%202v2%22/%3E%3Cpath%20d%3D%22M19%206l-1%2014a2%202%200%200%201-2%202H8a2%202%200%200%201-2-2L5%206%22/%3E%3Cline%20x1%3D%2210%22%20y1%3D%2211%22%20x2%3D%2210%22%20y2%3D%2217%22/%3E%3Cline%20x1%3D%2214%22%20y1%3D%2211%22%20x2%3D%2214%22%20y2%3D%2217%22/%3E%3C/svg%3E')!important; background-color:transparent!important;}
+.leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-delete{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%231F5C6B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%206h18%22/%3E%3Cpath%20d%3D%22M8%206V4a2%202%200%200%201%202-2h4a2%202%200%200%201%202%202v2%22/%3E%3Cpath%20d%3D%22M19%206l-1%2014a2%202%200%200%201-2%202H8a2%202%200%200%201-2-2L5%206%22/%3E%3Cline%20x1%3D%2210%22%20y1%3D%2211%22%20x2%3D%2210%22%20y2%3D%2217%22/%3E%3Cline%20x1%3D%2214%22%20y1%3D%2211%22%20x2%3D%2214%22%20y2%3D%2217%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .leaflet-pm-icon-delete{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23E7EAE6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%206h18%22/%3E%3Cpath%20d%3D%22M8%206V4a2%202%200%200%201%202-2h4a2%202%200%200%201%202%202v2%22/%3E%3Cpath%20d%3D%22M19%206l-1%2014a2%202%200%200%201-2%202H8a2%202%200%200%201-2-2L5%206%22/%3E%3Cline%20x1%3D%2210%22%20y1%3D%2211%22%20x2%3D%2210%22%20y2%3D%2217%22/%3E%3Cline%20x1%3D%2214%22%20y1%3D%2211%22%20x2%3D%2214%22%20y2%3D%2217%22/%3E%3C/svg%3E')!important;}
+html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-icon-delete{background-image:url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%235FA6B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3%206h18%22/%3E%3Cpath%20d%3D%22M8%206V4a2%202%200%200%201%202-2h4a2%202%200%200%201%202%202v2%22/%3E%3Cpath%20d%3D%22M19%206l-1%2014a2%202%200%200%201-2%202H8a2%202%200%200%201-2-2L5%206%22/%3E%3Cline%20x1%3D%2210%22%20y1%3D%2211%22%20x2%3D%2210%22%20y2%3D%2217%22/%3E%3Cline%20x1%3D%2214%22%20y1%3D%2211%22%20x2%3D%2214%22%20y2%3D%2217%22/%3E%3C/svg%3E')!important;}
+
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-marker{filter:brightness(0) invert(1);}
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-polyline{filter:brightness(0) invert(1);}
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-polygon{filter:brightness(0) invert(1);}
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-edit{filter:brightness(0) invert(1);}
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-drag{filter:brightness(0) invert(1);}
+.leaflet-pm-toolbar .button-container.active .leaflet-pm-icon-delete{filter:brightness(0) invert(1);}
+
+
+/* ---------- guardar automático: pulso no ícone + anel de progresso ao segurar ---------- */
+#btn-save-project{ position:relative; overflow:visible; }
+#btn-save-project.holding-save{
+  animation: saveHoldGrow 5s cubic-bezier(.2,.7,.3,1) forwards;
+}
+#btn-save-project.holding-save::before{
+  content:''; position:absolute; inset:-5px; border-radius:999px;
+  border:2px solid var(--green);
+  animation: saveHoldRing 5s linear forwards;
+}
+@keyframes saveHoldGrow{
+  0%{ color:var(--ink); border-color:var(--line); }
+  100%{ color:var(--green); border-color:var(--green); }
+}
+@keyframes saveHoldRing{
+  0%{ opacity:.15; transform:scale(.85); }
+  85%{ opacity:.9; transform:scale(1.08); }
+  100%{ opacity:0; transform:scale(1.18); }
+}
+#btn-save-project.autosave-pulse{
+  animation: autosavePulse 1s ease-out;
+  color: var(--green);
+  border-color: var(--green);
+}
+@keyframes autosavePulse{
+  0%{ transform:scale(1); box-shadow:0 0 0 0 rgba(31,92,107,.5); }
+  35%{ transform:scale(1.22); box-shadow:0 0 0 7px rgba(31,92,107,0); }
+  100%{ transform:scale(1); box-shadow:0 0 0 0 rgba(31,92,107,0); }
+}
+#autosave-toast{
+  position:fixed; top:22px; left:50%; z-index:2147483000;
+  display:flex; align-items:center; gap:10px;
+  background:var(--paper-elevated); border:1px solid rgba(31,92,107,.22);
+  border-radius:999px; box-shadow:var(--shadow);
+  padding:10px 20px 10px 14px; font-size:13px; font-weight:600; color:var(--ink);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateX(-50%) translateY(-14px) scale(.96);
+  transition:opacity .4s cubic-bezier(.22,.61,.36,1), transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear .4s;
+}
+#autosave-toast.is-visible{
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.34,1.4,.4,1), visibility 0s linear 0s;
+}
+#autosave-toast.is-leaving{
+  opacity:0; visibility:visible; pointer-events:none;
+  transform:translateX(-50%) translateY(-10px) scale(.97);
+  transition:opacity .35s cubic-bezier(.4,0,1,1), transform .35s cubic-bezier(.4,0,1,1), visibility 0s linear .35s;
+}
+#autosave-toast .dot{
+  width:9px; height:9px; border-radius:50%; background:var(--green); flex-shrink:0;
+  animation: autosaveDot 1s ease-in-out infinite;
+}
+@keyframes autosaveDot{
+  0%,100%{ opacity:.35; transform:scale(.8); }
+  50%{ opacity:1; transform:scale(1.15); }
+}
 
 @media (max-width:860px){
   main{flex-direction:column;}
@@ -1277,6 +1434,11 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   <span class="message">Sincronização concluída com sucesso</span>
 </div>
 
+<div id="autosave-toast" role="status" aria-live="polite">
+  <span class="dot"></span>
+  <span class="message">A guardar automaticamente…</span>
+</div>
+
 <main>
   <div id="map">
     <div id="landing-banner">
@@ -1314,11 +1476,22 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
         <div class="connectivity-offline-menu hidden" id="connectivity-offline-menu"></div>
       </div>
     </div>
+
+    <div class="hidden" id="shape-color-attr-row">
+      <div class="symbology-header">
+        <span id="symbology-layer-name">Simbologia</span>
+        <button type="button" id="symbology-close-btn" title="Fechar">✕</button>
+      </div>
+      <div id="symbology-body">
+        <label for="shape-color-attr-select">Colorir por</label>
+        <select id="shape-color-attr-select"></select>
+        <ul class="shape-color-legend" id="shape-color-legend"></ul>
+      </div>
+    </div>
   </div>
 
   <aside id="sidebar">
     <h2>Camadas</h2>
-    <div class="sub" id="config-summary"></div>
 
     <div class="team-block hidden" id="team-block">
       <div class="team-card" id="team-card">
@@ -1330,12 +1503,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
     <div class="feat-summary" id="feat-summary">
       <p class="sub" id="empty-msg">Ainda não configuraste nenhuma shape. Usa o botão "Vetorizar" para começar.</p>
       <div class="hidden" id="shape-panel">
-        <div class="shape-name-display" id="shape-name-display"></div>
-        <div class="hidden" id="shape-color-attr-row">
-          <label for="shape-color-attr-select">Colorir por</label>
-          <select id="shape-color-attr-select"></select>
-          <ul class="shape-color-legend" id="shape-color-legend"></ul>
-        </div>
+        <ul class="layers-list" id="layers-list"></ul>
       </div>
     </div>
 
@@ -1352,9 +1520,17 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 
 <!-- ============ WIZARD ============ -->
+<!-- ============ menu de contexto (botão direito) de uma camada ============ -->
+<div id="layer-context-menu" class="hidden">
+  <button type="button" id="layer-ctx-open-table">📋 Abrir tabela de atributos</button>
+  <button type="button" id="layer-ctx-symbology">🎨 Simbologia</button>
+  <button type="button" id="layer-ctx-export">⬇ Exportar camada</button>
+  <button type="button" id="layer-ctx-remove" class="danger">🗑 Remover camada</button>
+</div>
+
 <div id="attr-table-overlay" class="hidden">
   <div class="wizard-card intro-card attr-table-card" id="attr-table-card">
-    <div class="step-tag">Geometrias desenhadas</div>
+    <div class="step-tag" id="attr-table-layer-name">Camada</div>
     <h2>Tabela de atributos</h2>
     <p class="hint">Uma linha por geometria. O ID é sequencial e não é guardado no GeoJSON.</p>
     <div class="attr-table-wrap">
@@ -2127,6 +2303,16 @@ const config = {
   colorAttr: null       // nome do atributo categórico atualmente usado para colorir a shape
 };
 
+/* Suporte a múltiplas camadas simultâneas no painel:
+   - "layers" guarda as camadas já fechadas (criadas antes da atual)
+   - "activeLayerId" identifica a camada em que se está a desenhar agora (representada por "config")
+   - "layerVisible" controla se cada camada (incl. a ativa) está visível no mapa */
+let layerCounter = 0;
+let activeLayerId = 0;
+let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
+const layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
+const layerVisible = new Map([[0, true]]);
+
 let featureCounter = 0;
 const featuresData = new Map(); // leafletLayerId -> {layer, props}
 let drawnGroup;
@@ -2722,7 +2908,10 @@ let startProjectChoice = null; // 'novo' | 'sem'
 // marca que há alterações nas geometrias ainda não guardadas no projeto local;
 // usado para avisar o utilizador antes de sair/fechar/recomeçar
 let projectDirty = false;
-function markProjectDirty(){ projectDirty = true; }
+function markProjectDirty(){
+  projectDirty = true;
+  if(autoSaveEnabled) pulseSaveIcon(); // feedback imediato: "alteração registada, será guardada"
+}
 
 function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -2848,8 +3037,11 @@ document.getElementById('start-project-continue').addEventListener('click', ()=>
 
 /* ---------- guardar projeto ---------- */
 // devolve true se guardou com sucesso, false se o utilizador cancelou (ex: não deu nome)
-function saveCurrentProject(){
+// opts.silent=true -> usado pelo guardar automático: nunca pede nome e não mostra o toast normal
+function saveCurrentProject(opts){
+  opts = opts || {};
   if(!localProjectState.active || !localProjectState.name){
+    if(opts.silent) return false; // nada para guardar automaticamente ainda
     const name = prompt('Ainda não tens um projeto ativo. Dá um nome para guardares o trabalho:');
     if(!name || !name.trim()) return false;
     localProjectState.name = name.trim();
@@ -2858,18 +3050,99 @@ function saveCurrentProject(){
   }
 
   const projects = getLocalProjects();
+  const allLayerIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
+  const layersMeta = allLayerIds.map(id=>{
+    const schema = getLayerSchema(id);
+    return {
+      id,
+      name: schema.name,
+      geometryType: schema.geometryType,
+      mode: schema.mode,
+      attributes: schema.attributes,
+      colorAttr: schema.colorAttr,
+      visible: layerVisible.get(id) !== false
+    };
+  });
   projects[localProjectState.name] = {
     name: localProjectState.name,
     updatedAt: Date.now(),
-    config: {mode: config.mode, attributes: config.attributes, geometryType: config.geometryType, shapeName: config.shapeName, colorAttr: config.colorAttr},
-    geojson: buildGeoJSON(false)
+    layers: layersMeta,
+    activeLayerId: activeLayerId,
+    layerCounter: layerCounter,
+    geojson: buildGeoJSON(false, true)
   };
   saveLocalProjects(projects);
   projectDirty = false;
-  showTeamToast(`Projeto "${localProjectState.name}" guardado.`);
+  if(!opts.silent){
+    showTeamToast(`Projeto "${localProjectState.name}" guardado.`);
+  }
   return true;
 }
 document.getElementById('btn-save-project').addEventListener('click', saveCurrentProject);
+
+/* ---------- guardar automático: segurar o botão de guardar 5s ativa-o ---------- */
+let autoSaveEnabled = false;
+let autoSaveInterval = null;
+let saveHoldTimer = null;
+
+function showAutosaveToast(message){
+  const toast = document.getElementById('autosave-toast');
+  if(!toast) return;
+  toast.querySelector('.message').textContent = message;
+  toast.classList.remove('is-leaving');
+  void toast.offsetWidth;
+  toast.classList.add('is-visible');
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+    toast.classList.add('is-leaving');
+  }, 3200);
+}
+
+function pulseSaveIcon(){
+  const btn = document.getElementById('btn-save-project');
+  if(!btn) return;
+  btn.classList.remove('autosave-pulse');
+  void btn.offsetWidth; // reinicia a animação mesmo em disparos consecutivos
+  btn.classList.add('autosave-pulse');
+  setTimeout(()=>btn.classList.remove('autosave-pulse'), 1000);
+}
+
+function enableAutoSave(){
+  if(autoSaveEnabled) return;
+  autoSaveEnabled = true;
+  showAutosaveToast('A guardar automaticamente…');
+  autoSaveInterval = setInterval(()=>{
+    if(!projectDirty) return; // nada mudou desde o último guardado, não faz nada
+    const saved = saveCurrentProject({ silent:true });
+    if(saved) pulseSaveIcon();
+  }, 20000);
+}
+
+(function setupSaveButtonHold(){
+  const btn = document.getElementById('btn-save-project');
+  if(!btn) return;
+
+  function startHold(){
+    if(autoSaveEnabled) return; // já ativo, não precisa de segurar outra vez
+    clearTimeout(saveHoldTimer);
+    btn.classList.add('holding-save');
+    saveHoldTimer = setTimeout(()=>{
+      btn.classList.remove('holding-save');
+      enableAutoSave();
+    }, 5000);
+  }
+  function cancelHold(){
+    clearTimeout(saveHoldTimer);
+    btn.classList.remove('holding-save');
+  }
+
+  btn.addEventListener('mousedown', startHold);
+  btn.addEventListener('touchstart', startHold, { passive:true });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt=>{
+    btn.addEventListener(evt, cancelHold);
+  });
+})();
 
 /* ---------- consultar / abrir / eliminar projetos guardados ---------- */
 document.getElementById('btn-open-local-projects').addEventListener('click', ()=>{
@@ -2925,13 +3198,59 @@ function openLocalProject(name){
 
   featuresData.forEach(entry=> drawnGroup.removeLayer(entry.layer));
   featuresData.clear();
+  layers.length = 0;
+  layerVisible.clear();
+  symbologyLayerId = null;
 
-  if(p.config){
-    config.mode = p.config.mode || null;
-    config.attributes = p.config.attributes || [];
-    config.geometryType = p.config.geometryType || null;
-    config.shapeName = p.config.shapeName || null;
-    config.colorAttr = p.config.colorAttr || null;
+  if(p.layers && Array.isArray(p.layers) && p.layers.length){
+    // formato novo: guarda todas as camadas (não só a última a ser editada)
+    layerCounter = Number.isFinite(p.layerCounter) ? p.layerCounter : Math.max(...p.layers.map(l=>l.id), 0);
+    activeLayerId = p.layers.some(l=>l.id === p.activeLayerId) ? p.activeLayerId : p.layers[p.layers.length-1].id;
+
+    p.layers.forEach(l=>{
+      layerVisible.set(l.id, l.visible !== false);
+      if(l.id !== activeLayerId){
+        layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null});
+      }
+    });
+
+    const activeMeta = p.layers.find(l=>l.id === activeLayerId);
+    config.mode = activeMeta ? (activeMeta.mode || null) : null;
+    config.attributes = activeMeta ? (activeMeta.attributes || []) : [];
+    config.geometryType = activeMeta ? (activeMeta.geometryType || null) : null;
+    config.shapeName = activeMeta ? (activeMeta.name || null) : null;
+    config.colorAttr = activeMeta ? (activeMeta.colorAttr || null) : null;
+
+    if(p.geojson && p.geojson.features && p.geojson.features.length){
+      importGeoJSONFeatures(p.geojson, (rawProps)=>{
+        const lid = Number(rawProps.__layerId);
+        return Number.isFinite(lid) ? lid : activeLayerId;
+      });
+      // esconde de novo as geometrias das camadas que estavam marcadas como ocultas
+      featuresData.forEach(entry=>{
+        if(layerVisible.get(entry.layerId) === false) drawnGroup.removeLayer(entry.layer);
+      });
+    } else {
+      refreshFeatList();
+    }
+  } else {
+    // formato antigo (projetos guardados antes de existir suporte a várias camadas)
+    activeLayerId = ++layerCounter;
+    layerVisible.set(activeLayerId, true);
+
+    if(p.config){
+      config.mode = p.config.mode || null;
+      config.attributes = p.config.attributes || [];
+      config.geometryType = p.config.geometryType || null;
+      config.shapeName = p.config.shapeName || null;
+      config.colorAttr = p.config.colorAttr || null;
+    }
+
+    if(p.geojson && p.geojson.features && p.geojson.features.length){
+      importGeoJSONFeatures(p.geojson);
+    } else {
+      refreshFeatList();
+    }
   }
 
   localProjectState.name = name;
@@ -2942,12 +3261,6 @@ function openLocalProject(name){
     document.getElementById('landing-banner').classList.add('hidden');
   }
 
-  if(p.geojson && p.geojson.features && p.geojson.features.length){
-    importGeoJSONFeatures(p.geojson);
-  } else {
-    refreshFeatList();
-  }
-
   if(config.geometryType){
     applyGeometryConfig();
     setupSummary();
@@ -2956,6 +3269,7 @@ function openLocalProject(name){
   updateProjectStatusUI();
   document.getElementById('local-projects-overlay').classList.add('hidden');
   showTeamToast(`Projeto "${name}" aberto.`);
+  refreshLayerEditability();
 }
 
 function deleteLocalProject(name){
@@ -2972,14 +3286,36 @@ function deleteLocalProject(name){
 }
 
 document.getElementById('open-feature-wizard-btn').addEventListener('click', ()=>{
+  archiveActiveLayerIfNeeded();
   document.getElementById('wizard-overlay').classList.remove('hidden');
-  document.getElementById('config-summary').innerHTML = '';
   document.getElementById('wizard-shape-name').value = config.shapeName || '';
   document.getElementById('wizard-shape-name-error').style.display = 'none';
   validateStep1Continue();
   showStep(1);
   dismissGearCoachmark();
 });
+
+/* Se já existe uma camada configurada e com o wizard concluído, guarda-a na lista
+   de camadas antes de começar a configurar uma nova — assim não desaparece do painel. */
+function archiveActiveLayerIfNeeded(){
+  if(!config.geometryType) return; // ainda não há nenhuma camada configurada, nada a arquivar
+  layers.push({
+    id: activeLayerId,
+    name: config.shapeName,
+    geometryType: config.geometryType,
+    mode: config.mode,
+    attributes: config.attributes,
+    colorAttr: config.colorAttr
+  });
+  activeLayerId = ++layerCounter;
+  layerVisible.set(activeLayerId, true);
+  config.shapeName = null;
+  config.mode = null;
+  config.attributes = [];
+  config.geometryType = null;
+  config.colorAttr = null;
+  refreshLayerEditability();
+}
 
 document.getElementById('wizard-close-btn').addEventListener('click', ()=>{
   document.getElementById('wizard-overlay').classList.add('hidden');
@@ -3159,24 +3495,34 @@ function finishWizard(){
   setupSummary();
   applyGeometryConfig();
   refreshFeatList();
+  refreshLayerEditability();
 }
 
 function setupSummary(){
-  const labels = {Point:'Pontos', LineString:'Linhas', Polygon:'Polígonos'};
-  let html = `<span class="config-pill">${labels[config.geometryType]}</span>`;
-  if(config.mode === 'atributos'){
-    config.attributes.forEach(a=>{
-      html += `<span class="config-pill">${a.name} (${a.type})</span>`;
-    });
-  } else {
-    html += `<span class="config-pill">sem atributos</span>`;
-  }
-  document.getElementById('config-summary').innerHTML = html;
+  // o resumo de "tipo de geometria + atributos" da camada ativa deixou de ser
+  // mostrado no painel — a lista de camadas já traz essa informação em cada linha.
 }
 
 /* ============================================================
    MAPA + GEOMAN
    ============================================================ */
+/* mostra uma mensagem na pill do canto superior esquerdo do mapa; se autoHideMs for passado,
+   a mensagem desaparece sozinha (com fade) passado esse tempo */
+let toolbarHintHideTimer = null;
+function showToolbarHint(text, autoHideMs){
+  const hint = document.getElementById('toolbar-hint');
+  const textEl = document.getElementById('toolbar-hint-text');
+  if(!hint || !textEl) return;
+  textEl.textContent = text;
+  hint.classList.remove('hint-hidden');
+  clearTimeout(toolbarHintHideTimer);
+  if(autoHideMs){
+    toolbarHintHideTimer = setTimeout(()=>{
+      hint.classList.add('hint-hidden');
+    }, autoHideMs);
+  }
+}
+
 function initMap(){
   map = L.map('map', {zoomControl:true}).setView([20, 0], 2);
 
@@ -3258,7 +3604,7 @@ function initMap(){
     LineString: 'Bom Trabalho!.',
     Polygon: 'Bom Trabalho!.'
   };
-  document.getElementById('toolbar-hint-text').textContent = hintText[config.geometryType];
+  showToolbarHint(hintText[config.geometryType], 20000);
 
   map.on('pm:create', e => onFeatureCreated(e.layer));
   map.on('pm:remove', e => onFeatureRemoved(e.layer));
@@ -3292,7 +3638,7 @@ function applyGeometryConfig(){
     LineString: 'Bom Trabalho!.',
     Polygon: 'Bom Trabalho!.'
   };
-  document.getElementById('toolbar-hint-text').textContent = hintText[config.geometryType];
+  showToolbarHint(hintText[config.geometryType], 20000);
 }
 
 initMap(); // o mapa fica pronto logo ao carregar a página
@@ -3311,7 +3657,7 @@ function onFeatureCreated(layer){
   featureCounter++;
   const id = L.Util.stamp(layer);
 
-  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, hasOverlap:false, overlapsWith:[]};
+  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, layerId: activeLayerId, hasOverlap:false, overlapsWith:[]};
   featuresData.set(id, entry);
   markProjectDirty();
 
@@ -3368,7 +3714,7 @@ async function parseImportedFile(file){
   throw new Error('Formato GeoJSON não reconhecido.');
 }
 
-function importGeoJSONFeatures(geojson){
+function importGeoJSONFeatures(geojson, layerIdResolver){
   const features = (geojson.features || []).filter(f => f && f.geometry);
   let imported = 0, skipped = 0;
 
@@ -3384,12 +3730,14 @@ function importGeoJSONFeatures(geojson){
     const rawProps = f.properties && typeof f.properties === 'object' ? {...f.properties} : {};
     const fid = rawProps.__fid || genFid();
     const updatedAt = rawProps.__updatedAt || Date.now();
+    const layerId = layerIdResolver ? layerIdResolver(rawProps) : activeLayerId;
     delete rawProps.__fid;
     delete rawProps.__updatedAt;
+    delete rawProps.__layerId;
     const props = rawProps;
     const label = props.name || props.label || 'Geometria '+featureCounter;
     const geomType = baseGeomType(f.geometry.type);
-    const entry = {layer, props, id, fid, updatedAt, label, geomType, hasOverlap:false, overlapsWith:[]};
+    const entry = {layer, props, id, fid, updatedAt, label, geomType, layerId, hasOverlap:false, overlapsWith:[]};
     featuresData.set(id, entry);
 
     styleLayerDefault(layer);
@@ -3464,8 +3812,9 @@ function geometryStatsHTML(entry){
   // os atributos definidos na shape (categóricos como dropdown, texto/número como campo),
   // sem precisar de abrir a tabela de atributos
   let quickAttrHtml = '';
-  if(config.mode === 'atributos'){
-    quickAttrHtml = config.attributes.map(attr=>{
+  const entrySchema = getLayerSchema(entry.layerId);
+  if(entrySchema && entrySchema.mode === 'atributos'){
+    quickAttrHtml = entrySchema.attributes.map(attr=>{
       if(attr.type === 'categorico'){
         const opts = attr.classes.map(c=>
           `<option value="${escapeHtml(c.name)}" ${entry.props[attr.name]===c.name?'selected':''}>${escapeHtml(c.name)}</option>`
@@ -3524,7 +3873,7 @@ function handleQuickAttrEdit(e){
   styleLayerByClass(entry);
   if(entry.hasOverlap) applyTopologyVisual(entry);
   const tableOverlay = document.getElementById('attr-table-overlay');
-  if(tableOverlay && !tableOverlay.classList.contains('hidden')) renderAttrTable();
+  if(tableOverlay && !tableOverlay.classList.contains('hidden')) renderAttrTable(entry.layerId);
 }
 // 'change' cobre os dropdowns (categórico); 'input' cobre texto/número enquanto se escreve
 document.addEventListener('change', handleQuickAttrEdit);
@@ -3537,10 +3886,13 @@ function flashHighlight(entry){
     setTimeout(()=>{
       if(entry.hasOverlap){
         applyTopologyVisual(entry);
-      } else if(config.mode === 'atributos'){
-        styleLayerByClass(entry);
       } else {
-        styleLayerDefault(entry.layer);
+        const schema = getLayerSchema(entry.layerId);
+        if(schema && schema.mode === 'atributos'){
+          styleLayerByClass(entry);
+        } else {
+          styleLayerDefault(entry.layer);
+        }
       }
     }, 900);
   } else if(entry.layer._icon){
@@ -3632,8 +3984,9 @@ function applyTopologyVisual(entry){
     entry.layer.setStyle({color: getWarnColor(), weight:4, dashArray:'8 5', fillOpacity:.25});
   } else {
     // repõe o estilo normal (categórico, se aplicável, senão a cor por defeito)
+    const schema = getLayerSchema(entry.layerId);
     styleLayerByClass(entry);
-    if(config.mode !== 'atributos'){ styleLayerDefault(entry.layer); }
+    if(!schema || schema.mode !== 'atributos'){ styleLayerDefault(entry.layer); }
   }
 }
 
@@ -3660,9 +4013,10 @@ function styleLayerDefault(layer){
 }
 
 function styleLayerByClass(entry){
-  if(config.mode !== 'atributos') return;
-  const catAttr = config.attributes.find(a=>a.type==='categorico' && a.name === config.colorAttr)
-    || config.attributes.find(a=>a.type==='categorico');
+  const schema = getLayerSchema(entry.layerId);
+  if(!schema || schema.mode !== 'atributos') return;
+  const catAttr = schema.attributes.find(a=>a.type==='categorico' && a.name === schema.colorAttr)
+    || schema.attributes.find(a=>a.type==='categorico');
   if(!catAttr){ styleLayerDefault(entry.layer); return; }
   const val = entry.props[catAttr.name];
   const cls = catAttr.classes.find(c=>c.name === val);
@@ -3675,6 +4029,7 @@ function styleLayerByClass(entry){
 }
 
 let formEntryRef = null;
+let attrTableLayerId = null; // qual camada a tabela de atributos está a mostrar de momento
 let formIsNewFeature = false;
 const GEOM_TYPE_LABELS = {Point:'Ponto', LineString:'Linha', Polygon:'Polígono'};
 
@@ -3742,67 +4097,294 @@ function updateFeatSummary(){
   const shapePanel = document.getElementById('shape-panel');
   const tableBtn = document.getElementById('btn-open-attr-table');
 
-  if(!config.geometryType){
+  if(!config.geometryType && layers.length === 0){
     emptyMsg.style.display = '';
     shapePanel.classList.add('hidden');
   } else {
     emptyMsg.style.display = 'none';
     shapePanel.classList.remove('hidden');
-    renderShapePanel();
+    renderLayersPanel();
   }
 
   tableBtn.disabled = featuresData.size === 0;
 
   const tableOverlay = document.getElementById('attr-table-overlay');
   if(tableOverlay && !tableOverlay.classList.contains('hidden')){
-    renderAttrTable();
+    renderAttrTable(attrTableLayerId);
   }
 }
 
-/* painel da shape ativa: mostra só o nome da shape (as geometrias individuais,
-   contagem e edição de atributos ficam na tabela de atributos, já existente).
-   Se a shape tiver um atributo categórico, mostra um seletor para escolher qual
-   usar para colorir + a legenda de cores desse atributo. */
-function renderShapePanel(){
-  const nameDisplay = document.getElementById('shape-name-display');
-  const typeLabel = GEOM_TYPE_LABELS[config.geometryType] || '—';
-  nameDisplay.innerHTML = `${escapeHtml(config.shapeName || 'Shape sem nome')} <span class="shape-geom-badge">${typeLabel}</span>`;
+/* devolve o "esquema" (nome, tipo de geometria, modo, atributos) de uma camada,
+   quer seja a camada ativa (vive em "config") quer seja uma já arquivada em "layers" */
+function getLayerSchema(layerId){
+  if(layerId === activeLayerId){
+    return {name: config.shapeName, geometryType: config.geometryType, mode: config.mode, attributes: config.attributes, colorAttr: config.colorAttr};
+  }
+  return layers.find(l=>l.id === layerId) || null;
+}
 
+function countLayerFeatures(layerId){
+  let n = 0;
+  featuresData.forEach(entry=>{ if(entry.layerId === layerId) n++; });
+  return n;
+}
+
+/* painel: uma linha por camada (arquivadas + a ativa, se já tiver tipo de geometria definido),
+   cada uma com interruptor de visibilidade e menu de contexto (botão direito). */
+function renderLayersPanel(){
+  const list = document.getElementById('layers-list');
+  const allIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []).sort((a,b)=>a-b);
+
+  list.innerHTML = allIds.map(id=>{
+    const schema = getLayerSchema(id);
+    if(!schema) return '';
+    const typeLabel = GEOM_TYPE_LABELS[schema.geometryType] || '—';
+    const visible = layerVisible.get(id) !== false;
+    const isActive = id === activeLayerId;
+    const count = countLayerFeatures(id);
+    return `
+      <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" title="Clica para tornar ativa (editável) · botão direito para mais opções">
+        <button type="button" class="layer-eye-btn" data-eye title="${visible ? 'Ocultar camada' : 'Mostrar camada'}">${visible ? '👁' : '🙈'}</button>
+        <span class="layer-name">${escapeHtml(schema.name || 'Shape sem nome')} <span style="color:var(--stone); font-weight:400;">(${count})</span></span>
+        <span class="shape-geom-badge">${typeLabel}</span>
+        ${isActive ? '<span class="layer-active-tag">ativa</span>' : ''}
+      </li>`;
+  }).join('') || '';
+
+  list.querySelectorAll('.layer-row').forEach(row=>{
+    const id = Number(row.dataset.layerId);
+    row.querySelector('[data-eye]').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      toggleLayerVisibility(id);
+    });
+    row.addEventListener('click', ()=>{
+      switchActiveLayer(id);
+    });
+    row.addEventListener('contextmenu', (e)=>{
+      e.preventDefault();
+      openLayerContextMenu(e.clientX, e.clientY, id);
+    });
+  });
+
+  renderSymbologyPanel();
+}
+
+/* torna a camada clicada a única editável: podes criar geometrias novas nela e
+   editar/mover/apagar as que já lá estão. As restantes ficam bloqueadas no mapa
+   (não reagem ao modo de edição/arrastar/remoção do Geoman) até a selecionares. */
+function switchActiveLayer(id){
+  if(id !== activeLayerId){
+    const rec = layers.find(l=>l.id === id);
+    if(!rec) return; // segurança: camada desconhecida
+
+    // arquiva a camada ativa atual antes de trocar (se já estiver configurada)
+    if(config.geometryType){
+      layers.push({
+        id: activeLayerId,
+        name: config.shapeName,
+        geometryType: config.geometryType,
+        mode: config.mode,
+        attributes: config.attributes,
+        colorAttr: config.colorAttr
+      });
+    }
+
+    // promove a camada escolhida a ativa
+    layers.splice(layers.indexOf(rec), 1);
+    activeLayerId = rec.id;
+    config.shapeName = rec.name;
+    config.mode = rec.mode;
+    config.attributes = rec.attributes;
+    config.geometryType = rec.geometryType;
+    config.colorAttr = rec.colorAttr;
+
+    applyGeometryConfig();
+    renderLayersPanel();
+  }
+  refreshLayerEditability();
+}
+
+/* bloqueia no Geoman (pmIgnore) todas as geometrias que não pertençam à camada
+   ativa, para que criar/editar/apagar só funcione na camada selecionada. */
+function refreshLayerEditability(){
+  featuresData.forEach(entry=>{
+    if(entry.layer.options) entry.layer.options.pmIgnore = (entry.layerId !== activeLayerId);
+  });
+  if(!map || !map.pm) return;
+  // força o Geoman a reavaliar quais as geometrias elegíveis para cada modo,
+  // respeitando o pmIgnore que acabámos de definir
+  if(map.pm.globalEditModeEnabled()){ map.pm.disableGlobalEditMode(); map.pm.enableGlobalEditMode(); }
+  if(map.pm.globalDragModeEnabled()){ map.pm.disableGlobalDragMode(); map.pm.enableGlobalDragMode(); }
+  if(map.pm.globalRemovalModeEnabled()){ map.pm.disableGlobalRemovalMode(); map.pm.enableGlobalRemovalMode(); }
+}
+
+function toggleLayerVisibility(layerId){
+  const nextVisible = !(layerVisible.get(layerId) !== false);
+  layerVisible.set(layerId, nextVisible);
+  featuresData.forEach(entry=>{
+    if(entry.layerId !== layerId) return;
+    if(nextVisible) drawnGroup.addLayer(entry.layer);
+    else drawnGroup.removeLayer(entry.layer);
+  });
+  renderLayersPanel();
+}
+
+function removeLayerEntirely(layerId){
+  const schema = getLayerSchema(layerId);
+  const label = schema ? (schema.name || 'Shape sem nome') : 'esta camada';
+  if(!confirm(`Remover a camada "${label}" e todas as suas geometrias? Esta ação não pode ser desfeita.`)) return;
+
+  featuresData.forEach((entry, key)=>{
+    if(entry.layerId !== layerId) return;
+    if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
+    drawnGroup.removeLayer(entry.layer);
+    featuresData.delete(key);
+  });
+
+  const idx = layers.findIndex(l=>l.id === layerId);
+  if(idx !== -1) layers.splice(idx, 1);
+
+  if(layerId === activeLayerId){
+    config.shapeName = null;
+    config.mode = null;
+    config.attributes = [];
+    config.geometryType = null;
+    config.colorAttr = null;
+  }
+  layerVisible.delete(layerId);
+
+  markProjectDirty();
+  refreshFeatList();
+  checkAllTopology();
+  refreshLayerEditability();
+}
+
+/* ---------- menu de contexto (botão direito) numa linha de camada ---------- */
+let ctxMenuLayerId = null;
+function openLayerContextMenu(x, y, layerId){
+  ctxMenuLayerId = layerId;
+  const menu = document.getElementById('layer-context-menu');
+  menu.classList.remove('hidden');
+  menu.style.left = '0px';
+  menu.style.top = '0px';
+  const rect = menu.getBoundingClientRect();
+  const maxLeft = window.innerWidth - rect.width - 8;
+  const maxTop = window.innerHeight - rect.height - 8;
+  menu.style.left = Math.min(x, maxLeft) + 'px';
+  menu.style.top = Math.min(y, maxTop) + 'px';
+}
+function closeLayerContextMenu(){
+  ctxMenuLayerId = null;
+  document.getElementById('layer-context-menu').classList.add('hidden');
+}
+document.addEventListener('click', closeLayerContextMenu);
+document.addEventListener('contextmenu', (e)=>{
+  if(!e.target.closest('.layer-row')) closeLayerContextMenu();
+});
+document.getElementById('layer-ctx-open-table').addEventListener('click', ()=>{
+  if(ctxMenuLayerId === null) return;
+  attrTableLayerId = ctxMenuLayerId;
+  renderAttrTable(attrTableLayerId);
+  document.getElementById('attr-table-overlay').classList.remove('hidden');
+});
+document.getElementById('layer-ctx-remove').addEventListener('click', ()=>{
+  if(ctxMenuLayerId === null) return;
+  removeLayerEntirely(ctxMenuLayerId);
+});
+document.getElementById('layer-ctx-symbology').addEventListener('click', ()=>{
+  if(ctxMenuLayerId === null) return;
+  symbologyLayerId = ctxMenuLayerId;
+  renderSymbologyPanel();
+});
+document.getElementById('layer-ctx-export').addEventListener('click', ()=>{
+  if(ctxMenuLayerId === null) return;
+  openExportMenu('layer_' + ctxMenuLayerId);
+});
+document.getElementById('symbology-close-btn').addEventListener('click', ()=>{
+  symbologyLayerId = null;
+  renderSymbologyPanel();
+});
+
+/* define/atualiza a cor de uma camada específica (não necessariamente a ativa) */
+function setLayerColorAttr(layerId, attrName){
+  if(layerId === activeLayerId){
+    config.colorAttr = attrName;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.colorAttr = attrName;
+  }
+  featuresData.forEach(entry=>{
+    if(entry.layerId !== layerId) return;
+    const schema = getLayerSchema(layerId);
+    if(schema && schema.mode === 'atributos'){
+      styleLayerByClass(entry);
+      if(entry.hasOverlap) applyTopologyVisual(entry);
+    }
+  });
+}
+
+/* painel de simbologia: aberto sob pedido (opção "Simbologia" do menu de contexto),
+   para a camada escolhida — deixou de aparecer sempre por defeito. */
+function renderSymbologyPanel(){
   const row = document.getElementById('shape-color-attr-row');
   const select = document.getElementById('shape-color-attr-select');
   const legend = document.getElementById('shape-color-legend');
+  const nameLabel = document.getElementById('symbology-layer-name');
+  const body = document.getElementById('symbology-body');
 
-  const catAttrs = config.mode === 'atributos' ? config.attributes.filter(a=>a.type==='categorico') : [];
-
-  if(catAttrs.length === 0){
+  if(symbologyLayerId === null){
     row.classList.add('hidden');
     return;
   }
-  row.classList.remove('hidden');
 
-  if(!config.colorAttr || !catAttrs.some(a=>a.name === config.colorAttr)){
-    config.colorAttr = catAttrs[0].name;
+  const schema = getLayerSchema(symbologyLayerId);
+  if(!schema){ // a camada foi entretanto removida
+    symbologyLayerId = null;
+    row.classList.add('hidden');
+    return;
   }
 
-  select.innerHTML = catAttrs.map(a=>
-    `<option value="${escapeHtml(a.name)}" ${a.name===config.colorAttr?'selected':''}>${escapeHtml(a.name)}</option>`
+  row.classList.remove('hidden');
+  nameLabel.textContent = `Simbologia — ${schema.name || 'Shape sem nome'}`;
+
+  const catAttrs = schema.mode === 'atributos' ? schema.attributes.filter(a=>a.type==='categorico') : [];
+
+  if(catAttrs.length === 0){
+    body.innerHTML = '<p class="sub" style="margin:0;">Esta camada não tem atributos categóricos para simbologizar.</p>';
+    return;
+  }
+  body.innerHTML = `
+    <label for="shape-color-attr-select">Colorir por</label>
+    <select id="shape-color-attr-select"></select>
+    <ul class="shape-color-legend" id="shape-color-legend"></ul>`;
+
+  const freshSelect = document.getElementById('shape-color-attr-select');
+  const freshLegend = document.getElementById('shape-color-legend');
+
+  if(!schema.colorAttr || !catAttrs.some(a=>a.name === schema.colorAttr)){
+    setLayerColorAttr(symbologyLayerId, catAttrs[0].name);
+  }
+  const currentColorAttr = getLayerSchema(symbologyLayerId).colorAttr;
+
+  freshSelect.innerHTML = catAttrs.map(a=>
+    `<option value="${escapeHtml(a.name)}" ${a.name===currentColorAttr?'selected':''}>${escapeHtml(a.name)}</option>`
   ).join('');
 
-  const activeAttr = catAttrs.find(a=>a.name === config.colorAttr);
-  legend.innerHTML = activeAttr.classes.map(c=>`
+  const activeAttr = catAttrs.find(a=>a.name === currentColorAttr);
+  freshLegend.innerHTML = activeAttr.classes.map(c=>`
     <li><span class="swatch" style="background:${escapeHtml(c.color)};"></span>${escapeHtml(c.name)}</li>
   `).join('');
-}
 
-document.getElementById('shape-color-attr-select').addEventListener('change', (e)=>{
-  config.colorAttr = e.target.value;
-  restyleAllLayers();
-  renderShapePanel();
-});
+  freshSelect.addEventListener('change', (e)=>{
+    setLayerColorAttr(symbologyLayerId, e.target.value);
+    renderSymbologyPanel();
+  });
+}
 
 // reaplica a cor de todas as geometrias já desenhadas quando o atributo de cor muda
 function restyleAllLayers(){
   featuresData.forEach(entry=>{
+    if(entry.layerId !== activeLayerId) return;
     if(config.mode === 'atributos'){
       styleLayerByClass(entry);
       if(entry.hasOverlap) applyTopologyVisual(entry);
@@ -3810,21 +4392,33 @@ function restyleAllLayers(){
   });
 }
 
-function renderAttrTable(){
+function renderAttrTable(layerId){
+  if(layerId === undefined || layerId === null) layerId = activeLayerId;
+  attrTableLayerId = layerId;
+
+  const schema = getLayerSchema(layerId) || {name:null, mode:null, attributes:[]};
+  const isActiveLayer = layerId === activeLayerId;
+  const typeLabel = GEOM_TYPE_LABELS[schema.geometryType] || '—';
+  const nameTag = document.getElementById('attr-table-layer-name');
+  if(nameTag) nameTag.textContent = `${schema.name || 'Shape sem nome'} · ${typeLabel}`;
+
   const head = document.getElementById('attr-table-head');
   const body = document.getElementById('attr-table-body');
-  const attrCols = config.mode === 'atributos' ? config.attributes : [];
+  const attrCols = schema.mode === 'atributos' ? schema.attributes : [];
 
   head.innerHTML = '<th>ID</th>' + attrCols.map(a=>`<th>${escapeHtml(a.name)}</th>`).join('') + '<th>Ações</th>';
 
-  if(featuresData.size === 0){
-    body.innerHTML = `<tr><td colspan="${attrCols.length + 2}" id="attr-table-empty">Ainda não desenhaste nenhuma geometria.</td></tr>`;
+  const entries = [];
+  featuresData.forEach(entry=>{ if(entry.layerId === layerId) entries.push(entry); });
+
+  if(entries.length === 0){
+    body.innerHTML = `<tr><td colspan="${attrCols.length + 2}" id="attr-table-empty">Ainda não desenhaste nenhuma geometria nesta camada.</td></tr>`;
     return;
   }
 
   let i = 0;
   const rows = [];
-  featuresData.forEach(entry=>{
+  entries.forEach(entry=>{
     i++;
     const attrCells = attrCols.map(a=>`<td>${escapeHtml(entry.props[a.name] ?? '—')}</td>`).join('');
     rows.push(`
@@ -3834,7 +4428,7 @@ function renderAttrTable(){
         <td class="actions-cell">
           <button data-highlight title="Realçar e mostrar popup">👁</button>
           <button data-focus title="Centrar no mapa">⌖</button>
-          ${config.mode === 'atributos' ? '<button data-edit title="Editar atributos">✎</button>' : ''}
+          ${(schema.mode === 'atributos' && isActiveLayer) ? '<button data-edit title="Editar atributos">✎</button>' : ''}
           <button data-delete class="danger" title="Apagar">🗑</button>
         </td>
       </tr>`);
@@ -3865,7 +4459,7 @@ function renderAttrTable(){
 }
 
 document.getElementById('btn-open-attr-table').addEventListener('click', ()=>{
-  renderAttrTable();
+  renderAttrTable(activeLayerId);
   document.getElementById('attr-table-overlay').classList.remove('hidden');
 });
 document.getElementById('attr-table-close').addEventListener('click', ()=>{
@@ -3875,17 +4469,22 @@ document.getElementById('attr-table-close').addEventListener('click', ()=>{
 /* ============================================================
    EXPORTAÇÃO
    ============================================================ */
-function buildGeoJSON(includeSyncMeta){
+function buildGeoJSON(includeSyncMeta, includeLayerId, onlyLayerId){
   const features = [];
   featuresData.forEach(entry=>{
+    if(onlyLayerId !== undefined && entry.layerId !== onlyLayerId) return;
     const gj = entry.layer.toGeoJSON();
     const cleanProps = {...entry.props};
     delete cleanProps.__fid;
     delete cleanProps.__updatedAt;
+    delete cleanProps.__layerId;
     gj.properties = cleanProps;
     if(includeSyncMeta){
       gj.properties.__fid = entry.fid || genFid();
       gj.properties.__updatedAt = entry.updatedAt || Date.now();
+    }
+    if(includeLayerId){
+      gj.properties.__layerId = entry.layerId;
     }
     features.push(gj);
   });
@@ -4366,17 +4965,21 @@ async function exportShapefileZip(gj, folderName, btn){
    MENU DE EXPORTAÇÃO / DOWNLOAD (camadas)
    ============================================================ */
 function getExportableLayers(){
-  const layers = [];
-  if(featuresData.size > 0){
-    layers.push({
-      id: 'main',
-      label: config.shapeName ? `Geometrias — ${config.shapeName}` : 'Geometrias desenhadas',
-      filename: 'engenh_dados',
-      getGeoJSON: () => buildGeoJSON()
+  const exportables = [];
+  const allLayerIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
+  allLayerIds.forEach(id=>{
+    if(countLayerFeatures(id) === 0) return;
+    const schema = getLayerSchema(id);
+    const safeName = (schema.name || 'camada').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'') || 'camada';
+    exportables.push({
+      id: 'layer_' + id,
+      label: schema.name || 'Shape sem nome',
+      filename: 'engenh_' + safeName,
+      getGeoJSON: () => buildGeoJSON(false, false, id)
     });
-  }
+  });
   if(typeof lastBufferFeatures !== 'undefined' && lastBufferFeatures.length > 0){
-    layers.push({
+    exportables.push({
       id: 'buffer',
       label: 'Resultado do buffer',
       filename: 'engenh_buffer',
@@ -4384,7 +4987,7 @@ function getExportableLayers(){
     });
   }
   if(typeof lastIntersectFeatures !== 'undefined' && lastIntersectFeatures.length > 0){
-    layers.push({
+    exportables.push({
       id: 'intersect',
       label: 'Resultado da interseção',
       filename: 'engenh_intersect',
@@ -4392,7 +4995,7 @@ function getExportableLayers(){
     });
   }
   if(typeof lastUnionFeatures !== 'undefined' && lastUnionFeatures.length > 0){
-    layers.push({
+    exportables.push({
       id: 'union',
       label: 'Resultado da união',
       filename: 'engenh_union',
@@ -4400,17 +5003,17 @@ function getExportableLayers(){
     });
   }
   if(typeof lastDifferenceFeatures !== 'undefined' && lastDifferenceFeatures.length > 0){
-    layers.push({
+    exportables.push({
       id: 'difference',
       label: 'Resultado da diferença',
       filename: 'engenh_difference',
       getGeoJSON: () => ({type:'FeatureCollection', features: lastDifferenceFeatures})
     });
   }
-  return layers;
+  return exportables;
 }
 
-function openExportMenu(){
+function openExportMenu(onlyLayerId){
   const layers = getExportableLayers();
   const emptyEl = document.getElementById('export-menu-empty');
   const bodyEl = document.getElementById('export-menu-body');
@@ -4430,8 +5033,9 @@ function openExportMenu(){
 
     layers.forEach(l=>{
       const row = document.createElement('label');
+      const isChecked = onlyLayerId ? (l.id === onlyLayerId) : true;
       row.style.cssText = 'display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); cursor:pointer; font-size:13.5px;';
-      row.innerHTML = `<input type="checkbox" data-layer-id="${l.id}" checked style="width:16px; height:16px;"><span>${l.label}</span>`;
+      row.innerHTML = `<input type="checkbox" data-layer-id="${l.id}" ${isChecked ? 'checked' : ''} style="width:16px; height:16px;"><span>${l.label}</span>`;
       listEl.appendChild(row);
     });
   }
