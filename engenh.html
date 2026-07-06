@@ -696,6 +696,20 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 #basemap-menu button:hover{background:var(--paper-deep);}
 #basemap-menu button.is-active{color:var(--green); font-weight:600;}
 #basemap-menu button.is-active::after{content:'✓';}
+.basemap-menu-divider{ height:1px; background:var(--line); margin:5px 4px; }
+#basemap-menu .basemap-auto-btn{ position:relative; color:var(--stone); }
+#basemap-menu .basemap-auto-btn.is-active{ color:var(--green); font-weight:600; }
+#basemap-menu .basemap-auto-btn.is-active span::before{ content:'● '; font-size:9px; }
+#basemap-menu .basemap-auto-btn[data-tooltip]:hover::after,
+#basemap-menu .basemap-auto-btn[data-tooltip]:focus-visible::after{
+  content:attr(data-tooltip);
+  position:absolute; bottom:100%; left:50%; transform:translateX(-50%);
+  margin-bottom:8px; width:230px;
+  background:var(--ink); color:var(--paper-elevated);
+  border-radius:var(--radius-sm); box-shadow:var(--shadow);
+  padding:8px 10px; font-size:11.5px; line-height:1.4; font-weight:400;
+  white-space:normal; text-align:left; z-index:2001; pointer-events:none;
+}
 #offline-areas-menu{
   position:fixed; z-index:2000; width:260px; max-width:calc(100% - 16px);
   background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
@@ -1653,6 +1667,10 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
   <button type="button" data-basemap="dgt">Portugal HD (DGT)</button>
   <button type="button" data-basemap="claro">Mapa claro</button>
   <button type="button" data-basemap="osm">Mapa (OSM)</button>
+  <div class="basemap-menu-divider"></div>
+  <button type="button" id="basemap-auto-toggle" class="basemap-auto-btn is-active" data-tooltip="Troca sozinho entre Satélite e Portugal HD (DGT) consoante o zoom e a localização. Desliga-se automaticamente assim que escolhes um mapa base manualmente.">
+    <span>↻ Resolução automática</span>
+  </button>
 </div>
 
 <div id="offline-areas-menu" class="hidden">
@@ -4002,6 +4020,8 @@ function initMap(){
     document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
       btn.classList.toggle('is-active', btn.dataset.basemap === activeBaseLayerKey);
     });
+    const autoBtn = document.getElementById('basemap-auto-toggle');
+    if(autoBtn) autoBtn.classList.toggle('is-active', autoResolutionEnabled);
   }
 
   function switchBasemap(key, opts){
@@ -4019,9 +4039,11 @@ function initMap(){
   }
 
   /* ---------- troca automática Satélite ⇄ Portugal HD (DGT) por nível de zoom ---------- */
+  let autoResolutionEnabled = true;
   const PT_CONTINENTAL_BOUNDS = L.latLngBounds([36.7, -9.6], [42.3, -6.0]);
   const AUTO_HD_MIN_ZOOM = 14;
   function maybeAutoSwitchBasemap(){
+    if(!autoResolutionEnabled) return;
     // só atua sobre o par satélite/DGT — se o utilizador escolheu manualmente "claro" ou "OSM", não interfere
     if(activeBaseLayerKey !== 'satelite' && activeBaseLayerKey !== 'dgt') return;
     const zoom = map.getZoom();
@@ -4056,7 +4078,19 @@ function initMap(){
     if(menu.classList.contains('hidden')) openBasemapMenu(); else closeBasemapMenu();
   });
   document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
-    btn.addEventListener('click', (e)=>{ e.stopPropagation(); switchBasemap(btn.dataset.basemap); });
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      autoResolutionEnabled = false;
+      switchBasemap(btn.dataset.basemap);
+    });
+  });
+  document.getElementById('basemap-auto-toggle').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    autoResolutionEnabled = true;
+    renderBasemapMenu();
+    closeBasemapMenu();
+    showBasemapToast('Resolução automática reativada.');
+    maybeAutoSwitchBasemap();
   });
   document.addEventListener('click', (e)=>{
     const menu = document.getElementById('basemap-menu');
