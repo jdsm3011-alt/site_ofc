@@ -264,7 +264,6 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 
 .export-block{margin-top:auto; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:8px;}
 
-.offline-block{margin-top:16px; padding-top:16px; border-top:1px solid var(--line);}
 
 .team-block{margin-top:18px;}
 .team-block.hidden{display:none;}
@@ -477,6 +476,23 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #exit-confirm-overlay.hidden{display:none;}
 
+#autosave-suggest-overlay{
+  position:fixed; inset:0; background:rgba(23,49,36,.5);
+  display:flex; align-items:center; justify-content:center;
+  z-index:1200; padding:20px;
+}
+#autosave-suggest-overlay.hidden{display:none;}
+
+/* selo com setas em ciclo no botão Guardar, indicando que o auto-save está ativo */
+#btn-save-project .autosave-indicator{
+  position:absolute; bottom:-3px; right:-3px;
+  width:14px; height:14px; border-radius:50%;
+  background:var(--green, #2f7d4f); color:#fff;
+  display:none; align-items:center; justify-content:center;
+  border:2px solid var(--paper, #fff);
+}
+#btn-save-project.autosave-on .autosave-indicator{ display:flex; }
+
 #attr-table-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.45);
   display:flex; align-items:center; justify-content:center;
@@ -610,6 +626,13 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 .layer-row.is-active{box-shadow:inset 0 0 0 1.5px var(--green);}
 .layer-row.is-hidden-layer{opacity:.45;}
+.layer-row.is-dragging{opacity:.4;}
+.layer-row.drag-over-top{box-shadow:inset 0 2px 0 0 var(--green);}
+.layer-row.drag-over-bottom{box-shadow:inset 0 -2px 0 0 var(--green);}
+.layer-row .layer-drag-handle{
+  flex:none; width:14px; text-align:center; color:var(--stone); cursor:grab; font-size:13px; line-height:1;
+}
+.layer-row .layer-drag-handle:active{cursor:grabbing;}
 .layer-row .layer-eye-btn{
   flex:none; width:24px; height:24px; border-radius:6px; border:1px solid var(--line-strong);
   background:var(--paper); color:var(--stone); cursor:pointer; font-size:12.5px; line-height:1;
@@ -639,6 +662,67 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #layer-context-menu button:hover{background:var(--paper-deep);}
 #layer-context-menu button.danger:hover{color:var(--warn);}
+#feature-context-menu{
+  position:fixed; z-index:2000; min-width:170px;
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow); padding:6px; display:flex; flex-direction:column; gap:2px;
+}
+#feature-context-menu.hidden{display:none;}
+#feature-context-menu button{
+  display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; text-align:left;
+  border:none; background:none; padding:8px 10px; border-radius:6px; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--ink);
+}
+#feature-context-menu button:hover{background:var(--paper-deep);}
+#feature-context-menu button.is-active{color:var(--green); font-weight:600;}
+#feature-context-menu button.is-active::after{content:'✓';}
+.edge-measure-tooltip.leaflet-tooltip{
+  background:var(--paper-elevated); border:1px solid var(--ink); border-radius:2px;
+  padding:1px 5px; font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:600;
+  color:var(--ink); box-shadow:none; white-space:nowrap;
+}
+.edge-measure-tooltip.leaflet-tooltip::before{display:none;}
+#basemap-menu{
+  position:fixed; z-index:2000; min-width:170px;
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow); padding:6px; display:flex; flex-direction:column; gap:2px;
+}
+#basemap-menu.hidden{display:none;}
+#basemap-menu button{
+  display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; text-align:left;
+  border:none; background:none; padding:8px 10px; border-radius:6px; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--ink);
+}
+#basemap-menu button:hover{background:var(--paper-deep);}
+#basemap-menu button.is-active{color:var(--green); font-weight:600;}
+#basemap-menu button.is-active::after{content:'✓';}
+#offline-areas-menu{
+  position:fixed; z-index:2000; width:260px; max-width:calc(100% - 16px);
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow); padding:6px; display:flex; flex-direction:column; gap:4px;
+}
+#offline-areas-menu.hidden{display:none;}
+#offline-areas-list{display:flex; flex-direction:column; gap:2px; max-height:260px; overflow-y:auto;}
+#offline-areas-list .offline-area-empty{font-size:12px; color:var(--stone); text-align:center; padding:10px 6px;}
+.offline-area-item{
+  display:flex; align-items:center; gap:6px; width:100%;
+  padding:7px 8px; border-radius:6px; cursor:pointer;
+}
+.offline-area-item:hover{background:var(--paper-deep);}
+.offline-area-item .offline-area-info{flex:1; min-width:0; text-align:left;}
+.offline-area-item .offline-area-info b{display:block; font-size:12.5px; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.offline-area-item .offline-area-info span{display:block; font-size:10.5px; color:var(--stone); margin-top:1px;}
+.offline-area-item button{
+  flex:none; border:none; background:none; cursor:pointer; font-size:13px; color:var(--stone);
+  width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+}
+.offline-area-item button:hover{background:var(--paper-elevated); color:var(--warn);}
+#offline-areas-menu > #offline-areas-new{
+  border:none; background:none; cursor:pointer; text-align:left; width:100%;
+  padding:8px 10px; border-radius:6px; font-family:inherit; font-size:13px; font-weight:600; color:var(--green-deep);
+  border-top:1px solid var(--line); margin-top:2px; padding-top:10px;
+}
+#offline-areas-menu > #offline-areas-new:hover{background:var(--paper-deep);}
 #shape-color-attr-row{
   position:absolute; bottom:14px; right:14px; z-index:460; width:240px; max-width:calc(100% - 28px);
   border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px; background:var(--paper-elevated);
@@ -661,6 +745,16 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .shape-color-legend li{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink);}
 .shape-color-legend .swatch{
   flex:none; width:12px; height:12px; border-radius:3px; border:1px solid var(--line-strong);
+}
+.shape-color-legend .swatch-input{
+  flex:none; width:22px; height:22px; padding:0; border:1px solid var(--line-strong); border-radius:6px;
+  background:none; cursor:pointer;
+}
+.symbology-color-row{display:flex; align-items:center; gap:10px;}
+.symbology-color-row .hint{font-size:11.5px; color:var(--stone);}
+#shape-base-color-input{
+  flex:none; width:36px; height:36px; padding:0; border:1px solid var(--line-strong); border-radius:8px;
+  background:none; cursor:pointer;
 }
 #start-project-name-row input[type=text]{
   width:100%; padding:10px 12px; border:1px solid var(--line-strong); border-radius:8px;
@@ -978,12 +1072,12 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 /* ---------- guardar automático: pulso no ícone + anel de progresso ao segurar ---------- */
 #btn-save-project{ position:relative; overflow:visible; }
 #btn-save-project.holding-save{
-  animation: saveHoldGrow 5s cubic-bezier(.2,.7,.3,1) forwards;
+  animation: saveHoldGrow 3s cubic-bezier(.2,.7,.3,1) forwards;
 }
 #btn-save-project.holding-save::before{
   content:''; position:absolute; inset:-5px; border-radius:999px;
   border:2px solid var(--green);
-  animation: saveHoldRing 5s linear forwards;
+  animation: saveHoldRing 3s linear forwards;
 }
 @keyframes saveHoldGrow{
   0%{ color:var(--ink); border-color:var(--line); }
@@ -1338,6 +1432,9 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
     <div class="header-left-actions">
       <button type="button" class="feedback-nav-btn" id="btn-save-project" title="Guardar projeto" aria-label="Guardar projeto">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span class="autosave-indicator" aria-hidden="true" title="Guardar automático ativo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg>
+        </span>
       </button>
 
       <button type="button" class="feedback-nav-btn" id="btn-open-local-projects" title="Projetos guardados" aria-label="Ver projetos guardados">
@@ -1351,10 +1448,6 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
   </div>
 
   <div class="header-actions">
-
-    <button type="button" class="feedback-nav-btn" id="btn-open-attr-table" title="Tabela de atributos" aria-label="Tabela de atributos">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-    </button>
 
     <button type="button" class="feedback-nav-btn" id="open-feature-wizard-btn" title="Vetorizar" aria-label="Vetorizar">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -1376,6 +1469,14 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
     </button>
     <button type="button" class="feedback-nav-btn" id="btn-open-analysis" title="Análise espacial" aria-label="Análise espacial">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 12-8.5 8.5a2.119 2.119 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m6.3 11.3 1.4 1.4"/><path d="M20.9 11.7q-2.5-1.5-5.4-1.7c-.4 0-.7-.2-1-.5L11 6c-1.5-1.5-2-2-2-3.5 0-1 .5-1.5 1.5-1.5.9 0 2 .5 3 2l2.5 3c.3.3.5.6.5 1 .2 2.9 1.2 4.9 1.7 5.4"/></svg>
+    </button>
+
+    <button type="button" class="feedback-nav-btn" id="btn-basemap" title="Mudar mapa base" aria-label="Mudar mapa base">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </button>
+
+    <button type="button" class="feedback-nav-btn" id="btn-ruler" title="Medir distância" aria-label="Medir distância">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
     </button>
 
     <button type="button" class="feedback-nav-btn" id="btn-offline-define" title="Definir área de trabalho offline" aria-label="Definir área de trabalho offline">
@@ -1507,14 +1608,6 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
       </div>
     </div>
 
-    <div class="offline-block">
-      <b style="font-size:13px;">Modo Offline</b>
-      <p class="sub" id="offline-status" style="margin:4px 0 8px;">Nenhuma área guardada.</p>
-      <div class="btn-row">
-        <button class="btn warn" id="btn-offline-clear" style="display:none;">🗑</button>
-      </div>
-    </div>
-
   </aside>
 </main>
 
@@ -1522,10 +1615,26 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 <!-- ============ WIZARD ============ -->
 <!-- ============ menu de contexto (botão direito) de uma camada ============ -->
 <div id="layer-context-menu" class="hidden">
-  <button type="button" id="layer-ctx-open-table">📋 Abrir tabela de atributos</button>
-  <button type="button" id="layer-ctx-symbology">🎨 Simbologia</button>
+  <button type="button" id="layer-ctx-zoom">Zoom para a camada</button>
+  <button type="button" id="layer-ctx-open-table">Abrir tabela de atributos</button>
+  <button type="button" id="layer-ctx-symbology">Simbologia</button>
   <button type="button" id="layer-ctx-export">⬇ Exportar camada</button>
   <button type="button" id="layer-ctx-remove" class="danger">🗑 Remover camada</button>
+</div>
+
+<div id="feature-context-menu" class="hidden">
+  <button type="button" id="feature-ctx-measures">📐 Medidas</button>
+</div>
+
+<div id="basemap-menu" class="hidden">
+  <button type="button" data-basemap="satelite">Satélite</button>
+  <button type="button" data-basemap="claro">Mapa claro</button>
+  <button type="button" data-basemap="osm">Mapa (OSM)</button>
+</div>
+
+<div id="offline-areas-menu" class="hidden">
+  <div id="offline-areas-list"></div>
+  <button type="button" id="offline-areas-new">+ Nova área offline</button>
 </div>
 
 <div id="attr-table-overlay" class="hidden">
@@ -1574,6 +1683,14 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
             <small>.zip</small>
           </label>
         </div>
+      </div>
+
+      <div class="attr-block" style="margin-bottom:0; margin-top:14px;">
+        <div class="attr-head"><b>Sistema de coordenadas</b></div>
+        <select id="export-crs-select" style="width:100%;">
+          <option value="EPSG:3763" selected>ETRS89 / PT-TM06 (EPSG:3763)</option>
+          <option value="EPSG:4326">WGS84 (EPSG:4326)</option>
+        </select>
       </div>
     </div>
 
@@ -1646,6 +1763,19 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
       <span style="flex:1 1 auto;"></span>
       <button class="btn warn" id="exit-confirm-discard">Sair sem guardar</button>
       <button class="btn primary" id="exit-confirm-save">Guardar e sair</button>
+    </div>
+  </div>
+</div>
+
+<div id="autosave-suggest-overlay" class="hidden">
+  <div class="wizard-card intro-card" id="autosave-suggest-card">
+    <div class="step-tag">Guardar automático</div>
+    <h2>Ativar o guardar automático?</h2>
+    <p class="hint">Já guardaste este projeto manualmente algumas vezes. Queres que o DataGis guarde as alterações sozinho a partir de agora?</p>
+    <div class="wizard-nav" style="flex-wrap:wrap; gap:8px;">
+      <button class="btn" id="autosave-suggest-no">Não, obrigado</button>
+      <span style="flex:1 1 auto;"></span>
+      <button class="btn primary" id="autosave-suggest-yes">Sim, ativar</button>
     </div>
   </div>
 </div>
@@ -1734,11 +1864,26 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
   <button id="offline-rect-cancel">Cancelar</button>
 </div>
 
+<!-- ============ RÉGUA: banner durante o desenho da linha ============ -->
+<div id="ruler-banner" class="offline-rect-banner" style="display:none;">
+  Desenha uma linha no mapa para medir a distância
+  <button id="ruler-cancel">Cancelar</button>
+</div>
+
+<!-- ============ RÉGUA: resultado da medição ============ -->
+<div id="ruler-result" class="offline-rect-banner" style="display:none;">
+  Distância: <b id="ruler-result-value">0 m</b>
+  <button id="ruler-result-clear">🗑 Limpar</button>
+</div>
+
 <!-- ============ OFFLINE: confirmação / estimativa ============ -->
+
 <div id="offline-overlay" class="hidden">
   <div class="offline-card">
     <h2>Guardar área offline</h2>
     <p>Esta área ficará disponível no mapa mesmo sem ligação à internet, neste dispositivo.</p>
+    <label for="offline-area-name" style="display:block; font-size:12px; font-weight:600; color:var(--stone); margin:10px 0 4px;">Nome da área (opcional)</label>
+    <input type="text" id="offline-area-name" placeholder="Ex.: Obra Norte" style="width:100%; box-sizing:border-box; padding:8px 10px; border:1px solid var(--line-strong); border-radius:var(--radius-sm); font-family:inherit; font-size:13px; margin-bottom:4px;">
     <div class="offline-stats" id="offline-stats"></div>
     <p id="offline-warning" style="color:var(--warn); font-weight:600; display:none;"></p>
     <div class="btn-row">
@@ -2300,7 +2445,9 @@ const config = {
   mode: null,          // 'simples' | 'atributos'
   attributes: [],       // [{name, type:'texto'|'numero'|'categorico', classes:[{name,color}]}]
   geometryType: null,    // 'Point' | 'LineString' | 'Polygon'
-  colorAttr: null       // nome do atributo categórico atualmente usado para colorir a shape
+  colorAttr: null,      // nome do atributo categórico atualmente usado para colorir a shape
+  baseColor: null,      // cor única da camada, usada quando não há (ou não se está a usar) simbologia categórica
+  opacity: null         // transparência do preenchimento (0-100); null = usa o valor por omissão
 };
 
 /* Suporte a múltiplas camadas simultâneas no painel:
@@ -2313,12 +2460,20 @@ let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (
 const layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
 const layerVisible = new Map([[0, true]]);
 
+/* Ordem de empilhamento das camadas no mapa (índice 0 = topo/mais à frente,
+   último índice = fundo/mais atrás). Controlada ao arrastar as linhas no painel. */
+let layerOrder = [0];
+const layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
+
 let featureCounter = 0;
 const featuresData = new Map(); // leafletLayerId -> {layer, props}
 let drawnGroup;
+let measuresGroup; // etiquetas com as medidas dos lados (modo "Medidas" por geometria)
+let rulerGroup; // linha e etiquetas da ferramenta de régua (medição livre, não é uma geometria do projeto)
 let map;
 
 const DEFAULT_COLOR = '#F5821F';
+const DEFAULT_OPACITY = 35; // percentagem (0-100) usada quando a camada não tem opacidade definida
 const TEAM_STORAGE_KEY = 'engenh-team-project';
 let teamPanelVisible = false;
 let teamState = {
@@ -2346,6 +2501,7 @@ const MUNICIPIOS_INDEX = [{"m":"Albergaria-a-Velha","d":"Aveiro","p":"previews/A
    ============================================================ */
 let activeBaseLayerKey = 'satelite';
 let offlineDrawing = false;
+let rulerDrawing = false;
 let offlineRectLayer = null;
 let offlineCancelDownload = false;
 
@@ -2414,25 +2570,34 @@ async function idbSetMeta(meta){
   const db = await idbOpen();
   return new Promise((resolve, reject)=>{
     const tx = db.transaction('meta', 'readwrite');
-    tx.objectStore('meta').put(meta, 'area');
+    tx.objectStore('meta').put(meta, meta.id);
     tx.oncomplete = ()=> resolve();
     tx.onerror = ()=> reject(tx.error);
   });
 }
-async function idbGetMeta(){
+async function idbGetMeta(id){
   const db = await idbOpen();
   return new Promise((resolve)=>{
     const tx = db.transaction('meta', 'readonly');
-    const req = tx.objectStore('meta').get('area');
+    const req = tx.objectStore('meta').get(id);
     req.onsuccess = ()=> resolve(req.result || null);
     req.onerror = ()=> resolve(null);
   });
 }
-async function idbClearMeta(){
+async function idbGetAllMeta(){
+  const db = await idbOpen();
+  return new Promise((resolve)=>{
+    const tx = db.transaction('meta', 'readonly');
+    const req = tx.objectStore('meta').getAll();
+    req.onsuccess = ()=> resolve((req.result || []).sort((a,b)=> b.savedAt - a.savedAt));
+    req.onerror = ()=> resolve([]);
+  });
+}
+async function idbDeleteMeta(id){
   const db = await idbOpen();
   return new Promise((resolve, reject)=>{
     const tx = db.transaction('meta', 'readwrite');
-    tx.objectStore('meta').delete('area');
+    tx.objectStore('meta').delete(id);
     tx.oncomplete = ()=> resolve();
     tx.onerror = ()=> reject(tx.error);
   });
@@ -2489,11 +2654,16 @@ function buildTilePlan(bounds, minZoom, maxZoom){
 }
 
 /* ---------- UI: iniciar definição de área ---------- */
-document.getElementById('btn-offline-define').addEventListener('click', ()=>{
+function startOfflineAreaDrawing(){
   if(offlineDrawing) return;
+  closeOfflineAreasMenu();
   offlineDrawing = true;
   document.getElementById('offline-rect-banner').style.display = 'flex';
   map.pm.enableDraw('Rectangle');
+}
+document.getElementById('offline-areas-new').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  startOfflineAreaDrawing();
 });
 
 document.getElementById('offline-rect-cancel').addEventListener('click', cancelOfflineDrawing);
@@ -2513,6 +2683,72 @@ function setupOfflineMapEvents(){
     openOfflineEstimate(offlineRectLayer.getBounds());
   });
 }
+
+/* ============================================================
+   RÉGUA — medir uma distância livre no mapa (não é uma geometria do projeto)
+   ============================================================ */
+let rulerLineLayer = null;
+let rulerLabelLayers = [];
+
+function startRulerDrawing(){
+  if(rulerDrawing) return;
+  clearRulerMeasurement();
+  rulerDrawing = true;
+  document.getElementById('ruler-banner').style.display = 'flex';
+  map.pm.enableDraw('Line');
+}
+document.getElementById('btn-ruler').addEventListener('click', startRulerDrawing);
+
+function cancelRulerDrawing(){
+  rulerDrawing = false;
+  document.getElementById('ruler-banner').style.display = 'none';
+  if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw('Line');
+}
+document.getElementById('ruler-cancel').addEventListener('click', cancelRulerDrawing);
+
+function setupRulerMapEvents(){
+  map.on('pm:create', (e)=>{
+    if(!rulerDrawing) return; // não interfere com o desenho normal de geometrias
+    rulerDrawing = false;
+    document.getElementById('ruler-banner').style.display = 'none';
+    renderRulerLine(e.layer);
+  });
+}
+
+/* desenha a linha da régua com uma etiqueta (em metros) por segmento, e mostra o total */
+function renderRulerLine(layer){
+  clearRulerMeasurement();
+  rulerLineLayer = layer;
+  if(layer.setStyle) layer.setStyle({color:'#B5472B', weight:3, dashArray:'6,4'});
+  rulerGroup.addLayer(layer);
+
+  const latlngs = layer.getLatLngs();
+  let total = 0;
+  for(let i=0; i<latlngs.length-1; i++){
+    const a = latlngs[i], b = latlngs[i+1];
+    const dist = a.distanceTo(b);
+    total += dist;
+    const mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+    const label = dist < 1000 ? Math.round(dist) + ' m' : (dist / 1000).toFixed(2) + ' km';
+    const tooltip = L.tooltip({
+      permanent: true, direction: 'center', className: 'edge-measure-tooltip', interactive: false
+    }).setLatLng(mid).setContent(label);
+    rulerGroup.addLayer(tooltip);
+    rulerLabelLayers.push(tooltip);
+  }
+
+  const totalLabel = total < 1000 ? Math.round(total) + ' m' : (total / 1000).toFixed(2) + ' km';
+  document.getElementById('ruler-result-value').textContent = totalLabel;
+  document.getElementById('ruler-result').style.display = 'flex';
+}
+
+function clearRulerMeasurement(){
+  if(rulerLineLayer){ rulerGroup.removeLayer(rulerLineLayer); rulerLineLayer = null; }
+  rulerLabelLayers.forEach(t=> rulerGroup.removeLayer(t));
+  rulerLabelLayers = [];
+  document.getElementById('ruler-result').style.display = 'none';
+}
+document.getElementById('ruler-result-clear').addEventListener('click', clearRulerMeasurement);
 
 /* ---------- estimativa + confirmação ---------- */
 function openOfflineEstimate(bounds){
@@ -2547,6 +2783,8 @@ function openOfflineEstimate(bounds){
     startBtn.disabled = false;
   }
 
+  const nameInput = document.getElementById('offline-area-name');
+  if(nameInput) nameInput.value = '';
   document.getElementById('offline-overlay').classList.remove('hidden');
 
   startBtn.onclick = async ()=>{
@@ -2572,9 +2810,6 @@ async function downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos){
   const totalTiles = baseTiles.length * layerInfos.length;
   let done = 0;
 
-  // se há uma área anterior guardada, substitui-a
-  await idbClearTiles();
-
   outer:
   for(const info of layerInfos){
     for(const t of baseTiles){
@@ -2599,12 +2834,16 @@ async function downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos){
   progressOverlay.classList.add('hidden');
 
   if(offlineCancelDownload){
-    await idbClearTiles();
     if(offlineRectLayer){ map.removeLayer(offlineRectLayer); offlineRectLayer = null; }
     return;
   }
 
+  const nameInput = document.getElementById('offline-area-name');
+  const areaName = (nameInput && nameInput.value.trim()) || `Área ${new Date().toLocaleDateString('pt-PT')}`;
+
   await idbSetMeta({
+    id: 'area_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    name: areaName,
     bounds: [[bounds.getSouth(), bounds.getWest()], [bounds.getNorth(), bounds.getEast()]],
     minZoom, maxZoom,
     layerKey: activeBaseLayerKey,
@@ -2613,7 +2852,7 @@ async function downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos){
   });
 
   if(offlineRectLayer){ map.removeLayer(offlineRectLayer); offlineRectLayer = null; }
-  refreshOfflineStatus();
+  renderOfflineAreasMenu();
   alert('Área offline guardada com sucesso. Já podes usar este mapa sem ligação à internet, dentro desta área.');
 }
 
@@ -2621,38 +2860,83 @@ document.getElementById('offline-progress-cancel').addEventListener('click', ()=
   offlineCancelDownload = true;
 });
 
-/* ---------- estado / gestão ---------- */
-async function refreshOfflineStatus(){
-  const meta = await idbGetMeta();
-  const statusEl = document.getElementById('offline-status');
-  const clearBtn = document.getElementById('btn-offline-clear');
-  if(!meta){
-    statusEl.textContent = 'Nenhuma área guardada.';
-    clearBtn.style.display = 'none';
+/* ---------- estado / gestão: menu de áreas guardadas (no cabeçalho) ---------- */
+async function renderOfflineAreasMenu(){
+  const list = document.getElementById('offline-areas-list');
+  const areas = await idbGetAllMeta();
+  if(!areas.length){
+    list.innerHTML = `<p class="offline-area-empty">Ainda não guardaste nenhuma área offline.</p>`;
     return;
   }
-  const date = new Date(meta.savedAt).toLocaleString('pt-PT');
-  statusEl.innerHTML = `Área guardada (zoom ${meta.minZoom}–${meta.maxZoom}, ${meta.tileCount.toLocaleString('pt-PT')} tiles) <br>desde ${date}.`;
-  clearBtn.style.display = 'inline-flex';
+  list.innerHTML = '';
+  areas.forEach(meta=>{
+    const date = new Date(meta.savedAt).toLocaleDateString('pt-PT');
+    const item = document.createElement('div');
+    item.className = 'offline-area-item';
+    item.innerHTML = `
+      <div class="offline-area-info">
+        <b>${meta.name || 'Área sem nome'}</b>
+        <span>zoom ${meta.minZoom}–${meta.maxZoom} · ${date}</span>
+      </div>
+      <button type="button" title="Ver no mapa" aria-label="Ver no mapa">🔎</button>
+      <button type="button" title="Apagar área" aria-label="Apagar área" data-action="delete">🗑</button>
+    `;
+    const [zoomBtn, deleteBtn] = item.querySelectorAll('button');
+    zoomBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const b = L.latLngBounds(meta.bounds[0], meta.bounds[1]);
+      map.fitBounds(b);
+      closeOfflineAreasMenu();
+    });
+    deleteBtn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      if(!confirm(`Apagar a área "${meta.name || 'sem nome'}"? Deixa de poder ser usada offline.`)) return;
+      await idbDeleteMeta(meta.id);
+      renderOfflineAreasMenu();
+    });
+    list.appendChild(item);
+  });
 }
 
-document.getElementById('btn-offline-clear').addEventListener('click', async ()=>{
-  if(!confirm('Apagar a área offline guardada? Vais deixar de conseguir usar o mapa sem internet.')) return;
-  await idbClearTiles();
-  await idbClearMeta();
-  refreshOfflineStatus();
+function openOfflineAreasMenu(){
+  const menu = document.getElementById('offline-areas-menu');
+  const btn = document.getElementById('btn-offline-define');
+  const rect = btn.getBoundingClientRect();
+  menu.classList.remove('hidden');
+  const menuRect = menu.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 6) + 'px';
+  menu.style.left = Math.max(8, Math.min(rect.right - menuRect.width, window.innerWidth - menuRect.width - 8)) + 'px';
+  renderOfflineAreasMenu();
+}
+function closeOfflineAreasMenu(){
+  document.getElementById('offline-areas-menu').classList.add('hidden');
+}
+document.getElementById('btn-offline-define').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const menu = document.getElementById('offline-areas-menu');
+  if(menu.classList.contains('hidden')) openOfflineAreasMenu(); else closeOfflineAreasMenu();
+});
+document.addEventListener('click', (e)=>{
+  const menu = document.getElementById('offline-areas-menu');
+  const btn = document.getElementById('btn-offline-define');
+  if(!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)){
+    closeOfflineAreasMenu();
+  }
 });
 
-/* ---------- ao reabrir: prompt para usar a área guardada ---------- */
-async function checkOfflineOnLoad(){
-  const meta = await idbGetMeta();
-  refreshOfflineStatus();
-  if(!meta) return;
+/* ---------- ao reabrir: prompt para usar a área guardada ----------
+   Só mostra o popup depois de o utilizador ter aberto/iniciado o projeto
+   (chamado a partir de proceedToMap), nunca logo ao carregar a página. */
+async function promptResumeOfflineArea(){
+  const areas = await idbGetAllMeta();
+  if(!areas.length) return;
   if(!navigator.onLine) return; // sem ligação: trata-se no overlay de conectividade, não aqui
 
+  const meta = areas[0]; // área guardada mais recente
   const date = new Date(meta.savedAt).toLocaleString('pt-PT');
+  const extra = areas.length > 1 ? ` (tens mais ${areas.length - 1} área(s) guardada(s), acessíveis no botão de área offline)` : '';
   document.getElementById('offline-prompt-detail').textContent =
-    `Tens uma área guardada (camada "${meta.layerKey}", zoom ${meta.minZoom}–${meta.maxZoom}) desde ${date}. Queres abrir o mapa nessa área?`;
+    `Tens uma área guardada ("${meta.name || 'sem nome'}", zoom ${meta.minZoom}–${meta.maxZoom}) desde ${date}${extra}. Queres abrir o mapa nessa área?`;
   document.getElementById('offline-prompt-overlay').classList.remove('hidden');
 
   document.getElementById('offline-prompt-yes').onclick = ()=>{
@@ -2760,27 +3044,29 @@ window.addEventListener('beforeunload', (e)=>{
 
 async function renderConnectivityOfflineMenu(){
   const menu = document.getElementById('connectivity-offline-menu');
-  const meta = await idbGetMeta();
-  if(!meta){
+  const areas = await idbGetAllMeta();
+  if(!areas.length){
     menu.innerHTML = `<p class="connectivity-offline-empty">Ainda não guardaste nenhuma área para usar offline. Liga-te à internet e usa o botão de definir área offline no cabeçalho.</p>`;
     return;
   }
-  const date = new Date(meta.savedAt).toLocaleString('pt-PT');
   menu.innerHTML = '';
-  const item = document.createElement('div');
-  item.className = 'connectivity-offline-item';
-  item.innerHTML = `
-    <div>
-      <b>Área guardada (${meta.layerKey})</b>
-      <span>zoom ${meta.minZoom}–${meta.maxZoom} · desde ${date}</span>
-    </div>
-    <button type="button">Usar</button>
-  `;
-  item.querySelector('button').addEventListener('click', ()=> enterOfflineSession(meta));
-  item.addEventListener('click', (e)=>{
-    if(e.target.tagName !== 'BUTTON') enterOfflineSession(meta);
+  areas.forEach(meta=>{
+    const date = new Date(meta.savedAt).toLocaleString('pt-PT');
+    const item = document.createElement('div');
+    item.className = 'connectivity-offline-item';
+    item.innerHTML = `
+      <div>
+        <b>${meta.name || 'Área sem nome'}</b>
+        <span>zoom ${meta.minZoom}–${meta.maxZoom} · desde ${date}</span>
+      </div>
+      <button type="button">Usar</button>
+    `;
+    item.querySelector('button').addEventListener('click', ()=> enterOfflineSession(meta));
+    item.addEventListener('click', (e)=>{
+      if(e.target.tagName !== 'BUTTON') enterOfflineSession(meta);
+    });
+    menu.appendChild(item);
   });
-  menu.appendChild(item);
 }
 
 document.getElementById('connectivity-enter-offline-btn').addEventListener('click', async ()=>{
@@ -2796,7 +3082,7 @@ function enterOfflineSession(meta){
   document.getElementById('connectivity-offline-menu').classList.add('hidden');
 
   const banner = document.getElementById('connectivity-active-banner');
-  document.getElementById('connectivity-active-banner-area').textContent = ` — área "${meta.layerKey}"`;
+  document.getElementById('connectivity-active-banner-area').textContent = ` — área "${meta.name || meta.layerKey}"`;
   banner.classList.remove('hidden');
 
   const b = L.latLngBounds(meta.bounds[0], meta.bounds[1]);
@@ -2902,6 +3188,7 @@ document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
    PROJETOS LOCAIS (guardados na aplicação, neste dispositivo)
    ============================================================ */
 const LOCAL_PROJECTS_KEY = 'engenh-local-projects';
+const ACTIVE_PROJECT_KEY = 'engenh-active-project-name'; // guarda qual o projeto ativo, como rede de segurança
 let localProjectState = { name: null, active: false };
 let startProjectChoice = null; // 'novo' | 'sem'
 
@@ -3025,9 +3312,11 @@ document.getElementById('start-project-continue').addEventListener('click', ()=>
     }
     localProjectState.name = rawName;
     localProjectState.active = true;
+    try{ localStorage.setItem(ACTIVE_PROJECT_KEY, rawName); }catch(err){ /* ignora */ }
   } else {
     localProjectState.name = null;
     localProjectState.active = false;
+    try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
   }
 
   updateProjectStatusUI();
@@ -3040,6 +3329,23 @@ document.getElementById('start-project-continue').addEventListener('click', ()=>
 // opts.silent=true -> usado pelo guardar automático: nunca pede nome e não mostra o toast normal
 function saveCurrentProject(opts){
   opts = opts || {};
+  if(!localProjectState.active || !localProjectState.name){
+    // rede de segurança: se por algum motivo o estado em memória se perdeu mas
+    // sabemos qual foi o último projeto aberto (e ele ainda existe), recupera-o
+    // em vez de assumir que não há nenhum projeto e pedir para criar um novo.
+    try{
+      const lastActive = localStorage.getItem(ACTIVE_PROJECT_KEY);
+      if(lastActive){
+        const existing = getLocalProjects();
+        if(existing[lastActive]){
+          localProjectState.name = lastActive;
+          localProjectState.active = true;
+          updateProjectStatusUI();
+        }
+      }
+    }catch(err){ /* ignora */ }
+  }
+
   if(!localProjectState.active || !localProjectState.name){
     if(opts.silent) return false; // nada para guardar automaticamente ainda
     const name = prompt('Ainda não tens um projeto ativo. Dá um nome para guardares o trabalho:');
@@ -3060,6 +3366,8 @@ function saveCurrentProject(opts){
       mode: schema.mode,
       attributes: schema.attributes,
       colorAttr: schema.colorAttr,
+      baseColor: schema.baseColor,
+      opacity: schema.opacity,
       visible: layerVisible.get(id) !== false
     };
   });
@@ -3069,6 +3377,7 @@ function saveCurrentProject(opts){
     layers: layersMeta,
     activeLayerId: activeLayerId,
     layerCounter: layerCounter,
+    layerOrder: layerOrder.slice(),
     geojson: buildGeoJSON(false, true)
   };
   saveLocalProjects(projects);
@@ -3080,7 +3389,7 @@ function saveCurrentProject(opts){
 }
 document.getElementById('btn-save-project').addEventListener('click', saveCurrentProject);
 
-/* ---------- guardar automático: segurar o botão de guardar 5s ativa-o ---------- */
+/* ---------- guardar automático: segurar o botão de guardar 3s ativa-o ---------- */
 let autoSaveEnabled = false;
 let autoSaveInterval = null;
 let saveHoldTimer = null;
@@ -3111,6 +3420,8 @@ function pulseSaveIcon(){
 function enableAutoSave(){
   if(autoSaveEnabled) return;
   autoSaveEnabled = true;
+  const btn = document.getElementById('btn-save-project');
+  if(btn) btn.classList.add('autosave-on');
   showAutosaveToast('A guardar automaticamente…');
   autoSaveInterval = setInterval(()=>{
     if(!projectDirty) return; // nada mudou desde o último guardado, não faz nada
@@ -3118,6 +3429,32 @@ function enableAutoSave(){
     if(saved) pulseSaveIcon();
   }, 20000);
 }
+
+/* ---------- sugestão de guardar automático após 3 gravações manuais ----------
+   Ao 3º clique no botão Guardar (sem já ter o auto-save ativo), pergunta-se ao
+   utilizador se quer ativá-lo. Se disser "Não", a pergunta não volta a aparecer
+   (fica gravado no localStorage deste dispositivo). */
+let manualSaveClickCount = 0;
+const AUTOSAVE_SUGGEST_DECLINED_KEY = 'engenh-autosave-suggest-declined';
+
+document.getElementById('btn-save-project').addEventListener('click', ()=>{
+  if(autoSaveEnabled) return;
+  if(localStorage.getItem(AUTOSAVE_SUGGEST_DECLINED_KEY) === '1') return;
+  manualSaveClickCount++;
+  if(manualSaveClickCount >= 3){
+    document.getElementById('autosave-suggest-overlay').classList.remove('hidden');
+  }
+});
+
+document.getElementById('autosave-suggest-yes').addEventListener('click', ()=>{
+  document.getElementById('autosave-suggest-overlay').classList.add('hidden');
+  enableAutoSave();
+});
+
+document.getElementById('autosave-suggest-no').addEventListener('click', ()=>{
+  try{ localStorage.setItem(AUTOSAVE_SUGGEST_DECLINED_KEY, '1'); }catch(err){ /* ignora */ }
+  document.getElementById('autosave-suggest-overlay').classList.add('hidden');
+});
 
 (function setupSaveButtonHold(){
   const btn = document.getElementById('btn-save-project');
@@ -3130,7 +3467,7 @@ function enableAutoSave(){
     saveHoldTimer = setTimeout(()=>{
       btn.classList.remove('holding-save');
       enableAutoSave();
-    }, 5000);
+    }, 3000);
   }
   function cancelHold(){
     clearTimeout(saveHoldTimer);
@@ -3200,62 +3537,91 @@ function openLocalProject(name){
   featuresData.clear();
   layers.length = 0;
   layerVisible.clear();
+  layerOrder.length = 0;
   symbologyLayerId = null;
 
-  if(p.layers && Array.isArray(p.layers) && p.layers.length){
-    // formato novo: guarda todas as camadas (não só a última a ser editada)
-    layerCounter = Number.isFinite(p.layerCounter) ? p.layerCounter : Math.max(...p.layers.map(l=>l.id), 0);
-    activeLayerId = p.layers.some(l=>l.id === p.activeLayerId) ? p.activeLayerId : p.layers[p.layers.length-1].id;
+  // Tudo o que se segue lida com dados que podem estar em formatos antigos/incompletos
+  // (ficheiros guardados antes de alguma alteração ao esquema). Isola-se num try/catch
+  // para que um erro a interpretar geometrias antigas nunca impeça o passo seguinte
+  // (marcar este projeto como "ativo") — é isso que garante que o botão "Guardar"
+  // continua a saber em que projeto gravar, mesmo que algo aqui corra mal.
+  try{
+    if(p.layers && Array.isArray(p.layers) && p.layers.length){
+      // formato novo: guarda todas as camadas (não só a última a ser editada)
+      layerCounter = Number.isFinite(p.layerCounter) ? p.layerCounter : Math.max(...p.layers.map(l=>l.id), 0);
+      activeLayerId = p.layers.some(l=>l.id === p.activeLayerId) ? p.activeLayerId : p.layers[p.layers.length-1].id;
 
-    p.layers.forEach(l=>{
-      layerVisible.set(l.id, l.visible !== false);
-      if(l.id !== activeLayerId){
-        layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null});
+      p.layers.forEach(l=>{
+        layerVisible.set(l.id, l.visible !== false);
+        if(l.id !== activeLayerId){
+          layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null, baseColor:l.baseColor || null, opacity: (l.opacity != null ? l.opacity : null)});
+        }
+      });
+
+      const activeMeta = p.layers.find(l=>l.id === activeLayerId);
+      config.mode = activeMeta ? (activeMeta.mode || null) : null;
+      config.attributes = activeMeta ? (activeMeta.attributes || []) : [];
+      config.geometryType = activeMeta ? (activeMeta.geometryType || null) : null;
+      config.shapeName = activeMeta ? (activeMeta.name || null) : null;
+      config.colorAttr = activeMeta ? (activeMeta.colorAttr || null) : null;
+      config.baseColor = activeMeta ? (activeMeta.baseColor || null) : null;
+      config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+
+      // ordem de empilhamento no mapa: usa a guardada no projeto (se existir e continuar
+      // válida), preenchendo com quaisquer camadas em falta para não desaparecerem do topo.
+      const knownIds = p.layers.map(l=>l.id);
+      if(Array.isArray(p.layerOrder) && p.layerOrder.length){
+        layerOrder = p.layerOrder.filter(id=>knownIds.includes(id));
+        knownIds.forEach(id=>{ if(!layerOrder.includes(id)) layerOrder.unshift(id); });
+      } else {
+        layerOrder = knownIds.slice();
       }
-    });
 
-    const activeMeta = p.layers.find(l=>l.id === activeLayerId);
-    config.mode = activeMeta ? (activeMeta.mode || null) : null;
-    config.attributes = activeMeta ? (activeMeta.attributes || []) : [];
-    config.geometryType = activeMeta ? (activeMeta.geometryType || null) : null;
-    config.shapeName = activeMeta ? (activeMeta.name || null) : null;
-    config.colorAttr = activeMeta ? (activeMeta.colorAttr || null) : null;
-
-    if(p.geojson && p.geojson.features && p.geojson.features.length){
-      importGeoJSONFeatures(p.geojson, (rawProps)=>{
-        const lid = Number(rawProps.__layerId);
-        return Number.isFinite(lid) ? lid : activeLayerId;
-      });
-      // esconde de novo as geometrias das camadas que estavam marcadas como ocultas
-      featuresData.forEach(entry=>{
-        if(layerVisible.get(entry.layerId) === false) drawnGroup.removeLayer(entry.layer);
-      });
+      if(p.geojson && p.geojson.features && p.geojson.features.length){
+        importGeoJSONFeatures(p.geojson, (rawProps)=>{
+          const lid = Number(rawProps.__layerId);
+          return Number.isFinite(lid) ? lid : activeLayerId;
+        });
+        // esconde de novo as geometrias das camadas que estavam marcadas como ocultas
+        featuresData.forEach(entry=>{
+          if(layerVisible.get(entry.layerId) === false) drawnGroup.removeLayer(entry.layer);
+        });
+      } else {
+        refreshFeatList();
+      }
     } else {
-      refreshFeatList();
-    }
-  } else {
-    // formato antigo (projetos guardados antes de existir suporte a várias camadas)
-    activeLayerId = ++layerCounter;
-    layerVisible.set(activeLayerId, true);
+      // formato antigo (projetos guardados antes de existir suporte a várias camadas)
+      activeLayerId = ++layerCounter;
+      layerVisible.set(activeLayerId, true);
+      layerOrder = [activeLayerId];
 
-    if(p.config){
-      config.mode = p.config.mode || null;
-      config.attributes = p.config.attributes || [];
-      config.geometryType = p.config.geometryType || null;
-      config.shapeName = p.config.shapeName || null;
-      config.colorAttr = p.config.colorAttr || null;
-    }
+      if(p.config){
+        config.mode = p.config.mode || null;
+        config.attributes = p.config.attributes || [];
+        config.geometryType = p.config.geometryType || null;
+        config.shapeName = p.config.shapeName || null;
+        config.colorAttr = p.config.colorAttr || null;
+        config.baseColor = p.config.baseColor || null;
+        config.opacity = p.config.opacity != null ? p.config.opacity : null;
+      }
 
-    if(p.geojson && p.geojson.features && p.geojson.features.length){
-      importGeoJSONFeatures(p.geojson);
-    } else {
-      refreshFeatList();
+      if(p.geojson && p.geojson.features && p.geojson.features.length){
+        importGeoJSONFeatures(p.geojson);
+      } else {
+        refreshFeatList();
+      }
     }
+  }catch(err){
+    console.error('Erro ao carregar geometrias do projeto guardado (o projeto foi marcado como ativo mesmo assim):', err);
+    alert('Algumas geometrias deste projeto não puderam ser lidas corretamente, mas o projeto foi aberto na mesma — já podes desenhar e guardar normalmente.');
   }
+
+  applyLayerZOrder();
 
   localProjectState.name = name;
   localProjectState.active = true;
   projectDirty = false;
+  try{ localStorage.setItem(ACTIVE_PROJECT_KEY, name); }catch(err){ /* ignora */ }
 
   if(document.getElementById('landing-banner') && !document.getElementById('landing-banner').classList.contains('hidden')){
     document.getElementById('landing-banner').classList.add('hidden');
@@ -3280,6 +3646,7 @@ function deleteLocalProject(name){
   if(localProjectState.name === name){
     localProjectState.name = null;
     localProjectState.active = false;
+    try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
     updateProjectStatusUI();
   }
   renderLocalProjectsList();
@@ -3305,7 +3672,9 @@ function archiveActiveLayerIfNeeded(){
     geometryType: config.geometryType,
     mode: config.mode,
     attributes: config.attributes,
-    colorAttr: config.colorAttr
+    colorAttr: config.colorAttr,
+    baseColor: config.baseColor,
+    opacity: config.opacity
   });
   activeLayerId = ++layerCounter;
   layerVisible.set(activeLayerId, true);
@@ -3314,6 +3683,8 @@ function archiveActiveLayerIfNeeded(){
   config.attributes = [];
   config.geometryType = null;
   config.colorAttr = null;
+  config.baseColor = null;
+  config.opacity = null;
   refreshLayerEditability();
 }
 
@@ -3328,6 +3699,8 @@ function proceedToMap(){
   document.getElementById('landing-banner').classList.add('hidden');
   map.flyTo([39.6, -8.0], 7, { duration: 2.2, easeLinearity: 0.25 });
   map.once('moveend', showGearCoachmark);
+  // nota: deixámos de mostrar o popup "Área offline encontrada" ao reabrir o projeto;
+  // as áreas guardadas continuam acessíveis a partir do botão de área offline no cabeçalho.
 }
 
 function showGearCoachmark(){
@@ -3524,45 +3897,85 @@ function showToolbarHint(text, autoHideMs){
 }
 
 function initMap(){
-  map = L.map('map', {zoomControl:true}).setView([20, 0], 2);
+  map = L.map('map', {zoomControl:true, maxZoom: 24}).setView([20, 0], 2);
 
   const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19,
+    maxZoom: 24, maxNativeZoom: 19,
     attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics',
     offlineKey: 'satellite'
   });
   const satelliteLabels = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19, pane: 'shadowPane',
+    maxZoom: 24, maxNativeZoom: 19, pane: 'shadowPane',
     offlineKey: 'satelliteLabels'
   });
   const satelliteGroup = L.layerGroup([satellite, satelliteLabels]).addTo(map);
 
   const claro = new OfflineTileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
+    maxZoom: 24, maxNativeZoom: 19,
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
     offlineKey: 'claro'
   });
   const osm = new OfflineTileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 24, maxNativeZoom: 19,
     attribution: '&copy; OpenStreetMap contributors',
     offlineKey: 'osm'
   });
 
-  L.control.layers({
-    'Satélite': satelliteGroup,
-    'Mapa claro': claro,
-    'Mapa (OSM)': osm
-  }, null, {position:'topright', collapsed:true}).addTo(map);
+  const basemaps = { satelite: satelliteGroup, claro: claro, osm: osm };
 
   // regista qual a camada base ativa, para saber o que cachear no modo offline
   activeBaseLayerKey = 'satelite';
-  map.on('baselayerchange', (e)=>{
-    if(e.layer === claro) activeBaseLayerKey = 'claro';
-    else if(e.layer === osm) activeBaseLayerKey = 'osm';
-    else activeBaseLayerKey = 'satelite';
+
+  function renderBasemapMenu(){
+    document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+      btn.classList.toggle('is-active', btn.dataset.basemap === activeBaseLayerKey);
+    });
+  }
+
+  function switchBasemap(key){
+    const next = basemaps[key];
+    if(!next || key === activeBaseLayerKey){ closeBasemapMenu(); return; }
+    Object.values(basemaps).forEach(l=>{ if(l !== next && map.hasLayer(l)) map.removeLayer(l); });
+    if(!map.hasLayer(next)) next.addTo(map);
+    activeBaseLayerKey = key;
+    renderBasemapMenu();
+    closeBasemapMenu();
+  }
+
+  function openBasemapMenu(){
+    const menu = document.getElementById('basemap-menu');
+    const btn = document.getElementById('btn-basemap');
+    const rect = btn.getBoundingClientRect();
+    menu.classList.remove('hidden');
+    const menuRect = menu.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 6) + 'px';
+    menu.style.left = Math.max(8, Math.min(rect.right - menuRect.width, window.innerWidth - menuRect.width - 8)) + 'px';
+    renderBasemapMenu();
+  }
+  function closeBasemapMenu(){
+    document.getElementById('basemap-menu').classList.add('hidden');
+  }
+
+  document.getElementById('btn-basemap').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const menu = document.getElementById('basemap-menu');
+    if(menu.classList.contains('hidden')) openBasemapMenu(); else closeBasemapMenu();
   });
+  document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); switchBasemap(btn.dataset.basemap); });
+  });
+  document.addEventListener('click', (e)=>{
+    const menu = document.getElementById('basemap-menu');
+    const btn = document.getElementById('btn-basemap');
+    if(!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)){
+      closeBasemapMenu();
+    }
+  });
+  renderBasemapMenu();
 
   drawnGroup = L.featureGroup().addTo(map);
+  measuresGroup = L.layerGroup().addTo(map);
+  rulerGroup = L.layerGroup().addTo(map);
 
   map.pm.addControls({
     position: 'topleft',
@@ -3610,7 +4023,8 @@ function initMap(){
   map.on('pm:remove', e => onFeatureRemoved(e.layer));
 
   setupOfflineMapEvents();
-  checkOfflineOnLoad();
+  setupRulerMapEvents();
+  renderOfflineAreasMenu();
   updateConnectivityUI();
   map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
 }
@@ -3652,22 +4066,24 @@ function genFid(){
 }
 
 function onFeatureCreated(layer){
-  if(offlineDrawing) return; // o retângulo do modo offline não é uma geometria do utilizador
+  if(offlineDrawing || rulerDrawing) return; // retângulo offline / linha da régua não são geometrias do utilizador
   drawnGroup.addLayer(layer);
+  assignLayerPane(layer, activeLayerId);
   featureCounter++;
   const id = L.Util.stamp(layer);
 
-  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, layerId: activeLayerId, hasOverlap:false, overlapsWith:[]};
+  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, layerId: activeLayerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
   featuresData.set(id, entry);
   markProjectDirty();
 
-  styleLayerDefault(layer);
+  styleLayerDefault(layer, activeLayerId);
   showStatsPopup(entry);
+  bindFeatureContextMenu(entry);
 
   // reage a edições posteriores desta geometria (arrastar vértices, mover) para
   // manter as estatísticas e a verificação de topologia sempre atualizadas
-  layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
-  layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
+  layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); if(entry.showMeasures) renderPolygonMeasures(entry); });
+  layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); if(entry.showMeasures) renderPolygonMeasures(entry); });
 
   // sem popup ao criar: a geometria fica logo com o nome genérico "Geometria N"
   // e aparece de imediato na lista/tabela; atributos (se o modo os tiver) editam-se na tabela
@@ -3679,7 +4095,10 @@ function onFeatureCreated(layer){
 function onFeatureRemoved(layer){
   const id = L.Util.stamp(layer);
   const entry = featuresData.get(id);
-  if(entry && entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
+  if(entry){
+    if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
+    clearPolygonMeasures(entry);
+  }
   featuresData.delete(id);
   markProjectDirty();
   refreshFeatList();
@@ -3731,18 +4150,20 @@ function importGeoJSONFeatures(geojson, layerIdResolver){
     const fid = rawProps.__fid || genFid();
     const updatedAt = rawProps.__updatedAt || Date.now();
     const layerId = layerIdResolver ? layerIdResolver(rawProps) : activeLayerId;
+    assignLayerPane(layer, layerId);
     delete rawProps.__fid;
     delete rawProps.__updatedAt;
     delete rawProps.__layerId;
     const props = rawProps;
     const label = props.name || props.label || 'Geometria '+featureCounter;
     const geomType = baseGeomType(f.geometry.type);
-    const entry = {layer, props, id, fid, updatedAt, label, geomType, layerId, hasOverlap:false, overlapsWith:[]};
+    const entry = {layer, props, id, fid, updatedAt, label, geomType, layerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
     featuresData.set(id, entry);
 
-    styleLayerDefault(layer);
-    layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
-    layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); });
+    styleLayerDefault(layer, layerId);
+    bindFeatureContextMenu(entry);
+    layer.on('pm:edit', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); if(entry.showMeasures) renderPolygonMeasures(entry); });
+    layer.on('pm:dragend', ()=>{ entry.updatedAt = Date.now(); markProjectDirty(); refreshStatsIfOpen(entry); checkAllTopology(); if(entry.showMeasures) renderPolygonMeasures(entry); });
 
     imported++;
   });
@@ -3891,7 +4312,7 @@ function flashHighlight(entry){
         if(schema && schema.mode === 'atributos'){
           styleLayerByClass(entry);
         } else {
-          styleLayerDefault(entry.layer);
+          styleLayerDefault(entry.layer, entry.layerId);
         }
       }
     }, 900);
@@ -3986,7 +4407,7 @@ function applyTopologyVisual(entry){
     // repõe o estilo normal (categórico, se aplicável, senão a cor por defeito)
     const schema = getLayerSchema(entry.layerId);
     styleLayerByClass(entry);
-    if(!schema || schema.mode !== 'atributos'){ styleLayerDefault(entry.layer); }
+    if(!schema || schema.mode !== 'atributos'){ styleLayerDefault(entry.layer, entry.layerId); }
   }
 }
 
@@ -4003,12 +4424,15 @@ function dataGisMarkerIcon(color){
   });
 }
 
-function styleLayerDefault(layer){
+function styleLayerDefault(layer, layerId){
+  const schema = layerId != null ? getLayerSchema(layerId) : null;
+  const color = (schema && schema.baseColor) || DEFAULT_COLOR;
+  const fillOpacity = ((schema && schema.opacity != null) ? schema.opacity : DEFAULT_OPACITY) / 100;
   if(layer.setIcon){
     // marker: usa o marcador circular DataGis em vez do pin azul padrão
-    layer.setIcon(dataGisMarkerIcon(DEFAULT_COLOR));
+    layer.setIcon(dataGisMarkerIcon(color));
   } else if(layer.setStyle){
-    layer.setStyle({color: DEFAULT_COLOR, weight:3, fillColor: DEFAULT_COLOR, fillOpacity:.35});
+    layer.setStyle({color, weight:3, fillColor: color, fillOpacity});
   }
 }
 
@@ -4017,14 +4441,15 @@ function styleLayerByClass(entry){
   if(!schema || schema.mode !== 'atributos') return;
   const catAttr = schema.attributes.find(a=>a.type==='categorico' && a.name === schema.colorAttr)
     || schema.attributes.find(a=>a.type==='categorico');
-  if(!catAttr){ styleLayerDefault(entry.layer); return; }
+  if(!catAttr){ styleLayerDefault(entry.layer, entry.layerId); return; }
   const val = entry.props[catAttr.name];
   const cls = catAttr.classes.find(c=>c.name === val);
-  const color = cls ? cls.color : DEFAULT_COLOR;
+  const color = cls ? cls.color : ((schema.baseColor) || DEFAULT_COLOR);
+  const fillOpacity = ((schema && schema.opacity != null) ? schema.opacity : DEFAULT_OPACITY) / 100;
   if(entry.layer.setIcon){
     entry.layer.setIcon(dataGisMarkerIcon(color));
   } else if(entry.layer.setStyle){
-    entry.layer.setStyle({color, fillColor:color, fillOpacity:.4, weight:3});
+    entry.layer.setStyle({color, fillColor:color, fillOpacity, weight:3});
   }
 }
 
@@ -4095,7 +4520,6 @@ function refreshFeatList(){
 function updateFeatSummary(){
   const emptyMsg = document.getElementById('empty-msg');
   const shapePanel = document.getElementById('shape-panel');
-  const tableBtn = document.getElementById('btn-open-attr-table');
 
   if(!config.geometryType && layers.length === 0){
     emptyMsg.style.display = '';
@@ -4105,8 +4529,6 @@ function updateFeatSummary(){
     shapePanel.classList.remove('hidden');
     renderLayersPanel();
   }
-
-  tableBtn.disabled = featuresData.size === 0;
 
   const tableOverlay = document.getElementById('attr-table-overlay');
   if(tableOverlay && !tableOverlay.classList.contains('hidden')){
@@ -4118,7 +4540,7 @@ function updateFeatSummary(){
    quer seja a camada ativa (vive em "config") quer seja uma já arquivada em "layers" */
 function getLayerSchema(layerId){
   if(layerId === activeLayerId){
-    return {name: config.shapeName, geometryType: config.geometryType, mode: config.mode, attributes: config.attributes, colorAttr: config.colorAttr};
+    return {name: config.shapeName, geometryType: config.geometryType, mode: config.mode, attributes: config.attributes, colorAttr: config.colorAttr, baseColor: config.baseColor, opacity: config.opacity};
   }
   return layers.find(l=>l.id === layerId) || null;
 }
@@ -4129,13 +4551,64 @@ function countLayerFeatures(layerId){
   return n;
 }
 
+/* ---------- empilhamento (z-order) das camadas no mapa ----------
+   Cada camada tem o seu próprio "pane" do Leaflet (uma camada de DOM dedicada);
+   mudar a ordem no painel é só reatribuir o z-index de cada pane — não é preciso
+   tocar em cada geometria individualmente. Funciona da mesma forma para pontos
+   (marcadores), linhas e polígonos, porque todos passam a viver no pane da sua
+   própria camada em vez dos panes genéricos do Leaflet. */
+function ensureLayerPane(id){
+  const name = 'camada-pane-' + id;
+  if(!layerPanes.has(id)){
+    const pane = map.createPane(name);
+    pane.style.pointerEvents = 'auto'; // panes criados à mão não herdam isto por defeito
+    layerPanes.set(id, name);
+    if(!layerOrder.includes(id)) layerOrder.unshift(id); // nova camada entra no topo
+    applyLayerZOrder();
+  }
+  return layerPanes.get(id);
+}
+
+/* garante que uma geometria já criada (que o Geoman coloca sempre nos panes
+   genéricos por defeito) passa a viver no pane da sua camada. */
+function assignLayerPane(layer, layerId){
+  const paneName = ensureLayerPane(layerId);
+  if(layer.options.pane === paneName) return;
+  const wasOnMap = !!layer._map;
+  if(wasOnMap) map.removeLayer(layer);
+  layer.options.pane = paneName;
+  if(wasOnMap) map.addLayer(layer);
+}
+
+/* aplica a ordem atual de "layerOrder" ao mapa, ajustando o z-index de cada
+   pane (índice 0 em layerOrder = topo do painel = mais à frente no mapa). */
+function applyLayerZOrder(){
+  if(!map) return;
+  const total = layerOrder.length;
+  layerOrder.forEach((id, idx)=>{
+    const paneName = layerPanes.get(id);
+    if(!paneName) return;
+    const pane = map.getPane(paneName);
+    if(pane) pane.style.zIndex = 450 + (total - idx);
+  });
+}
+
+let draggedLayerRowId = null;
+
 /* painel: uma linha por camada (arquivadas + a ativa, se já tiver tipo de geometria definido),
-   cada uma com interruptor de visibilidade e menu de contexto (botão direito). */
+   cada uma com interruptor de visibilidade, menu de contexto (botão direito) e arrastar
+   para reordenar — a ordem das linhas no painel passa a definir qual camada fica por
+   cima/por baixo das outras no mapa. */
 function renderLayersPanel(){
   const list = document.getElementById('layers-list');
-  const allIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []).sort((a,b)=>a-b);
+  const allIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
 
-  list.innerHTML = allIds.map(id=>{
+  // mantém a ordem já definida pelo utilizador (layerOrder) e acrescenta, no topo,
+  // quaisquer camadas novas que ainda não lá estejam.
+  allIds.forEach(id=>{ if(!layerOrder.includes(id)) layerOrder.unshift(id); });
+  layerOrder = layerOrder.filter(id=>allIds.includes(id));
+
+  list.innerHTML = layerOrder.map(id=>{
     const schema = getLayerSchema(id);
     if(!schema) return '';
     const typeLabel = GEOM_TYPE_LABELS[schema.geometryType] || '—';
@@ -4143,7 +4616,8 @@ function renderLayersPanel(){
     const isActive = id === activeLayerId;
     const count = countLayerFeatures(id);
     return `
-      <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" title="Clica para tornar ativa (editável) · botão direito para mais opções">
+      <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" draggable="true" title="Arrasta para reordenar · clica para tornar ativa (editável) · botão direito para mais opções">
+        <span class="layer-drag-handle" title="Arrastar para reordenar">⠿</span>
         <button type="button" class="layer-eye-btn" data-eye title="${visible ? 'Ocultar camada' : 'Mostrar camada'}">${visible ? '👁' : '🙈'}</button>
         <span class="layer-name">${escapeHtml(schema.name || 'Shape sem nome')} <span style="color:var(--stone); font-weight:400;">(${count})</span></span>
         <span class="shape-geom-badge">${typeLabel}</span>
@@ -4164,9 +4638,58 @@ function renderLayersPanel(){
       e.preventDefault();
       openLayerContextMenu(e.clientX, e.clientY, id);
     });
+
+    row.addEventListener('dragstart', (e)=>{
+      draggedLayerRowId = id;
+      row.classList.add('is-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try{ e.dataTransfer.setData('text/plain', String(id)); }catch(err){ /* alguns browsers exigem isto mesmo sem uso */ }
+    });
+    row.addEventListener('dragend', ()=>{
+      draggedLayerRowId = null;
+      list.querySelectorAll('.layer-row').forEach(r=>r.classList.remove('is-dragging','drag-over-top','drag-over-bottom'));
+    });
+    row.addEventListener('dragover', (e)=>{
+      if(draggedLayerRowId === null || draggedLayerRowId === id) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const rect = row.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      row.classList.toggle('drag-over-top', before);
+      row.classList.toggle('drag-over-bottom', !before);
+    });
+    row.addEventListener('dragleave', ()=>{
+      row.classList.remove('drag-over-top','drag-over-bottom');
+    });
+    row.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      const targetId = id;
+      row.classList.remove('drag-over-top','drag-over-bottom');
+      if(draggedLayerRowId === null || draggedLayerRowId === targetId) return;
+      const rect = row.getBoundingClientRect();
+      const before = (e.clientY - rect.top) < rect.height / 2;
+      reorderLayer(draggedLayerRowId, targetId, before);
+    });
   });
 
   renderSymbologyPanel();
+}
+
+/* move a camada "draggedId" para junto de "targetId" na lista (antes ou depois),
+   atualiza o painel e reflete de imediato a nova ordem no mapa. */
+function reorderLayer(draggedId, targetId, insertBefore){
+  const from = layerOrder.indexOf(draggedId);
+  if(from === -1) return;
+  layerOrder.splice(from, 1);
+  let to = layerOrder.indexOf(targetId);
+  if(to === -1){ layerOrder.push(draggedId); }
+  else{
+    if(!insertBefore) to += 1;
+    layerOrder.splice(to, 0, draggedId);
+  }
+  applyLayerZOrder();
+  renderLayersPanel();
+  markProjectDirty();
 }
 
 /* torna a camada clicada a única editável: podes criar geometrias novas nela e
@@ -4185,7 +4708,9 @@ function switchActiveLayer(id){
         geometryType: config.geometryType,
         mode: config.mode,
         attributes: config.attributes,
-        colorAttr: config.colorAttr
+        colorAttr: config.colorAttr,
+        baseColor: config.baseColor,
+        opacity: config.opacity
       });
     }
 
@@ -4197,6 +4722,8 @@ function switchActiveLayer(id){
     config.attributes = rec.attributes;
     config.geometryType = rec.geometryType;
     config.colorAttr = rec.colorAttr;
+    config.baseColor = rec.baseColor;
+    config.opacity = rec.opacity != null ? rec.opacity : null;
 
     applyGeometryConfig();
     renderLayersPanel();
@@ -4223,8 +4750,13 @@ function toggleLayerVisibility(layerId){
   layerVisible.set(layerId, nextVisible);
   featuresData.forEach(entry=>{
     if(entry.layerId !== layerId) return;
-    if(nextVisible) drawnGroup.addLayer(entry.layer);
-    else drawnGroup.removeLayer(entry.layer);
+    if(nextVisible){
+      drawnGroup.addLayer(entry.layer);
+      if(entry.showMeasures) renderPolygonMeasures(entry);
+    } else {
+      drawnGroup.removeLayer(entry.layer);
+      clearPolygonMeasures(entry);
+    }
   });
   renderLayersPanel();
 }
@@ -4237,6 +4769,7 @@ function removeLayerEntirely(layerId){
   featuresData.forEach((entry, key)=>{
     if(entry.layerId !== layerId) return;
     if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
+    clearPolygonMeasures(entry);
     drawnGroup.removeLayer(entry.layer);
     featuresData.delete(key);
   });
@@ -4250,8 +4783,14 @@ function removeLayerEntirely(layerId){
     config.attributes = [];
     config.geometryType = null;
     config.colorAttr = null;
+    config.baseColor = null;
+    config.opacity = null;
   }
   layerVisible.delete(layerId);
+  layerOrder = layerOrder.filter(id=>id !== layerId);
+  const paneName = layerPanes.get(layerId);
+  if(paneName && map.getPane(paneName)) map.getPane(paneName).remove();
+  layerPanes.delete(layerId);
 
   markProjectDirty();
   refreshFeatList();
@@ -4280,6 +4819,111 @@ function closeLayerContextMenu(){
 document.addEventListener('click', closeLayerContextMenu);
 document.addEventListener('contextmenu', (e)=>{
   if(!e.target.closest('.layer-row')) closeLayerContextMenu();
+});
+
+/* ---------- menu de contexto (botão direito) numa geometria desenhada no mapa ---------- */
+let ctxMenuFeatureEntry = null;
+function bindFeatureContextMenu(entry){
+  entry.layer.on('contextmenu', (e)=>{
+    L.DomEvent.stop(e.originalEvent); // impede o menu nativo do browser e a propagação para o mapa/documento
+    openFeatureContextMenu(e.originalEvent.clientX, e.originalEvent.clientY, entry);
+  });
+}
+function openFeatureContextMenu(x, y, entry){
+  closeLayerContextMenu();
+  ctxMenuFeatureEntry = entry;
+  const menu = document.getElementById('feature-context-menu');
+  const measuresBtn = document.getElementById('feature-ctx-measures');
+  // por agora só as geometrias de polígono têm a opção de medidas dos lados
+  measuresBtn.style.display = entry.geomType === 'Polygon' ? 'flex' : 'none';
+  measuresBtn.classList.toggle('is-active', !!entry.showMeasures);
+  menu.classList.remove('hidden');
+  menu.style.left = '0px';
+  menu.style.top = '0px';
+  const rect = menu.getBoundingClientRect();
+  const maxLeft = window.innerWidth - rect.width - 8;
+  const maxTop = window.innerHeight - rect.height - 8;
+  menu.style.left = Math.min(x, maxLeft) + 'px';
+  menu.style.top = Math.min(y, maxTop) + 'px';
+}
+function closeFeatureContextMenu(){
+  ctxMenuFeatureEntry = null;
+  document.getElementById('feature-context-menu').classList.add('hidden');
+}
+document.addEventListener('click', closeFeatureContextMenu);
+document.addEventListener('contextmenu', (e)=>{
+  if(!e.target.closest('#feature-context-menu')) closeFeatureContextMenu();
+});
+document.getElementById('feature-ctx-measures').addEventListener('click', (e)=>{
+  e.stopPropagation();
+  if(!ctxMenuFeatureEntry) return;
+  togglePolygonMeasures(ctxMenuFeatureEntry);
+  closeFeatureContextMenu();
+});
+
+/* separa umas L.LatLng[] potencialmente aninhadas (Polygon com buracos, ou MultiPolygon)
+   em várias listas simples de vértices — um "anel" por lista */
+function flattenPolygonRings(latlngs){
+  if(!Array.isArray(latlngs) || latlngs.length === 0) return [];
+  if(latlngs[0] instanceof L.LatLng) return [latlngs];
+  let rings = [];
+  latlngs.forEach(item=>{
+    if(Array.isArray(item) && item.length && item[0] instanceof L.LatLng) rings.push(item);
+    else if(Array.isArray(item)) rings = rings.concat(flattenPolygonRings(item));
+  });
+  return rings;
+}
+
+/* desenha, tipo esquiço de engenharia, o comprimento (em metros) de cada lado do polígono */
+function renderPolygonMeasures(entry){
+  clearPolygonMeasures(entry);
+  if(!entry.showMeasures) return;
+  const rings = flattenPolygonRings(entry.layer.getLatLngs());
+  entry.measureTooltips = [];
+  rings.forEach(ring=>{
+    for(let i=0; i<ring.length; i++){
+      const a = ring[i], b = ring[(i+1) % ring.length];
+      if(a.equals(b)) continue;
+      const distM = a.distanceTo(b);
+      if(distM < 0.05) continue; // ignora lados degenerados (vértices sobrepostos)
+      const mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
+      const label = distM < 1000 ? Math.round(distM) + ' m' : (distM / 1000).toFixed(2) + ' km';
+      const tooltip = L.tooltip({
+        permanent: true, direction: 'center', className: 'edge-measure-tooltip', interactive: false
+      }).setLatLng(mid).setContent(label);
+      measuresGroup.addLayer(tooltip);
+      entry.measureTooltips.push(tooltip);
+    }
+  });
+}
+function clearPolygonMeasures(entry){
+  if(entry.measureTooltips && entry.measureTooltips.length){
+    entry.measureTooltips.forEach(t=> measuresGroup.removeLayer(t));
+  }
+  entry.measureTooltips = [];
+}
+function togglePolygonMeasures(entry){
+  entry.showMeasures = !entry.showMeasures;
+  renderPolygonMeasures(entry);
+}
+
+/* dá zoom/enquadra o mapa em todas as geometrias de uma camada */
+function zoomToLayer(layerId){
+  const group = L.featureGroup();
+  featuresData.forEach(entry=>{
+    if(entry.layerId === layerId) group.addLayer(entry.layer);
+  });
+  if(group.getLayers().length === 0){
+    alert('Esta camada ainda não tem geometrias para dar zoom.');
+    return;
+  }
+  try{ map.fitBounds(group.getBounds(), {padding:[40,40], maxZoom:18}); }
+  catch(err){ /* bounds inválidos, ignora em segurança */ }
+}
+
+document.getElementById('layer-ctx-zoom').addEventListener('click', ()=>{
+  if(ctxMenuLayerId === null) return;
+  zoomToLayer(ctxMenuLayerId);
 });
 document.getElementById('layer-ctx-open-table').addEventListener('click', ()=>{
   if(ctxMenuLayerId === null) return;
@@ -4323,12 +4967,69 @@ function setLayerColorAttr(layerId, attrName){
   });
 }
 
+/* define a cor única de uma camada (usada quando não há simbologia categórica ativa) */
+function setLayerBaseColor(layerId, color){
+  if(layerId === activeLayerId){
+    config.baseColor = color;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.baseColor = color;
+  }
+  const schema = getLayerSchema(layerId);
+  const catAttr = schema && schema.mode === 'atributos'
+    ? (schema.attributes.find(a=>a.type==='categorico' && a.name === schema.colorAttr) || schema.attributes.find(a=>a.type==='categorico'))
+    : null;
+  if(catAttr) return; // já há simbologia categórica ativa — a cor base não é usada no mapa
+  featuresData.forEach(entry=>{
+    if(entry.layerId !== layerId) return;
+    styleLayerDefault(entry.layer, layerId);
+    if(entry.hasOverlap) applyTopologyVisual(entry);
+  });
+  markProjectDirty();
+}
+
+/* define a transparência (0-100) do preenchimento de uma camada */
+function setLayerOpacity(layerId, opacityPct){
+  const clamped = Math.max(0, Math.min(100, Number(opacityPct)));
+  if(layerId === activeLayerId){
+    config.opacity = clamped;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.opacity = clamped;
+  }
+  featuresData.forEach(entry=>{
+    if(entry.layerId !== layerId) return;
+    const schema = getLayerSchema(layerId);
+    if(schema && schema.mode === 'atributos') styleLayerByClass(entry);
+    else styleLayerDefault(entry.layer, layerId);
+    if(entry.hasOverlap) applyTopologyVisual(entry);
+  });
+  markProjectDirty();
+}
+
+/* atualiza a cor de uma classe específica de um atributo categórico */
+function setClassColor(layerId, attrName, className, color){
+  const schema = getLayerSchema(layerId);
+  if(!schema) return;
+  const attr = schema.attributes.find(a=>a.name === attrName && a.type === 'categorico');
+  if(!attr) return;
+  const cls = attr.classes.find(c=>c.name === className);
+  if(!cls) return;
+  cls.color = color;
+  featuresData.forEach(entry=>{
+    if(entry.layerId !== layerId) return;
+    styleLayerByClass(entry);
+    if(entry.hasOverlap) applyTopologyVisual(entry);
+  });
+  markProjectDirty();
+}
+
 /* painel de simbologia: aberto sob pedido (opção "Simbologia" do menu de contexto),
-   para a camada escolhida — deixou de aparecer sempre por defeito. */
+   para a camada escolhida — deixou de aparecer sempre por defeito. Toda a camada
+   pode ter a sua cor mudada, com ou sem atributos; se tiver um atributo categórico,
+   mostra-se também um seletor para escolher qual usar e as cores de cada classe. */
 function renderSymbologyPanel(){
   const row = document.getElementById('shape-color-attr-row');
-  const select = document.getElementById('shape-color-attr-select');
-  const legend = document.getElementById('shape-color-legend');
   const nameLabel = document.getElementById('symbology-layer-name');
   const body = document.getElementById('symbology-body');
 
@@ -4350,16 +5051,48 @@ function renderSymbologyPanel(){
   const catAttrs = schema.mode === 'atributos' ? schema.attributes.filter(a=>a.type==='categorico') : [];
 
   if(catAttrs.length === 0){
-    body.innerHTML = '<p class="sub" style="margin:0;">Esta camada não tem atributos categóricos para simbologizar.</p>';
+    // sem atributos categóricos (camada simples, ou com atributos mas nenhum categórico):
+    // só há uma cor única a definir para toda a camada.
+    const currentOpacity = schema.opacity != null ? schema.opacity : DEFAULT_OPACITY;
+    body.innerHTML = `
+      <label for="shape-base-color-input">Cor da camada</label>
+      <div class="symbology-color-row">
+        <input type="color" id="shape-base-color-input" value="${escapeHtml(schema.baseColor || DEFAULT_COLOR)}">
+        <span class="hint" style="margin:0;">Aplicada a todas as geometrias desta camada.</span>
+      </div>
+      <label for="shape-opacity-input" style="margin-top:10px;">Transparência do preenchimento</label>
+      <div class="symbology-color-row">
+        <input type="range" id="shape-opacity-input" min="0" max="100" step="1" value="${currentOpacity}" style="flex:1;">
+        <span class="hint" id="shape-opacity-value" style="margin:0; min-width:36px; text-align:right;">${currentOpacity}%</span>
+      </div>`;
+    document.getElementById('shape-base-color-input').addEventListener('input', (e)=>{
+      setLayerBaseColor(symbologyLayerId, e.target.value);
+    });
+    document.getElementById('shape-opacity-input').addEventListener('input', (e)=>{
+      document.getElementById('shape-opacity-value').textContent = e.target.value + '%';
+      setLayerOpacity(symbologyLayerId, e.target.value);
+    });
     return;
   }
+
+  // com atributo(s) categórico(s): escolher qual usar para colorir + editar a cor de cada classe.
+  const currentOpacity = schema.opacity != null ? schema.opacity : DEFAULT_OPACITY;
   body.innerHTML = `
     <label for="shape-color-attr-select">Colorir por</label>
     <select id="shape-color-attr-select"></select>
-    <ul class="shape-color-legend" id="shape-color-legend"></ul>`;
+    <ul class="shape-color-legend" id="shape-color-legend"></ul>
+    <label for="shape-opacity-input" style="margin-top:10px;">Transparência do preenchimento</label>
+    <div class="symbology-color-row">
+      <input type="range" id="shape-opacity-input" min="0" max="100" step="1" value="${currentOpacity}" style="flex:1;">
+      <span class="hint" id="shape-opacity-value" style="margin:0; min-width:36px; text-align:right;">${currentOpacity}%</span>
+    </div>`;
 
   const freshSelect = document.getElementById('shape-color-attr-select');
   const freshLegend = document.getElementById('shape-color-legend');
+  document.getElementById('shape-opacity-input').addEventListener('input', (e)=>{
+    document.getElementById('shape-opacity-value').textContent = e.target.value + '%';
+    setLayerOpacity(symbologyLayerId, e.target.value);
+  });
 
   if(!schema.colorAttr || !catAttrs.some(a=>a.name === schema.colorAttr)){
     setLayerColorAttr(symbologyLayerId, catAttrs[0].name);
@@ -4371,9 +5104,16 @@ function renderSymbologyPanel(){
   ).join('');
 
   const activeAttr = catAttrs.find(a=>a.name === currentColorAttr);
-  freshLegend.innerHTML = activeAttr.classes.map(c=>`
-    <li><span class="swatch" style="background:${escapeHtml(c.color)};"></span>${escapeHtml(c.name)}</li>
+  freshLegend.innerHTML = activeAttr.classes.map((c, ci)=>`
+    <li><input type="color" class="swatch-input" value="${escapeHtml(c.color)}" data-class-idx="${ci}">${escapeHtml(c.name)}</li>
   `).join('');
+
+  freshLegend.querySelectorAll('[data-class-idx]').forEach(inp=>{
+    inp.addEventListener('input', (e)=>{
+      const cls = activeAttr.classes[Number(inp.dataset.classIdx)];
+      setClassColor(symbologyLayerId, currentColorAttr, cls.name, e.target.value);
+    });
+  });
 
   freshSelect.addEventListener('change', (e)=>{
     setLayerColorAttr(symbologyLayerId, e.target.value);
@@ -4458,10 +5198,6 @@ function renderAttrTable(layerId){
   });
 }
 
-document.getElementById('btn-open-attr-table').addEventListener('click', ()=>{
-  renderAttrTable(activeLayerId);
-  document.getElementById('attr-table-overlay').classList.remove('hidden');
-});
 document.getElementById('attr-table-close').addEventListener('click', ()=>{
   document.getElementById('attr-table-overlay').classList.add('hidden');
 });
@@ -4693,6 +5429,7 @@ async function loadTeamGeometries(resumeData){
       return;
     }
     drawnGroup.clearLayers();
+    measuresGroup.clearLayers();
     featuresData.clear();
     featureCounter = 0;
     importGeoJSONFeatures(geojson);
@@ -4824,6 +5561,7 @@ async function syncTeamProject(){
 
     // 4. atualizar o mapa local com o resultado já unido (pode incluir geometrias de outra pessoa)
     drawnGroup.clearLayers();
+    measuresGroup.clearLayers();
     featuresData.clear();
     featureCounter = 0;
     importGeoJSONFeatures(merged);
@@ -4856,6 +5594,7 @@ async function downloadTeamProject(){
   try{
     const geojson = await fetchTeamProjectGeoJSON();
     drawnGroup.clearLayers();
+    measuresGroup.clearLayers();
     featuresData.clear();
     featureCounter = 0;
     importGeoJSONFeatures(geojson);
@@ -4923,6 +5662,31 @@ function initTeamUI(){
 }
 
 const WGS84_WKT = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]';
+const PTTM06_WKT = 'PROJCS["ETRS89 / Portugal TM06",GEOGCS["ETRS89",DATUM["European_Terrestrial_Reference_System_1989",SPHEROID["GRS 1980",6378137,298.257222101]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",39.66825833333333],PARAMETER["central_meridian",-8.133108333333334],PARAMETER["scale_factor",1],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1]]';
+
+/* reprojeta recursivamente um array de coordenadas GeoJSON (WGS84 -> destino) */
+function reprojectCoords(coords, fromCrs, toCrs){
+  if(typeof coords[0] === 'number'){
+    const [x, y] = proj4(fromCrs, toCrs, [coords[0], coords[1]]);
+    return coords.length > 2 ? [x, y, coords[2]] : [x, y];
+  }
+  return coords.map(c => reprojectCoords(c, fromCrs, toCrs));
+}
+
+/* devolve uma cópia da FeatureCollection com as geometrias reprojetadas de WGS84
+   para o CRS pedido (usado apenas na exportação — o projeto continua sempre
+   guardado internamente em WGS84/EPSG:4326). */
+function reprojectGeoJSON(gj, toCrs){
+  if(toCrs === 'EPSG:4326') return gj;
+  return {
+    ...gj,
+    crs: { type:'name', properties:{ name: 'urn:ogc:def:crs:' + toCrs.replace(':', '::') } },
+    features: gj.features.map(f => ({
+      ...f,
+      geometry: f.geometry ? { ...f.geometry, coordinates: reprojectCoords(f.geometry.coordinates, 'EPSG:4326', toCrs) } : f.geometry
+    }))
+  };
+}
 
 function downloadGeoJSON(gj, filename){
   const blob = new Blob([JSON.stringify(gj, null, 2)], {type:'application/geo+json'});
@@ -4933,20 +5697,127 @@ function downloadGeoJSON(gj, filename){
   URL.revokeObjectURL(url);
 }
 
-async function exportShapefileZip(gj, folderName, btn){
+/* ------------------------------------------------------------
+   Correção de winding order para Shapefile.
+   GeoJSON (RFC 7946) exige anel exterior CCW e buracos CW.
+   O formato Shapefile (ESRI) exige o oposto: anel exterior CW e
+   buracos CCW. Se isto não for garantido antes de escrever o
+   .shp, o ArcGIS pode interpretar o anel exterior como um buraco
+   e o polígono não é desenhado.
+   ------------------------------------------------------------ */
+function ringSignedArea(ring){
+  let area = 0;
+  for(let i=0; i<ring.length; i++){
+    const [x1,y1] = ring[i];
+    const [x2,y2] = ring[(i+1) % ring.length];
+    area += (x1*y2 - x2*y1);
+  }
+  return area / 2;
+}
+
+function rewindRing(ring, clockwise){
+  const isClockwise = ringSignedArea(ring) < 0;
+  if(isClockwise === clockwise) return ring;
+  return ring.slice().reverse();
+}
+
+function rewindPolygonCoords(coords){
+  // coords[0] = anel exterior -> deve ficar CW para Shapefile
+  // coords[1..] = buracos -> devem ficar CCW para Shapefile
+  return coords.map((ring, i) => rewindRing(ring, i === 0));
+}
+
+function rewindGeometryForShapefile(geom){
+  if(!geom) return geom;
+  if(geom.type === 'Polygon'){
+    return { ...geom, coordinates: rewindPolygonCoords(geom.coordinates) };
+  }
+  if(geom.type === 'MultiPolygon'){
+    return { ...geom, coordinates: geom.coordinates.map(rewindPolygonCoords) };
+  }
+  return geom;
+}
+
+function rewindGeoJSONForShapefile(gj){
+  return {
+    ...gj,
+    features: gj.features.map(f => ({
+      ...f,
+      geometry: rewindGeometryForShapefile(f.geometry)
+    }))
+  };
+}
+
+async function exportShapefileZip(gj, folderName, btn, prjWkt){
   const originalText = btn ? btn.textContent : '';
   if(btn){ btn.disabled = true; btn.textContent = '⏳ A gerar…'; }
   try{
     if(typeof shpwrite === 'undefined'){
       throw new Error('A biblioteca shp-write não carregou (verifica a ligação à internet ou bloqueadores de scripts/anúncios).');
     }
-    const zipBlob = await shpwrite.zip(gj, {
-      folder: folderName,
-      types: { point:'pontos', polygon:'poligonos', polyline:'linhas' },
-      prj: WGS84_WKT,
-      outputType: 'blob'
-    });
-    const url = URL.createObjectURL(zipBlob);
+    if(typeof JSZip === 'undefined'){
+      throw new Error('A biblioteca JSZip não carregou.');
+    }
+    const gjForShp = rewindGeoJSONForShapefile(gj);
+    const prjText = prjWkt || WGS84_WKT;
+
+    /* CORREÇÃO DE BUG DA BIBLIOTECA shp-write@0.4.3:
+       o justType('LineString'/'MultiLineString', 'POLYLINE') em geojson.js
+       embrulha SEMPRE as geometrias numa camada extra de array, ao contrário
+       de POLYGON/POINT. Quando shpwrite.zip() combina os grupos "line" e
+       "multiline" (via flatMap em zip.js) e um deles está vazio — o caso
+       normal, já que desenhamos LineString simples — sobra uma entrada
+       fantasma [] que faz crashar poly.js:parts(). Por isso as linhas nunca
+       chegavam a ser escritas. Contorna-se separando as linhas do resto e
+       escrevendo-as com shpwrite.write() de baixo nível, que não passa por
+       esse caminho defeituoso. */
+    const lineFeatures  = gjForShp.features.filter(f => f.geometry && (f.geometry.type === 'LineString' || f.geometry.type === 'MultiLineString'));
+    const otherFeatures = gjForShp.features.filter(f => !(f.geometry && (f.geometry.type === 'LineString' || f.geometry.type === 'MultiLineString')));
+
+    const zip = new JSZip();
+
+    if(otherFeatures.length){
+      const otherGj = { ...gjForShp, features: otherFeatures };
+      const partialBlob = await shpwrite.zip(otherGj, {
+        folder: folderName,
+        types: { point:'pontos', polygon:'poligonos', polyline:'linhas' },
+        prj: prjText,
+        outputType: 'blob'
+      });
+      const partialZip = await JSZip.loadAsync(partialBlob);
+      for(const [name, entry] of Object.entries(partialZip.files)){
+        if(entry.dir) continue;
+        const data = await entry.async('uint8array');
+        // corrige também aqui o .prj (o bundle da CDN ignora options.prj)
+        zip.file(name, name.toLowerCase().endsWith('.prj') ? prjText : data, { binary: !name.toLowerCase().endsWith('.prj') });
+      }
+    }
+
+    if(lineFeatures.length){
+      const rows = lineFeatures.map(f => f.properties || {});
+      /* IMPORTANTE: a função interna de escrita da shp-write trata "coords.length"
+         como "número de partes" — o que só é correto se coords já for uma lista
+         de partes (como um MultiLineString, ou como um Polygon em GeoJSON, cujos
+         anéis já vêm nesse formato). Um LineString simples vem em GeoJSON como
+         uma lista plana de pontos, sem esse nível extra, o que fazia a biblioteca
+         confundir "número de pontos" com "número de partes" e gravar a linha
+         como várias partes degeneradas (por isso não aparecia no ArcGIS mesmo
+         depois de contornar o crash anterior). Por isso embrulha-se o LineString
+         como se fosse um MultiLineString de uma única parte antes de escrever. */
+      const geometries = lineFeatures.map(f => f.geometry.type === 'LineString' ? [f.geometry.coordinates] : f.geometry.coordinates);
+      const lineFiles = await new Promise((resolve, reject) => {
+        shpwrite.write(rows, 'POLYLINE', geometries, (err, files) => err ? reject(err) : resolve(files));
+      });
+      const base = folderName + '/linhas';
+      zip.file(base + '.shp', lineFiles.shp.buffer, { binary: true });
+      zip.file(base + '.shx', lineFiles.shx.buffer, { binary: true });
+      zip.file(base + '.dbf', lineFiles.dbf.buffer, { binary: true });
+      zip.file(base + '.prj', prjText);
+    }
+
+    const finalBlob = await zip.generateAsync({ type: 'blob' });
+
+    const url = URL.createObjectURL(finalBlob);
     const a = document.createElement('a');
     a.href = url; a.download = folderName + '.zip';
     document.body.appendChild(a);
@@ -5070,6 +5941,8 @@ document.getElementById('export-menu-download').addEventListener('click', async 
   const checkedIds = Array.from(document.querySelectorAll('#export-layer-list input[type=checkbox]:checked')).map(cb=>cb.dataset.layerId);
   if(checkedIds.length === 0){ alert('Seleciona pelo menos uma camada para download.'); return; }
   const format = document.querySelector('input[name="export-format"]:checked').value;
+  const crs = document.getElementById('export-crs-select').value; // 'EPSG:3763' (predefinido) ou 'EPSG:4326'
+  const prjWkt = crs === 'EPSG:3763' ? PTTM06_WKT : WGS84_WKT;
 
   const downloadBtn = document.getElementById('export-menu-download');
   const originalText = downloadBtn.textContent;
@@ -5078,12 +5951,12 @@ document.getElementById('export-menu-download').addEventListener('click', async 
   for(const id of checkedIds){
     const layer = layers.find(l=>l.id === id);
     if(!layer) continue;
-    const gj = layer.getGeoJSON();
+    const gj = reprojectGeoJSON(layer.getGeoJSON(), crs);
     if(format === 'geojson'){
       downloadGeoJSON(gj, layer.filename + '.geojson');
     } else {
       downloadBtn.textContent = `⏳ A gerar ${layer.label}…`;
-      await exportShapefileZip(gj, layer.filename, null);
+      await exportShapefileZip(gj, layer.filename, null, prjWkt);
     }
   }
 
@@ -5294,12 +6167,12 @@ document.querySelectorAll('.tool-drawer-header[data-drawer-toggle]').forEach(btn
 });
 
 function initAnalysisMap(){
-  analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false});
+  analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false, maxZoom: 24});
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom:19
+    maxZoom:24, maxNativeZoom:19
   }).addTo(analysisMap);
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom:19
+    maxZoom:24, maxNativeZoom:19
   }).addTo(analysisMap);
 
   analysisSourceLayer = L.geoJSON(null, {
@@ -5355,10 +6228,12 @@ function initAnalysisMap(){
   });
   document.getElementById('btn-export-buffer-shp').addEventListener('click', async ()=>{
     if(lastBufferFeatures.length === 0){ alert('Gera primeiro um buffer para poderes exportar.'); return; }
+    const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastBufferFeatures}, 'EPSG:3763');
     await exportShapefileZip(
-      {type:'FeatureCollection', features:lastBufferFeatures},
+      gj,
       'engenh_buffer',
-      document.getElementById('btn-export-buffer-shp')
+      document.getElementById('btn-export-buffer-shp'),
+      PTTM06_WKT
     );
   });
 
@@ -5375,10 +6250,12 @@ function initAnalysisMap(){
   });
   document.getElementById('btn-export-intersect-shp').addEventListener('click', async ()=>{
     if(lastIntersectFeatures.length === 0){ alert('Gera primeiro uma interseção para poderes exportar.'); return; }
+    const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastIntersectFeatures}, 'EPSG:3763');
     await exportShapefileZip(
-      {type:'FeatureCollection', features:lastIntersectFeatures},
+      gj,
       'engenh_intersect',
-      document.getElementById('btn-export-intersect-shp')
+      document.getElementById('btn-export-intersect-shp'),
+      PTTM06_WKT
     );
   });
 
@@ -5395,10 +6272,12 @@ function initAnalysisMap(){
   });
   document.getElementById('btn-export-union-shp').addEventListener('click', async ()=>{
     if(lastUnionFeatures.length === 0){ alert('Gera primeiro uma união para poderes exportar.'); return; }
+    const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastUnionFeatures}, 'EPSG:3763');
     await exportShapefileZip(
-      {type:'FeatureCollection', features:lastUnionFeatures},
+      gj,
       'engenh_union',
-      document.getElementById('btn-export-union-shp')
+      document.getElementById('btn-export-union-shp'),
+      PTTM06_WKT
     );
   });
 
@@ -5415,10 +6294,12 @@ function initAnalysisMap(){
   });
   document.getElementById('btn-export-difference-shp').addEventListener('click', async ()=>{
     if(lastDifferenceFeatures.length === 0){ alert('Gera primeiro uma diferença para poderes exportar.'); return; }
+    const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastDifferenceFeatures}, 'EPSG:3763');
     await exportShapefileZip(
-      {type:'FeatureCollection', features:lastDifferenceFeatures},
+      gj,
       'engenh_difference',
-      document.getElementById('btn-export-difference-shp')
+      document.getElementById('btn-export-difference-shp'),
+      PTTM06_WKT
     );
   });
 }
