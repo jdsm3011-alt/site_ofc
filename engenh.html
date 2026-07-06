@@ -4041,7 +4041,7 @@ function initMap(){
   /* ---------- troca automática Satélite ⇄ Portugal HD (DGT) por nível de zoom ---------- */
   let autoResolutionEnabled = true;
   const PT_CONTINENTAL_BOUNDS = L.latLngBounds([36.7, -9.6], [42.3, -6.0]);
-  const AUTO_HD_MIN_ZOOM = 14;
+  const AUTO_HD_MIN_ZOOM = 17;
   function maybeAutoSwitchBasemap(){
     if(!autoResolutionEnabled) return;
     // só atua sobre o par satélite/DGT — se o utilizador escolheu manualmente "claro" ou "OSM", não interfere
