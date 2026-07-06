@@ -69,23 +69,130 @@ a{color:inherit;}
 h1,h2,h3{font-family:'IBM Plex Sans', sans-serif; font-weight:700; letter-spacing:-.01em; margin:0 0 6px;}
 button{font-family:inherit;}
 
+#team-sync-floating-menu.hidden,#settings-floating-menu.hidden{display:none !important;}
+#team-sync-floating-menu,#settings-floating-menu{
+  position:absolute; top:18px; left:18px;
+  width:min(360px, calc(100vw - 40px));
+  max-width:380px;
+  max-height:min(78vh, 700px);
+  background:var(--paper-elevated);
+  border:1px solid var(--line-strong);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:16px;
+  z-index:900;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  overflow:hidden;
+}
+.cloud-menu-body{
+  display:flex; flex-direction:column; gap:12px;
+  overflow-y:auto;
+  padding-right:6px;
+  min-height:0;
+  scroll-behavior:smooth;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(31,92,107,.28) transparent;
+  overscroll-behavior:contain;
+}
+.cloud-menu-body::-webkit-scrollbar{width:8px;}
+.cloud-menu-body::-webkit-scrollbar-track{background:transparent;}
+.cloud-menu-body::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(31,92,107,.24), rgba(31,92,107,.46)); border-radius:999px; border:2px solid transparent; background-clip:padding-box;}
+.cloud-menu-body::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(31,92,107,.34), rgba(31,92,107,.56));}
+#map{position:relative;}
+.settings-panel-surface{display:flex; flex-direction:column; gap:12px; padding:10px 2px 2px;}
+.settings-section{display:flex; flex-direction:column; gap:8px; padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--paper-elevated); box-shadow:var(--shadow-soft);}
+.settings-section-title{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--green-deep);}
+.settings-option{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line);}
+.settings-option:last-child{border-bottom:none; padding-bottom:0;}
+.settings-option-label{display:flex; flex-direction:column; gap:3px; min-width:0;}
+.settings-option-label strong{font-size:13px; color:var(--ink);} 
+.settings-option-label small{font-size:12px; color:var(--stone); line-height:1.4;}
+.settings-option-control{display:flex; align-items:center; gap:8px; flex-shrink:0;}
+.settings-pill{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; border:1px solid var(--line); background:var(--paper); color:var(--stone); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;}
+.settings-pill.is-live{color:var(--green-deep); border-color:rgba(31,92,107,.24); background:rgba(31,92,107,.08);} 
+.settings-switch{position:relative; width:48px; height:28px; border-radius:999px; border:none; padding:3px; background:linear-gradient(135deg, rgba(31,92,107,.16), rgba(31,92,107,.06)); box-shadow:inset 0 1px 2px rgba(0,0,0,.08), 0 2px 6px rgba(15,30,34,.08); cursor:pointer; transition:background .2s ease, box-shadow .2s ease;} 
+.settings-switch::after{content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg, var(--paper-elevated), #fff); box-shadow:0 2px 6px rgba(15,30,34,.16); transition:transform .2s ease;} 
+.settings-switch.is-on{background:linear-gradient(135deg, var(--green), var(--green-deep)); box-shadow:inset 0 1px 2px rgba(255,255,255,.16), 0 3px 8px rgba(31,92,107,.18);} 
+.settings-switch.is-on::after{transform:translateX(20px);} 
+.settings-segmented{display:flex; gap:6px; flex-wrap:wrap;}
+.settings-segmented button{border:1px solid var(--line-strong); border-radius:999px; padding:7px 11px; background:var(--paper); color:var(--ink); cursor:pointer; font-size:12px; font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.04); transition:all .18s ease;} 
+.settings-segmented button:hover{border-color:var(--green); color:var(--green-deep);} 
+.settings-segmented button.is-active{background:linear-gradient(135deg, var(--green), var(--green-deep)); color:var(--paper); border-color:transparent; box-shadow:0 4px 10px rgba(31,92,107,.18);} 
+.settings-select{border:1px solid var(--line-strong); border-radius:10px; padding:8px 10px; background:var(--paper); color:var(--ink); font-size:13px; min-width:112px; box-shadow:inset 0 1px 2px rgba(0,0,0,.04);} 
+.settings-select:focus{outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(31,92,107,.12);} 
+.cloud-menu-header{display:flex; align-items:flex-start; justify-content:space-between; gap:14px;}
+.cloud-menu-eyebrow{font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--green-deep);}
+.cloud-menu-header h3{font-size:18px; margin:0; line-height:1.2;}
+.cloud-menu-close{
+  width:34px; height:34px; border:1px solid var(--line); border-radius:999px;
+  background:var(--paper-elevated); color:var(--stone); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.cloud-menu-close:hover{border-color:var(--warn); color:var(--warn);}
+.cloud-menu-body{display:flex; flex-direction:column; gap:12px;}
+.cloud-menu-status{padding:12px 14px; border-radius:14px; background:rgba(31,92,107,.08); color:var(--green-deep); font-size:13px; font-weight:600;}
+.cloud-menu-card,
+.cloud-plan-card{border:1px solid var(--line); border-radius:14px; background:var(--paper); padding:14px; text-align:left; cursor:pointer; transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;}
+.cloud-menu-card:hover,
+.cloud-plan-card:hover{border-color:var(--green); transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.06);}
+.cloud-menu-card strong,
+.cloud-plan-card strong{display:block; margin-bottom:4px; font-size:15px; color:var(--ink);}
+.cloud-menu-card small,
+.cloud-plan-card small{color:var(--stone); font-size:13px; line-height:1.5;}
+.cloud-plan-grid{display:grid; gap:10px;}
+.cloud-menu-subtitle{font-size:13px; font-weight:700; color:var(--green-deep);}
+.cloud-menu-hint{margin:0; font-size:13px; color:var(--stone); line-height:1.6;}
+.cloud-menu-actions{display:flex; gap:10px; flex-wrap:wrap;}
+.cloud-menu-actions .btn{flex:1 1 120px;}
+.cloud-panel-surface{display:flex; flex-direction:column; gap:10px; padding:12px; border:1px solid var(--line); border-radius:16px; background:var(--paper-elevated); box-shadow:var(--shadow-soft);}
+.cloud-panel-chip{display:inline-flex; align-items:center; gap:7px; width:max-content; padding:6px 10px; border-radius:999px; background:var(--paper); color:var(--green-deep); font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; border:1px solid var(--line);}
+.cloud-form-card{display:flex; flex-direction:column; gap:10px; padding:12px; border:1px solid var(--line); border-radius:14px; background:var(--paper-elevated); box-shadow:var(--shadow-soft);}
+.cloud-usage-card{display:flex; flex-direction:column; gap:8px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--paper);}
+.cloud-usage-meta{display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:13px;}
+.cloud-usage-meta span{color:var(--stone);}
+.cloud-usage-meta b{color:var(--ink);}
+.cloud-info-row{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); border-radius:10px; background:var(--paper);}
+.cloud-info-row .label{font-size:12px; color:var(--stone); font-weight:600; text-transform:uppercase; letter-spacing:.06em;}
+.cloud-info-row .value{font-size:13px; color:var(--ink); font-weight:600; text-align:right;}
+.cloud-field{display:flex; flex-direction:column; gap:6px;}
+.cloud-field label{font-size:11px; font-weight:700; color:var(--green-deep); text-transform:uppercase; letter-spacing:.08em;}
+.cloud-input{width:100%; border:1px solid var(--line-strong); border-radius:10px; padding:10px 12px; background:var(--paper); color:var(--ink); font-size:14px; transition:border-color .15s ease, box-shadow .15s ease;}
+.cloud-input:focus{outline:none; border-color:var(--green); box-shadow:0 0 0 3px rgba(31,92,107,.12);}
+.cloud-helper{margin:0; font-size:12px; color:var(--stone); line-height:1.5;}
+.cloud-inline-row{display:flex; gap:10px; flex-wrap:wrap;}
+.cloud-action-card{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:var(--paper); transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;}
+.cloud-action-card:hover{border-color:var(--green); transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,.05);}
+.cloud-action-card strong{display:block; font-size:14px; color:var(--ink); margin-bottom:2px;}
+.cloud-action-card small{display:block; color:var(--stone); font-size:12px; line-height:1.45;}
+.cloud-action-card.warn{border-color:rgba(172,58,44,.24); background:rgba(172,58,44,.04);}
+.cloud-action-card.warn:hover{border-color:var(--warn);}
+
 /* ---------- header ---------- */
 header{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 26px;
+  display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+  padding:12px 22px;
   border-bottom:1px solid var(--line);
   background:var(--paper-elevated);
   position:relative; z-index:50;
+  flex-wrap:wrap;
 }
-.brand-text{display:flex; align-items:baseline; gap:10px;}
-.brand-text h1{font-size:17px; font-weight:700; letter-spacing:-.01em;}
+.brand-text{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; min-width:0;}
+.brand-text h1{font-size:17px; font-weight:700; letter-spacing:-.01em; margin:0;}
 .brand-text span{font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--stone); text-transform:uppercase; letter-spacing:.07em;}
 .back-link{
   text-decoration:none; font-size:12.5px; font-weight:600;
   border:1px solid var(--line-strong); padding:7px 13px; border-radius:var(--radius-sm);
   background:var(--paper-elevated);
+  white-space:nowrap;
 }
 .back-link:hover{border-color:var(--green); color:var(--green-deep);}
+
+.header-left{display:flex; align-items:center; gap:16px; flex:1 1 320px; min-width:0; flex-wrap:wrap;}
+.header-left-actions{display:flex; align-items:center; gap:8px; padding-left:16px; border-left:1px solid var(--line); flex-wrap:wrap; margin-top:6px;}
+
+.header-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; flex:1 1 320px; min-width:0;}
 
 .theme-toggle{
   display:flex; align-items:center; justify-content:center;
@@ -99,15 +206,40 @@ header{
 html[data-theme="dark"] .theme-toggle .icon-sun{display:none;}
 html[data-theme="dark"] .theme-toggle .icon-moon{display:inline;}
 
-.header-left{display:flex; align-items:center; gap:16px;}
-.header-left-actions{display:flex; align-items:center; gap:8px; padding-left:16px; border-left:1px solid var(--line);}
+.header-left{display:flex; align-items:center; gap:16px; flex:1 1 320px; min-width:0; flex-wrap:wrap;}
+.header-left-actions{display:flex; align-items:center; gap:8px; padding-left:16px; border-left:1px solid var(--line); flex-wrap:wrap;}
 
-.header-actions{display:flex; align-items:center; gap:10px;}
+.header-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
 
 /* ---------- layout ---------- */
 main{flex:1; display:flex; position:relative; min-height:0;}
-#map{flex:1; min-height:0;}
+#map{flex:1; min-height:0; position:relative;}
 .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
+#workspace-tabs{
+  position:absolute; top:12px; right:12px; z-index:500;
+  display:flex; flex-direction:column; gap:8px;
+  align-items:flex-end;
+  pointer-events:auto;
+}
+.workspace-tab{
+  border:1px solid var(--line-strong);
+  background:var(--paper-elevated);
+  color:var(--ink);
+  border-radius:12px;
+  padding:8px 10px;
+  min-width:92px;
+  font-size:12px;
+  font-weight:600;
+  box-shadow:var(--shadow-soft);
+  cursor:pointer;
+  text-align:left;
+}
+.workspace-tab.is-active{
+  background:linear-gradient(135deg, var(--green), var(--green-deep));
+  color:var(--paper);
+  border-color:transparent;
+}
+.workspace-tab-add{display:flex; align-items:center; justify-content:center; min-width:44px; font-size:16px; padding:8px 0;}
 
 /* ---------- banner de aterragem "Iniciar projeto" ---------- */
 #landing-banner{
@@ -473,8 +605,19 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   position:fixed; inset:0; background:rgba(23,49,36,.5);
   display:flex; align-items:center; justify-content:center;
   z-index:1200; padding:20px;
+  opacity:1; visibility:visible; pointer-events:auto;
+  transition:opacity .24s ease, visibility .24s ease;
 }
-#exit-confirm-overlay.hidden{display:none;}
+#exit-confirm-overlay.hidden{
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+#exit-confirm-card{
+  transform:translateY(10px) scale(.98);
+  transition:transform .24s cubic-bezier(.22,.61,.36,1);
+}
+#exit-confirm-overlay:not(.hidden) #exit-confirm-card{
+  transform:translateY(0) scale(1);
+}
 
 #autosave-suggest-overlay{
   position:fixed; inset:0; background:rgba(23,49,36,.5);
@@ -980,11 +1123,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 
 .toolbar-hint{
-  position:absolute; top:14px; left:14px; z-index:450;
-  background:var(--paper-elevated); border:1px solid var(--line); border-radius:999px;
-  padding:8px 16px; font-size:12px; font-family:'IBM Plex Mono', monospace; box-shadow:var(--shadow-soft);
-  display:flex; align-items:center; gap:8px;
-  transition:opacity .5s ease, transform .5s ease;
+  display:none !important;
 }
 .toolbar-hint.hint-hidden{ opacity:0; transform:translateY(-8px); pointer-events:none; }
 .toolbar-hint .dot{width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;}
@@ -1035,6 +1174,8 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .feedback-nav-btn{
   display:flex; align-items:center; justify-content:center;
   width:34px; height:34px;
+  min-width:34px;
+  min-height:34px;
   border:1px solid var(--line);
   border-radius:999px;
   background:var(--paper-elevated);
@@ -1042,8 +1183,18 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   cursor:pointer;
   transition:border-color .15s ease, background .15s ease, color .15s ease;
   flex-shrink:0;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
 }
 .feedback-nav-btn:hover{ border-color:var(--green); color:var(--green); }
+.feedback-nav-btn.hidden{display:none;}
+.feedback-nav-btn.header-pill-btn{width:auto; min-width:auto; padding:0 12px; gap:6px; border-radius:999px;}
+.feedback-nav-btn.header-pill-btn span{font-size:12px; font-weight:600; white-space:nowrap;}
+.feedback-nav-btn svg{width:var(--app-icon-size, 16px); height:var(--app-icon-size, 16px);} 
+.feedback-nav-btn.is-syncing{border-color:var(--green); color:var(--green-deep);}
+.feedback-nav-btn.is-syncing svg{animation:cloudSyncSpin .9s linear infinite; transform-origin:center;}
+.feedback-nav-btn.is-syncing .icon{animation:cloudSyncSpin .9s linear infinite; transform-origin:center;}
+@keyframes cloudSyncSpin{from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+.cloud-delete-spinner{width:18px; height:18px; border:3px solid rgba(31,92,107,.2); border-top-color:var(--green); border-radius:50%; animation:cloudSyncSpin .8s linear infinite; margin:0 auto;}
 
 /* ---------- ícones modernos da barra de desenho (Leaflet-Geoman) ---------- */
 /* cada botão é agora um círculo individual e flutuante (como os ícones do cabeçalho),
@@ -1459,7 +1610,6 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 <header>
   <div class="header-left">
     <div class="brand-text">
-      <h1>Digitalização</h1>
       <span>Em desenvolvimento</span>
       <div id="project-status-badge"><span class="dot"></span><span id="project-status-badge-text"></span></div>
     </div>
@@ -1476,8 +1626,17 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
       </button>
 
-      <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Modo equipa" aria-label="Ligar modo equipa">
+      <button type="button" class="feedback-nav-btn hidden" id="btn-sync-online" title="Sincronizar projeto online" aria-label="Sincronizar projeto online">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+      </button>
+
+      <button type="button" class="feedback-nav-btn" id="open-wizard-btn" title="Nuvem" aria-label="Abrir nuvem">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+      </button>
+
+      <button type="button" class="feedback-nav-btn header-pill-btn" id="btn-cloud-settings" title="Definições" aria-label="Definições">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 0 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.2a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+        <span>Definições</span>
       </button>
     </div>
   </div>
@@ -1577,6 +1736,7 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 
 <main>
   <div id="map">
+    <div id="workspace-tabs" aria-label="Mapas"></div>
     <div id="landing-banner">
       <div class="landing-banner-card">
         <div class="landing-eyebrow"></div>
@@ -1594,7 +1754,29 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
       </div>
     </div>
 
-    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">Configura o ambiente para começares</span></div>
+    <div id="settings-floating-menu" class="hidden" role="dialog" aria-label="Definições da aplicação">
+      <div class="cloud-menu-header">
+        <div>
+          <div class="cloud-menu-eyebrow">Definições</div>
+          <h3>Preferências do projeto</h3>
+        </div>
+        <button type="button" class="cloud-menu-close" id="settings-menu-close" title="Fechar definições" aria-label="Fechar definições">✕</button>
+      </div>
+      <div id="settings-floating-body" class="cloud-menu-body"></div>
+    </div>
+
+    <div id="team-sync-floating-menu" class="hidden" role="dialog" aria-label="Menu de sincronização">
+      <div class="cloud-menu-header">
+        <div>
+          <div class="cloud-menu-eyebrow">Sincronização</div>
+          <h3>Guardar e colaborar</h3>
+        </div>
+        <button type="button" class="cloud-menu-close" id="cloud-menu-close" title="Fechar menu" aria-label="Fechar menu">✕</button>
+      </div>
+      <div id="team-sync-floating-body" class="cloud-menu-body"></div>
+    </div>
+
+    <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text"></span></div>
     <div class="basemap-toast" id="basemap-toast"><span class="basemap-toast-icon">◎</span><span id="basemap-toast-text"></span></div>
     <div class="coord-bar" id="coord-bar">
       <span id="coord-value">— , —</span>
@@ -2117,24 +2299,47 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 <script src="https://unpkg.com/shpjs@4.0.4/dist/shp.min.js"></script>
 
 <script>
+const SETTINGS_STORAGE_KEY = 'engenh-settings';
+const DEFAULT_SETTINGS = {
+  autoSaveEnabled: false,
+  autoSaveIntervalMs: 20000,
+  showMapGrid: false,
+  showCursorCoordinates: true,
+  showInterfaceHints: true,
+  confirmDeletes: true,
+  enableSnapping: true,
+  snapTolerance: 18,
+  distanceUnits: 'metric',
+  restoreLastProject: false,
+  themeMode: 'light',
+  iconSize: 'normal'
+};
+let settings = {...DEFAULT_SETTINGS};
+
 /* ============================================================
    TEMA CLARO/ESCURO
    ============================================================ */
+function applyTheme(themeMode){
+  const resolved = themeMode === 'dark' ? 'dark' : 'light';
+  settings.themeMode = resolved;
+  if(resolved === 'dark'){
+    document.documentElement.setAttribute('data-theme','dark');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  localStorage.setItem('engenh-theme', resolved);
+}
+
 (function(){
   const saved = localStorage.getItem('engenh-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = saved || (prefersDark ? 'dark' : 'light');
-  if(theme === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  const initialMode = (saved === 'dark' || saved === 'light') ? saved : 'light';
+  settings.themeMode = initialMode;
+  applyTheme(initialMode);
 
   document.getElementById('theme-toggle').addEventListener('click', ()=>{
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    if(isDark){
-      document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('engenh-theme','light');
-    } else {
-      document.documentElement.setAttribute('data-theme','dark');
-      localStorage.setItem('engenh-theme','dark');
-    }
+    const nextMode = settings.themeMode === 'dark' ? 'light' : 'dark';
+    applyTheme(nextMode);
+    if(typeof renderSettingsMenu === 'function') renderSettingsMenu();
   });
 })();
 </script>
@@ -2481,7 +2686,7 @@ function updateCoordBar(lat, lng){
 /* ============================================================
    ESTADO GLOBAL
    ============================================================ */
-const config = {
+let config = {
   shapeName: null,      // nome dado à "shape"/camada (ex: "Estradas") — mostrado no painel
   mode: null,          // 'simples' | 'atributos'
   attributes: [],       // [{name, type:'texto'|'numero'|'categorico', classes:[{name,color}]}]
@@ -2498,25 +2703,262 @@ const config = {
 let layerCounter = 0;
 let activeLayerId = 0;
 let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
-const layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
-const layerVisible = new Map([[0, true]]);
+let layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
+let layerVisible = new Map([[0, true]]);
 
 /* Ordem de empilhamento das camadas no mapa (índice 0 = topo/mais à frente,
    último índice = fundo/mais atrás). Controlada ao arrastar as linhas no painel. */
 let layerOrder = [0];
-const layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
+let layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
 
 let featureCounter = 0;
-const featuresData = new Map(); // leafletLayerId -> {layer, props}
+let featuresData = new Map(); // leafletLayerId -> {layer, props}
 let drawnGroup;
 let measuresGroup; // etiquetas com as medidas dos lados (modo "Medidas" por geometria)
 let rulerGroup; // linha e etiquetas da ferramenta de régua (medição livre, não é uma geometria do projeto)
 let map;
+let activeBaseLayerKey = 'satelite';
+let basemapLayers = null;
+let autoResolutionEnabled = true;
+
+let workspaces = [];
+let currentWorkspaceId = null;
+let currentWorkspace = null;
+
+function createWorkspaceState(id, name){
+  return {
+    id,
+    name,
+    config: {
+      shapeName: null,
+      mode: null,
+      attributes: [],
+      geometryType: null,
+      colorAttr: null,
+      baseColor: null,
+      opacity: null
+    },
+    layerCounter: 0,
+    activeLayerId: 0,
+    symbologyLayerId: null,
+    layers: [],
+    layerVisible: new Map([[0, true]]),
+    layerOrder: [0],
+    layerPanes: new Map(),
+    featureCounter: 0,
+    featuresData: new Map(),
+    drawnGroup: null,
+    measuresGroup: null,
+    rulerGroup: null,
+    projectDirty: false,
+    localProjectState: {name:null, active:false},
+    mapView: { center: [20, 0], zoom: 2 },
+    activeBaseLayerKey: 'satelite'
+  };
+}
+
+function cloneAttributes(attributes){
+  return Array.isArray(attributes) ? attributes.map(attr=>({
+    ...attr,
+    classes: Array.isArray(attr && attr.classes) ? attr.classes.map(cls=>({...cls})) : []
+  })) : [];
+}
+
+function cloneConfig(source){
+  return {
+    shapeName: source && source.shapeName != null ? source.shapeName : null,
+    mode: source && source.mode ? source.mode : null,
+    attributes: cloneAttributes(source && source.attributes),
+    geometryType: source && source.geometryType ? source.geometryType : null,
+    colorAttr: source && source.colorAttr ? source.colorAttr : null,
+    baseColor: source && source.baseColor ? source.baseColor : null,
+    opacity: source && source.opacity != null ? source.opacity : null
+  };
+}
+
+function persistCurrentWorkspaceState(){
+  if(!currentWorkspace) return;
+  currentWorkspace.config = cloneConfig(config);
+  currentWorkspace.layers = layers.map(layer=>({
+    ...layer,
+    attributes: cloneAttributes(layer && layer.attributes)
+  }));
+  currentWorkspace.layerCounter = layerCounter;
+  currentWorkspace.activeLayerId = activeLayerId;
+  currentWorkspace.symbologyLayerId = symbologyLayerId;
+  currentWorkspace.layerVisible = new Map(layerVisible);
+  currentWorkspace.layerOrder = layerOrder.slice();
+  currentWorkspace.layerPanes = new Map(layerPanes);
+  currentWorkspace.featureCounter = featureCounter;
+  currentWorkspace.featuresData = featuresData;
+  currentWorkspace.drawnGroup = drawnGroup;
+  currentWorkspace.measuresGroup = measuresGroup;
+  currentWorkspace.rulerGroup = rulerGroup;
+  currentWorkspace.projectDirty = Boolean(projectDirty);
+  currentWorkspace.localProjectState = { ...localProjectState };
+  currentWorkspace.mapView = {
+    center: map ? map.getCenter() : [20, 0],
+    zoom: map ? map.getZoom() : 2
+  };
+  currentWorkspace.activeBaseLayerKey = activeBaseLayerKey;
+}
+
+function getWorkspaceById(id){ return workspaces.find(ws=>ws.id===id) || null; }
+function getCurrentWorkspace(){ return currentWorkspace || null; }
+
+function ensureWorkspaceMapGroups(workspace){
+  if(!workspace) return;
+  if(!workspace.drawnGroup) workspace.drawnGroup = L.featureGroup();
+  if(!workspace.measuresGroup) workspace.measuresGroup = L.layerGroup();
+  if(!workspace.rulerGroup) workspace.rulerGroup = L.layerGroup();
+}
+
+function ensureWorkspaceBasemap(key){
+  if(!map || !basemapLayers) return;
+  const target = basemapLayers[key];
+  if(!target) return;
+  Object.values(basemapLayers).forEach(layer=>{
+    if(layer !== target && map.hasLayer(layer)) map.removeLayer(layer);
+  });
+  if(!map.hasLayer(target)) target.addTo(map);
+  activeBaseLayerKey = key;
+  document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+    btn.classList.toggle('is-active', btn.dataset.basemap === activeBaseLayerKey);
+  });
+}
+
+function applyWorkspaceState(workspace){
+  if(!workspace) return;
+  persistCurrentWorkspaceState();
+  currentWorkspace = workspace;
+  currentWorkspaceId = workspace.id;
+  config = cloneConfig(workspace.config || {});
+  layers = Array.isArray(workspace.layers) ? workspace.layers.map(layer=>({
+    ...layer,
+    attributes: cloneAttributes(layer && layer.attributes)
+  })) : [];
+  layerCounter = Number.isFinite(workspace.layerCounter) ? workspace.layerCounter : 0;
+  activeLayerId = Number.isFinite(workspace.activeLayerId) ? workspace.activeLayerId : 0;
+  symbologyLayerId = workspace.symbologyLayerId || null;
+  layerVisible = workspace.layerVisible instanceof Map ? new Map(workspace.layerVisible) : new Map([[0, true]]);
+  layerOrder = Array.isArray(workspace.layerOrder) ? workspace.layerOrder.slice() : [0];
+  layerPanes = workspace.layerPanes instanceof Map ? new Map(workspace.layerPanes) : new Map();
+  featureCounter = Number.isFinite(workspace.featureCounter) ? workspace.featureCounter : 0;
+  featuresData = workspace.featuresData instanceof Map ? workspace.featuresData : new Map();
+  projectDirty = Boolean(workspace.projectDirty);
+  localProjectState = workspace.localProjectState ? { ...workspace.localProjectState } : { name:null, active:false };
+  activeBaseLayerKey = workspace.activeBaseLayerKey || 'satelite';
+  if(map){
+    if(drawnGroup && map.hasLayer(drawnGroup)) map.removeLayer(drawnGroup);
+    if(measuresGroup && map.hasLayer(measuresGroup)) map.removeLayer(measuresGroup);
+    if(rulerGroup && map.hasLayer(rulerGroup)) map.removeLayer(rulerGroup);
+    ensureWorkspaceMapGroups(workspace);
+    drawnGroup = workspace.drawnGroup;
+    measuresGroup = workspace.measuresGroup;
+    rulerGroup = workspace.rulerGroup;
+    if(!map.hasLayer(drawnGroup)) map.addLayer(drawnGroup);
+    if(!map.hasLayer(measuresGroup)) map.addLayer(measuresGroup);
+    if(!map.hasLayer(rulerGroup)) map.addLayer(rulerGroup);
+    if(workspace.mapView && workspace.mapView.center){
+      map.setView(workspace.mapView.center, workspace.mapView.zoom || map.getZoom());
+    }
+  } else {
+    drawnGroup = workspace.drawnGroup;
+    measuresGroup = workspace.measuresGroup;
+    rulerGroup = workspace.rulerGroup;
+  }
+  ensureWorkspaceBasemap(activeBaseLayerKey || 'satelite');
+  renderWorkspaceTabs();
+  refreshLayerEditability();
+  refreshFeatList();
+  renderLayersPanel();
+  updateProjectStatusUI();
+}
+
+function renderWorkspaceTabs(){
+  const container = document.getElementById('workspace-tabs');
+  if(!container) return;
+  container.innerHTML = '';
+  workspaces.forEach(workspace=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'workspace-tab' + (workspace.id === currentWorkspaceId ? ' is-active' : '');
+    btn.dataset.workspaceId = workspace.id;
+    btn.innerHTML = `<span>${escapeHtml(workspace.name || 'Mapa')}</span>`;
+    btn.addEventListener('click', ()=>{
+      if(workspace.id !== currentWorkspaceId){ switchWorkspace(workspace.id); }
+    });
+    container.appendChild(btn);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'workspace-tab workspace-tab-add';
+  addBtn.title = 'Adicionar mapa';
+  addBtn.textContent = '+';
+  addBtn.addEventListener('click', createAndActivateNewWorkspace);
+  container.appendChild(addBtn);
+}
+
+function switchWorkspace(id){
+  if(!id || id === currentWorkspaceId) return;
+  const target = getWorkspaceById(id);
+  if(!target) return;
+  applyWorkspaceState(target);
+}
+
+function createAndActivateNewWorkspace(){
+  const nextIndex = workspaces.length + 1;
+  const workspace = createWorkspaceState(`workspace-${Date.now()}-${nextIndex}`, `Mapa ${nextIndex}`);
+  workspace.activeBaseLayerKey = 'satelite';
+  workspaces.push(workspace);
+  applyWorkspaceState(workspace);
+  ensureWorkspaceBasemap('satelite');
+
+  const landingBanner = document.getElementById('landing-banner');
+  if(landingBanner) landingBanner.classList.remove('hidden');
+
+  const startOverlay = document.getElementById('start-project-overlay');
+  if(startOverlay) startOverlay.classList.remove('hidden');
+
+  const localProjectsOverlay = document.getElementById('local-projects-overlay');
+  if(localProjectsOverlay) localProjectsOverlay.classList.add('hidden');
+
+  const warning = document.getElementById('start-project-warning');
+  if(warning){ warning.classList.add('hidden'); warning.textContent = ''; }
+
+  startProjectChoice = null;
+  const nameRow = document.getElementById('start-project-name-row');
+  const nameError = document.getElementById('start-project-name-error');
+  const continueBtn = document.getElementById('start-project-continue');
+  if(nameRow) nameRow.classList.add('hidden');
+  if(nameError) nameError.style.display = 'none';
+  if(continueBtn) continueBtn.disabled = true;
+  document.querySelectorAll('[data-start-choice]').forEach(card=>card.classList.remove('selected'));
+  document.getElementById('start-project-name').value = '';
+
+  if(map && map.invalidateSize){
+    setTimeout(()=>map.invalidateSize(), 0);
+  }
+}
+
+function initializeWorkspaces(){
+  if(workspaces.length === 0){
+    workspaces.push(createWorkspaceState('workspace-1', 'Mapa 1'));
+  }
+  if(!currentWorkspace){
+    applyWorkspaceState(workspaces[0]);
+  } else {
+    renderWorkspaceTabs();
+  }
+}
 
 const DEFAULT_COLOR = '#F5821F';
 const DEFAULT_OPACITY = 35; // percentagem (0-100) usada quando a camada não tem opacidade definida
 const TEAM_STORAGE_KEY = 'engenh-team-project';
 let teamPanelVisible = false;
+let cloudMenuView = 'home';
+let cloudSyncMode = null;
+let cloudSyncPlan = null;
 let teamState = {
   savedSlug: '',
   savedName: '',
@@ -2540,7 +2982,6 @@ const MUNICIPIOS_INDEX = [{"m":"Albergaria-a-Velha","d":"Aveiro","p":"previews/A
 /* ============================================================
    MODO OFFLINE
    ============================================================ */
-let activeBaseLayerKey = 'satelite';
 let offlineDrawing = false;
 let rulerDrawing = false;
 let offlineRectLayer = null;
@@ -2799,7 +3240,7 @@ function renderRulerLine(layer){
     const dist = a.distanceTo(b);
     total += dist;
     const mid = L.latLng((a.lat + b.lat) / 2, (a.lng + b.lng) / 2);
-    const label = dist < 1000 ? Math.round(dist) + ' m' : (dist / 1000).toFixed(2) + ' km';
+    const label = formatDistance(dist);
     const tooltip = L.tooltip({
       permanent: true, direction: 'center', className: 'edge-measure-tooltip', interactive: false
     }).setLatLng(mid).setContent(label);
@@ -2807,7 +3248,7 @@ function renderRulerLine(layer){
     rulerLabelLayers.push(tooltip);
   }
 
-  const totalLabel = total < 1000 ? Math.round(total) + ' m' : (total / 1000).toFixed(2) + ' km';
+  const totalLabel = formatDistance(total);
   document.getElementById('ruler-result-value').textContent = totalLabel;
   document.getElementById('ruler-result').style.display = 'flex';
 }
@@ -2960,7 +3401,7 @@ async function renderOfflineAreasMenu(){
     });
     deleteBtn.addEventListener('click', async (e)=>{
       e.stopPropagation();
-      if(!confirm(`Apagar a área "${meta.name || 'sem nome'}"? Deixa de poder ser usada offline.`)) return;
+      if(!requestConfirmation(`Apagar a área "${meta.name || 'sem nome'}"? Deixa de poder ser usada offline.`)) return;
       await idbDeleteMeta(meta.id);
       renderOfflineAreasMenu();
     });
@@ -3067,31 +3508,51 @@ function setBackLinkDisabled(disabled){
   }
 }
 let pendingExitAction = null;
+let suppressProjectRestoreErrorAlert = false;
+
+function hasUnsavedChanges(){
+  return Boolean(projectDirty && featuresData.size > 0);
+}
+
+function showExitConfirmOverlay(){
+  const overlay = document.getElementById('exit-confirm-overlay');
+  if(!overlay) return;
+  overlay.classList.remove('hidden');
+  void overlay.offsetWidth;
+  overlay.classList.add('is-visible');
+}
+
+function hideExitConfirmOverlay(){
+  const overlay = document.getElementById('exit-confirm-overlay');
+  if(!overlay) return;
+  overlay.classList.add('hidden');
+  overlay.classList.remove('is-visible');
+}
 
 // se houver alterações por guardar, mostra o modal antes de executar a ação (sair/recomeçar);
 // caso contrário executa-a de imediato
 function requestExit(action){
-  if(projectDirty && featuresData.size > 0){
+  if(hasUnsavedChanges()){
     pendingExitAction = action;
-    document.getElementById('exit-confirm-overlay').classList.remove('hidden');
+    showExitConfirmOverlay();
   } else {
     action();
   }
 }
 
 document.getElementById('exit-confirm-cancel').addEventListener('click', ()=>{
-  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  hideExitConfirmOverlay();
   pendingExitAction = null;
 });
 document.getElementById('exit-confirm-discard').addEventListener('click', ()=>{
-  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  hideExitConfirmOverlay();
   const action = pendingExitAction;
   pendingExitAction = null;
   if(action) action();
 });
 document.getElementById('exit-confirm-save').addEventListener('click', ()=>{
   const saved = saveCurrentProject();
-  document.getElementById('exit-confirm-overlay').classList.add('hidden');
+  hideExitConfirmOverlay();
   const action = pendingExitAction;
   pendingExitAction = null;
   if(saved && action) action();
@@ -3103,9 +3564,20 @@ document.getElementById('back-link').addEventListener('click', (e)=>{
   requestExit(()=>{ window.location.href = 'index.html'; });
 });
 
+document.addEventListener('keydown', (event)=>{
+  if(!hasUnsavedChanges()) return;
+  const key = event.key.toLowerCase();
+  const isReloadShortcut = key === 'f5' || ((event.ctrlKey || event.metaKey) && key === 'r');
+  if(!isReloadShortcut) return;
+  event.preventDefault();
+  event.stopPropagation();
+  pendingExitAction = ()=> window.location.reload();
+  showExitConfirmOverlay();
+});
+
 // aviso nativo do browser ao fechar o separador/janela ou recarregar a página
 window.addEventListener('beforeunload', (e)=>{
-  if(projectDirty && featuresData.size > 0){
+  if(hasUnsavedChanges()){
     e.preventDefault();
     e.returnValue = '';
     return '';
@@ -3250,8 +3722,683 @@ function showStep(n){
 }
 
 document.getElementById('open-wizard-btn').addEventListener('click', ()=>{
-  dismissGearCoachmark();
-  showTeamPanel();
+  toggleCloudMenu();
+});
+
+document.getElementById('btn-cloud-settings')?.addEventListener('click', (event)=>{
+  event.stopPropagation();
+  toggleSettingsMenu(true);
+});
+
+function setCloudSyncState(mode, plan = null){
+  cloudSyncMode = mode;
+  cloudSyncPlan = plan;
+  updateOnlineSyncButtonVisibility();
+}
+
+function clearCloudSyncState(){
+  cloudSyncMode = null;
+  cloudSyncPlan = null;
+  updateOnlineSyncButtonVisibility();
+}
+
+function updateOnlineSyncButtonVisibility(){
+  const syncButton = document.getElementById('btn-sync-online');
+  const saveButton = document.getElementById('btn-save-project');
+  if(!syncButton || !saveButton) return;
+  const active = Boolean(teamState.connected && cloudSyncMode);
+  const syncing = Boolean(teamState.connected && teamState.status === 'syncing');
+  syncButton.classList.toggle('hidden', !active);
+  syncButton.classList.toggle('is-active', active);
+  syncButton.classList.toggle('is-syncing', syncing);
+  saveButton.classList.toggle('hidden', active);
+  syncButton.setAttribute('aria-busy', syncing ? 'true' : 'false');
+}
+
+let cloudDeleteInProgress = false;
+let settingsMenuDirty = false;
+
+function loadSettings(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY) || 'null');
+    if(saved && typeof saved === 'object'){
+      settings = {...DEFAULT_SETTINGS, ...saved};
+    }
+  }catch(err){
+    console.warn('Não foi possível ler as definições guardadas.', err);
+  }
+  settings.autoSaveEnabled = Boolean(settings.autoSaveEnabled);
+  settings.showMapGrid = Boolean(settings.showMapGrid);
+  settings.showCursorCoordinates = settings.showCursorCoordinates !== false;
+  settings.showInterfaceHints = settings.showInterfaceHints !== false;
+  settings.confirmDeletes = settings.confirmDeletes !== false;
+  settings.enableSnapping = settings.enableSnapping !== false;
+  settings.snapTolerance = Number(settings.snapTolerance) || 18;
+  settings.autoSaveIntervalMs = Number(settings.autoSaveIntervalMs) || 20000;
+  settings.distanceUnits = settings.distanceUnits === 'imperial' ? 'imperial' : 'metric';
+  settings.restoreLastProject = false;
+  settings.themeMode = settings.themeMode === 'dark' ? 'dark' : 'light';
+  settings.iconSize = ['small','large'].includes(settings.iconSize) ? settings.iconSize : 'normal';
+  applyTheme(settings.themeMode);
+  applyIconSize(settings.iconSize);
+}
+
+function saveSettings(){
+  try{ localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings)); }catch(err){ console.warn('Não foi possível guardar as definições.', err); }
+}
+
+function requestConfirmation(message){
+  if(!settings.confirmDeletes) return true;
+  return confirm(message);
+}
+
+function applyIconSize(size){
+  const root = document.documentElement;
+  const resolved = size === 'large' ? '20px' : (size === 'small' ? '13px' : '16px');
+  root.style.setProperty('--app-icon-size', resolved);
+  settings.iconSize = size;
+}
+
+function updateMapGridVisibility(){
+  if(!map) return;
+  if(settings.showMapGrid){
+    if(!mapGridLayer){
+      mapGridLayer = L.layerGroup(buildMapGridLines());
+    }
+    if(!map.hasLayer(mapGridLayer)) map.addLayer(mapGridLayer);
+  } else if(mapGridLayer && map.hasLayer(mapGridLayer)){
+    map.removeLayer(mapGridLayer);
+  }
+}
+
+function applySettingsToEditing(){
+  if(!map || !map.pm) return;
+  map.pm.setGlobalOptions({
+    markerStyle: { icon: dataGisMarkerIcon(DEFAULT_COLOR) },
+    snappable: settings.enableSnapping,
+    snapDistance: settings.snapTolerance,
+    snapSegment: true
+  });
+}
+
+function maybeRestoreLastProjectOnStartup(){
+  if(!settings.restoreLastProject) return;
+  try{
+    const savedName = localStorage.getItem(ACTIVE_PROJECT_KEY);
+    if(!savedName) return;
+    const projects = getLocalProjects();
+    if(projects[savedName]) {
+      suppressProjectRestoreErrorAlert = true;
+      openLocalProject(savedName, {suppressRestoreErrorAlert:true});
+    }
+  }catch(err){
+    console.warn('Não foi possível restaurar o último projeto no arranque.', err);
+  } finally {
+    suppressProjectRestoreErrorAlert = false;
+  }
+}
+
+function formatDistance(distance){
+  if(settings.distanceUnits === 'imperial'){
+    const feet = distance * 3.28084;
+    return feet >= 5280 ? `${(feet / 5280).toFixed(2)} mi` : `${Math.round(feet)} ft`;
+  }
+  return distance >= 1000 ? `${(distance / 1000).toFixed(2)} km` : `${Math.round(distance)} m`;
+}
+
+function renderSettingsMenu(){
+  const body = document.getElementById('settings-floating-body');
+  if(!body) return;
+  const currentTheme = settings.themeMode === 'dark' ? 'dark' : 'light';
+  const currentSyncLabel = teamState.connected ? `${teamState.name || 'Projeto online'} · ${teamState.status === 'syncing' ? 'a sincronizar' : 'pronto'}` : 'Sem projeto online ativo';
+  body.innerHTML = `
+    <div class="settings-panel-surface">
+      <div class="settings-section">
+        <div class="settings-section-title">Geral</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Guardar automático</strong>
+            <small>Guarda as alterações quando houver trabalho novo sem precisar de clicar no botão.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.autoSaveEnabled ? 'is-on' : ''}" data-setting-toggle="autoSaveEnabled" aria-label="Alternar guardar automático"></button>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Intervalo de guardado</strong>
+            <small>Define com que frequência o projeto é guardado automaticamente.</small>
+          </div>
+          <div class="settings-option-control">
+            <select class="settings-select" data-setting-select="autoSaveIntervalMs">
+              <option value="15000" ${settings.autoSaveIntervalMs === 15000 ? 'selected' : ''}>15 s</option>
+              <option value="30000" ${settings.autoSaveIntervalMs === 30000 ? 'selected' : ''}>30 s</option>
+              <option value="60000" ${settings.autoSaveIntervalMs === 60000 ? 'selected' : ''}>1 min</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Restaurar último projeto ao iniciar</strong>
+            <small>Se houver um projeto guardado, é reaberto automaticamente ao entrar na aplicação.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.restoreLastProject ? 'is-on' : ''}" data-setting-toggle="restoreLastProject" aria-label="Alternar restaurar último projeto"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Mapa</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Mostrar grelha no mapa</strong>
+            <small>Ajuda a perceber melhor a orientação espacial durante a digitalização.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.showMapGrid ? 'is-on' : ''}" data-setting-toggle="showMapGrid" aria-label="Alternar grelha"></button>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Mostrar coordenadas do cursor</strong>
+            <small>Mostra as coordenadas do ponto sob o cursor na barra inferior.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.showCursorCoordinates ? 'is-on' : ''}" data-setting-toggle="showCursorCoordinates" aria-label="Alternar coordenadas do cursor"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Edição</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Snapping por defeito</strong>
+            <small>Ativa o íman de desenho para colar a vértices e segmentos existentes.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.enableSnapping ? 'is-on' : ''}" data-setting-toggle="enableSnapping" aria-label="Alternar snapping"></button>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Tolerância de snapping</strong>
+            <small>Raio em píxeis dentro do qual o íman reage ao cursor.</small>
+          </div>
+          <div class="settings-option-control">
+            <select class="settings-select" data-setting-select="snapTolerance">
+              <option value="10" ${settings.snapTolerance === 10 ? 'selected' : ''}>10 px</option>
+              <option value="18" ${settings.snapTolerance === 18 ? 'selected' : ''}>18 px</option>
+              <option value="24" ${settings.snapTolerance === 24 ? 'selected' : ''}>24 px</option>
+            </select>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Confirmações antes de eliminar</strong>
+            <small>Mostra avisos antes de apagar uma camada, um projeto ou uma geometria.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.confirmDeletes ? 'is-on' : ''}" data-setting-toggle="confirmDeletes" aria-label="Alternar confirmações"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Interface</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Tema</strong>
+            <small>Escolhe a aparência da aplicação.</small>
+          </div>
+          <div class="settings-option-control">
+            <div class="settings-segmented">
+              <button type="button" class="${currentTheme === 'light' ? 'is-active' : ''}" data-theme-mode="light">Claro</button>
+              <button type="button" class="${currentTheme === 'dark' ? 'is-active' : ''}" data-theme-mode="dark">Escuro</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Tamanho dos ícones</strong>
+            <small>Ajusta a densidade visual dos botões do cabeçalho.</small>
+          </div>
+          <div class="settings-option-control">
+            <div class="settings-segmented">
+              <button type="button" class="${settings.iconSize === 'small' ? 'is-active' : ''}" data-icon-size="small">Pequeno</button>
+              <button type="button" class="${settings.iconSize === 'normal' ? 'is-active' : ''}" data-icon-size="normal">Normal</button>
+              <button type="button" class="${settings.iconSize === 'large' ? 'is-active' : ''}" data-icon-size="large">Grande</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Dicas da interface</strong>
+            <small>Mostra mensagens contextuais quando mudas de basemap ou de ferramenta.</small>
+          </div>
+          <div class="settings-option-control">
+            <button type="button" class="settings-switch ${settings.showInterfaceHints ? 'is-on' : ''}" data-setting-toggle="showInterfaceHints" aria-label="Alternar dicas"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Camadas e projeto</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Unidades de distância</strong>
+            <small>Usa métrico ou imperial nas medições da régua.</small>
+          </div>
+          <div class="settings-option-control">
+            <div class="settings-segmented">
+              <button type="button" class="${settings.distanceUnits === 'metric' ? 'is-active' : ''}" data-distance-units="metric">Métrico</button>
+              <button type="button" class="${settings.distanceUnits === 'imperial' ? 'is-active' : ''}" data-distance-units="imperial">Imperial</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Sincronização online</strong>
+            <small>${currentSyncLabel}</small>
+          </div>
+          <div class="settings-option-control"><span class="settings-pill is-live">Ativo</span></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Desempenho</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Modo performance</strong>
+            <small>Reduz atualizações visuais em projetos muito grandes. Disponível em breve.</small>
+          </div>
+          <div class="settings-option-control"><span class="settings-pill">Em breve</span></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Experimental</div>
+        <div class="settings-option">
+          <div class="settings-option-label">
+            <strong>Sobreposições e erros topológicos</strong>
+            <small>Realça problemas de sobreposição entre geometrias. Disponível em breve.</small>
+          </div>
+          <div class="settings-option-control"><span class="settings-pill">Em breve</span></div>
+        </div>
+      </div>
+
+      <div class="cloud-menu-actions" style="margin-top:4px; display:flex; flex-direction:column; gap:8px;">
+        <div class="hint" style="font-size:11.5px; color:var(--stone);">As alterações só ficam definitivas depois de guardar.</div>
+        <button type="button" class="btn primary" id="settings-save-btn">Guardar alterações</button>
+      </div>
+    </div>
+  `;
+  body.querySelectorAll('[data-setting-toggle]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.getAttribute('data-setting-toggle');
+      settings[key] = !settings[key];
+      settingsMenuDirty = true;
+      saveSettings();
+      if(key === 'autoSaveEnabled'){
+        if(settings.autoSaveEnabled){ enableAutoSave(); } else { disableAutoSave(); }
+      }
+      if(key === 'showMapGrid'){ updateMapGridVisibility(); }
+      if(key === 'enableSnapping'){ applySettingsToEditing(); }
+      if(key === 'showCursorCoordinates'){ if(!settings.showCursorCoordinates) { coordValueEl.innerHTML = '—'; } }
+      renderSettingsMenu();
+    });
+  });
+  body.querySelectorAll('[data-setting-select]').forEach(select=>{
+    select.addEventListener('change', ()=>{
+      const key = select.getAttribute('data-setting-select');
+      const value = select.value;
+      settings[key] = key === 'autoSaveIntervalMs' ? Number(value) : Number(value);
+      settingsMenuDirty = true;
+      saveSettings();
+      if(key === 'autoSaveIntervalMs' && settings.autoSaveEnabled){ enableAutoSave(); }
+      if(key === 'snapTolerance'){ applySettingsToEditing(); }
+      renderSettingsMenu();
+    });
+  });
+  body.querySelectorAll('[data-theme-mode]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      applyTheme(btn.getAttribute('data-theme-mode'));
+      settings.themeMode = settings.themeMode === 'dark' ? 'dark' : 'light';
+      settingsMenuDirty = true;
+      saveSettings();
+      renderSettingsMenu();
+    });
+  });
+  body.querySelectorAll('[data-icon-size]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const size = btn.getAttribute('data-icon-size');
+      settings.iconSize = size;
+      settingsMenuDirty = true;
+      applyIconSize(size);
+      saveSettings();
+      renderSettingsMenu();
+    });
+  });
+  body.querySelectorAll('[data-distance-units]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      settings.distanceUnits = btn.getAttribute('data-distance-units');
+      settingsMenuDirty = true;
+      saveSettings();
+      renderSettingsMenu();
+    });
+  });
+  const saveBtn = document.getElementById('settings-save-btn');
+  saveBtn?.addEventListener('click', ()=>{
+    saveSettings();
+    settingsMenuDirty = false;
+    closeSettingsMenu(true);
+    showTeamToast('Definições guardadas.');
+  });
+}
+
+function setupSettingsMenuWheelLock(){
+  const menu = document.getElementById('settings-floating-menu');
+  const body = document.getElementById('settings-floating-body');
+  if(!menu || !body || menu.__wheelLockAttached) return;
+  const handleWheel = (event)=>{
+    const deltaY = event.deltaY || 0;
+    const atTop = body.scrollTop <= 0;
+    const atBottom = body.scrollTop + body.clientHeight >= body.scrollHeight - 1;
+    const shouldScroll = deltaY > 0 ? !atBottom : !atTop;
+    if(shouldScroll || body.scrollHeight > body.clientHeight){
+      event.preventDefault();
+      event.stopPropagation();
+      body.scrollTop += deltaY;
+    } else {
+      event.stopPropagation();
+    }
+  };
+  menu.addEventListener('wheel', handleWheel, {passive:false});
+  body.addEventListener('wheel', handleWheel, {passive:false});
+  menu.__wheelLockAttached = true;
+}
+
+function openSettingsMenu(){
+  settingsMenuDirty = false;
+  const menu = document.getElementById('settings-floating-menu');
+  if(menu){
+    menu.classList.remove('hidden');
+    menu.setAttribute('aria-hidden','false');
+  }
+  setupSettingsMenuWheelLock();
+  renderSettingsMenu();
+}
+
+function closeSettingsMenu(force = false){
+  const menu = document.getElementById('settings-floating-menu');
+  if(!menu) return;
+  if(settingsMenuDirty && !force){
+    showTeamToast('Guarda as alterações para fechar as definições.');
+    return;
+  }
+  menu.classList.add('hidden');
+  menu.setAttribute('aria-hidden','true');
+  settingsMenuDirty = false;
+}
+
+function toggleSettingsMenu(forceOpen = null){
+  const menu = document.getElementById('settings-floating-menu');
+  if(!menu) return;
+  const shouldOpen = forceOpen ?? menu.classList.contains('hidden');
+  if(shouldOpen){ openSettingsMenu(); } else { closeSettingsMenu(); }
+}
+
+document.getElementById('settings-menu-close')?.addEventListener('click', ()=> closeSettingsMenu());
+document.addEventListener('click', (event)=>{
+  const menu = document.getElementById('settings-floating-menu');
+  const settingsBtn = document.getElementById('btn-cloud-settings');
+  if(!menu || menu.classList.contains('hidden')) return;
+  const path = event.composedPath ? event.composedPath() : [];
+  const clickedInside = path.includes(menu) || (settingsBtn && path.includes(settingsBtn));
+  if(!clickedInside){ closeSettingsMenu(); }
+});
+
+document.addEventListener('keydown', (event)=>{
+  const menu = document.getElementById('settings-floating-menu');
+  if(event.key === 'Escape' && menu && !menu.classList.contains('hidden')){
+    event.preventDefault();
+    closeSettingsMenu();
+  }
+});
+
+function renderCloudMenu(){
+  const body = document.getElementById('team-sync-floating-body');
+  if(!body) return;
+
+  if(cloudMenuView === 'settings'){
+    if(cloudDeleteInProgress){
+      body.innerHTML = `
+        <div class="cloud-panel-surface">
+          <div class="cloud-panel-chip">A eliminar projeto</div>
+          <div class="cloud-form-card" style="align-items:center; text-align:center;">
+            <div class="cloud-delete-spinner"></div>
+            <p class="cloud-helper" style="margin-top:6px;">A eliminar projeto da base de dados…</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    body.innerHTML = `
+      <div class="cloud-panel-surface">
+        <div class="cloud-panel-chip">Definições da nuvem</div>
+        <p class="cloud-menu-hint">Gerir o projeto online ativo ou voltar ao menu principal.</p>
+        ${teamState.connected ? `
+          <div class="cloud-form-card">
+            <div class="cloud-info-row">
+              <span class="label">Projeto</span>
+              <span class="value">${escapeHtml(teamState.name || '—')}</span>
+            </div>
+            <div class="cloud-field">
+              <label for="cloud-delete-project-name">Nome do projeto</label>
+              <input class="cloud-input" type="text" id="cloud-delete-project-name" value="${escapeHtml(teamState.name || '')}" autocomplete="off">
+            </div>
+            <div class="cloud-field">
+              <label for="cloud-delete-project-password">Password</label>
+              <input class="cloud-input" type="password" id="cloud-delete-project-password" autocomplete="new-password">
+            </div>
+            <button type="button" class="btn warn" id="cloud-delete-project-btn">Eliminar projeto</button>
+          </div>
+        ` : '<div class="cloud-form-card"><p class="cloud-helper">Nenhum projeto online está ativo neste momento.</p></div>'}
+      </div>
+      <div class="cloud-menu-actions">
+        <button type="button" class="btn" id="cloud-menu-back">← Voltar</button>
+      </div>
+    `;
+    document.getElementById('cloud-menu-back')?.addEventListener('click', ()=>{
+      cloudMenuView = 'home';
+      renderCloudMenu();
+    });
+    document.getElementById('cloud-delete-project-btn')?.addEventListener('click', async ()=>{
+      const projectName = normalizeTeamProjectName(document.getElementById('cloud-delete-project-name')?.value || teamState.name);
+      const password = document.getElementById('cloud-delete-project-password')?.value || '';
+      if(!projectName || !password){ alert('Introduz o nome do projeto e a password para eliminar.'); return; }
+      if(!requestConfirmation(`Eliminar o projeto “${projectName}” da base de dados? Esta ação não pode ser desfeita.`)) return;
+      cloudDeleteInProgress = true;
+      renderCloudMenu();
+      try{
+        await deleteTeamProjectFromServer(projectName, password);
+        clearTeamProject();
+        clearCloudSyncState();
+        cloudMenuView = 'home';
+        updateTeamSyncSupportVisibility();
+        updateProjectStatusUI();
+        showTeamToast('Projeto eliminado da base de dados.');
+        renderCloudMenu();
+      }catch(err){
+        console.error('Erro ao eliminar projeto online:', err);
+        cloudDeleteInProgress = false;
+        renderCloudMenu();
+        alert('Não foi possível eliminar o projeto. Verifica o nome e a password.');
+      }
+    });
+    return;
+  }
+
+  if(teamState.connected){
+    const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
+    const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
+    const statusLabel = teamState.status === 'syncing' ? 'a sincronizar…' : 'Pronto para sincronizar';
+    const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
+    body.innerHTML = `
+      <div class="cloud-panel-surface">
+        <div class="cloud-panel-chip">Projeto online ativo</div>
+        <div class="cloud-menu-status">${escapeHtml(teamState.name || 'Projeto online')}</div>
+        <div class="cloud-form-card">
+          <div class="cloud-info-row">
+            <span class="label">Projeto</span>
+            <span class="value">${escapeHtml(teamState.name || '—')}</span>
+          </div>
+          <div class="cloud-info-row">
+            <span class="label">Estado</span>
+            <span class="value">${statusLabel}</span>
+          </div>
+          <div class="cloud-info-row">
+            <span class="label">Última sincronização</span>
+            <span class="value">${lastSyncLabel}</span>
+          </div>
+          <div class="cloud-usage-card">
+            <div class="cloud-usage-meta">
+              <span>Espaço usado</span>
+              <b>${usedLabel} / 200 MB</b>
+            </div>
+            <div class="team-progress-bar"><div class="team-progress-fill" style="width:${percent}%"></div></div>
+          </div>
+          <button type="button" class="btn warn" id="cloud-leave-project-btn">Sair do projeto</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('cloud-leave-project-btn')?.addEventListener('click', ()=>{
+      leaveTeamProject();
+      renderCloudMenu();
+    });
+    return;
+  }
+
+  if(cloudMenuView === 'team'){
+    body.innerHTML = `
+      <div class="cloud-panel-surface">
+        <div class="cloud-panel-chip">Carregar projeto da nuvem</div>
+        <p class="cloud-menu-hint">Escolhe o projeto guardado na nuvem para retomar o trabalho ou gerir o acesso ao mesmo.</p>
+        <div id="cloud-team-content"></div>
+      </div>
+      <div class="cloud-menu-actions">
+        <button type="button" class="btn" id="cloud-menu-back">← Voltar</button>
+      </div>
+    `;
+    document.getElementById('cloud-menu-back')?.addEventListener('click', ()=>{
+      cloudMenuView = 'home';
+      renderCloudMenu();
+    });
+    renderTeamCard('load');
+    return;
+  }
+
+  if(cloudMenuView === 'personal'){
+    body.innerHTML = `
+      <div class="cloud-panel-surface">
+        <div class="cloud-panel-chip">Criar projeto na nuvem</div>
+        <p class="cloud-menu-hint">Define um nome e uma password para criar um projeto online e começar a sincronizar.</p>
+        <div id="cloud-team-content"></div>
+      </div>
+      <div class="cloud-menu-actions">
+        <button type="button" class="btn" id="cloud-menu-back">← Voltar</button>
+      </div>
+    `;
+    document.getElementById('cloud-menu-back')?.addEventListener('click', ()=>{
+      cloudMenuView = 'home';
+      renderCloudMenu();
+    });
+    renderTeamCard('create');
+    return;
+  }
+
+  const statusText = cloudSyncMode === 'team'
+    ? 'Ligação ativa a projeto na nuvem.'
+    : (cloudSyncMode === 'personal' ? 'Ligação ativa a projeto na nuvem.' : 'Escolhe o que queres fazer com os teus projetos na nuvem.');
+
+  body.innerHTML = `
+    <div class="cloud-menu-status">${statusText}</div>
+    <button type="button" class="cloud-menu-card" id="cloud-menu-personal">
+      <strong>Criar projeto na nuvem</strong>
+      <small>Cria um novo projeto online com nome e password para começar a sincronizar.</small>
+    </button>
+    <button type="button" class="cloud-menu-card" id="cloud-menu-team">
+      <strong>Carregar projeto da nuvem</strong>
+      <small>Retoma um projeto já guardado na nuvem e continua a trabalhar a partir dele.</small>
+    </button>
+  `;
+  document.getElementById('cloud-menu-personal')?.addEventListener('click', (event)=>{
+    event.stopPropagation();
+    cloudMenuView = 'personal';
+    renderCloudMenu();
+  });
+  document.getElementById('cloud-menu-team')?.addEventListener('click', (event)=>{
+    event.stopPropagation();
+    cloudMenuView = 'team';
+    renderCloudMenu();
+    renderTeamCard();
+  });
+}
+
+function openCloudMenu(){
+  const menu = document.getElementById('team-sync-floating-menu');
+  if(menu){
+    menu.classList.remove('hidden');
+    menu.setAttribute('aria-hidden', 'false');
+    menu.onclick = (event)=> event.stopPropagation();
+  }
+  renderCloudMenu();
+}
+
+function closeCloudMenu(){
+  const menu = document.getElementById('team-sync-floating-menu');
+  if(menu){
+    menu.classList.add('hidden');
+    menu.setAttribute('aria-hidden', 'true');
+  }
+  cloudMenuView = 'home';
+}
+
+function toggleCloudMenu(forceOpen = null){
+  const menu = document.getElementById('team-sync-floating-menu');
+  if(!menu) return;
+  const shouldOpen = forceOpen ?? menu.classList.contains('hidden');
+  if(shouldOpen){
+    dismissGearCoachmark();
+    showTeamPanel();
+    openCloudMenu();
+  } else {
+    closeCloudMenu();
+  }
+}
+
+document.addEventListener('click', (event)=>{
+  const menu = document.getElementById('team-sync-floating-menu');
+  const openBtn = document.getElementById('open-wizard-btn');
+  const settingsBtn = document.getElementById('btn-cloud-settings');
+  if(!menu || menu.classList.contains('hidden')) return;
+  const path = event.composedPath ? event.composedPath() : [];
+  const clickedInside = path.includes(menu)
+    || (openBtn && path.includes(openBtn))
+    || (settingsBtn && path.includes(settingsBtn));
+  if(!clickedInside){
+    closeCloudMenu();
+  }
+});
+
+document.addEventListener('keydown', (event)=>{
+  const menu = document.getElementById('team-sync-floating-menu');
+  if(event.key === 'Escape' && menu && !menu.classList.contains('hidden')){
+    event.preventDefault();
+    closeCloudMenu();
+  }
 });
 
 /* ============================================================
@@ -3267,6 +4414,7 @@ let startProjectChoice = null; // 'novo' | 'sem'
 let projectDirty = false;
 function markProjectDirty(){
   projectDirty = true;
+  persistCurrentWorkspaceState();
   if(autoSaveEnabled) pulseSaveIcon(); // feedback imediato: "alteração registada, será guardada"
 }
 
@@ -3295,9 +4443,12 @@ function saveLocalProjects(projects){
 function updateProjectStatusUI(){
   const badge = document.getElementById('project-status-badge');
   const badgeText = document.getElementById('project-status-badge-text');
-  if(localProjectState.active && localProjectState.name){
+  const onlineLabel = teamState.connected && teamState.name ? `Nuvem: ${teamState.name}` : '';
+  const localLabel = localProjectState.active && localProjectState.name ? `Projeto: ${localProjectState.name}` : '';
+  const label = onlineLabel || localLabel;
+  if(label){
     badge.style.display = 'inline-flex';
-    badgeText.textContent = 'Projeto: ' + localProjectState.name;
+    badgeText.textContent = label;
   } else {
     badge.style.display = 'none';
     badgeText.textContent = '';
@@ -3308,6 +4459,149 @@ function updateProjectStatusUI(){
       ? `Guardar em "${localProjectState.name}"`
       : 'Guardar projeto';
   }
+}
+
+function clearLocalProjectState(){
+  localProjectState.name = null;
+  localProjectState.active = false;
+  try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
+  updateProjectStatusUI();
+}
+
+function clearMapLayerState(){
+  if(drawnGroup) drawnGroup.clearLayers();
+  if(measuresGroup) measuresGroup.clearLayers();
+  featuresData.clear();
+  layers.length = 0;
+  layerVisible.clear();
+  layerOrder.length = 0;
+  symbologyLayerId = null;
+  config.shapeName = null;
+  config.mode = null;
+  config.attributes = [];
+  config.geometryType = null;
+  config.colorAttr = null;
+  config.baseColor = null;
+  config.opacity = null;
+  layerPanes.forEach((paneName, id)=>{
+    const pane = map && map.getPane(paneName);
+    if(pane) pane.remove();
+  });
+  layerPanes.clear();
+  activeLayerId = ++layerCounter;
+  layerVisible.set(activeLayerId, true);
+  layerOrder = [activeLayerId];
+}
+
+function serializeLayerSchemasForGeoJSON(){
+  const allLayerIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
+  return allLayerIds.map(id=>{
+    const schema = getLayerSchema(id);
+    if(!schema) return null;
+    return {
+      id,
+      name: schema.name,
+      geometryType: schema.geometryType,
+      mode: schema.mode,
+      attributes: Array.isArray(schema.attributes) ? schema.attributes.map(a=>({...a})) : [],
+      colorAttr: schema.colorAttr || null,
+      baseColor: schema.baseColor || null,
+      opacity: schema.opacity,
+      visible: layerVisible.get(id) !== false
+    };
+  }).filter(Boolean);
+}
+
+function restoreLayerSchemasFromGeoJSON(geojson){
+  const schemas = Array.isArray(geojson && geojson.__layers) ? geojson.__layers : [];
+  if(!schemas.length) return false;
+
+  layers.length = 0;
+  layerVisible.clear();
+  layerOrder.length = 0;
+
+  const importedIds = [];
+  schemas.forEach(meta=>{
+    const id = Number(meta.id);
+    if(!Number.isFinite(id)) return;
+    importedIds.push(id);
+
+    layers.push({
+      id,
+      name: meta.name || null,
+      geometryType: meta.geometryType || null,
+      mode: meta.mode || 'atributos',
+      attributes: Array.isArray(meta.attributes) ? meta.attributes.map(a=>({...a})) : [],
+      colorAttr: meta.colorAttr || null,
+      baseColor: meta.baseColor || null,
+      opacity: meta.opacity
+    });
+    layerVisible.set(id, meta.visible !== false);
+  });
+
+  if(!importedIds.length) return false;
+
+  layerCounter = Math.max(layerCounter, ...importedIds);
+  const preferredActive = Number(geojson.__activeLayerId);
+  activeLayerId = importedIds.includes(preferredActive) ? preferredActive : importedIds[0];
+  layerOrder = importedIds.slice();
+
+  const activeMeta = schemas.find(meta=>Number(meta.id)===activeLayerId) || schemas[0];
+  config.shapeName = activeMeta && activeMeta.name ? activeMeta.name : null;
+  config.mode = activeMeta && activeMeta.mode ? activeMeta.mode : 'atributos';
+  config.attributes = Array.isArray(activeMeta && activeMeta.attributes) ? activeMeta.attributes.map(a=>({...a})) : [];
+  config.geometryType = activeMeta && activeMeta.geometryType ? activeMeta.geometryType : null;
+  config.colorAttr = activeMeta && activeMeta.colorAttr ? activeMeta.colorAttr : null;
+  config.baseColor = activeMeta && activeMeta.baseColor ? activeMeta.baseColor : null;
+  config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+
+  return true;
+}
+
+function inferLayerAttributesFromProps(layerId, props){
+  const source = props && typeof props === 'object' ? props : {};
+  const keys = Object.keys(source).filter(k=>k && !k.startsWith('__'));
+  if(!keys.length) return;
+
+  const schema = getLayerSchema(layerId);
+  if(!schema) return;
+
+  const hasExistingAttrs = Array.isArray(schema.attributes) && schema.attributes.length > 0;
+  if(hasExistingAttrs) return;
+
+  const attrs = keys.map(name=>({name, type:'texto'}));
+  if(layerId === activeLayerId){
+    config.attributes = attrs;
+    if(!config.mode) config.mode = 'atributos';
+  } else {
+    const layerMeta = layers.find(l=>l.id === layerId);
+    if(layerMeta){
+      layerMeta.attributes = attrs;
+      if(!layerMeta.mode) layerMeta.mode = 'atributos';
+    }
+  }
+}
+
+function ensureActiveLayerForImportedProject(){
+  if(config.geometryType || featuresData.size === 0) return;
+  const firstEntry = featuresData.values().next().value;
+  if(!firstEntry) return;
+  config.geometryType = firstEntry.geomType;
+  config.shapeName = 'Camada importada';
+  config.mode = 'atributos';
+  config.attributes = [];
+  config.colorAttr = null;
+  config.baseColor = null;
+  config.opacity = null;
+}
+
+function finalizeLoadedProjectState(){
+  if(map && map.pm){
+    applyGeometryConfig();
+    refreshLayerEditability();
+  }
+  refreshFeatList();
+  if(document.getElementById('layers-list')) renderLayersPanel();
 }
 
 /* ---------- modal de escolha ao iniciar ---------- */
@@ -3452,12 +4746,21 @@ function saveCurrentProject(opts){
   };
   saveLocalProjects(projects);
   projectDirty = false;
+  persistCurrentWorkspaceState();
   if(!opts.silent){
     showTeamToast(`Projeto "${localProjectState.name}" guardado.`);
   }
   return true;
 }
 document.getElementById('btn-save-project').addEventListener('click', saveCurrentProject);
+
+function disableAutoSave(){
+  if(!autoSaveEnabled) return;
+  autoSaveEnabled = false;
+  const btn = document.getElementById('btn-save-project');
+  if(btn) btn.classList.remove('autosave-on');
+  if(autoSaveInterval){ clearInterval(autoSaveInterval); autoSaveInterval = null; }
+}
 
 /* ---------- guardar automático: segurar o botão de guardar 3s ativa-o ---------- */
 let autoSaveEnabled = false;
@@ -3490,14 +4793,17 @@ function pulseSaveIcon(){
 function enableAutoSave(){
   if(autoSaveEnabled) return;
   autoSaveEnabled = true;
+  settings.autoSaveEnabled = true;
+  saveSettings();
   const btn = document.getElementById('btn-save-project');
   if(btn) btn.classList.add('autosave-on');
   showAutosaveToast('A guardar automaticamente…');
+  if(autoSaveInterval) clearInterval(autoSaveInterval);
   autoSaveInterval = setInterval(()=>{
     if(!projectDirty) return; // nada mudou desde o último guardado, não faz nada
     const saved = saveCurrentProject({ silent:true });
     if(saved) pulseSaveIcon();
-  }, 20000);
+  }, settings.autoSaveIntervalMs || 20000);
 }
 
 /* ---------- sugestão de guardar automático após 3 gravações manuais ----------
@@ -3596,19 +4902,19 @@ function renderLocalProjectsList(){
   });
 }
 
-function openLocalProject(name){
+function openLocalProject(name, options = {}){
   const projects = getLocalProjects();
   const p = projects[name];
   if(!p) return;
+  const suppressAlert = Boolean(options.suppressRestoreErrorAlert || suppressProjectRestoreErrorAlert);
 
-  if(featuresData.size > 0 && !confirm('Abrir este projeto vai substituir as geometrias atuais no mapa. Continuar?')) return;
+  if(featuresData.size > 0 && !requestConfirmation('Abrir este projeto vai substituir as geometrias atuais no mapa. Continuar?')) return;
 
-  featuresData.forEach(entry=> drawnGroup.removeLayer(entry.layer));
-  featuresData.clear();
-  layers.length = 0;
-  layerVisible.clear();
-  layerOrder.length = 0;
-  symbologyLayerId = null;
+  try{
+    clearMapLayerState();
+  }catch(err){
+    console.error('Erro ao limpar o estado anterior antes de abrir o projeto.', err);
+  }
 
   // Tudo o que se segue lida com dados que podem estar em formatos antigos/incompletos
   // (ficheiros guardados antes de alguma alteração ao esquema). Isola-se num try/catch
@@ -3682,11 +4988,25 @@ function openLocalProject(name){
       }
     }
   }catch(err){
-    console.error('Erro ao carregar geometrias do projeto guardado (o projeto foi marcado como ativo mesmo assim):', err);
-    alert('Algumas geometrias deste projeto não puderam ser lidas corretamente, mas o projeto foi aberto na mesma — já podes desenhar e guardar normalmente.');
+    console.error('Erro ao carregar geometrias do projeto guardado:', err);
+    clearMapLayerState();
+    activeLayerId = ++layerCounter;
+    layerVisible.set(activeLayerId, true);
+    layerOrder = [activeLayerId];
+    config.mode = null;
+    config.attributes = [];
+    config.geometryType = null;
+    config.shapeName = null;
+    config.colorAttr = null;
+    config.baseColor = null;
+    config.opacity = null;
+    if(!suppressAlert){
+      alert('Não foi possível restaurar este projeto corretamente. O estado foi limpo e ficou pronto para começar de novo.');
+    }
   }
 
   applyLayerZOrder();
+  finalizeLoadedProjectState();
 
   localProjectState.name = name;
   localProjectState.active = true;
@@ -3709,7 +5029,7 @@ function openLocalProject(name){
 }
 
 function deleteLocalProject(name){
-  if(!confirm(`Eliminar o projeto "${name}" guardado neste dispositivo? Esta ação não pode ser desfeita.`)) return;
+  if(!requestConfirmation(`Eliminar o projeto "${name}" guardado neste dispositivo? Esta ação não pode ser desfeita.`)) return;
   const projects = getLocalProjects();
   delete projects[name];
   saveLocalProjects(projects);
@@ -3736,12 +5056,18 @@ document.getElementById('open-feature-wizard-btn').addEventListener('click', ()=
    de camadas antes de começar a configurar uma nova — assim não desaparece do painel. */
 function archiveActiveLayerIfNeeded(){
   if(!config.geometryType) return; // ainda não há nenhuma camada configurada, nada a arquivar
+  const sanitizedName = (config.shapeName || '').toString().trim();
+  if(!sanitizedName){
+    alert('Dá um nome à camada antes de a guardar.');
+    return;
+  }
+
   layers.push({
     id: activeLayerId,
-    name: config.shapeName,
+    name: sanitizedName,
     geometryType: config.geometryType,
     mode: config.mode,
-    attributes: config.attributes,
+    attributes: Array.isArray(config.attributes) ? config.attributes.filter(a=>a && a.name && a.name.trim()) : [],
     colorAttr: config.colorAttr,
     baseColor: config.baseColor,
     opacity: config.opacity
@@ -3912,8 +5238,7 @@ function renderClasses(idx){
 document.getElementById('add-attr').addEventListener('click', addAttributeBlock);
 document.getElementById('step2-back').addEventListener('click', ()=> showStep(1));
 document.getElementById('step2-next').addEventListener('click', ()=>{
-  // limpar atributos sem nome
-  config.attributes = config.attributes.filter(a=>a.name.trim() !== '');
+  config.attributes = (Array.isArray(config.attributes) ? config.attributes : []).filter(a=>a && typeof a === 'object' && a.name && a.name.toString().trim() !== '');
   showStep(3);
 });
 
@@ -3924,7 +5249,12 @@ document.querySelectorAll('[data-geom]').forEach(card=>{
   card.addEventListener('click', ()=>{
     document.querySelectorAll('[data-geom]').forEach(c=>c.classList.remove('selected'));
     card.classList.add('selected');
-    config.geometryType = card.dataset.geom;
+    const geomValue = card.dataset.geom;
+    if(!['Point','LineString','Polygon'].includes(geomValue)){
+      alert('Tipo de geometria inválido.');
+      return;
+    }
+    config.geometryType = geomValue;
     document.getElementById('step3-finish').disabled = false;
   });
 });
@@ -3934,6 +5264,12 @@ document.getElementById('step3-back').addEventListener('click', ()=>{
 document.getElementById('step3-finish').addEventListener('click', finishWizard);
 
 function finishWizard(){
+  const shapeName = (document.getElementById('wizard-shape-name')?.value || '').toString().trim();
+  if(!shapeName){
+    alert('Dá um nome à camada antes de concluir.');
+    return;
+  }
+  config.shapeName = shapeName;
   document.getElementById('wizard-overlay').classList.add('hidden');
   setupSummary();
   applyGeometryConfig();
@@ -3953,17 +5289,16 @@ function setupSummary(){
    a mensagem desaparece sozinha (com fade) passado esse tempo */
 let toolbarHintHideTimer = null;
 function showToolbarHint(text, autoHideMs){
-  const hint = document.getElementById('toolbar-hint');
+  if(!settings.showInterfaceHints) return;
+  const el = document.getElementById('toolbar-hint');
   const textEl = document.getElementById('toolbar-hint-text');
-  if(!hint || !textEl) return;
+  if(!el || !textEl) return;
   textEl.textContent = text;
-  hint.classList.remove('hint-hidden');
+  el.classList.remove('hint-hidden');
   clearTimeout(toolbarHintHideTimer);
-  if(autoHideMs){
-    toolbarHintHideTimer = setTimeout(()=>{
-      hint.classList.add('hint-hidden');
-    }, autoHideMs);
-  }
+  toolbarHintHideTimer = setTimeout(()=>{
+    el.classList.add('hint-hidden');
+  }, autoHideMs || 2600);
 }
 
 /* toast flutuante e discreto, usado para avisar de trocas automáticas (ex.: mudança de basemap) */
@@ -3978,6 +5313,19 @@ function showBasemapToast(text, autoHideMs){
   basemapToastHideTimer = setTimeout(()=>{
     toast.classList.remove('is-visible');
   }, autoHideMs || 3500);
+}
+
+let mapGridLayer = null;
+function buildMapGridLines(){
+  const step = 1;
+  const lines = [];
+  for(let lng = -180; lng <= 180; lng += step){
+    lines.push(L.polyline([[ -90, lng ], [ 90, lng ]], { color: 'rgba(31,92,107,.16)', weight: 1, dashArray: '3 4', interactive: false }));
+  }
+  for(let lat = -90; lat <= 90; lat += step){
+    lines.push(L.polyline([[ lat, -180 ], [ lat, 180 ]], { color: 'rgba(31,92,107,.16)', weight: 1, dashArray: '3 4', interactive: false }));
+  }
+  return lines;
 }
 
 function initMap(){
@@ -4012,6 +5360,7 @@ function initMap(){
   });
 
   const basemaps = { satelite: satelliteGroup, claro: claro, osm: osm, dgt: dgt };
+  basemapLayers = basemaps;
 
   // regista qual a camada base ativa, para saber o que cachear no modo offline
   activeBaseLayerKey = 'satelite';
@@ -4133,19 +5482,7 @@ function initMap(){
   //                que estás a desenhar. É o que permite, por ex., fechar um
   //                polígono exatamente sobre o lado de outro já existente, sem
   //                teres de acertar num vértice exato.
-  map.pm.setGlobalOptions({
-    markerStyle: { icon: dataGisMarkerIcon(DEFAULT_COLOR) },
-    snappable: true,
-    snapDistance: 18,
-    snapSegment: true
-  });
-
-  const hintText = {
-    Point: 'Bom Trabalho!.',
-    LineString: 'Bom Trabalho!.',
-    Polygon: 'Bom Trabalho!.'
-  };
-  showToolbarHint(hintText[config.geometryType], 20000);
+  applySettingsToEditing();
 
   map.on('pm:create', e => onFeatureCreated(e.layer));
   map.on('pm:remove', e => onFeatureRemoved(e.layer));
@@ -4154,7 +5491,10 @@ function initMap(){
   setupRulerMapEvents();
   renderOfflineAreasMenu();
   updateConnectivityUI();
-  map.on('mousemove', e => updateCoordBar(e.latlng.lat, e.latlng.lng));
+  updateMapGridVisibility();
+  map.on('mousemove', e => {
+    if(settings.showCursorCoordinates){ updateCoordBar(e.latlng.lat, e.latlng.lng); }
+  });
 }
 
 /* ativa as ferramentas de desenho certas depois do wizard definir o tipo de geometria */
@@ -4175,15 +5515,14 @@ function applyGeometryConfig(){
     rotateMode: false
   });
 
-  const hintText = {
-    Point: 'Bom Trabalho!.',
-    LineString: 'Bom Trabalho!.',
-    Polygon: 'Bom Trabalho!.'
-  };
-  showToolbarHint(hintText[config.geometryType], 20000);
 }
 
+loadSettings();
 initMap(); // o mapa fica pronto logo ao carregar a página
+initializeWorkspaces();
+if(settings.autoSaveEnabled){ enableAutoSave(); }
+updateMapGridVisibility();
+maybeRestoreLastProjectOnStartup();
 initTeamUI();
 
 /* ============================================================
@@ -4195,6 +5534,10 @@ function genFid(){
 
 function onFeatureCreated(layer){
   if(offlineDrawing || rulerDrawing) return; // retângulo offline / linha da régua não são geometrias do utilizador
+  if(layerVisible.get(activeLayerId) === undefined){
+    layerVisible.set(activeLayerId, true);
+  }
+  if(!layerOrder.includes(activeLayerId)) layerOrder.unshift(activeLayerId);
   drawnGroup.addLayer(layer);
   assignLayerPane(layer, activeLayerId);
   featureCounter++;
@@ -4262,7 +5605,12 @@ async function parseImportedFile(file){
 }
 
 function importGeoJSONFeatures(geojson, layerIdResolver){
-  const features = (geojson.features || []).filter(f => f && f.geometry);
+  if(!geojson || typeof geojson !== 'object' || !Array.isArray(geojson.features)){
+    alert('O conteúdo importado não tem o formato esperado de GeoJSON.');
+    return {imported:0, skipped:0};
+  }
+
+  const features = geojson.features.filter(f => f && f.geometry);
   let imported = 0, skipped = 0;
 
   features.forEach(f=>{
@@ -4283,6 +5631,7 @@ function importGeoJSONFeatures(geojson, layerIdResolver){
     delete rawProps.__updatedAt;
     delete rawProps.__layerId;
     const props = rawProps;
+    inferLayerAttributesFromProps(layerId, props);
     const label = props.name || props.label || 'Geometria '+featureCounter;
     const geomType = baseGeomType(f.geometry.type);
     const entry = {layer, props, id, fid, updatedAt, label, geomType, layerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
@@ -4307,6 +5656,7 @@ function importGeoJSONFeatures(geojson, layerIdResolver){
     ? `Importadas ${imported} geometria(s). ${skipped} geometria(s) inválida(s) ou ilegível(is) foram ignoradas.`
     : (imported > 0 ? `Importadas ${imported} geometria(s) com sucesso.` : 'Nenhuma geometria válida encontrada no ficheiro.');
   alert(msg);
+  return {imported, skipped};
 }
 
 document.getElementById('btn-import-geom').addEventListener('click', ()=>{
@@ -4590,6 +5940,7 @@ function openAttrForm(entry, isNew){
   formEntryRef = entry;
   formIsNewFeature = !!isNew;
 
+  const schema = getLayerSchema(entry.layerId) || {name:null, mode:null, attributes:[]};
   document.getElementById('feat-form-title').textContent = formIsNewFeature ? 'Nova geometria' : 'Editar geometria';
   const typeLabel = GEOM_TYPE_LABELS[entry.geomType] || '—';
   document.getElementById('feat-form-type-line').textContent = 'Tipo: ' + typeLabel;
@@ -4600,10 +5951,10 @@ function openAttrForm(entry, isNew){
 
   const fieldsWrap = document.getElementById('feat-form-fields');
   fieldsWrap.innerHTML = '';
-  config.attributes.forEach(attr=>{
+  (schema.attributes || []).forEach(attr=>{
     const wrap = document.createElement('div');
     if(attr.type === 'categorico'){
-      const opts = attr.classes.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
+      const opts = (attr.classes || []).map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
       wrap.innerHTML = `<label>${attr.name}</label><select data-field="${attr.name}"><option value="">—</option>${opts}</select>`;
       if(!formIsNewFeature) wrap.querySelector('select').value = entry.props[attr.name] || '';
     } else {
@@ -4702,10 +6053,25 @@ function ensureLayerPane(id){
 function assignLayerPane(layer, layerId){
   const paneName = ensureLayerPane(layerId);
   if(layer.options.pane === paneName) return;
-  const wasOnMap = !!layer._map;
-  if(wasOnMap) map.removeLayer(layer);
+
+  if(layerVisible.get(layerId) === undefined){
+    layerVisible.set(layerId, true);
+  }
+  if(!layerOrder.includes(layerId)) layerOrder.unshift(layerId);
+
   layer.options.pane = paneName;
-  if(wasOnMap) map.addLayer(layer);
+
+  if(drawnGroup && typeof drawnGroup.hasLayer === 'function' && drawnGroup.hasLayer(layer)){
+    drawnGroup.removeLayer(layer);
+    drawnGroup.addLayer(layer);
+    return;
+  }
+
+  const wasOnMap = !!layer._map;
+  if(wasOnMap){
+    try{ map.removeLayer(layer); }catch(err){ /* ignora */ }
+    try{ map.addLayer(layer); }catch(err){ /* ignora */ }
+  }
 }
 
 /* aplica a ordem atual de "layerOrder" ao mapa, ajustando o z-index de cada
@@ -4744,8 +6110,8 @@ function renderLayersPanel(){
     const isActive = id === activeLayerId;
     const count = countLayerFeatures(id);
     return `
-      <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" draggable="true" title="Arrasta para reordenar · clica para tornar ativa (editável) · botão direito para mais opções">
-        <span class="layer-drag-handle" title="Arrastar para reordenar">⠿</span>
+      <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" ${isActive ? 'draggable="true"' : ''} title="${isActive ? 'Arrasta para reordenar · clica para tornar ativa (editável) · botão direito para mais opções' : 'Clica para tornar ativa · botão direito para mais opções'}">
+        <span class="layer-drag-handle" title="${isActive ? 'Arrastar para reordenar' : 'Só a camada ativa pode ser reordenada'}">⠿</span>
         <button type="button" class="layer-eye-btn" data-eye title="${visible ? 'Ocultar camada' : 'Mostrar camada'}">${visible ? '👁' : '🙈'}</button>
         <span class="layer-name">${escapeHtml(schema.name || 'Shape sem nome')} <span style="color:var(--stone); font-weight:400;">(${count})</span></span>
         <span class="shape-geom-badge">${typeLabel}</span>
@@ -4755,6 +6121,7 @@ function renderLayersPanel(){
 
   list.querySelectorAll('.layer-row').forEach(row=>{
     const id = Number(row.dataset.layerId);
+    const isActive = id === activeLayerId;
     row.querySelector('[data-eye]').addEventListener('click', (e)=>{
       e.stopPropagation();
       toggleLayerVisibility(id);
@@ -4767,18 +6134,20 @@ function renderLayersPanel(){
       openLayerContextMenu(e.clientX, e.clientY, id);
     });
 
-    row.addEventListener('dragstart', (e)=>{
-      draggedLayerRowId = id;
-      row.classList.add('is-dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      try{ e.dataTransfer.setData('text/plain', String(id)); }catch(err){ /* alguns browsers exigem isto mesmo sem uso */ }
-    });
-    row.addEventListener('dragend', ()=>{
-      draggedLayerRowId = null;
-      list.querySelectorAll('.layer-row').forEach(r=>r.classList.remove('is-dragging','drag-over-top','drag-over-bottom'));
-    });
+    if(isActive){
+      row.addEventListener('dragstart', (e)=>{
+        draggedLayerRowId = id;
+        row.classList.add('is-dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        try{ e.dataTransfer.setData('text/plain', String(id)); }catch(err){ /* alguns browsers exigem isto mesmo sem uso */ }
+      });
+      row.addEventListener('dragend', ()=>{
+        draggedLayerRowId = null;
+        list.querySelectorAll('.layer-row').forEach(r=>r.classList.remove('is-dragging','drag-over-top','drag-over-bottom'));
+      });
+    }
     row.addEventListener('dragover', (e)=>{
-      if(draggedLayerRowId === null || draggedLayerRowId === id) return;
+      if(!isActive || draggedLayerRowId === null || draggedLayerRowId === id) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
       const rect = row.getBoundingClientRect();
@@ -4793,7 +6162,7 @@ function renderLayersPanel(){
       e.preventDefault();
       const targetId = id;
       row.classList.remove('drag-over-top','drag-over-bottom');
-      if(draggedLayerRowId === null || draggedLayerRowId === targetId) return;
+      if(!isActive || draggedLayerRowId === null || draggedLayerRowId === targetId) return;
       const rect = row.getBoundingClientRect();
       const before = (e.clientY - rect.top) < rect.height / 2;
       reorderLayer(draggedLayerRowId, targetId, before);
@@ -4892,7 +6261,7 @@ function toggleLayerVisibility(layerId){
 function removeLayerEntirely(layerId){
   const schema = getLayerSchema(layerId);
   const label = schema ? (schema.name || 'Shape sem nome') : 'esta camada';
-  if(!confirm(`Remover a camada "${label}" e todas as suas geometrias? Esta ação não pode ser desfeita.`)) return;
+  if(!requestConfirmation(`Remover a camada "${label}" e todas as suas geometrias? Esta ação não pode ser desfeita.`)) return;
 
   featuresData.forEach((entry, key)=>{
     if(entry.layerId !== layerId) return;
@@ -4905,20 +6274,39 @@ function removeLayerEntirely(layerId){
   const idx = layers.findIndex(l=>l.id === layerId);
   if(idx !== -1) layers.splice(idx, 1);
 
+  const remainingLayerIds = layers.map(l=>l.id);
+  const fallbackId = remainingLayerIds.length ? remainingLayerIds[remainingLayerIds.length - 1] : null;
+
   if(layerId === activeLayerId){
-    config.shapeName = null;
-    config.mode = null;
-    config.attributes = [];
-    config.geometryType = null;
-    config.colorAttr = null;
-    config.baseColor = null;
-    config.opacity = null;
+    if(fallbackId != null){
+      const fallback = layers.find(l=>l.id === fallbackId);
+      activeLayerId = fallbackId;
+      config.shapeName = fallback ? fallback.name : null;
+      config.mode = fallback ? fallback.mode : null;
+      config.attributes = fallback ? (fallback.attributes || []) : [];
+      config.geometryType = fallback ? fallback.geometryType : null;
+      config.colorAttr = fallback ? fallback.colorAttr : null;
+      config.baseColor = fallback ? fallback.baseColor : null;
+      config.opacity = fallback && fallback.opacity != null ? fallback.opacity : null;
+    } else {
+      config.shapeName = null;
+      config.mode = null;
+      config.attributes = [];
+      config.geometryType = null;
+      config.colorAttr = null;
+      config.baseColor = null;
+      config.opacity = null;
+    }
   }
   layerVisible.delete(layerId);
   layerOrder = layerOrder.filter(id=>id !== layerId);
   const paneName = layerPanes.get(layerId);
   if(paneName && map.getPane(paneName)) map.getPane(paneName).remove();
   layerPanes.delete(layerId);
+
+  if(fallbackId != null && !layerVisible.has(fallbackId)){
+    layerVisible.set(fallbackId, true);
+  }
 
   markProjectDirty();
   refreshFeatList();
@@ -5352,7 +6740,12 @@ function buildGeoJSON(includeSyncMeta, includeLayerId, onlyLayerId){
     }
     features.push(gj);
   });
-  return {type:'FeatureCollection', features};
+  return {
+    type:'FeatureCollection',
+    features,
+    __layers: serializeLayerSchemasForGeoJSON(),
+    __activeLayerId: activeLayerId
+  };
 }
 
 function loadSavedTeam(){
@@ -5364,6 +6757,9 @@ function loadSavedTeam(){
       teamState.slug = saved.slug;
       teamState.name = saved.name || '';
       teamState.connected = false;
+      if(Array.isArray(saved.deletedFids)){
+        teamState.deletedFids = new Map(saved.deletedFids.map(fid=>[fid, Date.now()]));
+      }
     }
   }catch(err){
     console.warn('Não foi possível ler o projeto de equipa guardado.', err);
@@ -5372,7 +6768,12 @@ function loadSavedTeam(){
 
 function saveTeamProject(){
   try{
-    localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify({slug: teamState.slug, name: teamState.name}));
+    const payload = {
+      slug: teamState.slug,
+      name: teamState.name,
+      deletedFids: Array.from(teamState.deletedFids.keys())
+    };
+    localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(payload));
   }catch(err){ console.warn('Não foi possível guardar o estado da equipa.', err); }
 }
 
@@ -5382,6 +6783,7 @@ function clearTeamProject(){
     savedSlug: '', savedName: '', slug: '', name: '', password: null,
     connected: false, lastSync: null, deletedFids: new Map(), usedBytes: 0, sizeLimit: 200 * 1024 * 1024, status: 'idle'
   };
+  updateProjectStatusUI();
 }
 
 function showTeamToast(message){
@@ -5424,40 +6826,82 @@ function normalizeTeamProjectName(name){
   return (name || '').trim();
 }
 
-function renderTeamCard(){
-  const container = document.getElementById('team-card-content');
+function renderTeamCard(mode = null){
+  const container = document.getElementById('cloud-team-content') || document.getElementById('team-card-content');
   if(!container) return;
 
-  if(!teamState.connected){
-    const savedInfo = teamState.slug ? `<div class="team-status-row"><span>Projeto guardado</span><b>${teamState.name || '—'}</b></div>` : '';
+  if(!mode && teamState.connected){
+    const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
+    const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
+    const statusLabel = teamState.status === 'syncing' ? 'a sincronizar…' : 'Pronto para sincronizar';
+    const percent = Math.min(100, (teamState.usedBytes / teamState.sizeLimit) * 100);
+
     container.innerHTML = `
-      ${savedInfo}
-      <label for="team-project-name">Nome do projeto</label>
-      <input type="text" id="team-project-name" placeholder="Ex: meu-projeto" value="${teamState.name || ''}" autocomplete="off">
-      <label for="team-project-password">Password</label>
-      <input type="password" id="team-project-password" autocomplete="new-password">
-      <div class="btn-row">
-        <button type="button" class="btn primary" id="team-create-btn">Criar projeto</button>
-        <button type="button" class="btn" id="team-resume-btn">Retomar projeto</button>
+      <div class="cloud-form-card">
+        <div class="team-status-row"><span>Projeto</span><b>${teamState.name}</b></div>
+        <div class="team-status-row"><span>Estado</span><b>${statusLabel}</b></div>
+        <div class="team-status-row"><span>Última sincronização</span><b>${lastSyncLabel}</b></div>
+        <div class="team-status-row"><span>Espaço usado</span><b>${usedLabel} / 200 MB</b></div>
+        <div class="team-progress-bar"><div class="team-progress-fill" style="width:${percent}%"></div></div>
+        <div class="cloud-inline-row">
+          <button type="button" class="btn primary" id="team-sync-btn">Sincronizar</button>
+          <button type="button" class="btn" id="team-download-btn">Descarregar/Atualizar</button>
+        </div>
+        <div class="cloud-inline-row">
+          <button type="button" class="btn warn" id="team-leave-btn">Sair do projeto</button>
+        </div>
       </div>
-      <div class="btn-row">
-        <button type="button" class="btn warn" id="team-clear-btn">Limpar projeto guardado</button>
-      </div>
-      <p class="sub">O nome do projeto fica guardado localmente. A password apenas em memória enquanto permaneceres nesta página.</p>
     `;
-    container.querySelector('#team-create-btn')?.addEventListener('click', ()=>{
-      if (typeof window.adminGateRequireAuth === 'function') {
-        window.adminGateRequireAuth(createTeamProject);
-      } else {
-        createTeamProject();
-      }
-    });
-    container.querySelector('#team-resume-btn')?.addEventListener('click', resumeTeamProject);
-    container.querySelector('#team-clear-btn')?.addEventListener('click', ()=>{
-      clearTeamProject(); renderTeamCard();
-    });
+
+    container.querySelector('#team-sync-btn')?.addEventListener('click', syncTeamProject);
+    container.querySelector('#team-download-btn')?.addEventListener('click', downloadTeamProject);
+    container.querySelector('#team-leave-btn')?.addEventListener('click', leaveTeamProject);
     return;
   }
+
+  const isCreateMode = mode === 'create';
+  const savedInfo = teamState.slug ? `<div class="team-status-row"><span>Projeto guardado</span><b>${teamState.name || '—'}</b></div>` : '';
+  const actionButtons = isCreateMode
+    ? `<div class="btn-row"><button type="button" class="btn primary" id="team-create-btn">Criar projeto</button></div>`
+    : `<div class="btn-row"><button type="button" class="btn primary" id="team-resume-btn">Retomar projeto</button><button type="button" class="btn warn" id="team-delete-btn">Eliminar projeto</button></div>`;
+
+  container.innerHTML = `
+    <div class="cloud-form-card">
+      ${savedInfo}
+      <div class="cloud-field">
+        <label for="team-project-name">Nome do projeto</label>
+        <input class="cloud-input" type="text" id="team-project-name" placeholder="Ex: meu-projeto" value="${teamState.name || ''}" autocomplete="off">
+      </div>
+      <div class="cloud-field">
+        <label for="team-project-password">Password</label>
+        <input class="cloud-input" type="password" id="team-project-password" autocomplete="new-password">
+      </div>
+      ${actionButtons}
+      <p class="cloud-helper">${isCreateMode ? 'O nome do projeto fica guardado localmente. A password é usada apenas para proteger o acesso ao projeto online.' : 'Preenche o nome e a password para retomar ou eliminar um projeto guardado.'}</p>
+    </div>
+  `;
+  container.querySelector('#team-create-btn')?.addEventListener('click', ()=>{
+    if (typeof window.adminGateRequireAuth === 'function') {
+      window.adminGateRequireAuth(createTeamProject);
+    } else {
+      createTeamProject();
+    }
+  });
+  container.querySelector('#team-resume-btn')?.addEventListener('click', resumeTeamProject);
+  container.querySelector('#team-delete-btn')?.addEventListener('click', ()=>{
+    const projectName = normalizeTeamProjectName(document.getElementById('team-project-name')?.value || teamState.name);
+    const promptText = projectName
+      ? `Eliminar o projeto “${projectName}” guardado localmente?`
+      : 'Eliminar o projeto guardado localmente?';
+    if(!requestConfirmation(promptText)) return;
+    clearTeamProject();
+    clearCloudSyncState();
+    renderTeamCard('load');
+    updateTeamSyncSupportVisibility();
+    showTeamToast('Projeto eliminado.');
+  });
+  return;
+
 
   const usedLabel = teamState.usedBytes ? `${(teamState.usedBytes / 1024 / 1024).toFixed(1)} MB` : '—';
   const lastSyncLabel = teamState.lastSync ? new Date(teamState.lastSync).toLocaleString('pt-PT') : 'Nunca sincronizado';
@@ -5507,9 +6951,11 @@ async function createTeamProject(){
     teamState.connected = true;
     teamState.savedSlug = teamState.slug;
     teamState.savedName = teamState.name;
+    setCloudSyncState('team');
     saveTeamProject();
     renderTeamCard();
     updateTeamSyncSupportVisibility();
+    updateProjectStatusUI();
     showTeamToast('Projeto criado. Agora podes sincronizar.');
   }catch(err){
     if(err.status === 409){
@@ -5536,10 +6982,12 @@ async function resumeTeamProject(){
     teamState.connected = true;
     teamState.savedSlug = teamState.slug;
     teamState.savedName = teamState.name;
+    setCloudSyncState('team');
     updateTeamMetadata(result);
     saveTeamProject();
     renderTeamCard();
     updateTeamSyncSupportVisibility();
+    updateProjectStatusUI();
     await loadTeamGeometries(result);
   }catch(err){
     if(err.status === 401){ alert('Password incorreta.'); }
@@ -5551,21 +6999,25 @@ async function loadTeamGeometries(resumeData){
   teamState.status = 'syncing'; renderTeamCard();
   try{
     const geojson = await downloadTeamGeoJSON(resumeData);
+    clearLocalProjectState();
+    clearMapLayerState();
+    featureCounter = 0;
+    restoreLayerSchemasFromGeoJSON(geojson);
     if(!geojson.features || geojson.features.length === 0){
       teamState.status = 'idle'; renderTeamCard();
       showTeamToast('Projeto retomado. Ainda não há geometrias guardadas.');
       return;
     }
-    drawnGroup.clearLayers();
-    measuresGroup.clearLayers();
-    featuresData.clear();
-    featureCounter = 0;
     importGeoJSONFeatures(geojson);
+    ensureActiveLayerForImportedProject();
+    finalizeLoadedProjectState();
     teamState.status = 'idle';
     renderTeamCard();
     showTeamToast('Projeto retomado e geometrias carregadas.');
   }catch(err){
     console.error('Erro ao carregar geometrias do projeto:', err);
+    clearMapLayerState();
+    clearLocalProjectState();
     teamState.status = 'idle';
     renderTeamCard();
     showTeamToast('Projeto retomado, mas falhou o carregamento das geometrias.');
@@ -5629,10 +7081,16 @@ function mergeTeamGeoJSON(localGeojson, serverGeojson){
     }
   });
 
+  const mergedLayers = (localGeojson.__layers && localGeojson.__layers.length)
+    ? localGeojson.__layers
+    : (serverGeojson.__layers || []);
+
   return {
     type: 'FeatureCollection',
     features: [...byFid.values()],
-    __deletedFids: [...deleted]
+    __deletedFids: [...deleted],
+    __layers: mergedLayers,
+    __activeLayerId: localGeojson.__activeLayerId || serverGeojson.__activeLayerId || undefined
   };
 }
 
@@ -5658,7 +7116,10 @@ function splitTextToChunks(text, maxBytes){
 async function syncTeamProject(){
   if(!teamState.connected){ alert('Retoma ou cria um projeto de equipa antes de sincronizar.'); return; }
   if(featuresData.size === 0 && teamState.deletedFids.size === 0){ alert('Ainda não tens geometrias para sincronizar.'); return; }
-  teamState.status = 'syncing'; renderTeamCard();
+  teamState.status = 'syncing';
+  updateOnlineSyncButtonVisibility();
+  renderTeamCard();
+  renderCloudMenu();
 
   try{
     // 1. buscar o estado atual do servidor (pode ter sido alterado por outra pessoa entretanto)
@@ -5688,11 +7149,11 @@ async function syncTeamProject(){
     });
 
     // 4. atualizar o mapa local com o resultado já unido (pode incluir geometrias de outra pessoa)
-    drawnGroup.clearLayers();
-    measuresGroup.clearLayers();
-    featuresData.clear();
+    clearMapLayerState();
     featureCounter = 0;
+    restoreLayerSchemasFromGeoJSON(merged);
     importGeoJSONFeatures(merged);
+    finalizeLoadedProjectState();
     teamState.deletedFids.clear();
 
     teamState.usedBytes = new TextEncoder().encode(text).length;
@@ -5700,12 +7161,17 @@ async function syncTeamProject(){
     teamState.status = 'idle';
     saveTeamProject();
     renderTeamCard();
+    updateOnlineSyncButtonVisibility();
+    renderCloudMenu();
     showTeamToast('Sincronização concluída (com o trabalho de todos).');
   }catch(err){
     console.error(err);
+    clearMapLayerState();
     teamState.status = 'idle';
     renderTeamCard();
-    alert('Falha na sincronização. Tenta novamente.');
+    updateOnlineSyncButtonVisibility();
+    renderCloudMenu();
+    alert('Falha na sincronização. O estado anterior foi limpo para evitar inconsistências.');
   }
 }
 
@@ -5721,11 +7187,13 @@ async function downloadTeamProject(){
 
   try{
     const geojson = await fetchTeamProjectGeoJSON();
-    drawnGroup.clearLayers();
-    measuresGroup.clearLayers();
-    featuresData.clear();
+    clearLocalProjectState();
+    clearMapLayerState();
     featureCounter = 0;
+    restoreLayerSchemasFromGeoJSON(geojson);
     importGeoJSONFeatures(geojson);
+    ensureActiveLayerForImportedProject();
+    finalizeLoadedProjectState();
     renderTeamCard();
     showTeamToast('Projeto descarregado e atualizado com sucesso.');
   }catch(err){
@@ -5737,10 +7205,13 @@ async function downloadTeamProject(){
 }
 
 function leaveTeamProject(){
-  if(!confirm('Sais do projeto de equipa? O nome do projeto será removido localmente.')) return;
+  if(!requestConfirmation('Sais do projeto de equipa? O nome do projeto será removido localmente.')) return;
   clearTeamProject();
+  clearCloudSyncState();
   renderTeamCard();
   updateTeamSyncSupportVisibility();
+  updateProjectStatusUI();
+  renderCloudMenu();
   showTeamToast('Saíste do projeto de equipa.');
 
   teamPanelVisible = false;
@@ -5748,23 +7219,51 @@ function leaveTeamProject(){
   if(block) block.classList.add('hidden');
 }
 
+async function deleteTeamProjectFromServer(projectName, password){
+  const candidates = [
+    {method:'POST', path:'/api/projects/delete', data:{name: projectName, password}},
+    {method:'POST', path:`/api/projects/${encodeURIComponent(projectName)}/delete`, data:{password}},
+    {method:'DELETE', path:`/api/projects/${encodeURIComponent(projectName)}`, extraHeaders:{'X-Project-Password': password}}
+  ];
+
+  let lastError = null;
+  for(const candidate of candidates){
+    try{
+      return await apiRequest(candidate.method, candidate.path, candidate.data, candidate.extraHeaders);
+    }catch(err){
+      lastError = err;
+      if(err && (err.status === 404 || err.status === 405)) continue;
+      throw err;
+    }
+  }
+  throw lastError || new Error('Não foi possível eliminar o projeto.');
+}
+
 function showTeamPanel(){
   teamPanelVisible = true;
   const block = document.getElementById('team-block');
-  if(block) block.classList.remove('hidden');
+  if(block) block.classList.add('hidden');
   const wizard = document.getElementById('wizard-overlay');
   if(wizard) wizard.classList.add('hidden');
-  renderTeamCard();
-  const card = document.getElementById('team-card');
-  if(card) card.scrollIntoView({behavior:'smooth', block:'center'});
+  openCloudMenu();
 }
 
 function hideTeamPanel(){
   teamPanelVisible = false;
+  closeCloudMenu();
   const block = document.getElementById('team-block');
   if(block) block.classList.add('hidden');
 }
 document.getElementById('team-card-close').addEventListener('click', hideTeamPanel);
+document.getElementById('cloud-menu-close')?.addEventListener('click', hideTeamPanel);
+
+document.getElementById('btn-sync-online')?.addEventListener('click', ()=>{
+  if(cloudSyncMode === 'team'){
+    syncTeamProject();
+  } else if(cloudSyncMode === 'personal'){
+    showTeamToast('A sincronização do projeto pessoal está preparada para o próximo passo.');
+  }
+});
 
 function updateTeamSyncSupportVisibility(){
   const connectCard = document.getElementById('team-sync-support');
@@ -5785,8 +7284,10 @@ function initTeamUI(){
   document.getElementById('btn-open-team-panel')?.addEventListener('click', showTeamPanel);
   document.getElementById('btn-open-team-panel-connected')?.addEventListener('click', showTeamPanel);
   loadSavedTeam();
+  renderCloudMenu();
   renderTeamCard();
   updateTeamSyncSupportVisibility();
+  updateOnlineSyncButtonVisibility();
 }
 
 const WGS84_WKT = 'GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433]]';
