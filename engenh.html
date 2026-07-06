@@ -975,6 +975,27 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .toolbar-hint.hint-hidden{ opacity:0; transform:translateY(-8px); pointer-events:none; }
 .toolbar-hint .dot{width:8px; height:8px; border-radius:50%; background:var(--green); display:inline-block;}
 
+.basemap-toast{
+  position:absolute; top:14px; left:50%; z-index:500;
+  transform:translateX(-50%) translateY(-10px);
+  background:var(--paper-elevated); border:1px solid var(--line-strong);
+  border-radius:var(--radius-lg); box-shadow:var(--shadow);
+  padding:10px 18px 10px 12px; display:flex; align-items:center; gap:10px;
+  font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink);
+  opacity:0; pointer-events:none; transition:opacity .35s ease, transform .35s ease;
+  max-width:min(90vw, 420px);
+}
+.basemap-toast.is-visible{ opacity:1; transform:translateX(-50%) translateY(0); }
+.basemap-toast .basemap-toast-icon{
+  width:20px; height:20px; border-radius:50%; background:var(--green); color:var(--white);
+  display:flex; align-items:center; justify-content:center; font-size:12px; flex:0 0 auto;
+  animation: basemap-toast-pulse 1.6s ease-in-out infinite;
+}
+@keyframes basemap-toast-pulse{
+  0%, 100%{ box-shadow:0 0 0 0 rgba(31,92,107,.35); }
+  50%{ box-shadow:0 0 0 5px rgba(31,92,107,0); }
+}
+
 /* ---------- barra de coordenadas ---------- */
 .coord-bar{
   position:absolute; bottom:12px; left:14px; z-index:450;
@@ -1560,6 +1581,7 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
     </div>
 
     <div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text">Configura o ambiente para começares</span></div>
+    <div class="basemap-toast" id="basemap-toast"><span class="basemap-toast-icon">◎</span><span id="basemap-toast-text"></span></div>
     <div class="coord-bar" id="coord-bar">
       <span id="coord-value">— , —</span>
       <button type="button" class="crs-switch" id="crs-switch" title="Alternar sistema de coordenadas">ETRS89 / PT-TM06</button>
@@ -1628,6 +1650,7 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
 
 <div id="basemap-menu" class="hidden">
   <button type="button" data-basemap="satelite">Satélite</button>
+  <button type="button" data-basemap="dgt">Portugal HD (DGT)</button>
   <button type="button" data-basemap="claro">Mapa claro</button>
   <button type="button" data-basemap="osm">Mapa (OSM)</button>
 </div>
@@ -2514,6 +2537,9 @@ const BASE_LAYERS_INFO = {
   satelite: [
     {key:'satellite', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
   ],
+  dgt: [
+    {key:'dgt', wms:true, base:'https://cartografia.dgterritorio.gov.pt/wms/ortos2021', wmsLayer:'Ortos2021-RGB'}
+  ],
   claro: [
     {key:'claro', tpl:'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}
   ],
@@ -2625,6 +2651,33 @@ const OfflineTileLayer = L.TileLayer.extend({
     return tile;
   }
 });
+
+/* camada WMS (usada para o basemap de alta resolução da DGT) com o mesmo cache offline */
+const OfflineWMSTileLayer = L.TileLayer.WMS.extend({
+  createTile: OfflineTileLayer.prototype.createTile
+});
+
+/* converte coordenadas de tile z/x/y para bbox em metros (EPSG:3857) — usado para montar
+   pedidos WMS (GetMap) equivalentes ao tile XYZ pedido pelo Leaflet */
+function tile3857BBox(z, x, y){
+  const EARTH = 20037508.342789244;
+  const size = (2 * EARTH) / Math.pow(2, z);
+  const minX = -EARTH + x * size;
+  const maxX = -EARTH + (x + 1) * size;
+  const maxY = EARTH - y * size;
+  const minY = EARTH - (y + 1) * size;
+  return [minX, minY, maxX, maxY];
+}
+function buildWmsTileUrl(info, t){
+  const [minX, minY, maxX, maxY] = tile3857BBox(t.z, t.x, t.y);
+  const params = new URLSearchParams({
+    service: 'WMS', version: '1.3.0', request: 'GetMap',
+    layers: info.wmsLayer, styles: '', format: 'image/jpeg', transparent: 'false',
+    width: '256', height: '256', crs: 'EPSG:3857',
+    bbox: `${minX},${minY},${maxX},${maxY}`
+  });
+  return `${info.base}?${params.toString()}`;
+}
 
 /* ---------- utilidades de tiles ---------- */
 function lonLatToTile(lon, lat, z){
@@ -2813,7 +2866,7 @@ async function downloadOfflineArea(bounds, minZoom, maxZoom, layerInfos){
   for(const info of layerInfos){
     for(const t of baseTiles){
       if(offlineCancelDownload) break outer;
-      const url = info.tpl.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y);
+      const url = info.wms ? buildWmsTileUrl(info, t) : info.tpl.replace('{z}', t.z).replace('{x}', t.x).replace('{y}', t.y);
       try{
         const resp = await fetch(url);
         if(resp.ok){
@@ -3895,6 +3948,20 @@ function showToolbarHint(text, autoHideMs){
   }
 }
 
+/* toast flutuante e discreto, usado para avisar de trocas automáticas (ex.: mudança de basemap) */
+let basemapToastHideTimer = null;
+function showBasemapToast(text, autoHideMs){
+  const toast = document.getElementById('basemap-toast');
+  const textEl = document.getElementById('basemap-toast-text');
+  if(!toast || !textEl) return;
+  textEl.textContent = text;
+  toast.classList.add('is-visible');
+  clearTimeout(basemapToastHideTimer);
+  basemapToastHideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+  }, autoHideMs || 3500);
+}
+
 function initMap(){
   map = L.map('map', {zoomControl:true, maxZoom: 24}).setView([20, 0], 2);
 
@@ -3916,7 +3983,17 @@ function initMap(){
     offlineKey: 'osm'
   });
 
-  const basemaps = { satelite: satelliteGroup, claro: claro, osm: osm };
+  const dgt = new OfflineWMSTileLayer('https://cartografia.dgterritorio.gov.pt/wms/ortos2021', {
+    layers: 'Ortos2021-RGB',
+    format: 'image/jpeg',
+    transparent: false,
+    version: '1.3.0',
+    maxZoom: 24, maxNativeZoom: 20, minNativeZoom: 6,
+    attribution: 'Ortofotos &copy; DGT — Ortos 2021 Portugal Continental (CC-BY 4.0)',
+    offlineKey: 'dgt'
+  });
+
+  const basemaps = { satelite: satelliteGroup, claro: claro, osm: osm, dgt: dgt };
 
   // regista qual a camada base ativa, para saber o que cachear no modo offline
   activeBaseLayerKey = 'satelite';
@@ -3927,7 +4004,8 @@ function initMap(){
     });
   }
 
-  function switchBasemap(key){
+  function switchBasemap(key, opts){
+    opts = opts || {};
     const next = basemaps[key];
     if(!next || key === activeBaseLayerKey){ closeBasemapMenu(); return; }
     Object.values(basemaps).forEach(l=>{ if(l !== next && map.hasLayer(l)) map.removeLayer(l); });
@@ -3935,7 +4013,28 @@ function initMap(){
     activeBaseLayerKey = key;
     renderBasemapMenu();
     closeBasemapMenu();
+    if(key === 'dgt' && !opts.auto){
+      showToolbarHint('Portugal HD (DGT): só mostra imagem a partir de zoom de cidade/bairro — aproxima-te para veres o detalhe.', 6000);
+    }
   }
+
+  /* ---------- troca automática Satélite ⇄ Portugal HD (DGT) por nível de zoom ---------- */
+  const PT_CONTINENTAL_BOUNDS = L.latLngBounds([36.7, -9.6], [42.3, -6.0]);
+  const AUTO_HD_MIN_ZOOM = 14;
+  function maybeAutoSwitchBasemap(){
+    // só atua sobre o par satélite/DGT — se o utilizador escolheu manualmente "claro" ou "OSM", não interfere
+    if(activeBaseLayerKey !== 'satelite' && activeBaseLayerKey !== 'dgt') return;
+    const zoom = map.getZoom();
+    const dentroPT = PT_CONTINENTAL_BOUNDS.contains(map.getCenter());
+    if(activeBaseLayerKey === 'satelite' && dentroPT && zoom >= AUTO_HD_MIN_ZOOM){
+      switchBasemap('dgt', {auto:true});
+      showBasemapToast('Basemap otimizado automaticamente: Portugal HD (DGT) — resolução máxima disponível aqui.');
+    } else if(activeBaseLayerKey === 'dgt' && (!dentroPT || zoom < AUTO_HD_MIN_ZOOM)){
+      switchBasemap('satelite', {auto:true});
+      showBasemapToast('A voltar ao Satélite global.');
+    }
+  }
+  map.on('zoomend moveend', maybeAutoSwitchBasemap);
 
   function openBasemapMenu(){
     const menu = document.getElementById('basemap-menu');
