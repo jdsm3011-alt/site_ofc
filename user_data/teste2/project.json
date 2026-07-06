@@ -3,7 +3,7 @@
   "slug": "teste2",
   "password_hash": "a3c0e4da8f7f6bb7e73d0d47324c9c8db4c83cbf355563af40e4466cc6a5e3a0",
   "created_at": "2026-07-06T21:47:03.291Z",
-  "total_bytes": 406,
+  "total_bytes": 1549,
   "chunk_count": 1,
   "status": "complete"
 }
