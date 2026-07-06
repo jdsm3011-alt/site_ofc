@@ -1,6 +1,12 @@
 {
   "slug": "teste2",
-  "chunks": [],
-  "total_bytes": 0,
+  "chunks": [
+    {
+      "index": 0,
+      "name": "chunk_0000.json",
+      "bytes": 1168
+    }
+  ],
+  "total_bytes": 1168,
   "complete": false
 }
