@@ -2512,8 +2512,7 @@ const BYTES_PER_TILE_ESTIMATE = 22000; // estimativa média (~22KB/tile)
 // para cada basemap visível na UI, quais as sub-camadas (chave + template) a cachear
 const BASE_LAYERS_INFO = {
   satelite: [
-    {key:'satellite', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'},
-    {key:'satelliteLabels', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'}
+    {key:'satellite', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
   ],
   claro: [
     {key:'claro', tpl:'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}
@@ -3904,11 +3903,7 @@ function initMap(){
     attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics',
     offlineKey: 'satellite'
   });
-  const satelliteLabels = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 24, maxNativeZoom: 19, pane: 'shadowPane',
-    offlineKey: 'satelliteLabels'
-  });
-  const satelliteGroup = L.layerGroup([satellite, satelliteLabels]).addTo(map);
+  const satelliteGroup = L.layerGroup([satellite]).addTo(map);
 
   const claro = new OfflineTileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 24, maxNativeZoom: 19,
@@ -6169,9 +6164,6 @@ document.querySelectorAll('.tool-drawer-header[data-drawer-toggle]').forEach(btn
 function initAnalysisMap(){
   analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false, maxZoom: 24});
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom:24, maxNativeZoom:19
-  }).addTo(analysisMap);
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
     maxZoom:24, maxNativeZoom:19
   }).addTo(analysisMap);
 
