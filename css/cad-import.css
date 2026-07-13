@@ -1,0 +1,49 @@
+/* ============================================================
+   BOTÃO "CAD" NO CABEÇALHO — destacado, cor distinta do "Sync"
+   ============================================================ */
+.cad-import-btn{
+  position:relative;
+  width:auto !important;
+  padding:0 12px 0 9px !important;
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid rgba(179,120,20,.4) !important;
+  background:linear-gradient(135deg, rgba(179,120,20,.12), rgba(150,90,10,.10)) !important;
+  color:#8a5a10 !important;
+}
+.cad-import-btn:hover{
+  border-color:#b37814 !important;
+  background:linear-gradient(135deg, rgba(179,120,20,.20), rgba(150,90,10,.18)) !important;
+}
+.cad-import-btn-label{
+  font-family:'IBM Plex Sans', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+.cad-import-btn-dot{
+  width:6px; height:6px; border-radius:50%;
+  background:#b37814;
+  animation:ssDotPulse 1.8s ease-in-out infinite;
+}
+
+/* --------- checklist de layers CAD (Fase 2) --------- */
+.cad-layer-row{
+  display:flex; align-items:center; gap:10px;
+  padding:8px 10px; border-bottom:1px solid var(--line-strong);
+}
+.cad-layer-row:last-child{ border-bottom:none; }
+.cad-layer-row input[type="checkbox"]{ width:16px; height:16px; flex-shrink:0; }
+.cad-layer-row .cad-layer-name{ flex:1; font-size:13px; font-weight:600; color:var(--ink); }
+.cad-layer-row .cad-layer-count{ font-size:11.5px; color:var(--stone); }
+.cad-layer-row .cad-layer-swatch{
+  width:12px; height:12px; border-radius:3px; flex-shrink:0; border:1px solid var(--line-strong);
+}
+
+/* --------- badge de tipo de geometria sugerido --------- */
+.cad-geom-badge{
+  display:inline-block; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px;
+  background:var(--paper-deep); color:var(--stone); margin-left:6px;
+}
+.cad-geom-badge.pt{ background:rgba(31,92,107,.12); color:#1f5c6b; }
+.cad-geom-badge.ln{ background:rgba(179,120,20,.14); color:#8a5a10; }
+.cad-geom-badge.pg{ background:rgba(61,107,79,.14); color:var(--green-deep); }

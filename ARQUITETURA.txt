@@ -1,0 +1,93 @@
+
+Atualização — Sincronização Inteligente Excel/CSV → SIG (novo módulo)
+--------------------------------------------------------------------------
+Novo botão destacado no cabeçalho ("Sync", ícone de chip/automação,
+id="btn-smart-sync") que abre uma página cheia dentro da própria app
+(#smart-sync-page), com 4 secções: Nova sincronização (wizard de 6
+passos), Receitas guardadas, Automação e Histórico.
+
+Novos ficheiros:
+  - css/smart-sync.css     → estilo do botão destacado + página cheia
+  - js/06-smart-sync.js    → toda a lógica do módulo
+
+Dependência nova (CDN): SheetJS (xlsx.full.min.js), adicionada em
+engenh.html a seguir ao shpjs, antes do 06-smart-sync.js.
+
+Como funciona (resumo):
+  1) Ficheiro Excel/CSV + escolha de folha + escolha da camada SIG já
+     existente na app.
+  2) Correspondência de campos (com sugestão automática por semelhança
+     de nome) + escolha do campo-chave.
+  3) Pré-visualização: conta quantos registos serão atualizados, criados
+     ou têm erros/conflitos (chaves duplicadas, valores inválidos, etc.),
+     e quais já não têm alterações desde a última sincronização com a
+     mesma receita (deteção de alterações, guardada em localStorage).
+  4-5) Execução: atualiza apenas os campos mapeados dos objetos já
+     existentes (por comparação da chave); cria pontos novos apenas se
+     a camada for de pontos e houver colunas de latitude/longitude
+     mapeadas — para linhas/polígonos, registos sem correspondência
+     ficam assinalados como "sem geometria" em vez de inventados.
+  6) Relatório com contagens e tempo, exportável para .txt.
+  7) Receitas guardadas em localStorage (nome, camada, mapeamento, chave).
+  8) Automação: verificação periódica de uma pasta ENQUANTO a app está
+     aberta (File System Access API, funciona no Electron/Chromium). Não
+     substitui um verdadeiro agendamento ao nível do sistema operativo —
+     isso exigiria um script fora do browser.
+  11) Histórico de execuções (data, receita, contagens, utilizador),
+     guardado em localStorage.
+
+Nada do código já existente (mapa, wizard de geometrias, exportação,
+modo equipa, etc.) foi alterado — só se acrescentou este módulo novo e
+duas pequenas linhas em js/01-admin-gate.js para expor
+window.currentAdminUser (usado só para o histórico).
+
+Atualização — Importação CAD DXF/DWG → SIG (novo módulo)
+--------------------------------------------------------------------------
+Novo botão destacado no cabeçalho ("CAD", ícone de régua/esquadro,
+id="btn-cad-import", cor âmbar para se distinguir do "Sync"), a seguir
+ao botão de importar GeoJSON/Shapefile. Abre outra página cheia dentro
+da app (#cad-import-page), com 5 secções: Nova importação (wizard de 6
+passos), Perfis guardados, Importação em lote, Histórico e Como usar.
+
+Novos ficheiros:
+  - css/cad-import.css   → estilo do botão "CAD" (reutiliza de propósito
+                            as classes .ss-* já definidas em
+                            smart-sync.css para o "chrome" da página,
+                            já que ambos os ficheiros CSS são carregados
+                            em conjunto)
+  - js/07-cad-import.js  → toda a lógica do módulo
+
+Dependência nova (carregada sob pedido, via import() dinâmico, só
+quando o botão CAD é usado): "dxf-parser" a partir do CDN esm.run/
+jsdelivr — não foi adicionado nenhum <script> fixo no <head>.
+
+Âmbito e limites assumidos (importante):
+  - Só .dxf é lido de facto. .dwg é reconhecido mas NÃO é convertido —
+    é um formato binário fechado da Autodesk, sem SDK/licença não há
+    forma fiável de o ler numa página web. A app mostra instruções
+    para converter para .dxf primeiro (ODA File Converter, LibreCAD,
+    QCAD, ou "Guardar como" no AutoCAD/BricsCAD).
+  - A "deteção inteligente" (Fase 6) é um motor de REGRAS (nome do
+    layer, geometria fechada/aberta, nome de blocos inseridos) — não é
+    IA treinada, por isso o relatório final mostra contagens reais em
+    vez de uma percentagem de precisão inventada.
+  - Entidades suportadas: LINE, LWPOLYLINE/POLYLINE (abertas → linha,
+    fechadas → polígono), CIRCLE e INSERT (→ ponto), ARC (aproximado
+    por segmentos), TEXT/MTEXT (→ ponto com Label). DIMENSION e HATCH
+    são sempre ignoradas. Outras entidades (SPLINE, 3DFACE, etc.) não
+    são convertidas e ficam contabilizadas como "não suportadas" no
+    relatório, em vez de causarem erro.
+  - Reutiliza infraestrutura já existente em vez de reinventar: cada
+    camada nova é criada com layers.push(...) + importGeoJSONFeatures()
+    (que já cria os atributos automaticamente a partir das props de
+    cada feature, estiliza, ajusta o zoom, etc.) — o mesmo mecanismo já
+    usado no botão de importar GeoJSON/Shapefile. Exportação reutiliza
+    buildGeoJSON()/exportShapefileZip() já existentes; KML tem um
+    conversor novo e simples. GeoPackage não está disponível.
+  - Sistema de coordenadas de origem (Fase 7): como um DXF normal não
+    tem CRS embutido, o utilizador escolhe entre EPSG:3763 (PT-TM06,
+    pré-selecionado por ser o mais comum em Portugal), EPSG:4326, ou
+    uma definição proj4 manual — depois reprojeta-se para WGS84 com o
+    proj4 já carregado (mesma biblioteca usada em js/03-coords.js).
+
+Nada do código já existente foi alterado por este módulo.

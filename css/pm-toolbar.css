@@ -1,0 +1,22 @@
+/* ============================================================
+   TOGGLE DAS FERRAMENTAS DE EDIÇÃO (Geoman: draw / edit / drag / remove)
+   ============================================================
+   Por omissão a toolbar do Leaflet-Geoman fica escondida. Só aparece
+   quando o botão do lápis (#btn-toggle-pm-toolbar) é ativado, através
+   da classe "pm-toolbar-visible" no contentor do mapa (#map).
+*/
+#map .leaflet-pm-toolbar{
+  display:none;
+}
+#map.pm-toolbar-visible .leaflet-pm-toolbar{
+  display:block;
+}
+
+/* estado "ativo" do botão do lápis no cabeçalho, quando as ferramentas
+   estão visíveis — mesmo padrão visual usado noutros botões do header
+   (ex: .is-syncing) */
+.feedback-nav-btn#btn-toggle-pm-toolbar.is-active{
+  border-color:var(--green);
+  color:var(--green-deep);
+  background:rgba(31,92,107,.08);
+}
