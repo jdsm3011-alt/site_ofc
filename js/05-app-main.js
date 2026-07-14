@@ -3627,7 +3627,7 @@ function geometryStatsHTML(entry){
   }
 
   let warnHtml = '';
-  if(entry.hasOverlap){
+  if(entry.hasOverlap && topologyWarningsEnabled){
     warnHtml = `<div class="stats-popup-warn">⚠ Sobreposto a: ${entry.overlapsWith.join(', ')}</div>`;
   }
 
@@ -3779,6 +3779,12 @@ function checkAllTopology(){
     for(let j=i+1; j<polyEntries.length; j++){
       const b = polyEntries[j];
 
+      // só interessa sobreposição DENTRO da mesma camada — polígonos de
+      // camadas distintas podem legitimamente coincidir no espaço (ex.: um
+      // limite de município e uma camada de uso do solo) e isso não é um
+      // erro de topologia a assinalar ao utilizador
+      if(a.entry.layerId !== b.entry.layerId) continue;
+
       // rejeição rápida e barata: se as bounding boxes nem sequer se sobrepõem,
       // as geometrias reais também não podem sobrepor-se — evita chamar as
       // operações turf.js (muito mais caras) para a maioria dos pares
@@ -3809,6 +3815,7 @@ function checkAllTopology(){
   });
 
   refreshFeatList();
+  updateTopologyWarnButton();
 }
 
 function getWarnColor(){
@@ -3816,9 +3823,42 @@ function getWarnColor(){
   return v || '#B5472B';
 }
 
+/* ---------- avisos de sobreposição: ligar/desligar (botão no header) ----------
+   Só afeta a APRESENTAÇÃO (tracejado nas arestas, badge na tabela, aviso no
+   popup) — a deteção em si (entry.hasOverlap/overlapsWith) continua sempre
+   ativa, para o botão saber quando aparecer/desaparecer. A preferência fica
+   guardada no localStorage, por isso mantém-se entre sessões. */
+let topologyWarningsEnabled = localStorage.getItem('dgpt_topology_warnings_off') !== '1';
+
+function toggleTopologyWarnings(){
+  topologyWarningsEnabled = !topologyWarningsEnabled;
+  try{ localStorage.setItem('dgpt_topology_warnings_off', topologyWarningsEnabled ? '0' : '1'); }
+  catch(err){ /* localStorage indisponível, ignora */ }
+
+  featuresData.forEach(entry=>{ if(entry.hasOverlap) applyTopologyVisual(entry); });
+  refreshFeatList();
+  updateTopologyWarnButton();
+}
+
+function updateTopologyWarnButton(){
+  const btn = document.getElementById('btn-topology-warn-toggle');
+  if(!btn) return;
+  let hasAnyOverlap = false;
+  featuresData.forEach(e => { if(e.hasOverlap) hasAnyOverlap = true; });
+  btn.classList.toggle('hidden', !hasAnyOverlap);
+  btn.classList.toggle('has-overlap-warn', hasAnyOverlap && topologyWarningsEnabled);
+  btn.classList.toggle('is-active', hasAnyOverlap && !topologyWarningsEnabled);
+  btn.setAttribute('aria-pressed', String(!topologyWarningsEnabled));
+  btn.title = topologyWarningsEnabled
+    ? 'Sobreposições detetadas — clicar para desligar os avisos'
+    : 'Avisos de sobreposição desligados — clicar para voltar a ligar';
+}
+
+document.getElementById('btn-topology-warn-toggle')?.addEventListener('click', toggleTopologyWarnings);
+
 function applyTopologyVisual(entry){
   if(!entry.layer.setStyle) return;
-  if(entry.hasOverlap){
+  if(entry.hasOverlap && topologyWarningsEnabled){
     entry.layer.setStyle({color: getWarnColor(), weight:4, dashArray:'8 5', fillOpacity:.25});
   } else {
     // repõe o estilo normal (categórico, se aplicável, senão a cor por defeito)
@@ -4273,10 +4313,27 @@ function renderLayersPanel(){
       </li>`;
     if(!isActive) return rowHTML;
     // camada ativa: mostra por baixo uma mini-legenda com as cores atuais; clicar nela abre a Simbologia
-    const swatches = layerSwatchColors(schema).slice(0, 20);
+    const allSwatches = layerSwatchColors(schema);
+    const hasLabels = allSwatches.some(s => s.label != null);
+    const LEGEND_LIMIT = 25;
+    const swatches = allSwatches.slice(0, LEGEND_LIMIT);
+    const extraCount = allSwatches.length - swatches.length;
+
+    const legendInnerHTML = hasLabels
+      ? `
+        <ul class="layer-legend-list" style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; width:100%;">
+          ${swatches.map(s=>`
+            <li class="layer-legend-item" style="display:flex; align-items:center; gap:6px; font-size:11.5px; line-height:1.3; color:var(--stone, #8a8478);">
+              <span class="layer-legend-swatch" style="background:${escapeHtml(s.color)}; width:11px; height:11px; min-width:11px; border-radius:3px; display:inline-block;"></span>
+              <span class="layer-legend-label" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s.label!=null ? escapeHtml(String(s.label)) : '—'}</span>
+            </li>`).join('')}
+          ${extraCount > 0 ? `<li class="layer-legend-item layer-legend-more" style="font-size:11px; color:var(--stone, #8a8478); padding-left:17px;">+ ${extraCount} classe(s)</li>` : ''}
+        </ul>`
+      : swatches.map(s=>`<span class="layer-legend-swatch" style="background:${escapeHtml(s.color)}"></span>`).join('');
+
     const legendHTML = `
       <li class="layer-legend-row" data-legend-for="${id}" title="Clica para abrir a Simbologia">
-        ${swatches.map(s=>`<span class="layer-legend-swatch" style="background:${escapeHtml(s.color)}" ${s.label!=null?`title="${escapeHtml(String(s.label))}"`:''}></span>`).join('')}
+        ${legendInnerHTML}
       </li>`;
     return rowHTML + legendHTML;
   }).join('') || '';
@@ -5040,7 +5097,7 @@ function renderAttrTable(layerId){
     return;
   }
 
-  const overlapCount = entries.filter(e=>e.hasOverlap).length;
+  const overlapCount = entries.filter(e=>e.hasOverlap && topologyWarningsEnabled).length;
   if(countPill){
     countPill.textContent = entries.length === 1 ? '1 geometria' : `${entries.length} geometrias`;
     if(overlapCount > 0){
@@ -5059,11 +5116,12 @@ function renderAttrTable(layerId){
       const { attrs, html } = formatAttrCellHtml(a, entry.props[a.name]);
       return `<td ${attrs}>${html}</td>`;
     }).join('');
-    const overlapBadge = entry.hasOverlap
+    const showOverlap = entry.hasOverlap && topologyWarningsEnabled;
+    const overlapBadge = showOverlap
       ? `<span class="overlap-badge" title="Esta geometria sobrepõe-se a outra">${ATTR_ACTION_ICONS.overlap}</span>`
       : '';
     rows.push(`
-      <tr data-row-id="${entry.id}" class="${entry.hasOverlap ? 'has-overlap' : ''}">
+      <tr data-row-id="${entry.id}" class="${showOverlap ? 'has-overlap' : ''}">
         <td class="id-cell"><span class="id-cell-inner"><span class="id-badge">${i}</span>${overlapBadge}</span></td>
         ${attrCells}
         <td class="actions-cell">

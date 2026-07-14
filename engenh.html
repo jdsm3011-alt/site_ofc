@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="css/cad-import.css">
 <link rel="stylesheet" href="css/tools-menu.css">
 <link rel="stylesheet" href="css/layouts.css">
+<link rel="stylesheet" href="css/portal-bridge.css">
 </head>
 <body>
 
@@ -116,6 +117,12 @@
     <button type="button" class="feedback-nav-btn" id="btn-open-municipios" title="Limites de município" aria-label="Limites de município">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l5-6 8 2 4 6-2 9-11 1-4-5z"/></svg>
     </button>
+
+    <button type="button" class="feedback-nav-btn" id="btn-portal-bridge" title="Ligar ao Portal DataGis — importar dados por município" aria-label="Ligar ao Portal DataGis" aria-haspopup="true" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="M12 12v6"/><path d="m9.5 15.5 2.5 2.5 2.5-2.5"/></svg>
+    </button>
+
+
     <button type="button" class="feedback-nav-btn" id="btn-open-analysis" title="Análise espacial" aria-label="Análise espacial">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="9.5" r="6.5"/><circle cx="14.5" cy="14.5" r="6.5"/></svg>
     </button>
@@ -143,6 +150,10 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     </button>
 
+
+    <button type="button" class="feedback-nav-btn hidden" id="btn-topology-warn-toggle" title="Sobreposições detetadas — clicar para desligar os avisos" aria-label="Avisos de sobreposição" aria-pressed="false">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
 
     <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro" aria-label="Alternar tema claro/escuro">
       <span class="icon-sun">&#9728;</span>
@@ -329,6 +340,49 @@
     <b>Carregados</b>
     <ul class="municipios-loaded-list" id="municipios-loaded-list"></ul>
     <p class="sub" id="municipios-empty-msg">Nenhum limite carregado ainda.</p>
+  </div>
+</div>
+
+<!-- ============================================================
+     LIGAR AO PORTAL — ponte entre o Engenh e o portal DataGis
+     (https://datagispt.gispt.workers.dev/). Traz dados do portal
+     diretamente para o mapa como uma camada nova e editável.
+     Toda a lógica vive em js/10-portal-bridge.js.
+     ============================================================ -->
+<div id="portal-bridge-panel" class="portal-bridge-panel hidden" role="dialog" aria-label="Ligar ao Portal DataGis">
+  <div class="portal-bridge-header">
+    <div>
+      <div class="portal-bridge-eyebrow">DataGis Portal</div>
+      <b>Ligar ao Portal</b>
+    </div>
+    <button type="button" class="portal-bridge-close" id="portal-bridge-close" title="Fechar" aria-label="Fechar">✕</button>
+  </div>
+
+  <div class="portal-bridge-body">
+
+    <div class="portal-bridge-section" data-pb-view="search">
+      <p class="portal-bridge-hint">Escolhe um município para veres os conteúdos do portal disponíveis para importar como camada no Engenh.</p>
+      <input type="text" id="pb-caop-search" placeholder="Escreve o nome do município…" autocomplete="off">
+      <ul class="portal-bridge-results" id="pb-caop-results"></ul>
+    </div>
+
+    <div class="portal-bridge-section hidden" data-pb-view="contents">
+      <button type="button" class="portal-bridge-back" id="pb-back-btn">‹ Trocar de município</button>
+      <div class="portal-bridge-selected" id="pb-selected-municipio"></div>
+      <ul class="portal-bridge-content-list" id="pb-content-list"></ul>
+      <p class="sub" id="pb-content-status" style="min-height:14px; margin:6px 0 0;"></p>
+    </div>
+
+    <div class="portal-bridge-section hidden" data-pb-view="osm">
+      <button type="button" class="portal-bridge-back" id="pb-osm-back-btn">‹ Voltar aos conteúdos</button>
+      <div class="portal-bridge-selected" id="pb-osm-title"></div>
+      <ul class="portal-bridge-content-list" id="pb-osm-list"></ul>
+      <p class="sub" id="pb-osm-status" style="min-height:14px; margin:6px 0 0;"></p>
+    </div>
+
+    <div class="portal-bridge-footer">
+      <a href="https://datagispt.gispt.workers.dev/" target="_blank" rel="noopener">Abrir o portal DataGis ↗</a>
+    </div>
   </div>
 </div>
 
@@ -1048,6 +1102,7 @@
 <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="js/09-layouts.js"></script>
+<script src="js/10-portal-bridge.js"></script>
 
 <script>
 (function(){
