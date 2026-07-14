@@ -234,6 +234,34 @@ async function handleChunkDownload(req, env, slug, index) {
   return json({ ok: true, data: chunkFile.content });
 }
 
+async function handleDownloadProxy(req, env) {
+  const reqUrl = new URL(req.url);
+  const target = reqUrl.searchParams.get("url");
+  if (!target) return json({ error: "parâmetro 'url' em falta" }, 400);
+
+  // só deixa fazer proxy a GitHub Releases do próprio repositório (evita open proxy / SSRF)
+  const allowedPrefix = `https://github.com/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/releases/download/`;
+  if (!target.startsWith(allowedPrefix)) {
+    return json({ error: "url não permitido" }, 403);
+  }
+
+  let upstream;
+  try {
+    upstream = await fetch(target, { redirect: "follow" });
+  } catch (err) {
+    return json({ error: `falha ao contactar o GitHub Releases: ${err.message}` }, 502);
+  }
+  if (!upstream.ok) {
+    return json({ error: `GitHub Releases devolveu ${upstream.status}` }, upstream.status);
+  }
+
+  const headers = new Headers();
+  headers.set("Content-Type", upstream.headers.get("Content-Type") || "application/octet-stream");
+  const len = upstream.headers.get("Content-Length");
+  if (len) headers.set("Content-Length", len);
+  return new Response(upstream.body, { status: 200, headers });
+}
+
 // ---------- router ----------
 
 export default {
@@ -245,6 +273,11 @@ export default {
     const parts = url.pathname.split("/").filter(Boolean); // ["api","projects", ...]
 
     try {
+      // GET /api/download?url=<GitHub Release asset> — proxy sem CORS -> com CORS
+      if (parts[0] === "api" && parts[1] === "download" && parts.length === 2 && req.method === "GET") {
+        return cors(await handleDownloadProxy(req, env), origin);
+      }
+
       if (parts[0] !== "api" || parts[1] !== "projects") {
         return cors(json({ error: "not found" }, 404), origin);
       }
