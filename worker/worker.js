@@ -262,6 +262,53 @@ async function handleDownloadProxy(req, env) {
   return new Response(upstream.body, { status: 200, headers });
 }
 
+/* Proxy dedicado ao WMS de ortofotos da DGT, usado pela autogeoreferenciação
+ * (12-autogeoref.js / runAutoGeorefDetection) para obter o tile de referência.
+ * Existe separado de handleDownloadProxy porque:
+ *   - o browser não consegue fazer fetch() direto ao servidor da DGT (sem
+ *     cabeçalhos CORS na resposta);
+ *   - handleDownloadProxy está (corretamente) restrito só a GitHub Releases,
+ *     por isso nunca serviria para isto;
+ *   - proxies públicos gratuitos (allorigins.win, corsproxy.io,
+ *     thingproxy.freeboard.io) mostraram-se todos indisponíveis/pouco fiáveis
+ *     na prática — não vale a pena depender deles.
+ * Restrito só a pedidos GetMap ao domínio/serviço da DGT, para não se tornar
+ * um proxy aberto. */
+async function handleDgtTileProxy(req, env) {
+  const reqUrl = new URL(req.url);
+  const target = reqUrl.searchParams.get("url");
+  if (!target) return json({ error: "parâmetro 'url' em falta" }, 400);
+
+  const allowedPrefix = "https://cartografia.dgterritorio.gov.pt/wms/";
+  let parsedTarget;
+  try {
+    parsedTarget = new URL(target);
+  } catch (err) {
+    return json({ error: "url inválido" }, 400);
+  }
+  const request = (parsedTarget.searchParams.get("request") || "").toUpperCase();
+  const service = (parsedTarget.searchParams.get("service") || "").toUpperCase();
+  if (!target.startsWith(allowedPrefix) || service !== "WMS" || request !== "GETMAP") {
+    return json({ error: "url não permitido" }, 403);
+  }
+
+  let upstream;
+  try {
+    upstream = await fetch(target, { redirect: "follow" });
+  } catch (err) {
+    return json({ error: `falha ao contactar a DGT: ${err.message}` }, 502);
+  }
+  if (!upstream.ok) {
+    return json({ error: `DGT devolveu ${upstream.status}` }, upstream.status);
+  }
+
+  const headers = new Headers();
+  headers.set("Content-Type", upstream.headers.get("Content-Type") || "image/jpeg");
+  const len = upstream.headers.get("Content-Length");
+  if (len) headers.set("Content-Length", len);
+  return new Response(upstream.body, { status: 200, headers });
+}
+
 // ---------- router ----------
 
 export default {
@@ -276,6 +323,11 @@ export default {
       // GET /api/download?url=<GitHub Release asset> — proxy sem CORS -> com CORS
       if (parts[0] === "api" && parts[1] === "download" && parts.length === 2 && req.method === "GET") {
         return cors(await handleDownloadProxy(req, env), origin);
+      }
+
+      // GET /api/dgt-tile?url=<WMS GetMap da DGT ortos> — proxy sem CORS -> com CORS
+      if (parts[0] === "api" && parts[1] === "dgt-tile" && parts.length === 2 && req.method === "GET") {
+        return cors(await handleDgtTileProxy(req, env), origin);
       }
 
       if (parts[0] !== "api" || parts[1] !== "projects") {
