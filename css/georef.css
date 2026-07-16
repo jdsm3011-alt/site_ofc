@@ -1,0 +1,833 @@
+/* ============================================================
+   GEORREFERENCIAÇÃO — estilos do módulo
+   ------------------------------------------------------------
+   FASE 0: ainda sem UI. Este ficheiro fica só reservado, com a
+   convenção de cores/tipografia da app pronta a ser usada quando
+   a Fase 3 (modo de georreferenciação) construir:
+     - a barra superior do modo ("Pontos: 0/4", Cancelar/Aplicar)
+     - o painel de GCPs
+     - o botão "🎯 Georreferenciar" no header
+     - o ícone de camada "não georreferenciada"
+   ============================================================ */
+
+/* FASE 1: painel lateral "Imagens", separado da lista de camadas
+   vetoriais — uma imagem não tem geometryType/atributos/simbologia,
+   por isso ganha o seu próprio bloco simples em vez de forçar o
+   template das camadas vetoriais. */
+#raster-panel{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--paper-elevated, #e8e2d6);
+}
+.raster-panel-title{
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--stone, #8a8478);
+}
+.raster-layers-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.raster-row{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--paper-elevated, #f4efe4);
+  font-size: 12.5px;
+}
+.raster-row.is-pending{
+  outline: 1px dashed color-mix(in srgb, var(--green-deep, #3c5a45) 45%, transparent);
+}
+.raster-status-icon{ flex: 0 0 auto; }
+.raster-name{
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.raster-status-label{
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  color: var(--stone, #8a8478);
+  white-space: nowrap;
+}
+.raster-focus-btn, .raster-remove-btn{
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 2px;
+  opacity: .75;
+}
+.raster-focus-btn:hover, .raster-remove-btn:hover{ opacity: 1; }
+
+/* imagem colocada provisoriamente em (0,0), antes de passar pelo modo
+   de georreferenciação — contorno tracejado para deixar claro que a
+   posição não é real */
+.raster-overlay-pending{
+  outline: 2px dashed color-mix(in srgb, var(--green-deep, #3c5a45) 60%, transparent);
+  outline-offset: -2px;
+}
+
+/* FASE 2: seletor da imagem a georreferenciar, quando há mais do que
+   uma pendente — mesmo padrão de menu flutuante position:fixed usado
+   no resto da app (ex.: offline-areas-menu) */
+#georef-picker-menu{
+  position: fixed;
+  z-index: 2000;
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--paper-elevated, #fff);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.georef-picker-item{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.georef-picker-item:hover{
+  background: color-mix(in srgb, var(--green-deep, #3c5a45) 10%, transparent);
+}
+
+/* FASE 7: menu de opções de exportação de raster — mesmo padrão de menu
+   flutuante position:fixed usado no seletor acima */
+#raster-export-menu{
+  position: fixed;
+  z-index: 2000;
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--paper-elevated, #fff);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.raster-export-item{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 7px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12.5px;
+}
+.raster-export-item:hover{
+  background: color-mix(in srgb, var(--green-deep, #3c5a45) 10%, transparent);
+}
+.raster-export-item .raster-export-item-hint{
+  font-size: 10.5px;
+  color: var(--stone, #8a8478);
+}
+
+/* ============================================================
+   FASE 2b: destaque animado do botão "🎯 Georreferenciar" no
+   header, para guiar o utilizador assim que importa uma imagem
+   sem georreferenciação. Três camadas, para não ficar exagerado:
+     1) "pop" de entrada quando o botão deixa de estar escondido
+     2) anel a pulsar em torno do botão, contínuo mas subtil
+     3) o próprio ícone dá um "aceno" periódico
+   Tudo pausa quando o utilizador já está a interagir com o botão
+   (menu de seleção aberto) ou dentro do modo de georreferenciação,
+   para não distrair de propósito quem já está a tratar do assunto.
+   ============================================================ */
+#btn-georef-mode{
+  position: relative;
+  overflow: visible;
+}
+#btn-georef-mode.is-attention{
+  animation: georef-btn-pop .45s cubic-bezier(.34,1.56,.64,1);
+}
+#btn-georef-mode.is-attention::after{
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 999px;
+  border: 2px solid var(--green-deep, #3c5a45);
+  opacity: .6;
+  animation: georef-btn-ring 1.8s ease-out infinite;
+  pointer-events: none;
+}
+#btn-georef-mode.is-attention.is-paused::after{
+  animation-play-state: paused;
+  opacity: 0;
+}
+#btn-georef-mode.is-attention .georef-btn-icon{
+  display: inline-flex;
+  animation: georef-btn-wiggle 2.6s ease-in-out infinite;
+  animation-delay: .5s;
+}
+#btn-georef-mode.is-attention.is-paused .georef-btn-icon{
+  animation-play-state: paused;
+}
+.georef-btn-badge{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 15px;
+  height: 15px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #b5472b;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--paper, #fff);
+  animation: georef-btn-badge-pop .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+}
+.georef-btn-badge.hidden{ display: none; }
+
+@keyframes georef-btn-pop{
+  0%{ transform: scale(.55); }
+  55%{ transform: scale(1.2); }
+  100%{ transform: scale(1); }
+}
+@keyframes georef-btn-ring{
+  0%{ transform: scale(1); opacity: .6; }
+  100%{ transform: scale(1.6); opacity: 0; }
+}
+@keyframes georef-btn-wiggle{
+  0%, 94%, 100%{ transform: rotate(0deg); }
+  4%{ transform: rotate(-13deg); }
+  8%{ transform: rotate(11deg); }
+  12%{ transform: rotate(-8deg); }
+  16%{ transform: rotate(6deg); }
+  20%{ transform: rotate(0deg); }
+}
+@keyframes georef-btn-badge-pop{
+  0%{ transform: scale(0); }
+  70%{ transform: scale(1.25); }
+  100%{ transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce){
+  #btn-georef-mode.is-attention,
+  #btn-georef-mode.is-attention::after,
+  #btn-georef-mode.is-attention .georef-btn-icon,
+  .georef-btn-badge{
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   FASE 3: esqueleto do modo de georreferenciação
+   ------------------------------------------------------------
+   Posicionamento em position:fixed, calculado em JS a partir de
+   #map.getBoundingClientRect() — mesma convenção usada no resto
+   da app para overlays flutuantes (ex.: #georef-picker-menu acima).
+   ============================================================ */
+
+/* bloqueia as restantes ferramentas enquanto o modo está ativo:
+   cabeçalho e painel de camadas ficam visíveis mas inertes; o mapa
+   em si e os novos elementos flutuantes do modo continuam ativos */
+body.georef-mode-active header,
+body.georef-mode-active #sidebar{
+  pointer-events: none;
+  opacity: .5;
+  filter: grayscale(.2);
+  transition: opacity .15s ease;
+}
+
+/* --- popup "Pronto para georreferenciar" ao entrar no modo --- */
+.georef-ready-popup .leaflet-popup-content-wrapper{
+  background: var(--green-deep, #3c5a45);
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+.georef-ready-popup .leaflet-popup-content{
+  margin: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.georef-ready-popup .leaflet-popup-tip{
+  background: var(--green-deep, #3c5a45);
+}
+.georef-ready-popup .leaflet-popup-close-button{
+  color: #fff !important;
+}
+
+/* --- notificação flutuante persistente --- */
+.georef-active-banner{
+  position: fixed;
+  z-index: 1400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green-deep, #3c5a45);
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0,0,0,.2);
+  pointer-events: none;
+}
+.georef-active-banner.hidden{ display: none; }
+.georef-active-banner .dot{
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  animation: georef-pulse 1.6s ease-in-out infinite;
+}
+@keyframes georef-pulse{
+  0%, 100%{ opacity: 1; }
+  50%{ opacity: .35; }
+}
+
+/* --- barra superior modal --- */
+#georef-mode-topbar{
+  position: fixed;
+  z-index: 1500;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--paper-elevated, #fff);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  padding: 9px 14px;
+  font-size: 13px;
+  max-width: calc(100vw - 32px);
+}
+#georef-mode-topbar.hidden{ display: none; }
+.georef-topbar-title{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.georef-topbar-title #georef-topbar-name{
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.georef-topbar-stats{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--stone, #8a8478);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding: 0 12px;
+  border-left: 1px solid var(--paper-elevated, #e8e2d6);
+  border-right: 1px solid var(--paper-elevated, #e8e2d6);
+}
+.georef-topbar-rms{ font-weight: 600; }
+.georef-topbar-rms.is-good{ color: #2f7d4f; }
+.georef-topbar-rms.is-warn{ color: #b8860b; }
+.georef-topbar-rms.is-bad{ color: #b5472b; }
+.georef-topbar-actions{
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* --- painel lateral flutuante da imagem --- */
+#georef-image-panel{
+  position: fixed;
+  z-index: 1450;
+  /* largura/altura definidas via JS (positionGeorefOverlays) para
+     ocupar exatamente a metade direita da área do mapa — a outra
+     metade fica livre para o basemap normal */
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-elevated, #fff);
+  box-shadow: -8px 0 24px rgba(0,0,0,.2);
+  border-left: 1px solid var(--paper-elevated, #e8e2d6);
+  overflow: hidden;
+}
+#georef-image-panel.hidden{ display: none; }
+.georef-panel-close-btn{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--stone, #8a8478);
+  background: color-mix(in srgb, var(--paper-elevated, #e8e2d6) 65%, transparent);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.georef-panel-close-btn:hover{
+  background: color-mix(in srgb, #b5472b 15%, transparent);
+  color: #b5472b;
+}
+.georef-image-panel-header{
+  padding: 9px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--stone, #8a8478);
+  border-bottom: 1px solid var(--paper-elevated, #e8e2d6);
+  flex: 0 0 auto;
+}
+.georef-image-panel-body{
+  flex: 1 1 auto;
+  min-height: 120px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background:
+    linear-gradient(45deg, #00000009 25%, transparent 25%, transparent 75%, #00000009 75%) 0 0/16px 16px,
+    linear-gradient(45deg, #00000009 25%, transparent 25%, transparent 75%, #00000009 75%) 8px 8px/16px 16px;
+  cursor: default;
+}
+.georef-image-panel-body.georef-manual-active{
+  cursor: crosshair;
+}
+.georef-gcp-list-wrap.hidden{ display: none; }
+
+/* --- botão de recurso ao modo manual (só após falha automática) --- */
+.georef-manual-fallback-btn{
+  width: 100%;
+  text-align: center;
+  line-height: 1.35;
+  padding: 9px 12px;
+  font-size: 12px;
+  border-color: color-mix(in srgb, #b5472b 35%, transparent);
+  color: #8a3b24;
+  background: color-mix(in srgb, #b5472b 6%, var(--paper-elevated, #fff));
+}
+.georef-manual-fallback-btn:hover{
+  background: color-mix(in srgb, #b5472b 12%, var(--paper-elevated, #fff));
+}
+.georef-manual-fallback-btn.hidden{ display: none; }
+#georef-image-el{
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.georef-image-panel-footer{
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--paper-elevated, #e8e2d6);
+}
+
+/* --- linha que agrupa "Autogeoreferenciar" + "Aplicar alterações", quando
+   este último aparece após uma deteção automática com sucesso (ver
+   ensureGeorefApplyChangesButton em 05-app-main.js) --- */
+.georef-auto-footer-row{
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.georef-auto-footer-row .georef-auto-btn{
+  width: auto;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+/* --- botão "Aplicar alterações": só existe para o fluxo automático,
+   invisível até a deteção terminar com sucesso --- */
+.georef-apply-changes-btn{
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  line-height: 1.2;
+  color: #fff;
+  background: var(--green-deep, #3c5a45);
+  cursor: pointer;
+  transition: opacity .15s ease, transform .1s ease;
+}
+.georef-apply-changes-btn:hover:not(:disabled){ opacity: .9; }
+.georef-apply-changes-btn:active:not(:disabled){ transform: scale(.98); }
+.georef-apply-changes-btn:disabled{ opacity: .5; cursor: not-allowed; }
+.georef-apply-changes-btn.hidden{ display: none; }
+
+/* --- botão "Autogeoreferenciar" com spinner inline --- */
+.georef-auto-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  transition: opacity .15s ease;
+}
+.georef-auto-btn-spinner{
+  display: none;
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+}
+.georef-auto-btn.is-busy{
+  cursor: progress;
+  opacity: .85;
+}
+.georef-auto-btn.is-busy .georef-auto-btn-spinner{
+  display: inline-block;
+  animation: georef-progress-spin .8s linear infinite;
+}
+.georef-auto-btn.is-disabled,
+.georef-auto-btn:disabled{
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* --- linha de estado (ponto + texto) --- */
+.georef-auto-status{
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--stone, #8a8478);
+}
+.georef-auto-status-dot{
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--stone, #8a8478);
+  opacity: .55;
+}
+.georef-auto-status-text{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.georef-auto-status[data-state="working"]{
+  color: var(--text, #2d2a24);
+}
+.georef-auto-status[data-state="working"] .georef-auto-status-dot{
+  background: var(--green-deep, #3c5a45);
+  opacity: 1;
+  animation: georef-pulse 1.2s ease-in-out infinite;
+}
+.georef-auto-status[data-state="success"]{
+  color: #2f7d4f;
+}
+.georef-auto-status[data-state="success"] .georef-auto-status-dot{
+  background: #2f7d4f;
+  opacity: 1;
+}
+.georef-auto-status[data-state="error"],
+.georef-auto-status.is-error{
+  color: #b5472b;
+}
+.georef-auto-status[data-state="error"] .georef-auto-status-dot,
+.georef-auto-status.is-error .georef-auto-status-dot{
+  background: #b5472b;
+  opacity: 1;
+}
+
+/* ============================================================
+   FASE 4: captura de GCPs (clicar imagem → clicar mapa)
+   ============================================================ */
+
+/* wrapper posicionado exatamente sobre a imagem renderizada, para os
+   números ①②③ serem colocados em percentagem (x/largura, y/altura)
+   e acompanharem automaticamente qualquer redimensionamento */
+#georef-image-canvas-wrap{
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
+}
+
+.georef-gcp-image-marker,
+.georef-gcp-pending-marker{
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.georef-gcp-image-marker{
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--green-deep, #3c5a45);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.3);
+}
+
+.georef-gcp-pending-marker{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px dashed #fff;
+  box-shadow: 0 0 0 2px var(--green-deep, #3c5a45), 0 2px 6px rgba(0,0,0,.3);
+  animation: georef-pulse 1.2s ease-in-out infinite;
+}
+
+/* marcadores correspondentes no mapa (Leaflet divIcon) */
+.georef-gcp-map-marker span{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--green-deep, #3c5a45);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.3);
+}
+.georef-gcp-pending-map-marker{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px dashed var(--green-deep, #3c5a45);
+  background: #fff;
+  animation: georef-pulse 1.2s ease-in-out infinite;
+}
+
+/* --- mini consola da autogeorreferenciação (canto inferior direito) --- */
+#georef-auto-progress{
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  top: auto;
+  z-index: 1850;
+  min-width: 320px;
+  max-width: 420px;
+  border-radius: 10px;
+  background: #1e1e1e;
+  border: 1px solid #3c3c3c;
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: Consolas, 'Courier New', monospace;
+}
+#georef-auto-progress.hidden{ display: none; }
+#georef-auto-progress.is-success{
+  border-color: #2f7d4f;
+}
+#georef-auto-progress.is-error{
+  border-color: #b5472b;
+}
+.georef-auto-console-header{
+  flex: 0 0 auto;
+  padding: 8px 10px 6px;
+  border-bottom: 1px solid #333;
+  background: #252526;
+}
+.georef-auto-console-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.georef-auto-console-title{
+  font-size: 11px;
+  font-weight: 600;
+  color: #cccccc;
+  letter-spacing: .02em;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+.georef-auto-console-pill{
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: #858585;
+  white-space: nowrap;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+#georef-auto-progress.is-working .georef-auto-console-pill{
+  color: #4ec9b0;
+}
+#georef-auto-progress.is-success .georef-auto-console-pill{
+  color: #4ec9b0;
+}
+#georef-auto-progress.is-error .georef-auto-console-pill{
+  color: #f48771;
+}
+.georef-auto-console-source{
+  font-size: 10px;
+  color: #858585;
+  margin-top: 2px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+.georef-auto-console-source:empty{ display: none; }
+.georef-auto-console-log{
+  flex: 1 1 auto;
+  height: 200px;
+  max-height: 38vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1.45;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #1e1e1e;
+}
+.georef-auto-console-log::-webkit-scrollbar{ width: 6px; }
+.georef-auto-console-log::-webkit-scrollbar-thumb{
+  background: #555;
+  border-radius: 3px;
+}
+.georef-auto-console-line{
+  display: flex;
+  gap: 6px;
+  padding: 1px 0;
+  word-break: break-word;
+}
+.georef-auto-console-ts{
+  flex: 0 0 auto;
+  color: #6a9955;
+  user-select: none;
+}
+.georef-auto-console-msg{
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #d4d4d4;
+}
+.georef-auto-console-line.is-warn .georef-auto-console-msg{ color: #cca700; }
+.georef-auto-console-line.is-error .georef-auto-console-msg{ color: #f48771; }
+.georef-auto-console-line.is-info .georef-auto-console-msg{ color: #9cdcfe; }
+.btn.is-busy{
+  opacity: .75;
+  cursor: progress;
+}
+.btn.is-busy:hover{
+  opacity: .75;
+}
+
+.georef-gcp-list-wrap{
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-top: 1px solid var(--paper-elevated, #e8e2d6);
+}
+.georef-gcp-list-header{
+  padding: 8px 12px 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: var(--stone, #8a8478);
+  flex: 0 0 auto;
+}
+.georef-gcp-list{
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px 8px;
+  overflow-y: auto;
+  max-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.georef-gcp-empty{
+  padding: 6px 4px;
+  font-size: 11.5px;
+  color: var(--stone, #8a8478);
+}
+.georef-gcp-item{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--green-deep, #3c5a45) 6%, transparent);
+  font-size: 11px;
+}
+.georef-gcp-item-num{
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: var(--green-deep, #3c5a45);
+  white-space: nowrap;
+}
+.georef-gcp-item-coords{
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--stone, #8a8478);
+  font-variant-numeric: tabular-nums;
+}
+.georef-gcp-item-error{
+  flex: 0 0 auto;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.georef-gcp-item-edit,
+.georef-gcp-item-remove{
+  flex: 0 0 auto;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11.5px;
+  line-height: 1;
+  padding: 2px;
+  opacity: .75;
+}
+.georef-gcp-item-edit:hover,
+.georef-gcp-item-remove:hover{ opacity: 1; }
