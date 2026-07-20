@@ -154,7 +154,15 @@ async function ransacAffine(matches, opts){
   let best = {inlierCount: -1, inlierIdx: null, transform: null};
 
   for(let iter = 0; iter < iterations; iter++){
-    if(iter % 20 === 0 && performance.now() - startTime > timeoutMs) break;
+    if(iter % 20 === 0){
+      // cede o event loop periodicamente — sem isto, o loop corre inteiramente
+      // síncrono e o heartbeat (setInterval) fica sem oportunidade de disparar
+      // durante a computação, tal como seria de esperar de um "worker vivo mas
+      // ocupado" (ver cabeçalho do ficheiro). Mesmo padrão da versão main-thread
+      // em 12-autogeoref.js.
+      await new Promise(resolve => setTimeout(resolve, 0));
+      if(performance.now() - startTime > timeoutMs) break;
+    }
 
     const sampleIdx = sampleThreeDistinctIndices(matches.length);
     const sample = sampleIdx.map(i => toGcpFormat(matches[i]));
@@ -325,7 +333,7 @@ const FAST_OFFSETS = [
 ];
 const FAST_THRESHOLD = 22;   // diferença de intensidade mínima (0-255) para contar como mais claro/escuro
 const FAST_ARC_LEN = 9;      // nº mínimo de pontos contíguos no círculo de 16 para ser canto
-const FAST_BORDER = 17;      // margem: cobre o círculo do FAST (raio 3) + a mancha da orientação/BRIEF (raio 15)
+const FAST_BORDER = 18;      // margem: cobre o círculo do FAST (raio 3) + a mancha da orientação/BRIEF (raio 15)
 const NMS_MIN_DIST = 6;      // distância mínima (px) entre cantos aceites, para espalhar os pontos pela imagem
 
 /* Fase C: o mosaico de referência (768×768, ver 05-app-main.js) faz o FAST
@@ -578,12 +586,16 @@ function computeFeatures(bitmap, nFeatures, maxImageDim, label, postStatus, equa
   return { keypoints, descriptors, scale, count: descriptors.length };
 }
 
-function matchFeaturesJS(feat1, feat2, ratioTestThreshold, label, postStatus){
+function matchFeaturesJS(feat1, feat2, ratioTestThreshold, label, postStatus, matchStrategy){
   const emit = (text)=> postStatus && postStatus(text);
   const { keypoints: kp1, descriptors: desc1, scale: scale1 } = feat1;
   const { keypoints: kp2, descriptors: desc2, scale: scale2 } = feat2;
-  const matches = [];
+  const strategy = matchStrategy || 'both'; // 'ratio' | 'crossCheck' | 'both' — mesmo default que matchDescriptors em 12-autogeoref.js
   const t = performance.now();
+
+  // direção 1→2: candidatos que passam o ratio test de Lowe (ignorado se a
+  // estratégia for só 'crossCheck', tal como na versão main-thread)
+  const candidates = []; // {i, bestJ, best}
   for(let i=0; i<desc1.length; i++){
     let best = Infinity, second = Infinity, bestJ = -1;
     const d1 = desc1[i];
@@ -593,26 +605,49 @@ function matchFeaturesJS(feat1, feat2, ratioTestThreshold, label, postStatus){
       else if(d < second){ second = d; }
     }
     if(bestJ === -1) continue;
-    // ratio test de Lowe, adaptado a distância de Hamming: só aceita se a
-    // melhor correspondência for claramente melhor do que a segunda hipótese
-    if(second === Infinity || best < ratioTestThreshold * second){
-      matches.push({
-        p1: { x: kp1[i].x/scale1, y: kp1[i].y/scale1 },
-        p2: { x: kp2[bestJ].x/scale2, y: kp2[bestJ].y/scale2 },
-        distance: best
-      });
-    }
+    const passesRatio = strategy === 'crossCheck' || second === Infinity || best < ratioTestThreshold * second;
+    if(passesRatio) candidates.push({i, bestJ, best});
   }
-  emit(`[timing] ${label}: matching (força bruta, ${desc1.length}×${desc2.length}) em ${Math.round(performance.now()-t)}ms — ${matches.length} correspondências`);
+  const t1 = performance.now();
+  emit(`[timing] ${label}: matching 1→2 (força bruta, ${desc1.length}×${desc2.length}) em ${Math.round(t1-t)}ms — ${candidates.length} candidatos`);
+
+  let finalPairs = candidates;
+
+  if(strategy === 'crossCheck' || strategy === 'both'){
+    // direção 2→1: confirma que cada candidato também é, na direção inversa,
+    // o vizinho mais próximo — elimina correspondências assimétricas que só
+    // sobrevivem ao ratio test por causa de uma zona ambígua na imagem 1
+    // (textura repetida, ex. campos agrícolas/telhados iguais lado a lado).
+    const nearestFrom2 = new Int32Array(desc2.length).fill(-1);
+    for(let j=0; j<desc2.length; j++){
+      let best = Infinity, bestI = -1;
+      const d2 = desc2[j];
+      for(let i=0; i<desc1.length; i++){
+        const d = hammingDistance(d2, desc1[i]);
+        if(d < best){ best = d; bestI = i; }
+      }
+      nearestFrom2[j] = bestI;
+    }
+    finalPairs = candidates.filter(c => nearestFrom2[c.bestJ] === c.i);
+    emit(`[timing] ${label}: matching 2→1 (cross-check, ${desc2.length}×${desc1.length}) em ${Math.round(performance.now()-t1)}ms — ${finalPairs.length}/${candidates.length} sobreviveram`);
+  }
+
+  const matches = finalPairs.map(({i, bestJ, best})=> ({
+    p1: { x: kp1[i].x/scale1, y: kp1[i].y/scale1 },
+    p2: { x: kp2[bestJ].x/scale2, y: kp2[bestJ].y/scale2 },
+    distance: best
+  }));
+
+  emit(`[timing] ${label}: matching total em ${Math.round(performance.now()-t)}ms — ${matches.length} correspondências finais`);
   return matches;
 }
 
 /* Mantido só por compatibilidade com chamadas manuais na consola. */
 function detectAndMatch(bitmap1, bitmap2, opts, postStatus){
-  const { nFeatures = DEFAULT_N_FEATURES, ratioTestThreshold = 0.75, maxImageDim = 1200, equalize } = opts || {};
+  const { nFeatures = DEFAULT_N_FEATURES, ratioTestThreshold = 0.75, maxImageDim = 1200, equalize, matchStrategy } = opts || {};
   const feat1 = computeFeatures(bitmap1, nFeatures, maxImageDim, 'imagem', postStatus, equalize);
   const feat2 = computeFeatures(bitmap2, nFeatures, maxImageDim, 'referência', postStatus, equalize);
-  return matchFeaturesJS(feat1, feat2, ratioTestThreshold, 'match', postStatus);
+  return matchFeaturesJS(feat1, feat2, ratioTestThreshold, 'match', postStatus, matchStrategy);
 }
 
 /* ------------------------------------------------------------
@@ -653,18 +688,23 @@ async function detectAndMatchMultiScale(imgBitmap, refBitmap, opts, postStatus){
   const tryDetectWithFallback = (source, label, baseOpts) => {
     const effectiveOpts = baseOpts ? { ...baseOpts } : {};
     const feat1 = computeFeatures(source, effectiveOpts.nFeatures || DEFAULT_N_FEATURES, effectiveOpts.maxImageDim || 1200, label, postStatus, effectiveOpts.equalize);
-    const matches = matchFeaturesJS(feat1, refFeatures, effectiveOpts.ratioTestThreshold || 0.75, label, postStatus);
+    const matches = matchFeaturesJS(feat1, refFeatures, effectiveOpts.ratioTestThreshold || 0.75, label, postStatus, effectiveOpts.matchStrategy);
     if(matches.length >= 3) return matches;
 
     const fallbackOpts = {
       ...effectiveOpts,
       nFeatures: Math.max(400, Math.floor((effectiveOpts.nFeatures || DEFAULT_N_FEATURES) / 2 * 1.5)), // mais generoso que o dobro em baixo, já que não há custo de compilação a poupar
       ratioTestThreshold: Math.min(0.9, (effectiveOpts.ratioTestThreshold || 0.75) + 0.1),
-      maxImageDim: Math.max(800, Math.floor((effectiveOpts.maxImageDim || 1200) * 0.9))
+      maxImageDim: Math.max(800, Math.floor((effectiveOpts.maxImageDim || 1200) * 0.9)),
+      // cross-check é a parte mais restritiva do matching (exige acordo nas
+      // duas direções) — no fallback já mais permissivo, larga-se primeiro,
+      // antes de se aceitar perder correspondências verdadeiras por causa
+      // do threshold/nFeatures.
+      matchStrategy: 'ratio'
     };
-    emit(`${label}: poucas correspondências (${matches.length}); a tentar fallback mais permissivo…`);
+    emit(`${label}: poucas correspondências (${matches.length}); a tentar fallback mais permissivo (sem cross-check)…`);
     const feat1b = computeFeatures(source, fallbackOpts.nFeatures, fallbackOpts.maxImageDim, `${label} (fallback)`, postStatus, fallbackOpts.equalize);
-    return matchFeaturesJS(feat1b, refFeatures, fallbackOpts.ratioTestThreshold, `${label} (fallback)`, postStatus);
+    return matchFeaturesJS(feat1b, refFeatures, fallbackOpts.ratioTestThreshold, `${label} (fallback)`, postStatus, fallbackOpts.matchStrategy);
   };
 
   for(let i = 0; i < scales.length; i++){

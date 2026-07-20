@@ -350,14 +350,15 @@
     }
     const kp1 = new cv.KeyPointVector(); const kp2 = new cv.KeyPointVector();
     const desc1 = new cv.Mat(); const desc2 = new cv.Mat();
-    orb.detectAndCompute(proc1, new cv.Mat(), kp1, desc1);
-    orb.detectAndCompute(proc2, new cv.Mat(), kp2, desc2);
+    const mask1 = new cv.Mat(); const mask2 = new cv.Mat(); // máscaras vazias = usa a imagem toda; têm de ser apagadas como qualquer outro Mat
+    orb.detectAndCompute(proc1, mask1, kp1, desc1);
+    orb.detectAndCompute(proc2, mask2, kp2, desc2);
 
     const matches = matchDescriptors(cv, desc1, desc2, kp1, kp2, {
       norm: cv.NORM_HAMMING, ratioTestThreshold, matchStrategy, scale1, scale2
     });
 
-    [mat1, mat2, gray1, gray2, proc1, proc2, kp1, kp2, desc1, desc2].forEach(m=> m.delete());
+    [mat1, mat2, gray1, gray2, proc1, proc2, kp1, kp2, desc1, desc2, mask1, mask2].forEach(m=> m.delete());
     orb.delete();
 
     return matches;
@@ -408,14 +409,15 @@
     const akaze = cv.AKAZE.create();
     const kp1 = new cv.KeyPointVector(); const kp2 = new cv.KeyPointVector();
     const desc1 = new cv.Mat(); const desc2 = new cv.Mat();
-    akaze.detectAndCompute(proc1, new cv.Mat(), kp1, desc1);
-    akaze.detectAndCompute(proc2, new cv.Mat(), kp2, desc2);
+    const mask1 = new cv.Mat(); const mask2 = new cv.Mat(); // máscaras vazias = usa a imagem toda; têm de ser apagadas como qualquer outro Mat
+    akaze.detectAndCompute(proc1, mask1, kp1, desc1);
+    akaze.detectAndCompute(proc2, mask2, kp2, desc2);
 
     const matches = matchDescriptors(cv, desc1, desc2, kp1, kp2, {
       norm: cv.NORM_HAMMING, ratioTestThreshold, matchStrategy, scale1, scale2
     });
 
-    [mat1, mat2, gray1, gray2, proc1, proc2, kp1, kp2, desc1, desc2].forEach(m=> m.delete());
+    [mat1, mat2, gray1, gray2, proc1, proc2, kp1, kp2, desc1, desc2, mask1, mask2].forEach(m=> m.delete());
     akaze.delete();
 
     return matches;
@@ -1013,16 +1015,31 @@
       createImageBitmap(refEl)
     ]);
 
+    /* Se a imagem foi encaixotada para AUTOGEOREF_MAX_INPUT_DIM, os keypoints
+       e GCPs do worker ficam no espaço de pixels encaixotados — mas o overlay
+       usa as dimensões originais (entry.width/entry.height). Escalamos os
+       GCPs img de volta para o espaço original para que o transform afim
+       resultante seja coerente com as dimensões do raster. */
+    const origW = imgEl.naturalWidth || imgEl.width;
+    const origH = imgEl.naturalHeight || imgEl.height;
+    const scaleX = (imgBitmap.width && imgBitmap.width !== origW) ? origW / imgBitmap.width : 1;
+    const scaleY = (imgBitmap.height && imgBitmap.height !== origH) ? origH / imgBitmap.height : 1;
+
     const msg = await requestAutoGeorefFromWorker({imgBitmap, refBitmap, refTileBounds, refTileSize, opts}, onStatus);
 
     if(!msg.success){
       return { success: false, reason: msg.reason || 'Não foi possível encontrar um modelo fiável entre as imagens.' };
     }
 
-    const published = publishGcpsToUI(msg.gcps, msg.quality);
+    const scaledGcps = (scaleX === 1 && scaleY === 1) ? msg.gcps : msg.gcps.map(g => ({
+      ...g,
+      img: { x: g.img.x * scaleX, y: g.img.y * scaleY }
+    }));
+
+    const published = publishGcpsToUI(scaledGcps, msg.quality);
     return {
       success: true,
-      gcps: msg.gcps,
+      gcps: scaledGcps,
       quality: msg.quality,
       publishedToUI: published
     };

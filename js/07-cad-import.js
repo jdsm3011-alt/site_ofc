@@ -360,11 +360,11 @@
       bboxWarnHtml =
         '<div class="ss-note" style="background:rgba(179,65,60,.07); border-color:rgba(179,65,60,.28);">' +
           '<b>⚠ Este desenho parece não ter coordenadas geográficas reais.</b> ' +
-          'As geometrias ocupam apenas ' + S.bbox.width.toFixed(3) + ' × ' + S.bbox.height.toFixed(3) + ' unidades no total — ' +
-          'demasiado pequeno para ser um levantamento à escala real. É provável que seja um modelo local ' +
+          'As geometrias ocupam apenas ' + S.bbox.width.toFixed(3) + ' × ' + S.bbox.height.toFixed(3) + ' unidades no total ' +
+          '(demasiado pequeno para ser um levantamento à escala real). É provável que seja um modelo local ' +
           '(ex: exportado de um programa 3D como Blender/SketchUp), à escala do próprio objeto, sem qualquer ligação ao mundo real.<br><br>' +
           'Se escolheres um sistema de coordenadas geográfico (ETRS89/PT-TM06 ou WGS84) na fase seguinte, o desenho vai aparecer ' +
-          'minúsculo e num sítio aleatório do mapa. Usa antes a opção <b>"Desenho local — georreferenciar manualmente por 2 pontos"</b> na fase seguinte.' +
+          'minúsculo e num sítio aleatório do mapa. Usa antes a opção <b>"Desenho local (georreferenciar manualmente por 2 pontos)"</b> na fase seguinte.' +
         '</div>';
     }
 
@@ -372,7 +372,7 @@
       '<div class="ss-note"><b>' + esc(S.fileName) + '</b> — ' + totalEntities + ' entidade(s) em ' + S.layerTable.length + ' layer(s). Sistema de coordenadas: não indicado no DXF (escolhe-se na fase seguinte).</div>' +
       bboxWarnHtml +
       '<div class="ss-card">' +
-        '<h3>Layers encontrados — escolhe quais importar</h3>' +
+        '<h3>Layers encontrados (escolhe quais importar)</h3>' +
         rowsHtml +
       '</div>' +
       '<div class="ss-actions-row">' +
@@ -406,20 +406,20 @@
     }).join('');
 
     body.innerHTML =
-      '<div class="ss-note"><b>Fase 3.</b> Define, para cada layer CAD escolhido, o nome da camada SIG de destino (é criada uma camada nova com este nome) e o tipo de geometria. Só precisas de fazer isto uma vez — depois guarda como perfil.</div>' +
+      '<div class="ss-note"><b>Fase 3.</b> Define, para cada layer CAD escolhido, o nome da camada SIG de destino (é criada uma camada nova com este nome) e o tipo de geometria. Só precisas de fazer isto uma vez (depois guarda como perfil).</div>' +
       '<div class="ss-card">' +
         '<h3>Correspondência layer CAD → camada SIG</h3>' +
         '<table class="ss-map-table"><thead><tr><th>Layer CAD</th><th>Nome da camada SIG</th><th>Geometria</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
       '</div>' +
       '<div class="ss-card">' +
-        '<h3>Fase 7 — Sistema de coordenadas de origem</h3>' +
+        '<h3>Fase 7 / Sistema de coordenadas de origem</h3>' +
         '<div class="ss-field">' +
           '<label>O ficheiro está em:</label>' +
           '<select id="cad-crs-select">' +
-            '<option value="EPSG:3763"'+(S.fromCRS==='EPSG:3763'?' selected':'')+'>ETRS89 / PT-TM06 (EPSG:3763) — metros, uso comum em Portugal</option>' +
+            '<option value="EPSG:3763"'+(S.fromCRS==='EPSG:3763'?' selected':'')+'>ETRS89 / PT-TM06 (EPSG:3763) / metros, uso comum em Portugal</option>' +
             '<option value="EPSG:4326"'+(S.fromCRS==='EPSG:4326'?' selected':'')+'>WGS84 / graus (EPSG:4326)</option>' +
             '<option value="custom"'+(S.fromCRS==='custom'?' selected':'')+'>Outro (definição proj4 manual)</option>' +
-            '<option value="twopoint"'+(S.fromCRS==='twopoint'?' selected':'')+'>Desenho local (sem coordenadas reais) — georreferenciar manualmente por 2 pontos</option>' +
+            '<option value="twopoint"'+(S.fromCRS==='twopoint'?' selected':'')+'>Desenho local (sem coordenadas reais, georreferenciar manualmente por 2 pontos)</option>' +
           '</select>' +
         '</div>' +
         '<div class="ss-field" id="cad-crs-custom-wrap" style="'+(S.fromCRS==='custom'?'':'display:none;')+'">' +
@@ -430,14 +430,14 @@
         '<div class="ss-field" id="cad-crs-twopoint-wrap" style="'+(S.fromCRS==='twopoint'?'':'display:none;')+'">' +
           '<div class="ss-hint" style="margin-bottom:10px;">Indica dois pontos do desenho (as coordenadas tal como aparecem no CAD) e onde esses mesmos dois pontos ficam no mundo real (latitude/longitude). A app calcula a escala e a rotação automaticamente a partir destes dois pontos.</div>' +
           '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">' +
-            '<div><label>Ponto 1 — X no desenho</label><input type="text" id="cad-tp-p1x" value="'+esc(S.twoPointInput.p1x)+'" placeholder="ex: 0.004042"></div>' +
-            '<div><label>Ponto 1 — Y no desenho</label><input type="text" id="cad-tp-p1y" value="'+esc(S.twoPointInput.p1y)+'" placeholder="ex: -0.091303"></div>' +
-            '<div><label>Ponto 1 — Latitude real</label><input type="text" id="cad-tp-p1lat" value="'+esc(S.twoPointInput.p1lat)+'" placeholder="ex: 41.15790"></div>' +
-            '<div><label>Ponto 1 — Longitude real</label><input type="text" id="cad-tp-p1lon" value="'+esc(S.twoPointInput.p1lon)+'" placeholder="ex: -8.62910"></div>' +
-            '<div><label>Ponto 2 — X no desenho</label><input type="text" id="cad-tp-p2x" value="'+esc(S.twoPointInput.p2x)+'" placeholder="ex: 0.019870"></div>' +
-            '<div><label>Ponto 2 — Y no desenho</label><input type="text" id="cad-tp-p2y" value="'+esc(S.twoPointInput.p2y)+'" placeholder="ex: -0.050120"></div>' +
-            '<div><label>Ponto 2 — Latitude real</label><input type="text" id="cad-tp-p2lat" value="'+esc(S.twoPointInput.p2lat)+'" placeholder="ex: 41.15845"></div>' +
-            '<div><label>Ponto 2 — Longitude real</label><input type="text" id="cad-tp-p2lon" value="'+esc(S.twoPointInput.p2lon)+'" placeholder="ex: -8.62822"></div>' +
+            '<div><label>Ponto 1 / X no desenho</label><input type="text" id="cad-tp-p1x" value="'+esc(S.twoPointInput.p1x)+'" placeholder="ex: 0.004042"></div>' +
+            '<div><label>Ponto 1 / Y no desenho</label><input type="text" id="cad-tp-p1y" value="'+esc(S.twoPointInput.p1y)+'" placeholder="ex: -0.091303"></div>' +
+            '<div><label>Ponto 1 / Latitude real</label><input type="text" id="cad-tp-p1lat" value="'+esc(S.twoPointInput.p1lat)+'" placeholder="ex: 41.15790"></div>' +
+            '<div><label>Ponto 1 / Longitude real</label><input type="text" id="cad-tp-p1lon" value="'+esc(S.twoPointInput.p1lon)+'" placeholder="ex: -8.62910"></div>' +
+            '<div><label>Ponto 2 / X no desenho</label><input type="text" id="cad-tp-p2x" value="'+esc(S.twoPointInput.p2x)+'" placeholder="ex: 0.019870"></div>' +
+            '<div><label>Ponto 2 / Y no desenho</label><input type="text" id="cad-tp-p2y" value="'+esc(S.twoPointInput.p2y)+'" placeholder="ex: -0.050120"></div>' +
+            '<div><label>Ponto 2 / Latitude real</label><input type="text" id="cad-tp-p2lat" value="'+esc(S.twoPointInput.p2lat)+'" placeholder="ex: 41.15845"></div>' +
+            '<div><label>Ponto 2 / Longitude real</label><input type="text" id="cad-tp-p2lon" value="'+esc(S.twoPointInput.p2lon)+'" placeholder="ex: -8.62822"></div>' +
           '</div>' +
           '<div class="ss-hint" id="cad-tp-status" style="margin-top:8px;"></div>' +
         '</div>' +
@@ -546,7 +546,7 @@
     if(t.valid){
       var scaleTxt = t.scale >= 1 ? (t.scale.toFixed(2) + '×') : ('1 / ' + (1/t.scale).toFixed(2));
       var rotDeg = (t.rotation * 180 / Math.PI).toFixed(1);
-      statusEl.innerHTML = '<span style="color:var(--green-deep);">✓ Transformação calculada — escala ' + scaleTxt + ', rotação ' + rotDeg + '°</span>';
+      statusEl.innerHTML = '<span style="color:var(--green-deep);">✓ Transformação calculada / escala ' + scaleTxt + ', rotação ' + rotDeg + '°</span>';
     } else {
       statusEl.innerHTML = '<span style="color:#b3413c;">✗ ' + esc(t.error) + '</span>';
     }
@@ -750,7 +750,7 @@
       '<div class="ss-stats-grid">' + statsHtml + '</div>' +
       (r.unsupported ? '<p class="ss-hint">✗ ' + r.unsupported + ' entidade(s) não suportada(s) ou inválida(s) foram ignoradas.</p>' : '<p class="ss-hint">✗ 0 erros.</p>') +
       '<p class="ss-hint">Tempo: ' + r.elapsedSec + 's</p>' +
-      '<div class="ss-card"><h3>Camadas criadas — exportar / ver no mapa</h3>' + (actionsHtml || '<p class="ss-empty">Nenhuma camada criada.</p>') +
+      '<div class="ss-card"><h3>Camadas criadas (exportar / ver no mapa)</h3>' + (actionsHtml || '<p class="ss-empty">Nenhuma camada criada.</p>') +
       '<div class="ss-hint" style="margin-top:8px;">GeoPackage não está disponível nesta versão.</div></div>' +
       '<div class="ss-actions-row">' +
         '<button class="ss-btn" id="cad-step5-next">Guardar como perfil →</button>' +
@@ -863,7 +863,7 @@
     }).join('');
     contentEl.innerHTML =
       '<h2>Perfis guardados</h2>' +
-      '<p class="ss-subtitle">Perfis de conversão (Fase 10). Escolhe um perfil, depois o ficheiro DXF novo — o mapeamento de layers e o sistema de coordenadas já vêm preenchidos.</p>' +
+      '<p class="ss-subtitle">Perfis de conversão (Fase 10). Escolhe um perfil, depois o ficheiro DXF novo (o mapeamento de layers e o sistema de coordenadas já vêm preenchidos).</p>' +
       (itemsHtml || '<p class="ss-empty">Ainda não guardou nenhum perfil.</p>');
 
     profiles.forEach(function(p,i){
@@ -901,12 +901,17 @@
     _origHandleFile(file);
     if(S._pendingProfile){
       var profile = S._pendingProfile;
+      var elapsed = 0;
       var checkApply = setInterval(function(){
+        elapsed += 150;
         if(S.layerTable && S.layerTable.length){
           applyProfileToLayerTable(profile);
           S._pendingProfile = null;
           clearInterval(checkApply);
           renderWizard();
+        } else if(elapsed > 10000){
+          S._pendingProfile = null;
+          clearInterval(checkApply);
         }
       }, 150);
     }
@@ -1022,7 +1027,7 @@
 
       '<details class="ss-help-item" open>' +
         '<summary>1. O que é isto?</summary>' +
-        '<div class="ss-help-body">Converte um desenho CAD (.dxf) em camadas SIG desta app — edifícios, estradas, árvores, redes, etc. — em vez de teres de desenhar tudo à mão por cima do CAD.</div>' +
+        '<div class="ss-help-body">Converte um desenho CAD (.dxf) em camadas SIG desta app / edifícios, estradas, árvores, redes, etc. (em vez de teres de desenhar tudo à mão por cima do CAD).</div>' +
       '</details>' +
 
       '<details class="ss-help-item">' +

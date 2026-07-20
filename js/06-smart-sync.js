@@ -210,7 +210,7 @@
 
     body.innerHTML =
       '<div class="ss-card">' +
-        '<h3>1 — Ficheiro Excel/CSV</h3>' +
+        '<h3>1 / Ficheiro Excel/CSV</h3>' +
         '<div class="ss-dropzone" id="ss-dropzone">' +
           '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
           '<b>Clique para escolher um ficheiro .xlsx ou .csv</b>' +
@@ -225,7 +225,7 @@
       '</div>' +
 
       '<div class="ss-card">' +
-        '<h3>2 — Camada SIG a atualizar</h3>' +
+        '<h3>2 / Camada SIG a atualizar</h3>' +
         '<div class="ss-field">' +
           '<label>Camada</label>' +
           '<select id="ss-layer-select"><option value="">— escolher —</option>' + layerOptions + '</select>' +
@@ -329,7 +329,7 @@
 
     var latLngHtml = geomType === 'Point' ?
       '<div class="ss-card">' +
-        '<h3>Colunas de coordenadas (opcional — só necessário para criar pontos novos)</h3>' +
+        '<h3>Colunas de coordenadas (opcional, só necessário para criar pontos novos)</h3>' +
         '<div class="ss-field" style="display:flex; gap:12px;">' +
           '<div style="flex:1;"><label>Coluna de Latitude</label><select id="ss-lat-select"><option value="">—</option>' +
             S.headers.map(function(h){ return '<option value="'+esc(h)+'"'+(h===S.latCol?' selected':'')+'>'+esc(h)+'</option>'; }).join('') +
@@ -486,7 +486,7 @@
         '<div class="ss-stat-box is-create"><b>' + c.create + '</b><span>serão criados</span></div>' +
         '<div class="ss-stat-box is-conflict"><b>' + c.error + '</b><span>apresentam erros/conflitos</span></div>' +
       '</div>' +
-      (c.skip ? '<p class="ss-hint">' + c.skip + ' registo(s) sem alterações desde a última sincronização desta receita — serão ignorados (deteção de alterações).</p>' : '') +
+      (c.skip ? '<p class="ss-hint">' + c.skip + ' registo(s) sem alterações desde a última sincronização desta receita (serão ignorados (deteção de alterações).</p>' : '') +
       '<div class="ss-card">' +
         '<h3>Detalhe por registo</h3>' +
         '<div class="ss-table-wrap"><table class="ss-table"><thead><tr><th>Chave</th><th>Ação</th><th>Notas</th></tr></thead><tbody>' + (rowsHtml || '<tr><td colspan="3" class="ss-empty">Sem registos.</td></tr>') + '</tbody></table></div>' +
@@ -599,7 +599,7 @@
   }
 
   function exportReport(){
-    var lines = ['Sincronização Inteligente — Relatório', new Date().toLocaleString('pt-PT'), ''];
+    var lines = ['Sincronização Inteligente / Relatório', new Date().toLocaleString('pt-PT'), ''];
     lines.push('Camada: ' + getLayerLabel(S.layerId));
     lines.push('Ficheiro: ' + (S.fileName || ''));
     lines.push('Atualizados: ' + S.lastResult.updated);
@@ -796,7 +796,7 @@
     var itemsHtml = history.map(function(h){
       var date = new Date(h.at).toLocaleString('pt-PT');
       return '<div class="ss-history-item">' +
-        '<b>' + esc(h.recipeName) + '</b> — ' + esc(h.layerName || '') +
+        '<b>' + esc(h.recipeName) + '</b> / ' + esc(h.layerName || '') +
         '<div>' + date + ' · ✓ ' + h.updated + ' atualizados · ✓ ' + h.created + ' inseridos' + (h.errors ? ' · ✗ ' + h.errors + ' erros' : '') + '</div>' +
         '<div>Utilizador: ' + esc(h.user || 'Desconhecido') + (h.fileName ? ' · Ficheiro: ' + esc(h.fileName) : '') + '</div>' +
       '</div>';
@@ -819,7 +819,7 @@
       '<details class="ss-help-item" open>' +
         '<summary>1. O que é isto?</summary>' +
         '<div class="ss-help-body">' +
-          'Serve para atualizar uma camada SIG já existente na app diretamente a partir de um ficheiro Excel (.xlsx) ou CSV — sem teres de abrir cada objeto e editar os campos à mão. ' +
+          'Serve para atualizar uma camada SIG já existente na app diretamente a partir de um ficheiro Excel (.xlsx) ou CSV (sem teres de abrir cada objeto e editar os campos à mão). ' +
           'A app compara o ficheiro com o que já está na camada e diz-te o que muda, antes de mudar seja o que for.' +
         '</div>' +
       '</details>' +
@@ -827,11 +827,11 @@
       '<details class="ss-help-item">' +
         '<summary>2. Passo a passo (Nova sincronização)</summary>' +
         '<div class="ss-help-body">' +
-          '<b>Fase 1 — Ficheiro e camada.</b> Escolhe o Excel/CSV (arrasta para a caixa ou clica nela). Se o ficheiro tiver várias folhas, escolhe a folha certa. Depois escolhe a camada da tua app que queres atualizar.<br><br>' +
-          '<b>Fase 2 — Correspondência.</b> Para cada campo da camada (ex: ESTADO, TECNICO, DATA), escolhe a coluna do Excel que lhe corresponde. A app tenta adivinhar por ti, mas confirma sempre.<br><br>' +
-          '<b>Fase 3 — Chave.</b> Na mesma tabela, marca com o botão de opção qual é o campo que serve de identificador único (ex: ID_OBRA). É assim que a app sabe que a linha "ID 1587" do Excel corresponde ao objeto "ID_OBRA 1587" da camada.<br><br>' +
-          '<b>Fase 4 — Pré-visualização.</b> A app mostra quantos registos vai atualizar, criar ou que têm erros. Nada é alterado ainda.<br><br>' +
-          '<b>Fase 5/6 — Executar e relatório.</b> Clica em "Executar" e no fim vês o resumo (atualizados / inseridos / erros / tempo). Podes exportar o relatório em .txt.' +
+          '<b>Fase 1 / Ficheiro e camada.</b> Escolhe o Excel/CSV (arrasta para a caixa ou clica nela). Se o ficheiro tiver várias folhas, escolhe a folha certa. Depois escolhe a camada da tua app que queres atualizar.<br><br>' +
+          '<b>Fase 2 / Correspondência.</b> Para cada campo da camada (ex: ESTADO, TECNICO, DATA), escolhe a coluna do Excel que lhe corresponde. A app tenta adivinhar por ti, mas confirma sempre.<br><br>' +
+          '<b>Fase 3 / Chave.</b> Na mesma tabela, marca com o botão de opção qual é o campo que serve de identificador único (ex: ID_OBRA). É assim que a app sabe que a linha "ID 1587" do Excel corresponde ao objeto "ID_OBRA 1587" da camada.<br><br>' +
+          '<b>Fase 4 / Pré-visualização.</b> A app mostra quantos registos vai atualizar, criar ou que têm erros. Nada é alterado ainda.<br><br>' +
+          '<b>Fase 5/6 / Executar e relatório.</b> Clica em "Executar" e no fim vês o resumo (atualizados / inseridos / erros / tempo). Podes exportar o relatório em .txt.' +
         '</div>' +
       '</details>' +
 

@@ -10,7 +10,13 @@ const coordValueEl = document.getElementById('coord-value');
 
 crsSwitchBtn.addEventListener('click', ()=>{
   coordMode = coordMode === 'wgs84' ? 'pttm06' : 'wgs84';
-  crsSwitchBtn.textContent = coordMode === 'wgs84' ? 'ETRS89 / PT-TM06' : 'WGS84';
+  const label = coordMode === 'wgs84' ? 'PT-TM06' : 'WGS84';
+  crsSwitchBtn.textContent = label;
+  if(coordMode === 'wgs84'){
+    crsSwitchBtn.title = 'Alternar para ETRS89 / PT-TM06';
+  } else {
+    crsSwitchBtn.title = 'Alternar para WGS84';
+  }
 });
 
 function updateCoordBar(lat, lng){

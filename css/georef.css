@@ -831,3 +831,122 @@ body.georef-mode-active #sidebar{
 }
 .georef-gcp-item-edit:hover,
 .georef-gcp-item-remove:hover{ opacity: 1; }
+
+/* ============================================================
+   FASE 7: cartão flutuante de estatísticas de precisão
+   ============================================================ */
+.georef-stats-card{
+  position: absolute;
+  z-index: 500;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.14);
+  padding: 10px 12px 8px;
+  min-width: 210px;
+  font-size: 11px;
+  pointer-events: auto;
+}
+.georef-stats-card.hidden{ display: none; }
+.georef-stats-card-header{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.georef-stats-card-title{
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--stone, #8a8478);
+}
+.georef-stats-card-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+.georef-stat-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 3px 4px;
+  border-radius: 6px;
+  background: rgba(60,90,69,.05);
+  text-align: center;
+}
+.georef-stat-card.good{
+  background: rgba(47,125,79,.09);
+}
+.georef-stat-card.good .georef-stat-value{ color: #2f7d4f; }
+.georef-stat-card.warn{
+  background: rgba(192,138,32,.09);
+}
+.georef-stat-card.warn .georef-stat-value{ color: #a07018; }
+.georef-stat-card.bad{
+  background: rgba(181,71,43,.09);
+}
+.georef-stat-card.bad .georef-stat-value{ color: #b5472b; }
+.georef-stat-value{
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text, #2d2a24);
+  font-variant-numeric: tabular-nums;
+}
+.georef-stat-label{
+  font-size: 8.5px;
+  line-height: 1.3;
+  color: var(--stone, #8a8478);
+  margin-top: 1px;
+}
+.georef-stats-card-detail{
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid rgba(0,0,0,.06);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--stone, #8a8478);
+}
+.georef-stats-card-detail:empty{ display: none; }
+.georef-stats-card-detail .georef-detail-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.georef-stats-card-detail .georef-detail-row + .georef-detail-row{
+  margin-top: 1px;
+}
+.georef-stats-card-detail .georef-detail-label{
+  color: var(--stone, #8a8478);
+}
+.georef-stats-card-detail .georef-detail-value{
+  font-weight: 600;
+  color: var(--text, #2d2a24);
+  font-variant-numeric: tabular-nums;
+}
+.georef-stats-card-detail .georef-error-bar-wrap{
+  margin-top: 4px;
+}
+.georef-stats-card-detail .georef-error-bar-label{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+.georef-stats-card-detail .georef-error-bar{
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0,0,0,.08);
+  overflow: hidden;
+}
+.georef-stats-card-detail .georef-error-bar-fill{
+  height: 100%;
+  border-radius: 2px;
+  transition: width .3s ease;
+}
