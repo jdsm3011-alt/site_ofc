@@ -39,6 +39,117 @@
     40%{ transform:scale(.86); }
     100%{ transform:scale(1); }
   }
+
+  /* ---- Vetorizacao assistida: ferramentas OSM / magic wand ----
+     Antes tinham cores fixas inline (verde/vermelho pastel, emoji) geradas
+     por JS -- aqui ficam como classes, alinhadas com a tipografia e as
+     variaveis de design (--stone, --line-strong, --radius-sm, --warn) ja
+     usadas no resto do painel va-*. */
+  .va-mw-toolbar{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-left:10px;
+    padding-left:10px;
+    border-left:1px solid var(--line-strong, #d8d2c4);
+    flex-wrap:wrap;
+  }
+  .va-mw-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:500;
+    line-height:1.2;
+    border-radius:var(--radius-sm, 6px);
+    border:1px solid var(--line-strong, #d8d2c4);
+    background:var(--surface2, #fff);
+    color:inherit;
+    cursor:pointer;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .va-mw-toolbar .va-mw-btn{ padding:5px 10px; font-size:12px; }
+  .va-mw-btn.block{ flex:1; justify-content:center; }
+  .va-mw-btn svg{ width:14px; height:14px; flex:none; }
+  .va-mw-toolbar .va-mw-btn svg{ width:13px; height:13px; }
+  .va-mw-btn:hover{ border-color:currentColor; background:rgba(0,0,0,.03); }
+  .va-mw-btn.pos{ color:#2f7d4f; }
+  .va-mw-btn.pos:hover{ background:rgba(47,125,79,.08); }
+  .va-mw-btn.neg{ color:#b5472b; }
+  .va-mw-btn.neg:hover{ background:rgba(181,71,43,.08); }
+  .va-mw-field{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:11.5px;
+    color:var(--stone, #8a8478);
+  }
+  .va-mw-field select{
+    font-family:inherit;
+    font-size:11.5px;
+    padding:3px 6px;
+    border-radius:var(--radius-sm, 6px);
+    border:1px solid var(--line-strong, #d8d2c4);
+    background:var(--surface2, #fff);
+    color:inherit;
+  }
+  .va-mw-field input[type="checkbox"]{ margin:0; accent-color:#2f7d4f; }
+
+  .va-magicwand-banner{
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:1000;
+    background:#22201b;
+    color:#f4f1e8;
+    padding:7px 12px;
+    border-radius:var(--radius-sm, 8px);
+    font-size:12.5px;
+    font-family:inherit;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  .va-magicwand-banner.hidden{ display:none; }
+  .va-magicwand-banner button{
+    background:rgba(255,255,255,.12);
+    color:inherit;
+    border:1px solid rgba(255,255,255,.22);
+    padding:3px 10px;
+    border-radius:var(--radius-sm, 5px);
+    cursor:pointer;
+    font-size:11.5px;
+    font-family:inherit;
+  }
+  .va-magicwand-banner button:hover{ background:rgba(255,255,255,.2); }
+
+  #va-osm-status{
+    font-size:12px;
+    color:var(--stone, #8a8478);
+    margin-top:6px;
+  }
+
+  .va-osm-coverage-warn{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:var(--radius-sm, 8px);
+    border:1px solid var(--warn, #c08a20);
+    background:#fbf3df;
+    background:color-mix(in srgb, var(--warn, #c08a20) 12%, white);
+    font-size:12.5px;
+    line-height:1.45;
+  }
+  .va-osm-coverage-warn.hidden{ display:none; }
+  .va-osm-coverage-warn svg{ flex:none; margin-top:1px; color:var(--warn, #c08a20); }
+  .va-osm-coverage-warn b{ display:block; color:var(--warn, #c08a20); margin-bottom:2px; }
+  .va-osm-coverage-warn p{ margin:0; color:inherit; }
 </style>
 </head>
 <body>
@@ -148,10 +259,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
       </span>
       <span class="georef-btn-badge hidden" id="georef-btn-badge"></span>
-    </button>
-
-    <button type="button" class="feedback-nav-btn" id="btn-vetassist" title="Funcionalidade disponível em breve." aria-label="Vetorização Assistida" disabled>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
     </button>
 
     <button type="button" class="feedback-nav-btn" id="btn-open-municipios" title="Limites de município" aria-label="Limites de município">
@@ -645,6 +752,7 @@
   <button type="button" data-basemap="dgt">Portugal HD (DGT)</button>
   <button type="button" data-basemap="claro">Mapa claro</button>
   <button type="button" data-basemap="osm">Mapa (OSM)</button>
+  <button type="button" data-basemap="none">Sem basemap</button>
   <div class="basemap-menu-divider"></div>
   <button type="button" id="basemap-auto-toggle" class="basemap-auto-btn is-active" data-tooltip="Troca sozinho entre Satélite e Portugal HD (DGT) consoante o zoom e a localização. Desliga-se automaticamente assim que escolhes um mapa base manualmente.">
     <span>↻ Resolução automática</span>
@@ -1262,6 +1370,13 @@
             <div class="va-estimate-label">Tempo est.</div>
           </div>
         </div>
+        <div class="va-osm-coverage-warn hidden" id="va-osm-coverage-warn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div>
+            <b>Área já bem coberta por edifícios OSM</b>
+            <p><span id="va-osm-coverage-pct">—</span>% da área desenhada já corresponde a edifícios existentes no OpenStreetMap (<span id="va-osm-coverage-count">—</span> encontrados). O classificador ajuda sobretudo a detetar construções que o OSM ainda não tem — para o resto, estes edifícios já vêm importados como amostra. Considera desenhar uma área menor, focada só nas zonas sem cobertura.</p>
+          </div>
+        </div>
         <div class="va-nav-actions">
           <button class="btn" id="va-step3-back">← Voltar</button>
           <button class="btn" id="va-step3-draw">Desenhar área</button>
@@ -1282,8 +1397,8 @@
           <b>Dica:</b> Clica em "Edifício" ou "Não-edifício" abaixo, e desenha um polígono sobre o exemplo correspondente no mapa. Recomenda-se no mínimo 5 amostras de cada tipo.
         </div>
         <div class="va-sample-counter" style="margin-bottom:8px;">
-          <button class="btn" id="va-sample-btn-pos" style="flex:1;">+ Edifício</button>
-          <button class="btn" id="va-sample-btn-neg" style="flex:1;">+ Não-edifício</button>
+          <button class="va-mw-btn pos block" id="va-sample-btn-pos">+ Edifício</button>
+          <button class="va-mw-btn neg block" id="va-sample-btn-neg">+ Não-edifício</button>
         </div>
         <div id="va-sample-list" style="font-size:11px;color:var(--stone,#8a8478);margin-bottom:12px;"></div>
         <div class="va-nav-actions">
@@ -1390,6 +1505,7 @@
 <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/geotiff@3.0.5/dist-browser/geotiff.js"></script>
 <script src="https://unpkg.com/leaflet-imageoverlay-rotated@0.2.1/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort.min.js"></script>
 
 <div class="coord-xy-overlay hidden" id="coord-xy-overlay">
   <div class="coord-xy-modal" id="coord-xy-modal">
@@ -1509,6 +1625,8 @@
      tempo fazia cada clique disparar dois handlers em paralelo. -->
 
 <script src="js/14-assisted-vect.js"></script>
+<script src="js/18-sam-segment.js"></script>
+<script src="js/19-eagle-assistant.js"></script>
 <script src="js/16-runtime-errors.js"></script>
 <script src="js/17-state-consistency.js"></script>
 <script src="js/15-integrity-check.js"></script>
@@ -1788,8 +1906,8 @@
   registerPanel('catalog-panel', {
     trigger: 'btn-catalog'
   });
+
 })();
 </script>
 
-</body>
-</html>
+</body></html>

@@ -551,6 +551,14 @@ function initMap(){
 
   function switchBasemap(key, opts){
     opts = opts || {};
+    if(key === 'none'){
+      Object.values(basemaps).forEach(l=>{ if(map.hasLayer(l)) map.removeLayer(l); });
+      activeBaseLayerKey = 'none';
+      window.__activeBaseLayerKey = 'none';
+      renderBasemapMenu();
+      closeBasemapMenu();
+      return;
+    }
     const next = basemaps[key];
     if(!next || key === activeBaseLayerKey){ closeBasemapMenu(); return; }
     Object.values(basemaps).forEach(l=>{ if(l !== next && map.hasLayer(l)) map.removeLayer(l); });
@@ -563,6 +571,15 @@ function initMap(){
       showToolbarHint('Portugal HD (DGT): só mostra imagem a partir de zoom de cidade/bairro — aproxima-te para veres o detalhe.', 6000);
     }
   }
+
+  /* Hook estável para outros módulos (ex. 18-sam-segment.js) forçarem um
+     basemap especifico e desligarem a troca automática satelite<->dgt,
+     sem terem de aceder a variaveis privadas deste closure (activeBaseLayerKey,
+     autoResolutionEnabled) nem simular cliques no menu de basemap. */
+  window.__forceBasemap = function(key){
+    autoResolutionEnabled = false;
+    switchBasemap(key, {auto:true});
+  };
 
   /* ---------- troca automática Satélite ⇄ Portugal HD (DGT) por nível de zoom ---------- */
   let autoResolutionEnabled = true;
@@ -649,6 +666,51 @@ function initMap(){
     cutPolygon: false,
     rotateMode: false
   });
+
+  /* Vetorização Assistida (SAM) -- deixou de ser um botão do header e
+     passou a ser um controlo Leaflet próprio, no canto 'topleft', a
+     seguir à toolbar de edição do Geoman (desenhar/editar vértices/
+     mover/eliminar) acima -- por isso aparece sempre logo por baixo
+     dela. Só fica visível quando essa toolbar está aberta (mesma classe
+     "pm-toolbar-visible" em #map -- ver css/pm-toolbar.css), já que é
+     uma ferramenta do mesmo grupo de edição/desenho.
+     A lógica de ativar/desativar o modo SAM em si vive toda em
+     18-sam-segment.js (window.__sam.activate/deactivate) -- aqui só se
+     cria o botão e liga-se o clique. */
+  var VetAssistControl = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function(){
+      var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control va-vetassist-control');
+      var link = L.DomUtil.create('a', '', container);
+      link.href = '#';
+      link.id = 'btn-vetassist';
+      link.title = 'AAV (Algoritmo de assistência à vetorização automática)';
+      link.setAttribute('role', 'button');
+      link.setAttribute('aria-label', 'Vetorização Assistida');
+      link.setAttribute('aria-pressed', 'false');
+      link.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>';
+
+      L.DomEvent.disableClickPropagation(container);
+      L.DomEvent.disableScrollPropagation(container);
+      L.DomEvent.on(link, 'click', function(e){
+        L.DomEvent.stop(e);
+        if(!window.__sam) return;
+        if(window.__sam.active) window.__sam.deactivate();
+        else window.__sam.activate();
+      });
+
+      // Refletir o estado (ativo/inativo) independentemente de quem o mudou
+      // -- clique neste botão, tecla Esc, ou qualquer outro sítio.
+      window.addEventListener('sam:state', function(e){
+        var isActive = !!(e.detail && e.detail.active);
+        link.classList.toggle('is-active', isActive);
+        link.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      return container;
+    }
+  });
+  map.addControl(new VetAssistControl());
 
   // usa o marcador circular DataGis (em vez do pin azul padrão) também
   // durante a pré-visualização ao colocar o ponto, antes do clique

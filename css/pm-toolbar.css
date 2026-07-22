@@ -20,3 +20,36 @@
   color:var(--green-deep);
   background:rgba(31,92,107,.08);
 }
+
+/* ============================================================
+   BOTÃO DA VETORIZAÇÃO ASSISTIDA (SAM)
+   ============================================================
+   Deixou de ser um botão do header -- agora é um controlo Leaflet no
+   canto 'topleft', criado logo a seguir à toolbar de edição do Geoman
+   (map.pm.addControls) em 05-app-main.js, pelo que já aparece
+   naturalmente por baixo dela nesse canto do mapa. Fica escondido e
+   mostra-se junto com essa toolbar (mesma classe "pm-toolbar-visible"
+   em #map), por ser mais uma ferramenta do mesmo grupo de
+   desenho/edição.
+*/
+#map .va-vetassist-control{
+  display:none;
+  margin-top:4px;
+}
+#map.pm-toolbar-visible .va-vetassist-control{
+  display:block;
+}
+#map .va-vetassist-control a{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  color:#333;
+  background:#fff;
+}
+#map .va-vetassist-control a.is-active{
+  border-color:var(--green);
+  color:var(--green-deep);
+  background:rgba(31,92,107,.08);
+}

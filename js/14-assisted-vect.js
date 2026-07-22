@@ -3,6 +3,7 @@
    ============================================================ */
 (function(){
   'use strict';
+  console.log('[vetorizacao-assistida] 14-assisted-vect.js build=osm-auto-samples-v2 (magic wand: crop de alta resolucao por clique + trava de deriva de cor; amostras automaticas via edificios OSM/Overpass; negativas automaticas por cobertura do solo OSM -- floresta/agricola/estrada -- com grelha cega so como complemento)');
 
   var vaState = {
     active: false,
@@ -16,7 +17,7 @@
     vaDrawingActive: false,
     magicWandActive: false,
     magicWandLabel: null,
-    mosaicCache: null,
+    mwCropCache: null,
     geojson: null,
     stats: null,
     reviewLayers: [],
@@ -49,10 +50,12 @@
     vaState.geojson = null;
     vaState.stats = null;
     vaState.reviewLayers = [];
-    vaState.mosaicCache = null;
+    vaState.mwCropCache = null;
     vaState.magicWandActive = false;
     vaState.magicWandLabel = null;
     $('va-page').hidden = false;
+    setOsmStatusText('');
+    updateOsmCoverageWarning(0, 0);
     showStep(1);
     updateNav();
   }
@@ -64,7 +67,7 @@
     cancelAreaDrawing();
     cancelSampleDrawing();
     cancelMagicWand();
-    vaState.mosaicCache = null;
+    vaState.mwCropCache = null;
     if(vaState.areaLayer){ map.removeLayer(vaState.areaLayer); }
     clearSampleLayers();
     clearReviewLayers();
@@ -123,9 +126,10 @@
     cancelAreaDrawing();
     vaState.areaLayer = layer;
     vaState.areaBounds = layer.getBounds();
-    vaState.mosaicCache = null; // area mudou -- invalida a imagem cacheada para o magic wand
+    vaState.mwCropCache = null; // area mudou -- invalida a imagem cacheada para o magic wand
     var areaM2 = calcAreaM2(vaState.areaBounds);
-    var zoom = estimateZoom(areaM2);
+    var centerLat = vaState.areaBounds.getCenter().lat;
+    var zoom = estimateZoom(centerLat);
     var tiles = estimateTiles(vaState.areaBounds, zoom);
     var timeEst = estimateTime(tiles);
     $('va-estimate-area').textContent = formatArea(areaM2);
@@ -133,7 +137,454 @@
     $('va-estimate-zoom').textContent = zoom;
     $('va-estimate-time').textContent = timeEst;
     $('va-estimate').classList.remove('hidden');
-    $('va-step3-next').disabled = false;
+
+    /* Area nova -- as amostras anteriores (se existirem, de uma area
+       diferente) deixam de fazer sentido geograficamente. */
+    clearSampleLayers();
+    updateSampleUI();
+
+    /* zoom ja nao baixa para compensar areas grandes (ver estimateZoom) --
+       em vez disso, se a area desenhada exigir demasiados tiles ao zoom de
+       classificacao, bloqueia-se o avanco em vez de degradar a resolucao
+       silenciosamente. */
+    var tooLarge = tiles > CLASSIFICATION_MAX_TILES;
+    updateAreaTooLargeWarning(tooLarge, tiles, zoom);
+    $('va-step3-next').disabled = tooLarge;
+    if(tooLarge) return;
+
+    importOsmBuildingsForArea(vaState.areaBounds, zoom, areaM2);
+  }
+
+  /* ============================================================
+     Importacao automatica de edificios OSM (Overpass API)
+     ------------------------------------------------------------
+     Em vez de depender so do click manual / magic wand para gerar
+     amostras positivas, pedimos os poligonos `building=*` que ja
+     existem no OpenStreetMap dentro da area de trabalho e usamo-los
+     directamente como amostras de treino "edificio". A geometria vem
+     certa (sem deriva de cor, sem ambiguidade de bordas) porque nao
+     estamos a adivinhar nada a partir de pixels.
+     Complementamos com algumas amostras "nao-edificio" geradas por
+     amostragem em grelha dentro da area, evitando pontos proximos de
+     qualquer edificio OSM -- assim o utilizador ja chega ao passo 4
+     com amostras minimas prontas (3+3), podendo sempre acrescentar/
+     remover manualmente.
+     ============================================================ */
+  var OSM_OVERPASS_ENDPOINT = 'https://overpass-api.de/api/interpreter';
+  var OSM_OVERPASS_TIMEOUT_S = 25;
+  var OSM_AUTO_NEG_COUNT = 4;      // quantas amostras negativas tentar gerar automaticamente
+  /* IMPORTANTE: o worker classifica por SUPERPIXEL (grid de SLIC_GRID_STEP=12px,
+     ver 14b-assisted-vect-worker.js), e so' considera uma amostra se esta
+     contiver o CENTRO de pelo menos um desses superpixels (ver
+     prepareTrainingData/pointInPixelBounds no worker). Um quadrado de
+     tamanho fixo em metros pode ser MENOR do que uma celula do grid a zooms
+     baixos (usados em areas grandes) -- nesse caso a amostra e' aceite na
+     UI mas contribui ZERO linhas de treino. Sem nenhuma amostra negativa
+     real, o classificador aprende so' "edificio" e classifica a area
+     inteira como um unico edificio (foi exatamente o bug reportado).
+     Por isso o tamanho e' calculado dinamicamente a partir do zoom que vai
+     ser mesmo usado no processamento (mesma formula de metros/pixel do
+     Web Mercator), com margem generosa (2.5x a celula) para garantir que
+     cobre sempre o centro de pelo menos um superpixel, seja qual for o
+     desfasamento entre o quadrado e a grelha. */
+  var SLIC_GRID_STEP_REF = 12; // tem de acompanhar SLIC_GRID_STEP no worker
+  var OSM_AUTO_NEG_MIN_SIZE_M = 6;   // nunca gerar amostras mais pequenas do que isto
+  var OSM_AUTO_NEG_MAX_SIZE_M = 30;  // nem maiores do que isto (evita invadir zonas vizinhas)
+
+  function metersPerPixelAt(lat, zoom){
+    return 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+  }
+
+  function autoNegSampleSizeM(lat, zoom){
+    var cellSizeM = metersPerPixelAt(lat, zoom) * SLIC_GRID_STEP_REF;
+    var size = cellSizeM * 2.5;
+    if(size < OSM_AUTO_NEG_MIN_SIZE_M) size = OSM_AUTO_NEG_MIN_SIZE_M;
+    if(size > OSM_AUTO_NEG_MAX_SIZE_M) size = OSM_AUTO_NEG_MAX_SIZE_M;
+    return size;
+  }
+
+  function boundsToOverpassBBox(bounds){
+    return [bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()].join(',');
+  }
+
+  /* Um unico pedido Overpass que traz, alem dos edificios, tres classes de
+     cobertura do solo (floresta, terreno agricola, estradas) para servirem
+     de amostras negativas "verdadeiras". Antes so pediamos edificios e
+     adivinhavamos pontos "vazios" numa grelha cega -- isso falha quando a
+     area tem floresta/sombra de copa ou estrada, porque o classificador
+     nunca via um exemplo negativo desse tipo especifico e acabava por
+     confundir textura de copa ou aresta de asfalto com telhado. Aqui
+     aplicamos a mesma logica que ja usamos para "building": o OSM ja sabe
+     onde e floresta/campo/estrada, por isso perguntamos diretamente em vez
+     de adivinhar. So `way` -- relations (multipolygon) ficam de fora por
+     agora, ver nota equivalente que existia antes para edificios. */
+  function buildOverpassTrainingQuery(bbox){
+    return '[out:json][timeout:' + OSM_OVERPASS_TIMEOUT_S + '];' +
+      '(' +
+      'way["building"](' + bbox + ');' +
+      'way["natural"="wood"](' + bbox + ');' +
+      'way["landuse"="forest"](' + bbox + ');' +
+      'way["landuse"="farmland"](' + bbox + ');' +
+      'way["highway"](' + bbox + ');' +
+      ');' +
+      'out geom;';
+  }
+
+  function closeRingIfNeeded(coords){
+    var first = coords[0], last = coords[coords.length - 1];
+    if(first[0] !== last[0] || first[1] !== last[1]) coords.push([first[0], first[1]]);
+    return coords;
+  }
+
+  /* Devolve edificios (rings fechados, como antes) e, separadamente,
+     poligonos de floresta/agricola (rings fechados, com o tipo em `kind`)
+     e linhas de estrada (polilinhas abertas) -- usados so' para gerar
+     amostras negativas automaticas, nunca desenhados como amostra
+     positiva. */
+  function fetchOsmTrainingFeatures(bounds){
+    var query = buildOverpassTrainingQuery(boundsToOverpassBBox(bounds));
+    return fetch(OSM_OVERPASS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: query
+    }).then(function(resp){
+      if(!resp.ok) throw new Error('Overpass respondeu ' + resp.status);
+      return resp.json();
+    }).then(function(data){
+      var elements = (data && data.elements) || [];
+      var buildingRings = [];
+      var landcoverRings = [];
+      var roadLines = [];
+      elements.forEach(function(el){
+        if(el.type !== 'way' || !el.geometry || el.geometry.length < 2) return;
+        var coords = el.geometry.map(function(pt){ return [pt.lat, pt.lon]; });
+        var tags = el.tags || {};
+        if(tags.building){
+          if(coords.length < 3) return;
+          buildingRings.push(closeRingIfNeeded(coords));
+        } else if(tags.natural === 'wood' || tags.landuse === 'forest'){
+          if(coords.length < 3) return;
+          landcoverRings.push({ ring: closeRingIfNeeded(coords), kind: 'floresta' });
+        } else if(tags.landuse === 'farmland'){
+          if(coords.length < 3) return;
+          landcoverRings.push({ ring: closeRingIfNeeded(coords), kind: 'agricola' });
+        } else if(tags.highway){
+          roadLines.push(coords);
+        }
+      });
+      return { buildingRings: buildingRings, landcoverRings: landcoverRings, roadLines: roadLines };
+    });
+  }
+
+  function pointInRing(lat, lng, ring){
+    var inside = false;
+    for(var i = 0, j = ring.length - 2; i < ring.length - 1; j = i++){
+      var yi = ring[i][0], xi = ring[i][1];
+      var yj = ring[j][0], xj = ring[j][1];
+      var intersect = ((yi > lat) !== (yj > lat)) &&
+        (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function pointInAnyRing(lat, lng, rings){
+    for(var i = 0; i < rings.length; i++){
+      if(pointInRing(lat, lng, rings[i])) return true;
+    }
+    return false;
+  }
+
+  function metersBetween(lat1, lng1, lat2, lng2){
+    var dLat = (lat2 - lat1) * 111320;
+    var dLng = (lng2 - lng1) * 111320 * Math.cos(lat1 * Math.PI / 180);
+    return Math.sqrt(dLat * dLat + dLng * dLng);
+  }
+
+  function squareRingAround(lat, lng, sizeM){
+    var dLat = (sizeM / 2) / 111320;
+    var dLng = (sizeM / 2) / (111320 * Math.cos(lat * Math.PI / 180));
+    return [
+      [lat - dLat, lng - dLng],
+      [lat - dLat, lng + dLng],
+      [lat + dLat, lng + dLng],
+      [lat + dLat, lng - dLng],
+      [lat - dLat, lng - dLng]
+    ];
+  }
+
+  var OSM_AUTO_NEG_PER_CLASS = 2;              // quantas amostras negativas tentar tirar de CADA classe (floresta, agricola, estrada)
+  var OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS = 6; // nao percorrer centenas de poligonos/linhas -- so os primeiros N encontrados por classe
+
+  function tooCloseToRings(lat, lng, rings, minDistM){
+    return rings.some(function(ring){
+      return ring.some(function(v){
+        return metersBetween(lat, lng, v[0], v[1]) < minDistM;
+      });
+    });
+  }
+
+  function tooCloseToPoints(lat, lng, points, minDistM){
+    return points.some(function(p){
+      return metersBetween(lat, lng, p[0], p[1]) < minDistM;
+    });
+  }
+
+  /* Ponto aleatorio dentro de um ring, por rejection sampling na bounding
+     box (rings de floresta/campo do OSM tendem a ser irregulares, por
+     isso nao basta usar o centroide -- pode cair fora da forma). */
+  function randomPointInRing(ring, maxTries){
+    var minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+    for(var i = 0; i < ring.length - 1; i++){
+      var lat = ring[i][0], lng = ring[i][1];
+      if(lat < minLat) minLat = lat;
+      if(lat > maxLat) maxLat = lat;
+      if(lng < minLng) minLng = lng;
+      if(lng > maxLng) maxLng = lng;
+    }
+    for(var t = 0; t < maxTries; t++){
+      var lat = minLat + Math.random() * (maxLat - minLat);
+      var lng = minLng + Math.random() * (maxLng - minLng);
+      if(pointInRing(lat, lng, ring)) return [lat, lng];
+    }
+    return null;
+  }
+
+  /* Distribui `count` pontos ao longo do comprimento total da polilinha,
+     evitando os extremos (que podem cair fora da area de trabalho). */
+  function pointsAlongLine(line, count){
+    var segLens = [];
+    var total = 0;
+    for(var i = 0; i < line.length - 1; i++){
+      var d = metersBetween(line[i][0], line[i][1], line[i + 1][0], line[i + 1][1]);
+      segLens.push(d);
+      total += d;
+    }
+    if(total <= 0) return [];
+    var pts = [];
+    for(var k = 1; k <= count; k++){
+      var target = total * k / (count + 1);
+      var acc = 0;
+      for(var i = 0; i < segLens.length; i++){
+        if(acc + segLens[i] >= target || i === segLens.length - 1){
+          var segT = segLens[i] > 0 ? (target - acc) / segLens[i] : 0;
+          segT = Math.max(0, Math.min(1, segT));
+          pts.push([
+            line[i][0] + (line[i + 1][0] - line[i][0]) * segT,
+            line[i][1] + (line[i + 1][1] - line[i][1]) * segT
+          ]);
+          break;
+        }
+        acc += segLens[i];
+      }
+    }
+    return pts;
+  }
+
+  /* Tenta adicionar uma amostra negativa num ponto: rejeita se cair dentro
+     de um edificio, perto demais de um edificio, ou perto demais de outra
+     amostra negativa ja adicionada (evita desperdicar amostras coladas
+     umas as outras). Devolve true/false consoante conseguiu. */
+  function tryAddNegativeSampleAt(lat, lng, sizeM, buildingRings, minDistM, addedPoints){
+    if(pointInAnyRing(lat, lng, buildingRings)) return false;
+    if(tooCloseToRings(lat, lng, buildingRings, minDistM)) return false;
+    if(tooCloseToPoints(lat, lng, addedPoints, sizeM)) return false;
+    var ring = squareRingAround(lat, lng, sizeM);
+    var layer = L.polygon(ring).addTo(map);
+    addSampleFromLayer(layer, 'non-building');
+    addedPoints.push([lat, lng]);
+    return true;
+  }
+
+  /* Amostragem negativa automatica em duas fases:
+     1. Cobertura do solo real do OSM (floresta, agricola, estrada) -- da
+        diversidade espectral ao classificador (sombra de copa, asfalto,
+        terra) que faltava por completo antes: se a area tinha floresta e
+        a grelha cega calhava so em campo agricola, o classificador nunca
+        aprendia "isto tambem e nao-edificio" para sombra de arvore, e
+        confundia-a com telhado (era exatamente o padrao visto nos
+        resultados: mancha gigante sobre copas + faixa fina ao longo de
+        uma estrada).
+     2. Grelha cega, como complemento/fallback, ate perfazer
+        OSM_AUTO_NEG_COUNT no total -- continua a ser util quando a area
+        nao tem nenhuma floresta/campo/estrada mapeada no OSM. */
+  function generateAutoNegativeSamples(bounds, buildingRings, landcoverRings, roadLines, zoom){
+    var north = bounds.getNorth(), south = bounds.getSouth();
+    var east = bounds.getEast(), west = bounds.getWest();
+    var latMid = (north + south) / 2;
+    var sizeM = autoNegSampleSizeM(latMid, zoom);
+    var minDistM = sizeM * 1.2;
+    var addedPoints = [];
+    var added = 0;
+    var byKind = { floresta: 0, agricola: 0, estrada: 0 };
+
+    ['floresta', 'agricola'].forEach(function(kind){
+      var feats = landcoverRings.filter(function(f){ return f.kind === kind; }).slice(0, OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS);
+      feats.forEach(function(f){
+        if(byKind[kind] >= OSM_AUTO_NEG_PER_CLASS) return;
+        var pt = randomPointInRing(f.ring, 8);
+        if(!pt) return;
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+          byKind[kind]++;
+        }
+      });
+    });
+
+    roadLines.slice(0, OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS).forEach(function(line){
+      if(byKind.estrada >= OSM_AUTO_NEG_PER_CLASS) return;
+      pointsAlongLine(line, 1).forEach(function(pt){
+        if(byKind.estrada >= OSM_AUTO_NEG_PER_CLASS) return;
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+          byKind.estrada++;
+        }
+      });
+    });
+
+    if(added < OSM_AUTO_NEG_COUNT){
+      var gridN = 6;
+      var candidates = [];
+      for(var i = 1; i < gridN; i++){
+        for(var j = 1; j < gridN; j++){
+          candidates.push([
+            south + (north - south) * i / gridN,
+            west + (east - west) * j / gridN
+          ]);
+        }
+      }
+      for(var k = 0; k < candidates.length && added < OSM_AUTO_NEG_COUNT; k++){
+        var pt = candidates[k];
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+        }
+      }
+    }
+
+    return { added: added, byKind: byKind };
+  }
+
+  function setOsmStatusText(text){
+    var el = $('va-osm-status');
+    if(el) el.textContent = text;
+  }
+
+  function formatNegKindSummary(byKind){
+    var parts = [];
+    if(byKind.floresta > 0) parts.push(byKind.floresta + ' floresta');
+    if(byKind.agricola > 0) parts.push(byKind.agricola + ' agricola');
+    if(byKind.estrada > 0) parts.push(byKind.estrada + ' estrada');
+    return parts.length > 0 ? ' (' + parts.join(', ') + ')' : '';
+  }
+
+  /* Area aproximada de um ring (lat/lng) em m2, por projecao local
+     equirectangular (suficiente para uma estimativa de cobertura -- nao
+     precisa da precisao geodesica usada no worker para os poligonos
+     finais). */
+  function ringAreaM2(ring){
+    var n = ring.length - 1;
+    if(n < 3) return 0;
+    var latSum = 0;
+    for(var i = 0; i < n; i++) latSum += ring[i][0];
+    var latMid = latSum / n;
+    var latM = 111320;
+    var lngM = 111320 * Math.cos(latMid * Math.PI / 180);
+    var area = 0;
+    for(var i = 0; i < n; i++){
+      var j = (i + 1) % n;
+      var x1 = ring[i][1] * lngM, y1 = ring[i][0] * latM;
+      var x2 = ring[j][1] * lngM, y2 = ring[j][0] * latM;
+      area += x1 * y2 - x2 * y1;
+    }
+    return Math.abs(area) / 2;
+  }
+
+  /* Se a area desenhada ja esta densamente coberta por edificios OSM
+     (centro urbano ja mapeado), correr o classificador nao ajuda -- o
+     objetivo desta ferramenta e detetar construcoes que o OSM AINDA NAO
+     tem. Nesses casos os edificios OSM ja importados como amostra positiva
+     (passo seguinte) sao, na pratica, o resultado que se quer: mais vale
+     avisar e sugerir reduzir a area a zonas sem cobertura. */
+  var OSM_COVERAGE_WARN_AREA_RATIO = 0.28; // >=28% da area desenhada ja coberta por edificios OSM
+  var OSM_COVERAGE_WARN_MIN_COUNT = 25;    // ou simplesmente muitos edificios OSM na area, zona urbana densa
+
+  function updateOsmCoverageWarning(coverageRatio, buildingCount){
+    var el = $('va-osm-coverage-warn');
+    if(!el) return;
+    var show = coverageRatio >= OSM_COVERAGE_WARN_AREA_RATIO || buildingCount >= OSM_COVERAGE_WARN_MIN_COUNT;
+    if(show){
+      var pctEl = $('va-osm-coverage-pct');
+      if(pctEl) pctEl.textContent = Math.round(coverageRatio * 100);
+      var countEl = $('va-osm-coverage-count');
+      if(countEl) countEl.textContent = buildingCount;
+    }
+    el.classList.toggle('hidden', !show);
+  }
+
+  /* Aviso "area demasiado grande" -- ver nota junto a estimateZoom() sobre
+     porque o zoom de classificacao deixou de baixar com a area (isso e'
+     que causava a celula do SLIC/grid ficar maior do que ruas/edificios
+     em areas grandes). Como agora o zoom fica sempre alto o suficiente
+     para uma resolucao fiavel, o numero de tiles/pixels do mosaico pode
+     crescer muito em areas grandes -- em vez de deixar continuar (o que
+     pode esgotar memoria do canvas ou demorar minutos), bloqueamos o
+     avanco do passo 3 e pedimos uma area mais pequena. O elemento HTML
+     nao existe no template (page injetado antes do resto do app existir),
+     por isso e' criado por JS na primeira vez, tal como injectOsmStatusUI. */
+  function injectAreaTooLargeWarningUI(){
+    if($('va-area-toolarge-warn')) return;
+    var estimate = $('va-estimate');
+    if(!estimate || !estimate.parentNode) return;
+    var el = document.createElement('div');
+    el.id = 'va-area-toolarge-warn';
+    el.className = 'hidden';
+    el.style.cssText = 'margin-top:8px;padding:10px 12px;border:1px solid var(--warn, #b45309);' +
+      'border-radius:var(--radius-sm, 6px);background:rgba(180,83,9,0.08);' +
+      'color:var(--warn, #b45309);font-size:0.85rem;line-height:1.4;';
+    el.innerHTML = 'Área demasiado grande para a resolução de classificação necessária ' +
+      '(<span id="va-area-toolarge-tiles"></span> tiles a zoom <span id="va-area-toolarge-zoom"></span>, ' +
+      'limite de ' + CLASSIFICATION_MAX_TILES + '). Desenhe uma área mais pequena para continuar.';
+    estimate.parentNode.insertBefore(el, estimate.nextSibling);
+  }
+
+  function updateAreaTooLargeWarning(show, tiles, zoom){
+    injectAreaTooLargeWarningUI();
+    var el = $('va-area-toolarge-warn');
+    if(!el) return;
+    if(show){
+      var tilesEl = $('va-area-toolarge-tiles');
+      if(tilesEl) tilesEl.textContent = tiles;
+      var zoomEl = $('va-area-toolarge-zoom');
+      if(zoomEl) zoomEl.textContent = zoom;
+    }
+    el.classList.toggle('hidden', !show);
+  }
+
+  function importOsmBuildingsForArea(bounds, zoom, areaM2){
+    setOsmStatusText('A importar edificios e cobertura do solo (OpenStreetMap)...');
+    updateOsmCoverageWarning(0, 0);
+    fetchOsmTrainingFeatures(bounds).then(function(data){
+      data.buildingRings.forEach(function(ring){
+        var layer = L.polygon(ring).addTo(map);
+        addSampleFromLayer(layer, 'building');
+      });
+      var totalBuildingAreaM2 = data.buildingRings.reduce(function(sum, ring){ return sum + ringAreaM2(ring); }, 0);
+      var coverageRatio = areaM2 > 0 ? totalBuildingAreaM2 / areaM2 : 0;
+      updateOsmCoverageWarning(coverageRatio, data.buildingRings.length);
+      var neg = generateAutoNegativeSamples(bounds, data.buildingRings, data.landcoverRings, data.roadLines, zoom);
+      var kindText = formatNegKindSummary(neg.byKind);
+      if(data.buildingRings.length > 0){
+        setOsmStatusText(data.buildingRings.length + ' edificio(s) OSM importado(s) como amostra positiva' + (data.buildingRings.length === 1 ? '' : 's') +
+          (neg.added > 0 ? '; ' + neg.added + ' amostra(s) negativa(s) geradas automaticamente' + kindText + '.' : '.'));
+      } else {
+        setOsmStatusText('Nenhum edificio OSM encontrado nesta area' +
+          (neg.added > 0 ? ' (' + neg.added + ' amostra(s) negativa(s) geradas automaticamente' + kindText + ').' : '.') +
+          ' Usa o desenho manual ou o magic wand no passo seguinte.');
+      }
+    }).catch(function(err){
+      console.error('[VetAssist] Erro Overpass:', err);
+      setOsmStatusText('Nao foi possivel importar dados OSM (' + err.message + '). Podes continuar manualmente no passo seguinte.');
+    });
   }
 
   /* ---- Step 4: Amostras ---- */
@@ -214,22 +665,50 @@
           um poligono editavel (arrastavel, via leaflet-geoman) que e
           adicionado como amostra de treino.
      ============================================================ */
-  var MW_WINDOW_RADIUS_PX = 180;
-  var MW_GRADIENT_THRESHOLD = 130; // magnitude Sobel: arestas fortes param o flood fill   // raio (em px do mosaico) da janela de procura a volta do clique
+  var MW_WINDOW_RADIUS_PX = 70; // raio (em px do CROP de alta resolucao) da janela de procura a volta do clique
+  var MW_GRADIENT_THRESHOLD = 130; // magnitude Sobel: arestas fortes param o flood fill
 
   var MW_TOLERANCE_PRESETS = { baixa: 25, media: 42, alta: 60 }; // distancia euclidiana RGB (0-441)
-  function ensureMosaicForMagicWand(){
-    if(vaState.mosaicCache) return Promise.resolve(vaState.mosaicCache);
-    var bounds = {
-      north: vaState.areaBounds.getNorth(),
-      south: vaState.areaBounds.getSouth(),
-      east: vaState.areaBounds.getEast(),
-      west: vaState.areaBounds.getWest()
-    };
-    var zoom = estimateZoom(calcAreaM2(vaState.areaBounds));
-    setMagicWandBannerText('A carregar imagem para selecao automatica...');
-    return captureBasemapPixels(bounds, zoom).then(function(result){
-      vaState.mosaicCache = result;
+
+  /* O magic wand precisa de resolucao ao nivel do edificio (~0.2-0.3 m/px),
+     independentemente do zoom escolhido para a captura da area de trabalho
+     inteira (esse zoom e propositadamente baixo em areas grandes, para nao
+     pedir milhares de tiles -- ver estimateZoom). Reutilizar esse mosaico de
+     baixa resolucao para o magic wand foi o bug real por tras dos "vazamentos"
+     gigantes: uma janela de poucas dezenas de pixels nesse mosaico podia
+     corresponder a dezenas de metros reais no terreno, cobrindo varias casas,
+     arvores e a rua -- nao era a comparacao de cor que estava errada, era a
+     area coberta por cada pixel que era grande demais.
+     Por isso o magic wand agora pede sempre um crop pequeno e de zoom fixo
+     e elevado, centrado no ponto clicado, em vez de reutilizar o mosaico
+     grande. Mantem-se em cache o ultimo crop pedido para evitar pedidos de
+     tiles repetidos quando o utilizador clica varias vezes perto uns dos
+     outros. */
+  var MW_CAPTURE_ZOOM = 19; // ~0.2-0.3 m/px a latitudes de Portugal -- suficiente para separar edificios individuais
+  var MW_CAPTURE_RADIUS_M = 45; // raio (em metros) do crop pedido a volta de cada clique
+
+  function boundsAroundLatLng(lat, lng, radiusM){
+    var dLat = radiusM / 111320;
+    var dLng = radiusM / (111320 * Math.cos(lat * Math.PI / 180));
+    return { north: lat + dLat, south: lat - dLat, east: lng + dLng, west: lng - dLng };
+  }
+
+  function latLngWithinCropMargin(latlng, crop){
+    if(!crop) return false;
+    var marginLat = (crop.bounds.north - crop.bounds.south) * 0.2;
+    var marginLng = (crop.bounds.east - crop.bounds.west) * 0.2;
+    return latlng.lat > crop.bounds.south + marginLat && latlng.lat < crop.bounds.north - marginLat &&
+           latlng.lng > crop.bounds.west + marginLng && latlng.lng < crop.bounds.east - marginLng;
+  }
+
+  function ensureHighResCropAroundClick(latlng){
+    if(latLngWithinCropMargin(latlng, vaState.mwCropCache)){
+      return Promise.resolve(vaState.mwCropCache);
+    }
+    var bounds = boundsAroundLatLng(latlng.lat, latlng.lng, MW_CAPTURE_RADIUS_M);
+    setMagicWandBannerText('A carregar imagem de alta resolucao...');
+    return captureBasemapPixels(bounds, MW_CAPTURE_ZOOM).then(function(result){
+      vaState.mwCropCache = result;
       setMagicWandBannerText(magicWandBannerDefaultText());
       return result;
     }).catch(function(err){
@@ -261,9 +740,9 @@
     setMagicWandBannerText(magicWandBannerDefaultText());
     if(map && map.getContainer()) map.getContainer().style.cursor = 'crosshair';
     if(map) map.on('click', onMagicWandClick);
-    ensureMosaicForMagicWand().catch(function(){
-      showAppAlert('Nao foi possivel carregar a imagem para selecao automatica.', {error:true});
-    });
+    /* Nao ha imagem para pre-carregar aqui -- o crop de alta resolucao e
+       pedido a volta do primeiro clique, ja que so ai sabemos onde o
+       utilizador quer clicar. */
   }
 
   function cancelMagicWand(){
@@ -279,9 +758,9 @@
 
   function onMagicWandClick(e){
     if(!vaState.magicWandActive) return;
-    ensureMosaicForMagicWand().then(function(mosaic){
-      processMagicWandClick(e.latlng, mosaic);
-    }).catch(function(){ /* erro ja reportado em ensureMosaicForMagicWand */ });
+    ensureHighResCropAroundClick(e.latlng).then(function(crop){
+      processMagicWandClick(e.latlng, crop);
+    }).catch(function(){ /* erro ja reportado em ensureHighResCropAroundClick */ });
   }
 
   function processMagicWandClick(latlng, mosaic){
@@ -302,7 +781,7 @@
       return;
     }
 
-    var ring = traceMaskBoundary(result.mask, result.w, result.h);
+    var ring = traceMaskBoundary(result.mask, result.w, result.h, result.seedLx, result.seedLy);
     if(!ring || ring.length < 4){
       showAppAlert('Nao foi possivel tracar um contorno valido nesse ponto. Tenta outro clique.', {error:true});
       return;
@@ -401,7 +880,20 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
     var maxFill = Math.floor(winW * winH * 0.6);
     var bb = { minX: seedX - minX, minY: seedY - minY, maxX: seedX - minX, maxY: seedY - minY };
 
-    /* Adaptive reference: actualiza lentamente para seguir variacao suave dentro do telhado */
+    /* Adaptive reference: actualiza lentamente para seguir variacao suave dentro do telhado.
+       MAS sem nenhum travao, esta adaptacao sofre de "color drift" (color
+       walk): cada passo e pequeno e "razoavel" localmente (dentro da
+       tolerancia face a referencia atual), mas ao fim de centenas de
+       pixels a referencia pode ter-se afastado muito da cor original do
+       clique, permitindo que o fill atravesse telhado -> sombra -> rua ->
+       outro telhado sem nunca violar a tolerancia local. Isto e exatamente
+       o que estava a fundir varios edificios/ruas/logradouros numa mancha
+       so. Fix: alem da distancia a referencia adaptativa, exige-se tambem
+       que a cor nunca se afaste mais do que maxDriftFromAnchor da cor
+       ORIGINAL do clique (que nunca muda) -- um travao duro independente
+       da deriva gradual. */
+    var anchorR = refR, anchorG = refG, anchorB = refB;
+    var maxDriftFromAnchor = tolerance * 1.4;
     var adaptR = refR, adaptG = refG, adaptB = refB;
     var adaptCount = 0;
     var maxAdaptDist = tolerance * 0.55;
@@ -412,6 +904,8 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
       var c = readPx(lx + minX, ly + minY);
       var dist = Math.sqrt(Math.pow(c[0] - adaptR, 2) + Math.pow(c[1] - adaptG, 2) + Math.pow(c[2] - adaptB, 2));
       if(dist > tolerance) continue;
+      var distAnchor = Math.sqrt(Math.pow(c[0] - anchorR, 2) + Math.pow(c[1] - anchorG, 2) + Math.pow(c[2] - anchorB, 2));
+      if(distAnchor > maxDriftFromAnchor) continue;
       mask[ly * winW + lx] = 1;
       filledCount++;
       if(filledCount > maxFill) return null;
@@ -467,7 +961,7 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
       mask = isolated.mask;
     }
 
-    return { mask: mask, w: winW, h: winH, offsetX: minX, offsetY: minY };
+    return { mask: mask, w: winW, h: winH, offsetX: minX, offsetY: minY, seedLx: seedLx, seedLy: seedLy };
   }
 
   /* Erosao seguida de dilatacao (4-conectividade), 1 iteracao: remove
@@ -561,7 +1055,19 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
   /* ---- Tracing de contorno por arestas direcionadas (mesma tecnica do
      worker, adaptada para operar sobre uma mascara binaria pixel-a-pixel
      em vez de uma grelha de superpixels) ---- */
-  function traceMaskBoundary(mask, w, h){
+  function pointInPolygonXY(x, y, ring){
+    var inside = false;
+    for(var i = 0, j = ring.length - 2; i < ring.length - 1; j = i++){
+      var xi = ring[i][0], yi = ring[i][1];
+      var xj = ring[j][0], yj = ring[j][1];
+      var intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function traceMaskBoundary(mask, w, h, seedLx, seedLy){
     function filled(x, y){
       if(x < 0 || x >= w || y < 0 || y >= h) return false;
       return mask[y * w + x] === 1;
@@ -633,14 +1139,36 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
     }
     if(loops.length === 0) return null;
 
-    var bestRing = null, bestArea = -1;
+    var candidates = [];
     for(var i = 0; i < loops.length; i++){
       var a = 0;
       for(var j = 0; j < loops[i].length - 1; j++){
         a += loops[i][j][0] * loops[i][j + 1][1] - loops[i][j + 1][0] * loops[i][j][1];
       }
-      a = Math.abs(a / 2);
-      if(a > bestArea){ bestArea = a; bestRing = loops[i]; }
+      candidates.push({ loop: loops[i], area: Math.abs(a / 2) });
+    }
+
+    /* Uma mascara isolada por keepComponentContainingSeed continua a poder
+       gerar mais do que um loop se a forma se tocar a si propria num unico
+       vertice (ex: edificio em L, ou dois "colados" por um so pixel).
+       ANTES escolhia-se sempre o loop de maior area -- se o lobo que o
+       utilizador clicou fosse o mais pequeno dos dois, o poligono devolvido
+       nem sequer continha o ponto do clique. Agora: preferir sempre o loop
+       que contem o pixel clicado; so cair para "maior area" se, por algum
+       motivo inesperado, nenhum loop contiver o ponto. */
+    if(typeof seedLx === 'number' && typeof seedLy === 'number'){
+      var seedRing = null;
+      for(var i2 = 0; i2 < candidates.length; i2++){
+        if(pointInPolygonXY(seedLx + 0.5, seedLy + 0.5, candidates[i2].loop)){
+          if(!seedRing || candidates[i2].area > seedRing.area) seedRing = candidates[i2];
+        }
+      }
+      if(seedRing) return seedRing.loop;
+    }
+
+    var bestRing = null, bestArea = -1;
+    for(var i3 = 0; i3 < candidates.length; i3++){
+      if(candidates[i3].area > bestArea){ bestArea = candidates[i3].area; bestRing = candidates[i3].loop; }
     }
     return bestRing;
   }
@@ -840,7 +1368,7 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
       return { label: s.label, geometry: gj.geometry };
     });
     clearSampleLayers();
-    var zoom = estimateZoom(calcAreaM2(vaState.areaBounds));
+    var zoom = estimateZoom(vaState.areaBounds.getCenter().lat);
 
     captureBasemapPixels(bounds, zoom).then(function(result){
       appendLog('Imagem capturada: ' + result.width + 'x' + result.height + ' px', 'log');
@@ -914,10 +1442,18 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
       }
     }
 
+    /* mosaicBounds tem de corresponder EXATAMENTE aos pixels desenhados no
+       canvas (tiles minTileX..maxTileX, minTileY..maxTileY). Usar
+       minTileX+nCols / minTileY+nRows aqui seria pedir os limites do tile
+       SEGUINTE (um tile inteiro, 256px, alem do que esta realmente
+       pintado) -- isso alarga o mosaicBounds para alem da imagem real e
+       faz com que toda a conversao pixel->lat/lng (features, amostras de
+       treino, poligono final) fique esticada/desfasada. Correto e usar o
+       INDICE do ultimo tile realmente desenhado (maxTileX/maxTileY). */
     var mosaicBounds = {
       north: tileToBounds(minTileX, minTileY, zoom).north,
-      south: tileToBounds(minTileX + nCols, minTileY + nRows, zoom).south,
-      east: tileToBounds(minTileX + nCols, minTileY, zoom).east,
+      south: tileToBounds(maxTileX, maxTileY, zoom).south,
+      east: tileToBounds(maxTileX, minTileY, zoom).east,
       west: tileToBounds(minTileX, minTileY, zoom).west
     };
 
@@ -1009,6 +1545,16 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
       appendLog(msg.text, 'log');
     } else if(msg.type === 'log'){
       appendLog(msg.text, msg.level || 'log');
+    } else if(msg.type === 'sampleWarning'){
+      /* O worker ja' escreveu os detalhes no log (nivel 'warning'); aqui so'
+         reforcamos com um alerta visivel, porque isto muda a fiabilidade do
+         resultado (menos amostras reais do que as que o utilizador desenhou)
+         e e' facil perder uma linha de log a meio do processamento. */
+      showAppAlert(
+        msg.deadSamples.length + ' de ' + msg.totalSamples + ' amostra(s) nao contribuiram para o treino ' +
+        '(demasiado pequenas para a grelha usada a este zoom). Ve o registo para detalhes.',
+        {error:true}
+      );
     } else if(msg.type === 'done'){
       $('va-progress-fill').style.width = '100%';
       $('va-progress-phase').textContent = 'Concluido!';
@@ -1178,11 +1724,29 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
     return Math.abs(ne.lat - sw.lat) * latM * Math.abs(ne.lng - sw.lng) * lngM;
   }
 
-  function estimateZoom(areaM2){
-    if(areaM2 > 2000000) return 16;
-    if(areaM2 > 500000) return 17;
-    if(areaM2 > 100000) return 18;
-    return 19;
+  /* estimateZoom era area-based (baldes por m2): quanto maior a area
+     desenhada, mais baixo o zoom escolhido. Isso confundia duas coisas
+     diferentes -- "quanto tempo/tiles vai demorar" e "que resolucao e'
+     preciso para classificar edificios" -- e em areas grandes dava um
+     zoom baixo demais para o classificador funcionar (celula do SLIC
+     maior do que ruas estreitas/edificios colados, ver nota junto a
+     SLIC_GRID_STEP_REF). A resolucao de classificacao NAO deve depender
+     da area desenhada: decoupled agora por metros/pixel alvo (constante,
+     independente da area), com a area grande a ser tratada em vez disso
+     como um bloqueio explicito (ver updateAreaTooLargeWarning) em vez de
+     um zoom mais baixo e silenciosamente pior. */
+  var CLASSIFICATION_TARGET_MPP = 0.6;  // metros/pixel alvo (~zoom 18 a latitude de Portugal)
+  var CLASSIFICATION_MIN_ZOOM = 16;
+  var CLASSIFICATION_MAX_ZOOM = 19;     // acima disto os providers de tiles usados nao tem mais detalhe
+  var CLASSIFICATION_MAX_TILES = 256;   // ~16x16 tiles (4096x4096px) -- limite seguro de memoria/canvas
+
+  function estimateZoom(lat){
+    var latForCalc = (typeof lat === 'number' && !isNaN(lat)) ? lat : 41; // ~latitude media de Portugal continental
+    var mppAtZoom0 = 156543.03392 * Math.cos(latForCalc * Math.PI / 180);
+    var z = Math.ceil(Math.log2(mppAtZoom0 / CLASSIFICATION_TARGET_MPP));
+    if(z < CLASSIFICATION_MIN_ZOOM) z = CLASSIFICATION_MIN_ZOOM;
+    if(z > CLASSIFICATION_MAX_ZOOM) z = CLASSIFICATION_MAX_ZOOM;
+    return z;
   }
 
   function estimateTiles(bounds, zoom){
@@ -1213,24 +1777,38 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
   }
 
   /* Injeta a UI do magic wand dinamicamente (banner + botoes + sensibilidade).
-     Nao temos o template engenh.html neste ficheiro, por isso construimos os
-     elementos por JS em vez de assumir IDs que podem nao existir. Se quiseres
-     que isto fique no HTML/CSS "a serio" (em vez de estilo inline), diz que
-     eu ajusto quando tiveres o ficheiro do template. */
+     O estilo vive agora em classes CSS (ver <style> em engenh.html, bloco
+     "Vetorizacao assistida: ferramentas OSM/magic wand"), consistente com o
+     resto da app -- antes tinha cores fixas inline aqui, o que destoava do
+     .btn usado no resto do painel. */
+  /* Injeta uma linha de estado (texto simples) por baixo do bloco de
+     estimativa do passo 3, usada para reportar o progresso/resultado da
+     importacao automatica de edificios OSM. Mesma logica do
+     injectMagicWandUI: nao ha garantia de que o template HTML tenha este
+     elemento, por isso criamo-lo por JS. */
+  function injectOsmStatusUI(){
+    if($('va-osm-status')) return;
+    var estimate = $('va-estimate');
+    if(!estimate || !estimate.parentNode) return;
+    var el = document.createElement('div');
+    el.id = 'va-osm-status';
+    estimate.parentNode.insertBefore(el, estimate.nextSibling);
+  }
+
+  var MW_WAND_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>';
+
   function injectMagicWandUI(){
     if($('va-magicwand-banner')) return; // ja injetado
 
     var sampleBanner = $('va-sample-banner');
     var banner = document.createElement('div');
     banner.id = 'va-magicwand-banner';
-    banner.className = 'hidden';
-    banner.style.cssText = 'position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:1000;background:#1f2937;color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);';
+    banner.className = 'va-magicwand-banner hidden';
     var text = document.createElement('span');
     text.id = 'va-magicwand-banner-text';
     var cancelBtn = document.createElement('button');
     cancelBtn.type = 'button';
     cancelBtn.textContent = 'Cancelar';
-    cancelBtn.style.cssText = 'background:#374151;color:#fff;border:none;padding:3px 10px;border-radius:5px;cursor:pointer;font-size:12px;';
     cancelBtn.addEventListener('click', cancelMagicWand);
     banner.appendChild(text);
     banner.appendChild(cancelBtn);
@@ -1242,30 +1820,29 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
 
     var negBtn = $('va-sample-btn-neg');
     var wrap = document.createElement('span');
-    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:6px;margin-left:8px;';
+    wrap.className = 'va-mw-toolbar';
 
     var mwPosBtn = document.createElement('button');
     mwPosBtn.type = 'button';
     mwPosBtn.id = 'va-magicwand-btn-pos';
+    mwPosBtn.className = 'va-mw-btn pos';
     mwPosBtn.title = 'Clica sobre um edificio na imagem e o algoritmo desenha o limite automaticamente';
-    mwPosBtn.textContent = '🪄 Edificio (clique)';
-    mwPosBtn.style.cssText = 'background:#e7f4ec;color:#2f7d4f;border:1px solid #2f7d4f;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:12px;';
+    mwPosBtn.innerHTML = MW_WAND_ICON_SVG + '<span>Edificio (clique)</span>';
     mwPosBtn.addEventListener('click', function(){ startMagicWand('building'); });
 
     var mwNegBtn = document.createElement('button');
     mwNegBtn.type = 'button';
     mwNegBtn.id = 'va-magicwand-btn-neg';
+    mwNegBtn.className = 'va-mw-btn neg';
     mwNegBtn.title = 'Clica sobre uma area NAO-edificio na imagem e o algoritmo desenha o limite automaticamente';
-    mwNegBtn.textContent = '🪄 Nao-edificio (clique)';
-    mwNegBtn.style.cssText = 'background:#fbebe6;color:#b5472b;border:1px solid #b5472b;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:12px;';
+    mwNegBtn.innerHTML = MW_WAND_ICON_SVG + '<span>Nao-edificio (clique)</span>';
     mwNegBtn.addEventListener('click', function(){ startMagicWand('non-building'); });
 
     var tolLabel = document.createElement('label');
-    tolLabel.style.cssText = 'font-size:11px;color:#555;display:inline-flex;align-items:center;gap:4px;';
-    tolLabel.textContent = 'Sensibilidade:';
+    tolLabel.className = 'va-mw-field';
+    tolLabel.appendChild(document.createTextNode('Sensibilidade:'));
     var tolSelect = document.createElement('select');
     tolSelect.id = 'va-magicwand-tolerance';
-    tolSelect.style.cssText = 'font-size:11px;padding:2px 4px;border-radius:4px;';
     ['baixa', 'media', 'alta'].forEach(function(opt){
       var o = document.createElement('option');
       o.value = opt;
@@ -1276,7 +1853,7 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
     tolLabel.appendChild(tolSelect);
 
     var orthoLabel = document.createElement('label');
-    orthoLabel.style.cssText = 'font-size:11px;color:#555;display:inline-flex;align-items:center;gap:4px;margin-left:6px;';
+    orthoLabel.className = 'va-mw-field';
     var orthoCheckbox = document.createElement('input');
     orthoCheckbox.type = 'checkbox';
     orthoCheckbox.id = 'va-magicwand-ortho';
@@ -1298,8 +1875,10 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
   /* ---- Bind events ---- */
   function bindEvents(){
     injectMagicWandUI();
+    injectOsmStatusUI();
 
-    $('btn-vetassist').addEventListener('click', openVetAssist);
+    // Comentado: o botão btn-vetassist agora é gerido pelo SAM (18-sam-segment.js)
+    // $('btn-vetassist').addEventListener('click', openVetAssist);
     $('va-close-btn').addEventListener('click', closeVetAssist);
     $('va-cancel-btn').addEventListener('click', closeVetAssist);
     $('va-summary-close').addEventListener('click', closeVetAssist);

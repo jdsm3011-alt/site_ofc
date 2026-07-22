@@ -36,6 +36,14 @@
     return n;
   }
 
+  /* Mesma formula usada no main thread (ver metersPerPixelAt em
+     14-assisted-vect.js) -- so' para conseguirmos explicar ao utilizador,
+     em metros, porque e' que uma amostra nao gerou nenhuma linha de treino
+     (celula da grelha SLIC_GRID_STEP maior do que o poligono desenhado). */
+  function metersPerPixelAt(lat, zoom){
+    return 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+  }
+
   function processArea(msg){
     var bounds = msg.bounds;
     var samples = msg.samples;
@@ -60,10 +68,47 @@
     postProgress(25, 'A segmentar superpixels...');
     var superpixels = computeSuperpixels(mosaic, features);
 
+    /* As 9 features (r,g,b,h,s,greenExcess,exRed,textureStd,edgeMag) tem
+       escalas muito diferentes: as 7 primeiras estao normalizadas 0-1, mas
+       textureStd e edgeMag (derivadas do filtro de Sobel) podem chegar a
+       varias unidades. Sem normalizar, o KNN (que usa distancia euclidiana
+       diretamente) fica dominado quase por completo pela magnitude do
+       gradiente -- na pratica passa a classificar "edificio" sempre que ha
+       uma aresta forte (bordas de estrada, limites de vegetacao, sombras),
+       ignorando a cor. Isto tambem deixa o Naive Bayes mais instavel. Por
+       isso normalizamos (z-score) cada feature para media 0 / desvio 1
+       antes de qualquer treino ou classificacao. */
+    standardizeFeaturesInPlace(superpixels.centroidFeatures, superpixels.nSuperpixels, superpixels.nFeatures);
+
     /* Fase 4: Preparar dados de treino */
     postProgress(35, 'A preparar dados de treino...');
     var trainData = prepareTrainingData(samples, superpixels, mosaic);
     postLog('Amostras: ' + trainData.X.length + ' (edif=' + trainData.y.filter(function(v){return v===1;}).length + ', nao-edif=' + trainData.y.filter(function(v){return v===0;}).length + ')', 'status');
+
+    /* Aviso: amostras "mortas" -- desenhadas/aceites na UI mas que nao
+       contem o centro de nenhum superpixel a este zoom, logo nao geraram
+       nenhuma linha em trainData. Avisa-se AQUI, antes de qualquer treino,
+       para o utilizador perceber que o numero de amostras "reais" pode ser
+       bem menor do que o que a UI mostrou no passo anterior. */
+    var deadSamples = [];
+    trainData.sampleCounts.forEach(function(count, idx){
+      if(count === 0) deadSamples.push({ index: idx, label: samples[idx].label });
+    });
+    if(deadSamples.length > 0){
+      var latMid = (mosaic.bounds.north + mosaic.bounds.south) / 2;
+      var cellSizeM = metersPerPixelAt(latMid, zoom) * SLIC_GRID_STEP;
+      var refs = deadSamples.map(function(d){
+        return '#' + (d.index + 1) + ' (' + (d.label === 'building' ? 'edificio' : 'nao-edificio') + ')';
+      }).join(', ');
+      postLog(
+        deadSamples.length + ' de ' + samples.length + ' amostra(s) nao tocam no centro de nenhum superpixel ' +
+        'e por isso NAO entram no treino, apesar de aparecerem na lista: ' + refs + '. ' +
+        'A este zoom (' + zoom + ') cada celula da grelha tem cerca de ' + cellSizeM.toFixed(1) + 'm de lado -- ' +
+        'redesenha estas amostras maiores, ou reduz a area de trabalho para subir o zoom.',
+        'warning'
+      );
+      self.postMessage({ type: 'sampleWarning', deadSamples: deadSamples, totalSamples: samples.length, zoom: zoom, cellSizeM: cellSizeM });
+    }
 
     /* Fase 5: Estimar accuracy por validacao cruzada (k-fold), depois treinar
        o modelo final com TODOS os dados. Nunca avaliar no mesmo conjunto que
@@ -294,6 +339,42 @@
   }
 
   /* ---- SLIC superpixels (grid-based simplification) ---- */
+  /* Normaliza cada feature (coluna) para media 0 / desvio padrao 1,
+     calculado sobre a populacao de TODOS os superpixels da imagem (nao so
+     as amostras de treino -- da uma estimativa mais estavel da escala
+     real da imagem, e nao usa rotulos, por isso nao ha fuga de informacao
+     de treino/validacao). Aplica-se antes de extrair X de treino e antes
+     de classificar a imagem toda, para que ambos usem exatamente a mesma
+     escala. */
+  function standardizeFeaturesInPlace(centroidFeatures, nSuperpixels, nFeatures){
+    var mean = new Float64Array(nFeatures);
+    var std = new Float64Array(nFeatures);
+    for(var s = 0; s < nSuperpixels; s++){
+      for(var f = 0; f < nFeatures; f++){
+        mean[f] += centroidFeatures[s * nFeatures + f];
+      }
+    }
+    for(var f = 0; f < nFeatures; f++) mean[f] /= Math.max(nSuperpixels, 1);
+
+    for(var s2 = 0; s2 < nSuperpixels; s2++){
+      for(var f2 = 0; f2 < nFeatures; f2++){
+        var d = centroidFeatures[s2 * nFeatures + f2] - mean[f2];
+        std[f2] += d * d;
+      }
+    }
+    for(var f3 = 0; f3 < nFeatures; f3++){
+      std[f3] = Math.sqrt(std[f3] / Math.max(nSuperpixels, 1));
+      if(std[f3] < 1e-6) std[f3] = 1e-6;
+    }
+
+    for(var s3 = 0; s3 < nSuperpixels; s3++){
+      for(var f4 = 0; f4 < nFeatures; f4++){
+        var idx = s3 * nFeatures + f4;
+        centroidFeatures[idx] = (centroidFeatures[idx] - mean[f4]) / std[f4];
+      }
+    }
+  }
+
   function computeSuperpixels(mosaic, features){
     var w = mosaic.width;
     var h = mosaic.height;
@@ -342,15 +423,30 @@
     };
   }
 
-  /* ---- Training data preparation ---- */
+  /* ---- Training data preparation ----
+     Cada amostra (poligono desenhado a mao, magic wand, ou vinda do OSM)
+     so' conta para o treino se contiver o CENTRO de pelo menos um
+     superpixel da grelha ATUAL (que depende do zoom real de processamento,
+     ver estimateZoom). Uma amostra pode aparecer perfeitamente valida na
+     UI (posCount/negCount >= 3) e mesmo assim contribuir ZERO linhas aqui
+     -- e' exatamente o cenario descrito no comentario de
+     autoNegSampleSizeM() no main thread, mas que ali so' foi corrigido
+     para as amostras negativas automaticas via OSM, nunca para as
+     amostras manuais/magic-wand. Por isso devolvemos tambem
+     'sampleCounts' (uma linha por amostra de entrada, na mesma ordem),
+     para o caller poder detetar e avisar sobre amostras "mortas" antes
+     de treinar, em vez de o utilizador so' perceber pelo resultado final
+     (ensemble a inclinar tudo para "edificio" por falta de negativos
+     reais). */
   function prepareTrainingData(samples, superpixels, mosaic){
     var w = mosaic.width;
     var nFeat = superpixels.nFeatures;
     var X = [];
     var y = [];
     var labeled = {};
+    var sampleCounts = samples.map(function(){ return 0; });
 
-    samples.forEach(function(sample){
+    samples.forEach(function(sample, sIdx){
       var geom = sample.geometry;
       var label = sample.label === 'building' ? 1 : 0;
       var coords = flattenCoords(geom);
@@ -370,11 +466,12 @@
           }
           X.push(feat);
           y.push(label);
+          sampleCounts[sIdx]++;
         }
       }
     });
 
-    return { X: X, y: y };
+    return { X: X, y: y, sampleCounts: sampleCounts };
   }
 
   function flattenCoords(geometry){
@@ -853,9 +950,12 @@
             }
           }
 
-          var ring = regionToRing(region, gridCols, gridRows, step, bounds, w, h);
-          if(ring.length >= 4){
-            polygons.push({ ring: ring, confidence: avgConfidence(region, classified.confidences) });
+          var rings = regionToRing(region, gridCols, gridRows, step, bounds, w, h);
+          var regionConfidence = avgConfidence(region, classified.confidences);
+          for(var ri = 0; ri < rings.length; ri++){
+            if(rings[ri].length >= 4){
+              polygons.push({ ring: rings[ri], confidence: regionConfidence });
+            }
           }
         }
       }
@@ -982,29 +1082,38 @@
     var loops = traceDirectedLoops(edges);
     if(loops.length === 0) return [];
 
-    /* Uma regiao pode produzir mais do que um loop (contorno exterior +
-       eventuais buracos, ou lobos que so se tocam num ponto). Para
-       edificios interessa-nos o contorno exterior: o de maior area
-       absoluta. Loops mais pequenos (ex: buracos, lobos residuais) sao
-       descartados aqui -- ja eram ignorados antes, so que de forma
-       acidental (o traçado antigo simplesmente saltava para eles). */
-    var bestRing = null, bestArea = -1;
-    for(var i = 0; i < loops.length; i++){
-      var area = Math.abs(signedArea(loops[i]));
-      if(area > bestArea){ bestArea = area; bestRing = loops[i]; }
+    /* Uma regiao pode produzir mais do que um loop: o contorno exterior,
+       eventuais buracos (sinal de area OPOSTO ao do exterior), e/ou lobos
+       que so se tocam num unico vertice -- ex: edificio em L, ou dois
+       edificios "colados" por um so pixel de fronteira (mesmo sinal do
+       exterior). ANTES so' o loop de maior area absoluta era mantido, o
+       que amputava silenciosamente o(s) outro(s) lobo(s) sempre que o
+       tracado por arestas direcionadas os separava (bug real: um edificio
+       em L perdia uma das suas alas; um par fundido em pente perdia um
+       edificio inteiro). Agora: o loop de maior area define o sinal
+       "exterior"; TODOS os loops com esse mesmo sinal sao devolvidos como
+       poligonos proprios -- so os de sinal oposto (buracos genuinos) sao
+       descartados. Devolve um array de aneis (normalmente 1, por vezes
+       mais). */
+    var signedLoops = loops.map(function(l){ return { loop: l, area: signedArea(l) }; });
+    signedLoops.sort(function(a, b){ return Math.abs(b.area) - Math.abs(a.area); });
+    var exteriorSign = signedLoops[0].area >= 0 ? 1 : -1;
+
+    var rings = [];
+    for(var i = 0; i < signedLoops.length; i++){
+      var sign = signedLoops[i].area >= 0 ? 1 : -1;
+      if(sign !== exteriorSign) continue; // buraco -- descartar
+
+      var coords = signedLoops[i].loop.map(function(v){
+        return cellToCoord(v[0], v[1], bounds, mosaicW, mosaicH);
+      });
+      coords.push(coords[0].slice());
+      coords = removeConsecutiveDuplicates(coords);
+      if(coords.length < 4) continue;
+      if(!isRingClosed(coords)) coords.push(coords[0].slice());
+      rings.push(coords);
     }
-    if(!bestRing) return [];
-
-    var coords = bestRing.map(function(v){
-      return cellToCoord(v[0], v[1], bounds, mosaicW, mosaicH);
-    });
-    coords.push(coords[0].slice());
-
-    coords = removeConsecutiveDuplicates(coords);
-    if(coords.length < 4) return [];
-    if(!isRingClosed(coords)) coords.push(coords[0].slice());
-
-    return coords;
+    return rings;
   }
 
   function removeConsecutiveDuplicates(coords){
@@ -1227,52 +1336,88 @@
     if(bestIdx < 0) return [ring];
 
     var splitProj = projections[bestIdx].proj;
-    var splitPoint = [cx + dirX * splitProj, cy + dirY * splitProj];
 
-    var perpX = -dirY, perpY = dirX;
-    var minPerp = 0, maxPerp = 0;
-    for(var i = 0; i < n; i++){
-      var dx = ring[i][0] - cx;
-      var dy = ring[i][1] - cy;
-      var proj = dx * dirX + dy * dirY;
-      var perp = dx * perpX + dy * perpY;
-      var nearSplit = Math.abs(proj - splitProj);
-      if(nearSplit < 0.00005){
-        if(perp < minPerp) minPerp = perp;
-        if(perp > maxPerp) maxPerp = perp;
-      }
-    }
-
-    var p1 = [splitPoint[0] + perpX * minPerp, splitPoint[1] + perpY * minPerp];
-    var p2 = [splitPoint[0] + perpX * maxPerp, splitPoint[1] + perpY * maxPerp];
-
-    var leftPoly = [];
-    var rightPoly = [];
-
-    for(var i = 0; i < n; i++){
-      var dx = ring[i][0] - cx;
-      var dy = ring[i][1] - cy;
-      var proj = dx * dirX + dy * dirY;
-      if(proj <= splitProj){
-        leftPoly.push(ring[i]);
-      } else {
-        rightPoly.push(ring[i]);
-      }
-    }
-
-    leftPoly.push(p2);
-    leftPoly.push(p1);
-    leftPoly.push(leftPoly[0].slice());
-
-    rightPoly.push(p1);
-    rightPoly.push(p2);
-    rightPoly.push(rightPoly[0].slice());
+    // Clipping robusto tipo Sutherland-Hodgman: percorre o anel na ordem
+    // original e, para cada aresta, decide manter/descartar/inserir o ponto
+    // de interseccao com a linha de corte. Isto lida correctamente com
+    // formas concavas que cruzam a linha varias vezes, ao contrario do
+    // particionamento ingenuo anterior (que produzia bowties porque a
+    // ordem dos vertices deixava de corresponder a um percurso valido do
+    // perimetro quando havia mais de duas travessias).
+    var leftRaw = clipRingByLine(ring, cx, cy, dirX, dirY, splitProj, -1);
+    var rightRaw = clipRingByLine(ring, cx, cy, dirX, dirY, splitProj, 1);
 
     var results = [];
-    if(leftPoly.length >= 4) results.push(leftPoly);
-    if(rightPoly.length >= 4) results.push(rightPoly);
+    var leftPoly = closeAndCleanRing(leftRaw);
+    var rightPoly = closeAndCleanRing(rightRaw);
+    if(leftPoly) results.push(leftPoly);
+    if(rightPoly) results.push(rightPoly);
 
     return results.length > 0 ? results : [ring];
+  }
+
+  // Corta um anel (fechado, ultimo ponto == primeiro) contra a semi-recta
+  // definida por (cx,cy) + dir*proj, mantendo o lado indicado por `side`:
+  // side = -1 mantem proj <= splitProj; side = 1 mantem proj >= splitProj.
+  // Insere um ponto de interseccao em cada travessia da linha, produzindo
+  // uma sequencia de vertices que ainda forma um percurso valido do
+  // perimetro (sem interleaving).
+  function clipRingByLine(ring, cx, cy, dirX, dirY, splitProj, side){
+    var n = ring.length - 1;
+    var out = [];
+    for(var i = 0; i < n; i++){
+      var curr = ring[i];
+      var prev = ring[(i - 1 + n) % n];
+      var currProj = (curr[0] - cx) * dirX + (curr[1] - cy) * dirY;
+      var prevProj = (prev[0] - cx) * dirX + (prev[1] - cy) * dirY;
+      var currIn = side < 0 ? currProj <= splitProj : currProj >= splitProj;
+      var prevIn = side < 0 ? prevProj <= splitProj : prevProj >= splitProj;
+
+      if(currIn !== prevIn){
+        // aresta cruza a linha de corte - inserir ponto de interseccao
+        var denom = currProj - prevProj;
+        if(Math.abs(denom) > 1e-14){
+          var t = (splitProj - prevProj) / denom;
+          out.push([
+            prev[0] + t * (curr[0] - prev[0]),
+            prev[1] + t * (curr[1] - prev[1])
+          ]);
+        }
+      }
+      if(currIn){
+        out.push(curr);
+      }
+    }
+    return out;
+  }
+
+  // Fecha o anel resultante do clipping, remove pontos duplicados
+  // consecutivos e descarta resultados degenerados (menos de 3 vertices
+  // unicos), devolvendo null nesse caso.
+  function closeAndCleanRing(pts){
+    if(!pts || pts.length < 3) return null;
+
+    var cleaned = [];
+    for(var i = 0; i < pts.length; i++){
+      var p = pts[i];
+      var last = cleaned[cleaned.length - 1];
+      if(!last || Math.abs(p[0] - last[0]) > 1e-12 || Math.abs(p[1] - last[1]) > 1e-12){
+        cleaned.push(p);
+      }
+    }
+    // remover ultimo ponto se coincidir com o primeiro (evita duplicar no fecho)
+    if(cleaned.length > 1){
+      var first = cleaned[0];
+      var lastPt = cleaned[cleaned.length - 1];
+      if(Math.abs(first[0] - lastPt[0]) < 1e-12 && Math.abs(first[1] - lastPt[1]) < 1e-12){
+        cleaned.pop();
+      }
+    }
+
+    if(cleaned.length < 3) return null;
+
+    cleaned.push(cleaned[0].slice());
+    return cleaned;
   }
 
   function orthogonalizePolygon(ring, confidence){

@@ -1526,12 +1526,6 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   box-shadow:0 1px 2px rgba(0,0,0,.04);
 }
 .feedback-nav-btn:hover{ border-color:var(--green); color:var(--green); }
-.feedback-nav-btn:disabled{
-  opacity:.55; cursor:not-allowed; pointer-events:auto;
-}
-.feedback-nav-btn:disabled:hover{
-  border-color:var(--warn, #B5472B); color:var(--warn, #B5472B); background:rgba(181,71,43,.06);
-}
 .feedback-nav-btn.hidden{display:none;}
 .feedback-nav-btn.header-pill-btn{width:auto; min-width:auto; padding:0 12px; gap:6px; border-radius:999px;}
 .feedback-nav-btn.header-pill-btn span{font-size:12px; font-weight:600; white-space:nowrap;}
@@ -1858,3 +1852,201 @@ html[data-theme="dark"] .app-alert-card{
 /* Layout do main — needed for proper positioning */
 main{flex:1; display:flex; position:relative; min-height:0;}
 #map{flex:1; min-height:0; position:relative;}
+
+/* ---------- SAM: botao ativo ---------- */
+.feedback-nav-btn#btn-vetassist.is-active{
+  border-color:var(--green);
+  color:var(--green-deep);
+  background:rgba(31,92,107,.10);
+  box-shadow:0 0 0 2px rgba(31,92,107,.12), 0 1px 2px rgba(0,0,0,.04);
+}
+.feedback-nav-btn#btn-vetassist.is-loading{
+  border-color:var(--ochre);
+  color:var(--ochre);
+  pointer-events:none;
+}
+.feedback-nav-btn#btn-vetassist.is-loading svg{
+  animation:samBtnSpin .9s linear infinite;
+}
+@keyframes samBtnSpin{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+
+/* overlay pulsante */
+.sam-overlay-pulse{
+  position:absolute; inset:0; z-index:602;
+  cursor:crosshair;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(31,92,107,.05) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(31,92,107,.02) 3px, rgba(31,92,107,.02) 4px);
+  animation:samOverlayPulse 3s ease-in-out infinite alternate;
+}
+@keyframes samOverlayPulse{
+  0%{ background-color:rgba(31,92,107,.04); }
+  100%{ background-color:rgba(31,92,107,.09); }
+}
+
+/* guide inferior */
+.sam-guide{
+  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  z-index:603;
+  background:rgba(20,24,26,.82);
+  backdrop-filter:blur(6px);
+  color:#fff;
+  padding:8px 18px 8px 14px;
+  border-radius:999px;
+  font-size:12px; font-weight:500;
+  font-family:'IBM Plex Sans', sans-serif;
+  pointer-events:none;
+  white-space:nowrap;
+  box-shadow:0 2px 12px rgba(0,0,0,.25);
+  display:flex; align-items:center; gap:8px;
+  animation:samGuideIn .3s ease;
+}
+@keyframes samGuideIn{ from{opacity:0; transform:translateX(-50%) translateY(6px);} to{opacity:1; transform:translateX(-50%) translateY(0);} }
+.sam-guide .sam-guide-dot{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--green);
+  animation:samDotPulse 1.6s ease-in-out infinite;
+}
+@keyframes samDotPulse{
+  0%,100%{ opacity:.4; transform:scale(.8); }
+  50%{ opacity:1; transform:scale(1.2); }
+}
+.sam-guide .sam-guide-key{
+  display:inline-block;
+  background:rgba(255,255,255,.15);
+  border-radius:4px;
+  padding:1px 5px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:10px;
+  font-weight:700;
+  vertical-align:middle;
+}
+
+/* status de processamento */
+.sam-status{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  z-index:610;
+  background:rgba(20,24,26,.88);
+  backdrop-filter:blur(8px);
+  color:#fff;
+  padding:14px 24px 14px 18px;
+  border-radius:12px;
+  font-size:13px; font-weight:500;
+  font-family:'IBM Plex Sans', sans-serif;
+  pointer-events:none;
+  display:flex; align-items:center; gap:10px;
+  box-shadow:0 4px 24px rgba(0,0,0,.35);
+  animation:samStatusIn .25s ease;
+}
+@keyframes samStatusIn{ from{opacity:0; transform:translate(-50%,-50%) scale(.92);} to{opacity:1; transform:translate(-50%,-50%) scale(1);} }
+.sam-spinner{
+  width:18px; height:18px;
+  border:2.5px solid rgba(255,255,255,.2);
+  border-top-color:#4ecb71;
+  border-radius:50%;
+  animation:samBtnSpin .7s linear infinite;
+  flex-shrink:0;
+}
+.sam-status-sub{
+  font-size:11px; color:rgba(255,255,255,.55);
+  margin-top:2px;
+}
+
+/* mensagem transitória (erro/aviso) */
+.sam-transient{
+  position:absolute; bottom:54px; left:50%; transform:translateX(-50%);
+  z-index:610;
+  background:rgba(180,40,40,.92);
+  backdrop-filter:blur(6px);
+  color:#fff;
+  padding:9px 18px;
+  border-radius:999px;
+  font-size:12px; font-weight:500;
+  font-family:'IBM Plex Sans', sans-serif;
+  pointer-events:none;
+  max-width:80%;
+  text-align:center;
+  box-shadow:0 2px 12px rgba(0,0,0,.3);
+  animation:samTransientIn .3s ease;
+}
+.sam-transient.is-success{ background:rgba(31,92,107,.92); }
+@keyframes samTransientIn{ from{opacity:0; transform:translateX(-50%) translateY(6px);} to{opacity:1; transform:translateX(-50%) translateY(0);} }
+
+/* polígono SAM no mapa */
+.sam-polygon{
+  transition:fill-opacity .2s ease, stroke-width .2s ease;
+}
+.sam-polygon:hover{
+  fill-opacity:0.40;
+  stroke-width:3;
+}
+
+/* popup de score pós-segmentação */
+.sam-score-popup .leaflet-popup-content-wrapper{
+  background:var(--paper-elevated);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:0;
+}
+.sam-score-popup .leaflet-popup-tip{
+  background:var(--paper-elevated);
+  border:1px solid var(--line-strong);
+  box-shadow:none;
+}
+.sam-score-popup .leaflet-popup-content{
+  margin:0;
+  min-width:160px;
+}
+.sam-score-body{
+  padding:10px 14px;
+  display:flex; flex-direction:column; gap:8px;
+  font-family:'IBM Plex Sans', sans-serif;
+}
+.sam-score-row{
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:12px; color:var(--stone);
+}
+.sam-score-row b{
+  font-family:'IBM Plex Mono', monospace;
+  color:var(--ink); font-weight:600;
+}
+.sam-score-actions{
+  display:flex; gap:6px;
+  padding-top:4px;
+  border-top:1px solid var(--line);
+}
+.sam-score-actions button{
+  flex:1;
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  padding:6px 0;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius-sm);
+  background:var(--paper-elevated);
+  color:var(--ink);
+  font-size:12px; font-weight:600;
+  font-family:'IBM Plex Sans', sans-serif;
+  cursor:pointer;
+  transition:all .12s ease;
+}
+.sam-score-actions button:hover{
+  border-color:var(--green);
+  color:var(--green-deep);
+}
+.sam-score-actions button.sam-accept{
+  background:var(--green-deep);
+  color:#fff;
+  border-color:var(--green-deep);
+}
+.sam-score-actions button.sam-accept:hover{
+  background:var(--green);
+  border-color:var(--green);
+}
+.sam-score-actions button.sam-delete{
+  color:var(--warn);
+  border-color:rgba(172,58,44,.25);
+}
+.sam-score-actions button.sam-delete:hover{
+  background:rgba(172,58,44,.06);
+  border-color:var(--warn);
+}
