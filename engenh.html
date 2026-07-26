@@ -147,36 +147,33 @@
   .va-osm-coverage-warn svg{ flex:none; margin-top:1px; color:var(--warn, #c08a20); }
   .va-osm-coverage-warn b{ display:block; color:var(--warn, #c08a20); margin-bottom:2px; }
   .va-osm-coverage-warn p{ margin:0; color:inherit; }
+
+  /* Bloqueio temporário de funcionalidades (vermelho no hover) */
+  .ui-blocked{
+    pointer-events:none !important;
+    opacity:.45;
+    filter:saturate(.3);
+    transition:opacity .15s, filter .15s;
+  }
+  .ui-blocked[title]::after{
+    content:attr(title);
+    position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+    background:rgba(180,40,40,.92); color:#fff;
+    font-size:11px; font-family:inherit; white-space:nowrap;
+    padding:4px 10px; border-radius:5px;
+    pointer-events:none; opacity:0; transition:opacity .15s;
+    z-index:9999;
+  }
+  .ui-blocked:hover{ opacity:.6; filter:saturate(.5) hue-rotate(-10deg); }
 </style>
 </head>
 <body>
-<!-- ===== Portal de acesso restrito (administradores) ===== -->
-<link href="css/misc.css" rel="stylesheet"/>
-<div id="admin-gate">
-<div id="admin-gate-box">
-<div id="admin-gate-titlebar"><span><span class="dot"></span><span data-i18n="txt.sistema">SISTEMA</span></span></div>
-<div id="admin-gate-body">
-<div id="admin-gate-heading"><span data-i18n="txt.acesso_negado">ACESSO NEGADO</span></div>
-<p class="desc"><span data-i18n="txt.esta_componente_apenas_est_dispon_vel_a_">Esta componente apenas está disponível a administradores.</span></p>
-<form id="admin-gate-form">
-<label for="admin-gate-user"><span data-i18n="txt.administrador">Administrador</span></label>
-<input autocomplete="off" id="admin-gate-user" type="text"/>
-<label for="admin-gate-pass"><span data-i18n="txt.palavra_passe">Palavra-passe</span></label>
-<input autocomplete="off" id="admin-gate-pass" type="password"/>
-<button type="submit"><span data-i18n="txt.entrar">Entrar</span></button>
-<p id="admin-gate-error"><span data-i18n="txt.utilizador_ou_palavra_passe_incorretos">Utilizador ou palavra-passe incorretos.</span></p>
-</form>
-<a href="index.html" id="admin-gate-back"><span data-i18n="txt.voltar">← Voltar</span></a>
-</div>
-</div>
-</div>
 <script src="js/00-i18n.js"></script>
-<script src="js/01-admin-gate.js"></script>
 <div id="mobile-block" style="display:none;">
 <div class="mobile-block-card">
-<div class="mobile-block-ico">🖥️</div>
-<h2><span data-i18n="txt.componente_temporariamente_indispon_vel">Componente temporariamente indisponível</span></h2>
-<p><span data-i18n="txt.esta_ferramenta_ainda_n_o_est_dispon_vel">Esta ferramenta ainda não está disponível em ambiente mobile.</span><br/><span data-i18n="txt.por_favor_aceda_a_partir_de_um_computado">Por favor aceda a partir de um computador.</span></p>
+<div class="mobile-block-ico">🔄</div>
+<h2>Rode o ecrã</h2>
+<p>Para a melhor experiência, utilize o telemóvel na horizontal (modo paisagem).<br/>O ambiente completo, igual ao do computador, fica disponível assim que rodar o ecrã.</p>
 </div>
 </div>
 <link href="css/mobile.css" rel="stylesheet"/>
@@ -204,7 +201,7 @@
 <button aria-label="Sincronizar projeto online" class="feedback-nav-btn hidden" data-i18n-title="attr.title.sincronizar_projeto_online" id="btn-sync-online" title="Sincronizar projeto online" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 1 1-3-6.7"></path><path d="M21 3v6h-6"></path></svg>
 </button>
-<button aria-label="Abrir nuvem" class="feedback-nav-btn" data-i18n-title="attr.title.nuvem" id="open-wizard-btn" title="Nuvem" type="button">
+<button aria-label="Abrir nuvem" class="feedback-nav-btn ui-blocked" data-i18n-title="attr.title.nuvem" id="open-wizard-btn" title="Indisponível" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
 </button>
 <button aria-label="Definições" class="feedback-nav-btn" data-i18n-title="attr.title.defini_es" id="btn-cloud-settings" title="Definições" type="button">
@@ -220,9 +217,6 @@
 </div>
 </div>
 <div class="header-actions">
-<button aria-label="Abrir Catálogo" class="feedback-nav-btn" data-i18n-title="attr.title.cat_logo" id="btn-catalog" title="Catálogo" type="button">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><line x1="8" x2="16" y1="7" y2="7"></line><line x1="8" x2="14" y1="11" y2="11"></line></svg>
-</button>
 <button aria-label="Desfazer última ação" class="feedback-nav-btn" data-i18n-title="attr.title.desfazer_ctrl_z" disabled="" id="btn-undo-action" title="Desfazer (Ctrl+Z)" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>
 </button>
@@ -240,9 +234,6 @@
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
 </span>
 <span class="georef-btn-badge hidden" id="georef-btn-badge"></span>
-</button>
-<button aria-label="Limites de município" class="feedback-nav-btn" data-i18n-title="attr.title.limites_de_munic_pio" id="btn-open-municipios" title="Limites de município" type="button">
-<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M4 9l5-6 8 2 4 6-2 9-11 1-4-5z"></path></svg>
 </button>
 <button aria-expanded="false" aria-haspopup="true" aria-label="Ligar ao Portal DataGis" class="feedback-nav-btn" data-i18n-title="attr.title.ligar_ao_portal_datagis_importar_dados_p" id="btn-portal-bridge" title="Ligar ao Portal DataGis (importar dados por município)" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path><path d="M12 12v6"></path><path d="m9.5 15.5 2.5 2.5 2.5-2.5"></path></svg>
@@ -411,7 +402,7 @@
 <span class="add-map-choice-card-title"><span data-i18n="txt.novo_workspace">Novo Workspace</span></span>
 <span class="add-map-choice-card-desc"><span data-i18n="txt.um_mapa_novo_e_independente_para_desenha">Um mapa novo e independente, para desenhar e editar.</span></span>
 </button>
-<button class="add-map-choice-card" data-add-map-choice="layout" type="button">
+<button class="add-map-choice-card ui-blocked" data-add-map-choice="layout" title="Indisponível" type="button">
 <span class="add-map-choice-card-title"><span data-i18n="txt.novo_layout">Novo Layout</span></span>
 <span class="add-map-choice-card-desc"><span data-i18n="txt.uma_p_gina_com_v_rios_mapas_existentes_l">Uma página com vários mapas existentes lado a lado.</span></span>
 </button>
@@ -545,19 +536,6 @@
 <div class="console-terminal-input-line">
 <span class="console-prompt">❯</span>
 <input autocomplete="off" data-i18n-placeholder="attr.placeholder.comando" id="console-terminal-input" placeholder="comando…" spellcheck="false" type="text"/>
-</div>
-</div>
-</div>
-<div class="side-panel collapsed" id="catalog-panel">
-<div class="side-panel-header">
-<span class="side-panel-title"><span data-i18n="txt.cat_logo">Catálogo</span></span>
-<button aria-label="Abrir/fechar catálogo" class="side-panel-toggle" data-i18n-title="attr.title.abrir_fechar_cat_logo" id="catalog-panel-toggle" title="Abrir/fechar catálogo" type="button">▸</button>
-</div>
-<div class="side-panel-body">
-<div class="catalog-placeholder">
-<p><span data-i18n="txt.cat_logo_de_ficheiros">Catálogo de ficheiros</span></p>
-<p class="sub"><span data-i18n="txt.em_breve">Em breve…</span></p>
-<p class="sub"><span data-i18n="txt.utilize_o_bot_o_importar_no_heather">Utilize o botão importar no heather…</span></p>
 </div>
 </div>
 </div>
@@ -1742,11 +1720,6 @@
   });
 
   logToConsole('Consola pronta. "help" para comandos.', 'system');
-
-  // === Catálogo ===
-  registerPanel('catalog-panel', {
-    trigger: 'btn-catalog'
-  });
 
 })();
 </script>

@@ -7,13 +7,24 @@
   max-width:360px; text-align:center;
   font-family:'IBM Plex Sans', sans-serif;
 }
-.mobile-block-ico{font-size:36px; margin-bottom:14px;}
+.mobile-block-ico{
+  font-size:48px; margin-bottom:14px;
+  display:inline-block;
+  animation:engenh-rotate-hint 1.6s ease-in-out infinite;
+}
+@keyframes engenh-rotate-hint{
+  0%,100%{ transform:rotate(0deg); }
+  50%{ transform:rotate(90deg); }
+}
 .mobile-block-card h2{
   font-family:'IBM Plex Sans', sans-serif; font-weight:700; font-size:20px; margin:0 0 10px; color:var(--ink, #173124);
 }
 .mobile-block-card p{
   font-size:14px; line-height:1.5; color:var(--stone, #6E726A); margin:0;
 }
-@media (max-width: 768px){
+@media (max-width: 1100px) and (orientation: portrait){
   #mobile-block{ display:flex !important; }
+}
+@media (orientation: landscape){
+  #mobile-block{ display:none !important; }
 }
