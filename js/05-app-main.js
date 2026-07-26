@@ -1,1 +1,1027 @@
-const _0x524d57=_0x43aa;(function(_0x548d95,_0x1a47fd){const _0x2df16d=_0x43aa,_0x109b2d=_0x548d95();while(!![]){try{const _0x2bd4bd=parseInt(_0x2df16d(0x324))/0x1*(parseInt(_0x2df16d(0x2e6))/0x2)+-parseInt(_0x2df16d(0x22a))/0x3+parseInt(_0x2df16d(0x364))/0x4*(parseInt(_0x2df16d(0x2db))/0x5)+-parseInt(_0x2df16d(0x2ab))/0x6*(parseInt(_0x2df16d(0x3fa))/0x7)+parseInt(_0x2df16d(0x3be))/0x8+parseInt(_0x2df16d(0x26d))/0x9*(parseInt(_0x2df16d(0x1d4))/0xa)+-parseInt(_0x2df16d(0x2f2))/0xb*(-parseInt(_0x2df16d(0x2ce))/0xc);if(_0x2bd4bd===_0x1a47fd)break;else _0x109b2d['push'](_0x109b2d['shift']());}catch(_0x412f1a){_0x109b2d['push'](_0x109b2d['shift']());}}}(_0x4a61,0xbea32));let config={'shapeName':null,'mode':null,'attributes':[],'geometryType':null,'colorAttr':null,'baseColor':null,'opacity':null,'symbology':null},layerCounter=0x0,activeLayerId=0x0,symbologyLayerId=null,layers=[],layerVisible=new Map([[0x0,!![]]]),layerOrder=[0x0],layerPanes=new Map(),featureCounter=0x0,featuresData=new Map(),drawnGroup,measuresGroup,rulerGroup,map,activeBaseLayerKey=_0x524d57(0x1e1),basemapLayers=null,workspaces=[],currentWorkspaceId=null,currentWorkspace=null,suppressProjectRestoreErrorAlert=![],pendingExitAction=null;function createWorkspaceState(_0x53b196,_0x258980){const _0x4d4412=_0x524d57;return{'id':_0x53b196,'name':_0x258980,'config':{'shapeName':null,'mode':null,'attributes':[],'geometryType':null,'colorAttr':null,'baseColor':null,'opacity':null,'symbology':defaultSymbology()},'layerCounter':0x0,'activeLayerId':0x0,'symbologyLayerId':null,'layers':[],'layerVisible':new Map([[0x0,!![]]]),'layerOrder':[0x0],'layerPanes':new Map(),'featureCounter':0x0,'featuresData':new Map(),'drawnGroup':null,'measuresGroup':null,'rulerGroup':null,'projectDirty':![],'localProjectState':{'name':null,'active':![]},'mapView':{'center':[0x14,0x0],'zoom':0x2},'activeBaseLayerKey':_0x4d4412(0x1e1)};}function cloneAttributes(_0x3ec586){const _0x139500=_0x524d57;return Array[_0x139500(0x1e6)](_0x3ec586)?_0x3ec586[_0x139500(0x415)](_0x5c4dc1=>({..._0x5c4dc1,'classes':Array[_0x139500(0x1e6)](_0x5c4dc1&&_0x5c4dc1['classes'])?_0x5c4dc1['classes']['map'](_0x1349cb=>({..._0x1349cb})):[]})):[];}function cloneConfig(_0x665aec){const _0x26e5ea=_0x524d57;return{'shapeName':_0x665aec&&_0x665aec['shapeName']!=null?_0x665aec['shapeName']:null,'mode':_0x665aec&&_0x665aec[_0x26e5ea(0x3d3)]?_0x665aec[_0x26e5ea(0x3d3)]:null,'attributes':cloneAttributes(_0x665aec&&_0x665aec['attributes']),'geometryType':_0x665aec&&_0x665aec['geometryType']?_0x665aec[_0x26e5ea(0x241)]:null,'colorAttr':_0x665aec&&_0x665aec[_0x26e5ea(0x25e)]?_0x665aec[_0x26e5ea(0x25e)]:null,'baseColor':_0x665aec&&_0x665aec[_0x26e5ea(0x29a)]?_0x665aec['baseColor']:null,'opacity':_0x665aec&&_0x665aec['opacity']!=null?_0x665aec[_0x26e5ea(0x3ea)]:null,'symbology':cloneSymbology(_0x665aec&&_0x665aec[_0x26e5ea(0x34c)])};}function _0x4a61(){const _0x46de77=['D29YA3nWywnLlte','zMvHDhvYzuDYB3vW','ugvUyw1Hy29Y','qwXIzxjNyxjPys1HlvzLBgHH','ChjLDMLLD3mVvMLSyv9szwfSl0jVDgLJyxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','qw1HCMvZ','qwXTB2tdThzHCG','ChjLDMLLD3mVug9YDg8Vqw1HCMfUDguVy2fVCf9WCMv2Awv3lMDLB2PZB24','ug9UDguGzgeGqMfYy2e','C2XPy2u','tCoQzge','Bgf5zxjqyw5LCW','q3jHDg8','ChjLDMLLD3mVtgvPCMLHl0XLAxjPys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVvMLZzxuVtwfUz3vHBgrLl2nHB3bFChjLDMLLDY5Nzw9QC29U','BM90Awz5tgf5B3v0C1DVCMTZCgfJzunOyw5Nzwq','jMnVChK7ie9Wzw5tDhjLzxrnyxaGy29UDhjPyNv0B3jZiczJB3b5oYbdqvjutW','Dg9hzw9ku09o','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9nzwXNyCoNBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','B3bHy2L0Eq','tgfTzwDV','ChjLDMLLD3mVtgvPCMLHl0fSy29IyCoNys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','yMvMB3jL','z2v0','Ahr0Chm6lY97C30UDgLSzs5VCgvUC3rYzwv0BwfWlM9YzY97EN0VE3H9l3T5Fs5WBMC','ChjLDMLLD3mVvMLZzxuVvg9UzgvSys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','t3zHCG','ChjLDMLLD3mVqxzLAxjVl1pdO29FsM/dO29FzgfFtwfKzwLYys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','C3bSAwnL','ChjLDMLLD3mVqNjHz2eVq2vSB3jPy29FzgvFqMfZDg8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','D2LKDgG','C2fToNn0yxrL','Cg06zhjHz2vUza','CMvKBW','ChjLDMLLD3mVvMLZzxuVtMvSyxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','mJC3ndaZvLryqxno','ChjLDMLLD3mVtgLZyM9Hl0f6yw1IDwPHl2nHB3bFChjLDMLLDY5Nzw9QC29U','u2fUDgeGtwfYDgeGzguGugvUywD1ACoJBW','C2v0qxr0CMLIDxrL','r3vHCMrH','ChjLDMLLD3mVqxzLAxjVl1zHBgvFzgvFq2fTyNjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVqMvQys9dyxn0CM9FvMvYzguVy2fVCf9WCMv2Awv3lMDLB2PZB24','rxn0CMvTB3O','r3ldOM5KB2XH','qNjHz2e','ChjLDMLLD3mVu2v0W7PIywWVtw9UDgLQBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','rMfYBW','Ahr0Chm6lY9YyxCUz2L0AhvIDxnLCMnVBNrLBNqUy29Tl2PKC20ZmdeXlwfSDc9ZAxrLx29MyY9TywLUlW','ChjLDMLLD3mVqNjHz2eVvgvYCMfZx2rLx0jVDxjVl2nHB3bFChjLDMLLDY5Nzw9QC29U','tw9UzgLTigrLiejHC3rV','vhjVzMe','AgfZtgf5zxi','ChjLDMLLD3mVW4L2B3jHl01VDxldO28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','C2v0','q2HHBxvZy2e','r2f2ACoJBW','twf0B3nPBMHVCW','A2v5','ChjLDMLLD3mVqxzLAxjVl1zHz29Zl2nHB3bFChjLDMLLDY5Nzw9QC29U','ug9YDhvNywWGseqGkerhvcK6ihpdSYbTB3n0CMeGAw1Hz2vTigeGCgfYDgLYigrLihPVB20GzguGy2LKywrLl2jHAxjYBYdIGjqGyxbYB3HPBweTDguGCgfYysb2zxjLCYbVigrLDgfSAguU','tMLZyq','vMLSysbszwfSigrLifnHBNrViefUDmoZBMLV','BwfW','twfWyq','ywn0AxzLtgf5zxjjza','BgvHDMvmyxLVDxrwAwv3','ChjLDMLLD3mVrMfYBY9bBgj1zMvPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLZzxuVugvUywX2yv9KB19dyxn0zwXVl2nHB3bFChjLDMLLDY5Nzw9QC29U','zhjHD25hCM91Ca','AxmTChjLC3nLza','r291DMvPyq','Bgf0tg5NqM91BMrZ','AxnmyxLVDxrwAwv3qwn0AxzL','ChjLDMLLD3mVr3vHCMrHl0fSBwvPzgeVy2fVCf9WCMv2Awv3lMDLB2PZB24','rg9TrxzLBNq','AgfUzgXLqwrKtwfWq2XPy2S','twfWysaX','tw9PBwvUDgeGzgeGqMvPCMe','ugfTCgLSAg9ZysbKysbtzxjYyq','q2vSB3jPy28GzguGqMfZDg8','tg91C8oJ','zMLUza','ChjLDMLLD3mVqxzLAxjVl0fSyMvYz2fYAweTys1wzwXOys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVug9YDgfSzwDYzs9nyxj2W6nVl2nHB3bFChjLDMLLDY5Nzw9QC29U','D29YA3nWywnLswq','twhdP8oJBW','ChjLDMLLD3mVW4L2B3jHl1bVCNrLBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVu2v0W7PIywWVqMfYCMvPCM8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','BgvUz3rO','ChjLDMLLD3mVqMvQys9gzxjYzwLYyv9KB19bBgvUDgvQBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVW4L2B3jHl0vZDhjLBw96l2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVqxzLAxjVl8onBgHHDM8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','vgfYB3vJyq','q2fTCg8GtwfPB3i','ChjLDMLLD3mVug9YDg8VvMLSyv9KB19dB25Kzs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVvMLZzxuVu8oHDmoJBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVq29PBwjYys9mB3vZW6mVy2fVCf9WCMv2Awv3lMDLB2PZB24','C2HPzNq','vMLUAgfPCW','ugfYzwrLCYbKzsbdB3vYyq','zMvHDhvYzunVDw50zxi','u2vYCge','ywn0AxzHDgu','C3rHCNqTChjVAMvJDc1JB250Aw51zq','ChjLDMLLD3mVu2fUDgfYW6LTl0nVCNvJAguVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VswrHBMHHlweTtM92ys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVq29PBwjYys9pBgL2zwLYyv9KB19iB3nWAxrHBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVqNjHz2eVvMLSyv9wzxjKzs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qwXTzwLKyq','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28Vt2XLAxjVCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','Dg9W','q2HHDMvZ','Bgf0tg5N','ChjLDMLLD3mVrMfYBY9tAwX2zxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','qwrPy2LVBMfYig1HCge','AwrSzq','DgfYz2v0','ChjLDMLLD3mVqMvQys9tzxjWys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','tMvSyxm','Bgf5zxjwAxnPyMXL','twfUDgvPz2fZ','CM9Szq','ChjLDMLLD3mVqxzLAxjVl0vZDgfYCMvQys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ms4ZlJa','qwXJB2nOzxrL','yxbWzw5Kq2HPBgq','A2v5zg93BG','ChjLDMLLD3mVug9YDgfSzwDYzs9dCMf0BY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVq29PBwjYys9qzw5LBgeVy2fVCf9WCMv2Awv3lMDLB2PZB24','uMLVie1HAw9Y','ChjLDMLLD3mVq29PBwjYys9bCMDHBMLSl2nHB3bFChjLDMLLDY5Nzw9QC29U','x19Hy3rPDMvcyxnLtgf5zxjlzxK','AgLKzgvU','BM93','ug9PBNq','ChjLDMLLD3mVrMfYBY9pBgJdO28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','tg91BmoP','u2vPEgfS','DgL0Bgu','ugvZBYbKysbsW6LNDwe','Ahr0Chm6lY9Jyxj0B2DYywzPys5Kz3rLCNjPDg9YAw8Uz292lNb0l3DTCY9VCNrVCZiWmJe','phn2zYb4BwXUCZ0IAhr0CdOVl3D3DY53mY5VCMCVmJaWmc9ZDMCIihDPzhrOpsiXnIiGAgvPz2H0psiXnIiGDMLLD0jVEd0ImcaWidi0idi0iIbMAwXSpsjUB25LiIbZDhjVA2u9iMn1CNjLBNrdB2XVCIiGC3rYB2TLlxDPzhrOpsiYiIbZDhjVA2uTBgLUzwnHCd0ICM91BMqIihn0CM9Rzs1SAw5LAM9PBJ0ICM91BMqIigfYAweTAgLKzgvUpsj0CNvLiJ48Cgf0AcbKpsjnmYaYmwGXociVpJXWyxrOigq9iK01idiXvJDSoc00DJe4iI8+phbHDgGGzd0Itte5idiXvJeXBc02ltqIlZ48Cgf0AcbKpsjnosa5DI4WmsiVpJXWyxrOigq9iK05ideYDI4WmsiVpJXWyxrOigq9iK05ide1DI4WmsiVpJXWyxrOigq9iK05ide4DI4WmsiVpJWVC3zNpG','ug9YDgLTW6nV','su5qvvq','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28Vq2fZDgvSB19cCMfUy28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','C2HPzNrlzxK','y2XHC3nmAxn0','otbyCxPyswS','u2LSDMvZ','vMLZzxu','u2v2zxiGzg8GvM91z2e','ChjLDMLLD3mVqNjHz2eVrMfMzs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','q3vIyq','twvHBgHHzge','BMfTzq','ug9TyMfS','twfPyq','twfWysa','qwXTzwLYAw0','twfJzwrVigrLienHDMfSzwLYB3m','C2f0zwXPDgu','ChjLDMLLD3mVtgvPCMLHl8otyMLKB3mVy2fVCf9WCMv2Awv3lMDLB2PZB24','zxH0zw5K','zMvHDhvYzxneyxrH','zMLKlq','AxnbCNjHEq','ywrKvg8','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9nB27dP8oJBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVtgLZyM9Hl0nHzgf2ywWVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVug9YDgfSzwDYzs9gCM9UDgvPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','qMvSBw9UDgu','ug9UDguGzguGtgLTyq','Bgf0','i2jHC2vTyxaTBwvUDsbIDxr0B25Bzgf0ys1IyxnLBwfWxq','ChjLDMLLD3mVug9YDg8VugvUywzPzwWVy2fVCf9WCMv2Awv3lMDLB2PZB24','ug9YDgfSzwDYzq','qxzPCW','qxjJB3mGzguGvMfSzgv2zxO','t3j0B2zVDg9ZiczJB3b5oYber1qG4Ocuie9YDg9ZidiWmJeGug9YDhvNywWGq29UDgLUzw50ywWGkendlujzidqUmcK','Ahr0Chm6lY97C30UyMfZzw1HChmUy2fYDg9Jzg4Uy29Tl2XPz2H0x2fSBc97EN0VE3H9l3T5FxTYFs5WBMC','qwXJB3v0Aw0','CMDIysGZmsW5mIWXmdCSlJe2kq','vgvYCMfZigrLiejVDxjV','ChjLDMLLD3mVr3vHCMrHl0zVCM5VC19Kzv9bBgDVzhjLCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVvMLZzxuVvMLZzxuVy2fVCf9WCMv2Awv3lMDLB2PZB24','zgL2','ywrKq29UDhjVBhm','ChjLDMLLD3mVqMvQys9wAwrPz3vLAxjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVu2v0W7PIywWVqwXJW6fJzxjFzg9Fu2fSl2nHB3bFChjLDMLLDY5Nzw9QC29U','i0u3qtu3qq','vM91EMvSyq','ChjLDMLLD3mVug9YDg8VtwfPys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','y2vUDgvY','vMfSzsbKzsbdyw1ICMe','ChjLDMLLD3mVqMvQys9bBg1Vzmo0DMfYl2nHB3bFChjLDMLLDY5Nzw9QC29U','vMLHBMeGzg8Gq2fZDgvSBW','ChjLDMLLD3mVqMvQys9bBgP1C3rYzwWVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVu2fUDgfYW6LTl0DVBgvNW6mVy2fVCf9WCMv2Awv3lMDLB2PZB24','qMvQyq','qNjHz2fUW6DH','y3rYBeTLEq','rMvYCMvPCMeGzg8GqwXLBNrLAM8','Dg9WBgvMDa','ChjLDMLLD3mVu2v0W7PIywWVu2vPEgfSl2nHB3bFChjLDMLLDY5Nzw9QC29U','zw5Nzw5OlxrLyw0TChjVAMvJDa','ChjLDMLLD3mVug9YDg8Vr29Uzg9TyxiVy2fVCf9WCMv2Awv3lMDLB2PZB24','vxrPBa','C3rVCfbYB3bHz2f0Aw9U','t2XPDMvPCMeGzg8GqMfPCNjV','vMLHBMeGzg8GqwXLBNrLAM8','Dg9VBgjHCI1OAw50','BgfUzgLUzY1Iyw5Uzxi','ChjLDMLLD3mVrMfYBY9nB25JAgLXDwuVy2fVCf9WCMv2Awv3lMDLB2PZB24','tw9YDmoHz3vH','BM9Uzq','qwXLBNf1zxi','ChjLDMLLD3mVtgvPCMLHl0nHC3rHBMHLAxjHx2rLx1ddQNjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','y3j5ChrV','qwXTywrH','ChjLDMLLD3mVvMLSyv9szwfSl1jPyMvPCMfFzgvFugvUys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','u2fUDgeGtwfYAweGzgeGrMvPCMe','qwXWAwfYW6DH','ChjLDMLLD3mVqNjHz2eVvML6zwXHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVqNjHz2eVumoZDM9Hx2rLx0XHBMHVC28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','Dw5KBW','rNvUzmoJBW','yxjPys1SywjLBa','tw9PDge','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9qyxjLzgvZx2rLx0nVDxjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','y29UzMLN','AxmTDMLZAwjSzq','Bgf5zxjhCM91Ca','vhjHBMnVC28','mZG2nda2ou9st1jryq','zgD0','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28Vu2vYDmoJl2nHB3bFChjLDMLLDY5Nzw9QC29U','i0y1odiXrG','u8oJBYbkB8oJBYbKysbqzxnXDwvPCMe','ChjLDMLLD3mVug9YDgfSzwDYzs9qB250zv9Kzv9tB3iVy2fVCf9WCMv2Awv3lMDLB2PZB24','yMfZzw1HCc10B2fZDc10zxH0','tg91CMvZ','twvSz2hdP28','vMLSysboB3zHigrLifbVAwfYzxm','ughdP29ZigrLiezLCNjLAxjH','ugvUywX2ysbKBYbdyxn0zwXV','q29UzgvPEgeTys1oB3zH','ChjLDMLLD3mVu2fUDgfYW6LTl091CSoPBs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','BwfWvMLLDW','qwX2ywNdOxPLCMu','Ahr0Chm6lY9HlMjHC2vTyxbZlMnHCNrVy2rUlMnVBs9SAwDODf9HBgWVE3P9l3T4Fs97Ex0UCg5N','qwXMW6jUzgvNysbKysbgW6K','ChjLDMLLD3mVq29PBwjYys9qyw1WAwXOB3nHx2rHx1nLCNjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','y3jLyxrLrwXLBwvUDa','ChjLDMLLD3mVtgLZyM9Hl0XVDxjPBMJdOY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','yMfZzw1HCc10B2fZDa','C3rVCa','z2vVBwv0CNLuExbL','t2XPDMvPCMeGzg8Gsg9ZCgL0ywW','qxzLAxjV','rMvJAgfYig1HCge','qMfYCMfUy29Z','ChjLDMLLD3mVqNjHz2fUW6DHl01PCMfUzgvSys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','EM9VBwvUzcbTB3zLzw5K','ChjLDMLLD3mVq29PBwjYys9qzw5Hy292ys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','u8oJBYbcCSoHCYbKzsbbBhbVCNrLBa','q2fZy2fPCW','ChjLDMLLD3mVrMfYBY9bBgnVDxrPBs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','Bg5N','q292AwXOW6m','twfYy28GzguGq2fUyxzLC2vZ','ChjLDMLLD3mVr3vHCMrHl1rYyw5JB3nVl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVrMfYBY9wAwXHx1jLywXFzgvFu2fUDg9Fqw50W7nUAw8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVq29PBwjYys9dB25KzwL4ys1Hlu5VDMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','tw9Uy2HPCxvL','ChjLDMLLD3mVqNjHz2fUW6DHl0jYywDHBSoNys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qxjVDwnH','ChjLDMLLD3mVvMLSyv9szwfSl01LC8oJB19gCMLVl2nHB3bFChjLDMLLDY5Nzw9QC29U','zgLZCgXHEq','uMvZzw5Kzq','u2vYBMfUy2vSAgu','W41SAgf2BW','yMfZzw1HCc1HDxrVlxrVz2DSzq','z2v0rwXLBwvUDej5swq','ywrKrxzLBNrmAxn0zw5LCG','twLYyw5KysbKBYbdB3j2BW','y29SB3jbDhrY','qwXPASoZ','vMLSysboB3zHigrLiezHBwfSAwpdO28','ChjLDMLLD3mVug9YDg8VtwfYy29FzgvFq2fUyxzLC2vZl2nHB3bFChjLDMLLDY5Nzw9QC29U','y3jLyxrL','ChjLDMLLD3mVtgLZyM9Hl1zPBgfFrNjHBMnHx2rLx1HPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','zMLK','C2HVD01Lyxn1CMvZ','ChjLDMLLD3mVtgvPCMLHl0fSDMfPW6f6zxjLl2nHB3bFChjLDMLLDY5Nzw9QC29U','twLYyw5KysbKBYbeB3vYBW','BwvHC3vYzxnhCM91Ca','tw9UzM9YDgu','zxn0zsbTyxbH','C3rYAw5NAwz5','tw9UW6FdO28','nJm4ndz5BuLfyMe','ChjLDMLLD3mVtgLZyM9Hl09LAxjHCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','q2fZDhjVierHAxjL','zwrPDa','qM9YyMe','zgLZywjSzvnJCM9SBfbYB3bHz2f0Aw9U','Bg9JywXqCM9Qzwn0u3rHDgu','ChjLDMLLD3mVvMLZzxuVvgfIDwhdP28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVtgvPCMLHl1bLzhldS2FdO29Fr3jHBMrLl2nHB3bFChjLDMLLDY5Nzw9QC29U','Bgf0Bg5N','ChjLDMLLD3mVug9YDg8VughdP29Zx2rLx0zLCNjLAxjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','rwX2yxm','yxr0CMLIDxrLCW','ChjLDMLLD3mVvMLZzxuVqxjTyw1HCI9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','rMLNDwvPCSoZigrVCYbwAw5OB3m','ChjLDMLLD3mVqNjHz2fUW6DHl0zYzwL4B19Kzv9fC3bHzgfFW6bFq2LUDgeVy2fVCf9WCMv2Awv3lMDLB2PZB24','C3bHBG','qufwicHbBgDVCML0Bw8GzguGyxnZAxn0W6PUy2LHimoGihzLDg9YAxPHW6FdO28Gyxv0B23dOxrPy2eP','qMf0ywXOyq','Dg9Nz2XL','Bgf5zxjZ','AhjLzG','y29VCMrPBMf0zxm','Aw5Uzxjive1m','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VqMvSBw9UDguVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9wywXLBSoNys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','y29UDgfPBNm','vMfNB3m','ChjLDMLLD3mVug9YDgfSzwDYzs9bBhrLCL9KB19dAmoJBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVtgLZyM9Hl0fSzw5XDwvYl2nHB3bFChjLDMLLDY5Nzw9QC29U','qwXQDxn0CMvS','C3rHCNqTChjVAMvJDc1VDMvYBgf5','ChjLDMLLD3mVqxzLAxjVl8obz3vLzgeVy2fVCf9WCMv2Awv3lMDLB2PZB24','vMfSCghdP29Z','ChjLDMLLD3mVvMLZzxuVt2XPDMvPCMfFzgvFrNjHzgvZl2nHB3bFChjLDMLLDY5Nzw9QC29U','mYa0','ChjLDMLLD3mVu2v0W7PIywWVu2v0W7PIywWVy2fVCf9WCMv2Awv3lMDLB2PZB24','q2fZDgvSBYbcCMfUy28','Bwv0yuTLEq','vg9YCMvZie5VDMfZ','ChjLDMLLD3mVqNjHz2eVqMfYy2vSB3mVy2fVCf9WCMv2Awv3lMDLB2PZB24','z2v0q2vUDgvY','ChjLDMLLD3mVq29PBwjYys9hW7nPCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','D29YA3nWywnLlxrHyNm','ChjLDMLLD3mVW4L2B3jHl8ojDM9Yys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','yMfZzunVBg9Y','CMLNAhq','tgvPCMLH','twfYA2vY','u2v0W7PIywW','qxPHBwj1AMe','ChjLDMLLD3mVvMLSyv9szwfSl011CSoNys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','zgvSzxrL','ChjLDMLLD3mVqNjHz2fUW6DHl01PCMfUzgfFzg9Frg91CM8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','zM9YrwfJAa','Aw1Hz2uVANbLzW','u2fIDwDHBa','q2LUzSoJzxm','ChjLDMLLD3mVug9YDgfSzwDYzs9hyxzPW6nVl2nHB3bFChjLDMLLDY5Nzw9QC29U','igLZlwfJDgL2zq','BgvHzMXLDc1IyxiGBgvHzMXLDc1JB250CM9SihzHlxzLDgfZC2LZDc1JB250CM9S','ChjLDMLLD3mVvMLZzxuVu8oJB19kB8oJB19Kyv9qzxnXDwvPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','mtaYB0joCwj4','Cg9SEwXPBMu','ywz0zxi','DMfeCMf3Aw5Nqwn0AxzL','uhjVzw7dP2eTys1oB3zH','DxbKyxrLzef0','ChjLDMLLD3mVu2fUDgfYW6LTl1jPB19nywLVCI9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qwjYyw50zxm','Ag9Tzq','Dw5ZAgLMDa','z2v0wM9VBq','ChjLDMLLD3mVqMvQys9bBhzPDg8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','Aw52ywXPzgf0zvnPEMu','rNjVBNrLAxjH','qxjYB25JAgvZ','C2HVD0LUDgvYzMfJzuHPBNrZ','ChjLDMLLD3mVug9YDgfSzwDYzs9tB3vZzwWVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVu2fUDgfYW6LTl0nHCNrHEg8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','rMLNDwvPCMeGzgeGrM96','DhLWzq','C3rHCNqTChjVAMvJDc1Uyw1LlwvYCM9Y','vg9UzgvSyq','ChjLDMLLD3mVu2fUDgfYW6LTl1rVCNjLC19oB3zHCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','txvYW6DH','rxn0yxjYzwPH','ChjLDMLLD3mVvMLZzxuVugvUzwrVBM8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ugfSBwvSyq','ChjLDMLLD3mVvMLZzxuVu8oJB19qzwrYB19KB19tDwWVy2fVCf9WCMv2Awv3lMDLB2PZB24','yM90Dg9T','y29VCMrZvg9myxrmBMDZ','qwD1AwfYigrHiejLAxjH','qwXJB2jHW6DH','t3j0B3mYmdiXlvjhqG','y2XHCM8','AxndB250zw50rwrPDgfIBgu','mJa0sgDSruPX','umoZDM9HigrLieXHBMHVC28','D29YA3nWywnLlq','EM9VBq','CMvTB3zLtgf5zxi','ChjLDMLLD3mVug9YDgfSzwDYzs9oAxnHl2nHB3bFChjLDMLLDY5Nzw9QC29U','B3nT','C2HVD0n1CNnVCKnVB3jKAw5HDgvZ','ChjLDMLLD3mVqMvQys9dDwjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','twfYDSoJBW','C2v0tgf0tg5N','Bgf5zxjpCMrLCG','ChjLDMLLD3mVvMLSyv9szwfSl1zPBgfFug91y2fFzgvFqwD1AwfYl2nHB3bFChjLDMLLDY5Nzw9QC29U','mtC1ChrPtgTj','ChjLDMLLD3mVqMvQys9nB3vYys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qw1Hzg9Yyq','DgfNtMfTzq','q2fZDgfUAgvPCMeGzguGumoQCMe','ChjLDMLLD3mVr3vHCMrHl1nHyNvNywWVy2fVCf9WCMv2Awv3lMDLB2PZB24','W5nIAwrVCW','ChjLDMLLD3mVug9YDg8Vu2fUDg9FvgLYC28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','AgLUDc1OAwrKzw4','CxvLCNLtzwXLy3rVCKfSBa','vMLSysbKzsbszwK','nZu3mdiWCMjntNDk','yNrUlxjLzg8Tywn0Aw9U','qwX2AxrV','q2fTAw5Oyq','ChjLDMLLD3mVq29PBwjYys9dyw50yw5OzwrLl2nHB3bFChjLDMLLDY5Nzw9QC29U','BgvMDa','ChjLDMLLD3mVug9YDgfSzwDYzs9dyxn0zwXVx2rLx1zPzguVy2fVCf9WCMv2Awv3lMDLB2PZB24','zgLZywjSzwq','ChjLDMLLD3mVtgLZyM9Hl09KAxzLBgfZl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVu2fUDgfYW6LTl1nHBhzHDgvYCMfFzgvFtwfNB3mVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLZzxuVu2fUDgfFq29TyMfFrmoJBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVu2fUDgfYW6LTl1rVBwfYl2nHB3bFChjLDMLLDY5Nzw9QC29U','mZu2ntiXEKzhse5v','r3vPBwfYW6nLCW','ChjLDMLLD3mVu2fUDgfYW6LTl0vUDhjVBMnHBwvUDg8Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVr3vHCMrHl03dQMrHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVvMLZzxuVq2fZDhjVx0rHAxjLl2nHB3bFChjLDMLLDY5Nzw9QC29U','C3LTyM9SB2D5tgf5zxjjza','ChjLDMLLD3mVqNjHz2fUW6DHl1rVCNjLx2rLx01VBMnVCNzVl2nHB3bFChjLDMLLDY5Nzw9QC29U','tw9NywrVDxjV','iZLcouu5na','y2XHC3noyw1L','zgvSzxrLzezPzhm','tw9UDgvTB3iTBY1oB3zV','yNv0Dg9U','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VugvUyw1Hy29Yl2nHB3bFChjLDMLLDY5Nzw9QC29U','q29UC3tdOM5JAwe','rw50zxi','ugvUywzPzwW','ChjLDMLLD3mVu2fUDgfYW6LTl01HW6FdO28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','vMLSysbwzxjKzq','D29YA3nWywnLlxrHyG','vMLSysbKBYbdB25Kzq','ChjLDMLLD3mVtgvPCMLHl05HEMfYW6KVy2fVCf9WCMv2Awv3lMDLB2PZB24','DgfIsw5KzxG','q2fYCMf6zwrHigrLiefUC2NdO2vZ','ChjLDMLLD3mVtgLZyM9Hl0nHC2nHAxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','Ahr0Chm6lY9Zzxj2zxiUyxjJz2LZB25SAw5LlMnVBs9bCMnhsvmVCMvZDc9Zzxj2AwnLCY9xB3jSzf9jBwfNzxj5l01HCfnLCNzLCI90AwXLl3T6Fs97Ex0VE3H9','ChjLDMLLD3mVrMfYBY9bBgPLENvYl2nHB3bFChjLDMLLDY5Nzw9QC29U','x19MB3jJzujHC2vTyxa','ChjLDMLLD3mVu2v0W7PIywWVtw9PDgeVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLSyv9szwfSl01VBNrHBgvNCMuVy2fVCf9WCMv2Awv3lMDLB2PZB24','x19IyxnLBwfWtgf5zxjZ','ChjLDMLLD3mVr3vHCMrHl0D1yxjKys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','q2fZDgvSBYbKzsbqywL2yq','ChjLDMLLD3mVrMfYBY9mB3vSW6KVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVu2v0W7PIywWVugfSBwvSys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVr3vHCMrHl1nLAweVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLSyv9szwfSl01VBMrPBv9Kzv9cyxn0BY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','t2XOW6nV','q29UDhjVBa','W4L2B3jH','Bgf5zxjdB3vUDgvY','ChjLDMLLD3mVug9YDg8VvMfSB25NBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qw1HCMfUDgu','u2fUDgfYW6LT','CMvKCMf3','ChjLDMLLD3mVtgLZyM9Hl1nVyNjHBf9Kzv9nB250zv9bz3jHW6DVl2nHB3bFChjLDMLLDY5Nzw9QC29U','iZDgqJG5na','t3vYW6LT','Bw91C2vTB3zL','u8oJBYbkB8oJBYbKysbnywrLAxjH','mvjizML0zG','tw9UDgfSzwDYzq','ChjLDMLLD3mVW4L2B3jHl1zPyw5Hx2rVx0fSzw50zwPVl2nHB3bFChjLDMLLDY5Nzw9QC29U','jMnVChK7ie9Wzw5tDhjLzxrnyxaGy29UDhjPyNv0B3jZ','ChjLDMLLD3mVvMLSyv9szwfSl1zPBgfFuMvHBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVqxzLAxjVl1nLDMvYx2rVx1zVDwDHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVqNjHz2fUW6DHl01Hy2vKB19Kzv9dyxzHBgvPCM9Zl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVr3vHCMrHl0fNDwLHCL9Kyv9czwLYys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVqNjHz2fUW6DHl1zPBgfFrMXVCI9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','vMfSB25NBW','twfYAw5OysbhCMfUzgu','ChjLDMLLD3mVW4L2B3jHl0fSyw5KCM9HBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVug9YDgfSzwDYzs9nB25MB3j0zs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVtgvPCMLHl0jVBwjHCNjHBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVvMLZzxuVtgfTzwDVl2nHB3bFChjLDMLLDY5Nzw9QC29U','uMvZB2X1W6FdO28Gyxv0B23dOxrPy2eGCMvHDgL2ywrHlG','ChjLDMLLD3mVug9YDgfSzwDYzs9fBhzHCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','qxjTyw1HCG','ChjLDMLLD3mVtgLZyM9Hl0fYCNvKyv9KB3nFvMLUAg9Zl2nHB3bFChjLDMLLDY5Nzw9QC29U','BwLU','ChjLDMLLD3mVu2fUDgfYW6LTl0nOyw11C2nHl2nHB3bFChjLDMLLDY5Nzw9QC29U','AxmTywn0AxzL','qMvUyxzLBNrL','vMLSysbszwfS','DMfSDwu','vevyvefsrue','t2XLAxjVCW','zgv0ywLS','u291C2vS','z2v0qM91BMrPBMDdBgLLBNrszwn0','vMLSysbwzwXOysbKzsbsW7nKW6nV','C3rHCNqTChjVAMvJDc1Uyw1LlxjVDW','ChjLDMLLD3mVqxzLAxjVl0f2zwLYBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVW4L2B3jHl01VBNrLBw9Ylw8TtM92BY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVqxzLAxjVl0fYB3vJys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ywrKq29UDhjVBa','C3r5Bgu','iZzfnZi2qq','ChjLDMLLD3mVrMfYBY9tW6nVx0jYW6fZx2rLx0fSCg9YDgvSl2nHB3bFChjLDMLLDY5Nzw9QC29U','qMfZzw1HCcbVDgLTAxPHzg8Gyxv0B21HDgLJyw1LBNrLoIbqB3j0DwDHBcbircaOreDuksdIGjqGCMvZB2X1W6FdO28GBCoHEgLTysbKAxnWB27dRxzLBcbHCxvPlG','C3LTyM9SB2D5','q2fZDhjVie1HCMLT','ug9YDgvS','u2vYDmoJ','Dgv4DenVBNrLBNq','ChjLDMLLD3mVqMvQys9cyxjYyw5JB3mVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChvZAa','tgLUzvn0CMLUzW','CMvTB3zL','qMfPW6nV','ChjLDMLLD3mVqxzLAxjVl09SAxzLAxjHx2rLx0f6zw3dQwLZl2nHB3bFChjLDMLLDY5Nzw9QC29U','zgf0yxnLDa','q2fKyxzHBa','u2fYzg9HBa','ChjLDMLLD3mVqxzLAxjVl092yxiVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVrMfYBY9dyxn0CM9FtwfYAw0Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVtgLZyM9Hl1nPBNrYys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','yNrUlxvUzg8Tywn0Aw9U','ChjLDMLLD3mVrMfYBY9uyxzPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','ugfYzwrLCW','i0mYnZaZra','r2vVsLnptG','ChjLDMLLD3mVu2fUDgfYW6LTl0fICMfUDgvZl2nHB3bFChjLDMLLDY5Nzw9QC29U','Ahr0Chm6lY9HlNrPBguUB3bLBNn0CMvLDg1HCc5VCMCVE3P9l3T4Fs97Ex0UCg5N','mtaYote2AKP0Dujq','ChjLDMLLD3mVqNjHz2eVvMLSyv9oB3zHx2rLx0zHBwfSAwpdO28Vy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVtgvPCMLHl0zPz3vLAxldS19KB3nFvMLUAg9Zl2nHB3bFChjLDMLLDY5Nzw9QC29U','yxjPys1WCMvZC2vK','ug9UDguGzguGu29Y','ChjLDMLLD3mVvMLSyv9szwfSl1bLC29FzgfFuSoPz3vHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVr3vHCMrHl0nLBg9YAwnVx2rHx0jLAxjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','iJ8Gvg9KyxmGyxmGy2fTywrHCYbLigDLB21LDhjPyxmGzgvZDguGBwfWysbZzxldO28GzwXPBwLUywrHCYbWzxjTyw5LBNrLBwvUDguU','ChjLDMLLD3mVu2fUDgfYW6LTl1nHBNrHCSoPBs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9qB250zv9Kyv9cyxjJys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVW4L2B3jHl0jVCMjHl2nHB3bFChjLDMLLDY5Nzw9QC29U','C2v0tgf0tg5NCW','ChjLDMLLD3mVu2fUDgfYW6LTl0fSBwvPCMLTl2nHB3bFChjLDMLLDY5Nzw9QC29U','q2vSB3jPy28GzgeGqMvPCMe','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VuhjVzw7dP2eTys1oB3zHl2nHB3bFChjLDMLLDY5Nzw9QC29U','ywn0AxzLqMfZzuXHEwvYs2v5','ywrKtgf5zxi','twLYyw5KzwXH','CNvSzxjhCM91Ca','rNjLAxHVigrLievZCgfKysddOcbdAw50yq','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VvMLSyv9Kzv9szwKVy2fVCf9WCMv2Awv3lMDLB2PZB24','yMfZzw1HCc1Tzw51','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9wAwXHx05VDMfFzgvFq2vYDMvPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','qMfYy2vSB3m','qwXJW6fJzxiGzg8Gu2fS','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28Vq292AwXOW6mVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVqNjHz2fUW6DHl01Vz2fKB3vYBY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVqMvQys9czwPHl2nHB3bFChjLDMLLDY5Nzw9QC29U','vMLSysboB3zHigrHiejHCNf1Aw5Oyq','ChjLDMLLD3mVvMLZzxuVtw9PBwvUDgfFzgfFqMvPCMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','zMfSC2u','vML6zwXH','vMv0B3jPEMhdP8oJBYbbC3nPC3rPzge','qwX0zxiGzg8Gq2JdO28','vg9Tyxi','Cg06CMvTB3zL','swrHBMHHlweTtM92yq','rw50CM9Uy2fTzw50BW','ChjLDMLLD3mVrMfYBY9gyxjVl2nHB3bFChjLDMLLDY5Nzw9QC29U','vgLSzxmGjMnVChK7ievZCMKG4OcuifnVDxjJztOGrxnYAsWGtwf4yxiSievHCNrOC3rHCIbhzw9NCMfWAgLJCW','vMvUzgfZie5VDMfZ','ChjLDMLLD3mVvMLZzxuVvM91EMvSys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','tw91CSoJBW','q2fIzwnLAxjHCYbKzsbcyxn0BW','ug9SEwDVBG','ChjLDMLLD3mVu2v0W7PIywWVqwXTywrHl2nHB3bFChjLDMLLDY5Nzw9QC29U','vgfIDwhdP28','CMfUzg9Tvvvjra','ChjLDMLLD3mVr3vHCMrHl1bPBMHLBc9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','tgLZyM9H','zw50CNK','ChjLDMLLD3mVu2fUDgfYW6LTl0nVBNn0W6jUy2LHl2nHB3bFChjLDMLLDY5Nzw9QC29U','Bgf5zxi','umoZDM9HigrLifzHCNPPBq','Dg9tDhjPBMC','Cg06zwrPDa','txvYDg9Zyq','ChjLDMLLD3mVug9YDg8VqMfPW6nVl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9qB250zv9Kzv9mAw1Hl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVvMLSyv9szwfSl0nOyxzLCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ywn0AxzL','iZiZndyZnq','tw91CMe','ChjLDMLLD3mVqNjHz2eVqNjHz2eVy2fVCf9WCMv2Awv3lMDLB2PZB24','qwXQzxP1CG','ywrK','ug9YDg8','ChjLDMLLD3mVqNjHz2eVr3vPBwfYW6nLCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','tSoJBYddQsbWB3nZW612zwWGzMvJAgfYig8GW7PSDgLTBYbTyxbHigfIzxj0BY4','ChjLDMLLD3mVq29PBwjYys9nAxjHBMrHx2rVx0nVCNzVl2nHB3bFChjLDMLLDY5Nzw9QC29U','u8oHDmoJBW','Dg9mB3DLCKnHC2u','ug9YDg8GzguGtCoZCW','C3rHBxa','t2rPDMvSyxm','q29PBwjYyq','CMvUzgvYtgf5B3v0vgfIC0LUDg8','ChjLDMLLD3mVvMLHBMfFzg9Fq2fZDgvSBY9bCMnVC19Kzv9wywXKzxzLEI9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVtgvPCMLHl01HCMLUAgfFr3jHBMrLl2nHB3bFChjLDMLLDY5Nzw9QC29U','ChjLDMLLD3mVqxzLAxjVl011CNrVC2eVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVvMLZzxuVq2LUzSoJzxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','rMfMzq','ChjLDMLLD3mVqMvQys9nW6LYDg9Sys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMLLD3mVq2fZDgvSB19cCMfUy28VvMLSyv9wzwXOyv9Kzv9sW7nKW6nVl2nHB3bFChjLDMLLDY5Nzw9QC29U','q2fYCMvNywWGzg8Gu2fS','ChjLDMLLD3mVq29PBwjYys9wAwXHx05VDMfFzgvFug9PyxjLCY9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjLDMvUDerLzMf1Bhq','D29YA3nWywnLlxrHyI1SywjLBa','W4fNDwvKyq','y2XPy2S','nJC4oty2nhvfs3DRwq','yNrUlwjHC2vTyxa','ChjLDMLLD3mVu2fUDgfYW6LTl0jLBMf2zw50zs9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','ChjVAMvJDerPCNr5','rg9TvxrPBa','ChjLDMLLD3mVug9YDgfSzwDYzs9bCNjVBMnOzxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','qw5HzgLH','rMvSz3vLAxjHCW','ChjLDMLLD3mVqNjHz2fUW6DHl1zPBMHHAxmVy2fVCf9WCMv2Awv3lMDLB2PZB24','AxngAw5PDgu','Cg06y3jLyxrL','DMfSDwvZ','zNvUy3rPB24','ChjLDMLLD3mVtgLZyM9Hl0XPC2jVys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','yMfZzw1HCa','ChjLDMLLD3mVr3vHCMrHl0DVDxzLAweVy2fVCf9WCMv2Awv3lMDLB2PZB24','x19Zyw0','ChjLDMLLD3mVrMfYBY9mywDVys9Jyw9Wx3bYzxzPzxCUz2vVANnVBG','zgvHy3rPDMf0zq','q2fZDgvSBYbKzsbwAwrL','qxjYywLVBg9Z','Bw9Kzq','Cg06BwfYA2vYzhjHz3n0yxj0','ChjLDMLLD3mVug9YDg8VvhjVzMeVy2fVCf9WCMv2Awv3lMDLB2PZB24','ChjLDMLLD3mVu2fUDgfYW6LTl1nHCMrVywWVy2fVCf9WCMv2Awv3lMDLB2PZB24'];_0x4a61=function(){return _0x46de77;};return _0x4a61();}function persistCurrentWorkspaceState(){const _0xa48ca1=_0x524d57;if(!currentWorkspace)return;currentWorkspace[_0xa48ca1(0x226)]=cloneConfig(config),currentWorkspace[_0xa48ca1(0x281)]=layers[_0xa48ca1(0x415)](_0x2eeca8=>({..._0x2eeca8,'attributes':cloneAttributes(_0x2eeca8&&_0x2eeca8['attributes']),'symbology':cloneSymbology(_0x2eeca8&&_0x2eeca8[_0xa48ca1(0x34c)])})),currentWorkspace[_0xa48ca1(0x31a)]=layerCounter,currentWorkspace[_0xa48ca1(0x417)]=activeLayerId,currentWorkspace[_0xa48ca1(0x2f7)]=symbologyLayerId,currentWorkspace[_0xa48ca1(0x44e)]=new Map(layerVisible),currentWorkspace[_0xa48ca1(0x2d9)]=layerOrder[_0xa48ca1(0x3e0)](),currentWorkspace[_0xa48ca1(0x3e2)]=new Map(layerPanes),currentWorkspace['featureCounter']=featureCounter,currentWorkspace[_0xa48ca1(0x1e4)]=featuresData,currentWorkspace[_0xa48ca1(0x41b)]=drawnGroup,currentWorkspace[_0xa48ca1(0x268)]=measuresGroup,currentWorkspace[_0xa48ca1(0x376)]=rulerGroup,currentWorkspace[_0xa48ca1(0x3c1)]=Boolean(projectDirty),currentWorkspace[_0xa48ca1(0x273)]={...localProjectState},currentWorkspace[_0xa48ca1(0x238)]={'center':map?map[_0xa48ca1(0x296)]():[0x14,0x0],'zoom':map?map[_0xa48ca1(0x2b5)]():0x2},currentWorkspace[_0xa48ca1(0x373)]=activeBaseLayerKey,typeof window[_0xa48ca1(0x3e6)]===_0xa48ca1(0x3ca)&&window[_0xa48ca1(0x3e6)](currentWorkspace);}function getWorkspaceById(_0x52caae){const _0x2ac2db=_0x524d57;return workspaces[_0x2ac2db(0x428)](_0x3f867a=>_0x3f867a['id']===_0x52caae)||null;}function getCurrentWorkspace(){return currentWorkspace||null;}function ensureWorkspaceMapGroups(_0x5e1262){const _0x4b57b7=_0x524d57;if(!_0x5e1262)return;if(!_0x5e1262[_0x4b57b7(0x41b)])_0x5e1262['drawnGroup']=L[_0x4b57b7(0x3d8)]();if(!_0x5e1262[_0x4b57b7(0x268)])_0x5e1262['measuresGroup']=L[_0x4b57b7(0x228)]();if(!_0x5e1262['rulerGroup'])_0x5e1262['rulerGroup']=L['layerGroup']();}function ensureWorkspaceBasemap(_0x434f2d){const _0x2559f5=_0x524d57;if(!map||!basemapLayers)return;const _0x509011=basemapLayers[_0x434f2d];if(!_0x509011)return;Object['values'](basemapLayers)['forEach'](_0x53cf75=>{const _0x3de066=_0x43aa;if(_0x53cf75!==_0x509011&&map['hasLayer'](_0x53cf75))map[_0x3de066(0x2d2)](_0x53cf75);});if(!map['hasLayer'](_0x509011))_0x509011['addTo'](map);activeBaseLayerKey=_0x434f2d,document['querySelectorAll']('#basemap-menu\x20button[data-basemap]')[_0x2559f5(0x2a3)](_0x15059f=>{const _0x56f953=_0x2559f5;_0x15059f[_0x56f953(0x1d3)][_0x56f953(0x280)](_0x56f953(0x339),_0x15059f[_0x56f953(0x357)][_0x56f953(0x3cc)]===activeBaseLayerKey);});}function applyWorkspaceState(_0x43a436){const _0x498c1c=_0x524d57;if(!_0x43a436)return;if(typeof window[_0x498c1c(0x418)]===_0x498c1c(0x3ca))window[_0x498c1c(0x418)]();persistCurrentWorkspaceState(),currentWorkspace=_0x43a436,currentWorkspaceId=_0x43a436['id'],config=cloneConfig(_0x43a436[_0x498c1c(0x226)]||{}),layers=Array['isArray'](_0x43a436[_0x498c1c(0x281)])?_0x43a436[_0x498c1c(0x281)][_0x498c1c(0x415)](_0x4b564d=>({..._0x4b564d,'attributes':cloneAttributes(_0x4b564d&&_0x4b564d[_0x498c1c(0x279)]),'symbology':cloneSymbology(_0x4b564d&&_0x4b564d['symbology'])})):[],layerCounter=Number['isFinite'](_0x43a436[_0x498c1c(0x31a)])?_0x43a436['layerCounter']:0x0,activeLayerId=Number[_0x498c1c(0x3c7)](_0x43a436[_0x498c1c(0x417)])?_0x43a436[_0x498c1c(0x417)]:0x0,symbologyLayerId=_0x43a436[_0x498c1c(0x2f7)]||null,layerVisible=_0x43a436[_0x498c1c(0x44e)]instanceof Map?new Map(_0x43a436[_0x498c1c(0x44e)]):new Map([[0x0,!![]]]),layerOrder=Array[_0x498c1c(0x1e6)](_0x43a436['layerOrder'])?_0x43a436[_0x498c1c(0x2d9)][_0x498c1c(0x3e0)]():[0x0],layerPanes=_0x43a436[_0x498c1c(0x3e2)]instanceof Map?new Map(_0x43a436[_0x498c1c(0x3e2)]):new Map(),featureCounter=Number[_0x498c1c(0x3c7)](_0x43a436[_0x498c1c(0x43b)])?_0x43a436[_0x498c1c(0x43b)]:0x0,featuresData=_0x43a436[_0x498c1c(0x1e4)]instanceof Map?_0x43a436[_0x498c1c(0x1e4)]:new Map(),projectDirty=Boolean(_0x43a436['projectDirty']),localProjectState=_0x43a436['localProjectState']?{..._0x43a436[_0x498c1c(0x273)]}:{'name':null,'active':![]},activeBaseLayerKey=_0x43a436['activeBaseLayerKey']||'satelite',window['__activeBaseLayerKey']=activeBaseLayerKey;if(map){if(drawnGroup&&map[_0x498c1c(0x40a)](drawnGroup))map[_0x498c1c(0x2d2)](drawnGroup);if(measuresGroup&&map['hasLayer'](measuresGroup))map[_0x498c1c(0x2d2)](measuresGroup);if(rulerGroup&&map[_0x498c1c(0x40a)](rulerGroup))map[_0x498c1c(0x2d2)](rulerGroup);ensureWorkspaceMapGroups(_0x43a436),drawnGroup=_0x43a436[_0x498c1c(0x41b)],measuresGroup=_0x43a436['measuresGroup'],rulerGroup=_0x43a436['rulerGroup'];if(!map[_0x498c1c(0x40a)](drawnGroup))map[_0x498c1c(0x374)](drawnGroup);if(!map[_0x498c1c(0x40a)](measuresGroup))map[_0x498c1c(0x374)](measuresGroup);if(!map[_0x498c1c(0x40a)](rulerGroup))map['addLayer'](rulerGroup);_0x43a436[_0x498c1c(0x238)]&&_0x43a436[_0x498c1c(0x238)][_0x498c1c(0x201)]&&map['setView'](_0x43a436[_0x498c1c(0x238)][_0x498c1c(0x201)],_0x43a436[_0x498c1c(0x238)][_0x498c1c(0x2d1)]||map[_0x498c1c(0x2b5)]());}else drawnGroup=_0x43a436[_0x498c1c(0x41b)],measuresGroup=_0x43a436[_0x498c1c(0x268)],rulerGroup=_0x43a436[_0x498c1c(0x376)];if(typeof __rehookStateConsistency===_0x498c1c(0x3ca))__rehookStateConsistency();ensureWorkspaceBasemap(activeBaseLayerKey||_0x498c1c(0x1e1)),renderWorkspaceTabs(),refreshLayerEditability(),refreshFeatList(),renderLayersPanel(),updateProjectStatusUI();}function renderWorkspaceTabs(){const _0x2fa15f=_0x524d57,_0x668b6e=document['getElementById'](_0x2fa15f(0x298));if(!_0x668b6e)return;_0x668b6e[_0x2fa15f(0x284)]='';const _0x5eed8a=workspaces['length']>0x1;workspaces[_0x2fa15f(0x2a3)](_0x3862d8=>{const _0xf261fa=_0x2fa15f,_0x2aa69c=typeof window['isLayoutViewActive']==='function'&&window[_0xf261fa(0x41f)](),_0x1b0cfa=document['createElement'](_0xf261fa(0x1fa));_0x1b0cfa['className']=_0xf261fa(0x305)+(_0x3862d8['id']===currentWorkspaceId&&!_0x2aa69c?_0xf261fa(0x2a8):''),_0x1b0cfa[_0xf261fa(0x357)][_0xf261fa(0x42b)]=_0x3862d8['id'],_0x1b0cfa[_0xf261fa(0x3fd)](_0xf261fa(0x450),_0xf261fa(0x2fe)),_0x1b0cfa[_0xf261fa(0x308)]=0x0;const _0xa7ea32=document[_0xf261fa(0x23d)](_0xf261fa(0x27d));_0xa7ea32[_0xf261fa(0x2fb)]=_0xf261fa(0x3bb),_0xa7ea32['textContent']=_0x3862d8[_0xf261fa(0x1db)]||_0xf261fa(0x416),_0x1b0cfa[_0xf261fa(0x454)](_0xa7ea32);if(_0x5eed8a){const _0x513385=document['createElement']('button');_0x513385[_0xf261fa(0x2be)]=_0xf261fa(0x2fe),_0x513385[_0xf261fa(0x2fb)]='workspace-tab-close',_0x513385['title']='Fechar\x20mapa',_0x513385['setAttribute'](_0xf261fa(0x223),_0xf261fa(0x244)),_0x513385[_0xf261fa(0x350)]='×',_0x513385[_0xf261fa(0x25c)](_0xf261fa(0x3bd),_0x4bf465=>{const _0x41c16c=_0xf261fa;_0x4bf465[_0x41c16c(0x210)](),closeWorkspace(_0x3862d8['id']);}),_0x1b0cfa[_0xf261fa(0x454)](_0x513385);}const _0x22a8b2=()=>{const _0x28216c=_0xf261fa,_0x2b0422=typeof window[_0x28216c(0x41f)]===_0x28216c(0x3ca)&&window[_0x28216c(0x41f)]();(_0x3862d8['id']!==currentWorkspaceId||_0x2b0422)&&switchWorkspace(_0x3862d8['id']);};_0x1b0cfa['addEventListener'](_0xf261fa(0x3bd),_0x22a8b2),_0x1b0cfa[_0xf261fa(0x25c)](_0xf261fa(0x455),_0xccb289=>{const _0x84eda3=_0xf261fa;(_0xccb289[_0x84eda3(0x410)]===_0x84eda3(0x301)||_0xccb289[_0x84eda3(0x410)]==='\x20')&&(_0xccb289[_0x84eda3(0x3ba)](),_0x22a8b2());}),_0x668b6e[_0xf261fa(0x454)](_0x1b0cfa);});typeof window[_0x2fa15f(0x3b0)]===_0x2fa15f(0x3ca)&&window['renderLayoutTabsInto'](_0x668b6e);const _0x897b97=document[_0x2fa15f(0x23d)](_0x2fa15f(0x2fe));_0x897b97[_0x2fa15f(0x2be)]='button',_0x897b97[_0x2fa15f(0x2fb)]='workspace-tab\x20workspace-tab-add',_0x897b97[_0x2fa15f(0x1cb)]=_0x2fa15f(0x449),_0x897b97[_0x2fa15f(0x350)]='+',_0x897b97[_0x2fa15f(0x25c)]('click',()=>{const _0xdc9242=_0x2fa15f;typeof window['handleAddMapClick']===_0xdc9242(0x3ca)?window[_0xdc9242(0x422)]():createAndActivateNewWorkspace();}),_0x668b6e[_0x2fa15f(0x454)](_0x897b97);}function switchWorkspace(_0xb5f718){const _0x2ed123=_0x524d57,_0x143ef2=typeof window[_0x2ed123(0x41f)]===_0x2ed123(0x3ca)&&window[_0x2ed123(0x41f)]();if(!_0xb5f718||_0xb5f718===currentWorkspaceId&&!_0x143ef2)return;const _0xfa6297=getWorkspaceById(_0xb5f718);if(!_0xfa6297)return;applyWorkspaceState(_0xfa6297);}function closeWorkspace(_0x481fa9){const _0x39f32d=_0x524d57,_0xd06121=getWorkspaceById(_0x481fa9);if(!_0xd06121)return;if(workspaces['length']<=0x1){showAppAlert(_0x39f32d(0x3a8));return;}const _0x3ae222=_0xd06121['name']||_0x39f32d(0x26a);if(!requestConfirmation('Fechar\x20\x22'+_0x3ae222+_0x39f32d(0x36b)))return;const _0x5706e7=_0xd06121['id']===currentWorkspaceId,_0xd74a7f=workspaces['indexOf'](_0xd06121),_0x1f6d77=_0x5706e7?[drawnGroup,measuresGroup,rulerGroup]:[_0xd06121[_0x39f32d(0x41b)],_0xd06121[_0x39f32d(0x268)],_0xd06121[_0x39f32d(0x376)]];_0x1f6d77[_0x39f32d(0x2a3)](_0x2c15b6=>{if(_0x2c15b6&&map&&map['hasLayer'](_0x2c15b6))map['removeLayer'](_0x2c15b6);});const _0x4d1550=_0x5706e7?layerPanes:_0xd06121[_0x39f32d(0x3e2)]instanceof Map?_0xd06121[_0x39f32d(0x3e2)]:new Map();_0x4d1550[_0x39f32d(0x2a3)](_0x92a267=>{const _0xf3edfd=map&&map['getPane'](_0x92a267);if(_0xf3edfd)_0xf3edfd['remove']();}),workspaces[_0x39f32d(0x3f3)](_0xd74a7f,0x1);if(_0x5706e7){currentWorkspace=null,currentWorkspaceId=null;const _0x1acec7=Math[_0x39f32d(0x337)](_0xd74a7f,workspaces[_0x39f32d(0x42f)]-0x1);applyWorkspaceState(workspaces[_0x1acec7]);}else renderWorkspaceTabs();}function createAndActivateNewWorkspace(){const _0x2b8e1e=_0x524d57,_0x1b2d00=workspaces[_0x2b8e1e(0x42f)]+0x1,_0x2d3ede=createWorkspaceState(_0x2b8e1e(0x2d0)+Date[_0x2b8e1e(0x45c)]()+'-'+_0x1b2d00,_0x2b8e1e(0x1de)+_0x1b2d00);_0x2d3ede[_0x2b8e1e(0x373)]=_0x2b8e1e(0x1e1),workspaces['push'](_0x2d3ede),applyWorkspaceState(_0x2d3ede),ensureWorkspaceBasemap(_0x2b8e1e(0x1e1));const _0x1e851f=document['getElementById'](_0x2b8e1e(0x214));if(_0x1e851f)_0x1e851f[_0x2b8e1e(0x1d3)][_0x2b8e1e(0x354)]('hidden');const _0x512a03=document[_0x2b8e1e(0x25b)](_0x2b8e1e(0x28c));if(_0x512a03)_0x512a03[_0x2b8e1e(0x1d3)][_0x2b8e1e(0x354)](_0x2b8e1e(0x45b));const _0x4bc203=document[_0x2b8e1e(0x25b)]('local-projects-overlay');if(_0x4bc203)_0x4bc203[_0x2b8e1e(0x1d3)][_0x2b8e1e(0x3a5)](_0x2b8e1e(0x45b));const _0x162959=document[_0x2b8e1e(0x25b)]('start-project-warning');_0x162959&&(_0x162959[_0x2b8e1e(0x1d3)][_0x2b8e1e(0x3a5)](_0x2b8e1e(0x45b)),_0x162959[_0x2b8e1e(0x350)]='');startProjectChoice=null;const _0x1c25f6=document['getElementById'](_0x2b8e1e(0x343)),_0x2303cd=document[_0x2b8e1e(0x25b)](_0x2b8e1e(0x2bf)),_0x22ba91=document[_0x2b8e1e(0x25b)](_0x2b8e1e(0x43e));if(_0x1c25f6)_0x1c25f6[_0x2b8e1e(0x1d3)]['add'](_0x2b8e1e(0x45b));if(_0x2303cd)_0x2303cd[_0x2b8e1e(0x348)][_0x2b8e1e(0x256)]=_0x2b8e1e(0x217);if(_0x22ba91)_0x22ba91['disabled']=!![];document['querySelectorAll']('[data-start-choice]')[_0x2b8e1e(0x2a3)](_0x51ed66=>_0x51ed66['classList']['remove']('selected')),document[_0x2b8e1e(0x25b)]('start-project-name')[_0x2b8e1e(0x33c)]='',map&&map['invalidateSize']&&setTimeout(()=>map[_0x2b8e1e(0x2b7)](),0x0);}function initializeWorkspaces(){const _0x3781f4=_0x524d57;workspaces['length']===0x0&&workspaces[_0x3781f4(0x352)](createWorkspaceState(_0x3781f4(0x3d7),_0x3781f4(0x423))),!currentWorkspace?applyWorkspaceState(workspaces[0x0]):renderWorkspaceTabs();}const DEFAULT_COLOR=_0x524d57(0x22d),DEFAULT_OPACITY=0x23,TEAM_STORAGE_KEY=_0x524d57(0x20d);let teamPanelVisible=![],cloudMenuView=_0x524d57(0x2b3),cloudSyncMode=null,cloudSyncPlan=null,teamState={'savedSlug':'','savedName':'','slug':'','name':'','password':null,'connected':![],'lastSync':null,'deletedFids':new Map(),'usedBytes':0x0,'sizeLimit':0xc8*0x400*0x400,'status':_0x524d57(0x44a)};const PALETTE=[_0x524d57(0x22d),_0x524d57(0x360),_0x524d57(0x349),_0x524d57(0x3a1),_0x524d57(0x1fe),_0x524d57(0x320),'#B5472B',_0x524d57(0x2fa)],MUNICIPIOS_GITHUB_RAW_BASE=_0x524d57(0x406),MUNICIPIOS_INDEX=[{'m':_0x524d57(0x3da),'d':_0x524d57(0x243),'p':_0x524d57(0x429)},{'m':_0x524d57(0x3c4),'d':_0x524d57(0x243),'p':'previews/Aveiro/Anadia/caop_preview.geojson'},{'m':_0x524d57(0x254),'d':_0x524d57(0x243),'p':_0x524d57(0x346)},{'m':_0x524d57(0x243),'d':_0x524d57(0x243),'p':_0x524d57(0x344)},{'m':_0x524d57(0x312),'d':_0x524d57(0x243),'p':'previews/Aveiro/Castelo_de_Paiva/caop_preview.geojson'},{'m':_0x524d57(0x2c3),'d':'Aveiro','p':_0x524d57(0x451)},{'m':_0x524d57(0x1da),'d':'Aveiro','p':'previews/Aveiro/Mealhada/caop_preview.geojson'},{'m':_0x524d57(0x39c),'d':'Aveiro','p':_0x524d57(0x3b3)},{'m':'Oliveira\x20de\x20Azeméis','d':_0x524d57(0x243),'p':_0x524d57(0x356)},{'m':_0x524d57(0x211),'d':_0x524d57(0x243),'p':'previews/Aveiro/Oliveira_do_Bairro/caop_preview.geojson'},{'m':_0x524d57(0x3f1),'d':_0x524d57(0x243),'p':_0x524d57(0x35a)},{'m':_0x524d57(0x21d),'d':_0x524d57(0x243),'p':'previews/Aveiro/Santa_Maria_da_Feira/caop_preview.geojson'},{'m':_0x524d57(0x1d7),'d':_0x524d57(0x243),'p':_0x524d57(0x329)},{'m':_0x524d57(0x323),'d':'Aveiro','p':_0x524d57(0x3f2)},{'m':_0x524d57(0x288),'d':_0x524d57(0x243),'p':_0x524d57(0x411)},{'m':_0x524d57(0x202),'d':_0x524d57(0x243),'p':_0x524d57(0x3ff)},{'m':_0x524d57(0x3bc),'d':_0x524d57(0x243),'p':_0x524d57(0x28d)},{'m':_0x524d57(0x259),'d':_0x524d57(0x243),'p':_0x524d57(0x432)},{'m':_0x524d57(0x28b),'d':_0x524d57(0x207),'p':_0x524d57(0x205)},{'m':_0x524d57(0x3dd),'d':'Beja','p':_0x524d57(0x203)},{'m':_0x524d57(0x2e8),'d':_0x524d57(0x207),'p':_0x524d57(0x2b6)},{'m':_0x524d57(0x245),'d':'Beja','p':_0x524d57(0x351)},{'m':_0x524d57(0x207),'d':_0x524d57(0x207),'p':_0x524d57(0x37f)},{'m':'Castro\x20Verde','d':_0x524d57(0x207),'p':_0x524d57(0x400)},{'m':_0x524d57(0x1d9),'d':'Beja','p':_0x524d57(0x2d6)},{'m':_0x524d57(0x20a),'d':_0x524d57(0x207),'p':_0x524d57(0x430)},{'m':_0x524d57(0x3a2),'d':'Beja','p':_0x524d57(0x2dc)},{'m':'Mértola','d':_0x524d57(0x207),'p':_0x524d57(0x3b6)},{'m':_0x524d57(0x43c),'d':_0x524d57(0x207),'p':_0x524d57(0x44c)},{'m':'Vidigueira','d':_0x524d57(0x207),'p':_0x524d57(0x1fc)},{'m':_0x524d57(0x3dc),'d':_0x524d57(0x403),'p':'previews/Braga/Amares/caop_preview.geojson'},{'m':_0x524d57(0x37b),'d':'Braga','p':_0x524d57(0x295)},{'m':_0x524d57(0x2f3),'d':_0x524d57(0x403),'p':_0x524d57(0x3a7)},{'m':_0x524d57(0x403),'d':_0x524d57(0x403),'p':_0x524d57(0x3a3)},{'m':_0x524d57(0x38f),'d':_0x524d57(0x403),'p':'previews/Braga/Cabeceiras_de_Basto/caop_preview.geojson'},{'m':_0x524d57(0x426),'d':'Braga','p':_0x524d57(0x3f4)},{'m':'Esposende','d':_0x524d57(0x403),'p':'previews/Braga/Esposende/caop_preview.geojson'},{'m':_0x524d57(0x3b5),'d':'Braga','p':_0x524d57(0x1d8)},{'m':_0x524d57(0x2cf),'d':_0x524d57(0x403),'p':_0x524d57(0x220)},{'m':_0x524d57(0x1f7),'d':_0x524d57(0x403),'p':_0x524d57(0x407)},{'m':'Vieira\x20do\x20Minho','d':'Braga','p':'previews/Braga/Vieira_do_Minho/caop_preview.geojson'},{'m':_0x524d57(0x260),'d':_0x524d57(0x403),'p':_0x524d57(0x365)},{'m':_0x524d57(0x304),'d':'Braga','p':_0x524d57(0x442)},{'m':_0x524d57(0x383),'d':_0x524d57(0x403),'p':_0x524d57(0x21f)},{'m':_0x524d57(0x23b),'d':_0x524d57(0x208),'p':'previews/Bragança/Alfândega_da_Fé/caop_preview.geojson'},{'m':_0x524d57(0x208),'d':_0x524d57(0x208),'p':_0x524d57(0x253)},{'m':_0x524d57(0x309),'d':_0x524d57(0x208),'p':'previews/Bragança/Carrazeda_de_Ansiães/caop_preview.geojson'},{'m':_0x524d57(0x377),'d':_0x524d57(0x208),'p':_0x524d57(0x27c)},{'m':_0x524d57(0x1e0),'d':_0x524d57(0x208),'p':_0x524d57(0x32a)},{'m':_0x524d57(0x267),'d':_0x524d57(0x208),'p':_0x524d57(0x2a2)},{'m':_0x524d57(0x375),'d':_0x524d57(0x208),'p':_0x524d57(0x246)},{'m':_0x524d57(0x2f9),'d':_0x524d57(0x208),'p':_0x524d57(0x37e)},{'m':'Torre\x20de\x20Moncorvo','d':'Bragança','p':_0x524d57(0x2f8)},{'m':'Vila\x20Flor','d':'Bragança','p':_0x524d57(0x32c)},{'m':'Vimioso','d':_0x524d57(0x208),'p':'previews/Bragança/Vimioso/caop_preview.geojson'},{'m':_0x524d57(0x439),'d':_0x524d57(0x208),'p':_0x524d57(0x3c6)},{'m':_0x524d57(0x1eb),'d':_0x524d57(0x292),'p':_0x524d57(0x285)},{'m':'Castelo\x20Branco','d':_0x524d57(0x292),'p':_0x524d57(0x1d1)},{'m':_0x524d57(0x24d),'d':'Castelo\x20Branco','p':_0x524d57(0x37d)},{'m':_0x524d57(0x222),'d':'Castelo\x20Branco','p':'previews/Castelo_Branco/Fundão/caop_preview.geojson'},{'m':_0x524d57(0x388),'d':'Castelo\x20Branco','p':_0x524d57(0x440)},{'m':_0x524d57(0x33e),'d':_0x524d57(0x292),'p':_0x524d57(0x444)},{'m':_0x524d57(0x3d9),'d':_0x524d57(0x292),'p':_0x524d57(0x2ff)},{'m':_0x524d57(0x2af),'d':_0x524d57(0x292),'p':_0x524d57(0x372)},{'m':_0x524d57(0x34f),'d':'Castelo\x20Branco','p':_0x524d57(0x22c)},{'m':_0x524d57(0x342),'d':_0x524d57(0x292),'p':_0x524d57(0x3b7)},{'m':_0x524d57(0x2e5),'d':_0x524d57(0x292),'p':_0x524d57(0x378)},{'m':'Arganil','d':_0x524d57(0x3af),'p':_0x524d57(0x459)},{'m':'Cantanhede','d':_0x524d57(0x3af),'p':_0x524d57(0x2ea)},{'m':'Coimbra','d':'Coimbra','p':'previews/Coimbra/Coimbra/caop_preview.geojson'},{'m':_0x524d57(0x236),'d':_0x524d57(0x3af),'p':_0x524d57(0x251)},{'m':_0x524d57(0x2bd),'d':_0x524d57(0x3af),'p':'previews/Coimbra/Figueira_da_Foz/caop_preview.geojson'},{'m':'Góis','d':_0x524d57(0x3af),'p':_0x524d57(0x297)},{'m':_0x524d57(0x427),'d':'Coimbra','p':_0x524d57(0x437)},{'m':_0x524d57(0x25d),'d':_0x524d57(0x3af),'p':_0x524d57(0x3a9)},{'m':'Montemor-o-Velho','d':'Coimbra','p':'previews/Coimbra/Montemor-o-Velho/caop_preview.geojson'},{'m':_0x524d57(0x242),'d':'Coimbra','p':_0x524d57(0x441)},{'m':_0x524d57(0x425),'d':_0x524d57(0x3af),'p':_0x524d57(0x23c)},{'m':'Penacova','d':_0x524d57(0x3af),'p':_0x524d57(0x248)},{'m':'Penela','d':_0x524d57(0x3af),'p':_0x524d57(0x457)},{'m':'Soure','d':'Coimbra','p':'previews/Coimbra/Soure/caop_preview.geojson'},{'m':'Tábua','d':_0x524d57(0x3af),'p':'previews/Coimbra/Tábua/caop_preview.geojson'},{'m':_0x524d57(0x233),'d':_0x524d57(0x3af),'p':_0x524d57(0x3b9)},{'m':'Albufeira','d':'Faro','p':_0x524d57(0x419)},{'m':_0x524d57(0x1f5),'d':_0x524d57(0x405),'p':_0x524d57(0x24b)},{'m':_0x524d57(0x3a4),'d':_0x524d57(0x405),'p':_0x524d57(0x30c)},{'m':_0x524d57(0x34d),'d':'Faro','p':_0x524d57(0x35b)},{'m':_0x524d57(0x405),'d':_0x524d57(0x405),'p':_0x524d57(0x38a)},{'m':'Lagoa','d':_0x524d57(0x405),'p':_0x524d57(0x3cf)},{'m':_0x524d57(0x45f),'d':_0x524d57(0x405),'p':_0x524d57(0x313)},{'m':_0x524d57(0x252),'d':_0x524d57(0x405),'p':_0x524d57(0x215)},{'m':_0x524d57(0x317),'d':_0x524d57(0x405),'p':_0x524d57(0x45e)},{'m':_0x524d57(0x1cf),'d':_0x524d57(0x405),'p':'previews/Faro/Portimão/caop_preview.geojson'},{'m':_0x524d57(0x1d5),'d':'Faro','p':_0x524d57(0x448)},{'m':_0x524d57(0x249),'d':_0x524d57(0x405),'p':_0x524d57(0x34a)},{'m':'Tavira','d':_0x524d57(0x405),'p':_0x524d57(0x35e)},{'m':_0x524d57(0x414),'d':_0x524d57(0x405),'p':_0x524d57(0x250)},{'m':_0x524d57(0x2c9),'d':'Guarda','p':_0x524d57(0x32b)},{'m':_0x524d57(0x443),'d':_0x524d57(0x3fe),'p':_0x524d57(0x420)},{'m':_0x524d57(0x371),'d':_0x524d57(0x3fe),'p':_0x524d57(0x36a)},{'m':'Fornos\x20de\x20Algodres','d':_0x524d57(0x3fe),'p':_0x524d57(0x1f8)},{'m':_0x524d57(0x41d),'d':_0x524d57(0x3fe),'p':_0x524d57(0x3cd)},{'m':_0x524d57(0x3fe),'d':'Guarda','p':_0x524d57(0x311)},{'m':_0x524d57(0x44f),'d':_0x524d57(0x3fe),'p':'previews/Guarda/Manteigas/caop_preview.geojson'},{'m':_0x524d57(0x3e1),'d':'Guarda','p':_0x524d57(0x2f5)},{'m':'Pinhel','d':_0x524d57(0x3fe),'p':_0x524d57(0x394)},{'m':_0x524d57(0x2a5),'d':_0x524d57(0x3fe),'p':_0x524d57(0x2e0)},{'m':'Seia','d':_0x524d57(0x3fe),'p':_0x524d57(0x315)},{'m':_0x524d57(0x229),'d':_0x524d57(0x3fe),'p':_0x524d57(0x24f)},{'m':_0x524d57(0x2ca),'d':'Leiria','p':_0x524d57(0x3ec)},{'m':_0x524d57(0x239),'d':_0x524d57(0x29c),'p':_0x524d57(0x266)},{'m':'Ansião','d':_0x524d57(0x29c),'p':'previews/Leiria/Ansião/caop_preview.geojson'},{'m':_0x524d57(0x27f),'d':_0x524d57(0x29c),'p':'previews/Leiria/Batalha/caop_preview.geojson'},{'m':'Bombarral','d':'Leiria','p':_0x524d57(0x331)},{'m':_0x524d57(0x2df),'d':_0x524d57(0x29c),'p':_0x524d57(0x219)},{'m':_0x524d57(0x27b),'d':_0x524d57(0x29c),'p':_0x524d57(0x366)},{'m':'Leiria','d':_0x524d57(0x29c),'p':_0x524d57(0x3e4)},{'m':_0x524d57(0x32e),'d':_0x524d57(0x29c),'p':_0x524d57(0x3b2)},{'m':'Nazaré','d':_0x524d57(0x29c),'p':_0x524d57(0x307)},{'m':'Pedrógão\x20Grande','d':_0x524d57(0x29c),'p':_0x524d57(0x275)},{'m':_0x524d57(0x1dc),'d':_0x524d57(0x29c),'p':'previews/Leiria/Pombal/caop_preview.geojson'},{'m':_0x524d57(0x3ac),'d':'Leiria','p':'previews/Leiria/Porto_de_Mós/caop_preview.geojson'},{'m':_0x524d57(0x2e1),'d':_0x524d57(0x29c),'p':_0x524d57(0x1e2)},{'m':_0x524d57(0x218),'d':_0x524d57(0x395),'p':_0x524d57(0x28a)},{'m':_0x524d57(0x2dd),'d':_0x524d57(0x395),'p':'previews/Lisboa/Amadora/caop_preview.geojson'},{'m':'Arruda\x20dos\x20Vinhos','d':_0x524d57(0x395),'p':_0x524d57(0x336)},{'m':_0x524d57(0x29f),'d':'Lisboa','p':_0x524d57(0x3fb)},{'m':_0x524d57(0x358),'d':'Lisboa','p':_0x524d57(0x1e9)},{'m':_0x524d57(0x24a),'d':'Lisboa','p':_0x524d57(0x30a)},{'m':_0x524d57(0x395),'d':'Lisboa','p':_0x524d57(0x3cb)},{'m':_0x524d57(0x231),'d':_0x524d57(0x395),'p':'previews/Lisboa/Loures/caop_preview.geojson'},{'m':'Lourinhã','d':_0x524d57(0x395),'p':_0x524d57(0x23e)},{'m':_0x524d57(0x3ae),'d':_0x524d57(0x395),'p':_0x524d57(0x2ee)},{'m':'Oeiras','d':_0x524d57(0x395),'p':_0x524d57(0x26e)},{'m':'Sintra','d':_0x524d57(0x395),'p':_0x524d57(0x35c)},{'m':'Sobral\x20de\x20Monte\x20Agraço','d':'Lisboa','p':_0x524d57(0x31f)},{'m':'Vila\x20Franca\x20de\x20Xira','d':_0x524d57(0x395),'p':_0x524d57(0x263)},{'m':_0x524d57(0x385),'d':'Portalegre','p':_0x524d57(0x289)},{'m':_0x524d57(0x2b9),'d':_0x524d57(0x1f0),'p':_0x524d57(0x3c3)},{'m':_0x524d57(0x1f1),'d':_0x524d57(0x1f0),'p':'previews/Portalegre/Avis/caop_preview.geojson'},{'m':_0x524d57(0x434),'d':_0x524d57(0x1f0),'p':'previews/Portalegre/Campo_Maior/caop_preview.geojson'},{'m':_0x524d57(0x3d1),'d':'Portalegre','p':_0x524d57(0x2ec)},{'m':_0x524d57(0x3e3),'d':_0x524d57(0x1f0),'p':_0x524d57(0x456)},{'m':_0x524d57(0x278),'d':_0x524d57(0x1f0),'p':_0x524d57(0x334)},{'m':_0x524d57(0x2b8),'d':_0x524d57(0x1f0),'p':_0x524d57(0x1ea)},{'m':_0x524d57(0x40e),'d':_0x524d57(0x1f0),'p':_0x524d57(0x2a7)},{'m':_0x524d57(0x2d7),'d':_0x524d57(0x1f0),'p':_0x524d57(0x42a)},{'m':_0x524d57(0x269),'d':'Portalegre','p':_0x524d57(0x330)},{'m':_0x524d57(0x413),'d':_0x524d57(0x1f0),'p':_0x524d57(0x2d3)},{'m':_0x524d57(0x368),'d':_0x524d57(0x1f0),'p':_0x524d57(0x22f)},{'m':_0x524d57(0x1f0),'d':'Portalegre','p':'previews/Portalegre/Portalegre/caop_preview.geojson'},{'m':_0x524d57(0x340),'d':'Portalegre','p':_0x524d57(0x2bb)},{'m':_0x524d57(0x31c),'d':_0x524d57(0x3a6),'p':_0x524d57(0x3de)},{'m':_0x524d57(0x355),'d':_0x524d57(0x3a6),'p':_0x524d57(0x39d)},{'m':_0x524d57(0x3c5),'d':_0x524d57(0x3a6),'p':'previews/Porto/Felgueiras/caop_preview.geojson'},{'m':'Gondomar','d':_0x524d57(0x3a6),'p':_0x524d57(0x20e)},{'m':'Lousada','d':_0x524d57(0x3a6),'p':'previews/Porto/Lousada/caop_preview.geojson'},{'m':_0x524d57(0x1dd),'d':_0x524d57(0x3a6),'p':_0x524d57(0x200)},{'m':_0x524d57(0x24e),'d':_0x524d57(0x3a6),'p':_0x524d57(0x261)},{'m':_0x524d57(0x40f),'d':_0x524d57(0x3a6),'p':'previews/Porto/Matosinhos/caop_preview.geojson'},{'m':_0x524d57(0x35f),'d':'Porto','p':'previews/Porto/Paredes/caop_preview.geojson'},{'m':_0x524d57(0x234),'d':_0x524d57(0x3a6),'p':_0x524d57(0x277)},{'m':_0x524d57(0x302),'d':_0x524d57(0x3a6),'p':_0x524d57(0x1ef)},{'m':_0x524d57(0x3a6),'d':_0x524d57(0x3a6),'p':'previews/Porto/Porto/caop_preview.geojson'},{'m':_0x524d57(0x399),'d':'Porto','p':'previews/Porto/Póvoa_de_Varzim/caop_preview.geojson'},{'m':'Santo\x20Tirso','d':_0x524d57(0x3a6),'p':_0x524d57(0x2e2)},{'m':_0x524d57(0x409),'d':'Porto','p':_0x524d57(0x3d5)},{'m':_0x524d57(0x32d),'d':_0x524d57(0x3a6),'p':_0x524d57(0x31b)},{'m':_0x524d57(0x306),'d':_0x524d57(0x3a6),'p':_0x524d57(0x435)},{'m':_0x524d57(0x2b2),'d':_0x524d57(0x31d),'p':_0x524d57(0x362)},{'m':_0x524d57(0x1df),'d':_0x524d57(0x31d),'p':_0x524d57(0x370)},{'m':_0x524d57(0x21e),'d':_0x524d57(0x31d),'p':'previews/Santarém/Alpiarça/caop_preview.geojson'},{'m':_0x524d57(0x33a),'d':_0x524d57(0x31d),'p':_0x524d57(0x3c0)},{'m':'Cartaxo','d':_0x524d57(0x31d),'p':_0x524d57(0x2bc)},{'m':_0x524d57(0x40d),'d':_0x524d57(0x31d),'p':_0x524d57(0x338)},{'m':_0x524d57(0x300),'d':_0x524d57(0x31d),'p':_0x524d57(0x397)},{'m':'Coruche','d':_0x524d57(0x31d),'p':_0x524d57(0x43f)},{'m':_0x524d57(0x389),'d':_0x524d57(0x31d),'p':_0x524d57(0x2f4)},{'m':'Ferreira\x20do\x20Zêzere','d':'Santarém','p':'previews/Santarém/Ferreira_do_Zêzere/caop_preview.geojson'},{'m':'Golegã','d':_0x524d57(0x31d),'p':_0x524d57(0x206)},{'m':_0x524d57(0x42c),'d':'Santarém','p':_0x524d57(0x303)},{'m':_0x524d57(0x321),'d':_0x524d57(0x31d),'p':_0x524d57(0x237)},{'m':_0x524d57(0x458),'d':_0x524d57(0x31d),'p':_0x524d57(0x2b1)},{'m':'Salvaterra\x20de\x20Magos','d':_0x524d57(0x31d),'p':_0x524d57(0x2ef)},{'m':'Santarém','d':_0x524d57(0x31d),'p':_0x524d57(0x36c)},{'m':_0x524d57(0x359),'d':'Santarém','p':_0x524d57(0x3d6)},{'m':_0x524d57(0x386),'d':_0x524d57(0x31d),'p':_0x524d57(0x2f1)},{'m':_0x524d57(0x294),'d':'Santarém','p':_0x524d57(0x2c1)},{'m':_0x524d57(0x380),'d':_0x524d57(0x31d),'p':'previews/Santarém/Vila_Nova_da_Barquinha/caop_preview.geojson'},{'m':_0x524d57(0x453),'d':_0x524d57(0x29e),'p':'previews/Setúbal/Alcochete/caop_preview.geojson'},{'m':_0x524d57(0x37c),'d':_0x524d57(0x29e),'p':_0x524d57(0x1fd)},{'m':_0x524d57(0x21b),'d':_0x524d57(0x29e),'p':_0x524d57(0x391)},{'m':'Barreiro','d':'Setúbal','p':_0x524d57(0x42e)},{'m':_0x524d57(0x402),'d':_0x524d57(0x29e),'p':'previews/Setúbal/Grândola/caop_preview.geojson'},{'m':_0x524d57(0x224),'d':'Setúbal','p':_0x524d57(0x30e)},{'m':'Montijo','d':'Setúbal','p':_0x524d57(0x404)},{'m':_0x524d57(0x2c5),'d':_0x524d57(0x29e),'p':_0x524d57(0x314)},{'m':'Santiago\x20do\x20Cacém','d':_0x524d57(0x29e),'p':'previews/Setúbal/Santiago_do_Cacém/caop_preview.geojson'},{'m':_0x524d57(0x460),'d':_0x524d57(0x29e),'p':_0x524d57(0x20c)},{'m':_0x524d57(0x29e),'d':_0x524d57(0x29e),'p':_0x524d57(0x291)},{'m':_0x524d57(0x1f2),'d':_0x524d57(0x204),'p':_0x524d57(0x3b1)},{'m':_0x524d57(0x2e9),'d':_0x524d57(0x204),'p':'previews/Viana_do_Castelo/Caminha/caop_preview.geojson'},{'m':_0x524d57(0x232),'d':_0x524d57(0x204),'p':_0x524d57(0x3e9)},{'m':_0x524d57(0x26c),'d':'Viana\x20do\x20Castelo','p':_0x524d57(0x1e8)},{'m':_0x524d57(0x43a),'d':'Viana\x20do\x20Castelo','p':_0x524d57(0x225)},{'m':_0x524d57(0x3df),'d':_0x524d57(0x204),'p':_0x524d57(0x36d)},{'m':_0x524d57(0x1ec),'d':_0x524d57(0x204),'p':_0x524d57(0x39e)},{'m':'Valença','d':'Viana\x20do\x20Castelo','p':_0x524d57(0x286)},{'m':_0x524d57(0x204),'d':_0x524d57(0x204),'p':'previews/Viana_do_Castelo/Viana_do_Castelo/caop_preview.geojson'},{'m':'Vila\x20Nova\x20de\x20Cerveira','d':_0x524d57(0x204),'p':_0x524d57(0x37a)},{'m':_0x524d57(0x25f),'d':'Vila\x20Real','p':'previews/Vila_Real/Alijó/caop_preview.geojson'},{'m':'Boticas','d':_0x524d57(0x33b),'p':_0x524d57(0x3db)},{'m':_0x524d57(0x446),'d':_0x524d57(0x33b),'p':_0x524d57(0x39f)},{'m':'Mesão\x20Frio','d':_0x524d57(0x33b),'p':_0x524d57(0x255)},{'m':_0x524d57(0x408),'d':_0x524d57(0x33b),'p':_0x524d57(0x316)},{'m':_0x524d57(0x325),'d':_0x524d57(0x33b),'p':_0x524d57(0x30f)},{'m':_0x524d57(0x2c2),'d':_0x524d57(0x33b),'p':_0x524d57(0x2a0)},{'m':_0x524d57(0x1cc),'d':_0x524d57(0x33b),'p':_0x524d57(0x369)},{'m':'Ribeira\x20de\x20Pena','d':'Vila\x20Real','p':_0x524d57(0x21c)},{'m':'Sabrosa','d':_0x524d57(0x33b),'p':'previews/Vila_Real/Sabrosa/caop_preview.geojson'},{'m':_0x524d57(0x3fc),'d':_0x524d57(0x33b),'p':'previews/Vila_Real/Santa_Marta_de_Penaguião/caop_preview.geojson'},{'m':_0x524d57(0x28e),'d':_0x524d57(0x33b),'p':'previews/Vila_Real/Valpaços/caop_preview.geojson'},{'m':'Vila\x20Pouca\x20de\x20Aguiar','d':_0x524d57(0x33b),'p':_0x524d57(0x2da)},{'m':_0x524d57(0x33b),'d':_0x524d57(0x33b),'p':_0x524d57(0x328)},{'m':_0x524d57(0x335),'d':_0x524d57(0x1d6),'p':_0x524d57(0x27a)},{'m':_0x524d57(0x3b8),'d':'Viseu','p':'previews/Viseu/Carregal_do_Sal/caop_preview.geojson'},{'m':_0x524d57(0x26f),'d':'Viseu','p':_0x524d57(0x2f6)},{'m':_0x524d57(0x2a6),'d':'Viseu','p':_0x524d57(0x3b4)},{'m':_0x524d57(0x3eb),'d':_0x524d57(0x1d6),'p':_0x524d57(0x332)},{'m':'Mangualde','d':_0x524d57(0x1d6),'p':_0x524d57(0x3e5)},{'m':_0x524d57(0x424),'d':_0x524d57(0x1d6),'p':_0x524d57(0x381)},{'m':_0x524d57(0x216),'d':'Viseu','p':'previews/Viseu/Mortágua/caop_preview.geojson'},{'m':_0x524d57(0x44d),'d':'Viseu','p':_0x524d57(0x3f9)},{'m':'Oliveira\x20de\x20Frades','d':_0x524d57(0x1d6),'p':_0x524d57(0x28f)},{'m':_0x524d57(0x235),'d':'Viseu','p':_0x524d57(0x41a)},{'m':'Penedono','d':_0x524d57(0x1d6),'p':_0x524d57(0x2c4)},{'m':_0x524d57(0x257),'d':_0x524d57(0x1d6),'p':'previews/Viseu/Resende/caop_preview.geojson'},{'m':'Santa\x20Comba\x20Dão','d':_0x524d57(0x1d6),'p':_0x524d57(0x2f0)},{'m':_0x524d57(0x258),'d':_0x524d57(0x1d6),'p':'previews/Viseu/Sernancelhe/caop_preview.geojson'},{'m':_0x524d57(0x3aa),'d':'Viseu','p':_0x524d57(0x436)},{'m':_0x524d57(0x22e),'d':_0x524d57(0x1d6),'p':_0x524d57(0x2aa)},{'m':'São\x20Pedro\x20do\x20Sul','d':_0x524d57(0x1d6),'p':_0x524d57(0x2c6)},{'m':_0x524d57(0x392),'d':_0x524d57(0x1d6),'p':_0x524d57(0x274)},{'m':_0x524d57(0x433),'d':_0x524d57(0x1d6),'p':'previews/Viseu/Tarouca/caop_preview.geojson'},{'m':_0x524d57(0x2c0),'d':_0x524d57(0x1d6),'p':_0x524d57(0x3f0)},{'m':'Vila\x20Nova\x20de\x20Paiva','d':_0x524d57(0x1d6),'p':'previews/Viseu/Vila_Nova_de_Paiva/caop_preview.geojson'},{'m':_0x524d57(0x1d6),'d':_0x524d57(0x1d6),'p':_0x524d57(0x1f9)},{'m':_0x524d57(0x1ff),'d':_0x524d57(0x1d6),'p':_0x524d57(0x38d)},{'m':'Alandroal','d':_0x524d57(0x319),'p':_0x524d57(0x32f)},{'m':_0x524d57(0x3d2),'d':_0x524d57(0x319),'p':'previews/Évora/Arraiolos/caop_preview.geojson'},{'m':_0x524d57(0x271),'d':_0x524d57(0x319),'p':_0x524d57(0x36e)},{'m':_0x524d57(0x401),'d':'Évora','p':_0x524d57(0x431)},{'m':_0x524d57(0x2fd),'d':'Évora','p':_0x524d57(0x345)},{'m':'Mora','d':_0x524d57(0x319),'p':'previews/Évora/Mora/caop_preview.geojson'},{'m':_0x524d57(0x38e),'d':_0x524d57(0x319),'p':_0x524d57(0x40b)},{'m':_0x524d57(0x34e),'d':_0x524d57(0x319),'p':_0x524d57(0x42d)},{'m':'Redondo','d':'Évora','p':'previews/Évora/Redondo/caop_preview.geojson'},{'m':'Reguengos\x20de\x20Monsaraz','d':_0x524d57(0x319),'p':'previews/Évora/Reguengos_de_Monsaraz/caop_preview.geojson'},{'m':_0x524d57(0x38c),'d':_0x524d57(0x319),'p':'previews/Évora/Vendas_Novas/caop_preview.geojson'},{'m':_0x524d57(0x212),'d':_0x524d57(0x319),'p':_0x524d57(0x326)},{'m':'Vila\x20Viçosa','d':'Évora','p':'previews/Évora/Vila_Viçosa/caop_preview.geojson'},{'m':_0x524d57(0x319),'d':'Évora','p':_0x524d57(0x299)}];let offlineDrawing=![],rulerDrawing=![],offlineRectLayer=null,offlineCancelDownload=![];const OFFLINE_MAX_ZOOM=0x12,OFFLINE_TILE_LIMIT=0xbb8,BYTES_PER_TILE_ESTIMATE=0x55f0,BASE_LAYERS_INFO={'satelite':[{'key':'satellite','tpl':_0x524d57(0x30b)}],'dgt':[{'key':_0x524d57(0x22b),'wms':!![],'base':_0x524d57(0x1cd),'wmsLayer':'Ortos2021-RGB'}],'claro':[{'key':_0x524d57(0x2cc),'tpl':_0x524d57(0x23a)}],'osm':[{'key':'osm','tpl':_0x524d57(0x363)}]};let offlineSessionActive=![],offlineBoundaryLayer=null,offlineMaskLayer=null,wasOffline=!navigator['onLine'],toolbarHintHideTimer=null;function showToolbarHint(_0x130c18,_0x30efea){const _0x1a273d=_0x524d57;if(!settings[_0x1a273d(0x2ba)])return;const _0x3201ee=document[_0x1a273d(0x25b)](_0x1a273d(0x213)),_0x906cc5=document[_0x1a273d(0x25b)]('toolbar-hint-text');if(!_0x3201ee||!_0x906cc5)return;_0x906cc5['textContent']=_0x130c18,_0x3201ee[_0x1a273d(0x1d3)][_0x1a273d(0x354)](_0x1a273d(0x2e3)),clearTimeout(toolbarHintHideTimer),toolbarHintHideTimer=setTimeout(()=>{const _0xbaa5ce=_0x1a273d;_0x3201ee[_0xbaa5ce(0x1d3)][_0xbaa5ce(0x3a5)](_0xbaa5ce(0x2e3));},_0x30efea||0xa28);}let basemapToastHideTimer=null;function showBasemapToast(_0xc03971,_0x3c2284){const _0x19b465=_0x524d57,_0x28048d=document[_0x19b465(0x25b)](_0x19b465(0x23f)),_0x5010b8=document[_0x19b465(0x25b)](_0x19b465(0x230));if(!_0x28048d||!_0x5010b8)return;_0x5010b8[_0x19b465(0x350)]=_0xc03971,_0x28048d['classList'][_0x19b465(0x3a5)](_0x19b465(0x227)),clearTimeout(basemapToastHideTimer),basemapToastHideTimer=setTimeout(()=>{const _0x59ba98=_0x19b465;_0x28048d[_0x59ba98(0x1d3)][_0x59ba98(0x354)](_0x59ba98(0x227));},_0x3c2284||0xdac);}let mapGridLayer=null;function buildMapGridLines(){const _0x436599=_0x524d57,_0x2444c7=0x1,_0x2f6953=[];for(let _0xa318b2=-0xb4;_0xa318b2<=0xb4;_0xa318b2+=_0x2444c7){_0x2f6953[_0x436599(0x352)](L[_0x436599(0x2ac)]([[-0x5a,_0xa318b2],[0x5a,_0xa318b2]],{'color':_0x436599(0x1f6),'weight':0x1,'dashArray':_0x436599(0x290),'interactive':![]}));}for(let _0x3535b1=-0x5a;_0x3535b1<=0x5a;_0x3535b1+=_0x2444c7){_0x2f6953['push'](L[_0x436599(0x2ac)]([[_0x3535b1,-0xb4],[_0x3535b1,0xb4]],{'color':'rgba(31,92,107,.16)','weight':0x1,'dashArray':_0x436599(0x290),'interactive':![]}));}return _0x2f6953;}const GEOREF_AUTO_MIN_ZOOM=0x11,GEOREF_AUTO_MAX_ZOOM=0x14;function initMap(){const _0x5039dd=_0x524d57;map=L[_0x5039dd(0x415)](_0x5039dd(0x415),{'zoomControl':![],'attributionControl':![],'maxZoom':0x18})['setView']([0x14,0x0],0x2);const _0x513fcc=new OfflineTileLayer(_0x5039dd(0x30b),{'maxZoom':0x18,'maxNativeZoom':0x13,'attribution':_0x5039dd(0x38b),'offlineKey':'satellite'}),_0xa32105=L[_0x5039dd(0x228)]([_0x513fcc])[_0x5039dd(0x1e7)](map),_0x275f04=new OfflineTileLayer(_0x5039dd(0x1f4),{'maxZoom':0x18,'maxNativeZoom':0x13,'attribution':_0x5039dd(0x3e7),'offlineKey':_0x5039dd(0x2cc)}),_0x1c60fc=new OfflineTileLayer(_0x5039dd(0x3ef),{'maxZoom':0x18,'maxNativeZoom':0x13,'attribution':_0x5039dd(0x327),'offlineKey':_0x5039dd(0x2d4)}),_0x45f3bc=new OfflineWMSTileLayer(_0x5039dd(0x1cd),{'layers':_0x5039dd(0x2cb),'format':_0x5039dd(0x2a4),'transparent':![],'version':_0x5039dd(0x452),'maxZoom':0x18,'maxNativeZoom':0x14,'minNativeZoom':0x6,'attribution':_0x5039dd(0x1f3),'offlineKey':'dgt'}),_0x47aebf={'satelite':_0xa32105,'claro':_0x275f04,'osm':_0x1c60fc,'dgt':_0x45f3bc};basemapLayers=_0x47aebf,window[_0x5039dd(0x310)]=_0x47aebf,activeBaseLayerKey='satelite',window[_0x5039dd(0x45a)]=activeBaseLayerKey;function _0xd7b839(){const _0x9da71c=_0x5039dd;document[_0x9da71c(0x2e4)](_0x9da71c(0x1ee))[_0x9da71c(0x2a3)](_0x109d43=>{const _0x46fa6d=_0x9da71c;_0x109d43[_0x46fa6d(0x1d3)][_0x46fa6d(0x280)](_0x46fa6d(0x339),_0x109d43[_0x46fa6d(0x357)][_0x46fa6d(0x3cc)]===activeBaseLayerKey);});const _0x4b64cb=document[_0x9da71c(0x25b)]('basemap-auto-toggle');if(_0x4b64cb)_0x4b64cb[_0x9da71c(0x1d3)][_0x9da71c(0x280)](_0x9da71c(0x339),_0x359a70);}function _0x34c227(_0x27801d,_0x52bef5){const _0x152f0f=_0x5039dd;_0x52bef5=_0x52bef5||{};if(_0x27801d==='none'){Object[_0x152f0f(0x3c9)](_0x47aebf)['forEach'](_0x59a81a=>{const _0x4a36e6=_0x152f0f;if(map[_0x4a36e6(0x40a)](_0x59a81a))map[_0x4a36e6(0x2d2)](_0x59a81a);}),activeBaseLayerKey=_0x152f0f(0x217),window['__activeBaseLayerKey']=_0x152f0f(0x217),_0xd7b839(),_0x4241c4();return;}const _0x4082bd=_0x47aebf[_0x27801d];if(!_0x4082bd||_0x27801d===activeBaseLayerKey){_0x4241c4();return;}Object[_0x152f0f(0x3c9)](_0x47aebf)[_0x152f0f(0x2a3)](_0x22bbb1=>{const _0x2c40a2=_0x152f0f;if(_0x22bbb1!==_0x4082bd&&map[_0x2c40a2(0x40a)](_0x22bbb1))map[_0x2c40a2(0x2d2)](_0x22bbb1);});if(!map[_0x152f0f(0x40a)](_0x4082bd))_0x4082bd[_0x152f0f(0x1e7)](map);activeBaseLayerKey=_0x27801d,window[_0x152f0f(0x45a)]=_0x27801d,_0xd7b839(),_0x4241c4(),_0x27801d===_0x152f0f(0x22b)&&!_0x52bef5['auto']&&showToolbarHint(_0x152f0f(0x412),0x1770);}window[_0x5039dd(0x30d)]=function(_0x4da1be){_0x359a70=![],_0x34c227(_0x4da1be,{'auto':!![]});};let _0x359a70=!![];const _0x4ea2d7=L[_0x5039dd(0x41e)]([36.7,-9.6],[42.3,-0x6]),_0x4c72ec=0x11;function _0x1731a8(){const _0x17eab9=_0x5039dd;if(!_0x359a70)return;if(activeBaseLayerKey!==_0x17eab9(0x1e1)&&activeBaseLayerKey!==_0x17eab9(0x22b))return;const _0x5d2937=map[_0x17eab9(0x2b5)](),_0x4b6420=_0x4ea2d7[_0x17eab9(0x287)](map[_0x17eab9(0x296)]());if(activeBaseLayerKey==='satelite'&&_0x4b6420&&_0x5d2937>=_0x4c72ec)_0x34c227('dgt',{'auto':!![]}),showBasemapToast(_0x17eab9(0x34b));else activeBaseLayerKey===_0x17eab9(0x22b)&&(!_0x4b6420||_0x5d2937<_0x4c72ec)&&(_0x34c227(_0x17eab9(0x1e1),{'auto':!![]}),showBasemapToast('A\x20voltar\x20ao\x20Satélite\x20global.'));}map['on'](_0x5039dd(0x247),()=>{_0x1731a8(),enableGeorefAutoButtonIfZoomReady();});function _0x42b7d5(){const _0x2ff4b5=_0x5039dd,_0x127201=document[_0x2ff4b5(0x25b)](_0x2ff4b5(0x379)),_0x4a24f4=document[_0x2ff4b5(0x25b)]('btn-basemap'),_0x36ff27=_0x4a24f4[_0x2ff4b5(0x341)]();_0x127201[_0x2ff4b5(0x1d3)][_0x2ff4b5(0x354)](_0x2ff4b5(0x45b));const _0x524569=_0x127201['getBoundingClientRect']();_0x127201[_0x2ff4b5(0x348)][_0x2ff4b5(0x445)]=_0x36ff27[_0x2ff4b5(0x2c7)]+0x6+'px',_0x127201['style'][_0x2ff4b5(0x2eb)]=Math['max'](0x8,Math[_0x2ff4b5(0x337)](_0x36ff27[_0x2ff4b5(0x29b)]-_0x524569[_0x2ff4b5(0x3f5)],window['innerWidth']-_0x524569[_0x2ff4b5(0x3f5)]-0x8))+'px',_0xd7b839();}function _0x4241c4(){const _0x5e68b5=_0x5039dd;document[_0x5e68b5(0x25b)]('basemap-menu')[_0x5e68b5(0x1d3)]['add']('hidden');}document[_0x5039dd(0x25b)](_0x5039dd(0x3bf))[_0x5039dd(0x25c)](_0x5039dd(0x3bd),_0x554eed=>{const _0x134b13=_0x5039dd;_0x554eed[_0x134b13(0x210)]();const _0x352b6e=document[_0x134b13(0x25b)](_0x134b13(0x379));if(_0x352b6e['classList']['contains'](_0x134b13(0x45b)))_0x42b7d5();else _0x4241c4();}),document[_0x5039dd(0x2e4)](_0x5039dd(0x1ee))[_0x5039dd(0x2a3)](_0x54ebe6=>{const _0x2e0e59=_0x5039dd;_0x54ebe6['addEventListener'](_0x2e0e59(0x3bd),_0x5bd085=>{const _0x376e81=_0x2e0e59;_0x5bd085['stopPropagation'](),_0x359a70=![],_0x34c227(_0x54ebe6[_0x376e81(0x357)][_0x376e81(0x3cc)]);});}),document[_0x5039dd(0x25b)](_0x5039dd(0x25a))[_0x5039dd(0x25c)](_0x5039dd(0x3bd),_0x28af95=>{const _0x117b95=_0x5039dd;_0x28af95[_0x117b95(0x210)](),_0x359a70=!![],_0xd7b839(),_0x4241c4(),showBasemapToast(_0x117b95(0x333)),_0x1731a8();}),document['addEventListener']('click',_0x536987=>{const _0x1d6f33=_0x5039dd,_0x2668ab=document[_0x1d6f33(0x25b)](_0x1d6f33(0x379)),_0x240e68=document[_0x1d6f33(0x25b)](_0x1d6f33(0x3bf));!_0x2668ab[_0x1d6f33(0x1d3)][_0x1d6f33(0x287)]('hidden')&&!_0x2668ab['contains'](_0x536987[_0x1d6f33(0x44b)])&&_0x536987[_0x1d6f33(0x44b)]!==_0x240e68&&!_0x240e68['contains'](_0x536987['target'])&&_0x4241c4();}),_0xd7b839(),drawnGroup=L[_0x5039dd(0x3d8)]()[_0x5039dd(0x1e7)](map),measuresGroup=L[_0x5039dd(0x228)]()['addTo'](map),rulerGroup=L[_0x5039dd(0x228)]()[_0x5039dd(0x1e7)](map),map['pm'][_0x5039dd(0x1fb)]({'position':_0x5039dd(0x20b),'drawCircle':![],'drawCircleMarker':![],'drawRectangle':![],'drawText':![],'drawPolyline':![],'drawPolygon':![],'drawMarker':![],'editMode':!![],'dragMode':!![],'removalMode':!![],'cutPolygon':![],'rotateMode':![]});var _0x4666aa=L[_0x5039dd(0x318)][_0x5039dd(0x1e3)]({'options':{'position':_0x5039dd(0x20b)},'onAdd':function(){const _0x25cf01=_0x5039dd;var _0x13cf5e=L['DomUtil'][_0x25cf01(0x262)](_0x25cf01(0x1fa),_0x25cf01(0x2a9)),_0x3cf934=L[_0x25cf01(0x3c2)][_0x25cf01(0x262)]('a','',_0x13cf5e);return _0x3cf934[_0x25cf01(0x282)]='#',_0x3cf934['id']='btn-vetassist',_0x3cf934[_0x25cf01(0x1cb)]=_0x25cf01(0x27e),_0x3cf934[_0x25cf01(0x3fd)]('role','button'),_0x3cf934[_0x25cf01(0x3fd)](_0x25cf01(0x223),_0x25cf01(0x384)),_0x3cf934[_0x25cf01(0x3fd)](_0x25cf01(0x367),_0x25cf01(0x382)),_0x3cf934[_0x25cf01(0x284)]=_0x25cf01(0x1ce),L[_0x25cf01(0x421)]['disableClickPropagation'](_0x13cf5e),L[_0x25cf01(0x421)][_0x25cf01(0x272)](_0x13cf5e),L[_0x25cf01(0x421)]['on'](_0x3cf934,_0x25cf01(0x3bd),function(_0xaa6c87){const _0x5c6192=_0x25cf01;L[_0x5c6192(0x421)][_0x5c6192(0x240)](_0xaa6c87);if(!window['__sam'])return;if(window['__sam'][_0x5c6192(0x3a0)])window[_0x5c6192(0x3ce)][_0x5c6192(0x3d0)]();else window[_0x5c6192(0x3ce)][_0x5c6192(0x43d)]();}),window[_0x25cf01(0x25c)](_0x25cf01(0x3f6),function(_0x315918){const _0x453415=_0x25cf01;var _0x5c5f99=!!(_0x315918['detail']&&_0x315918[_0x453415(0x33f)][_0x453415(0x3a0)]);_0x3cf934[_0x453415(0x1d3)][_0x453415(0x280)](_0x453415(0x339),_0x5c5f99),_0x3cf934[_0x453415(0x3fd)](_0x453415(0x367),_0x5c5f99?'true':_0x453415(0x382));}),_0x13cf5e;}});map[_0x5039dd(0x347)](new _0x4666aa()),applySettingsToEditing(),map['on'](_0x5039dd(0x3c8),_0x649956=>onFeatureCreated(_0x649956[_0x5039dd(0x398)])),map['on'](_0x5039dd(0x387),_0x412c60=>onFeatureRemoved(_0x412c60[_0x5039dd(0x398)])),setupOfflineMapEvents(),setupRulerMapEvents(),setupGeorefMapEvents(),renderOfflineAreasMenu(),updateConnectivityUI(),updateMapGridVisibility(),map['on'](_0x5039dd(0x322),_0x35af33=>{const _0x1d5dce=_0x5039dd;settings[_0x1d5dce(0x2d5)]&&updateCoordBar(_0x35af33[_0x1d5dce(0x276)][_0x1d5dce(0x1ed)],_0x35af33[_0x1d5dce(0x276)][_0x1d5dce(0x24c)]);});}function applyGeometryConfig(){const _0x239532=_0x524d57;map['pm'][_0x239532(0x1fb)]({'position':_0x239532(0x20b),'drawCircle':![],'drawCircleMarker':![],'drawRectangle':![],'drawText':![],'drawPolyline':config['geometryType']===_0x239532(0x353),'drawPolygon':config['geometryType']===_0x239532(0x390),'drawMarker':config[_0x239532(0x241)]===_0x239532(0x45d),'editMode':!![],'dragMode':!![],'removalMode':!![],'cutPolygon':![],'rotateMode':![]});}const actionHistory=[];let historyIndex=-0x1;const HISTORY_LIMIT=0x3c;let isApplyingHistory=![];function pushHistoryAction(_0x45515d){const _0x356c21=_0x524d57;if(isApplyingHistory)return;actionHistory[_0x356c21(0x3f3)](historyIndex+0x1),actionHistory[_0x356c21(0x352)](_0x45515d),actionHistory['length']>HISTORY_LIMIT&&actionHistory[_0x356c21(0x438)](),historyIndex=actionHistory[_0x356c21(0x42f)]-0x1,updateUndoRedoButtons();}function geomSnapshot(_0x5261cf){const _0x53d342=_0x524d57;try{return JSON[_0x53d342(0x26b)](_0x5261cf[_0x53d342(0x3e8)]()['geometry']);}catch(_0x5b1494){return null;}}function restoreGeomSnapshot(_0x558457,_0x30d816){const _0x2f5911=_0x524d57;if(!_0x30d816)return;let _0x2237ee;try{_0x2237ee=JSON['parse'](_0x30d816);}catch(_0x51f4cb){return;}if(!_0x2237ee)return;if(_0x558457 instanceof L[_0x2f5911(0x29d)]){const _0x4bddcb=_0x2237ee[_0x2f5911(0x283)];_0x558457[_0x2f5911(0x2d8)](L[_0x2f5911(0x447)](_0x4bddcb[0x1],_0x4bddcb[0x0]));return;}if(typeof _0x558457['setLatLngs']!==_0x2f5911(0x3ca))return;const _0x26b049={'LineString':0x0,'MultiLineString':0x1,'Polygon':0x1,'MultiPolygon':0x2},_0x20c0a4=_0x26b049[_0x2237ee[_0x2f5911(0x2be)]]??0x0,_0x3eb980=L[_0x2f5911(0x361)][_0x2f5911(0x2c8)](_0x2237ee['coordinates'],_0x20c0a4);_0x558457[_0x2f5911(0x36f)](_0x3eb980);if(typeof _0x558457['redraw']===_0x2f5911(0x3ca))_0x558457[_0x2f5911(0x31e)]();}function bindFeatureEditTracking(_0x4c82fd){const _0x596a07=_0x524d57,_0x49c510=_0x4c82fd['layer'];let _0x2415ad=null;const _0x53cd7a=()=>{_0x2415ad=geomSnapshot(_0x49c510);},_0x288c97=()=>{const _0x3b2296=_0x43aa;_0x4c82fd['updatedAt']=Date[_0x3b2296(0x45c)](),markProjectDirty(),refreshStatsIfOpen(_0x4c82fd),checkAllTopology();if(_0x4c82fd[_0x3b2296(0x265)])renderPolygonMeasures(_0x4c82fd);if(_0x2415ad&&!isApplyingHistory){const _0x1c66c9=geomSnapshot(_0x49c510);_0x1c66c9&&_0x1c66c9!==_0x2415ad&&pushHistoryAction({'type':_0x3b2296(0x270),'layer':_0x49c510,'entry':_0x4c82fd,'before':_0x2415ad,'after':_0x1c66c9});}_0x2415ad=null;};_0x49c510['on'](_0x596a07(0x3d4),_0x53cd7a),_0x49c510['on']('pm:dragstart',_0x53cd7a),_0x49c510['on'](_0x596a07(0x39b),_0x288c97),_0x49c510['on'](_0x596a07(0x3f7),_0x288c97);}function historyAddFeature(_0x36c689,_0x533f2f){const _0x3daa04=_0x524d57;featuresData[_0x3daa04(0x40c)](_0x533f2f['id'],_0x533f2f);if(!drawnGroup['hasLayer'](_0x36c689))drawnGroup[_0x3daa04(0x374)](_0x36c689);if(_0x533f2f[_0x3daa04(0x264)])teamState['deletedFids'][_0x3daa04(0x2a1)](_0x533f2f[_0x3daa04(0x264)]);markProjectDirty(),refreshFeatList(),checkAllTopology();if(_0x533f2f[_0x3daa04(0x265)])renderPolygonMeasures(_0x533f2f);}function historyRemoveFeature(_0x4795a1,_0xa0eda4){const _0x52f85e=_0x524d57;clearPolygonMeasures(_0xa0eda4);if(_0xa0eda4['fid'])teamState[_0x52f85e(0x2fc)][_0x52f85e(0x40c)](_0xa0eda4[_0x52f85e(0x264)],Date[_0x52f85e(0x45c)]());featuresData[_0x52f85e(0x2a1)](_0xa0eda4['id']),drawnGroup[_0x52f85e(0x2d2)](_0x4795a1),markProjectDirty(),refreshFeatList(),checkAllTopology();}function applyHistoryAction(_0x5d875e,_0xadfea3){const _0x137bb1=_0x524d57;isApplyingHistory=!![];try{if(_0x5d875e[_0x137bb1(0x2be)]==='create'){if(_0xadfea3===_0x137bb1(0x221))historyRemoveFeature(_0x5d875e[_0x137bb1(0x398)],_0x5d875e['entry']);else historyAddFeature(_0x5d875e[_0x137bb1(0x398)],_0x5d875e[_0x137bb1(0x396)]);}else{if(_0x5d875e[_0x137bb1(0x2be)]==='remove'){if(_0xadfea3===_0x137bb1(0x221))historyAddFeature(_0x5d875e[_0x137bb1(0x398)],_0x5d875e[_0x137bb1(0x396)]);else historyRemoveFeature(_0x5d875e[_0x137bb1(0x398)],_0x5d875e[_0x137bb1(0x396)]);}else{if(_0x5d875e['type']===_0x137bb1(0x270)){restoreGeomSnapshot(_0x5d875e[_0x137bb1(0x398)],_0xadfea3==='undo'?_0x5d875e[_0x137bb1(0x3ed)]:_0x5d875e[_0x137bb1(0x2ad)]),_0x5d875e[_0x137bb1(0x396)][_0x137bb1(0x2b0)]=Date['now'](),markProjectDirty(),refreshStatsIfOpen(_0x5d875e[_0x137bb1(0x396)]),checkAllTopology();if(_0x5d875e[_0x137bb1(0x396)][_0x137bb1(0x265)])renderPolygonMeasures(_0x5d875e[_0x137bb1(0x396)]);}}}}finally{isApplyingHistory=![];}}function canUndoAction(){return historyIndex>=0x0;}function canRedoAction(){const _0x1593f8=_0x524d57;return historyIndex<actionHistory[_0x1593f8(0x42f)]-0x1;}function undoLastAction(){if(!canUndoAction())return;const _0x3666bb=actionHistory[historyIndex];applyHistoryAction(_0x3666bb,'undo'),historyIndex--,updateUndoRedoButtons();}function redoLastAction(){const _0x3d5627=_0x524d57;if(!canRedoAction())return;historyIndex++;const _0x17f77a=actionHistory[historyIndex];applyHistoryAction(_0x17f77a,_0x3d5627(0x3f8)),updateUndoRedoButtons();}function updateUndoRedoButtons(){const _0x394fed=_0x524d57,_0x29b91d=document[_0x394fed(0x25b)](_0x394fed(0x35d)),_0x52a681=document[_0x394fed(0x25b)]('btn-redo-action');if(_0x29b91d)_0x29b91d[_0x394fed(0x2ed)]=!canUndoAction();if(_0x52a681)_0x52a681[_0x394fed(0x2ed)]=!canRedoAction();}function pulseUndoRedoButton(_0x1b6d0f){const _0x468b1e=_0x524d57;if(!_0x1b6d0f)return;_0x1b6d0f[_0x468b1e(0x1d3)][_0x468b1e(0x354)](_0x468b1e(0x41c)),void _0x1b6d0f['offsetWidth'],_0x1b6d0f[_0x468b1e(0x1d3)][_0x468b1e(0x3a5)]('is-pressed'),setTimeout(()=>_0x1b6d0f[_0x468b1e(0x1d3)][_0x468b1e(0x354)](_0x468b1e(0x41c)),0xc8);}const btnUndoAction=document['getElementById'](_0x524d57(0x35d)),btnRedoAction=document['getElementById'](_0x524d57(0x2e7));btnUndoAction?.[_0x524d57(0x25c)](_0x524d57(0x3bd),()=>{if(!canUndoAction())return;pulseUndoRedoButton(btnUndoAction),undoLastAction();}),btnRedoAction?.[_0x524d57(0x25c)](_0x524d57(0x3bd),()=>{if(!canRedoAction())return;pulseUndoRedoButton(btnRedoAction),redoLastAction();}),document[_0x524d57(0x25c)]('keydown',_0x1adbf9=>{const _0x6390c5=_0x524d57,_0x419a21=_0x1adbf9[_0x6390c5(0x44b)],_0x3139dd=_0x419a21&&(_0x419a21[_0x6390c5(0x2de)]===_0x6390c5(0x1d0)||_0x419a21[_0x6390c5(0x2de)]===_0x6390c5(0x33d)||_0x419a21[_0x6390c5(0x2cd)]);if(_0x3139dd)return;const _0x2e1823=_0x1adbf9[_0x6390c5(0x410)][_0x6390c5(0x3ab)]();if((_0x1adbf9[_0x6390c5(0x209)]||_0x1adbf9[_0x6390c5(0x293)])&&!_0x1adbf9[_0x6390c5(0x1d2)]&&_0x2e1823==='z')_0x1adbf9[_0x6390c5(0x3ba)](),canUndoAction()&&(pulseUndoRedoButton(btnUndoAction),undoLastAction());else((_0x1adbf9[_0x6390c5(0x209)]||_0x1adbf9[_0x6390c5(0x293)])&&_0x2e1823==='y'||(_0x1adbf9[_0x6390c5(0x209)]||_0x1adbf9['metaKey'])&&_0x1adbf9[_0x6390c5(0x1d2)]&&_0x2e1823==='z')&&(_0x1adbf9[_0x6390c5(0x3ba)](),canRedoAction()&&(pulseUndoRedoButton(btnRedoAction),redoLastAction()));});function genFid(){const _0x545ed4=_0x524d57;return window[_0x545ed4(0x21a)]&&crypto['randomUUID']?crypto[_0x545ed4(0x393)]():_0x545ed4(0x1e5)+Date[_0x545ed4(0x45c)]()+'-'+Math['random']()[_0x545ed4(0x39a)](0x24)[_0x545ed4(0x3e0)](0x2);}function _0x43aa(_0x103a8e,_0x1a9961){_0x103a8e=_0x103a8e-0x1cb;const _0x4a6168=_0x4a61();let _0x43aa6a=_0x4a6168[_0x103a8e];if(_0x43aa['gvBYbf']===undefined){var _0x4f847f=function(_0x1eea9c){const _0x4b8ef1='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x53b196='',_0x258980='';for(let _0x3ec586=0x0,_0x5c4dc1,_0x1349cb,_0x665aec=0x0;_0x1349cb=_0x1eea9c['charAt'](_0x665aec++);~_0x1349cb&&(_0x5c4dc1=_0x3ec586%0x4?_0x5c4dc1*0x40+_0x1349cb:_0x1349cb,_0x3ec586++%0x4)?_0x53b196+=String['fromCharCode'](0xff&_0x5c4dc1>>(-0x2*_0x3ec586&0x6)):0x0){_0x1349cb=_0x4b8ef1['indexOf'](_0x1349cb);}for(let _0x2eeca8=0x0,_0x52caae=_0x53b196['length'];_0x2eeca8<_0x52caae;_0x2eeca8++){_0x258980+='%'+('00'+_0x53b196['charCodeAt'](_0x2eeca8)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x258980);};_0x43aa['ocWZxP']=_0x4f847f,_0x43aa['PBSPPT']={},_0x43aa['gvBYbf']=!![];}const _0x1a7415=_0x4a6168[0x0],_0x423ed1=_0x103a8e+_0x1a7415,_0x50636a=_0x43aa['PBSPPT'][_0x423ed1];return!_0x50636a?(_0x43aa6a=_0x43aa['ocWZxP'](_0x43aa6a),_0x43aa['PBSPPT'][_0x423ed1]=_0x43aa6a):_0x43aa6a=_0x50636a,_0x43aa6a;}function onFeatureCreated(_0x49c2ca){const _0xb96da=_0x524d57;if(offlineDrawing||rulerDrawing||window[_0xb96da(0x2ae)])return;layerVisible[_0xb96da(0x3ee)](activeLayerId)===undefined&&layerVisible[_0xb96da(0x40c)](activeLayerId,!![]);if(!layerOrder['includes'](activeLayerId))layerOrder[_0xb96da(0x2b4)](activeLayerId);drawnGroup[_0xb96da(0x374)](_0x49c2ca),assignLayerPane(_0x49c2ca,activeLayerId),featureCounter++;const _0x190bfe=L[_0xb96da(0x20f)][_0xb96da(0x3ad)](_0x49c2ca),_0x2889de={'layer':_0x49c2ca,'props':{},'id':_0x190bfe,'fid':genFid(),'updatedAt':Date['now'](),'label':'Geometria\x20'+featureCounter,'geomType':config[_0xb96da(0x241)],'layerId':activeLayerId,'hasOverlap':![],'overlapsWith':[],'showMeasures':![],'measureTooltips':[]};featuresData[_0xb96da(0x40c)](_0x190bfe,_0x2889de),markProjectDirty(),styleLayerDefault(_0x49c2ca,activeLayerId),showStatsPopup(_0x2889de),bindFeatureContextMenu(_0x2889de),bindFeatureEditTracking(_0x2889de),refreshFeatList(),checkAllTopology(),pushHistoryAction({'type':_0xb96da(0x262),'layer':_0x49c2ca,'entry':_0x2889de});}function onFeatureRemoved(_0x30df83){const _0x20edd9=_0x524d57,_0x36a482=L[_0x20edd9(0x20f)][_0x20edd9(0x3ad)](_0x30df83),_0x67d621=featuresData[_0x20edd9(0x3ee)](_0x36a482);_0x67d621&&(_0x67d621[_0x20edd9(0x264)]&&teamState[_0x20edd9(0x2fc)]['set'](_0x67d621[_0x20edd9(0x264)],Date[_0x20edd9(0x45c)]()),clearPolygonMeasures(_0x67d621));featuresData[_0x20edd9(0x2a1)](_0x36a482),markProjectDirty(),refreshFeatList(),checkAllTopology();if(_0x67d621)pushHistoryAction({'type':'remove','layer':_0x30df83,'entry':_0x67d621});}
+﻿/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+let config = {
+  shapeName: null,      // nome dado à "shape"/camada (ex: "Estradas") — mostrado no painel
+  mode: null,          // 'simples' | 'atributos'
+  attributes: [],       // [{name, type:'texto'|'numero'|'categorico', classes:[{name,color}]}]
+  geometryType: null,    // 'Point' | 'LineString' | 'Polygon'
+  colorAttr: null,      // nome do atributo categórico atualmente usado para colorir a shape (legado)
+  baseColor: null,      // cor única da camada, usada quando não há (ou não se está a usar) simbologia
+  opacity: null,         // transparência do preenchimento (0-100); null = usa o valor por omissão
+  symbology: null        // {mode:'simples'|'unicos'|'graduado', attr, method, classCount, breaks, uniqueValues} — ver defaultSymbology()
+};
+
+/* Suporte a múltiplas camadas simultâneas no painel:
+   - "layers" guarda as camadas já fechadas (criadas antes da atual)
+   - "activeLayerId" identifica a camada em que se está a desenhar agora (representada por "config")
+   - "layerVisible" controla se cada camada (incl. a ativa) está visível no mapa */
+let layerCounter = 0;
+let activeLayerId = 0;
+let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
+let layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
+let layerVisible = new Map([[0, true]]);
+
+/* Ordem de empilhamento das camadas no mapa (índice 0 = topo/mais à frente,
+   último índice = fundo/mais atrás). Controlada ao arrastar as linhas no painel. */
+let layerOrder = [0];
+let layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
+
+let featureCounter = 0;
+let featuresData = new Map(); // leafletLayerId -> {layer, props}
+let drawnGroup;
+let measuresGroup; // etiquetas com as medidas dos lados (modo "Medidas" por geometria)
+let rulerGroup; // linha e etiquetas da ferramenta de régua (medição livre, não é uma geometria do projeto)
+let map;
+let activeBaseLayerKey = 'satelite';
+let basemapLayers = null;
+
+let workspaces = [];
+let currentWorkspaceId = null;
+let currentWorkspace = null;
+
+let suppressProjectRestoreErrorAlert = false;
+let pendingExitAction = null;
+
+function createWorkspaceState(id, name){
+  return {
+    id,
+    name,
+    config: {
+      shapeName: null,
+      mode: null,
+      attributes: [],
+      geometryType: null,
+      colorAttr: null,
+      baseColor: null,
+      opacity: null,
+      symbology: defaultSymbology()
+    },
+    layerCounter: 0,
+    activeLayerId: 0,
+    symbologyLayerId: null,
+    layers: [],
+    layerVisible: new Map([[0, true]]),
+    layerOrder: [0],
+    layerPanes: new Map(),
+    featureCounter: 0,
+    featuresData: new Map(),
+    drawnGroup: null,
+    measuresGroup: null,
+    rulerGroup: null,
+    projectDirty: false,
+    localProjectState: {name:null, active:false},
+    mapView: { center: [20, 0], zoom: 2 },
+    activeBaseLayerKey: 'satelite'
+  };
+}
+
+function cloneAttributes(attributes){
+  return Array.isArray(attributes) ? attributes.map(attr=>({
+    ...attr,
+    classes: Array.isArray(attr && attr.classes) ? attr.classes.map(cls=>({...cls})) : []
+  })) : [];
+}
+
+function cloneConfig(source){
+  return {
+    shapeName: source && source.shapeName != null ? source.shapeName : null,
+    mode: source && source.mode ? source.mode : null,
+    attributes: cloneAttributes(source && source.attributes),
+    geometryType: source && source.geometryType ? source.geometryType : null,
+    colorAttr: source && source.colorAttr ? source.colorAttr : null,
+    baseColor: source && source.baseColor ? source.baseColor : null,
+    opacity: source && source.opacity != null ? source.opacity : null,
+    symbology: cloneSymbology(source && source.symbology)
+  };
+}
+
+function persistCurrentWorkspaceState(){
+  if(!currentWorkspace) return;
+  currentWorkspace.config = cloneConfig(config);
+  currentWorkspace.layers = layers.map(layer=>({
+    ...layer,
+    attributes: cloneAttributes(layer && layer.attributes),
+    symbology: cloneSymbology(layer && layer.symbology)
+  }));
+  currentWorkspace.layerCounter = layerCounter;
+  currentWorkspace.activeLayerId = activeLayerId;
+  currentWorkspace.symbologyLayerId = symbologyLayerId;
+  currentWorkspace.layerVisible = new Map(layerVisible);
+  currentWorkspace.layerOrder = layerOrder.slice();
+  currentWorkspace.layerPanes = new Map(layerPanes);
+  currentWorkspace.featureCounter = featureCounter;
+  currentWorkspace.featuresData = featuresData;
+  currentWorkspace.drawnGroup = drawnGroup;
+  currentWorkspace.measuresGroup = measuresGroup;
+  currentWorkspace.rulerGroup = rulerGroup;
+  currentWorkspace.projectDirty = Boolean(projectDirty);
+  currentWorkspace.localProjectState = { ...localProjectState };
+  currentWorkspace.mapView = {
+    center: map ? map.getCenter() : [20, 0],
+    zoom: map ? map.getZoom() : 2
+  };
+  currentWorkspace.activeBaseLayerKey = activeBaseLayerKey;
+
+  // GANCHO Layouts: se o módulo js/09-layouts.js estiver carregado, avisa-o
+  // para resincronizar os frames que estejam a mostrar este workspace.
+  if(typeof window.notifyLayoutsWorkspaceChanged === 'function'){
+    window.notifyLayoutsWorkspaceChanged(currentWorkspace);
+  }
+}
+
+function getWorkspaceById(id){ return workspaces.find(ws=>ws.id===id) || null; }
+function getCurrentWorkspace(){ return currentWorkspace || null; }
+
+function ensureWorkspaceMapGroups(workspace){
+  if(!workspace) return;
+  if(!workspace.drawnGroup) workspace.drawnGroup = L.featureGroup();
+  if(!workspace.measuresGroup) workspace.measuresGroup = L.layerGroup();
+  if(!workspace.rulerGroup) workspace.rulerGroup = L.layerGroup();
+}
+
+function ensureWorkspaceBasemap(key){
+  if(!map || !basemapLayers) return;
+  const target = basemapLayers[key];
+  if(!target) return;
+  Object.values(basemapLayers).forEach(layer=>{
+    if(layer !== target && map.hasLayer(layer)) map.removeLayer(layer);
+  });
+  if(!map.hasLayer(target)) target.addTo(map);
+  activeBaseLayerKey = key;
+  document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+    btn.classList.toggle('is-active', btn.dataset.basemap === activeBaseLayerKey);
+  });
+}
+
+function applyWorkspaceState(workspace){
+  if(!workspace) return;
+  // GANCHO Layouts: se estivermos a ver uma página de Layout, fecha-a e volta
+  // à vista normal de Workspace (no-op seguro se js/09-layouts.js não existir).
+  if(typeof window.leaveLayoutView === 'function') window.leaveLayoutView();
+  persistCurrentWorkspaceState();
+  currentWorkspace = workspace;
+  currentWorkspaceId = workspace.id;
+  config = cloneConfig(workspace.config || {});
+  layers = Array.isArray(workspace.layers) ? workspace.layers.map(layer=>({
+    ...layer,
+    attributes: cloneAttributes(layer && layer.attributes),
+    symbology: cloneSymbology(layer && layer.symbology)
+  })) : [];
+  layerCounter = Number.isFinite(workspace.layerCounter) ? workspace.layerCounter : 0;
+  activeLayerId = Number.isFinite(workspace.activeLayerId) ? workspace.activeLayerId : 0;
+  symbologyLayerId = workspace.symbologyLayerId || null;
+  layerVisible = workspace.layerVisible instanceof Map ? new Map(workspace.layerVisible) : new Map([[0, true]]);
+  layerOrder = Array.isArray(workspace.layerOrder) ? workspace.layerOrder.slice() : [0];
+  layerPanes = workspace.layerPanes instanceof Map ? new Map(workspace.layerPanes) : new Map();
+  featureCounter = Number.isFinite(workspace.featureCounter) ? workspace.featureCounter : 0;
+  featuresData = workspace.featuresData instanceof Map ? workspace.featuresData : new Map();
+  projectDirty = Boolean(workspace.projectDirty);
+  localProjectState = workspace.localProjectState ? { ...workspace.localProjectState } : { name:null, active:false };
+  activeBaseLayerKey = workspace.activeBaseLayerKey || 'satelite';
+  window.__activeBaseLayerKey = activeBaseLayerKey;
+  if(map){
+    if(drawnGroup && map.hasLayer(drawnGroup)) map.removeLayer(drawnGroup);
+    if(measuresGroup && map.hasLayer(measuresGroup)) map.removeLayer(measuresGroup);
+    if(rulerGroup && map.hasLayer(rulerGroup)) map.removeLayer(rulerGroup);
+    ensureWorkspaceMapGroups(workspace);
+    drawnGroup = workspace.drawnGroup;
+    measuresGroup = workspace.measuresGroup;
+    rulerGroup = workspace.rulerGroup;
+    if(!map.hasLayer(drawnGroup)) map.addLayer(drawnGroup);
+    if(!map.hasLayer(measuresGroup)) map.addLayer(measuresGroup);
+    if(!map.hasLayer(rulerGroup)) map.addLayer(rulerGroup);
+    if(workspace.mapView && workspace.mapView.center){
+      map.setView(workspace.mapView.center, workspace.mapView.zoom || map.getZoom());
+    }
+  } else {
+    drawnGroup = workspace.drawnGroup;
+    measuresGroup = workspace.measuresGroup;
+    rulerGroup = workspace.rulerGroup;
+  }
+  if(typeof __rehookStateConsistency === 'function') __rehookStateConsistency();
+  ensureWorkspaceBasemap(activeBaseLayerKey || 'satelite');
+  renderWorkspaceTabs();
+  refreshLayerEditability();
+  refreshFeatList();
+  renderLayersPanel();
+  updateProjectStatusUI();
+}
+
+function renderWorkspaceTabs(){
+  const container = document.getElementById('workspace-tabs');
+  if(!container) return;
+  container.innerHTML = '';
+  const canClose = workspaces.length > 1;
+  workspaces.forEach(workspace=>{
+    const inLayoutView = typeof window.isLayoutViewActive === 'function' && window.isLayoutViewActive();
+    const tab = document.createElement('div');
+    tab.className = 'workspace-tab' + (workspace.id === currentWorkspaceId && !inLayoutView ? ' is-active' : '');
+    tab.dataset.workspaceId = workspace.id;
+    tab.setAttribute('role', 'button');
+    tab.tabIndex = 0;
+
+    const label = document.createElement('span');
+    label.className = 'workspace-tab-label';
+    label.textContent = workspace.name || 'Mapa';
+    tab.appendChild(label);
+
+    if(canClose){
+      const closeBtn = document.createElement('button');
+      closeBtn.type = 'button';
+      closeBtn.className = 'workspace-tab-close';
+      closeBtn.title = 'Fechar mapa';
+      closeBtn.setAttribute('aria-label', 'Fechar mapa');
+      closeBtn.textContent = '×';
+      closeBtn.addEventListener('click', (ev)=>{
+        ev.stopPropagation();
+        closeWorkspace(workspace.id);
+      });
+      tab.appendChild(closeBtn);
+    }
+
+    const activate = ()=>{
+      const stillInLayout = typeof window.isLayoutViewActive === 'function' && window.isLayoutViewActive();
+      if(workspace.id !== currentWorkspaceId || stillInLayout){ switchWorkspace(workspace.id); }
+    };
+    tab.addEventListener('click', activate);
+    tab.addEventListener('keydown', (ev)=>{
+      if(ev.key === 'Enter' || ev.key === ' '){
+        ev.preventDefault();
+        activate();
+      }
+    });
+
+    container.appendChild(tab);
+  });
+
+  // GANCHO Layouts: insere os separadores de Layout (se o módulo estiver carregado),
+  // sempre antes do botão "+".
+  if(typeof window.renderLayoutTabsInto === 'function'){
+    window.renderLayoutTabsInto(container);
+  }
+
+  const addBtn = document.createElement('button');
+  addBtn.type = 'button';
+  addBtn.className = 'workspace-tab workspace-tab-add';
+  addBtn.title = 'Adicionar mapa';
+  addBtn.textContent = '+';
+  addBtn.addEventListener('click', ()=>{
+    // GANCHO Layouts: se o módulo estiver carregado, o "+" abre o modal de escolha
+    // ("Novo Workspace" / "Novo Layout") em vez de criar logo um workspace.
+    if(typeof window.handleAddMapClick === 'function'){
+      window.handleAddMapClick();
+    } else {
+      createAndActivateNewWorkspace();
+    }
+  });
+  container.appendChild(addBtn);
+}
+
+function switchWorkspace(id){
+  const inLayoutView = typeof window.isLayoutViewActive === 'function' && window.isLayoutViewActive();
+  if(!id || (id === currentWorkspaceId && !inLayoutView)) return;
+  const target = getWorkspaceById(id);
+  if(!target) return;
+  applyWorkspaceState(target);
+}
+
+/* Fecha (remove) um workspace: limpa as camadas/panes Leaflet associadas, retira-o
+   do array e, se era o workspace ativo, troca para outro (o mais próximo na lista).
+   Nunca permite fechar o último workspace restante — tem de existir sempre pelo
+   menos um mapa aberto. */
+function closeWorkspace(id){
+  const target = getWorkspaceById(id);
+  if(!target) return;
+
+  if(workspaces.length <= 1){
+    showAppAlert('Não é possível fechar o último mapa aberto.');
+    return;
+  }
+
+  const label = target.name || 'este mapa';
+  if(!requestConfirmation(`Fechar "${label}"? Todas as camadas e geometrias deste mapa serão eliminadas permanentemente.`)){
+    return;
+  }
+
+  const isCurrent = target.id === currentWorkspaceId;
+  const closingIndex = workspaces.indexOf(target);
+
+  // remove do mapa os grupos Leaflet (desenhos, medidas, régua) deste workspace
+  const groupsToClear = isCurrent
+    ? [drawnGroup, measuresGroup, rulerGroup]
+    : [target.drawnGroup, target.measuresGroup, target.rulerGroup];
+  groupsToClear.forEach(group=>{
+    if(group && map && map.hasLayer(group)) map.removeLayer(group);
+  });
+
+  // remove os panes dedicados às camadas deste workspace
+  const panesToRemove = isCurrent
+    ? layerPanes
+    : (target.layerPanes instanceof Map ? target.layerPanes : new Map());
+  panesToRemove.forEach(paneName=>{
+    const pane = map && map.getPane(paneName);
+    if(pane) pane.remove();
+  });
+
+  workspaces.splice(closingIndex, 1);
+
+  if(isCurrent){
+    // impede que applyWorkspaceState tente persistir estado no workspace descartado
+    currentWorkspace = null;
+    currentWorkspaceId = null;
+    const nextIndex = Math.min(closingIndex, workspaces.length - 1);
+    applyWorkspaceState(workspaces[nextIndex]);
+  } else {
+    renderWorkspaceTabs();
+  }
+}
+
+function createAndActivateNewWorkspace(){
+  const nextIndex = workspaces.length + 1;
+  const workspace = createWorkspaceState(`workspace-${Date.now()}-${nextIndex}`, `Mapa ${nextIndex}`);
+  workspace.activeBaseLayerKey = 'satelite';
+  workspaces.push(workspace);
+  applyWorkspaceState(workspace);
+  ensureWorkspaceBasemap('satelite');
+
+  const landingBanner = document.getElementById('landing-banner');
+  if(landingBanner) landingBanner.classList.remove('hidden');
+
+  const startOverlay = document.getElementById('start-project-overlay');
+  if(startOverlay) startOverlay.classList.remove('hidden');
+
+  const localProjectsOverlay = document.getElementById('local-projects-overlay');
+  if(localProjectsOverlay) localProjectsOverlay.classList.add('hidden');
+
+  const warning = document.getElementById('start-project-warning');
+  if(warning){ warning.classList.add('hidden'); warning.textContent = ''; }
+
+  startProjectChoice = null;
+  const nameRow = document.getElementById('start-project-name-row');
+  const nameError = document.getElementById('start-project-name-error');
+  const continueBtn = document.getElementById('start-project-continue');
+  if(nameRow) nameRow.classList.add('hidden');
+  if(nameError) nameError.style.display = 'none';
+  if(continueBtn) continueBtn.disabled = true;
+  document.querySelectorAll('[data-start-choice]').forEach(card=>card.classList.remove('selected'));
+  document.getElementById('start-project-name').value = '';
+
+  if(map && map.invalidateSize){
+    setTimeout(()=>map.invalidateSize(), 0);
+  }
+}
+
+function initializeWorkspaces(){
+  if(workspaces.length === 0){
+    workspaces.push(createWorkspaceState('workspace-1', 'Mapa 1'));
+  }
+  if(!currentWorkspace){
+    applyWorkspaceState(workspaces[0]);
+  } else {
+    renderWorkspaceTabs();
+  }
+}
+
+const DEFAULT_COLOR = '#F5821F';
+const DEFAULT_OPACITY = 35; // percentagem (0-100) usada quando a camada não tem opacidade definida
+const TEAM_STORAGE_KEY = 'engenh-team-project';
+let teamPanelVisible = false;
+let cloudMenuView = 'home';
+let cloudSyncMode = null;
+let cloudSyncPlan = null;
+let teamState = {
+  savedSlug: '',
+  savedName: '',
+  slug: '',
+  name: '',
+  password: null,
+  connected: false,
+  lastSync: null,
+  deletedFids: new Map(), // fid -> timestamp de eliminação (só nesta sessão)
+  usedBytes: 0,
+  sizeLimit: 200 * 1024 * 1024,
+  status: 'idle'
+};
+const PALETTE = ['#F5821F','#C2703D','#6E726A','#234635','#E7A57A','#7FB894','#B5472B','#9B9E94'];
+
+// ---------- limites de município (CAOP preview via GitHub) ----------
+const MUNICIPIOS_GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/jdsm3011-alt/site_ofc/main/';
+const MUNICIPIOS_INDEX = [{"m":"Albergaria-a-Velha","d":"Aveiro","p":"previews/Aveiro/Albergaria-a-Velha/caop_preview.geojson"},{"m":"Anadia","d":"Aveiro","p":"previews/Aveiro/Anadia/caop_preview.geojson"},{"m":"Arouca","d":"Aveiro","p":"previews/Aveiro/Arouca/caop_preview.geojson"},{"m":"Aveiro","d":"Aveiro","p":"previews/Aveiro/Aveiro/caop_preview.geojson"},{"m":"Castelo de Paiva","d":"Aveiro","p":"previews/Aveiro/Castelo_de_Paiva/caop_preview.geojson"},{"m":"Estarreja","d":"Aveiro","p":"previews/Aveiro/Estarreja/caop_preview.geojson"},{"m":"Mealhada","d":"Aveiro","p":"previews/Aveiro/Mealhada/caop_preview.geojson"},{"m":"Murtosa","d":"Aveiro","p":"previews/Aveiro/Murtosa/caop_preview.geojson"},{"m":"Oliveira de Azeméis","d":"Aveiro","p":"previews/Aveiro/Oliveira_de_Azeméis/caop_preview.geojson"},{"m":"Oliveira do Bairro","d":"Aveiro","p":"previews/Aveiro/Oliveira_do_Bairro/caop_preview.geojson"},{"m":"Ovar","d":"Aveiro","p":"previews/Aveiro/Ovar/caop_preview.geojson"},{"m":"Santa Maria da Feira","d":"Aveiro","p":"previews/Aveiro/Santa_Maria_da_Feira/caop_preview.geojson"},{"m":"Sever do Vouga","d":"Aveiro","p":"previews/Aveiro/Sever_do_Vouga/caop_preview.geojson"},{"m":"São João da Madeira","d":"Aveiro","p":"previews/Aveiro/São_João_da_Madeira/caop_preview.geojson"},{"m":"Vagos","d":"Aveiro","p":"previews/Aveiro/Vagos/caop_preview.geojson"},{"m":"Vale de Cambra","d":"Aveiro","p":"previews/Aveiro/Vale_de_Cambra/caop_preview.geojson"},{"m":"Águeda","d":"Aveiro","p":"previews/Aveiro/Águeda/caop_preview.geojson"},{"m":"Ílhavo","d":"Aveiro","p":"previews/Aveiro/Ílhavo/caop_preview.geojson"},{"m":"Aljustrel","d":"Beja","p":"previews/Beja/Aljustrel/caop_preview.geojson"},{"m":"Almodôvar","d":"Beja","p":"previews/Beja/Almodôvar/caop_preview.geojson"},{"m":"Alvito","d":"Beja","p":"previews/Beja/Alvito/caop_preview.geojson"},{"m":"Barrancos","d":"Beja","p":"previews/Beja/Barrancos/caop_preview.geojson"},{"m":"Beja","d":"Beja","p":"previews/Beja/Beja/caop_preview.geojson"},{"m":"Castro Verde","d":"Beja","p":"previews/Beja/Castro_Verde/caop_preview.geojson"},{"m":"Cuba","d":"Beja","p":"previews/Beja/Cuba/caop_preview.geojson"},{"m":"Ferreira do Alentejo","d":"Beja","p":"previews/Beja/Ferreira_do_Alentejo/caop_preview.geojson"},{"m":"Moura","d":"Beja","p":"previews/Beja/Moura/caop_preview.geojson"},{"m":"Mértola","d":"Beja","p":"previews/Beja/Mértola/caop_preview.geojson"},{"m":"Serpa","d":"Beja","p":"previews/Beja/Serpa/caop_preview.geojson"},{"m":"Vidigueira","d":"Beja","p":"previews/Beja/Vidigueira/caop_preview.geojson"},{"m":"Amares","d":"Braga","p":"previews/Braga/Amares/caop_preview.geojson"},{"m":"Barcelos","d":"Braga","p":"previews/Braga/Barcelos/caop_preview.geojson"},{"m":"Guimarães","d":"Braga","p":"previews/Braga/Guimarães/caop_preview.geojson"},{"m":"Braga","d":"Braga","p":"previews/Braga/Braga/caop_preview.geojson"},{"m":"Cabeceiras de Basto","d":"Braga","p":"previews/Braga/Cabeceiras_de_Basto/caop_preview.geojson"},{"m":"Celorico de Basto","d":"Braga","p":"previews/Braga/Celorico_de_Basto/caop_preview.geojson"},{"m":"Esposende","d":"Braga","p":"previews/Braga/Esposende/caop_preview.geojson"},{"m":"Fafe","d":"Braga","p":"previews/Braga/Fafe/caop_preview.geojson"},{"m":"Póvoa de Lanhoso","d":"Braga","p":"previews/Braga/Póvoa_de_Lanhoso/caop_preview.geojson"},{"m":"Terras de Bouro","d":"Braga","p":"previews/Braga/Terras_de_Bouro/caop_preview.geojson"},{"m":"Vieira do Minho","d":"Braga","p":"previews/Braga/Vieira_do_Minho/caop_preview.geojson"},{"m":"Vila Nova de Famalicão","d":"Braga","p":"previews/Braga/Vila_Nova_de_Famalicão/caop_preview.geojson"},{"m":"Vila Verde","d":"Braga","p":"previews/Braga/Vila_Verde/caop_preview.geojson"},{"m":"Vizela","d":"Braga","p":"previews/Braga/Vizela/caop_preview.geojson"},{"m":"Alfândega da Fé","d":"Bragança","p":"previews/Bragança/Alfândega_da_Fé/caop_preview.geojson"},{"m":"Bragança","d":"Bragança","p":"previews/Bragança/Bragança/caop_preview.geojson"},{"m":"Carrazeda de Ansiães","d":"Bragança","p":"previews/Bragança/Carrazeda_de_Ansiães/caop_preview.geojson"},{"m":"Freixo de Espada à Cinta","d":"Bragança","p":"previews/Bragança/Freixo_de_Espada_à_Cinta/caop_preview.geojson"},{"m":"Macedo de Cavaleiros","d":"Bragança","p":"previews/Bragança/Macedo_de_Cavaleiros/caop_preview.geojson"},{"m":"Miranda do Douro","d":"Bragança","p":"previews/Bragança/Miranda_do_Douro/caop_preview.geojson"},{"m":"Mirandela","d":"Bragança","p":"previews/Bragança/Mirandela/caop_preview.geojson"},{"m":"Mogadouro","d":"Bragança","p":"previews/Bragança/Mogadouro/caop_preview.geojson"},{"m":"Torre de Moncorvo","d":"Bragança","p":"previews/Bragança/Torre_de_Moncorvo/caop_preview.geojson"},{"m":"Vila Flor","d":"Bragança","p":"previews/Bragança/Vila_Flor/caop_preview.geojson"},{"m":"Vimioso","d":"Bragança","p":"previews/Bragança/Vimioso/caop_preview.geojson"},{"m":"Vinhais","d":"Bragança","p":"previews/Bragança/Vinhais/caop_preview.geojson"},{"m":"Belmonte","d":"Castelo Branco","p":"previews/Castelo_Branco/Belmonte/caop_preview.geojson"},{"m":"Castelo Branco","d":"Castelo Branco","p":"previews/Castelo_Branco/Castelo_Branco/caop_preview.geojson"},{"m":"Covilhã","d":"Castelo Branco","p":"previews/Castelo_Branco/Covilhã/caop_preview.geojson"},{"m":"Fundão","d":"Castelo Branco","p":"previews/Castelo_Branco/Fundão/caop_preview.geojson"},{"m":"Idanha-a-Nova","d":"Castelo Branco","p":"previews/Castelo_Branco/Idanha-a-Nova/caop_preview.geojson"},{"m":"Oleiros","d":"Castelo Branco","p":"previews/Castelo_Branco/Oleiros/caop_preview.geojson"},{"m":"Penamacor","d":"Castelo Branco","p":"previews/Castelo_Branco/Penamacor/caop_preview.geojson"},{"m":"Proença-a-Nova","d":"Castelo Branco","p":"previews/Castelo_Branco/Proença-a-Nova/caop_preview.geojson"},{"m":"Sertã","d":"Castelo Branco","p":"previews/Castelo_Branco/Sertã/caop_preview.geojson"},{"m":"Vila Velha de Ródão","d":"Castelo Branco","p":"previews/Castelo_Branco/Vila_Velha_de_Ródão/caop_preview.geojson"},{"m":"Vila de Rei","d":"Castelo Branco","p":"previews/Castelo_Branco/Vila_de_Rei/caop_preview.geojson"},{"m":"Arganil","d":"Coimbra","p":"previews/Coimbra/Arganil/caop_preview.geojson"},{"m":"Cantanhede","d":"Coimbra","p":"previews/Coimbra/Cantanhede/caop_preview.geojson"},{"m":"Coimbra","d":"Coimbra","p":"previews/Coimbra/Coimbra/caop_preview.geojson"},{"m":"Condeixa-a-Nova","d":"Coimbra","p":"previews/Coimbra/Condeixa-a-Nova/caop_preview.geojson"},{"m":"Figueira da Foz","d":"Coimbra","p":"previews/Coimbra/Figueira_da_Foz/caop_preview.geojson"},{"m":"Góis","d":"Coimbra","p":"previews/Coimbra/Góis/caop_preview.geojson"},{"m":"Lousã","d":"Coimbra","p":"previews/Coimbra/Lousã/caop_preview.geojson"},{"m":"Miranda do Corvo","d":"Coimbra","p":"previews/Coimbra/Miranda_do_Corvo/caop_preview.geojson"},{"m":"Montemor-o-Velho","d":"Coimbra","p":"previews/Coimbra/Montemor-o-Velho/caop_preview.geojson"},{"m":"Oliveira do Hospital","d":"Coimbra","p":"previews/Coimbra/Oliveira_do_Hospital/caop_preview.geojson"},{"m":"Pampilhosa da Serra","d":"Coimbra","p":"previews/Coimbra/Pampilhosa_da_Serra/caop_preview.geojson"},{"m":"Penacova","d":"Coimbra","p":"previews/Coimbra/Penacova/caop_preview.geojson"},{"m":"Penela","d":"Coimbra","p":"previews/Coimbra/Penela/caop_preview.geojson"},{"m":"Soure","d":"Coimbra","p":"previews/Coimbra/Soure/caop_preview.geojson"},{"m":"Tábua","d":"Coimbra","p":"previews/Coimbra/Tábua/caop_preview.geojson"},{"m":"Vila Nova de Poiares","d":"Coimbra","p":"previews/Coimbra/Vila_Nova_de_Poiares/caop_preview.geojson"},{"m":"Albufeira","d":"Faro","p":"previews/Faro/Albufeira/caop_preview.geojson"},{"m":"Alcoutim","d":"Faro","p":"previews/Faro/Alcoutim/caop_preview.geojson"},{"m":"Aljezur","d":"Faro","p":"previews/Faro/Aljezur/caop_preview.geojson"},{"m":"Castro Marim","d":"Faro","p":"previews/Faro/Castro_Marim/caop_preview.geojson"},{"m":"Faro","d":"Faro","p":"previews/Faro/Faro/caop_preview.geojson"},{"m":"Lagoa","d":"Faro","p":"previews/Faro/Lagoa/caop_preview.geojson"},{"m":"Loulé","d":"Faro","p":"previews/Faro/Loulé/caop_preview.geojson"},{"m":"Monchique","d":"Faro","p":"previews/Faro/Monchique/caop_preview.geojson"},{"m":"Olhão","d":"Faro","p":"previews/Faro/Olhão/caop_preview.geojson"},{"m":"Portimão","d":"Faro","p":"previews/Faro/Portimão/caop_preview.geojson"},{"m":"Silves","d":"Faro","p":"previews/Faro/Silves/caop_preview.geojson"},{"m":"São Brás de Alportel","d":"Faro","p":"previews/Faro/São_Brás_de_Alportel/caop_preview.geojson"},{"m":"Tavira","d":"Faro","p":"previews/Faro/Tavira/caop_preview.geojson"},{"m":"Vila Real de Santo António","d":"Faro","p":"previews/Faro/Vila_Real_de_Santo_António/caop_preview.geojson"},{"m":"Aguiar da Beira","d":"Guarda","p":"previews/Guarda/Aguiar_da_Beira/caop_preview.geojson"},{"m":"Almeida","d":"Guarda","p":"previews/Guarda/Almeida/caop_preview.geojson"},{"m":"Celorico da Beira","d":"Guarda","p":"previews/Guarda/Celorico_da_Beira/caop_preview.geojson"},{"m":"Fornos de Algodres","d":"Guarda","p":"previews/Guarda/Fornos_de_Algodres/caop_preview.geojson"},{"m":"Gouveia","d":"Guarda","p":"previews/Guarda/Gouveia/caop_preview.geojson"},{"m":"Guarda","d":"Guarda","p":"previews/Guarda/Guarda/caop_preview.geojson"},{"m":"Manteigas","d":"Guarda","p":"previews/Guarda/Manteigas/caop_preview.geojson"},{"m":"Mêda","d":"Guarda","p":"previews/Guarda/Mêda/caop_preview.geojson"},{"m":"Pinhel","d":"Guarda","p":"previews/Guarda/Pinhel/caop_preview.geojson"},{"m":"Sabugal","d":"Guarda","p":"previews/Guarda/Sabugal/caop_preview.geojson"},{"m":"Seia","d":"Guarda","p":"previews/Guarda/Seia/caop_preview.geojson"},{"m":"Trancoso","d":"Guarda","p":"previews/Guarda/Trancoso/caop_preview.geojson"},{"m":"Alcobaça","d":"Leiria","p":"previews/Leiria/Alcobaça/caop_preview.geojson"},{"m":"Alvaiázere","d":"Leiria","p":"previews/Leiria/Alvaiázere/caop_preview.geojson"},{"m":"Ansião","d":"Leiria","p":"previews/Leiria/Ansião/caop_preview.geojson"},{"m":"Batalha","d":"Leiria","p":"previews/Leiria/Batalha/caop_preview.geojson"},{"m":"Bombarral","d":"Leiria","p":"previews/Leiria/Bombarral/caop_preview.geojson"},{"m":"Castanheira de Pêra","d":"Leiria","p":"previews/Leiria/Castanheira_de_Pêra/caop_preview.geojson"},{"m":"Figueiró dos Vinhos","d":"Leiria","p":"previews/Leiria/Figueiró_dos_Vinhos/caop_preview.geojson"},{"m":"Leiria","d":"Leiria","p":"previews/Leiria/Leiria/caop_preview.geojson"},{"m":"Marinha Grande","d":"Leiria","p":"previews/Leiria/Marinha_Grande/caop_preview.geojson"},{"m":"Nazaré","d":"Leiria","p":"previews/Leiria/Nazaré/caop_preview.geojson"},{"m":"Pedrógão Grande","d":"Leiria","p":"previews/Leiria/Pedrógão_Grande/caop_preview.geojson"},{"m":"Pombal","d":"Leiria","p":"previews/Leiria/Pombal/caop_preview.geojson"},{"m":"Porto de Mós","d":"Leiria","p":"previews/Leiria/Porto_de_Mós/caop_preview.geojson"},{"m":"Óbidos","d":"Leiria","p":"previews/Leiria/Óbidos/caop_preview.geojson"},{"m":"Alenquer","d":"Lisboa","p":"previews/Lisboa/Alenquer/caop_preview.geojson"},{"m":"Amadora","d":"Lisboa","p":"previews/Lisboa/Amadora/caop_preview.geojson"},{"m":"Arruda dos Vinhos","d":"Lisboa","p":"previews/Lisboa/Arruda_dos_Vinhos/caop_preview.geojson"},{"m":"Azambuja","d":"Lisboa","p":"previews/Lisboa/Azambuja/caop_preview.geojson"},{"m":"Cadaval","d":"Lisboa","p":"previews/Lisboa/Cadaval/caop_preview.geojson"},{"m":"Cascais","d":"Lisboa","p":"previews/Lisboa/Cascais/caop_preview.geojson"},{"m":"Lisboa","d":"Lisboa","p":"previews/Lisboa/Lisboa/caop_preview.geojson"},{"m":"Loures","d":"Lisboa","p":"previews/Lisboa/Loures/caop_preview.geojson"},{"m":"Lourinhã","d":"Lisboa","p":"previews/Lisboa/Lourinhã/caop_preview.geojson"},{"m":"Odivelas","d":"Lisboa","p":"previews/Lisboa/Odivelas/caop_preview.geojson"},{"m":"Oeiras","d":"Lisboa","p":"previews/Lisboa/Oeiras/caop_preview.geojson"},{"m":"Sintra","d":"Lisboa","p":"previews/Lisboa/Sintra/caop_preview.geojson"},{"m":"Sobral de Monte Agraço","d":"Lisboa","p":"previews/Lisboa/Sobral_de_Monte_Agraço/caop_preview.geojson"},{"m":"Vila Franca de Xira","d":"Lisboa","p":"previews/Lisboa/Vila_Franca_de_Xira/caop_preview.geojson"},{"m":"Alter do Chão","d":"Portalegre","p":"previews/Portalegre/Alter_do_Chão/caop_preview.geojson"},{"m":"Arronches","d":"Portalegre","p":"previews/Portalegre/Arronches/caop_preview.geojson"},{"m":"Avis","d":"Portalegre","p":"previews/Portalegre/Avis/caop_preview.geojson"},{"m":"Campo Maior","d":"Portalegre","p":"previews/Portalegre/Campo_Maior/caop_preview.geojson"},{"m":"Castelo de Vide","d":"Portalegre","p":"previews/Portalegre/Castelo_de_Vide/caop_preview.geojson"},{"m":"Crato","d":"Portalegre","p":"previews/Portalegre/Crato/caop_preview.geojson"},{"m":"Elvas","d":"Portalegre","p":"previews/Portalegre/Elvas/caop_preview.geojson"},{"m":"Fronteira","d":"Portalegre","p":"previews/Portalegre/Fronteira/caop_preview.geojson"},{"m":"Gavião","d":"Portalegre","p":"previews/Portalegre/Gavião/caop_preview.geojson"},{"m":"Marvão","d":"Portalegre","p":"previews/Portalegre/Marvão/caop_preview.geojson"},{"m":"Monforte","d":"Portalegre","p":"previews/Portalegre/Monforte/caop_preview.geojson"},{"m":"Nisa","d":"Portalegre","p":"previews/Portalegre/Nisa/caop_preview.geojson"},{"m":"Ponte de Sor","d":"Portalegre","p":"previews/Portalegre/Ponte_de_Sor/caop_preview.geojson"},{"m":"Portalegre","d":"Portalegre","p":"previews/Portalegre/Portalegre/caop_preview.geojson"},{"m":"Sousel","d":"Portalegre","p":"previews/Portalegre/Sousel/caop_preview.geojson"},{"m":"Amarante","d":"Porto","p":"previews/Porto/Amarante/caop_preview.geojson"},{"m":"Baião","d":"Porto","p":"previews/Porto/Baião/caop_preview.geojson"},{"m":"Felgueiras","d":"Porto","p":"previews/Porto/Felgueiras/caop_preview.geojson"},{"m":"Gondomar","d":"Porto","p":"previews/Porto/Gondomar/caop_preview.geojson"},{"m":"Lousada","d":"Porto","p":"previews/Porto/Lousada/caop_preview.geojson"},{"m":"Maia","d":"Porto","p":"previews/Porto/Maia/caop_preview.geojson"},{"m":"Marco de Canaveses","d":"Porto","p":"previews/Porto/Marco_de_Canaveses/caop_preview.geojson"},{"m":"Matosinhos","d":"Porto","p":"previews/Porto/Matosinhos/caop_preview.geojson"},{"m":"Paredes","d":"Porto","p":"previews/Porto/Paredes/caop_preview.geojson"},{"m":"Paços de Ferreira","d":"Porto","p":"previews/Porto/Paços_de_Ferreira/caop_preview.geojson"},{"m":"Penafiel","d":"Porto","p":"previews/Porto/Penafiel/caop_preview.geojson"},{"m":"Porto","d":"Porto","p":"previews/Porto/Porto/caop_preview.geojson"},{"m":"Póvoa de Varzim","d":"Porto","p":"previews/Porto/Póvoa_de_Varzim/caop_preview.geojson"},{"m":"Santo Tirso","d":"Porto","p":"previews/Porto/Santo_Tirso/caop_preview.geojson"},{"m":"Trofa","d":"Porto","p":"previews/Porto/Trofa/caop_preview.geojson"},{"m":"Valongo","d":"Porto","p":"previews/Porto/Valongo/caop_preview.geojson"},{"m":"Vila do Conde","d":"Porto","p":"previews/Porto/Vila_do_Conde/caop_preview.geojson"},{"m":"Abrantes","d":"Santarém","p":"previews/Santarém/Abrantes/caop_preview.geojson"},{"m":"Almeirim","d":"Santarém","p":"previews/Santarém/Almeirim/caop_preview.geojson"},{"m":"Alpiarça","d":"Santarém","p":"previews/Santarém/Alpiarça/caop_preview.geojson"},{"m":"Benavente","d":"Santarém","p":"previews/Santarém/Benavente/caop_preview.geojson"},{"m":"Cartaxo","d":"Santarém","p":"previews/Santarém/Cartaxo/caop_preview.geojson"},{"m":"Chamusca","d":"Santarém","p":"previews/Santarém/Chamusca/caop_preview.geojson"},{"m":"Constância","d":"Santarém","p":"previews/Santarém/Constância/caop_preview.geojson"},{"m":"Coruche","d":"Santarém","p":"previews/Santarém/Coruche/caop_preview.geojson"},{"m":"Entroncamento","d":"Santarém","p":"previews/Santarém/Entroncamento/caop_preview.geojson"},{"m":"Ferreira do Zêzere","d":"Santarém","p":"previews/Santarém/Ferreira_do_Zêzere/caop_preview.geojson"},{"m":"Golegã","d":"Santarém","p":"previews/Santarém/Golegã/caop_preview.geojson"},{"m":"Mação","d":"Santarém","p":"previews/Santarém/Mação/caop_preview.geojson"},{"m":"Ourém","d":"Santarém","p":"previews/Santarém/Ourém/caop_preview.geojson"},{"m":"Rio Maior","d":"Santarém","p":"previews/Santarém/Rio_Maior/caop_preview.geojson"},{"m":"Salvaterra de Magos","d":"Santarém","p":"previews/Santarém/Salvaterra_de_Magos/caop_preview.geojson"},{"m":"Santarém","d":"Santarém","p":"previews/Santarém/Santarém/caop_preview.geojson"},{"m":"Sardoal","d":"Santarém","p":"previews/Santarém/Sardoal/caop_preview.geojson"},{"m":"Tomar","d":"Santarém","p":"previews/Santarém/Tomar/caop_preview.geojson"},{"m":"Torres Novas","d":"Santarém","p":"previews/Santarém/Torres_Novas/caop_preview.geojson"},{"m":"Vila Nova da Barquinha","d":"Santarém","p":"previews/Santarém/Vila_Nova_da_Barquinha/caop_preview.geojson"},{"m":"Alcochete","d":"Setúbal","p":"previews/Setúbal/Alcochete/caop_preview.geojson"},{"m":"Alcácer do Sal","d":"Setúbal","p":"previews/Setúbal/Alcácer_do_Sal/caop_preview.geojson"},{"m":"Almada","d":"Setúbal","p":"previews/Setúbal/Almada/caop_preview.geojson"},{"m":"Barreiro","d":"Setúbal","p":"previews/Setúbal/Barreiro/caop_preview.geojson"},{"m":"Grândola","d":"Setúbal","p":"previews/Setúbal/Grândola/caop_preview.geojson"},{"m":"Moita","d":"Setúbal","p":"previews/Setúbal/Moita/caop_preview.geojson"},{"m":"Montijo","d":"Setúbal","p":"previews/Setúbal/Montijo/caop_preview.geojson"},{"m":"Palmela","d":"Setúbal","p":"previews/Setúbal/Palmela/caop_preview.geojson"},{"m":"Santiago do Cacém","d":"Setúbal","p":"previews/Setúbal/Santiago_do_Cacém/caop_preview.geojson"},{"m":"Seixal","d":"Setúbal","p":"previews/Setúbal/Seixal/caop_preview.geojson"},{"m":"Setúbal","d":"Setúbal","p":"previews/Setúbal/Setúbal/caop_preview.geojson"},{"m":"Arcos de Valdevez","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Arcos_de_Valdevez/caop_preview.geojson"},{"m":"Caminha","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Caminha/caop_preview.geojson"},{"m":"Melgaço","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Melgaço/caop_preview.geojson"},{"m":"Monção","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Monção/caop_preview.geojson"},{"m":"Paredes de Coura","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Paredes_de_Coura/caop_preview.geojson"},{"m":"Ponte da Barca","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Ponte_da_Barca/caop_preview.geojson"},{"m":"Ponte de Lima","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Ponte_de_Lima/caop_preview.geojson"},{"m":"Valença","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Valença/caop_preview.geojson"},{"m":"Viana do Castelo","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Viana_do_Castelo/caop_preview.geojson"},{"m":"Vila Nova de Cerveira","d":"Viana do Castelo","p":"previews/Viana_do_Castelo/Vila_Nova_de_Cerveira/caop_preview.geojson"},{"m":"Alijó","d":"Vila Real","p":"previews/Vila_Real/Alijó/caop_preview.geojson"},{"m":"Boticas","d":"Vila Real","p":"previews/Vila_Real/Boticas/caop_preview.geojson"},{"m":"Chaves","d":"Vila Real","p":"previews/Vila_Real/Chaves/caop_preview.geojson"},{"m":"Mesão Frio","d":"Vila Real","p":"previews/Vila_Real/Mesão_Frio/caop_preview.geojson"},{"m":"Mondim de Basto","d":"Vila Real","p":"previews/Vila_Real/Mondim_de_Basto/caop_preview.geojson"},{"m":"Montalegre","d":"Vila Real","p":"previews/Vila_Real/Montalegre/caop_preview.geojson"},{"m":"Murça","d":"Vila Real","p":"previews/Vila_Real/Murça/caop_preview.geojson"},{"m":"Peso da Régua","d":"Vila Real","p":"previews/Vila_Real/Peso_da_Régua/caop_preview.geojson"},{"m":"Ribeira de Pena","d":"Vila Real","p":"previews/Vila_Real/Ribeira_de_Pena/caop_preview.geojson"},{"m":"Sabrosa","d":"Vila Real","p":"previews/Vila_Real/Sabrosa/caop_preview.geojson"},{"m":"Santa Marta de Penaguião","d":"Vila Real","p":"previews/Vila_Real/Santa_Marta_de_Penaguião/caop_preview.geojson"},{"m":"Valpaços","d":"Vila Real","p":"previews/Vila_Real/Valpaços/caop_preview.geojson"},{"m":"Vila Pouca de Aguiar","d":"Vila Real","p":"previews/Vila_Real/Vila_Pouca_de_Aguiar/caop_preview.geojson"},{"m":"Vila Real","d":"Vila Real","p":"previews/Vila_Real/Vila_Real/caop_preview.geojson"},{"m":"Armamar","d":"Viseu","p":"previews/Viseu/Armamar/caop_preview.geojson"},{"m":"Carregal do Sal","d":"Viseu","p":"previews/Viseu/Carregal_do_Sal/caop_preview.geojson"},{"m":"Castro Daire","d":"Viseu","p":"previews/Viseu/Castro_Daire/caop_preview.geojson"},{"m":"Cinfães","d":"Viseu","p":"previews/Viseu/Cinfães/caop_preview.geojson"},{"m":"Lamego","d":"Viseu","p":"previews/Viseu/Lamego/caop_preview.geojson"},{"m":"Mangualde","d":"Viseu","p":"previews/Viseu/Mangualde/caop_preview.geojson"},{"m":"Moimenta da Beira","d":"Viseu","p":"previews/Viseu/Moimenta_da_Beira/caop_preview.geojson"},{"m":"Mortágua","d":"Viseu","p":"previews/Viseu/Mortágua/caop_preview.geojson"},{"m":"Nelas","d":"Viseu","p":"previews/Viseu/Nelas/caop_preview.geojson"},{"m":"Oliveira de Frades","d":"Viseu","p":"previews/Viseu/Oliveira_de_Frades/caop_preview.geojson"},{"m":"Penalva do Castelo","d":"Viseu","p":"previews/Viseu/Penalva_do_Castelo/caop_preview.geojson"},{"m":"Penedono","d":"Viseu","p":"previews/Viseu/Penedono/caop_preview.geojson"},{"m":"Resende","d":"Viseu","p":"previews/Viseu/Resende/caop_preview.geojson"},{"m":"Santa Comba Dão","d":"Viseu","p":"previews/Viseu/Santa_Comba_Dão/caop_preview.geojson"},{"m":"Sernancelhe","d":"Viseu","p":"previews/Viseu/Sernancelhe/caop_preview.geojson"},{"m":"Sátão","d":"Viseu","p":"previews/Viseu/Sátão/caop_preview.geojson"},{"m":"São João da Pesqueira","d":"Viseu","p":"previews/Viseu/São_João_da_Pesqueira/caop_preview.geojson"},{"m":"São Pedro do Sul","d":"Viseu","p":"previews/Viseu/São_Pedro_do_Sul/caop_preview.geojson"},{"m":"Tabuaço","d":"Viseu","p":"previews/Viseu/Tabuaço/caop_preview.geojson"},{"m":"Tarouca","d":"Viseu","p":"previews/Viseu/Tarouca/caop_preview.geojson"},{"m":"Tondela","d":"Viseu","p":"previews/Viseu/Tondela/caop_preview.geojson"},{"m":"Vila Nova de Paiva","d":"Viseu","p":"previews/Viseu/Vila_Nova_de_Paiva/caop_preview.geojson"},{"m":"Viseu","d":"Viseu","p":"previews/Viseu/Viseu/caop_preview.geojson"},{"m":"Vouzela","d":"Viseu","p":"previews/Viseu/Vouzela/caop_preview.geojson"},{"m":"Alandroal","d":"Évora","p":"previews/Évora/Alandroal/caop_preview.geojson"},{"m":"Arraiolos","d":"Évora","p":"previews/Évora/Arraiolos/caop_preview.geojson"},{"m":"Borba","d":"Évora","p":"previews/Évora/Borba/caop_preview.geojson"},{"m":"Estremoz","d":"Évora","p":"previews/Évora/Estremoz/caop_preview.geojson"},{"m":"Montemor-o-Novo","d":"Évora","p":"previews/Évora/Montemor-o-Novo/caop_preview.geojson"},{"m":"Mora","d":"Évora","p":"previews/Évora/Mora/caop_preview.geojson"},{"m":"Mourão","d":"Évora","p":"previews/Évora/Mourão/caop_preview.geojson"},{"m":"Portel","d":"Évora","p":"previews/Évora/Portel/caop_preview.geojson"},{"m":"Redondo","d":"Évora","p":"previews/Évora/Redondo/caop_preview.geojson"},{"m":"Reguengos de Monsaraz","d":"Évora","p":"previews/Évora/Reguengos_de_Monsaraz/caop_preview.geojson"},{"m":"Vendas Novas","d":"Évora","p":"previews/Évora/Vendas_Novas/caop_preview.geojson"},{"m":"Viana do Alentejo","d":"Évora","p":"previews/Évora/Viana_do_Alentejo/caop_preview.geojson"},{"m":"Vila Viçosa","d":"Évora","p":"previews/Évora/Vila_Viçosa/caop_preview.geojson"},{"m":"Évora","d":"Évora","p":"previews/Évora/Évora/caop_preview.geojson"}];
+
+
+/* ============================================================
+   MODO OFFLINE
+   ============================================================ */
+let offlineDrawing = false;
+let rulerDrawing = false;
+let offlineRectLayer = null;
+let offlineCancelDownload = false;
+
+const OFFLINE_MAX_ZOOM = 18;
+const OFFLINE_TILE_LIMIT = 3000; // segurança: bloqueia áreas demasiado grandes
+const BYTES_PER_TILE_ESTIMATE = 22000; // estimativa média (~22KB/tile)
+
+// para cada basemap visível na UI, quais as sub-camadas (chave + template) a cachear
+const BASE_LAYERS_INFO = {
+  satelite: [
+    {key:'satellite', tpl:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}
+  ],
+  dgt: [
+    {key:'dgt', wms:true, base:'https://cartografia.dgterritorio.gov.pt/wms/ortos2021', wmsLayer:'Ortos2021-RGB'}
+  ],
+  claro: [
+    {key:'claro', tpl:'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}
+  ],
+  osm: [
+    {key:'osm', tpl:'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'}
+  ]
+};
+
+
+
+
+/* ============================================================
+   CONECTIVIDADE — deteta perda de ligação e bloqueia o mapa
+   ============================================================ */
+let offlineSessionActive = false; // true quando o utilizador escolheu trabalhar com uma área guardada
+let offlineBoundaryLayer = null;  // contorno tracejado vermelho da área com tiles guardados
+let offlineMaskLayer = null;      // sombreado vermelho fora dessa área
+let wasOffline = !navigator.onLine; // estado anterior, para detetar a transição offline -> online
+// Funções de conectividade migradas para js/modules/connectivity.js
+
+
+// Wizard migrated to js/modules/wizard.js
+
+/* ============================================================
+   MAPA + GEOMAN
+   ============================================================ */
+/* mostra uma mensagem na pill do canto superior esquerdo do mapa; se autoHideMs for passado,
+   a mensagem desaparece sozinha (com fade) passado esse tempo */
+let toolbarHintHideTimer = null;
+function showToolbarHint(text, autoHideMs){
+  if(!settings.showInterfaceHints) return;
+  const el = document.getElementById('toolbar-hint');
+  const textEl = document.getElementById('toolbar-hint-text');
+  if(!el || !textEl) return;
+  textEl.textContent = text;
+  el.classList.remove('hint-hidden');
+  clearTimeout(toolbarHintHideTimer);
+  toolbarHintHideTimer = setTimeout(()=>{
+    el.classList.add('hint-hidden');
+  }, autoHideMs || 2600);
+}
+
+/* toast flutuante e discreto, usado para avisar de trocas automáticas (ex.: mudança de basemap) */
+let basemapToastHideTimer = null;
+function showBasemapToast(text, autoHideMs){
+  const toast = document.getElementById('basemap-toast');
+  const textEl = document.getElementById('basemap-toast-text');
+  if(!toast || !textEl) return;
+  textEl.textContent = text;
+  toast.classList.add('is-visible');
+  clearTimeout(basemapToastHideTimer);
+  basemapToastHideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+  }, autoHideMs || 3500);
+}
+
+let mapGridLayer = null;
+function buildMapGridLines(){
+  const step = 1;
+  const lines = [];
+  for(let lng = -180; lng <= 180; lng += step){
+    lines.push(L.polyline([[ -90, lng ], [ 90, lng ]], { color: 'rgba(31,92,107,.16)', weight: 1, dashArray: '3 4', interactive: false }));
+  }
+  for(let lat = -90; lat <= 90; lat += step){
+    lines.push(L.polyline([[ lat, -180 ], [ lat, 180 ]], { color: 'rgba(31,92,107,.16)', weight: 1, dashArray: '3 4', interactive: false }));
+  }
+  return lines;
+}
+
+const GEOREF_AUTO_MIN_ZOOM = 17;
+const GEOREF_AUTO_MAX_ZOOM = 20;
+
+function initMap(){
+  map = L.map('map', {zoomControl:false, attributionControl:false, maxZoom: 24}).setView([20, 0], 2);
+
+  const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 24, maxNativeZoom: 19,
+    attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics',
+    offlineKey: 'satellite'
+  });
+  const satelliteGroup = L.layerGroup([satellite]).addTo(map);
+
+  const claro = new OfflineTileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 24, maxNativeZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    offlineKey: 'claro'
+  });
+  const osm = new OfflineTileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 24, maxNativeZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors',
+    offlineKey: 'osm'
+  });
+
+  const dgt = new OfflineWMSTileLayer('https://cartografia.dgterritorio.gov.pt/wms/ortos2021', {
+    layers: 'Ortos2021-RGB',
+    format: 'image/jpeg',
+    transparent: false,
+    version: '1.3.0',
+    maxZoom: 24, maxNativeZoom: 20, minNativeZoom: 6,
+    attribution: 'Ortofotos &copy; DGT — Ortos 2021 Portugal Continental (CC-BY 4.0)',
+    offlineKey: 'dgt'
+  });
+
+  const basemaps = { satelite: satelliteGroup, claro: claro, osm: osm, dgt: dgt };
+  basemapLayers = basemaps;
+  window.__basemapLayers = basemaps;
+
+  // regista qual a camada base ativa, para saber o que cachear no modo offline
+  activeBaseLayerKey = 'satelite';
+  window.__activeBaseLayerKey = activeBaseLayerKey;
+
+  function renderBasemapMenu(){
+    document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+      btn.classList.toggle('is-active', btn.dataset.basemap === activeBaseLayerKey);
+    });
+    const autoBtn = document.getElementById('basemap-auto-toggle');
+    if(autoBtn) autoBtn.classList.toggle('is-active', autoResolutionEnabled);
+  }
+
+  function switchBasemap(key, opts){
+    opts = opts || {};
+    if(key === 'none'){
+      Object.values(basemaps).forEach(l=>{ if(map.hasLayer(l)) map.removeLayer(l); });
+      activeBaseLayerKey = 'none';
+      window.__activeBaseLayerKey = 'none';
+      renderBasemapMenu();
+      closeBasemapMenu();
+      return;
+    }
+    const next = basemaps[key];
+    if(!next || key === activeBaseLayerKey){ closeBasemapMenu(); return; }
+    Object.values(basemaps).forEach(l=>{ if(l !== next && map.hasLayer(l)) map.removeLayer(l); });
+    if(!map.hasLayer(next)) next.addTo(map);
+    activeBaseLayerKey = key;
+    window.__activeBaseLayerKey = key;
+    renderBasemapMenu();
+    closeBasemapMenu();
+    if(key === 'dgt' && !opts.auto){
+      showToolbarHint('Portugal HD (DGT): só mostra imagem a partir de zoom de cidade/bairro — aproxima-te para veres o detalhe.', 6000);
+    }
+  }
+
+  /* Hook estável para outros módulos (ex. 18-sam-segment.js) forçarem um
+     basemap especifico e desligarem a troca automática satelite<->dgt,
+     sem terem de aceder a variaveis privadas deste closure (activeBaseLayerKey,
+     autoResolutionEnabled) nem simular cliques no menu de basemap. */
+  window.__forceBasemap = function(key){
+    autoResolutionEnabled = false;
+    switchBasemap(key, {auto:true});
+  };
+
+  /* ---------- troca automática Satélite ⇄ Portugal HD (DGT) por nível de zoom ---------- */
+  let autoResolutionEnabled = true;
+  const PT_CONTINENTAL_BOUNDS = L.latLngBounds([36.7, -9.6], [42.3, -6.0]);
+  const AUTO_HD_MIN_ZOOM = 17;
+  function maybeAutoSwitchBasemap(){
+    if(!autoResolutionEnabled) return;
+    // só atua sobre o par satélite/DGT — se o utilizador escolheu manualmente "claro" ou "OSM", não interfere
+    if(activeBaseLayerKey !== 'satelite' && activeBaseLayerKey !== 'dgt') return;
+    const zoom = map.getZoom();
+    const dentroPT = PT_CONTINENTAL_BOUNDS.contains(map.getCenter());
+    if(activeBaseLayerKey === 'satelite' && dentroPT && zoom >= AUTO_HD_MIN_ZOOM){
+      switchBasemap('dgt', {auto:true});
+      showBasemapToast('Basemap otimizado automaticamente: Portugal HD (DGT) — resolução máxima disponível aqui.');
+    } else if(activeBaseLayerKey === 'dgt' && (!dentroPT || zoom < AUTO_HD_MIN_ZOOM)){
+      switchBasemap('satelite', {auto:true});
+      showBasemapToast('A voltar ao Satélite global.');
+    }
+  }
+  map.on('zoomend moveend', ()=>{
+    maybeAutoSwitchBasemap();
+    enableGeorefAutoButtonIfZoomReady();
+  });
+
+  function openBasemapMenu(){
+    const menu = document.getElementById('basemap-menu');
+    const btn = document.getElementById('btn-basemap');
+    const rect = btn.getBoundingClientRect();
+    menu.classList.remove('hidden');
+    const menuRect = menu.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 6) + 'px';
+    menu.style.left = Math.max(8, Math.min(rect.right - menuRect.width, window.innerWidth - menuRect.width - 8)) + 'px';
+    renderBasemapMenu();
+  }
+  function closeBasemapMenu(){
+    document.getElementById('basemap-menu').classList.add('hidden');
+  }
+
+  document.getElementById('btn-basemap').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const menu = document.getElementById('basemap-menu');
+    if(menu.classList.contains('hidden')) openBasemapMenu(); else closeBasemapMenu();
+  });
+  document.querySelectorAll('#basemap-menu button[data-basemap]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      autoResolutionEnabled = false;
+      switchBasemap(btn.dataset.basemap);
+    });
+  });
+  document.getElementById('basemap-auto-toggle').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    autoResolutionEnabled = true;
+    renderBasemapMenu();
+    closeBasemapMenu();
+    showBasemapToast('Resolução automática reativada.');
+    maybeAutoSwitchBasemap();
+  });
+  document.addEventListener('click', (e)=>{
+    const menu = document.getElementById('basemap-menu');
+    const btn = document.getElementById('btn-basemap');
+    if(!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)){
+      closeBasemapMenu();
+    }
+  });
+  renderBasemapMenu();
+
+  drawnGroup = L.featureGroup().addTo(map);
+  measuresGroup = L.layerGroup().addTo(map);
+  rulerGroup = L.layerGroup().addTo(map);
+
+  map.pm.addControls({
+    position: 'topleft',
+    drawCircle: false,
+    drawCircleMarker: false,
+    drawRectangle: false,
+    drawText: false,
+    drawPolyline: false,
+    drawPolygon: false,
+    drawMarker: false,
+    editMode: true,
+    dragMode: true,
+    removalMode: true,
+    cutPolygon: false,
+    rotateMode: false
+  });
+
+  /* Vetorização Assistida (SAM) -- deixou de ser um botão do header e
+     passou a ser um controlo Leaflet próprio, no canto 'topleft', a
+     seguir à toolbar de edição do Geoman (desenhar/editar vértices/
+     mover/eliminar) acima -- por isso aparece sempre logo por baixo
+     dela. Só fica visível quando essa toolbar está aberta (mesma classe
+     "pm-toolbar-visible" em #map -- ver css/pm-toolbar.css), já que é
+     uma ferramenta do mesmo grupo de edição/desenho.
+     A lógica de ativar/desativar o modo SAM em si vive toda em
+     18-sam-segment.js (window.__sam.activate/deactivate) -- aqui só se
+     cria o botão e liga-se o clique. */
+  var VetAssistControl = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function(){
+      var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control va-vetassist-control');
+      var link = L.DomUtil.create('a', '', container);
+      link.href = '#';
+      link.id = 'btn-vetassist';
+      link.title = 'AAV (Algoritmo de assistência à vetorização automática)';
+      link.setAttribute('role', 'button');
+      link.setAttribute('aria-label', 'Vetorização Assistida');
+      link.setAttribute('aria-pressed', 'false');
+      link.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>';
+
+      L.DomEvent.disableClickPropagation(container);
+      L.DomEvent.disableScrollPropagation(container);
+      L.DomEvent.on(link, 'click', function(e){
+        L.DomEvent.stop(e);
+        if(!window.__sam) return;
+        if(window.__sam.active) window.__sam.deactivate();
+        else window.__sam.activate();
+      });
+
+      // Refletir o estado (ativo/inativo) independentemente de quem o mudou
+      // -- clique neste botão, tecla Esc, ou qualquer outro sítio.
+      window.addEventListener('sam:state', function(e){
+        var isActive = !!(e.detail && e.detail.active);
+        link.classList.toggle('is-active', isActive);
+        link.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      return container;
+    }
+  });
+  map.addControl(new VetAssistControl());
+
+  // usa o marcador circular DataGis (em vez do pin azul padrão) também
+  // durante a pré-visualização ao colocar o ponto, antes do clique
+  //
+  // --- Smart snapping ---
+  // snappable      liga o "íman" de desenho: o cursor agarra-se a pontos próximos
+  // snapDistance   raio (em pixels de ecrã) dentro do qual o íman atua
+  // snapSegment    o "smart" do snapping: além de colar aos VÉRTICES de outras
+  //                geometrias (extremos/cantos), também cola a qualquer ponto AO
+  //                LONGO das arestas/segmentos — incluindo os da própria geometria
+  //                que estás a desenhar. É o que permite, por ex., fechar um
+  //                polígono exatamente sobre o lado de outro já existente, sem
+  //                teres de acertar num vértice exato.
+  applySettingsToEditing();
+
+  map.on('pm:create', e => onFeatureCreated(e.layer));
+  map.on('pm:remove', e => onFeatureRemoved(e.layer));
+
+  setupOfflineMapEvents();
+  setupRulerMapEvents();
+  setupGeorefMapEvents();
+  renderOfflineAreasMenu();
+  updateConnectivityUI();
+  updateMapGridVisibility();
+  map.on('mousemove', e => {
+    if(settings.showCursorCoordinates){ updateCoordBar(e.latlng.lat, e.latlng.lng); }
+  });
+}
+
+/* ativa as ferramentas de desenho certas depois do wizard definir o tipo de geometria */
+function applyGeometryConfig(){
+  map.pm.addControls({
+    position: 'topleft',
+    drawCircle: false,
+    drawCircleMarker: false,
+    drawRectangle: false,
+    drawText: false,
+    drawPolyline: config.geometryType === 'LineString',
+    drawPolygon: config.geometryType === 'Polygon',
+    drawMarker: config.geometryType === 'Point',
+    editMode: true,
+    dragMode: true,
+    removalMode: true,
+    cutPolygon: false,
+    rotateMode: false
+  });
+
+}
+
+/* --- init.js encarrega-se da sequência de arranque (loadSettings, initMap, etc.) --- */
+
+/* ============================================================
+   CRIAÇÃO DE FEATURE + FORMULÁRIO DE ATRIBUTOS
+   ============================================================ */
+/* ============================================================
+   HISTÓRICO DE AÇÕES (DESFAZER / REFAZER)
+   ------------------------------------------------------------
+   Guarda um histórico linear de ações de edição (criar, apagar,
+   editar geometria) feitas com as ferramentas de desenho/edição.
+   Cada ação sabe reverter-se (undo) e reaplicar-se (redo). Ao
+   fazer uma nova ação depois de um undo, o "ramo" de redo é
+   cortado (comportamento standard tipo Ctrl+Z de qualquer editor).
+   ============================================================ */
+const actionHistory = [];
+let historyIndex = -1;       // aponta para a última ação já aplicada
+const HISTORY_LIMIT = 60;    // limite de ações guardadas, para não crescer sem fim
+let isApplyingHistory = false; // true enquanto um undo/redo está a decorrer,
+                                // para as próprias mudanças não se auto-registarem
+
+function pushHistoryAction(action){
+  if(isApplyingHistory) return;
+  // qualquer ação nova corta o que estava disponível para "refazer"
+  actionHistory.splice(historyIndex + 1);
+  actionHistory.push(action);
+  if(actionHistory.length > HISTORY_LIMIT){ actionHistory.shift(); }
+  historyIndex = actionHistory.length - 1;
+  updateUndoRedoButtons();
+}
+
+/* devolve só a geometria (coordenadas) de uma layer, para poder guardar
+   o "antes" e o "depois" de uma edição e restaurar mais tarde */
+function geomSnapshot(layer){
+  try{ return JSON.stringify(layer.toGeoJSON().geometry); }
+  catch(err){ return null; }
+}
+function restoreGeomSnapshot(layer, snapshotStr){
+  if(!snapshotStr) return;
+  let geom;
+  try{ geom = JSON.parse(snapshotStr); } catch(err){ return; }
+  if(!geom) return;
+  if(layer instanceof L.Marker){
+    const c = geom.coordinates;
+    layer.setLatLng(L.latLng(c[1], c[0]));
+    return;
+  }
+  if(typeof layer.setLatLngs !== 'function') return;
+  const nestingByType = { LineString:0, MultiLineString:1, Polygon:1, MultiPolygon:2 };
+  const nesting = nestingByType[geom.type] ?? 0;
+  const latlngs = L.GeoJSON.coordsToLatLngs(geom.coordinates, nesting);
+  layer.setLatLngs(latlngs);
+  if(typeof layer.redraw === 'function') layer.redraw();
+}
+
+/* regista o "antes" de uma edição de geometria (arrastar vértice / mover a
+   forma toda) e, quando a edição termina, guarda a ação no histórico */
+function bindFeatureEditTracking(entry){
+  const layer = entry.layer;
+  let editSnapshot = null;
+  const captureSnapshot = ()=>{ editSnapshot = geomSnapshot(layer); };
+  const commitEdit = ()=>{
+    entry.updatedAt = Date.now();
+    markProjectDirty();
+    refreshStatsIfOpen(entry);
+    checkAllTopology();
+    if(entry.showMeasures) renderPolygonMeasures(entry);
+    if(editSnapshot && !isApplyingHistory){
+      const after = geomSnapshot(layer);
+      if(after && after !== editSnapshot){
+        pushHistoryAction({type:'edit', layer, entry, before: editSnapshot, after});
+      }
+    }
+    editSnapshot = null;
+  };
+  layer.on('pm:markerdragstart', captureSnapshot);
+  layer.on('pm:dragstart', captureSnapshot);
+  layer.on('pm:edit', commitEdit);
+  layer.on('pm:dragend', commitEdit);
+}
+
+/* volta a colocar uma geometria já existente (entry+layer) no mapa e no
+   estado da app — usado ao refazer uma criação ou desfazer uma remoção */
+function historyAddFeature(layer, entry){
+  featuresData.set(entry.id, entry);
+  if(!drawnGroup.hasLayer(layer)) drawnGroup.addLayer(layer);
+  if(entry.fid) teamState.deletedFids.delete(entry.fid);
+  markProjectDirty();
+  refreshFeatList();
+  checkAllTopology();
+  if(entry.showMeasures) renderPolygonMeasures(entry);
+}
+/* remove uma geometria do mapa e do estado da app — usado ao desfazer uma
+   criação ou refazer uma remoção */
+function historyRemoveFeature(layer, entry){
+  clearPolygonMeasures(entry);
+  if(entry.fid) teamState.deletedFids.set(entry.fid, Date.now());
+  featuresData.delete(entry.id);
+  drawnGroup.removeLayer(layer);
+  markProjectDirty();
+  refreshFeatList();
+  checkAllTopology();
+}
+
+function applyHistoryAction(action, direction){
+  isApplyingHistory = true;
+  try{
+    if(action.type === 'create'){
+      if(direction === 'undo') historyRemoveFeature(action.layer, action.entry);
+      else historyAddFeature(action.layer, action.entry);
+    } else if(action.type === 'remove'){
+      if(direction === 'undo') historyAddFeature(action.layer, action.entry);
+      else historyRemoveFeature(action.layer, action.entry);
+    } else if(action.type === 'edit'){
+      restoreGeomSnapshot(action.layer, direction === 'undo' ? action.before : action.after);
+      action.entry.updatedAt = Date.now();
+      markProjectDirty();
+      refreshStatsIfOpen(action.entry);
+      checkAllTopology();
+      if(action.entry.showMeasures) renderPolygonMeasures(action.entry);
+    }
+  } finally {
+    isApplyingHistory = false;
+  }
+}
+
+function canUndoAction(){ return historyIndex >= 0; }
+function canRedoAction(){ return historyIndex < actionHistory.length - 1; }
+
+function undoLastAction(){
+  if(!canUndoAction()) return;
+  const action = actionHistory[historyIndex];
+  applyHistoryAction(action, 'undo');
+  historyIndex--;
+  updateUndoRedoButtons();
+}
+function redoLastAction(){
+  if(!canRedoAction()) return;
+  historyIndex++;
+  const action = actionHistory[historyIndex];
+  applyHistoryAction(action, 'redo');
+  updateUndoRedoButtons();
+}
+
+function updateUndoRedoButtons(){
+  const undoBtn = document.getElementById('btn-undo-action');
+  const redoBtn = document.getElementById('btn-redo-action');
+  if(undoBtn) undoBtn.disabled = !canUndoAction();
+  if(redoBtn) redoBtn.disabled = !canRedoAction();
+}
+
+/* faz o botão "saltar" tal como acontece com um clique real, mesmo quando
+   a ação é despoletada pelo teclado (Ctrl+Z / Ctrl+Y) */
+function pulseUndoRedoButton(btn){
+  if(!btn) return;
+  btn.classList.remove('is-pressed');
+  // força reflow para poder reiniciar a animação mesmo que seja chamada em sequência rápida
+  void btn.offsetWidth;
+  btn.classList.add('is-pressed');
+  setTimeout(()=> btn.classList.remove('is-pressed'), 200);
+}
+
+const btnUndoAction = document.getElementById('btn-undo-action');
+const btnRedoAction = document.getElementById('btn-redo-action');
+btnUndoAction?.addEventListener('click', ()=>{
+  if(!canUndoAction()) return;
+  pulseUndoRedoButton(btnUndoAction);
+  undoLastAction();
+});
+btnRedoAction?.addEventListener('click', ()=>{
+  if(!canRedoAction()) return;
+  pulseUndoRedoButton(btnRedoAction);
+  redoLastAction();
+});
+document.addEventListener('keydown', (event)=>{
+  const target = event.target;
+  const isTyping = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+  if(isTyping) return;
+  const key = event.key.toLowerCase();
+  if((event.ctrlKey || event.metaKey) && !event.shiftKey && key === 'z'){
+    event.preventDefault();
+    if(canUndoAction()){ pulseUndoRedoButton(btnUndoAction); undoLastAction(); }
+  } else if(((event.ctrlKey || event.metaKey) && key === 'y') || ((event.ctrlKey || event.metaKey) && event.shiftKey && key === 'z')){
+    event.preventDefault();
+    if(canRedoAction()){ pulseUndoRedoButton(btnRedoAction); redoLastAction(); }
+  }
+});
+
+function genFid(){
+  return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('fid-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+}
+
+function onFeatureCreated(layer){
+  if(offlineDrawing || rulerDrawing || window.vaDrawingActive) return; // retângulo offline / linha da régua / vetorização assistida não são geometrias do utilizador
+  if(layerVisible.get(activeLayerId) === undefined){
+    layerVisible.set(activeLayerId, true);
+  }
+  if(!layerOrder.includes(activeLayerId)) layerOrder.unshift(activeLayerId);
+  drawnGroup.addLayer(layer);
+  assignLayerPane(layer, activeLayerId);
+  featureCounter++;
+  const id = L.Util.stamp(layer);
+
+  const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, layerId: activeLayerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
+  featuresData.set(id, entry);
+  markProjectDirty();
+
+  styleLayerDefault(layer, activeLayerId);
+  showStatsPopup(entry);
+  bindFeatureContextMenu(entry);
+
+  // reage a edições posteriores desta geometria (arrastar vértices, mover) para
+  // manter as estatísticas e a verificação de topologia sempre atualizadas,
+  // e para poder desfazer/refazer essas edições
+  bindFeatureEditTracking(entry);
+
+  // sem popup ao criar: a geometria fica logo com o nome genérico "Geometria N"
+  // e aparece de imediato na lista/tabela; atributos (se o modo os tiver) editam-se na tabela
+  refreshFeatList();
+
+  checkAllTopology();
+
+  pushHistoryAction({type:'create', layer, entry});
+}
+
+function onFeatureRemoved(layer){
+  const id = L.Util.stamp(layer);
+  const entry = featuresData.get(id);
+  if(entry){
+    if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
+    clearPolygonMeasures(entry);
+  }
+  featuresData.delete(id);
+  markProjectDirty();
+  refreshFeatList();
+  checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras
+  if(entry) pushHistoryAction({type:'remove', layer, entry});
+}
+
+// Section migrated to js/modules/import.js
+// IMPORTAR GEOJSON/SHAPEFILE: parseImportedFile, importGeoJSONFeatures,
+// importFeaturesInChunks, parseLooseShapefileParts, processImportedFiles,
+// import-file-input handler, drag-and-drop handler
+
+// Section migrated to js/modules/raster.js
+// IMPORTAÇÃO DE RASTER (GEORREFERENCIAÇÃO)
+/*
+   Migrated: rasterLayers, splitImportFileGroups, fileToDataUrl,
+   importRasterFiles, serializeRasterLayersForProject, clearRasterLayerState,
+   restoreRasterLayersFromProject, renderRasterLayersPanel, georefModeState,
+   beginGeoreferencingMode, cancelGeorefMode, runAutoGeorefDetection,
+   setupGeorefMapEvents, and all georef-related functions
+*/
+
+
+// Select by attributes migrated to js/modules/select-by-attr.js
+
+// Popup/stats/highlight/hatch migrated to js/modules/popup.js
+
+// Symbology engine migrada para js/modules/symbology-engine.js
+
+// Features, layers panel, symbology panel, attr table migradas para js/modules/features.js
+
+// Exportação migrada para js/modules/export.js
+
+// Análise espacial migrada para js/modules/analysis.js

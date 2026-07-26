@@ -1,1 +1,1075 @@
-(function(_0x3a0bde,_0xe4aeef){var _0x2ea2fd=_0x141f,_0x497400=_0x3a0bde();while(!![]){try{var _0xc3a6ed=parseInt(_0x2ea2fd(0x19d))/0x1*(-parseInt(_0x2ea2fd(0x1c0))/0x2)+parseInt(_0x2ea2fd(0x1ee))/0x3*(parseInt(_0x2ea2fd(0x2a4))/0x4)+-parseInt(_0x2ea2fd(0x178))/0x5*(parseInt(_0x2ea2fd(0x192))/0x6)+-parseInt(_0x2ea2fd(0x29c))/0x7+-parseInt(_0x2ea2fd(0x268))/0x8*(parseInt(_0x2ea2fd(0x225))/0x9)+-parseInt(_0x2ea2fd(0x1e1))/0xa+parseInt(_0x2ea2fd(0x1ff))/0xb;if(_0xc3a6ed===_0xe4aeef)break;else _0x497400['push'](_0x497400['shift']());}catch(_0x2dbf7c){_0x497400['push'](_0x497400['shift']());}}}(_0x427b,0x3633d),(function(){var _0x3ac20c=_0x141f,_0x20628d=document[_0x3ac20c(0x2bc)](_0x3ac20c(0x29b)),_0x1698ec=document['getElementById']('btn-cad-import'),_0x5b237b=document[_0x3ac20c(0x2bc)](_0x3ac20c(0x2d2)),_0x599eed=document[_0x3ac20c(0x2bc)](_0x3ac20c(0x24f)),_0x3685f5=Array['prototype'][_0x3ac20c(0x22e)][_0x3ac20c(0x1f1)](document[_0x3ac20c(0x1c1)](_0x3ac20c(0x26e)));if(!_0x20628d||!_0x1698ec)return;var _0x340ee7=_0x3ac20c(0x21f),_0x191488=_0x3ac20c(0x279),_0x41226a=[_0x3ac20c(0x1cc),_0x3ac20c(0x20b),_0x3ac20c(0x194),'Conversão',_0x3ac20c(0x2d5),_0x3ac20c(0x16d)],_0xecdf4c={'section':'wizard','step':0x0,'fileName':null,'dxf':null,'entities':[],'layerTable':[],'fromCRS':_0x3ac20c(0x1f2),'customProj4':'','bbox':null,'twoPointInput':{'p1x':'','p1y':'','p1lat':'','p1lon':'','p2x':'','p2y':'','p2lat':'','p2lon':''},'twoPoint':null,'result':null,'profileName':null};function _0x40d1bb(){var _0x46ee5c=_0x3ac20c;_0xecdf4c[_0x46ee5c(0x2cc)]=0x0,_0xecdf4c['fileName']=null,_0xecdf4c[_0x46ee5c(0x25a)]=null,_0xecdf4c['entities']=[],_0xecdf4c[_0x46ee5c(0x2bb)]=[],_0xecdf4c[_0x46ee5c(0x1fc)]=null,_0xecdf4c[_0x46ee5c(0x265)]=null,_0xecdf4c[_0x46ee5c(0x201)]=null,_0xecdf4c[_0x46ee5c(0x1f5)]=null,_0xecdf4c[_0x46ee5c(0x216)]={'p1x':'','p1y':'','p1lat':'','p1lon':'','p2x':'','p2y':'','p2lat':'','p2lon':''};}_0x1698ec['addEventListener'](_0x3ac20c(0x24e),function(){_0x20628d['hidden']=![],_0x355845('wizard');}),_0x5b237b[_0x3ac20c(0x21d)](_0x3ac20c(0x24e),function(){var _0x1c2c5e=_0x3ac20c;_0x20628d[_0x1c2c5e(0x248)]=!![];}),document[_0x3ac20c(0x21d)](_0x3ac20c(0x285),function(_0xb3e981){var _0x336461=_0x3ac20c;if(_0xb3e981['key']===_0x336461(0x2ef)&&!_0x20628d['hidden'])_0x20628d['hidden']=!![];}),_0x3685f5[_0x3ac20c(0x21e)](function(_0x260f13){var _0x1d0637=_0x3ac20c;_0x260f13[_0x1d0637(0x21d)](_0x1d0637(0x24e),function(){var _0x20769d=_0x1d0637;_0x355845(_0x260f13[_0x20769d(0x2c1)][_0x20769d(0x2e3)]);});});function _0x355845(_0x20929c){var _0x87f3ea=_0x3ac20c;_0xecdf4c[_0x87f3ea(0x179)]=_0x20929c,_0x3685f5[_0x87f3ea(0x21e)](function(_0x3e79f2){var _0x6b9397=_0x87f3ea;_0x3e79f2[_0x6b9397(0x14a)][_0x6b9397(0x215)](_0x6b9397(0x270),_0x3e79f2[_0x6b9397(0x2c1)][_0x6b9397(0x2e3)]===_0x20929c);});if(_0x20929c===_0x87f3ea(0x2ea))_0x574f87();else{if(_0x20929c===_0x87f3ea(0x217))_0x5e8d36();else{if(_0x20929c===_0x87f3ea(0x209))_0x2c220f();else{if(_0x20929c===_0x87f3ea(0x2d6))_0x594cf4();else{if(_0x20929c===_0x87f3ea(0x15e))_0x35d87c();}}}}}function _0x263003(_0x45512f){var _0x5572be=_0x3ac20c;return String(_0x45512f==null?'':_0x45512f)[_0x5572be(0x213)](/[&<>"']/g,function(_0x2d2063){var _0x431386=_0x5572be;return{'&':'&amp;','<':'&lt;','>':'&gt;','\x22':_0x431386(0x28a),'\x27':'&#39;'}[_0x2d2063];});}function _0x51e383(_0x11457a){var _0x372f42=_0x3ac20c;return String(_0x11457a||'')['toLowerCase']()[_0x372f42(0x157)](_0x372f42(0x166))['replace'](/[\u0300-\u036f]/g,'')['replace'](/[^a-z0-9]/g,'');}function _0x1ffd0d(){try{return JSON['parse'](localStorage['getItem'](_0x340ee7)||'[]');}catch(_0x2dec01){return[];}}function _0x3c6cf3(_0x5edca6){var _0x5d3fb8=_0x3ac20c;try{localStorage[_0x5d3fb8(0x1eb)](_0x340ee7,JSON[_0x5d3fb8(0x15d)](_0x5edca6));}catch(_0x842e72){}}function _0x422e92(){var _0x5107c0=_0x3ac20c;try{return JSON['parse'](localStorage[_0x5107c0(0x2a2)](_0x191488)||'[]');}catch(_0x189494){return[];}}function _0x4d015c(_0x63978b){var _0x93d527=_0x3ac20c,_0x1d0a5b=_0x422e92();_0x1d0a5b['unshift'](_0x63978b);if(_0x1d0a5b[_0x93d527(0x2c8)]>0xc8)_0x1d0a5b=_0x1d0a5b[_0x93d527(0x22e)](0x0,0xc8);try{localStorage[_0x93d527(0x1eb)](_0x191488,JSON[_0x93d527(0x15d)](_0x1d0a5b));}catch(_0xb575f6){}}var _0x418ca9=null;function _0x2e55a8(){var _0x2cfd1c=_0x3ac20c;if(window[_0x2cfd1c(0x23e)])return Promise['resolve'](window[_0x2cfd1c(0x23e)]);return!_0x418ca9&&(_0x418ca9=import(_0x2cfd1c(0x27b))[_0x2cfd1c(0x2c3)](function(_0x298015){var _0x46e29c=_0x2cfd1c;return window[_0x46e29c(0x23e)]=_0x298015['default']||_0x298015[_0x46e29c(0x23e)],window[_0x46e29c(0x23e)];})),_0x418ca9;}var _0x43c14a={0x1:_0x3ac20c(0x1ca),0x2:_0x3ac20c(0x1f3),0x3:_0x3ac20c(0x1e5),0x4:_0x3ac20c(0x26c),0x5:_0x3ac20c(0x208),0x6:_0x3ac20c(0x257),0x7:_0x3ac20c(0x195),0x8:_0x3ac20c(0x14f),0x9:_0x3ac20c(0x214)};function _0x54aa29(_0x4d53af){return _0x43c14a[_0x4d53af]||null;}function _0x4d4f2f(_0x446ad3){var _0x31c179=_0x3ac20c,_0x437811=(_0x446ad3[_0x31c179(0x19c)][_0x31c179(0x1ae)]('.')[_0x31c179(0x2a3)]()||'')[_0x31c179(0x2e4)]();if(_0x437811===_0x31c179(0x19b)){_0x181383(_0x446ad3['name']);return;}if(_0x437811!==_0x31c179(0x25a)){alert('Formato\x20não\x20suportado.\x20Escolha\x20um\x20ficheiro\x20.dxf\x20(ou\x20.dwg,\x20para\x20ver\x20as\x20instruções\x20de\x20conversão).');return;}_0xecdf4c['fileName']=_0x446ad3[_0x31c179(0x19c)],_0x18a02d(),_0x2e55a8()[_0x31c179(0x2c3)](function(_0x232f1e){var _0x2a9492=_0x31c179,_0x5033c9=new FileReader();_0x5033c9[_0x2a9492(0x212)]=function(_0x5cb060){var _0x5a1529=_0x2a9492;try{var _0x4b1e15=new _0x232f1e(),_0x1ab6b4=_0x4b1e15[_0x5a1529(0x1b8)]?_0x4b1e15[_0x5a1529(0x1b8)](_0x5cb060[_0x5a1529(0x274)][_0x5a1529(0x1fc)]):_0x4b1e15['parse'](_0x5cb060[_0x5a1529(0x274)]['result']);_0xecdf4c['dxf']=_0x1ab6b4,_0xecdf4c[_0x5a1529(0x180)]=_0x1ab6b4&&_0x1ab6b4[_0x5a1529(0x180)]||[],_0xac045e(),_0xecdf4c[_0x5a1529(0x201)]=_0x1e9c95(_0xecdf4c[_0x5a1529(0x180)]),_0xecdf4c[_0x5a1529(0x2cc)]=0x1,_0x574f87();}catch(_0x4b0d86){console[_0x5a1529(0x23c)]('Erro\x20ao\x20processar\x20DXF:',_0x4b0d86),alert(_0x5a1529(0x15c)),_0xecdf4c[_0x5a1529(0x2cc)]=0x0,_0x574f87();}},_0x5033c9[_0x2a9492(0x1ed)]=function(){var _0x26f4c7=_0x2a9492;alert(_0x26f4c7(0x14e));},_0x5033c9['readAsText'](_0x446ad3);})[_0x31c179(0x22c)](function(_0x444e15){var _0x1e430c=_0x31c179;console['error'](_0x444e15),alert('Não\x20foi\x20possível\x20carregar\x20o\x20leitor\x20de\x20DXF\x20(verifica\x20a\x20ligação\x20à\x20internet).'),_0xecdf4c[_0x1e430c(0x2cc)]=0x0,_0x574f87();});}function _0x18a02d(){var _0xe4631e=_0x3ac20c;_0x599eed[_0xe4631e(0x221)]='<h2>A\x20processar…</h2><p\x20class=\x22ss-subtitle\x22>A\x20ler\x20o\x20ficheiro\x20DXF\x20e\x20a\x20identificar\x20layers\x20e\x20entidades.</p>';}function _0x181383(_0x17fbc9){var _0x42f9d5=_0x3ac20c;_0x599eed[_0x42f9d5(0x221)]='<h2>Ficheiro\x20.dwg\x20detetado</h2>'+_0x42f9d5(0x28b)+_0x42f9d5(0x28c)+_0x263003(_0x17fbc9)+_0x42f9d5(0x141)+_0x42f9d5(0x23a)+'<li>ODA\x20File\x20Converter\x20(gratuito,\x20oficial)</li>'+'<li>LibreCAD\x20ou\x20QCAD\x20(abrir\x20e\x20\x22Guardar\x20como\x22\x20.dxf)</li>'+_0x42f9d5(0x2ad)+_0x42f9d5(0x282)+'<button\x20class=\x22ss-btn\x22\x20id=\x22cad-dwg-retry\x22>Escolher\x20outro\x20ficheiro</button>',document['getElementById'](_0x42f9d5(0x1d2))['addEventListener'](_0x42f9d5(0x24e),function(){var _0x4b6910=_0x42f9d5;_0xecdf4c[_0x4b6910(0x2cc)]=0x0,_0x574f87();});}var _0x3a40c7=[{'re':/cota|dim/,'target':_0x3ac20c(0x27d),'geom':_0x3ac20c(0x24a),'checked':![]},{'re':/texto|text|label|annot|rotul/,'target':_0x3ac20c(0x290),'geom':_0x3ac20c(0x1ce),'checked':![]},{'re':/simbolo|symbol/,'target':'Símbolos','geom':'Point','checked':![]},{'re':/build|edif/,'target':_0x3ac20c(0x14c),'geom':_0x3ac20c(0x2e8),'checked':!![]},{'re':/road|estrada|arruamento|^via$/,'target':_0x3ac20c(0x155),'geom':'LineString','checked':!![]},{'re':/eixo|axis/,'target':_0x3ac20c(0x17d),'geom':_0x3ac20c(0x24a),'checked':!![]},{'re':/passeio|sidewalk|calcada/,'target':_0x3ac20c(0x2a6),'geom':_0x3ac20c(0x24a),'checked':!![]},{'re':/tree|arvore/,'target':'Árvores','geom':_0x3ac20c(0x1ce),'checked':!![]},{'re':/water|agua|hidr/,'target':_0x3ac20c(0x154),'geom':_0x3ac20c(0x24a),'checked':!![]},{'re':/sewer|esgoto|saneamento/,'target':_0x3ac20c(0x241),'geom':_0x3ac20c(0x24a),'checked':!![]}],_0x312457=[{'re':/arvore|tree/,'tipo':_0x3ac20c(0x1fe)},{'re':/hidrante|hydrant/,'tipo':_0x3ac20c(0x26a)},{'re':/poste|pole|light/,'tipo':_0x3ac20c(0x1b1)},{'re':/caixa|manhole|visita/,'tipo':_0x3ac20c(0x1e6)},{'re':/valvula|valve/,'tipo':'Válvula'}];function _0x5d1609(_0xd0de8c){var _0x3cdd7d=_0x3ac20c,_0x4bedee=_0x51e383(_0xd0de8c);for(var _0x10d331=0x0;_0x10d331<_0x3a40c7[_0x3cdd7d(0x2c8)];_0x10d331++){if(_0x3a40c7[_0x10d331]['re'][_0x3cdd7d(0x22d)](_0x4bedee))return{'targetName':_0x3a40c7[_0x10d331]['target'],'geom':_0x3a40c7[_0x10d331][_0x3cdd7d(0x15f)],'checked':_0x3a40c7[_0x10d331][_0x3cdd7d(0x18a)]};}return null;}function _0x49c5c4(_0x1c1af0){var _0x1eb2d9=_0x3ac20c,_0xfb34b4=_0x51e383(_0x1c1af0);for(var _0x99df3f=0x0;_0x99df3f<_0x312457['length'];_0x99df3f++){if(_0x312457[_0x99df3f]['re'][_0x1eb2d9(0x22d)](_0xfb34b4))return _0x312457[_0x99df3f]['tipo'];}return _0x1c1af0||'Bloco';}function _0x3edee0(_0x3a8387){var _0x2ade7d=_0x3ac20c;if(_0x3a8387['shape']===!![]||_0x3a8387[_0x2ade7d(0x1ad)]===!![])return!![];var _0x408465=_0x3a8387['vertices'];if(Array[_0x2ade7d(0x28d)](_0x408465)&&_0x408465[_0x2ade7d(0x2c8)]>0x2){var _0x45a8aa=_0x408465[0x0],_0xe82d94=_0x408465[_0x408465[_0x2ade7d(0x2c8)]-0x1];if(_0x45a8aa&&_0xe82d94&&Math[_0x2ade7d(0x273)](_0x45a8aa['x']-_0xe82d94['x'])<0.000001&&Math['abs'](_0x45a8aa['y']-_0xe82d94['y'])<0.000001)return!![];}return![];}function _0x536357(_0x2f509f){var _0x567f14=_0x3ac20c,_0x3a227={'Point':0x0,'LineString':0x0,'Polygon':0x0};return _0x2f509f['forEach'](function(_0x40047a){var _0x4233fd=_0x141f;if(_0x40047a[_0x4233fd(0x2d7)]===_0x4233fd(0x24b)||_0x40047a[_0x4233fd(0x2d7)]===_0x4233fd(0x2f2)||_0x40047a[_0x4233fd(0x2d7)]==='TEXT'||_0x40047a[_0x4233fd(0x2d7)]==='MTEXT'||_0x40047a['type']===_0x4233fd(0x151))_0x3a227[_0x4233fd(0x1ce)]++;else{if((_0x40047a[_0x4233fd(0x2d7)]===_0x4233fd(0x237)||_0x40047a[_0x4233fd(0x2d7)]==='POLYLINE')&&_0x3edee0(_0x40047a))_0x3a227[_0x4233fd(0x2e8)]++;else{if(_0x40047a[_0x4233fd(0x2d7)]===_0x4233fd(0x16e)||_0x40047a[_0x4233fd(0x2d7)]===_0x4233fd(0x237)||_0x40047a['type']===_0x4233fd(0x1bb)||_0x40047a[_0x4233fd(0x2d7)]==='ARC')_0x3a227[_0x4233fd(0x24a)]++;}}}),Object[_0x567f14(0x17f)](_0x3a227)['sort'](function(_0x4911ae,_0x211c84){return _0x3a227[_0x211c84]-_0x3a227[_0x4911ae];})[0x0];}function _0xac045e(){var _0x154601=_0x3ac20c,_0xa7773={};_0xecdf4c[_0x154601(0x180)]['forEach'](function(_0x311f92){var _0xa1e893=_0x154601,_0x1729e1=_0x311f92[_0xa1e893(0x2d1)]||'0';if(!_0xa7773[_0x1729e1])_0xa7773[_0x1729e1]=[];_0xa7773[_0x1729e1][_0xa1e893(0x1a2)](_0x311f92);});var _0x4e2c6d={};try{var _0x121847=_0xecdf4c[_0x154601(0x25a)][_0x154601(0x1a4)]&&_0xecdf4c['dxf'][_0x154601(0x1a4)]['layer']&&_0xecdf4c['dxf']['tables'][_0x154601(0x2d1)][_0x154601(0x1ba)];if(_0x121847)Object[_0x154601(0x17f)](_0x121847)[_0x154601(0x21e)](function(_0x2be511){var _0x381b27=_0x154601;_0x4e2c6d[_0x2be511]=_0x54aa29(_0x121847[_0x2be511]['colorIndex']||_0x121847[_0x2be511][_0x381b27(0x29d)]);});}catch(_0x57ee66){}_0xecdf4c[_0x154601(0x2bb)]=Object['keys'](_0xa7773)[_0x154601(0x2b3)](function(_0x2d55c5){var _0x511c80=_0x154601,_0x1d12cb=_0xa7773[_0x2d55c5],_0x12f590=_0x5d1609(_0x2d55c5),_0x51a81b=_0x12f590&&_0x12f590[_0x511c80(0x15f)]||_0x536357(_0x1d12cb);return{'name':_0x2d55c5,'count':_0x1d12cb[_0x511c80(0x2c8)],'colorHex':_0x4e2c6d[_0x2d55c5]||_0x511c80(0x2c4),'checked':_0x12f590?_0x12f590[_0x511c80(0x18a)]:!![],'geomHint':_0x51a81b,'targetName':_0x12f590&&_0x12f590[_0x511c80(0x1ea)]||_0x2d55c5};})[_0x154601(0x173)](function(_0x1f6bf3,_0x17b0e1){return _0x17b0e1['count']-_0x1f6bf3['count'];});}function _0x1e9c95(_0x304b1d){var _0x23a42e=_0x3ac20c,_0x3ffb34=Infinity,_0x5752e3=Infinity,_0x4f4cc5=-Infinity,_0x976a07=-Infinity,_0x4a4d35=![];function _0x1d2af7(_0x4a2cb9,_0x582321){var _0x394e5e=_0x141f;if(typeof _0x4a2cb9!==_0x394e5e(0x185)||typeof _0x582321!==_0x394e5e(0x185)||!isFinite(_0x4a2cb9)||!isFinite(_0x582321))return;_0x4a4d35=!![];if(_0x4a2cb9<_0x3ffb34)_0x3ffb34=_0x4a2cb9;if(_0x4a2cb9>_0x4f4cc5)_0x4f4cc5=_0x4a2cb9;if(_0x582321<_0x5752e3)_0x5752e3=_0x582321;if(_0x582321>_0x976a07)_0x976a07=_0x582321;}_0x304b1d[_0x23a42e(0x21e)](function(_0x195bdd){var _0x5adcab=_0x23a42e;if(Array[_0x5adcab(0x28d)](_0x195bdd['vertices']))_0x195bdd[_0x5adcab(0x230)][_0x5adcab(0x21e)](function(_0x344938){if(_0x344938)_0x1d2af7(_0x344938['x'],_0x344938['y']);});if(_0x195bdd[_0x5adcab(0x1d6)])_0x1d2af7(_0x195bdd['center']['x'],_0x195bdd[_0x5adcab(0x1d6)]['y']);if(_0x195bdd[_0x5adcab(0x1f4)])_0x1d2af7(_0x195bdd[_0x5adcab(0x1f4)]['x'],_0x195bdd[_0x5adcab(0x1f4)]['y']);if(_0x195bdd['insertionPoint'])_0x1d2af7(_0x195bdd[_0x5adcab(0x1a9)]['x'],_0x195bdd[_0x5adcab(0x1a9)]['y']);if(_0x195bdd['startPoint'])_0x1d2af7(_0x195bdd['startPoint']['x'],_0x195bdd[_0x5adcab(0x1fd)]['y']);});if(!_0x4a4d35)return null;return{'minX':_0x3ffb34,'minY':_0x5752e3,'maxX':_0x4f4cc5,'maxY':_0x976a07,'width':_0x4f4cc5-_0x3ffb34,'height':_0x976a07-_0x5752e3};}function _0x574f87(){var _0x15dfe9=_0x3ac20c,_0xe1ee81=_0x41226a[_0x15dfe9(0x2b3)](function(_0x5e538c,_0x1da505){var _0x57b739=_0x15dfe9,_0x40f65b=_0x1da505===_0xecdf4c['step']?_0x57b739(0x270):_0x1da505<_0xecdf4c[_0x57b739(0x2cc)]?_0x57b739(0x2b8):'';return'<div\x20class=\x22ss-step-pill\x20'+_0x40f65b+_0x57b739(0x2ec)+(_0x1da505+0x1)+'</span>'+_0x263003(_0x5e538c)+_0x57b739(0x2d8);})['join']('');_0x599eed[_0x15dfe9(0x221)]=_0x15dfe9(0x224)+'<p\x20class=\x22ss-subtitle\x22>Converte\x20um\x20desenho\x20CAD\x20(DXF)\x20diretamente\x20para\x20uma\x20ou\x20mais\x20camadas\x20SIG,\x20com\x20limpeza\x20automática\x20de\x20geometria.</p>'+'<div\x20class=\x22ss-steps\x22>'+_0xe1ee81+'</div>'+'<div\x20id=\x22cad-step-body\x22></div>';if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x0)_0x20844f();else{if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x1)_0x51343c();else{if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x2)_0x33095d();else{if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x3)_0x3658c0();else{if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x4)_0x248e09();else{if(_0xecdf4c[_0x15dfe9(0x2cc)]===0x5)_0x3700f1();}}}}}}function _0x20844f(){var _0x298dac=_0x3ac20c,_0x47cca9=document[_0x298dac(0x2bc)]('cad-step-body');_0x47cca9[_0x298dac(0x221)]='<div\x20class=\x22ss-card\x22>'+_0x298dac(0x140)+_0x298dac(0x259)+_0x298dac(0x1d3)+_0x298dac(0x1b9)+_0x298dac(0x28e)+_0x298dac(0x2d8)+'<input\x20type=\x22file\x22\x20id=\x22cad-file-input\x22\x20accept=\x22.dxf,.dwg\x22\x20style=\x22display:none;\x22>'+(_0xecdf4c[_0x298dac(0x2e6)]?_0x298dac(0x249)+_0x263003(_0xecdf4c[_0x298dac(0x2e6)])+_0x298dac(0x2d8):'')+'</div>';var _0x1227b1=document[_0x298dac(0x2bc)](_0x298dac(0x174)),_0x41a814=document[_0x298dac(0x2bc)](_0x298dac(0x15a));_0x1227b1[_0x298dac(0x21d)](_0x298dac(0x24e),function(){_0x41a814['click']();}),_0x1227b1[_0x298dac(0x21d)](_0x298dac(0x1aa),function(_0x826670){var _0xfdb4b9=_0x298dac;_0x826670[_0xfdb4b9(0x1c4)](),_0x1227b1[_0xfdb4b9(0x14a)][_0xfdb4b9(0x14b)]('is-drag');}),_0x1227b1[_0x298dac(0x21d)]('dragleave',function(){var _0x1b3384=_0x298dac;_0x1227b1[_0x1b3384(0x14a)][_0x1b3384(0x18e)](_0x1b3384(0x190));}),_0x1227b1[_0x298dac(0x21d)](_0x298dac(0x147),function(_0x2e487a){var _0x2f74b6=_0x298dac;_0x2e487a['preventDefault'](),_0x1227b1[_0x2f74b6(0x14a)][_0x2f74b6(0x18e)](_0x2f74b6(0x190));if(_0x2e487a['dataTransfer'][_0x2f74b6(0x229)]&&_0x2e487a[_0x2f74b6(0x254)][_0x2f74b6(0x229)][0x0])_0x4d4f2f(_0x2e487a[_0x2f74b6(0x254)]['files'][0x0]);}),_0x41a814[_0x298dac(0x21d)]('change',function(){var _0x23218b=_0x298dac;if(_0x41a814[_0x23218b(0x229)]&&_0x41a814['files'][0x0])_0x4d4f2f(_0x41a814[_0x23218b(0x229)][0x0]);});}function _0x51343c(){var _0x2e9264=_0x3ac20c,_0x4e00b7=document[_0x2e9264(0x2bc)](_0x2e9264(0x2be)),_0x4fdb03=_0xecdf4c[_0x2e9264(0x180)][_0x2e9264(0x2c8)],_0x33a2fe=_0xecdf4c[_0x2e9264(0x2bb)][_0x2e9264(0x2b3)](function(_0x1e91ca,_0x25a648){var _0x18d8a2=_0x2e9264;return _0x18d8a2(0x172)+_0x18d8a2(0x23d)+_0x25a648+_0x18d8a2(0x24d)+(_0x1e91ca[_0x18d8a2(0x18a)]?'checked':'')+'>'+_0x18d8a2(0x220)+_0x263003(_0x1e91ca[_0x18d8a2(0x165)])+';\x22></span>'+_0x18d8a2(0x159)+_0x263003(_0x1e91ca['name'])+'<span\x20class=\x22cad-geom-badge\x20'+(_0x1e91ca['geomHint']==='Point'?'pt':_0x1e91ca[_0x18d8a2(0x169)]===_0x18d8a2(0x2e8)?'pg':'ln')+'\x22>'+_0x263003(_0x1e91ca[_0x18d8a2(0x169)])+'</span></span>'+_0x18d8a2(0x28f)+_0x1e91ca[_0x18d8a2(0x152)]+_0x18d8a2(0x18b)+_0x18d8a2(0x2d8);})[_0x2e9264(0x170)](''),_0x3fd77c='';_0xecdf4c[_0x2e9264(0x201)]&&Math[_0x2e9264(0x2df)](_0xecdf4c[_0x2e9264(0x201)][_0x2e9264(0x1e7)],_0xecdf4c['bbox']['height'])<0x5&&(_0x3fd77c='<div\x20class=\x22ss-note\x22\x20style=\x22background:rgba(179,65,60,.07);\x20border-color:rgba(179,65,60,.28);\x22>'+_0x2e9264(0x1d1)+_0x2e9264(0x2d3)+_0xecdf4c[_0x2e9264(0x201)]['width'][_0x2e9264(0x1f6)](0x3)+_0x2e9264(0x256)+_0xecdf4c[_0x2e9264(0x201)]['height']['toFixed'](0x3)+_0x2e9264(0x1f9)+_0x2e9264(0x1d0)+'(ex:\x20exportado\x20de\x20um\x20programa\x203D\x20como\x20Blender/SketchUp),\x20à\x20escala\x20do\x20próprio\x20objeto,\x20sem\x20qualquer\x20ligação\x20ao\x20mundo\x20real.<br><br>'+_0x2e9264(0x1ec)+_0x2e9264(0x2f3)+_0x2e9264(0x2d8)),_0x4e00b7[_0x2e9264(0x221)]='<div\x20class=\x22ss-note\x22><b>'+_0x263003(_0xecdf4c[_0x2e9264(0x2e6)])+_0x2e9264(0x145)+_0x4fdb03+_0x2e9264(0x246)+_0xecdf4c['layerTable'][_0x2e9264(0x2c8)]+_0x2e9264(0x17c)+_0x3fd77c+_0x2e9264(0x1d7)+_0x2e9264(0x1de)+_0x33a2fe+'</div>'+_0x2e9264(0x203)+_0x2e9264(0x27f)+_0x2e9264(0x2ca)+_0x2e9264(0x2d8),Array[_0x2e9264(0x205)][_0x2e9264(0x22e)][_0x2e9264(0x1f1)](document['querySelectorAll'](_0x2e9264(0x181)))['forEach'](function(_0x229c78){var _0x383b19=_0x2e9264;_0x229c78[_0x383b19(0x21d)](_0x383b19(0x2bd),function(){var _0x2a7e55=_0x383b19;_0xecdf4c[_0x2a7e55(0x2bb)][Number(_0x229c78['dataset']['idx'])][_0x2a7e55(0x18a)]=_0x229c78[_0x2a7e55(0x18a)];});}),document[_0x2e9264(0x2bc)](_0x2e9264(0x168))[_0x2e9264(0x21d)](_0x2e9264(0x24e),function(){var _0x497fa6=_0x2e9264;_0xecdf4c[_0x497fa6(0x2cc)]=0x0,_0x574f87();}),document[_0x2e9264(0x2bc)](_0x2e9264(0x1ac))[_0x2e9264(0x21d)](_0x2e9264(0x24e),function(){var _0x190508=_0x2e9264;if(!_0xecdf4c[_0x190508(0x2bb)][_0x190508(0x2e0)](function(_0x391bac){var _0x5e6977=_0x190508;return _0x391bac[_0x5e6977(0x18a)];})){alert(_0x190508(0x21c));return;}_0xecdf4c['step']=0x2,_0x574f87();});}function _0x33095d(){var _0xe71b3e=_0x3ac20c,_0x404b75=document[_0xe71b3e(0x2bc)](_0xe71b3e(0x2be)),_0x393d8c=_0xecdf4c['layerTable']['filter'](function(_0x17fa01){var _0x52de2f=_0xe71b3e;return _0x17fa01[_0x52de2f(0x18a)];}),_0x52b3e3=_0x393d8c[_0xe71b3e(0x2b3)](function(_0x1185ab,_0x4b27c6){var _0x1e9a9d=_0xe71b3e;return'<tr>'+_0x1e9a9d(0x17e)+_0x263003(_0x1185ab[_0x1e9a9d(0x19c)])+_0x1e9a9d(0x242)+_0x1185ab[_0x1e9a9d(0x152)]+_0x1e9a9d(0x235)+'<td><input\x20type=\x22text\x22\x20data-idx=\x22'+_0x4b27c6+_0x1e9a9d(0x247)+_0x263003(_0x1185ab[_0x1e9a9d(0x1ea)])+_0x1e9a9d(0x227)+_0x1e9a9d(0x175)+_0x4b27c6+_0x1e9a9d(0x163)+[_0x1e9a9d(0x1ce),_0x1e9a9d(0x24a),'Polygon']['map'](function(_0x12b7db){var _0x1d660a=_0x1e9a9d;return _0x1d660a(0x2ce)+_0x12b7db+'\x22'+(_0x12b7db===_0x1185ab[_0x1d660a(0x169)]?'\x20selected':'')+'>'+_0x12b7db+_0x1d660a(0x142);})[_0x1e9a9d(0x170)]('')+_0x1e9a9d(0x16a)+'</tr>';})[_0xe71b3e(0x170)]('');_0x404b75[_0xe71b3e(0x221)]='<div\x20class=\x22ss-note\x22><b>Fase\x203.</b>\x20Define,\x20para\x20cada\x20layer\x20CAD\x20escolhido,\x20o\x20nome\x20da\x20camada\x20SIG\x20de\x20destino\x20(é\x20criada\x20uma\x20camada\x20nova\x20com\x20este\x20nome)\x20e\x20o\x20tipo\x20de\x20geometria.\x20Só\x20precisas\x20de\x20fazer\x20isto\x20uma\x20vez\x20(depois\x20guarda\x20como\x20perfil).</div>'+_0xe71b3e(0x1d7)+_0xe71b3e(0x1b0)+'<table\x20class=\x22ss-map-table\x22><thead><tr><th>Layer\x20CAD</th><th>Nome\x20da\x20camada\x20SIG</th><th>Geometria</th></tr></thead><tbody>'+_0x52b3e3+_0xe71b3e(0x1db)+'</div>'+_0xe71b3e(0x1d7)+_0xe71b3e(0x1da)+_0xe71b3e(0x25d)+'<label>O\x20ficheiro\x20está\x20em:</label>'+_0xe71b3e(0x189)+_0xe71b3e(0x233)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x1f2)?_0xe71b3e(0x29f):'')+_0xe71b3e(0x20c)+_0xe71b3e(0x183)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x2b6)?_0xe71b3e(0x29f):'')+_0xe71b3e(0x22a)+_0xe71b3e(0x1cf)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x1dd)?'\x20selected':'')+_0xe71b3e(0x2ac)+_0xe71b3e(0x1c2)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x291)?_0xe71b3e(0x29f):'')+_0xe71b3e(0x299)+_0xe71b3e(0x1b3)+_0xe71b3e(0x2d8)+_0xe71b3e(0x206)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x1dd)?'':_0xe71b3e(0x184))+'\x22>'+'<label>Definição\x20proj4</label>'+_0xe71b3e(0x228)+_0x263003(_0xecdf4c[_0xe71b3e(0x26d)])+'\x22>'+_0xe71b3e(0x1bc)+'</div>'+_0xe71b3e(0x2e1)+(_0xecdf4c[_0xe71b3e(0x232)]===_0xe71b3e(0x291)?'':_0xe71b3e(0x184))+'\x22>'+'<div\x20class=\x22ss-hint\x22\x20style=\x22margin-bottom:10px;\x22>Indica\x20dois\x20pontos\x20do\x20desenho\x20(as\x20coordenadas\x20tal\x20como\x20aparecem\x20no\x20CAD)\x20e\x20onde\x20esses\x20mesmos\x20dois\x20pontos\x20ficam\x20no\x20mundo\x20real\x20(latitude/longitude).\x20A\x20app\x20calcula\x20a\x20escala\x20e\x20a\x20rotação\x20automaticamente\x20a\x20partir\x20destes\x20dois\x20pontos.</div>'+'<div\x20style=\x22display:grid;\x20grid-template-columns:1fr\x201fr;\x20gap:10px;\x22>'+_0xe71b3e(0x200)+_0x263003(_0xecdf4c[_0xe71b3e(0x216)][_0xe71b3e(0x211)])+'\x22\x20placeholder=\x22ex:\x200.004042\x22></div>'+_0xe71b3e(0x1bf)+_0x263003(_0xecdf4c[_0xe71b3e(0x216)][_0xe71b3e(0x287)])+_0xe71b3e(0x1a3)+_0xe71b3e(0x20e)+_0x263003(_0xecdf4c[_0xe71b3e(0x216)][_0xe71b3e(0x2da)])+_0xe71b3e(0x297)+_0xe71b3e(0x2e2)+_0x263003(_0xecdf4c['twoPointInput'][_0xe71b3e(0x158)])+'\x22\x20placeholder=\x22ex:\x20-8.62910\x22></div>'+'<div><label>Ponto\x202\x20/\x20X\x20no\x20desenho</label><input\x20type=\x22text\x22\x20id=\x22cad-tp-p2x\x22\x20value=\x22'+_0x263003(_0xecdf4c[_0xe71b3e(0x216)]['p2x'])+_0xe71b3e(0x22b)+_0xe71b3e(0x1f7)+_0x263003(_0xecdf4c['twoPointInput'][_0xe71b3e(0x226)])+_0xe71b3e(0x2c6)+_0xe71b3e(0x1d4)+_0x263003(_0xecdf4c[_0xe71b3e(0x216)][_0xe71b3e(0x1e4)])+_0xe71b3e(0x191)+_0xe71b3e(0x144)+_0x263003(_0xecdf4c['twoPointInput'][_0xe71b3e(0x25e)])+'\x22\x20placeholder=\x22ex:\x20-8.62822\x22></div>'+_0xe71b3e(0x2d8)+_0xe71b3e(0x1a7)+_0xe71b3e(0x2d8)+_0xe71b3e(0x2d8)+_0xe71b3e(0x203)+_0xe71b3e(0x231)+'<button\x20class=\x22ss-btn\x22\x20id=\x22cad-step3-next\x22>Converter\x20→</button>'+_0xe71b3e(0x2d8),Array[_0xe71b3e(0x205)][_0xe71b3e(0x22e)][_0xe71b3e(0x1f1)](document['querySelectorAll']('.cad-target-name'))['forEach'](function(_0x5f4d08){var _0x47485e=_0xe71b3e;_0x5f4d08[_0x47485e(0x21d)](_0x47485e(0x2bd),function(){var _0x200fbc=_0x47485e;_0x393d8c[Number(_0x5f4d08[_0x200fbc(0x2c1)][_0x200fbc(0x1dc)])]['targetName']=_0x5f4d08[_0x200fbc(0x253)]['trim']()||_0x393d8c[Number(_0x5f4d08['dataset'][_0x200fbc(0x1dc)])][_0x200fbc(0x19c)];});}),Array[_0xe71b3e(0x205)]['slice']['call'](document[_0xe71b3e(0x1c1)](_0xe71b3e(0x296)))[_0xe71b3e(0x21e)](function(_0x4bcf68){var _0x2c1ed6=_0xe71b3e;_0x4bcf68[_0x2c1ed6(0x21d)]('change',function(){var _0x112dc6=_0x2c1ed6;_0x393d8c[Number(_0x4bcf68[_0x112dc6(0x2c1)][_0x112dc6(0x1dc)])][_0x112dc6(0x169)]=_0x4bcf68[_0x112dc6(0x253)];});}),document[_0xe71b3e(0x2bc)]('cad-crs-select')[_0xe71b3e(0x21d)]('change',function(_0x15055e){var _0x3d0023=_0xe71b3e;_0xecdf4c['fromCRS']=_0x15055e[_0x3d0023(0x274)][_0x3d0023(0x253)],document[_0x3d0023(0x2bc)]('cad-crs-custom-wrap')[_0x3d0023(0x2ba)]['display']=_0xecdf4c[_0x3d0023(0x232)]==='custom'?'':_0x3d0023(0x295),document[_0x3d0023(0x2bc)]('cad-crs-twopoint-wrap')['style'][_0x3d0023(0x1ab)]=_0xecdf4c[_0x3d0023(0x232)]==='twopoint'?'':'none';});var _0x233902=document[_0xe71b3e(0x2bc)](_0xe71b3e(0x266));if(_0x233902)_0x233902['addEventListener'](_0xe71b3e(0x2bd),function(){var _0x40a3be=_0xe71b3e;_0xecdf4c[_0x40a3be(0x26d)]=_0x233902[_0x40a3be(0x253)]['trim']();});[_0xe71b3e(0x211),_0xe71b3e(0x287),_0xe71b3e(0x2da),_0xe71b3e(0x158),'p2x',_0xe71b3e(0x226),'p2lat','p2lon'][_0xe71b3e(0x21e)](function(_0x58613e){var _0x4ddc52=_0xe71b3e,_0x26bb38=document[_0x4ddc52(0x2bc)](_0x4ddc52(0x2b9)+_0x58613e);if(!_0x26bb38)return;_0x26bb38[_0x4ddc52(0x21d)]('change',function(){var _0x588ce6=_0x4ddc52;_0xecdf4c[_0x588ce6(0x216)][_0x58613e]=_0x26bb38[_0x588ce6(0x253)][_0x588ce6(0x2b5)](),_0x1f9d4f();});}),_0x1f9d4f(),document[_0xe71b3e(0x2bc)](_0xe71b3e(0x16f))[_0xe71b3e(0x21d)](_0xe71b3e(0x24e),function(){var _0x25080a=_0xe71b3e;_0xecdf4c[_0x25080a(0x2cc)]=0x1,_0x574f87();}),document[_0xe71b3e(0x2bc)](_0xe71b3e(0x261))[_0xe71b3e(0x21d)](_0xe71b3e(0x24e),function(){var _0x32e7ac=_0xe71b3e;if(_0xecdf4c[_0x32e7ac(0x232)]===_0x32e7ac(0x291)&&(!_0xecdf4c['twoPoint']||!_0xecdf4c[_0x32e7ac(0x1f5)][_0x32e7ac(0x1b5)])){alert(_0x32e7ac(0x260)+(_0xecdf4c['twoPoint']&&_0xecdf4c['twoPoint']['error']?_0xecdf4c['twoPoint'][_0x32e7ac(0x23c)]:_0x32e7ac(0x267))+').');return;}_0xecdf4c['step']=0x3,_0x574f87(),_0xc8980d();});}function _0x513a64(){var _0x3b1c87=_0x3ac20c,_0x2ba9d8=_0xecdf4c[_0x3b1c87(0x216)],_0x59e95b=parseFloat(_0x2ba9d8['p1x']),_0x129d4e=parseFloat(_0x2ba9d8['p1y']),_0x57ccdb=parseFloat(_0x2ba9d8['p2x']),_0x2725c8=parseFloat(_0x2ba9d8[_0x3b1c87(0x226)]),_0x131a75=parseFloat(_0x2ba9d8['p1lat']),_0x482e0a=parseFloat(_0x2ba9d8[_0x3b1c87(0x158)]),_0x820b56=parseFloat(_0x2ba9d8[_0x3b1c87(0x1e4)]),_0x104066=parseFloat(_0x2ba9d8[_0x3b1c87(0x25e)]),_0xb340e=[_0x59e95b,_0x129d4e,_0x57ccdb,_0x2725c8,_0x131a75,_0x482e0a,_0x820b56,_0x104066];if(_0xb340e[_0x3b1c87(0x2e0)](function(_0x1e563b){return!isFinite(_0x1e563b);}))return{'valid':![],'error':'preenche\x20os\x208\x20campos\x20(2\x20pontos\x20do\x20desenho\x20+\x202\x20pontos\x20reais)'};if(Math[_0x3b1c87(0x273)](_0x131a75)>0x5a||Math[_0x3b1c87(0x273)](_0x820b56)>0x5a||Math[_0x3b1c87(0x273)](_0x482e0a)>0xb4||Math[_0x3b1c87(0x273)](_0x104066)>0xb4)return{'valid':![],'error':_0x3b1c87(0x272)};var _0x20bd38={'x':_0x57ccdb-_0x59e95b,'y':_0x2725c8-_0x129d4e},_0x40d818=Math['hypot'](_0x20bd38['x'],_0x20bd38['y']);if(_0x40d818<1e-9)return{'valid':![],'error':'os\x20dois\x20pontos\x20do\x20desenho\x20não\x20podem\x20ser\x20coincidentes'};var _0x322a64,_0x15a5d7;try{_0x322a64=proj4(_0x3b1c87(0x2b6),_0x3b1c87(0x1f2),[_0x482e0a,_0x131a75]),_0x15a5d7=proj4(_0x3b1c87(0x2b6),'EPSG:3763',[_0x104066,_0x820b56]);}catch(_0x13a4d3){return{'valid':![],'error':_0x3b1c87(0x2b2)};}var _0x11e93d={'x':_0x15a5d7[0x0]-_0x322a64[0x0],'y':_0x15a5d7[0x1]-_0x322a64[0x1]},_0x31664f=Math[_0x3b1c87(0x2b0)](_0x11e93d['x'],_0x11e93d['y']);if(_0x31664f<0.000001)return{'valid':![],'error':_0x3b1c87(0x2c7)};var _0x43b1ec=_0x31664f/_0x40d818,_0x184473=Math[_0x3b1c87(0x1d5)](_0x11e93d['y'],_0x11e93d['x'])-Math[_0x3b1c87(0x1d5)](_0x20bd38['y'],_0x20bd38['x']);return{'valid':!![],'p1':{'x':_0x59e95b,'y':_0x129d4e},'q1':{'x':_0x322a64[0x0],'y':_0x322a64[0x1]},'scale':_0x43b1ec,'rotation':_0x184473};}function _0x1f9d4f(){var _0x1084db=_0x3ac20c,_0x384b6a=document[_0x1084db(0x2bc)]('cad-tp-status'),_0x19ded9=Object[_0x1084db(0x17f)](_0xecdf4c['twoPointInput'])[_0x1084db(0x2e0)](function(_0x1d80bf){var _0x7a8967=_0x1084db;return _0xecdf4c[_0x7a8967(0x216)][_0x1d80bf]!=='';});if(!_0x19ded9){_0xecdf4c[_0x1084db(0x1f5)]=null;if(_0x384b6a)_0x384b6a['innerHTML']='';return;}var _0xbedc7f=_0x513a64();_0xecdf4c['twoPoint']=_0xbedc7f;if(!_0x384b6a)return;if(_0xbedc7f[_0x1084db(0x1b5)]){var _0x197577=_0xbedc7f[_0x1084db(0x234)]>=0x1?_0xbedc7f[_0x1084db(0x234)][_0x1084db(0x1f6)](0x2)+'×':'1\x20/\x20'+(0x1/_0xbedc7f[_0x1084db(0x234)])[_0x1084db(0x1f6)](0x2),_0x556cc6=(_0xbedc7f[_0x1084db(0x2a8)]*0xb4/Math['PI'])[_0x1084db(0x1f6)](0x1);_0x384b6a[_0x1084db(0x221)]='<span\x20style=\x22color:var(--green-deep);\x22>✓\x20Transformação\x20calculada\x20/\x20escala\x20'+_0x197577+_0x1084db(0x2b7)+_0x556cc6+_0x1084db(0x294);}else _0x384b6a[_0x1084db(0x221)]=_0x1084db(0x199)+_0x263003(_0xbedc7f[_0x1084db(0x23c)])+_0x1084db(0x186);}function _0x1de3c8(_0x2f11a5,_0x4cccc3){var _0x3598cf=_0x3ac20c;try{if(_0xecdf4c[_0x3598cf(0x232)]===_0x3598cf(0x2b6))return[_0x2f11a5,_0x4cccc3];if(_0xecdf4c['fromCRS']==='EPSG:3763')return proj4(_0x3598cf(0x1f2),_0x3598cf(0x2b6),[_0x2f11a5,_0x4cccc3]);if(_0xecdf4c[_0x3598cf(0x232)]===_0x3598cf(0x1dd)&&_0xecdf4c[_0x3598cf(0x26d)]){if(!proj4[_0x3598cf(0x2dd)](_0x3598cf(0x2a1)))proj4['defs']('CAD_CUSTOM_SRC',_0xecdf4c[_0x3598cf(0x26d)]);return proj4(_0x3598cf(0x2a1),_0x3598cf(0x2b6),[_0x2f11a5,_0x4cccc3]);}if(_0xecdf4c[_0x3598cf(0x232)]===_0x3598cf(0x291)&&_0xecdf4c[_0x3598cf(0x1f5)]&&_0xecdf4c[_0x3598cf(0x1f5)][_0x3598cf(0x1b5)]){var _0x358c10=_0xecdf4c[_0x3598cf(0x1f5)],_0xcd77da=_0x2f11a5-_0x358c10['p1']['x'],_0x420016=_0x4cccc3-_0x358c10['p1']['y'],_0x31d617=Math[_0x3598cf(0x2e9)](_0x358c10[_0x3598cf(0x2a8)]),_0x10c022=Math[_0x3598cf(0x2c0)](_0x358c10[_0x3598cf(0x2a8)]),_0x3d22a2=_0x358c10['q1']['x']+_0x358c10['scale']*(_0xcd77da*_0x31d617-_0x420016*_0x10c022),_0x5a2bd0=_0x358c10['q1']['y']+_0x358c10[_0x3598cf(0x234)]*(_0xcd77da*_0x10c022+_0x420016*_0x31d617);return proj4('EPSG:3763','EPSG:4326',[_0x3d22a2,_0x5a2bd0]);}}catch(_0x531213){}return[_0x2f11a5,_0x4cccc3];}function _0x4bfc53(_0x338a09,_0x21b85e,_0x592ba4,_0x3768cf,_0x46c2b0){var _0x26d978=_0x3ac20c,_0x26dc9f=_0x592ba4,_0x392fda=_0x3768cf;if(_0x392fda<=_0x26dc9f)_0x392fda+=0x168;var _0x33d6de=[];for(var _0xf24e20=0x0;_0xf24e20<=_0x46c2b0;_0xf24e20++){var _0xb5de5f=(_0x26dc9f+(_0x392fda-_0x26dc9f)*(_0xf24e20/_0x46c2b0))*Math['PI']/0xb4;_0x33d6de[_0x26d978(0x1a2)]({'x':_0x338a09['x']+_0x21b85e*Math[_0x26d978(0x2e9)](_0xb5de5f),'y':_0x338a09['y']+_0x21b85e*Math[_0x26d978(0x2c0)](_0xb5de5f)});}return _0x33d6de;}function _0x4c520f(_0xc04f4b){var _0x1c659d=[];return _0xc04f4b['forEach'](function(_0x5aeb8c){var _0x2f9816=_0x141f,_0x31abd7=_0x1c659d[_0x1c659d[_0x2f9816(0x2c8)]-0x1];if(!_0x31abd7||Math[_0x2f9816(0x273)](_0x31abd7['x']-_0x5aeb8c['x'])>1e-9||Math[_0x2f9816(0x273)](_0x31abd7['y']-_0x5aeb8c['y'])>1e-9)_0x1c659d[_0x2f9816(0x1a2)](_0x5aeb8c);}),_0x1c659d;}function _0x845fb8(_0x27cfdb,_0x4b8a3e,_0x503b69){var _0x1d38fe=_0x3ac20c;try{if(_0x27cfdb[_0x1d38fe(0x2d7)]==='DIMENSION'||_0x27cfdb['type']===_0x1d38fe(0x1b2))return null;if(_0x27cfdb['type']==='CIRCLE'&&_0x27cfdb[_0x1d38fe(0x1d6)]){var _0x43d29e=_0x1de3c8(_0x27cfdb['center']['x'],_0x27cfdb[_0x1d38fe(0x1d6)]['y']);return{'geomType':'Point','coords':_0x43d29e,'extra':{'Raio':_0x27cfdb[_0x1d38fe(0x1e8)]||null}};}if(_0x27cfdb['type']===_0x1d38fe(0x24b)){var _0x4b3e77=_0x27cfdb[_0x1d38fe(0x1f4)]||_0x27cfdb['insertionPoint'];if(!_0x4b3e77)return null;var _0x1c3846=_0x1de3c8(_0x4b3e77['x'],_0x4b3e77['y']);return{'geomType':_0x1d38fe(0x1ce),'coords':_0x1c3846,'extra':{'Tipo':_0x49c5c4(_0x27cfdb['name'])}};}if(_0x27cfdb[_0x1d38fe(0x2d7)]==='TEXT'||_0x27cfdb[_0x1d38fe(0x2d7)]===_0x1d38fe(0x284)){var _0x6e896=_0x27cfdb[_0x1d38fe(0x1fd)]||_0x27cfdb[_0x1d38fe(0x1f4)];if(!_0x6e896)return null;var _0x52f074=_0x1de3c8(_0x6e896['x'],_0x6e896['y']);return{'geomType':'Point','coords':_0x52f074,'extra':{'Label':_0x27cfdb['text']||''}};}if(_0x27cfdb[_0x1d38fe(0x2d7)]==='ARC'&&_0x27cfdb[_0x1d38fe(0x1d6)]&&_0x27cfdb['radius']!=null){var _0x3592d4=_0x4bfc53(_0x27cfdb[_0x1d38fe(0x1d6)],_0x27cfdb[_0x1d38fe(0x1e8)],_0x27cfdb[_0x1d38fe(0x2e5)]||0x0,_0x27cfdb['endAngle']||0x168,0x10),_0x46019b=_0x4c520f(_0x3592d4);if(_0x46019b[_0x1d38fe(0x2c8)]<0x2)return null;return{'geomType':'LineString','coords':_0x46019b[_0x1d38fe(0x2b3)](function(_0x5d01c5){return _0x1de3c8(_0x5d01c5['x'],_0x5d01c5['y']);})};}if(_0x27cfdb[_0x1d38fe(0x2d7)]==='LINE'||_0x27cfdb[_0x1d38fe(0x2d7)]==='LWPOLYLINE'||_0x27cfdb['type']===_0x1d38fe(0x1bb)){var _0x532593=_0x27cfdb[_0x1d38fe(0x230)];if(!Array[_0x1d38fe(0x28d)](_0x532593)||_0x532593['length']<0x2)return null;var _0xe2b458=_0x3edee0(_0x27cfdb),_0x34a39e=_0x4c520f(_0x532593);if(_0x4b8a3e==='Polygon'&&_0xe2b458){var _0x35bbd5=_0x34a39e[_0x1d38fe(0x22e)]();if(_0x35bbd5['length']<0x3)return null;var _0x48158d=_0x35bbd5[0x0],_0x585dcc=_0x35bbd5[_0x35bbd5[_0x1d38fe(0x2c8)]-0x1];if(Math[_0x1d38fe(0x273)](_0x48158d['x']-_0x585dcc['x'])>1e-9||Math[_0x1d38fe(0x273)](_0x48158d['y']-_0x585dcc['y'])>1e-9)_0x35bbd5[_0x1d38fe(0x1a2)](_0x48158d);if(_0x35bbd5['length']<0x4)return null;return{'geomType':'Polygon','coords':_0x35bbd5['map'](function(_0x5b0cc8){return _0x1de3c8(_0x5b0cc8['x'],_0x5b0cc8['y']);})};}if(_0x34a39e['length']<0x2)return null;return{'geomType':_0x1d38fe(0x24a),'coords':_0x34a39e[_0x1d38fe(0x2b3)](function(_0x44998a){return _0x1de3c8(_0x44998a['x'],_0x44998a['y']);})};}return null;}catch(_0x134add){return null;}}function _0x238231(){var _0x39866c=_0x3ac20c,_0xba6831=performance['now'](),_0x22d53e=_0xecdf4c[_0x39866c(0x2bb)][_0x39866c(0x161)](function(_0x18e797){return _0x18e797['checked'];}),_0x39ddab=[],_0x1f6fa0=0x0,_0x5acdc5=new Date()[_0x39866c(0x27a)]()[_0x39866c(0x22e)](0x0,0xa);_0x22d53e[_0x39866c(0x21e)](function(_0x3af67b){var _0x268d84=_0x39866c,_0x113668=_0xecdf4c['entities']['filter'](function(_0x2d1809){var _0x4f9423=_0x141f;return(_0x2d1809[_0x4f9423(0x2d1)]||'0')===_0x3af67b['name'];}),_0x1f15e1=[],_0x5d4cf6=0x0;_0x113668[_0x268d84(0x21e)](function(_0x3b6049){var _0x101ae4=_0x268d84,_0xfb6b6f=_0x845fb8(_0x3b6049,_0x3af67b['geomHint'],_0x3af67b[_0x101ae4(0x165)]);if(!_0xfb6b6f){_0x1f6fa0++;return;}_0x5d4cf6++;var _0x268738={'ID':_0x3af67b[_0x101ae4(0x1ea)]+'_'+_0x5d4cf6,'Layer':_0x3af67b['name'],'Cor':_0x3af67b[_0x101ae4(0x165)],'Tipo':_0xfb6b6f[_0x101ae4(0x19a)]&&_0xfb6b6f[_0x101ae4(0x19a)][_0x101ae4(0x1df)]||_0x3af67b[_0x101ae4(0x1ea)],'DataImportacao':_0x5acdc5};if(_0xfb6b6f[_0x101ae4(0x19a)]&&_0xfb6b6f[_0x101ae4(0x19a)][_0x101ae4(0x167)]!==undefined)_0x268738[_0x101ae4(0x167)]=_0xfb6b6f[_0x101ae4(0x19a)]['Label'];if(_0xfb6b6f[_0x101ae4(0x19a)]&&_0xfb6b6f['extra'][_0x101ae4(0x264)]!==undefined&&_0xfb6b6f[_0x101ae4(0x19a)][_0x101ae4(0x264)]!==null)_0x268738[_0x101ae4(0x264)]=_0xfb6b6f[_0x101ae4(0x19a)]['Raio'];var _0x4600e2;if(_0xfb6b6f['geomType']===_0x101ae4(0x1ce))_0x4600e2={'type':_0x101ae4(0x1ce),'coordinates':_0xfb6b6f[_0x101ae4(0x188)]};else{if(_0xfb6b6f[_0x101ae4(0x1e0)]==='LineString')_0x4600e2={'type':_0x101ae4(0x24a),'coordinates':_0xfb6b6f['coords']};else _0x4600e2={'type':'Polygon','coordinates':[_0xfb6b6f[_0x101ae4(0x188)]]};}var _0x26d809={'type':_0x101ae4(0x2ee),'geometry':_0x4600e2,'properties':_0x268738};try{if(_0xfb6b6f[_0x101ae4(0x1e0)]==='LineString')_0x268738[_0x101ae4(0x150)]=Math[_0x101ae4(0x1a8)](turf[_0x101ae4(0x2c8)](_0x26d809,{'units':_0x101ae4(0x197)})*0x3e8);if(_0xfb6b6f[_0x101ae4(0x1e0)]===_0x101ae4(0x2e8))_0x268738[_0x101ae4(0x1c6)]=Math['round'](turf[_0x101ae4(0x2dc)](_0x26d809));}catch(_0x3f05b7){}_0x1f15e1[_0x101ae4(0x1a2)](_0x26d809);}),_0x39ddab['push']({'targetName':_0x3af67b['targetName'],'geomType':_0x3af67b[_0x268d84(0x169)],'features':_0x1f15e1,'cadLayer':_0x3af67b[_0x268d84(0x19c)]});});var _0x4c71ee=[];_0x39ddab[_0x39866c(0x21e)](function(_0x4a4c93){var _0x17a5a8=_0x39866c;if(!_0x4a4c93[_0x17a5a8(0x21a)]['length']){_0x4c71ee[_0x17a5a8(0x1a2)]({'name':_0x4a4c93[_0x17a5a8(0x1ea)],'geomType':_0x4a4c93[_0x17a5a8(0x1e0)],'layerId':null,'imported':0x0});return;}var _0x1f1fda=++layerCounter;layers[_0x17a5a8(0x1a2)]({'id':_0x1f1fda,'name':_0x4a4c93[_0x17a5a8(0x1ea)],'geometryType':_0x4a4c93[_0x17a5a8(0x1e0)],'mode':_0x17a5a8(0x15b),'attributes':[],'colorAttr':null,'baseColor':null,'opacity':0x64,'symbology':defaultSymbology()});var _0x8d138f=importGeoJSONFeatures({'type':'FeatureCollection','features':_0x4a4c93[_0x17a5a8(0x21a)]},function(){return _0x1f1fda;},!![]);_0x4c71ee['push']({'name':_0x4a4c93[_0x17a5a8(0x1ea)],'geomType':_0x4a4c93['geomType'],'layerId':_0x1f1fda,'imported':_0x8d138f[_0x17a5a8(0x2d9)],'skipped':_0x8d138f[_0x17a5a8(0x26f)]});}),markProjectDirty();var _0x39ae23=((performance[_0x39866c(0x29a)]()-_0xba6831)/0x3e8)['toFixed'](0x1),_0x27bb2a={'groups':_0x4c71ee,'unsupported':_0x1f6fa0,'elapsedSec':_0x39ae23};return _0x4d015c({'at':Date['now'](),'fileName':_0xecdf4c[_0x39866c(0x2e6)],'groups':_0x4c71ee[_0x39866c(0x2b3)](function(_0xfcf031){var _0x5a08ef=_0x39866c;return{'name':_0xfcf031[_0x5a08ef(0x19c)],'imported':_0xfcf031[_0x5a08ef(0x2d9)]};}),'unsupported':_0x1f6fa0,'user':window['currentAdminUser']||_0x39866c(0x288)}),_0x27bb2a;}function _0xc8980d(){var _0x22a505=_0x3ac20c;_0xecdf4c[_0x22a505(0x1fc)]=_0x238231(),renderLayersPanel(),_0xecdf4c['step']=0x4,_0x574f87();}function _0x3658c0(){var _0x292ece=_0x3ac20c,_0x2401a7=document[_0x292ece(0x2bc)]('cad-step-body');_0x2401a7['innerHTML']=_0x292ece(0x153);}function _0x248e09(){var _0x1bd7b2=_0x3ac20c,_0xb9430=document[_0x1bd7b2(0x2bc)](_0x1bd7b2(0x2be)),_0x96f3b5=_0xecdf4c[_0x1bd7b2(0x1fc)],_0x45a5db=_0x96f3b5[_0x1bd7b2(0x1c9)][_0x1bd7b2(0x2b3)](function(_0x19bd57){var _0x3ce3db=_0x1bd7b2;return _0x3ce3db(0x171)+_0x19bd57[_0x3ce3db(0x2d9)]+_0x3ce3db(0x20f)+_0x263003(_0x19bd57['name'])+'\x20('+_0x19bd57[_0x3ce3db(0x1e0)]+_0x3ce3db(0x263);})['join'](''),_0x5f5ce2=_0x96f3b5[_0x1bd7b2(0x1c9)][_0x1bd7b2(0x161)](function(_0x1573ed){var _0x3d43ae=_0x1bd7b2;return _0x1573ed[_0x3d43ae(0x286)];})[_0x1bd7b2(0x2b3)](function(_0x2c0d62){var _0x1c15d1=_0x1bd7b2;return _0x1c15d1(0x1b6)+'<div><b>'+_0x263003(_0x2c0d62[_0x1c15d1(0x19c)])+_0x1c15d1(0x20f)+_0x2c0d62[_0x1c15d1(0x2d9)]+_0x1c15d1(0x244)+_0x1c15d1(0x22f)+'<button\x20class=\x22ss-btn\x20ss-btn-secondary\x22\x20data-zoom=\x22'+_0x2c0d62[_0x1c15d1(0x286)]+_0x1c15d1(0x1b7)+_0x1c15d1(0x207)+_0x2c0d62[_0x1c15d1(0x286)]+'\x22>GeoJSON</button>'+'<button\x20class=\x22ss-btn\x20ss-btn-secondary\x22\x20data-exp-shp=\x22'+_0x2c0d62[_0x1c15d1(0x286)]+_0x1c15d1(0x2b4)+_0x1c15d1(0x251)+_0x2c0d62['layerId']+'\x22>KML</button>'+_0x1c15d1(0x2d8)+_0x1c15d1(0x2d8);})[_0x1bd7b2(0x170)]('');_0xb9430[_0x1bd7b2(0x221)]=_0x1bd7b2(0x250)+_0x45a5db+'</div>'+(_0x96f3b5[_0x1bd7b2(0x25b)]?_0x1bd7b2(0x2de)+_0x96f3b5['unsupported']+'\x20entidade(s)\x20não\x20suportada(s)\x20ou\x20inválida(s)\x20foram\x20ignoradas.</p>':_0x1bd7b2(0x196))+'<p\x20class=\x22ss-hint\x22>Tempo:\x20'+_0x96f3b5[_0x1bd7b2(0x14d)]+'s</p>'+'<div\x20class=\x22ss-card\x22><h3>Camadas\x20criadas\x20(exportar\x20/\x20ver\x20no\x20mapa)</h3>'+(_0x5f5ce2||_0x1bd7b2(0x2c9))+_0x1bd7b2(0x2aa)+_0x1bd7b2(0x203)+_0x1bd7b2(0x1c7)+_0x1bd7b2(0x2a7)+_0x1bd7b2(0x2d8),Array[_0x1bd7b2(0x205)][_0x1bd7b2(0x22e)][_0x1bd7b2(0x1f1)](document[_0x1bd7b2(0x1c1)](_0x1bd7b2(0x1a0)))[_0x1bd7b2(0x21e)](function(_0x36f497){var _0x1ad5a9=_0x1bd7b2;_0x36f497[_0x1ad5a9(0x21d)](_0x1ad5a9(0x24e),function(){var _0x3e2546=_0x1ad5a9;zoomToLayer(Number(_0x36f497[_0x3e2546(0x2c1)][_0x3e2546(0x27e)])),_0x20628d[_0x3e2546(0x248)]=!![];});}),Array['prototype'][_0x1bd7b2(0x22e)][_0x1bd7b2(0x1f1)](document[_0x1bd7b2(0x1c1)](_0x1bd7b2(0x146)))[_0x1bd7b2(0x21e)](function(_0x178d35){var _0x14d04c=_0x1bd7b2;_0x178d35[_0x14d04c(0x21d)](_0x14d04c(0x24e),function(){var _0x16aae8=_0x14d04c,_0x4909b8=Number(_0x178d35[_0x16aae8(0x2c1)][_0x16aae8(0x2db)]),_0x1b5042=buildGeoJSON(![],![],_0x4909b8),_0x406053=new Blob([JSON[_0x16aae8(0x15d)](_0x1b5042)],{'type':_0x16aae8(0x2ab)}),_0xb271e0=document[_0x16aae8(0x1f0)]('a');_0xb271e0[_0x16aae8(0x1fb)]=URL[_0x16aae8(0x2d4)](_0x406053),_0xb271e0[_0x16aae8(0x245)]=(getLayerSchema(_0x4909b8)[_0x16aae8(0x19c)]||_0x16aae8(0x275))+_0x16aae8(0x298),_0xb271e0[_0x16aae8(0x24e)]();});}),Array[_0x1bd7b2(0x205)][_0x1bd7b2(0x22e)][_0x1bd7b2(0x1f1)](document[_0x1bd7b2(0x1c1)](_0x1bd7b2(0x16c)))[_0x1bd7b2(0x21e)](function(_0x44f71a){var _0x662c8=_0x1bd7b2;_0x44f71a[_0x662c8(0x21d)]('click',function(){var _0x48c3d0=_0x662c8,_0x144818=Number(_0x44f71a[_0x48c3d0(0x2c1)]['expShp']),_0x501dc3=buildGeoJSON(![],![],_0x144818);exportShapefileZip(_0x501dc3,getLayerSchema(_0x144818)[_0x48c3d0(0x19c)]||_0x48c3d0(0x275),_0x44f71a,null);});}),Array[_0x1bd7b2(0x205)][_0x1bd7b2(0x22e)][_0x1bd7b2(0x1f1)](document[_0x1bd7b2(0x1c1)]('[data-exp-kml]'))[_0x1bd7b2(0x21e)](function(_0x15161d){var _0x22e267=_0x1bd7b2;_0x15161d['addEventListener'](_0x22e267(0x24e),function(){var _0x54effc=_0x22e267,_0x19f3bc=Number(_0x15161d['dataset'][_0x54effc(0x236)]),_0x37eff2=buildGeoJSON(![],![],_0x19f3bc),_0x270116=_0x46b539(_0x37eff2,getLayerSchema(_0x19f3bc)[_0x54effc(0x19c)]||'camada'),_0xaf5294=new Blob([_0x270116],{'type':_0x54effc(0x160)}),_0x55a958=document[_0x54effc(0x1f0)]('a');_0x55a958[_0x54effc(0x1fb)]=URL[_0x54effc(0x2d4)](_0xaf5294),_0x55a958[_0x54effc(0x245)]=(getLayerSchema(_0x19f3bc)[_0x54effc(0x19c)]||'camada')+_0x54effc(0x1b4),_0x55a958[_0x54effc(0x24e)]();});}),document[_0x1bd7b2(0x2bc)](_0x1bd7b2(0x1bd))[_0x1bd7b2(0x21d)](_0x1bd7b2(0x24e),function(){var _0x40aa36=_0x1bd7b2;_0xecdf4c[_0x40aa36(0x2cc)]=0x5,_0x574f87();}),document[_0x1bd7b2(0x2bc)](_0x1bd7b2(0x198))[_0x1bd7b2(0x21d)]('click',function(){_0x40d1bb(),_0x574f87();});}function _0x46b539(_0x1de21e,_0x532dc4){var _0x28e518=_0x3ac20c;function _0x5ea6f0(_0x42b02b,_0x49ee28){var _0x41ed5b=_0x141f;return _0x42b02b[_0x41ed5b(0x2b3)](function(_0x2bcfe1){var _0x30d0dc=_0x41ed5b;return _0x2bcfe1[0x0]+','+_0x2bcfe1[0x1]+(_0x2bcfe1[_0x30d0dc(0x2c8)]>0x2?','+_0x2bcfe1[0x2]:',0');})[_0x41ed5b(0x170)]('\x20');}var _0xefc613=(_0x1de21e[_0x28e518(0x21a)]||[])[_0x28e518(0x2b3)](function(_0x34cb40){var _0x59ac2c=_0x28e518,_0x5b3290=_0x34cb40[_0x59ac2c(0x2ed)];if(!_0x5b3290)return'';var _0xb22b7='';if(_0x5b3290[_0x59ac2c(0x2d7)]===_0x59ac2c(0x1ce))_0xb22b7=_0x59ac2c(0x149)+_0x5b3290['coordinates'][0x0]+','+_0x5b3290[_0x59ac2c(0x25c)][0x1]+_0x59ac2c(0x1a1);else{if(_0x5b3290[_0x59ac2c(0x2d7)]==='LineString')_0xb22b7=_0x59ac2c(0x202)+_0x5ea6f0(_0x5b3290[_0x59ac2c(0x25c)])+_0x59ac2c(0x1f8);else{if(_0x5b3290[_0x59ac2c(0x2d7)]===_0x59ac2c(0x2e8))_0xb22b7=_0x59ac2c(0x269)+_0x5ea6f0(_0x5b3290[_0x59ac2c(0x25c)][0x0])+_0x59ac2c(0x289);else return'';}}var _0x2ca4d0=_0x34cb40[_0x59ac2c(0x238)]||{},_0x374cde=_0x2ca4d0['ID']||_0x2ca4d0[_0x59ac2c(0x167)]||'',_0x1c93a0=Object[_0x59ac2c(0x17f)](_0x2ca4d0)[_0x59ac2c(0x2b3)](function(_0x3433c8){return _0x3433c8+':\x20'+_0x2ca4d0[_0x3433c8];})['join'](_0x59ac2c(0x283));return _0x59ac2c(0x18f)+_0x263003(String(_0x374cde))+'</name><description>'+_0x263003(_0x1c93a0)+_0x59ac2c(0x239)+_0xb22b7+'</Placemark>';})[_0x28e518(0x170)]('');return _0x28e518(0x252)+_0x263003(_0x532dc4)+_0x28e518(0x24c)+_0xefc613+_0x28e518(0x2af);}function _0x3700f1(){var _0x5127c2=_0x3ac20c,_0x39772e=document[_0x5127c2(0x2bc)](_0x5127c2(0x2be)),_0x5176e8=_0xecdf4c['layerTable']['filter'](function(_0xbcd96f){return _0xbcd96f['checked'];});_0x39772e[_0x5127c2(0x221)]=_0x5127c2(0x1d7)+_0x5127c2(0x1fa)+_0x5127c2(0x20a)+_0x263003(_0xecdf4c[_0x5127c2(0x265)]||'')+'\x22></div>'+'<button\x20class=\x22ss-btn\x22\x20id=\x22cad-profile-save\x22>Guardar\x20perfil</button>'+_0x5127c2(0x21b)+_0x5127c2(0x2d8)+_0x5127c2(0x203)+_0x5127c2(0x1cd)+_0x5127c2(0x2d8),document[_0x5127c2(0x2bc)](_0x5127c2(0x2a9))[_0x5127c2(0x21d)](_0x5127c2(0x24e),function(){var _0x37ca8f=_0x5127c2,_0xa7ab3a=document[_0x37ca8f(0x2bc)](_0x37ca8f(0x280))[_0x37ca8f(0x253)][_0x37ca8f(0x2b5)]();if(!_0xa7ab3a){alert(_0x37ca8f(0x1be));return;}var _0x1ba5ea=_0x1ffd0d(),_0x3b926b={'name':_0xa7ab3a,'fromCRS':_0xecdf4c[_0x37ca8f(0x232)],'customProj4':_0xecdf4c[_0x37ca8f(0x26d)],'layerRules':_0x5176e8[_0x37ca8f(0x2b3)](function(_0x4795b2){var _0x1fa425=_0x37ca8f;return{'name':_0x4795b2[_0x1fa425(0x19c)],'targetName':_0x4795b2[_0x1fa425(0x1ea)],'geomHint':_0x4795b2['geomHint'],'checked':!![]};}),'createdAt':Date[_0x37ca8f(0x29a)]()},_0x15d510=_0x1ba5ea[_0x37ca8f(0x187)](function(_0x31f1fb){var _0x32effc=_0x37ca8f;return _0x31f1fb[_0x32effc(0x19c)]===_0xa7ab3a;});if(_0x15d510>=0x0)_0x1ba5ea[_0x15d510]=_0x3b926b;else _0x1ba5ea['push'](_0x3b926b);_0x3c6cf3(_0x1ba5ea),_0x40d1bb(),_0x355845(_0x37ca8f(0x217));}),document[_0x5127c2(0x2bc)](_0x5127c2(0x1ef))[_0x5127c2(0x21d)](_0x5127c2(0x24e),function(){_0x40d1bb(),_0x574f87();});}function _0x5e8d36(){var _0x326e3c=_0x3ac20c,_0x37a8bb=_0x1ffd0d(),_0x50f6c8=_0x37a8bb[_0x326e3c(0x2b3)](function(_0x5491be,_0x395888){var _0x41e918=_0x326e3c;return'<div\x20class=\x22ss-recipe-card\x22>'+_0x41e918(0x1c5)+_0x263003(_0x5491be[_0x41e918(0x19c)])+_0x41e918(0x20f)+_0x5491be[_0x41e918(0x2cb)]['length']+_0x41e918(0x156)+_0x263003(_0x5491be['fromCRS'])+_0x41e918(0x1a6)+_0x41e918(0x22f)+_0x41e918(0x2f1)+_0x395888+_0x41e918(0x23f)+_0x41e918(0x19f)+_0x395888+_0x41e918(0x2b1)+'</div>'+_0x41e918(0x2d8);})['join']('');_0x599eed[_0x326e3c(0x221)]='<h2>Perfis\x20guardados</h2>'+_0x326e3c(0x1c3)+(_0x50f6c8||'<p\x20class=\x22ss-empty\x22>Ainda\x20não\x20guardou\x20nenhum\x20perfil.</p>'),_0x37a8bb[_0x326e3c(0x21e)](function(_0x220822,_0x53a50e){var _0x22cff2=_0x326e3c,_0x27892a=_0x599eed['querySelector'](_0x22cff2(0x1d8)+_0x53a50e+'\x22]'),_0x55df16=_0x599eed[_0x22cff2(0x27c)](_0x22cff2(0x1af)+_0x53a50e+'\x22]');if(_0x27892a)_0x27892a[_0x22cff2(0x21d)](_0x22cff2(0x24e),function(){_0x590eb4(_0x220822);});if(_0x55df16)_0x55df16[_0x22cff2(0x21d)](_0x22cff2(0x24e),function(){var _0x74559d=_0x22cff2;if(!confirm(_0x74559d(0x18d)+_0x220822[_0x74559d(0x19c)]+'\x22?'))return;var _0x1f9f53=_0x1ffd0d();_0x1f9f53[_0x74559d(0x17b)](_0x53a50e,0x1),_0x3c6cf3(_0x1f9f53),_0x5e8d36();});});}function _0x301116(_0xc7847e){var _0x3ac6b8=_0x3ac20c;_0xecdf4c[_0x3ac6b8(0x232)]=_0xc7847e[_0x3ac6b8(0x232)],_0xecdf4c[_0x3ac6b8(0x26d)]=_0xc7847e[_0x3ac6b8(0x26d)]||'',_0xecdf4c['layerTable']['forEach'](function(_0x1fe6a9){var _0x203701=_0x3ac6b8,_0x24c941=_0xc7847e[_0x203701(0x2cb)][_0x203701(0x1e3)](function(_0x4a70e0){var _0x2ac129=_0x203701;return _0x4a70e0[_0x2ac129(0x19c)]===_0x1fe6a9[_0x2ac129(0x19c)];});_0x24c941?(_0x1fe6a9[_0x203701(0x18a)]=!![],_0x1fe6a9[_0x203701(0x1ea)]=_0x24c941[_0x203701(0x1ea)],_0x1fe6a9[_0x203701(0x169)]=_0x24c941[_0x203701(0x169)]):_0x1fe6a9[_0x203701(0x18a)]=![];});}function _0x590eb4(_0x33de2d){var _0x562367=_0x3ac20c;_0x40d1bb(),_0xecdf4c[_0x562367(0x265)]=_0x33de2d[_0x562367(0x19c)],_0xecdf4c[_0x562367(0x232)]=_0x33de2d[_0x562367(0x232)],_0xecdf4c['customProj4']=_0x33de2d[_0x562367(0x26d)]||'',_0x355845('wizard'),_0xecdf4c['_pendingProfile']=_0x33de2d;}var _0x299498=_0x4d4f2f;_0x4d4f2f=function(_0x4f63f2){var _0x56a372=_0x3ac20c;_0x299498(_0x4f63f2);if(_0xecdf4c[_0x56a372(0x222)])var _0x593c92=_0xecdf4c[_0x56a372(0x222)],_0x2de527=0x0,_0xea80ba=setInterval(function(){var _0x5f05bd=_0x56a372;_0x2de527+=0x96;if(_0xecdf4c[_0x5f05bd(0x2bb)]&&_0xecdf4c['layerTable']['length'])_0x301116(_0x593c92),_0xecdf4c[_0x5f05bd(0x222)]=null,clearInterval(_0xea80ba),_0x574f87();else _0x2de527>0x2710&&(_0xecdf4c['_pendingProfile']=null,clearInterval(_0xea80ba));},0x96);};function _0x2c220f(){var _0x1ad179=_0x3ac20c,_0x2ff3ba=_0x1ffd0d();_0x599eed['innerHTML']=_0x1ad179(0x2a0)+_0x1ad179(0x2bf)+(_0x2ff3ba[_0x1ad179(0x2c8)]?'<div\x20class=\x22ss-card\x22>'+_0x1ad179(0x219)+_0x2ff3ba[_0x1ad179(0x2b3)](function(_0x23cb31,_0x3ac824){var _0x16ebe9=_0x1ad179;return _0x16ebe9(0x2ce)+_0x3ac824+'\x22>'+_0x263003(_0x23cb31[_0x16ebe9(0x19c)])+_0x16ebe9(0x142);})[_0x1ad179(0x170)]('')+_0x1ad179(0x292)+_0x1ad179(0x2c2)+_0x1ad179(0x177)+_0x1ad179(0x2d8)+_0x1ad179(0x2eb)+_0x1ad179(0x2c5)+'</div>':'<p\x20class=\x22ss-empty\x22>Precisa\x20de\x20guardar\x20pelo\x20menos\x20um\x20perfil\x20(em\x20\x22Nova\x20importação\x22\x20→\x20Fase\x2010)\x20antes\x20de\x20poder\x20converter\x20em\x20lote.</p>');if(!_0x2ff3ba[_0x1ad179(0x2c8)])return;var _0x124f97=document[_0x1ad179(0x2bc)](_0x1ad179(0x162)),_0x39966d=document[_0x1ad179(0x2bc)](_0x1ad179(0x1d9)),_0xcab348=document[_0x1ad179(0x2bc)](_0x1ad179(0x277));_0x124f97[_0x1ad179(0x21d)]('click',function(){var _0x420092=_0x1ad179;_0x39966d[_0x420092(0x24e)]();}),_0x124f97['addEventListener'](_0x1ad179(0x1aa),function(_0xfd133f){var _0x2241a8=_0x1ad179;_0xfd133f['preventDefault'](),_0x124f97['classList'][_0x2241a8(0x14b)](_0x2241a8(0x190));}),_0x124f97[_0x1ad179(0x21d)]('dragleave',function(){var _0x39fb68=_0x1ad179;_0x124f97['classList'][_0x39fb68(0x18e)]('is-drag');}),_0x124f97[_0x1ad179(0x21d)](_0x1ad179(0x147),function(_0xff5bf9){var _0x2b816e=_0x1ad179;_0xff5bf9[_0x2b816e(0x1c4)](),_0x124f97[_0x2b816e(0x14a)]['remove'](_0x2b816e(0x190)),_0x109fb8(Array['prototype'][_0x2b816e(0x22e)][_0x2b816e(0x1f1)](_0xff5bf9['dataTransfer'][_0x2b816e(0x229)]));}),_0x39966d[_0x1ad179(0x21d)](_0x1ad179(0x2bd),function(){var _0x322267=_0x1ad179;_0x109fb8(Array[_0x322267(0x205)][_0x322267(0x22e)][_0x322267(0x1f1)](_0x39966d['files']));});function _0x109fb8(_0x564b0d){var _0x3dce5b=_0x1ad179,_0x2b3693=_0x564b0d[_0x3dce5b(0x161)](function(_0x33a5fa){var _0x5d0c62=_0x3dce5b;return/\.dxf$/i[_0x5d0c62(0x22d)](_0x33a5fa[_0x5d0c62(0x19c)]);});if(!_0x2b3693[_0x3dce5b(0x2c8)]){_0xcab348[_0x3dce5b(0x223)]=_0x3dce5b(0x218);return;}var _0x37e407=_0x2ff3ba[Number(document[_0x3dce5b(0x2bc)](_0x3dce5b(0x1c8))[_0x3dce5b(0x253)])];_0xcab348[_0x3dce5b(0x223)]=_0x3dce5b(0x1e9)+_0x2b3693['length']+_0x3dce5b(0x262);var _0x43ad30=0x0,_0x3b8d0d=0x0;function _0x109a85(){var _0x3954d5=_0x3dce5b;if(_0x43ad30>=_0x2b3693[_0x3954d5(0x2c8)]){_0xcab348[_0x3954d5(0x223)]=_0x3954d5(0x271)+_0x43ad30+_0x3954d5(0x243)+_0x3b8d0d+_0x3954d5(0x293),renderLayersPanel();return;}var _0x3ea6f6=_0x2b3693[_0x43ad30];_0x2e55a8()[_0x3954d5(0x2c3)](function(_0x186066){var _0x4ddac8=_0x3954d5,_0x36407c=new FileReader();_0x36407c[_0x4ddac8(0x212)]=function(_0x273ac3){var _0x11972a=_0x4ddac8;try{var _0x1d08ad=new _0x186066(),_0x5dbcc0=_0x1d08ad['parseSync']?_0x1d08ad[_0x11972a(0x1b8)](_0x273ac3[_0x11972a(0x274)]['result']):_0x1d08ad[_0x11972a(0x278)](_0x273ac3['target'][_0x11972a(0x1fc)]);_0x40d1bb(),_0xecdf4c[_0x11972a(0x2e6)]=_0x3ea6f6[_0x11972a(0x19c)],_0xecdf4c['dxf']=_0x5dbcc0,_0xecdf4c[_0x11972a(0x180)]=_0x5dbcc0&&_0x5dbcc0[_0x11972a(0x180)]||[],_0xac045e(),_0x301116(_0x37e407),_0x5d346e(function(_0x36ccbe){var _0x1a406b=_0x11972a;_0x3b8d0d+=_0x36ccbe,_0x43ad30++,_0xcab348[_0x1a406b(0x223)]=_0x43ad30+'\x20/\x20'+_0x2b3693[_0x1a406b(0x2c8)]+_0x1a406b(0x262),_0x109a85();});}catch(_0x3e4cf8){_0x43ad30++,_0x109a85();}},_0x36407c[_0x4ddac8(0x164)](_0x3ea6f6);});}_0x109a85();}}function _0x5d346e(_0x519874){var _0x3a3e96=_0x3ac20c,_0x188973=_0x238231(),_0x29088d=_0x188973[_0x3a3e96(0x1c9)][_0x3a3e96(0x17a)](function(_0x5e94cd,_0x2275c4){var _0x184a7c=_0x3a3e96;return _0x5e94cd+(_0x2275c4[_0x184a7c(0x2d9)]||0x0);},0x0);_0x519874(_0x29088d);}function _0x594cf4(){var _0x2fbcab=_0x3ac20c,_0x1ea904=_0x422e92(),_0x240391=_0x1ea904[_0x2fbcab(0x2b3)](function(_0x1ad5eb){var _0x149330=_0x2fbcab,_0x32cfb0=new Date(_0x1ad5eb['at'])['toLocaleString'](_0x149330(0x26b)),_0xf470ce=_0x1ad5eb[_0x149330(0x1c9)][_0x149330(0x2b3)](function(_0x353eac){var _0x59f35d=_0x149330;return _0x353eac[_0x59f35d(0x19c)]+'\x20('+_0x353eac['imported']+')';})[_0x149330(0x170)](',\x20');return _0x149330(0x281)+'<b>'+_0x263003(_0x1ad5eb[_0x149330(0x2e6)])+'</b>'+_0x149330(0x25f)+_0x32cfb0+'\x20·\x20'+_0x263003(_0xf470ce)+(_0x1ad5eb[_0x149330(0x25b)]?_0x149330(0x2e7)+_0x1ad5eb['unsupported']+_0x149330(0x1a5):'')+_0x149330(0x2d8)+'<div>Utilizador:\x20'+_0x263003(_0x1ad5eb[_0x149330(0x276)]||'Desconhecido')+_0x149330(0x2d8)+_0x149330(0x2d8);})[_0x2fbcab(0x170)]('');_0x599eed[_0x2fbcab(0x221)]=_0x2fbcab(0x176)+_0x2fbcab(0x240)+(_0x240391||_0x2fbcab(0x2ae));}function _0x35d87c(){var _0x3cdb67=_0x3ac20c;_0x599eed[_0x3cdb67(0x221)]='<h2>Como\x20usar\x20a\x20Importação\x20CAD</h2>'+_0x3cdb67(0x19e)+_0x3cdb67(0x148)+_0x3cdb67(0x1cb)+_0x3cdb67(0x255)+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x2f0)+_0x3cdb67(0x29e)+_0x3cdb67(0x143)+'<details\x20class=\x22ss-help-item\x22>'+_0x3cdb67(0x18c)+_0x3cdb67(0x193)+_0x3cdb67(0x1e2)+'<b>Fase\x202.</b>\x20Confirma\x20quais\x20layers\x20importar\x20(Cotas,\x20Textos\x20e\x20Símbolos\x20ficam\x20desligados\x20por\x20omissão\x20—\x20normalmente\x20não\x20são\x20geometria\x20útil).<br><br>'+_0x3cdb67(0x182)+_0x3cdb67(0x2cd)+_0x3cdb67(0x258)+_0x3cdb67(0x2d8)+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x210)+_0x3cdb67(0x16b)+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x2a5)+'<div\x20class=\x22ss-help-body\x22>ID,\x20Layer\x20(nome\x20original\x20no\x20CAD),\x20Cor,\x20Tipo,\x20Data\x20de\x20Importação,\x20e\x20ainda\x20Comprimento\x20(linhas)\x20ou\x20Área\x20(polígonos),\x20calculados\x20automaticamente.</div>'+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x2cf)+'<div\x20class=\x22ss-help-body\x22>Se\x20recebes\x20sempre\x20o\x20mesmo\x20tipo\x20de\x20desenho\x20(ex:\x20topografia\x20de\x20uma\x20empresa),\x20guarda\x20a\x20configuração\x20como\x20perfil.\x20Depois,\x20em\x20\x22Importação\x20em\x20lote\x22,\x20podes\x20converter\x20dezenas\x20de\x20DXF\x20de\x20uma\x20vez\x20com\x20o\x20mesmo\x20perfil.</div>'+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x2d0)+'<div\x20class=\x22ss-help-body\x22>Depois\x20de\x20converter,\x20cada\x20camada\x20criada\x20pode\x20ser\x20exportada\x20diretamente\x20para\x20GeoJSON,\x20Shapefile\x20(.zip)\x20ou\x20KML.\x20GeoPackage\x20não\x20está\x20disponível\x20nesta\x20versão.</div>'+_0x3cdb67(0x143)+_0x3cdb67(0x23b)+_0x3cdb67(0x204)+_0x3cdb67(0x20d)+_0x3cdb67(0x143);}}()));function _0x141f(_0x33bdc1,_0x4270bf){_0x33bdc1=_0x33bdc1-0x140;var _0x427b20=_0x427b();var _0x141f9f=_0x427b20[_0x33bdc1];if(_0x141f['XhEFtR']===undefined){var _0x1b47a1=function(_0x1b23cf){var _0x26ac73='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x20628d='',_0x1698ec='';for(var _0x5b237b=0x0,_0x599eed,_0x3685f5,_0x340ee7=0x0;_0x3685f5=_0x1b23cf['charAt'](_0x340ee7++);~_0x3685f5&&(_0x599eed=_0x5b237b%0x4?_0x599eed*0x40+_0x3685f5:_0x3685f5,_0x5b237b++%0x4)?_0x20628d+=String['fromCharCode'](0xff&_0x599eed>>(-0x2*_0x5b237b&0x6)):0x0){_0x3685f5=_0x26ac73['indexOf'](_0x3685f5);}for(var _0x191488=0x0,_0x41226a=_0x20628d['length'];_0x191488<_0x41226a;_0x191488++){_0x1698ec+='%'+('00'+_0x20628d['charCodeAt'](_0x191488)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x1698ec);};_0x141f['RtJiio']=_0x1b47a1,_0x141f['NhCtWB']={},_0x141f['XhEFtR']=!![];}var _0x1098d4=_0x427b20[0x0],_0x2ccc13=_0x33bdc1+_0x1098d4,_0x369601=_0x141f['NhCtWB'][_0x2ccc13];return!_0x369601?(_0x141f9f=_0x141f['RtJiio'](_0x141f9f),_0x141f['NhCtWB'][_0x2ccc13]=_0x141f9f):_0x141f9f=_0x369601,_0x141f9f;}function _0x427b(){var _0x7334e6=['A2v5zg93BG','Bgf5zxjjza','Cdf5','rgvZy29UAgvJAwrV','pc9JB29YzgLUyxrLCZ48l0XPBMvHCLjPBMC+pc9VDxrLCKjVDw5Kyxj5sxm+pc9qB2X5z29UpG','jNf1B3q7','pgrPDIbJBgfZCZ0IC3mTBM90zsi+pgi+tYbev0CGBSoJBYbWB2rLihnLCIbSAwrVigrPCMv0yw1LBNrLig51BweGCmoHz2LUysb3zwiUpc9IpIddIsb1BsbMB3jTyxrVigjPBSoHCMLVihbYB3bYAwv0W6fYAw8GzgeGqxv0B2rLC2SG4OcuigXLCIb1BsaUzhDNigrLigzVCM1HigzPW6f2zwWGzxHPz2uGDw1HigXPy2vUW6DHl1nesYaOqxv0B2rLC2SGuMvHBerxrYbVDsbpreePlcbVihf1zsbLC3tdOsbMB3jHigrVigfSy2fUy2uGzgvZDgeGyxbSAwnHW6FdO28UpgjYpJXICJ4','ugfYysbPBxbVCNrHCMvZici','AxnbCNjHEq','phnWyw4+lMr3zYb0yw1IW6LTimoPigfJzwL0zsdIGjqGBw9ZDhjHigLUC3rYDCoNW7vLCYbKzsbJB252zxjZW6nVihbHCMeGlMr4zJWVC3bHBJ4','phnWyw4Gy2XHC3m9iMnHzc1SyxLLCI1JB3vUDci+','vgv4Dg9Z','DhDVCg9PBNq','pc9ZzwXLy3q+pc9KAxy+','igDLB21LDhjPysHZksbPBxbVCNrHzgfZig5VihrVDgfSlG','WRa8l3nWyw4+','BM9Uzq','lMnHzc10yxjNzxqTz2vVBq','iIbWBgfJzwHVBgrLCJ0IzxG6idqXlJe1nZKWiJ48l2rPDJ4','lMDLB2PZB24','pKrLC2vUAg8GBg9JywWGkhnLBsbJB29YzgvUywrHCYbYzwfPCYWGz2vVCNjLzMvYzw5JAwfYig1HBNvHBg1LBNrLihbVCIaYihbVBNrVCYK8l29WDgLVBJ4','BM93','y2fKlwLTCg9YDc1WywDL','mJe3nJeWngLrAvjNra','y29SB3i','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ5pierxrYddQsb1BsbMB3jTyxrVigjPBSoHCMLVigzLy2HHzg8GzgeGqxv0B2rLC2SUifnLBsb1BweGBgLJzw7dP2eVu0rlig9MAwnPywWGkfjLywXev0CGB3uGt0rbksWGBSoJBYbOW6eGzM9YBweGzMNdOxzLBcbKzsbVigXLCIbKzw50CM8GzguGDw1HihddOwDPBMeGD2vIlIbbihnVBhxdP8oJBYbZAw1WBgvZoIbJB252zxj0zxiGCgfYysaUzhHMihbYAw1LAxjVlcbJB20GBYbpreeGrMLSzsbdB252zxj0zxiGkgDYyxr1AxrVksWGtgLICMvdquqSiffdquqSig91icjhDwfYzgfYignVBw8IigeGCgfYDgLYigrVief1Dg9dquqVqNjPy3ndquqUpc9KAxy+','ihnLBgvJDgvK','pgGYpKLTCg9YDghdP8oJBYbLBsbSB3rLpc9OmJ4','q0fex0nvu1rptv9tuKm','z2v0sxrLBq','Cg9W','mti2mdrJCuTIvNq','phn1Bw1HCNK+ns4GuxvLigf0CMLIDxrVCYbMAwnHBsbJCMLHzg9Zigf1Dg9TyxrPy2fTzw50zt88l3n1Bw1HCNK+','ugfZC2vPB3m','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjJywqTzMLUAxnOiJ5dB25JBhvPCJWVyNv0Dg9UpG','CM90yxrPB24','y2fKlxbYB2zPBguTC2f2zq','pgrPDIbJBgfZCZ0IC3mTAgLUDciGC3r5Bgu9iM1HCMDPBI10B3a6ohb4oYi+r2vVugfJA2fNzsbUW6nVigvZDmoHigrPC3bVBSoTDMvSig5LC3rHihzLCNpdO28Upc9KAxy+pc9KAxy+','yxbWBgLJyxrPB24Vz2vVk2PZB24','pK91DhjVicHKzwzPBMNdP8oJBYbWCM9QncbTyw51ywWPpc9VChrPB24+','pgXPpKf1Dg9dquqGlYbcCMLJC0nbrcdIGjqGiKD1yxjKyxiGy29TBYiG4OAsieryrJWVBgK+','phaGy2XHC3m9iNnZlwvTChr5iJ5bAw5KysbUW6nVigJdOsbPBxbVCNrHW6FdTwvZihjLz2LZDgfKyxmUpc9WpG','pc9eB2n1BwvUDd48l2TTBd4','AhLWB3q','iJ5fBgLTAw5HCJWVyNv0Dg9UpG','BSoJBYbMB2KGCg9ZC8oTDMvSignVBNzLCNrLCIbHCYbJB29YzgvUywrHCYbYzwfPCYbPBMrPy2fKyxm','BwfW','iJ5tAgfWzwzPBgu8l2j1DhrVBJ4','DhjPBq','rvbtrZO0mZi2','lcbYB3rHW6FdO28G','AxmTzg9Uzq','y2fKlxrWlq','C3r5Bgu','Bgf5zxjuywjSzq','z2v0rwXLBwvUDej5swq','y2HHBMDL','y2fKlxn0zxaTyM9KEq','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5fC2nVBgHLihBdOxjPB3mGzMLJAgvPCM9ZieryrIbKzsb1BweGDMv6iguGDw0GCgvYzMLSigD1yxjKywrViokaLcbHigfWCcbJB252zxj0zsb0B2rVCYWGDw0Gysb1BsWGy29TigfZig1LC21HCYbYzwDYyxmUpc9WpG','C2LU','zgf0yxnLDa','pgrPDIbJBgfZCZ0IC3mTzhjVChPVBMuIigLKpsjJywqTyMf0y2GTzhjVChPVBMuIpG','DgHLBG','iZnKnMi0zG','pgrPDIbPzd0Iy2fKlwjHDgnOlxn0yxr1CYiGy2XHC3m9iNnZlwHPBNqIihn0EwXLpsjTyxjNAw4TDg9WoJeWChG7iJ48l2rPDJ4','iIbWBgfJzwHVBgrLCJ0IzxG6ic0WlJa1mdeYmci+pc9KAxy+','B3mGzg9PCYbWB250B3mGCMvHAxmGBSoJBYbWB2rLBsbZzxiGy29PBMnPzgvUDgvZ','BgvUz3rO','phaGy2XHC3m9iNnZlwvTChr5iJ5ozw5ODw1HignHBwfKysbJCMLHzgeUpc9WpG','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0Iy2fKlxn0zxaYlw5LEhqIpLnLz3vPBNrLiokgKJWVyNv0Dg9UpG','Bgf5zxjsDwXLCW','C3rLCa','pgi+rMfZzsa3icHUysbTzxnTysbWW6fNAw5Hks48l2i+ieLUzgLJysbLBsbXDwuGC2LZDgvTysbKzsbJB29YzgvUywrHCYbLC3tdOsbVigrLC2vUAg8G4Ocuig8GBwfPCYbJB211BsbLBsbqB3j0DwDHBcddQsbfvfjtodKVufqTve0WnI4Gu2uGBYbKzxnLBMHVig7dO28GDgL2zxiGy29VCMrLBMfKyxmGCMvHAxmGkgv4oIb1BsbTB2rLBg8GzxHWB3j0ywrVigrLihvTihbYB2DYyw1HidnelcbZzw0GBgLNyCoNW6nVigfVig11BMrVihjLywWG4OcuigeGyxbWigf2AxnHigrPC3rVig5HiezHC2uGmIKSihvZysbHig9WW6FdO28GiKrLC2vUAg8GBg9JywWIlcbPBMrPy2fUzg8GmIbWB250B3mGzg8GzgvZzw5OBYbLig9UzguGzMLJyw0GBM8GBxvUzg8GCMvHBc48yNi+pgjYpG','pg9WDgLVBIb2ywX1zt0I','phn1Bw1HCNK+nI4GugvYzMLZiguGBg90zsdIGjqGCgfYysbXDCoQpZWVC3vTBwfYEt4','phn1Bw1HCNK+nY4GrxHWB3j0yCoNW6nViokaLcbVihf1zsbLC3tdOsbKAxnWB27dRxzLBd88l3n1Bw1HCNK+','Bgf5zxi','y2fKlwnSB3nLlwj0BG','qxmGz2vVBwv0CMLHCYbVy3vWyw0GyxbLBMfZia','y3jLyxrLt2jQzwn0vvjm','uMvSyxtdS3jPBW','AgLZDg9YEq','DhLWzq','pc9KAxy+','Aw1WB3j0zwq','CdfSyxq','zxHWr2vVANnVBG','yxjLyq','zgvMCW','phaGy2XHC3m9iNnZlwHPBNqIpUkCLYa','Bwf4','C29Tzq','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIigLKpsjJywqTy3jZlxr3B3bVAw50lxDYyxaIihn0EwXLpsi','pgrPDJ48BgfIzwW+ug9UDg8GmsaVieXVBMDPDhvKzsbYzwfSpc9SywjLBd48Aw5WDxqGDhLWzt0IDgv4DciGAwq9iMnHzc10Cc1WmwXVBIiGDMfSDwu9iG','y2fKu2vJDgLVBG','Dg9mB3DLCKnHC2u','C3rHCNrbBMDSzq','zMLSzu5HBwu','imk3iokCLYa','ug9SEwDVBG','y29Z','D2L6yxjK','pgLUChv0ihr5Cgu9iMzPBguIigLKpsjJywqTyMf0y2GTAw5WDxqIigfJy2vWDd0IlMr4zIiGBxvSDgLWBguGC3r5Bgu9iMrPC3bSyxK6BM9UztSIpG','iJ48C3bHBIbJBgfZCZ0IC3mTC3rLCc1UDw0IpG','z2vVBwv0CNK','rMvHDhvYzq','rxnJyxbL','phn1Bw1HCNK+mI4Gug9YCxvLimoPihf1zsbVic5KD2CGBSoJBYbMDw5JAw9UysbKAxjLDgfTzw50zt88l3n1Bw1HCNK+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbKyxrHlxj1BJ0I','q0Lsq0Xf','BwLUW7PZy3vSBYbLig51BsbZW610Aw8GywXLyxtdS3jPBYbKBYbTyxbHlIbvC2eGyw50zxmGysbVCmoNW6nVidXIpIjezxnLBMHVigXVy2fSicHNzw9YCMvMzxjLBMnPyxiGBwfUDwfSBwvUDguGCg9YidiGCg9UDg9Zksi8l2i+ig5HigzHC2uGC2vNDwLUDguU','pgGZpKzPy2HLAxjVienbrdWVAdm+','iIWGy29UDMvYDguGChjPBwvPCM8GCgfYysa8yJ4UzhHMpc9IpIbJB20GDw1HigrLC3rHCYbMzxjYyw1LBNrHCYbNCMf0DwL0yxmGzsbKzxbVAxmGDM9SDgeGysbLC3rHihddOwDPBMe6','pc9VChrPB24+','pc9KzxrHAwXZpG','pgrPDJ48BgfIzwW+ug9UDg8GmIaVieXVBMDPDhvKzsbYzwfSpc9SywjLBd48Aw5WDxqGDhLWzt0IDgv4DciGAwq9iMnHzc10Cc1WmMXVBIiGDMfSDwu9iG','pc9IpIdIGjqG','w2rHDgeTzxHWlwDLB2PZB25D','zhjVCa','pgrLDgfPBhmGy2XHC3m9iNnZlwHLBhaTAxrLBsiGB3bLBJ4','pfbVAw50pJXJB29YzgLUyxrLCZ4','y2XHC3nmAxn0','ywrK','rwrPzSoTy2LVCW','zwXHChnLzfnLyW','tSoJBYbMB2KGCg9ZC8oTDMvSigXLCIbVigzPy2HLAxjVlG','iZGWoda4ma','q29TChjPBwvUDg8','ue9jtLq','y291BNq','pgrPDIbJBgfZCZ0IC3mTy2fYzci+pgGZpKeGy29UDMvYDgvY4OcMpc9OmZ48CcbJBgfZCZ0IC3mTAgLUDci+qsbSzxiGz2vVBwv0CMLHCYWGBgLTCgfYiguGy3jPyxiGy2fTywrHCY4GtSoJBYbMzwnOzsbLC3rHigPHBMvSys48l3a+pc9KAxy+','uMvKzsddGwD1yq','rxn0CMfKyxm','igXHEwvYkhmPig1HCgvHzg8OCYKGWRCGq1jtoIa','BM9YBwfSAxPL','CdfSB24','phnWyw4Gy2XHC3m9iMnHzc1SyxLLCI1Uyw1LiJ4','y2fKlwzPBguTAw5WDxq','yxrYAwj1Dg9Z','tSoJBYbMB2KGCg9ZC8oTDMvSihbYB2nLC3nHCIbLC3rLieryrI4GrMLJAgvPCM8Gy29YCM9TCgLKBYbVDsbJB20Gzw50AwrHzgvZig11AxrVigvZCgvJW61MAwnHCYbUW6nVihn1Cg9YDgfKyxmU','C3rYAw5NAwz5','AgvSCa','z2vVBq','yxbWBgLJyxrPB24VDM5KlMDVB2DSzs1Lyxj0Ac5RBwWREg1S','zMLSDgvY','y2fKlwjHDgnOlwrYB3b6B25L','iIbJBgfZCZ0Iy2fKlxrHCMDLDc1Nzw9TiJ4','CMvHzefZvgv4Da','y29SB3jizxG','tKze','tgfIzwW','y2fKlxn0zxaYlwjHy2S','z2vVBuHPBNq','pc9ZzwXLy3q+pc90zd4','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ5qB3iGCMvNCMfZihnPBxbSzxmSig7dO28GCg9YigLUDgvSAwFdQM5JAweGyxj0AwzPy2LHBdOGBYbUB21LigrVigXHEwvYicHLEdOGiKj1AwXKAw5NCYiG4OAsievKAwBdRwnPB3mVug9SW61NB25VksWGC2uGysbWB2XPBgLUAgeGzxn0W6eGzMvJAgfKysaO4OAsihbYB3BdOxzLBcbLzgLMW61JAw8VCg9SW61NB25VksbVDsbHyMvYDgeGkokgKIbSAw5OysKSiguGBYbUB21LigrVCYbIBg9JB3mGAw5ZzxjPzg9ZicHLEdOGyMXVy28GiSobCNzVCMuIiokgKIbWB250BYbKBYb0AxbVimobCNzVCMuPlIbtW6nVihn1z2vZDmo1zxmG4OcuihbVzgvZihnLBxbYzsbHBhrLCMfYigfUDgvZigrLignVBNzLCNrLCI48l2rPDJ4','w2rHDgeTzxHWlxnOCf0','r3vHCMrHCIbWzxjMAwW','teLorq','y2fKlxn0zxaZlwjHy2S','AM9PBG','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTy3jLyxrLiJ48yJ7INjmG','pgrPDIbJBgfZCZ0Iy2fKlwXHEwvYlxjVDYi+','C29YDa','y2fKlwrYB3b6B25L','phrKpJXZzwXLy3qGzgf0ys1PzhG9iG','pgGYpKHPC3tdS3jPy288l2GYpG','pgi+q2XPCxvLihbHCMeGzxnJB2XOzxiGDSoHCMLVCYbMAwnOzwLYB3mGlMr4zJWVyJ48C3bHBJ5pDsbHCNjHC3rLlw9ZihbHCMeGyxf1AtWVC3bHBJ4','mtKYnJviqLvUD2S','C2vJDgLVBG','CMvKDwnL','C3bSAwnL','igXHEwvYkhmPlIbtAxn0zw1HigrLignVB3jKzw5HzgfZoIbUW6nVigLUzgLJywrVig5VieryrIaOzxnJB2XOzs1ZzsbUysbMyxnLihnLz3vPBNrLks48l2rPDJ4','rwL4B3m','phrKpJXIpG','A2v5CW','zw50AxrPzxm','lMnHzc1SyxLLCI1JAgvJAW','pgi+rMfZzsaZlJWVyJ4GugfYysbJywrHigXHEwvYlcbJB25MAxjTysbVig5VBwuGzgeGy2fTywrHifnjrYbHignYAwfYiguGBYb0AxbVigrLigDLB21LDhjPysbZDwDLCMLKBY48yNi+pgjYpG','pg9WDgLVBIb2ywX1zt0IrvbtrZO0mZi2iG','zgLZCgXHEtPUB25LoW','BNvTyMvY','pc9ZCgfUpG','zMLUzeLUzgv4','y29VCMrZ','phnLBgvJDcbPzd0Iy2fKlwnYCY1ZzwXLy3qIpG','y2HLy2TLza','igvUDgLKywrLkhmPpc9ZCgfUpG','phn1Bw1HCNK+mY4GugfZC28GysbWyxnZBZWVC3vTBwfYEt4','rwXPBwLUyxiGBYbWzxjMAwWGiG','CMvTB3zL','pfbSywnLBwfYAZ48BMfTzt4','AxmTzhjHzW','iIbWBgfJzwHVBgrLCJ0IzxG6idqXlJe1odq1iJ48l2rPDJ4','mZqYq3DTtvnK','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ4','uMvNCMfZicyGy29VCMrLBMfKyxm','i2zMzMzMzG','phaGy2XHC3m9iNnZlwHPBNqIpUkCLYaWigvYCM9ZlJWVCd4','A2LSB21LDgvYCW','y2fKlwzPBMLZAa','phnWyw4GC3r5Bgu9iMnVBg9YoInImZqXm2m7iJ7INjCG','zxH0CMe','zhDN','BMfTzq','mtLPBgvoAge','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5hDwLHihldOxbPzg8UienHzgeGyMXVy28GCg9KzsbZzxiGywjLCNrVl2zLy2HHzg8Gy2XPy2fUzg8GBM8GDmoTDhvSBY48l3a+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKGC3mTyNrUlwrHBMDLCIiGzgf0ys1KzwW9iG','w2rHDgeTEM9VBv0','lda8l2nVB3jKAw5HDgvZpJWVug9PBNq+','ChvZAa','iIbWBgfJzwHVBgrLCJ0IzxG6ic0WlJa5mtmWmYi+pc9KAxy+','DgfIBgvZ','ig7dO28GC3vWB3j0ywrHCW','pc9ZCgfUpJWVzgL2pG','pgrPDIbJBgfZCZ0IC3mTAgLUDciGAwq9iMnHzc10Cc1ZDgf0DxmIihn0EwXLpsjTyxjNAw4TDg9WoJHWEdSIpJWVzgL2pG','CM91BMq','Aw5Zzxj0Aw9Uug9PBNq','zhjHz292zxi','zgLZCgXHEq','y2fKlxn0zxaYlw5LEhq','y2XVC2vK','C3bSAxq','w2rHDgeTzgvSpsi','pgGZpKnVCNjLC3bVBMtdQM5JAweGBgf5zxiGq0feiokgKIbJyw1HzgeGu0Lhpc9OmZ4','ug9ZDgu','sefuq0G','pc9ZzwXLy3q+','lMTTBa','DMfSAwq','pgrPDIbJBgfZCZ0IC3mTCMvJAxbLlwnHCMqIpG','iJ5AB29Tpc9IDxr0B24+','CgfYC2vtEw5J','pgi+q2XPCxvLihbHCMeGzxnJB2XOzxiGDw0GzMLJAgvPCM8GlMr4zJWVyJ4','Bgf5zxjZ','ue9mwuXjtKu','pgrPDIbJBgfZCZ0IC3mTAgLUDci+u8oZihbHCMeGCxvLBsbQW6eGy29UAgvJzsbVihnPC3rLBweGzguGy29VCMrLBMfKyxmGzg8GzgvZzw5OBY4Gu2uGBSoJBYbZB3vIzxjLCYWGzxnJB2XOzsb1BweGzgfZig9WW6FdTwvZigfJAw1HlJWVzgL2pG','y2fKlxn0zxa1lw5LEhq','rmoQihvTig5VBwuGyw8GCgvYzMLSlG','pgrPDJ48BgfIzwW+ug9UDg8GmsaVifKGBM8GzgvZzw5OBZWVBgfIzwW+pgLUChv0ihr5Cgu9iNrLEhqIigLKpsjJywqTDhaTCdf5iIb2ywX1zt0I','mZKWtwnZAMz3','CxvLCNLtzwXLy3rVCKfSBa','pg9WDgLVBIb2ywX1zt0IDhDVCg9PBNqI','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5qzxjMAxmGzguGy29UDMvYC8oJBYaOrMfZzsaXmcKUievZy29SAguGDw0GCgvYzMLSlcbKzxbVAxmGBYbMAwnOzwLYBYbeweyGBM92BYaOBYbTyxbLyw1LBNrVigrLigXHEwvYCYbLig8GC2LZDgvTysbKzsbJB29YzgvUywrHCYbQW6eGDSoQBsbWCMvLBMnOAwrVCYKUpc9WpG','ChjLDMvUDerLzMf1Bhq','pgrPDJ48yJ4','W4fYzwe','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0Iy2fKlxn0zxa1lw5LEhqIpKD1yxjKyxiGy29TBYbWzxjMAwWG4OAspc9IDxr0B24+','y2fKlwjHDgnOlxbYB2zPBgu','z3jVDxbZ','i2zMmdaWma','phn1Bw1HCNK+ms4GtYbXDwuGW6KGAxn0BZ88l3n1Bw1HCNK+','rMLJAgvPCM8','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjJywqTzMLUAxnOmIi+q29Uy2X1AxiGC2vTigD1yxjKyxi8l2j1DhrVBJ4','ug9PBNq','pg9WDgLVBIb2ywX1zt0Iy3vZDg9TiG','kgrLBwfZAwfKBYbWzxf1zw5VihbHCMeGC2vYihvTigXLDMfUDgfTzw50BYddOcbLC2nHBgeGCMvHBcKUimojihbYB3BdOxzLBcbXDwuGC2vQysb1BsbTB2rLBg8GBg9JywWG','pgi+4PQGievZDguGzgvZzw5OBYbWyxjLy2uGBSoJBYb0zxiGy29VCMrLBMfKyxmGz2vVz3ldOwzPy2fZihjLywLZlJWVyJ4G','y2fKlwr3zY1YzxrYEq','phn2zYb4BwXUCZ0IAhr0CdOVl3D3DY53mY5VCMCVmJaWmc9ZDMCIihDPzhrOpsiYnIiGAgvPz2H0psiYnIiGDMLLD0jVEd0ImcaWidi0idi0iIbMAwXSpsjUB25LiIbZDhjVA2u9iMn1CNjLBNrdB2XVCIiGC3rYB2TLlxDPzhrOpsiYiIbZDhjVA2uTBgLUzwnHCd0ICM91BMqIihn0CM9Rzs1SAw5LAM9PBJ0ICM91BMqIpJXWyxrOigq9iK0XncaYsdzHmIaYidaGmcaWltiGmNyXnMeYidiGmcaWidaGmIaYAdeYytiGmIaWidaGmcaYltjwohOIlZ48Cg9SEwXPBMuGCg9PBNrZpsiXncaYide0idGGmJaGociVpJWVC3zNpG','pgrPDJ48BgfIzwW+ug9UDg8GmIaVieXHDgL0DwrLihjLywW8l2XHyMvSpJXPBNb1Dcb0ExbLpsj0zxH0iIbPzd0Iy2fKlxrWlxaYBgf0iIb2ywX1zt0I','yxrHBJi','y2vUDgvY','pgrPDIbJBgfZCZ0IC3mTy2fYzci+','w2rHDgeTCNvUpsi','y2fKlwjHDgnOlwLUChv0','pgGZpKzHC2uGnYaVifnPC3rLBweGzguGy29VCMrLBMfKyxmGzguGB3jPz2vTpc9OmZ4','pc90yM9KEt48l3rHyMXLpG','Awr4','y3vZDg9T','pgGZpKXHEwvYCYbLBMnVBNrYywrVCYaOzxnJB2XOzsbXDwfPCYbPBxbVCNrHCIK8l2GZpG','vgLWBW','z2vVBvr5Cgu','mZK5mJeXmhPmqNnowa','pgi+rMfZzsaXlJWVyJ4GrxnJB2XOzsbVic5KEgyG4OcuigeGyxbWig1VC3rYysbXDwfUDgfZigvUDgLKywrLCYbLigXHEwvYCYbLBMnVBNrYB3uUpgjYpJXICJ4','zMLUza','CdjSyxq','iZaWzMyWma','q2fPEgeGzguGvMLZAxrH','D2LKDgG','CMfKAxvZ','mcaVia','DgfYz2v0tMfTzq','C2v0sxrLBq','u2uGzxnJB2XOzxjLCYb1BsbZAxn0zw1HigrLignVB3jKzw5HzgfZigDLB2DYW6fMAwnVicHfvfjtodKVufqTve0WnIbVDsbxr1m4ncKGBMeGzMfZzsbZzwD1Aw50zsWGBYbKzxnLBMHVihzHAsbHCgfYzwnLCIa','B25LCNjVCG','mZe4uNb5zgzl','y2fKlwzPBMLZAdi','y3jLyxrLrwXLBwvUDa','y2fSBa','rvbtrZOZnZyZ','i2zMzMyWma','Cg9ZAxrPB24','DhDVug9PBNq','Dg9gAxHLza','pgrPDJ48BgfIzwW+ug9UDg8GmIaVifKGBM8GzgvZzw5OBZWVBgfIzwW+pgLUChv0ihr5Cgu9iNrLEhqIigLKpsjJywqTDhaTCdj5iIb2ywX1zt0I','pc9JB29YzgLUyxrLCZ48l0XPBMvtDhjPBMC+','ihvUAwrHzgvZig5VihrVDgfSia','pgGZpKD1yxjKyxiGzxn0zsbWzxjMAwWGzguGAw1WB3j0yCoNW6nVpc9OmZ4','AhjLzG','CMvZDwX0','C3rHCNrqB2LUDa','W4fYDM9Yzq','otGZmJyXngH3CNP3vG','pgrPDJ48BgfIzwW+ug9UDg8GmsaVifGGBM8GzgvZzw5OBZWVBgfIzwW+pgLUChv0ihr5Cgu9iNrLEhqIigLKpsjJywqTDhaTCdf4iIb2ywX1zt0I','yMjVEa','peXPBMvtDhjPBMC+pgnVB3jKAw5HDgvZpG','pgrPDIbJBgfZCZ0IC3mTywn0Aw9UCY1YB3CIpG','phn1Bw1HCNK+oc4GuxvLihrPCg9ZigrLigvUDgLKywrLienbrcbZW6nVihn1Cg9YDgfKB3m/pc9ZDw1Tyxj5pG','ChjVDg90ExbL','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIigLKpsjJywqTy3jZlwn1C3rVBs13CMfWiIbZDhLSzt0I','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigrHDgeTzxHWlwDLB2PZB249iG','iZaWmdbMzG','yMf0y2G','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpJXSywjLBd5oB21LigrVihbLCMzPBdWVBgfIzwW+pgLUChv0ihr5Cgu9iNrLEhqIigLKpsjJywqTChjVzMLSzs1Uyw1LiIbWBgfJzwHVBgrLCJ0IzxG6ifrVCg9NCMfMAweGrw1WCMvZysbyiIb2ywX1zt0I','uhldQs12Axn1ywXPEMhdP8oJBW','pKvuuLm4osaVifbulvrnmdyGkevqu0C6mZC2mYKGlYbTzxrYB3mSihvZBYbJB211BsbLBsbqB3j0DwDHBdWVB3b0Aw9UpG','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ5mAw5OyxmSihbVBgLSAw5OyxmGkgfIzxj0yxmG4OAsigXPBMHHCYWGzMvJAgfKyxmG4OAsihbVBmoTz29UB3mPlcbJW61Yy3vSB3mGzsbIBg9JB3mGAw5ZzxjPzg9ZicJIHPiGCg9UDg9ZksWGyxjJB3mGkgfWCM94Aw1Hzg9ZihbVCIbZzwDTzw50B3mGzguGBgLUAgePiguGDgv4Dg8GkokgKIbWB250BYbJB20GzxrPCxvLDgePlIbdB3rHCYbLihrYyw1HCYaOAgf0y2GPig7dO28GC8oJBYbJB252zxj0AwrHCY4Gu3bSAw5LCYWGzMfJzxmGm0qGzsbVDxrYyxmGzw50AwrHzgvZig11AxrVigvZCgvJW61MAwnHCYb0yw1IW6LTig7dO28GC8oJBYbZDxbVCNrHzgfZig5LC3rHihzLCNpdO28G4OcuigzPy2fTignVBNrHyMLSAxPHzgfZignVBw8GiM7dO28GC3vWB3j0ywrHCYiGBM8GCMvSyxtdS3jPBYbLBsb2zxOGzguGy2f1C2fYzw0GzxjYBY48l2rPDJ4','pgrPDJ48BgfIzwW+ug9UDg8GmsaVieXHDgL0DwrLihjLywW8l2XHyMvSpJXPBNb1Dcb0ExbLpsj0zxH0iIbPzd0Iy2fKlxrWlxaXBgf0iIb2ywX1zt0I','pc9IpJXZCgfUpG','phn1Bw1HCNK+nc4Gq29TBYddQsbKzwnPzgLKBYbVihrPCg8GzguGz2vVBwv0CMLHiguGysbJyw1HzgeGzguGzgvZDgLUBZ88l3n1Bw1HCNK+','Cdf4','B25SB2fK','CMvWBgfJzq','i2mWyZbJma','Dg9Nz2XL','DhDVug9PBNrjBNb1Da','ChjVzMLSzxm','tMvUAhvTic5KEgyGDSoHBgLKBYbZzwXLy2LVBMfKBY4','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpJXSywjLBd5qzxjMAwWGysbHCgXPy2fYpc9SywjLBd48C2vSzwn0igLKpsjJywqTyMf0y2GTChjVzMLSzsi+','zMvHDhvYzxm','pgrPDIbJBgfZCZ0IC3mTAgLUDci+r3vHCMrHigeGy29YCMvZCg9UzmoQBMnPysbKzsbSyxLLCNmSigDLB21LDhjPyxmGzsbZAxn0zw1HigrLignVB3jKzw5HzgfZlIbeysbWCSoZEgLTysb2zxOSigjHC3rHigvZy29SAgvYig8GCgvYzMLSigvTicjqzxjMAxmGz3vHCMrHzg9ZiIbLig8GBM92BYbMAwnOzwLYBYbeweyUpc9KAxy+','u2vSzwnPB25LihbLBg8GBwvUB3mGDw0GBgf5zxiU','ywrKrxzLBNrmAxn0zw5LCG','zM9YrwfJAa','y2fKsw1WB3j0uhjVzMLSzxm','phnWyw4Gy2XHC3m9iMnHzc1SyxLLCI1ZD2f0y2GIihn0EwXLpsjIywnRz3jVDw5KoG','Aw5Uzxjive1m','x3bLBMrPBMDqCM9MAwXL','Dgv4DenVBNrLBNq','pgGYpK5VDMeGAw1WB3j0yCoNW6nVpc9OmJ4','owf4y0THtG','Cdj5','iIbZDhLSzt0ID2LKDgG6mtaWjtSGCgfKzgLUzZO2ChGGohb4oYbIB3jKzxi6mxb4ihnVBgLKihzHCIGTlwXPBMuTC3rYB25NktSGyM9YzgvYlxjHzgL1CZO2ChG7iJ48l3rKpG','pgLUChv0ihr5Cgu9iNrLEhqIigLKpsjJywqTy3jZlwn1C3rVBsiGCgXHy2vOB2XKzxi9iITWCM9Qps4UlIaRzwXSChm9lI4UicT1BML0CZ1TicTUB19KzwzZiIb2ywX1zt0I','zMLSzxm','pLDhuZG0ic8Gz3jHDxmGkevqu0C6ndmYnIK8l29WDgLVBJ4','iIbWBgfJzwHVBgrLCJ0IzxG6idaUmde5odCWiJ48l2rPDJ4','y2f0y2G','DgvZDa','C2XPy2u','pgrPDIbJBgfZCZ0IC3mTCMvJAxbLlwfJDgLVBNmIpG','DMvYDgLJzxm','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjJywqTC3rLCdmTyMfJAYi+4OAqifzVBhrHCJWVyNv0Dg9UpG','zNjVBunsuW','pg9WDgLVBIb2ywX1zt0IrvbtrZOZnZyZiG','C2nHBgu','igvUDgLKywrLkhmPpc9KAxy+pc90zd4','zxHWs21S','tfDqt0XzteLorq','ChjVCgvYDgLLCW','pc9KzxnJCMLWDgLVBJ4','phvSihn0EwXLpsjTyxjNAw46mtbWEcaWidaGmtHWEdSGCgfKzgLUzZOWoYi+','pgrLDgfPBhmGy2XHC3m9iNnZlwHLBhaTAxrLBsi+','zxjYB3i','pgLUChv0ihr5Cgu9iMnOzwnRyM94iIbKyxrHlwLKEd0I','rhHMugfYC2vY','iJ5jBxbVCNrHCIbJB20Gzxn0zsbWzxjMAwW8l2j1DhrVBJ4','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5dywrHigLTCg9YDghdP8oJBYbdquqGzMLJysbYzwDPC3rHzgeGyxf1As48l3a+','uMvKzsbfC2DVDg9Z','pc9IpJXKAxyGy2XHC3m9iNnZlwHPBNqIpG','igzPy2HLAxjVkhmPlca','igDLB21LDhjPysHZktWVC3bHBJ48l2rPDJ4','zg93BMXVywq','igvUDgLKywrLkhmPigvTia','iIbJBgfZCZ0Iy2fKlxrHCMDLDc1Uyw1LiIb2ywX1zt0I','AgLKzgvU','pgrPDIbJBgfZCZ0IC3mTzMLSzs1JAgLWiJ7WN5oeia','tgLUzvn0CMLUzW','su5trvju','pc9Uyw1LpG','iIbJBgfZCZ0Iy2fKlwXHEwvYlwnOzwnRiIa','y2XPy2S','y2fKlwnVBNrLBNq','pgrPDIbJBgfZCZ0IC3mTC3rHDhmTz3jPzci+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigrHDgeTzxHWlwTTBd0I','pd94BwWGDMvYC2LVBJ0Ims4WiIbLBMnVzgLUzZ0IvvrgltGIpZ48A21SihHTBg5ZpsjODhrWoI8VD3D3lM9Wzw5NAxmUBMv0l2TTBc8YlJiIpJXeB2n1BwvUDd48BMfTzt4','DMfSDwu','zgf0yvrYyw5ZzMvY','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ5dB252zxj0zsb1BsbKzxnLBMHVienbrcaOlMr4zIKGzw0Gy2fTywrHCYbtsuCGzgvZDgeGyxbWic8GzwrPzSoTy2LVCYWGzxn0CMfKyxmSimoHCNzVCMvZlcbYzwrLCYWGzxrJlIaOzw0GDMv6igrLihrLCMvZigrLigrLC2vUAgfYihr1zg8GW6aGBCoJBYbWB3iGy2LTysbKBYbdquqPlJWVzgL2pG','imoxia','i2zMmdbMzG','pgi+rMfZzsa0ltKUpc9IpIbbigfWCcbJB252zxj0zsWGBgLTCgeGysbNzw9TzxrYAweGkhjLBw92zsbWB250B3mGCMvWzxrPzg9ZlcbMzwnOysbWB2ZdRwDVBM9ZlcbPz25VCMeGz2vVBwv0CMLHihzHEMLHksbLig1VC3rYysbVihjLBgf0W7nYAw8GzMLUywWU','pgrPDIbJBgfZCZ0IC3mTzhjVChPVBMuIigLKpsjJywqTzhjVChPVBMuIpG','zhHM','Dw5ZDxbWB3j0zwq','y29VCMrPBMf0zxm','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpG','CdjSB24','pgrPDJ4','uhjLzw5JAguGB3mGzg9PCYbWB250B3mGzguGz2vVCNjLzMvYzw5JAwhdP8oJBYbJB3jYzxrHBwvUDguGyw50zxmGzguGy29UDMvYDgvYicG','y2fKlxn0zxaZlw5LEhq','ihbYB2nLC3nHzg9Z4OcM','ktWVC3bHBJ48l2rPDJ4','uMfPBW','ChjVzMLSzu5HBwu','y2fKlwnYCY1JDxn0B20','y2fTCg9ZigvTigzHBhrH','ntC5nJy0vuPeAMnz','pfbVBhLNB24+pg91DgvYqM91BMrHCNLjCZ48tgLUzwfYuMLUzZ48y29VCMrPBMf0zxm+','sgLKCMfUDgu','ChqTufq','iZaWzMzMzG','y3vZDg9TuhjVAJq','i2nHzc1PBxbVCNqTCgfNzsaUC3mTBMf2lwj0BG','C2TPChbLza','AxmTywn0AxzL','q29Uy2X1W61KBZOG','Bgf0Axr1zguVBg9Uz2L0DwrLigzVCMeGzg8GAw50zxj2ywXVihBdOwXPzg8','ywjZ','DgfYz2v0','y2fTywrH','DxnLCG','y2fKlwjHDgnOlxn0yxr1CW','CgfYC2u','y2fKsw1WB3j0sgLZDg9YEq','Dg9ju09tDhjPBMC','Ahr0Chm6lY9Jzg4UANnKzwXPDNiUBMv0l25WBs9KEgyTCgfYC2vYqdeUms4YlYTLC20','CxvLCNLtzwXLy3rVCG','q290yxm','EM9VBq','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjJywqTC3rLCdiTyMfJAYi+4OAqifzVBhrHCJWVyNv0Dg9UpG','y2fKlxbYB2zPBguTBMfTzq','pgrPDIbJBgfZCZ0IC3mTAgLZDg9YEs1PDgvTiJ4','pc91Bd48l2rPDJ4','jImXmdS','tvrfwfq'];_0x427b=function(){return _0x7334e6;};return _0x427b();}
+/* ============================================================
+   IMPORTAÇÃO CAD — DXF/DWG → SIG
+   ============================================================
+   Módulo autónomo, depende de funções/variáveis já existentes em
+   05-app-main.js (layers, layerCounter, activeLayerId, config,
+   featuresData, map, drawnGroup, layerVisible, layerOrder,
+   getLayerSchema, importGeoJSONFeatures, buildGeoJSON,
+   exportShapefileZip, zoomToLayer, renderLayersPanel,
+   markProjectDirty, defaultSymbology) e das bibliotecas já
+   carregadas globalmente: proj4, turf, shpwrite.
+
+   Âmbito assumido (importante, para não prometer o que não se
+   consegue cumprir dentro de uma página web):
+
+   - DXF é suportado de facto (parsing feito no browser com a
+     biblioteca "dxf-parser", carregada sob pedido via import()).
+   - DWG NÃO é suportado. É um formato binário proprietário da
+     Autodesk — não existe forma fiável de o ler dentro de uma
+     página web sem uma licença/SDK (Autodesk RealDWG ou ODA).
+     Quando o utilizador escolhe um .dwg, a app explica isto e
+     sugere converter primeiro para .dxf com uma ferramenta
+     gratuita (ODA File Converter, LibreCAD, QCAD, ou "Guardar
+     como" no AutoCAD).
+   - A "deteção inteligente" é baseada em REGRAS (nome da layer,
+     tipo de entidade, geometria fechada/aberta, nome de blocos) —
+     não é um modelo de IA treinado, e por isso não se apresenta
+     nenhuma percentagem de "precisão estimada" inventada. O que se
+     mostra no relatório final são contagens reais.
+   - Exportação: GeoJSON e Shapefile reutilizam as funções já
+     existentes na app. KML é gerado por um pequeno conversor
+     próprio. GeoPackage não está disponível nesta versão (exige
+     uma biblioteca SQLite/GDAL que não faz sentido correr no
+     browser) — fica assinalado como tal na interface.
+   ============================================================ */
+(function(){
+  var pageEl = document.getElementById('cad-import-page');
+  var openBtn = document.getElementById('btn-cad-import');
+  var closeBtn = document.getElementById('cad-close-btn');
+  var contentEl = document.getElementById('cad-content');
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll('#cad-import-page .ss-nav-btn'));
+  if(!pageEl || !openBtn) return;
+
+  var LS_PROFILES = 'cadImportProfiles';
+  var LS_HISTORY = 'cadImportHistory';
+  var STEP_LABELS = ['Ficheiro','Pré-visualização','Regras & coordenadas','Conversão','Relatório','Guardar perfil'];
+
+  var S = {
+    section: 'wizard',
+    step: 0,
+    fileName: null,
+    dxf: null,
+    entities: [],
+    layerTable: [],     // [{name, count, colorHex, checked, geomHint, targetName}]
+    fromCRS: 'EPSG:3763',
+    customProj4: '',
+    bbox: null,          // {minX,minY,maxX,maxY,width,height} — extensão bruta das coordenadas do DXF
+    twoPointInput: {p1x:'', p1y:'', p1lat:'', p1lon:'', p2x:'', p2y:'', p2lat:'', p2lon:''},
+    twoPoint: null,       // {valid, p1:{x,y}, q1:{x,y}, scale, rotation} — transformação calculada
+    result: null,       // {groups:[{targetName, geomType, layerId, imported, errors}], unsupported, elapsedSec}
+    profileName: null
+  };
+
+  function resetState(){
+    S.step = 0; S.fileName = null; S.dxf = null; S.entities = [];
+    S.layerTable = []; S.result = null; S.profileName = null;
+    S.bbox = null; S.twoPoint = null;
+    S.twoPointInput = {p1x:'', p1y:'', p1lat:'', p1lon:'', p2x:'', p2y:'', p2lat:'', p2lon:''};
+  }
+
+  /* ============================================================
+     ABRIR / FECHAR
+     ============================================================ */
+  openBtn.addEventListener('click', function(){ pageEl.hidden = false; switchSection('wizard'); });
+  closeBtn.addEventListener('click', function(){ pageEl.hidden = true; });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !pageEl.hidden) pageEl.hidden = true; });
+  navBtns.forEach(function(btn){ btn.addEventListener('click', function(){ switchSection(btn.dataset.cadSection); }); });
+
+  function switchSection(name){
+    S.section = name;
+    navBtns.forEach(function(b){ b.classList.toggle('is-active', b.dataset.cadSection === name); });
+    if(name === 'wizard') renderWizard();
+    else if(name === 'profiles') renderProfiles();
+    else if(name === 'batch') renderBatch();
+    else if(name === 'history') renderHistory();
+    else if(name === 'help') renderHelp();
+  }
+
+  /* ============================================================
+     HELPERS
+     ============================================================ */
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function normalize(s){
+    return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+  }
+  function loadProfiles(){ try{ return JSON.parse(localStorage.getItem(LS_PROFILES)||'[]'); }catch(e){ return []; } }
+  function saveProfiles(list){ try{ localStorage.setItem(LS_PROFILES, JSON.stringify(list)); }catch(e){} }
+  function loadHistory(){ try{ return JSON.parse(localStorage.getItem(LS_HISTORY)||'[]'); }catch(e){ return []; } }
+  function pushHistory(entry){
+    var h = loadHistory(); h.unshift(entry);
+    if(h.length > 200) h = h.slice(0,200);
+    try{ localStorage.setItem(LS_HISTORY, JSON.stringify(h)); }catch(e){}
+  }
+
+  var dxfParserPromise = null;
+  function ensureDxfParser(){
+    if(window.DxfParser) return Promise.resolve(window.DxfParser);
+    if(!dxfParserPromise){
+      dxfParserPromise = import('https://cdn.jsdelivr.net/npm/dxf-parser@1.1.2/+esm')
+        .then(function(mod){
+          window.DxfParser = mod.default || mod.DxfParser;
+          return window.DxfParser;
+        });
+    }
+    return dxfParserPromise;
+  }
+
+  /* cores AutoCAD Color Index (ACI) mais comuns — suficiente para dar uma
+     cor aproximada; 0/256 (byblock/bylayer) ficam sem cor própria */
+  var ACI = {1:'#ff0000',2:'#ffff00',3:'#00ff00',4:'#00ffff',5:'#0000ff',6:'#ff00ff',7:'#ffffff',8:'#808080',9:'#c0c0c0'};
+  function aciToHex(idx){ return ACI[idx] || null; }
+
+  /* ============================================================
+     LEITURA E PARSING DO FICHEIRO
+     ============================================================ */
+  function handleFile(file){
+    var ext = (file.name.split('.').pop()||'').toLowerCase();
+    if(ext === 'dwg'){
+      renderDwgWarning(file.name);
+      return;
+    }
+    if(ext !== 'dxf'){
+      alert('Formato não suportado. Escolha um ficheiro .dxf (ou .dwg, para ver as instruções de conversão).');
+      return;
+    }
+    S.fileName = file.name;
+    renderLoading();
+    ensureDxfParser().then(function(DxfParser){
+      var reader = new FileReader();
+      reader.onload = function(e){
+        try{
+          var parser = new DxfParser();
+          var dxf = parser.parseSync ? parser.parseSync(e.target.result) : parser.parse(e.target.result);
+          S.dxf = dxf;
+          S.entities = (dxf && dxf.entities) || [];
+          buildLayerTable();
+          S.bbox = computeBBox(S.entities);
+          S.step = 1;
+          renderWizard();
+        } catch(err){
+          console.error('Erro ao processar DXF:', err);
+          alert('Não foi possível processar este DXF. Ficheiro corrompido ou com entidades muito específicas não suportadas.');
+          S.step = 0; renderWizard();
+        }
+      };
+      reader.onerror = function(){ alert('Não foi possível ler o ficheiro.'); };
+      reader.readAsText(file);
+    }).catch(function(err){
+      console.error(err);
+      alert('Não foi possível carregar o leitor de DXF (verifica a ligação à internet).');
+      S.step = 0; renderWizard();
+    });
+  }
+
+  function renderLoading(){
+    contentEl.innerHTML = '<h2>A processar…</h2><p class="ss-subtitle">A ler o ficheiro DXF e a identificar layers e entidades.</p>';
+  }
+
+  function renderDwgWarning(name){
+    contentEl.innerHTML =
+      '<h2>Ficheiro .dwg detetado</h2>' +
+      '<div class="ss-note"><b>O DWG não pode ser lido diretamente numa página web.</b> É um formato binário proprietário da Autodesk — ler um .dwg de forma fiável exige uma licença/SDK (Autodesk RealDWG ou ODA), o que está fora do alcance desta aplicação.<br><br>' +
+      'Para importares "' + esc(name) + '", converte primeiro para <b>.dxf</b> com uma destas ferramentas gratuitas e depois volta a esta página:' +
+      '<ul style="margin:10px 0 0 18px; padding:0;">' +
+        '<li>ODA File Converter (gratuito, oficial)</li>' +
+        '<li>LibreCAD ou QCAD (abrir e "Guardar como" .dxf)</li>' +
+        '<li>AutoCAD / BricsCAD — "Guardar como" → DXF</li>' +
+      '</ul></div>' +
+      '<button class="ss-btn" id="cad-dwg-retry">Escolher outro ficheiro</button>';
+    document.getElementById('cad-dwg-retry').addEventListener('click', function(){ S.step = 0; renderWizard(); });
+  }
+
+  /* ============================================================
+     TABELA DE LAYERS (Fase 1/2) + heurísticas de deteção (Fase 6)
+     ============================================================ */
+  var KEYWORD_RULES = [
+    {re:/cota|dim/, target:'Cotas', geom:'LineString', checked:false},
+    {re:/texto|text|label|annot|rotul/, target:'Textos', geom:'Point', checked:false},
+    {re:/simbolo|symbol/, target:'Símbolos', geom:'Point', checked:false},
+    {re:/build|edif/, target:'Edifícios', geom:'Polygon', checked:true},
+    {re:/road|estrada|arruamento|^via$/, target:'Estradas', geom:'LineString', checked:true},
+    {re:/eixo|axis/, target:'Eixos', geom:'LineString', checked:true},
+    {re:/passeio|sidewalk|calcada/, target:'Passeios', geom:'LineString', checked:true},
+    {re:/tree|arvore/, target:'Árvores', geom:'Point', checked:true},
+    {re:/water|agua|hidr/, target:'Rede Água', geom:'LineString', checked:true},
+    {re:/sewer|esgoto|saneamento/, target:'Rede Esgotos', geom:'LineString', checked:true}
+  ];
+  var BLOCK_TIPO_RULES = [
+    {re:/arvore|tree/, tipo:'Árvore'},
+    {re:/hidrante|hydrant/, tipo:'Hidrante'},
+    {re:/poste|pole|light/, tipo:'Poste'},
+    {re:/caixa|manhole|visita/, tipo:'Caixa de Visita'},
+    {re:/valvula|valve/, tipo:'Válvula'}
+  ];
+
+  function classifyLayerName(name){
+    var n = normalize(name);
+    for(var i=0;i<KEYWORD_RULES.length;i++){
+      if(KEYWORD_RULES[i].re.test(n)) return {targetName: KEYWORD_RULES[i].target, geom: KEYWORD_RULES[i].geom, checked: KEYWORD_RULES[i].checked};
+    }
+    return null;
+  }
+  function classifyBlockTipo(blockName){
+    var n = normalize(blockName);
+    for(var i=0;i<BLOCK_TIPO_RULES.length;i++){
+      if(BLOCK_TIPO_RULES[i].re.test(n)) return BLOCK_TIPO_RULES[i].tipo;
+    }
+    return blockName || 'Bloco';
+  }
+
+  function entityIsClosed(e){
+    if(e.shape === true || e.closed === true) return true;
+    var v = e.vertices;
+    if(Array.isArray(v) && v.length > 2){
+      var a = v[0], b = v[v.length-1];
+      if(a && b && Math.abs(a.x-b.x) < 1e-6 && Math.abs(a.y-b.y) < 1e-6) return true;
+    }
+    return false;
+  }
+
+  function dominantGeomForLayer(entities){
+    var counts = {Point:0, LineString:0, Polygon:0};
+    entities.forEach(function(e){
+      if(e.type === 'INSERT' || e.type === 'CIRCLE' || e.type === 'TEXT' || e.type === 'MTEXT' || e.type === 'POINT') counts.Point++;
+      else if((e.type === 'LWPOLYLINE' || e.type === 'POLYLINE') && entityIsClosed(e)) counts.Polygon++;
+      else if(e.type === 'LINE' || e.type === 'LWPOLYLINE' || e.type === 'POLYLINE' || e.type === 'ARC') counts.LineString++;
+    });
+    return Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; })[0];
+  }
+
+  function buildLayerTable(){
+    var byLayer = {};
+    S.entities.forEach(function(e){
+      var lname = e.layer || '0';
+      if(!byLayer[lname]) byLayer[lname] = [];
+      byLayer[lname].push(e);
+    });
+    var dxfLayerColors = {};
+    try{
+      var tbl = S.dxf.tables && S.dxf.tables.layer && S.dxf.tables.layer.layers;
+      if(tbl) Object.keys(tbl).forEach(function(k){ dxfLayerColors[k] = aciToHex(tbl[k].colorIndex || tbl[k].color); });
+    }catch(e){}
+
+    S.layerTable = Object.keys(byLayer).map(function(lname){
+      var ents = byLayer[lname];
+      var guess = classifyLayerName(lname);
+      var geom = (guess && guess.geom) || dominantGeomForLayer(ents);
+      return {
+        name: lname,
+        count: ents.length,
+        colorHex: dxfLayerColors[lname] || '#3d6b4f',
+        checked: guess ? guess.checked : true,
+        geomHint: geom,
+        targetName: (guess && guess.targetName) || lname
+      };
+    }).sort(function(a,b){ return b.count - a.count; });
+  }
+
+  /* extensão bruta (bounding box) das coordenadas tal como estão no DXF,
+     antes de qualquer reprojeção — serve para detetar desenhos "locais"
+     (sem coordenadas geográficas reais, ex: modelos exportados de
+     Blender/SketchUp à escala do próprio objeto) */
+  function computeBBox(entities){
+    var minX=Infinity, minY=Infinity, maxX=-Infinity, maxY=-Infinity, found=false;
+    function acc(x,y){
+      if(typeof x !== 'number' || typeof y !== 'number' || !isFinite(x) || !isFinite(y)) return;
+      found = true;
+      if(x<minX) minX=x; if(x>maxX) maxX=x;
+      if(y<minY) minY=y; if(y>maxY) maxY=y;
+    }
+    entities.forEach(function(e){
+      if(Array.isArray(e.vertices)) e.vertices.forEach(function(v){ if(v) acc(v.x, v.y); });
+      if(e.center) acc(e.center.x, e.center.y);
+      if(e.position) acc(e.position.x, e.position.y);
+      if(e.insertionPoint) acc(e.insertionPoint.x, e.insertionPoint.y);
+      if(e.startPoint) acc(e.startPoint.x, e.startPoint.y);
+    });
+    if(!found) return null;
+    return {minX:minX, minY:minY, maxX:maxX, maxY:maxY, width: maxX-minX, height: maxY-minY};
+  }
+
+  /* ============================================================
+     RENDER PRINCIPAL DO WIZARD
+     ============================================================ */
+  function renderWizard(){
+    var stepsHtml = STEP_LABELS.map(function(label,i){
+      var cls = i === S.step ? 'is-active' : (i < S.step ? 'is-done' : '');
+      return '<div class="ss-step-pill ' + cls + '"><span class="ss-step-num">' + (i+1) + '</span>' + esc(label) + '</div>';
+    }).join('');
+
+    contentEl.innerHTML =
+      '<h2>Nova importação</h2>' +
+      '<p class="ss-subtitle">Converte um desenho CAD (DXF) diretamente para uma ou mais camadas SIG, com limpeza automática de geometria.</p>' +
+      '<div class="ss-steps">' + stepsHtml + '</div>' +
+      '<div id="cad-step-body"></div>';
+
+    if(S.step === 0) renderStep1();
+    else if(S.step === 1) renderStep2Preview();
+    else if(S.step === 2) renderStep3Rules();
+    else if(S.step === 3) renderStep4Convert();
+    else if(S.step === 4) renderStep5Report();
+    else if(S.step === 5) renderStep6SaveProfile();
+  }
+
+  /* ---------------- FASE 1: ficheiro ---------------- */
+  function renderStep1(){
+    var body = document.getElementById('cad-step-body');
+    body.innerHTML =
+      '<div class="ss-card">' +
+        '<h3>Ficheiro CAD</h3>' +
+        '<div class="ss-dropzone" id="cad-dropzone">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+          '<b>Clique para escolher um ficheiro .dxf</b>' +
+          '<span>.dwg também é aceite — mostra instruções de conversão para .dxf</span>' +
+        '</div>' +
+        '<input type="file" id="cad-file-input" accept=".dxf,.dwg" style="display:none;">' +
+        (S.fileName ? '<div class="ss-file-chip">📄 ' + esc(S.fileName) + '</div>' : '') +
+      '</div>';
+
+    var dz = document.getElementById('cad-dropzone');
+    var fi = document.getElementById('cad-file-input');
+    dz.addEventListener('click', function(){ fi.click(); });
+    dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('is-drag'); });
+    dz.addEventListener('dragleave', function(){ dz.classList.remove('is-drag'); });
+    dz.addEventListener('drop', function(e){
+      e.preventDefault(); dz.classList.remove('is-drag');
+      if(e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fi.addEventListener('change', function(){ if(fi.files && fi.files[0]) handleFile(fi.files[0]); });
+  }
+
+  /* ---------------- FASE 2: pré-visualização de layers ---------------- */
+  function renderStep2Preview(){
+    var body = document.getElementById('cad-step-body');
+    var totalEntities = S.entities.length;
+    var rowsHtml = S.layerTable.map(function(l, i){
+      return '<div class="cad-layer-row">' +
+        '<input type="checkbox" data-idx="'+i+'" class="cad-layer-check" '+(l.checked?'checked':'')+'>' +
+        '<span class="cad-layer-swatch" style="background:'+esc(l.colorHex)+';"></span>' +
+        '<span class="cad-layer-name">' + esc(l.name) + '<span class="cad-geom-badge ' + (l.geomHint==='Point'?'pt':l.geomHint==='Polygon'?'pg':'ln') + '">' + esc(l.geomHint) + '</span></span>' +
+        '<span class="cad-layer-count">' + l.count + ' entidade(s)</span>' +
+      '</div>';
+    }).join('');
+
+    var bboxWarnHtml = '';
+    if(S.bbox && Math.max(S.bbox.width, S.bbox.height) < 5){
+      bboxWarnHtml =
+        '<div class="ss-note" style="background:rgba(179,65,60,.07); border-color:rgba(179,65,60,.28);">' +
+          '<b>⚠ Este desenho parece não ter coordenadas geográficas reais.</b> ' +
+          'As geometrias ocupam apenas ' + S.bbox.width.toFixed(3) + ' × ' + S.bbox.height.toFixed(3) + ' unidades no total ' +
+          '(demasiado pequeno para ser um levantamento à escala real). É provável que seja um modelo local ' +
+          '(ex: exportado de um programa 3D como Blender/SketchUp), à escala do próprio objeto, sem qualquer ligação ao mundo real.<br><br>' +
+          'Se escolheres um sistema de coordenadas geográfico (ETRS89/PT-TM06 ou WGS84) na fase seguinte, o desenho vai aparecer ' +
+          'minúsculo e num sítio aleatório do mapa. Usa antes a opção <b>"Desenho local (georreferenciar manualmente por 2 pontos)"</b> na fase seguinte.' +
+        '</div>';
+    }
+
+    body.innerHTML =
+      '<div class="ss-note"><b>' + esc(S.fileName) + '</b> — ' + totalEntities + ' entidade(s) em ' + S.layerTable.length + ' layer(s). Sistema de coordenadas: não indicado no DXF (escolhe-se na fase seguinte).</div>' +
+      bboxWarnHtml +
+      '<div class="ss-card">' +
+        '<h3>Layers encontrados (escolhe quais importar)</h3>' +
+        rowsHtml +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="cad-step2-back">← Voltar</button>' +
+        '<button class="ss-btn" id="cad-step2-next">Seguinte →</button>' +
+      '</div>';
+
+    Array.prototype.slice.call(document.querySelectorAll('.cad-layer-check')).forEach(function(cb){
+      cb.addEventListener('change', function(){ S.layerTable[Number(cb.dataset.idx)].checked = cb.checked; });
+    });
+    document.getElementById('cad-step2-back').addEventListener('click', function(){ S.step = 0; renderWizard(); });
+    document.getElementById('cad-step2-next').addEventListener('click', function(){
+      if(!S.layerTable.some(function(l){ return l.checked; })){ alert('Selecione pelo menos um layer.'); return; }
+      S.step = 2; renderWizard();
+    });
+  }
+
+  /* ---------------- FASE 3 + 7: regras de conversão + CRS ---------------- */
+  function renderStep3Rules(){
+    var body = document.getElementById('cad-step-body');
+    var checkedLayers = S.layerTable.filter(function(l){ return l.checked; });
+
+    var rowsHtml = checkedLayers.map(function(l, i){
+      return '<tr>' +
+        '<td><b>' + esc(l.name) + '</b><div class="ss-hint">' + l.count + ' entidade(s)</div></td>' +
+        '<td><input type="text" data-idx="'+i+'" class="cad-target-name" value="'+esc(l.targetName)+'" style="width:100%; padding:6px 8px; border:1px solid var(--line-strong); border-radius:6px;"></td>' +
+        '<td><select data-idx="'+i+'" class="cad-target-geom">' +
+          ['Point','LineString','Polygon'].map(function(g){ return '<option value="'+g+'"'+(g===l.geomHint?' selected':'')+'>'+g+'</option>'; }).join('') +
+        '</select></td>' +
+      '</tr>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="ss-note"><b>Fase 3.</b> Define, para cada layer CAD escolhido, o nome da camada SIG de destino (é criada uma camada nova com este nome) e o tipo de geometria. Só precisas de fazer isto uma vez (depois guarda como perfil).</div>' +
+      '<div class="ss-card">' +
+        '<h3>Correspondência layer CAD → camada SIG</h3>' +
+        '<table class="ss-map-table"><thead><tr><th>Layer CAD</th><th>Nome da camada SIG</th><th>Geometria</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '</div>' +
+      '<div class="ss-card">' +
+        '<h3>Fase 7 / Sistema de coordenadas de origem</h3>' +
+        '<div class="ss-field">' +
+          '<label>O ficheiro está em:</label>' +
+          '<select id="cad-crs-select">' +
+            '<option value="EPSG:3763"'+(S.fromCRS==='EPSG:3763'?' selected':'')+'>ETRS89 / PT-TM06 (EPSG:3763) / metros, uso comum em Portugal</option>' +
+            '<option value="EPSG:4326"'+(S.fromCRS==='EPSG:4326'?' selected':'')+'>WGS84 / graus (EPSG:4326)</option>' +
+            '<option value="custom"'+(S.fromCRS==='custom'?' selected':'')+'>Outro (definição proj4 manual)</option>' +
+            '<option value="twopoint"'+(S.fromCRS==='twopoint'?' selected':'')+'>Desenho local (sem coordenadas reais, georreferenciar manualmente por 2 pontos)</option>' +
+          '</select>' +
+        '</div>' +
+        '<div class="ss-field" id="cad-crs-custom-wrap" style="'+(S.fromCRS==='custom'?'':'display:none;')+'">' +
+          '<label>Definição proj4</label>' +
+          '<input type="text" id="cad-crs-custom" placeholder="+proj=... +ellps=... +units=m +no_defs" value="'+esc(S.customProj4)+'">' +
+          '<div class="ss-hint">Só para quem já conhece o sistema de coordenadas do desenho. Se não souberes, escolhe uma das opções acima.</div>' +
+        '</div>' +
+        '<div class="ss-field" id="cad-crs-twopoint-wrap" style="'+(S.fromCRS==='twopoint'?'':'display:none;')+'">' +
+          '<div class="ss-hint" style="margin-bottom:10px;">Indica dois pontos do desenho (as coordenadas tal como aparecem no CAD) e onde esses mesmos dois pontos ficam no mundo real (latitude/longitude). A app calcula a escala e a rotação automaticamente a partir destes dois pontos.</div>' +
+          '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">' +
+            '<div><label>Ponto 1 / X no desenho</label><input type="text" id="cad-tp-p1x" value="'+esc(S.twoPointInput.p1x)+'" placeholder="ex: 0.004042"></div>' +
+            '<div><label>Ponto 1 / Y no desenho</label><input type="text" id="cad-tp-p1y" value="'+esc(S.twoPointInput.p1y)+'" placeholder="ex: -0.091303"></div>' +
+            '<div><label>Ponto 1 / Latitude real</label><input type="text" id="cad-tp-p1lat" value="'+esc(S.twoPointInput.p1lat)+'" placeholder="ex: 41.15790"></div>' +
+            '<div><label>Ponto 1 / Longitude real</label><input type="text" id="cad-tp-p1lon" value="'+esc(S.twoPointInput.p1lon)+'" placeholder="ex: -8.62910"></div>' +
+            '<div><label>Ponto 2 / X no desenho</label><input type="text" id="cad-tp-p2x" value="'+esc(S.twoPointInput.p2x)+'" placeholder="ex: 0.019870"></div>' +
+            '<div><label>Ponto 2 / Y no desenho</label><input type="text" id="cad-tp-p2y" value="'+esc(S.twoPointInput.p2y)+'" placeholder="ex: -0.050120"></div>' +
+            '<div><label>Ponto 2 / Latitude real</label><input type="text" id="cad-tp-p2lat" value="'+esc(S.twoPointInput.p2lat)+'" placeholder="ex: 41.15845"></div>' +
+            '<div><label>Ponto 2 / Longitude real</label><input type="text" id="cad-tp-p2lon" value="'+esc(S.twoPointInput.p2lon)+'" placeholder="ex: -8.62822"></div>' +
+          '</div>' +
+          '<div class="ss-hint" id="cad-tp-status" style="margin-top:8px;"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="cad-step3-back">← Voltar</button>' +
+        '<button class="ss-btn" id="cad-step3-next">Converter →</button>' +
+      '</div>';
+
+    Array.prototype.slice.call(document.querySelectorAll('.cad-target-name')).forEach(function(inp){
+      inp.addEventListener('change', function(){ checkedLayers[Number(inp.dataset.idx)].targetName = inp.value.trim() || checkedLayers[Number(inp.dataset.idx)].name; });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('.cad-target-geom')).forEach(function(sel){
+      sel.addEventListener('change', function(){ checkedLayers[Number(sel.dataset.idx)].geomHint = sel.value; });
+    });
+    document.getElementById('cad-crs-select').addEventListener('change', function(e){
+      S.fromCRS = e.target.value;
+      document.getElementById('cad-crs-custom-wrap').style.display = S.fromCRS === 'custom' ? '' : 'none';
+      document.getElementById('cad-crs-twopoint-wrap').style.display = S.fromCRS === 'twopoint' ? '' : 'none';
+    });
+    var customInp = document.getElementById('cad-crs-custom');
+    if(customInp) customInp.addEventListener('change', function(){ S.customProj4 = customInp.value.trim(); });
+
+    ['p1x','p1y','p1lat','p1lon','p2x','p2y','p2lat','p2lon'].forEach(function(key){
+      var inp = document.getElementById('cad-tp-' + key);
+      if(!inp) return;
+      inp.addEventListener('change', function(){
+        S.twoPointInput[key] = inp.value.trim();
+        updateTwoPointTransform();
+      });
+    });
+    updateTwoPointTransform();
+
+    document.getElementById('cad-step3-back').addEventListener('click', function(){ S.step = 1; renderWizard(); });
+    document.getElementById('cad-step3-next').addEventListener('click', function(){
+      if(S.fromCRS === 'twopoint' && (!S.twoPoint || !S.twoPoint.valid)){
+        alert('Preenche os dois pontos de georreferenciação corretamente antes de converter (' + (S.twoPoint && S.twoPoint.error ? S.twoPoint.error : 'campos em falta') + ').');
+        return;
+      }
+      S.step = 3; renderWizard(); runConversion();
+    });
+  }
+
+  /* ---------------- georreferenciação manual por 2 pontos ---------------- */
+  /* Calcula uma transformação de similaridade (translação + escala uniforme +
+     rotação) que faz corresponder dois pontos do desenho CAD a duas posições
+     reais (lat/lon). Útil para desenhos "locais" sem coordenadas geográficas
+     (ex: modelos exportados de Blender/SketchUp, à escala do próprio objeto). */
+  function buildTwoPointTransform(){
+    var v = S.twoPointInput;
+    var p1x = parseFloat(v.p1x), p1y = parseFloat(v.p1y);
+    var p2x = parseFloat(v.p2x), p2y = parseFloat(v.p2y);
+    var lat1 = parseFloat(v.p1lat), lon1 = parseFloat(v.p1lon);
+    var lat2 = parseFloat(v.p2lat), lon2 = parseFloat(v.p2lon);
+
+    var fields = [p1x,p1y,p2x,p2y,lat1,lon1,lat2,lon2];
+    if(fields.some(function(n){ return !isFinite(n); })){
+      return {valid:false, error:'preenche os 8 campos (2 pontos do desenho + 2 pontos reais)'};
+    }
+    if(Math.abs(lat1) > 90 || Math.abs(lat2) > 90 || Math.abs(lon1) > 180 || Math.abs(lon2) > 180){
+      return {valid:false, error:'latitude/longitude fora do intervalo válido'};
+    }
+
+    var dSrc = {x: p2x - p1x, y: p2y - p1y};
+    var distSrc = Math.hypot(dSrc.x, dSrc.y);
+    if(distSrc < 1e-9){
+      return {valid:false, error:'os dois pontos do desenho não podem ser coincidentes'};
+    }
+
+    var q1, q2;
+    try{
+      q1 = proj4('EPSG:4326', 'EPSG:3763', [lon1, lat1]);
+      q2 = proj4('EPSG:4326', 'EPSG:3763', [lon2, lat2]);
+    }catch(err){
+      return {valid:false, error:'não foi possível converter as coordenadas reais indicadas'};
+    }
+    var dDst = {x: q2[0]-q1[0], y: q2[1]-q1[1]};
+    var distDst = Math.hypot(dDst.x, dDst.y);
+    if(distDst < 1e-6){
+      return {valid:false, error:'os dois pontos reais não podem ser coincidentes'};
+    }
+
+    var scale = distDst / distSrc;
+    var rotation = Math.atan2(dDst.y, dDst.x) - Math.atan2(dSrc.y, dSrc.x);
+
+    return {
+      valid: true,
+      p1: {x: p1x, y: p1y},
+      q1: {x: q1[0], y: q1[1]},
+      scale: scale,
+      rotation: rotation
+    };
+  }
+
+  function updateTwoPointTransform(){
+    var statusEl = document.getElementById('cad-tp-status');
+    var hasAny = Object.keys(S.twoPointInput).some(function(k){ return S.twoPointInput[k] !== ''; });
+    if(!hasAny){
+      S.twoPoint = null;
+      if(statusEl) statusEl.innerHTML = '';
+      return;
+    }
+    var t = buildTwoPointTransform();
+    S.twoPoint = t;
+    if(!statusEl) return;
+    if(t.valid){
+      var scaleTxt = t.scale >= 1 ? (t.scale.toFixed(2) + '×') : ('1 / ' + (1/t.scale).toFixed(2));
+      var rotDeg = (t.rotation * 180 / Math.PI).toFixed(1);
+      statusEl.innerHTML = '<span style="color:var(--green-deep);">✓ Transformação calculada / escala ' + scaleTxt + ', rotação ' + rotDeg + '°</span>';
+    } else {
+      statusEl.innerHTML = '<span style="color:#b3413c;">✗ ' + esc(t.error) + '</span>';
+    }
+  }
+
+  /* ---------------- reprojeção de coordenadas ---------------- */
+  function reprojectXY(x, y){
+    try{
+      if(S.fromCRS === 'EPSG:4326') return [x, y];
+      if(S.fromCRS === 'EPSG:3763') return proj4('EPSG:3763', 'EPSG:4326', [x, y]);
+      if(S.fromCRS === 'custom' && S.customProj4){
+        if(!proj4.defs('CAD_CUSTOM_SRC')) proj4.defs('CAD_CUSTOM_SRC', S.customProj4);
+        return proj4('CAD_CUSTOM_SRC', 'EPSG:4326', [x, y]);
+      }
+      if(S.fromCRS === 'twopoint' && S.twoPoint && S.twoPoint.valid){
+        var tp = S.twoPoint;
+        var dx = x - tp.p1.x, dy = y - tp.p1.y;
+        var cosA = Math.cos(tp.rotation), sinA = Math.sin(tp.rotation);
+        var mx = tp.q1.x + tp.scale * (dx*cosA - dy*sinA);
+        var my = tp.q1.y + tp.scale * (dx*sinA + dy*cosA);
+        return proj4('EPSG:3763', 'EPSG:4326', [mx, my]);
+      }
+    }catch(e){ /* cai para passthrough abaixo */ }
+    return [x, y];
+  }
+
+  /* ---------------- construção de arcos ---------------- */
+  function arcPoints(center, radius, startDeg, endDeg, segments){
+    var start = startDeg, end = endDeg;
+    if(end <= start) end += 360;
+    var pts = [];
+    for(var i=0;i<=segments;i++){
+      var ang = (start + (end-start) * (i/segments)) * Math.PI/180;
+      pts.push({x: center.x + radius*Math.cos(ang), y: center.y + radius*Math.sin(ang)});
+    }
+    return pts;
+  }
+
+  function dedupeConsecutive(pts){
+    var out = [];
+    pts.forEach(function(p){
+      var last = out[out.length-1];
+      if(!last || Math.abs(last.x-p.x) > 1e-9 || Math.abs(last.y-p.y) > 1e-9) out.push(p);
+    });
+    return out;
+  }
+
+  /* ---------------- FASE 4/5/6/8: conversão de uma entidade ---------------- */
+  function convertEntity(e, targetGeomType, layerColorHex){
+    try{
+      if(e.type === 'DIMENSION' || e.type === 'HATCH') return null; // cotas/tramas: não convertidas
+
+      if(e.type === 'CIRCLE' && e.center){
+        var c = reprojectXY(e.center.x, e.center.y);
+        return {geomType:'Point', coords:c, extra:{Raio: e.radius || null}};
+      }
+      if(e.type === 'INSERT'){
+        var p = e.position || e.insertionPoint;
+        if(!p) return null;
+        var c2 = reprojectXY(p.x, p.y);
+        return {geomType:'Point', coords:c2, extra:{Tipo: classifyBlockTipo(e.name)}};
+      }
+      if(e.type === 'TEXT' || e.type === 'MTEXT'){
+        var sp = e.startPoint || e.position;
+        if(!sp) return null;
+        var c3 = reprojectXY(sp.x, sp.y);
+        return {geomType:'Point', coords:c3, extra:{Label: e.text || ''}};
+      }
+      if(e.type === 'ARC' && e.center && e.radius != null){
+        var raw = arcPoints(e.center, e.radius, e.startAngle||0, e.endAngle||360, 16);
+        var clean = dedupeConsecutive(raw);
+        if(clean.length < 2) return null;
+        return {geomType:'LineString', coords: clean.map(function(pt){ return reprojectXY(pt.x, pt.y); })};
+      }
+      if(e.type === 'LINE' || e.type === 'LWPOLYLINE' || e.type === 'POLYLINE'){
+        var verts = e.vertices;
+        if(!Array.isArray(verts) || verts.length < 2) return null;
+        var closed = entityIsClosed(e);
+        var cleanV = dedupeConsecutive(verts);
+        if(targetGeomType === 'Polygon' && closed){
+          var ring = cleanV.slice();
+          if(ring.length < 3) return null;
+          var first = ring[0], last = ring[ring.length-1];
+          if(Math.abs(first.x-last.x) > 1e-9 || Math.abs(first.y-last.y) > 1e-9) ring.push(first);
+          if(ring.length < 4) return null;
+          return {geomType:'Polygon', coords: ring.map(function(pt){ return reprojectXY(pt.x, pt.y); })};
+        }
+        if(cleanV.length < 2) return null;
+        return {geomType:'LineString', coords: cleanV.map(function(pt){ return reprojectXY(pt.x, pt.y); })};
+      }
+      return null; // SPLINE, 3DFACE, SOLID, ELLIPSE, etc. — não suportado nesta versão
+    } catch(err){
+      return null;
+    }
+  }
+
+  /* ---------------- FASE 4-9: núcleo da conversão (sem tocar na UI) ---------------- */
+  function performConversion(){
+    var t0 = performance.now();
+    var checkedLayers = S.layerTable.filter(function(l){ return l.checked; });
+    var groups = [];
+    var unsupported = 0;
+    var today = new Date().toISOString().slice(0,10);
+
+    checkedLayers.forEach(function(l){
+      var ents = S.entities.filter(function(e){ return (e.layer||'0') === l.name; });
+      var features = [];
+      var idCounter = 0;
+      ents.forEach(function(e){
+        var conv = convertEntity(e, l.geomHint, l.colorHex);
+        if(!conv){ unsupported++; return; }
+        idCounter++;
+        var props = {
+          ID: l.targetName + '_' + idCounter,
+          Layer: l.name,
+          Cor: l.colorHex,
+          Tipo: (conv.extra && conv.extra.Tipo) || l.targetName,
+          DataImportacao: today
+        };
+        if(conv.extra && conv.extra.Label !== undefined) props.Label = conv.extra.Label;
+        if(conv.extra && conv.extra.Raio !== undefined && conv.extra.Raio !== null) props.Raio = conv.extra.Raio;
+
+        var geometry;
+        if(conv.geomType === 'Point') geometry = {type:'Point', coordinates: conv.coords};
+        else if(conv.geomType === 'LineString') geometry = {type:'LineString', coordinates: conv.coords};
+        else geometry = {type:'Polygon', coordinates: [conv.coords]};
+
+        var feature = {type:'Feature', geometry: geometry, properties: props};
+
+        try{
+          if(conv.geomType === 'LineString') props.Comprimento = Math.round(turf.length(feature, {units:'kilometers'}) * 1000);
+          if(conv.geomType === 'Polygon') props.Área = Math.round(turf.area(feature));
+        }catch(err){ /* geometria inválida para cálculo — mantém sem a métrica */ }
+
+        features.push(feature);
+      });
+
+      groups.push({targetName: l.targetName, geomType: l.geomHint, features: features, cadLayer: l.name});
+    });
+
+    var createdLayers = [];
+    groups.forEach(function(g){
+      if(!g.features.length){ createdLayers.push({name:g.targetName, geomType:g.geomType, layerId:null, imported:0}); return; }
+      var newLayerId = ++layerCounter;
+      layers.push({
+        id: newLayerId, name: g.targetName, geometryType: g.geomType, mode: 'atributos',
+        attributes: [], colorAttr: null, baseColor: null, opacity: 100, symbology: defaultSymbology()
+      });
+      var res = importGeoJSONFeatures({type:'FeatureCollection', features: g.features}, function(){ return newLayerId; }, true);
+      createdLayers.push({name: g.targetName, geomType: g.geomType, layerId: newLayerId, imported: res.imported, skipped: res.skipped});
+    });
+
+    markProjectDirty();
+
+    var elapsedSec = ((performance.now() - t0) / 1000).toFixed(1);
+    var result = {groups: createdLayers, unsupported: unsupported, elapsedSec: elapsedSec};
+
+    pushHistory({
+      at: Date.now(), fileName: S.fileName,
+      groups: createdLayers.map(function(g){ return {name:g.name, imported:g.imported}; }),
+      unsupported: unsupported, user: window.currentAdminUser || 'Desconhecido'
+    });
+
+    return result;
+  }
+
+  /* ---------------- versão interativa: atualiza a UI para o ecrã de relatório ---------------- */
+  function runConversion(){
+    S.result = performConversion();
+    renderLayersPanel();
+    S.step = 4;
+    renderWizard();
+  }
+
+  function renderStep4Convert(){
+    var body = document.getElementById('cad-step-body');
+    body.innerHTML = '<div class="ss-card"><h3>A converter…</h3><p class="ss-hint">A ler geometrias, limpar e criar camadas. Não feche esta janela.</p></div>';
+  }
+
+  /* ---------------- FASE 9/12/13: relatório + exportação + zoom ---------------- */
+  function renderStep5Report(){
+    var body = document.getElementById('cad-step-body');
+    var r = S.result;
+    var statsHtml = r.groups.map(function(g){
+      return '<div class="ss-stat-box is-create"><b>✓ ' + g.imported + '</b><span>' + esc(g.name) + ' (' + g.geomType + ')</span></div>';
+    }).join('');
+
+    var actionsHtml = r.groups.filter(function(g){ return g.layerId; }).map(function(g){
+      return '<div class="ss-recipe-card">' +
+        '<div><b>' + esc(g.name) + '</b><span>' + g.imported + ' geometria(s)</span></div>' +
+        '<div class="ss-recipe-actions">' +
+          '<button class="ss-btn ss-btn-secondary" data-zoom="' + g.layerId + '">Zoom</button>' +
+          '<button class="ss-btn ss-btn-secondary" data-exp-geojson="' + g.layerId + '">GeoJSON</button>' +
+          '<button class="ss-btn ss-btn-secondary" data-exp-shp="' + g.layerId + '">Shapefile</button>' +
+          '<button class="ss-btn ss-btn-secondary" data-exp-kml="' + g.layerId + '">KML</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="ss-stats-grid">' + statsHtml + '</div>' +
+      (r.unsupported ? '<p class="ss-hint">✗ ' + r.unsupported + ' entidade(s) não suportada(s) ou inválida(s) foram ignoradas.</p>' : '<p class="ss-hint">✗ 0 erros.</p>') +
+      '<p class="ss-hint">Tempo: ' + r.elapsedSec + 's</p>' +
+      '<div class="ss-card"><h3>Camadas criadas (exportar / ver no mapa)</h3>' + (actionsHtml || '<p class="ss-empty">Nenhuma camada criada.</p>') +
+      '<div class="ss-hint" style="margin-top:8px;">GeoPackage não está disponível nesta versão.</div></div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn" id="cad-step5-next">Guardar como perfil →</button>' +
+        '<button class="ss-btn ss-btn-secondary" id="cad-finish">Concluir</button>' +
+      '</div>';
+
+    Array.prototype.slice.call(document.querySelectorAll('[data-zoom]')).forEach(function(btn){
+      btn.addEventListener('click', function(){ zoomToLayer(Number(btn.dataset.zoom)); pageEl.hidden = true; });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-exp-geojson]')).forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = Number(btn.dataset.expGeojson);
+        var gj = buildGeoJSON(false, false, id);
+        var blob = new Blob([JSON.stringify(gj)], {type:'application/geo+json'});
+        var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = (getLayerSchema(id).name || 'camada') + '.geojson'; a.click();
+      });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-exp-shp]')).forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = Number(btn.dataset.expShp);
+        var gj = buildGeoJSON(false, false, id);
+        exportShapefileZip(gj, getLayerSchema(id).name || 'camada', btn, null);
+      });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[data-exp-kml]')).forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = Number(btn.dataset.expKml);
+        var gj = buildGeoJSON(false, false, id);
+        var kml = geojsonToKML(gj, getLayerSchema(id).name || 'camada');
+        var blob = new Blob([kml], {type:'application/vnd.google-earth.kml+xml'});
+        var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = (getLayerSchema(id).name || 'camada') + '.kml'; a.click();
+      });
+    });
+
+    document.getElementById('cad-step5-next').addEventListener('click', function(){ S.step = 5; renderWizard(); });
+    document.getElementById('cad-finish').addEventListener('click', function(){ resetState(); renderWizard(); });
+  }
+
+  /* conversor GeoJSON -> KML simples (pontos, linhas e polígonos) */
+  function geojsonToKML(gj, name){
+    function coordsToKml(coords, isRing){
+      return coords.map(function(c){ return c[0] + ',' + c[1] + (c.length>2?','+c[2]:',0'); }).join(' ');
+    }
+    var placemarks = (gj.features||[]).map(function(f){
+      var g = f.geometry; if(!g) return '';
+      var geomXml = '';
+      if(g.type === 'Point'){
+        geomXml = '<Point><coordinates>'+g.coordinates[0]+','+g.coordinates[1]+',0</coordinates></Point>';
+      } else if(g.type === 'LineString'){
+        geomXml = '<LineString><coordinates>'+coordsToKml(g.coordinates)+'</coordinates></LineString>';
+      } else if(g.type === 'Polygon'){
+        geomXml = '<Polygon><outerBoundaryIs><LinearRing><coordinates>'+coordsToKml(g.coordinates[0])+'</coordinates></LinearRing></outerBoundaryIs></Polygon>';
+      } else return '';
+      var props = f.properties || {};
+      var pname = props.ID || props.Label || '';
+      var desc = Object.keys(props).map(function(k){ return k+': '+props[k]; }).join('&#10;');
+      return '<Placemark><name>'+esc(String(pname))+'</name><description>'+esc(desc)+'</description>'+geomXml+'</Placemark>';
+    }).join('');
+    return '<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>'+esc(name)+'</name>'+placemarks+'</Document></kml>';
+  }
+
+  /* ---------------- FASE 10: guardar perfil ---------------- */
+  function renderStep6SaveProfile(){
+    var body = document.getElementById('cad-step-body');
+    var checkedLayers = S.layerTable.filter(function(l){ return l.checked; });
+    body.innerHTML =
+      '<div class="ss-card">' +
+        '<h3>Guardar este perfil de importação</h3>' +
+        '<div class="ss-field"><label>Nome do perfil</label><input type="text" id="cad-profile-name" placeholder="ex: Topografia Empresa X" value="'+esc(S.profileName||'')+'"></div>' +
+        '<button class="ss-btn" id="cad-profile-save">Guardar perfil</button>' +
+        '<div class="ss-hint">Guarda a correspondência de layers, geometrias e sistema de coordenadas. Da próxima vez, basta escolher o perfil em "Perfis guardados" e o novo ficheiro DXF.</div>' +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="cad-finish2">Concluir sem guardar</button>' +
+      '</div>';
+
+    document.getElementById('cad-profile-save').addEventListener('click', function(){
+      var name = document.getElementById('cad-profile-name').value.trim();
+      if(!name){ alert('Dê um nome ao perfil.'); return; }
+      var profiles = loadProfiles();
+      var profile = {
+        name: name, fromCRS: S.fromCRS, customProj4: S.customProj4,
+        layerRules: checkedLayers.map(function(l){ return {name:l.name, targetName:l.targetName, geomHint:l.geomHint, checked:true}; }),
+        createdAt: Date.now()
+      };
+      var idx = profiles.findIndex(function(p){ return p.name === name; });
+      if(idx >= 0) profiles[idx] = profile; else profiles.push(profile);
+      saveProfiles(profiles);
+      resetState();
+      switchSection('profiles');
+    });
+    document.getElementById('cad-finish2').addEventListener('click', function(){ resetState(); renderWizard(); });
+  }
+
+  /* ============================================================
+     PERFIS GUARDADOS
+     ============================================================ */
+  function renderProfiles(){
+    var profiles = loadProfiles();
+    var itemsHtml = profiles.map(function(p, i){
+      return '<div class="ss-recipe-card">' +
+        '<div><b>' + esc(p.name) + '</b><span>' + p.layerRules.length + ' layer(s) mapeado(s) · CRS: ' + esc(p.fromCRS) + '</span></div>' +
+        '<div class="ss-recipe-actions">' +
+          '<button class="ss-btn" data-run="'+i+'">Importar com este perfil</button>' +
+          '<button class="ss-btn ss-btn-secondary ss-btn-danger" data-del="'+i+'">Eliminar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    contentEl.innerHTML =
+      '<h2>Perfis guardados</h2>' +
+      '<p class="ss-subtitle">Perfis de conversão (Fase 10). Escolhe um perfil, depois o ficheiro DXF novo (o mapeamento de layers e o sistema de coordenadas já vêm preenchidos).</p>' +
+      (itemsHtml || '<p class="ss-empty">Ainda não guardou nenhum perfil.</p>');
+
+    profiles.forEach(function(p,i){
+      var runBtn = contentEl.querySelector('[data-run="'+i+'"]');
+      var delBtn = contentEl.querySelector('[data-del="'+i+'"]');
+      if(runBtn) runBtn.addEventListener('click', function(){ startFromProfile(p); });
+      if(delBtn) delBtn.addEventListener('click', function(){
+        if(!confirm('Eliminar o perfil "'+p.name+'"?')) return;
+        var list = loadProfiles(); list.splice(i,1); saveProfiles(list); renderProfiles();
+      });
+    });
+  }
+
+  function applyProfileToLayerTable(profile){
+    S.fromCRS = profile.fromCRS; S.customProj4 = profile.customProj4 || '';
+    S.layerTable.forEach(function(l){
+      var rule = profile.layerRules.find(function(r){ return r.name === l.name; });
+      if(rule){ l.checked = true; l.targetName = rule.targetName; l.geomHint = rule.geomHint; }
+      else { l.checked = false; }
+    });
+  }
+
+  function startFromProfile(profile){
+    resetState();
+    S.profileName = profile.name;
+    S.fromCRS = profile.fromCRS; S.customProj4 = profile.customProj4 || '';
+    switchSection('wizard');
+    // fica na fase 1 à espera do ficheiro; quando o DXF for lido,
+    // o perfil é aplicado automaticamente à tabela de layers (ver handleFile abaixo)
+    S._pendingProfile = profile;
+  }
+
+  var _origHandleFile = handleFile;
+  handleFile = function(file){
+    _origHandleFile(file);
+    if(S._pendingProfile){
+      var profile = S._pendingProfile;
+      var elapsed = 0;
+      var checkApply = setInterval(function(){
+        elapsed += 150;
+        if(S.layerTable && S.layerTable.length){
+          applyProfileToLayerTable(profile);
+          S._pendingProfile = null;
+          clearInterval(checkApply);
+          renderWizard();
+        } else if(elapsed > 10000){
+          S._pendingProfile = null;
+          clearInterval(checkApply);
+        }
+      }, 150);
+    }
+  };
+
+  /* ============================================================
+     IMPORTAÇÃO EM LOTE (Fase 11)
+     ============================================================ */
+  function renderBatch(){
+    var profiles = loadProfiles();
+    contentEl.innerHTML =
+      '<h2>Importação em lote</h2>' +
+      '<p class="ss-subtitle">Escolhe vários ficheiros DXF de uma vez e um perfil guardado — a app converte todos, um a um, com as mesmas regras.</p>' +
+      (profiles.length ?
+        '<div class="ss-card">' +
+          '<div class="ss-field"><label>Perfil a aplicar</label><select id="cad-batch-profile">' +
+            profiles.map(function(p,i){ return '<option value="'+i+'">'+esc(p.name)+'</option>'; }).join('') +
+          '</select></div>' +
+          '<div class="ss-dropzone" id="cad-batch-dropzone">' +
+            '<b>Clique para escolher vários ficheiros .dxf</b><span>Ou arraste-os para aqui</span>' +
+          '</div>' +
+          '<input type="file" id="cad-batch-input" accept=".dxf" multiple style="display:none;">' +
+          '<div id="cad-batch-status" class="ss-hint" style="margin-top:10px;"></div>' +
+        '</div>'
+        : '<p class="ss-empty">Precisa de guardar pelo menos um perfil (em "Nova importação" → Fase 10) antes de poder converter em lote.</p>');
+
+    if(!profiles.length) return;
+    var dz = document.getElementById('cad-batch-dropzone');
+    var input = document.getElementById('cad-batch-input');
+    var statusEl = document.getElementById('cad-batch-status');
+    dz.addEventListener('click', function(){ input.click(); });
+    dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('is-drag'); });
+    dz.addEventListener('dragleave', function(){ dz.classList.remove('is-drag'); });
+    dz.addEventListener('drop', function(e){
+      e.preventDefault(); dz.classList.remove('is-drag');
+      runBatch(Array.prototype.slice.call(e.dataTransfer.files));
+    });
+    input.addEventListener('change', function(){ runBatch(Array.prototype.slice.call(input.files)); });
+
+    function runBatch(files){
+      var dxfFiles = files.filter(function(f){ return /\.dxf$/i.test(f.name); });
+      if(!dxfFiles.length){ statusEl.textContent = 'Nenhum .dxf válido selecionado.'; return; }
+      var profile = profiles[Number(document.getElementById('cad-batch-profile').value)];
+      statusEl.textContent = '0 / ' + dxfFiles.length + ' processados…';
+      var done = 0, totalImported = 0;
+      function next(){
+        if(done >= dxfFiles.length){
+          statusEl.textContent = 'Concluído: ' + done + ' ficheiro(s), ' + totalImported + ' geometria(s) importadas no total.';
+          renderLayersPanel();
+          return;
+        }
+        var file = dxfFiles[done];
+        ensureDxfParser().then(function(DxfParser){
+          var reader = new FileReader();
+          reader.onload = function(e){
+            try{
+              var parser = new DxfParser();
+              var dxf = parser.parseSync ? parser.parseSync(e.target.result) : parser.parse(e.target.result);
+              resetState();
+              S.fileName = file.name; S.dxf = dxf; S.entities = (dxf && dxf.entities) || [];
+              buildLayerTable();
+              applyProfileToLayerTable(profile);
+              runConversionSilent(function(imported){
+                totalImported += imported;
+                done++;
+                statusEl.textContent = done + ' / ' + dxfFiles.length + ' processados…';
+                next();
+              });
+            }catch(err){ done++; next(); }
+          };
+          reader.readAsText(file);
+        });
+      }
+      next();
+    }
+  }
+
+  /* versão da conversão usada no lote: igual a runConversion() mas sem
+     navegar para o ecrã de relatório — devolve o total importado por callback */
+  function runConversionSilent(cb){
+    var result = performConversion();
+    var total = result.groups.reduce(function(s,g){ return s + (g.imported||0); }, 0);
+    cb(total);
+  }
+
+  /* ============================================================
+     HISTÓRICO
+     ============================================================ */
+  function renderHistory(){
+    var history = loadHistory();
+    var itemsHtml = history.map(function(h){
+      var date = new Date(h.at).toLocaleString('pt-PT');
+      var groupsStr = h.groups.map(function(g){ return g.name + ' (' + g.imported + ')'; }).join(', ');
+      return '<div class="ss-history-item">' +
+        '<b>' + esc(h.fileName) + '</b>' +
+        '<div>' + date + ' · ' + esc(groupsStr) + (h.unsupported ? ' · ✗ ' + h.unsupported + ' não suportadas' : '') + '</div>' +
+        '<div>Utilizador: ' + esc(h.user || 'Desconhecido') + '</div>' +
+      '</div>';
+    }).join('');
+    contentEl.innerHTML =
+      '<h2>Histórico</h2>' +
+      '<p class="ss-subtitle">Cada importação CAD fica registada aqui.</p>' +
+      (itemsHtml || '<p class="ss-empty">Ainda não há importações registadas.</p>');
+  }
+
+  /* ============================================================
+     COMO USAR
+     ============================================================ */
+  function renderHelp(){
+    contentEl.innerHTML =
+      '<h2>Como usar a Importação CAD</h2>' +
+      '<p class="ss-subtitle">Guia rápido. Cada bloco pode ser aberto/fechado clicando no título.</p>' +
+
+      '<details class="ss-help-item" open>' +
+        '<summary>1. O que é isto?</summary>' +
+        '<div class="ss-help-body">Converte um desenho CAD (.dxf) em camadas SIG desta app / edifícios, estradas, árvores, redes, etc. (em vez de teres de desenhar tudo à mão por cima do CAD).</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>2. Porque é que o .dwg não funciona diretamente?</summary>' +
+        '<div class="ss-help-body">O DWG é um formato binário fechado da Autodesk. Sem uma licença/SDK oficial (RealDWG ou ODA), não há forma fiável de o ler dentro de uma página web. A solução simples: converter para .dxf primeiro, com o ODA File Converter (gratuito), LibreCAD, QCAD, ou "Guardar como" a partir do AutoCAD/BricsCAD.</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>3. Passo a passo</summary>' +
+        '<div class="ss-help-body">' +
+          '<b>Fase 1.</b> Escolhe o .dxf — a app mostra quantas entidades e layers encontrou.<br><br>' +
+          '<b>Fase 2.</b> Confirma quais layers importar (Cotas, Textos e Símbolos ficam desligados por omissão — normalmente não são geometria útil).<br><br>' +
+          '<b>Fase 3.</b> Para cada layer, confirma o nome da camada SIG a criar e o tipo de geometria sugerido.<br><br>' +
+          '<b>Fase 7 (na mesma página).</b> Indica em que sistema de coordenadas está o desenho — o mais comum em Portugal é ETRS89/PT-TM06. Se o desenho não tiver coordenadas reais (ex: um modelo exportado de um programa 3D, sem ligação ao mundo real — a app avisa disto na Fase 2), usa a opção "Desenho local", indicando 2 pontos do desenho e onde ficam no mundo real.<br><br>' +
+          '<b>Fase 4-9.</b> A app converte, limpa a geometria (remove pontos repetidos, fecha polígonos, ignora geometria vazia) e mostra o relatório final.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>4. Como é decidido o tipo de geometria e a camada de destino?</summary>' +
+        '<div class="ss-help-body">Por regras simples, não por inteligência artificial: o nome do layer (ex: "Buildings" → Edifícios/Polígono), se a polilinha está fechada (→ provável edifício/polígono) ou aberta (→ linha), e o nome dos blocos inseridos (ex: bloco "Árvore" → ponto do tipo Árvore). São sugestões — podes sempre alterar antes de converter.</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>5. Que atributos ficam criados automaticamente?</summary>' +
+        '<div class="ss-help-body">ID, Layer (nome original no CAD), Cor, Tipo, Data de Importação, e ainda Comprimento (linhas) ou Área (polígonos), calculados automaticamente.</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>6. Perfis e lote — para quê?</summary>' +
+        '<div class="ss-help-body">Se recebes sempre o mesmo tipo de desenho (ex: topografia de uma empresa), guarda a configuração como perfil. Depois, em "Importação em lote", podes converter dezenas de DXF de uma vez com o mesmo perfil.</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>7. Exportação — o que está disponível?</summary>' +
+        '<div class="ss-help-body">Depois de converter, cada camada criada pode ser exportada diretamente para GeoJSON, Shapefile (.zip) ou KML. GeoPackage não está disponível nesta versão.</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>8. Que tipos de entidade CAD são suportados?</summary>' +
+        '<div class="ss-help-body">Linhas, polilinhas (abertas → linhas, fechadas → polígonos), círculos e blocos inseridos (→ pontos), arcos (aproximados por segmentos de linha) e texto (→ ponto com etiqueta). Cotas e tramas (hatch) não são convertidas. Splines, faces 3D e outras entidades muito específicas também não são suportadas nesta versão — ficam contabilizadas como "não suportadas" no relatório em vez de causarem erro.</div>' +
+      '</details>';
+  }
+
+})();

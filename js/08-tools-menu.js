@@ -1,1 +1,57 @@
-(function(_0x3442a0,_0x52f9ca){var _0xdfe2d0=_0x1f51,_0x3f4b2d=_0x3442a0();while(!![]){try{var _0x3a26a0=parseInt(_0xdfe2d0(0x9e))/0x1*(-parseInt(_0xdfe2d0(0x96))/0x2)+-parseInt(_0xdfe2d0(0x9d))/0x3*(parseInt(_0xdfe2d0(0x98))/0x4)+-parseInt(_0xdfe2d0(0x8d))/0x5*(-parseInt(_0xdfe2d0(0x91))/0x6)+-parseInt(_0xdfe2d0(0xa0))/0x7*(-parseInt(_0xdfe2d0(0xaa))/0x8)+-parseInt(_0xdfe2d0(0x9b))/0x9*(-parseInt(_0xdfe2d0(0x8b))/0xa)+parseInt(_0xdfe2d0(0x88))/0xb+-parseInt(_0xdfe2d0(0x9a))/0xc*(-parseInt(_0xdfe2d0(0x87))/0xd);if(_0x3a26a0===_0x52f9ca)break;else _0x3f4b2d['push'](_0x3f4b2d['shift']());}catch(_0x2781f7){_0x3f4b2d['push'](_0x3f4b2d['shift']());}}}(_0x5e6e,0x69d3f),(function(){var _0x954b12=_0x1f51,_0x403699=document[_0x954b12(0xa6)](_0x954b12(0x8f)),_0x244665=document[_0x954b12(0xa6)]('automation-menu-dropdown');if(!_0x403699||!_0x244665)return;function _0x3d9689(){var _0x3d26e7=_0x954b12,_0x674722=_0x403699[_0x3d26e7(0x93)]();_0x244665[_0x3d26e7(0xa2)]['remove'](_0x3d26e7(0x95));var _0x510e82=_0x244665['getBoundingClientRect']();_0x244665[_0x3d26e7(0xa8)]['top']=_0x674722[_0x3d26e7(0x8a)]+0x6+'px',_0x244665[_0x3d26e7(0xa8)][_0x3d26e7(0x9f)]=Math[_0x3d26e7(0x8e)](0x8,Math[_0x3d26e7(0x89)](_0x674722['left'],window[_0x3d26e7(0xa7)]-_0x510e82['width']-0x8))+'px',_0x403699[_0x3d26e7(0xa2)]['add']('is-active'),_0x403699[_0x3d26e7(0x99)](_0x3d26e7(0xac),_0x3d26e7(0xae));}function _0x43ef96(){var _0x43ec37=_0x954b12;_0x244665['classList'][_0x43ec37(0xad)](_0x43ec37(0x95)),_0x403699[_0x43ec37(0xa2)][_0x43ec37(0xab)]('is-active'),_0x403699[_0x43ec37(0x99)](_0x43ec37(0xac),'false');}_0x403699[_0x954b12(0x8c)](_0x954b12(0x86),function(_0x4a789d){var _0xa32045=_0x954b12;_0x4a789d['stopPropagation']();if(_0x244665[_0xa32045(0xa2)][_0xa32045(0xa9)](_0xa32045(0x95)))_0x3d9689();else _0x43ef96();}),Array[_0x954b12(0xa3)]['slice'][_0x954b12(0x94)](_0x244665[_0x954b12(0x92)](_0x954b12(0xa5)))[_0x954b12(0xa4)](function(_0x2fc826){var _0x179fd3=_0x954b12;_0x2fc826[_0x179fd3(0x8c)](_0x179fd3(0x86),function(){_0x43ef96();});}),document[_0x954b12(0x8c)](_0x954b12(0x86),function(_0x343e88){var _0x420e61=_0x954b12;!_0x244665['classList']['contains'](_0x420e61(0x95))&&!_0x244665[_0x420e61(0xa9)](_0x343e88[_0x420e61(0x90)])&&_0x343e88['target']!==_0x403699&&!_0x403699[_0x420e61(0xa9)](_0x343e88[_0x420e61(0x90)])&&_0x43ef96();}),window[_0x954b12(0x8c)](_0x954b12(0x97),function(){var _0x5be85d=_0x954b12;if(!_0x244665['classList'][_0x5be85d(0xa9)](_0x5be85d(0x95)))_0x3d9689();}),document[_0x954b12(0x8c)]('keydown',function(_0xecf5d5){var _0x4ad5d6=_0x954b12;if(_0xecf5d5[_0x4ad5d6(0xa1)]===_0x4ad5d6(0x9c)&&!_0x244665['classList']['contains'](_0x4ad5d6(0x95)))_0x43ef96();});}()));function _0x1f51(_0x1f0621,_0x302330){_0x1f0621=_0x1f0621-0x86;var _0x5e6e5c=_0x5e6e();var _0x1f5189=_0x5e6e5c[_0x1f0621];if(_0x1f51['xZkjoR']===undefined){var _0x3a1eeb=function(_0x4daec2){var _0x5d8712='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x403699='',_0x244665='';for(var _0x3d9689=0x0,_0x43ef96,_0x674722,_0x510e82=0x0;_0x674722=_0x4daec2['charAt'](_0x510e82++);~_0x674722&&(_0x43ef96=_0x3d9689%0x4?_0x43ef96*0x40+_0x674722:_0x674722,_0x3d9689++%0x4)?_0x403699+=String['fromCharCode'](0xff&_0x43ef96>>(-0x2*_0x3d9689&0x6)):0x0){_0x674722=_0x5d8712['indexOf'](_0x674722);}for(var _0x4a789d=0x0,_0x2fc826=_0x403699['length'];_0x4a789d<_0x2fc826;_0x4a789d++){_0x244665+='%'+('00'+_0x403699['charCodeAt'](_0x4a789d)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x244665);};_0x1f51['hQBblD']=_0x3a1eeb,_0x1f51['mBARtB']={},_0x1f51['xZkjoR']=!![];}var _0x2c56c7=_0x5e6e5c[0x0],_0x869d68=_0x1f0621+_0x2c56c7,_0x55c98f=_0x1f51['mBARtB'][_0x869d68];return!_0x55c98f?(_0x1f5189=_0x1f51['hQBblD'](_0x1f5189),_0x1f51['mBARtB'][_0x869d68]=_0x1f5189):_0x1f5189=_0x55c98f,_0x1f5189;}function _0x5e6e(){var _0x5501a9=['mJi4nZe0mMPiDurKzq','BwLU','yM90Dg9T','ndbwqwHjDue','ywrKrxzLBNrmAxn0zw5LCG','mJbmzMfJBMO','Bwf4','yNrUlwf1Dg9TyxrPB24TBwvUDq','DgfYz2v0','nZqXmZi0DxPprw11','CxvLCNLtzwXLy3rVCKfSBa','z2v0qM91BMrPBMDdBgLLBNrszwn0','y2fSBa','AgLKzgvU','mteWntKWnKz4zLLotq','CMvZAxPL','mta3mZjXu05KsMy','C2v0qxr0CMLIDxrL','odu3nZK2rfjrwvf4','nduWndu5CuH4A0Th','rxnJyxbL','nJqYtgLvv3Lo','mujiA1HKuW','BgvMDa','mtK1ntG3D3vsvu16','A2v5','y2XHC3nmAxn0','ChjVDg90ExbL','zM9YrwfJAa','lMf1Dg9TyxrPB24TBwvUDs1PDgvT','z2v0rwXLBwvUDej5swq','Aw5UzxjxAwr0Aa','C3r5Bgu','y29UDgfPBNm','mty4q0zOBwrW','CMvTB3zL','yxjPys1LEhbHBMrLza','ywrK','Dhj1zq','y2XPy2S','mtn2qwDAsNi'];_0x5e6e=function(){return _0x5501a9;};return _0x5e6e();}
+(function(){
+  /* ============================================================
+     MENU "AUTOMATIZAÇÃO" — combina os botões CAD e Sync num só.
+     Este módulo só trata de abrir/fechar o dropdown, posicionando-o
+     com position:fixed + getBoundingClientRect (o mesmo padrão já
+     usado nos outros menus da app: ver openBasemapMenu/
+     openOfflineAreasMenu em 05-app-main.js). Os cliques nos itens
+     ("Importação CAD" / "Sincronização Inteligente") continuam a
+     ser tratados pelos listeners já existentes em 07-cad-import.js
+     e 06-smart-sync.js (mesmos IDs de sempre: #btn-cad-import e
+     #btn-smart-sync) — este ficheiro só fecha o menu depois do clique.
+     ============================================================ */
+  var btn = document.getElementById('btn-automation-menu');
+  var menu = document.getElementById('automation-menu-dropdown');
+  if(!btn || !menu) return;
+
+  function openMenu(){
+    var rect = btn.getBoundingClientRect();
+    menu.classList.remove('hidden');
+    var menuRect = menu.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 6) + 'px';
+    menu.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - menuRect.width - 8)) + 'px';
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu(){
+    menu.classList.add('hidden');
+    btn.classList.remove('is-active');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    if(menu.classList.contains('hidden')) openMenu(); else closeMenu();
+  });
+
+  /* fecha ao escolher uma das duas ferramentas */
+  Array.prototype.slice.call(menu.querySelectorAll('.automation-menu-item')).forEach(function(item){
+    item.addEventListener('click', function(){ closeMenu(); });
+  });
+
+  /* fecha ao clicar fora (mesmo padrão usado no resto da app) */
+  document.addEventListener('click', function(e){
+    if(!menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)){
+      closeMenu();
+    }
+  });
+
+  /* reposiciona se a janela for redimensionada com o menu aberto */
+  window.addEventListener('resize', function(){
+    if(!menu.classList.contains('hidden')) openMenu();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !menu.classList.contains('hidden')) closeMenu();
+  });
+})();

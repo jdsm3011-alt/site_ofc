@@ -1,1 +1,420 @@
-const _0x412134=_0x3ada;(function(_0x4177f8,_0x10180c){const _0x535fac=_0x3ada,_0xfdaa62=_0x4177f8();while(!![]){try{const _0x12ded4=-parseInt(_0x535fac(0x1bb))/0x1*(-parseInt(_0x535fac(0x21c))/0x2)+parseInt(_0x535fac(0x1ce))/0x3+-parseInt(_0x535fac(0x222))/0x4+-parseInt(_0x535fac(0x1c0))/0x5*(-parseInt(_0x535fac(0x242))/0x6)+-parseInt(_0x535fac(0x247))/0x7+parseInt(_0x535fac(0x248))/0x8*(-parseInt(_0x535fac(0x226))/0x9)+parseInt(_0x535fac(0x1cc))/0xa*(parseInt(_0x535fac(0x219))/0xb);if(_0x12ded4===_0x10180c)break;else _0xfdaa62['push'](_0xfdaa62['shift']());}catch(_0x74a529){_0xfdaa62['push'](_0xfdaa62['shift']());}}}(_0x1a3f,0xb1a6e));function pbCreateLayerFromFeatureCollection(_0x18bb9d,_0xbc2221){const _0x121392=_0x3ada,_0x251921=Array[_0x121392(0x1cb)](_0x18bb9d&&_0x18bb9d[_0x121392(0x1b5)])?_0x18bb9d[_0x121392(0x1b5)][_0x121392(0x1e8)](_0x4a64c0=>_0x4a64c0&&_0x4a64c0[_0x121392(0x1fd)]):[];if(!_0x251921['length'])throw new Error(_0x121392(0x207));const _0xa161bd=baseGeomType(_0x251921[0x0][_0x121392(0x1fd)]['type']),_0x267598=++layerCounter,_0xc1e64a=_0xbc2221&&_0xbc2221['trim']()||'Camada\x20do\x20portal';layers[_0x121392(0x1dc)]({'id':_0x267598,'name':_0xc1e64a,'geometryType':_0xa161bd,'mode':_0x121392(0x1c2),'attributes':[],'colorAttr':null,'baseColor':null,'opacity':null,'symbology':defaultSymbology()});const _0x4f4d96=importGeoJSONFeatures({'type':_0x121392(0x1ba),'features':_0x251921},()=>_0x267598,!![]);renderLayersPanel(),markProjectDirty();if(_0x4f4d96['imported']>0x0)try{map[_0x121392(0x218)](drawnGroup[_0x121392(0x249)](),{'padding':[0x28,0x28],'maxZoom':0x12});}catch(_0x1daac0){}return{'newLayerId':_0x267598,..._0x4f4d96};}const PB_DATASETS=[{'key':_0x412134(0x1d4),'label':'CAOP\x20—\x20Limite\x20administrativo','field':_0x412134(0x225),'desc':_0x412134(0x1ae),'available':!![]},{'key':_0x412134(0x1cd),'label':_0x412134(0x230),'field':_0x412134(0x1c1),'desc':_0x412134(0x1ae),'available':!![]},{'key':_0x412134(0x1cf),'label':_0x412134(0x22a),'field':_0x412134(0x1b1),'desc':_0x412134(0x1ae),'available':!![]},{'key':_0x412134(0x1f5),'label':_0x412134(0x1f7),'field':'osm_zips','desc':_0x412134(0x206),'available':!![],'isGroup':!![]},{'key':_0x412134(0x241),'label':_0x412134(0x1bd),'field':null,'desc':_0x412134(0x1f8),'available':![]}],PB_OSM_META={'gis_osm_buildings_a_free_1':{'nome':_0x412134(0x1c5),'meta':_0x412134(0x1f2)},'gis_osm_landuse_a_free_1':{'nome':_0x412134(0x203),'meta':'Polígonos'},'gis_osm_natural_a_free_1':{'nome':'Natureza\x20(áreas)','meta':_0x412134(0x1f2)},'gis_osm_natural_free_1':{'nome':_0x412134(0x202),'meta':_0x412134(0x235)},'gis_osm_places_a_free_1':{'nome':'Lugares\x20(áreas)','meta':'Polígonos'},'gis_osm_places_free_1':{'nome':_0x412134(0x1d8),'meta':_0x412134(0x235)},'gis_osm_pofw_a_free_1':{'nome':_0x412134(0x211),'meta':'Polígonos'},'gis_osm_pofw_free_1':{'nome':'Culto\x20(pontos)','meta':_0x412134(0x235)},'gis_osm_pois_a_free_1':{'nome':_0x412134(0x1ec),'meta':'Polígonos'},'gis_osm_pois_free_1':{'nome':'POI\x20(pontos)','meta':_0x412134(0x235)},'gis_osm_protected_areas_a_free_1':{'nome':'Áreas\x20Protegidas','meta':_0x412134(0x1f2)},'gis_osm_railways_free_1':{'nome':_0x412134(0x1d7),'meta':_0x412134(0x233)},'gis_osm_roads_free_1':{'nome':_0x412134(0x20a),'meta':_0x412134(0x233)},'gis_osm_traffic_a_free_1':{'nome':_0x412134(0x201),'meta':_0x412134(0x1f2)},'gis_osm_traffic_free_1':{'nome':_0x412134(0x1fe),'meta':_0x412134(0x235)},'gis_osm_transport_a_free_1':{'nome':_0x412134(0x1e5),'meta':'Polígonos'},'gis_osm_transport_free_1':{'nome':_0x412134(0x22c),'meta':_0x412134(0x235)},'gis_osm_water_a_free_1':{'nome':_0x412134(0x1fc),'meta':'Polígonos'},'gis_osm_waterways_free_1':{'nome':_0x412134(0x1f9),'meta':_0x412134(0x233)}};function pbOsmLayerName(_0x36e85a){const _0x3ce292=_0x412134,_0x5f2188=PB_OSM_META[_0x36e85a];if(_0x5f2188)return _0x5f2188['nome'];return _0x36e85a[_0x3ce292(0x1bf)](_0x3ce292(0x214),'')[_0x3ce292(0x1bf)](/_a_free_1|_free_1/g,'')[_0x3ce292(0x1bf)](/_/g,'\x20')[_0x3ce292(0x1bf)](/\b\w/g,_0x594bef=>_0x594bef['toUpperCase']());}const PB_ICON=_0x412134(0x24c);function _0x3ada(_0x9993cc,_0x269c7a){_0x9993cc=_0x9993cc-0x1ac;const _0x1a3f66=_0x1a3f();let _0x3ada2c=_0x1a3f66[_0x9993cc];if(_0x3ada['imTSIc']===undefined){var _0x58ab3d=function(_0x34b438){const _0x468401='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x18bb9d='',_0xbc2221='';for(let _0x251921=0x0,_0xa161bd,_0x267598,_0xc1e64a=0x0;_0x267598=_0x34b438['charAt'](_0xc1e64a++);~_0x267598&&(_0xa161bd=_0x251921%0x4?_0xa161bd*0x40+_0x267598:_0x267598,_0x251921++%0x4)?_0x18bb9d+=String['fromCharCode'](0xff&_0xa161bd>>(-0x2*_0x251921&0x6)):0x0){_0x267598=_0x468401['indexOf'](_0x267598);}for(let _0x4f4d96=0x0,_0x4a64c0=_0x18bb9d['length'];_0x4f4d96<_0x4a64c0;_0x4f4d96++){_0xbc2221+='%'+('00'+_0x18bb9d['charCodeAt'](_0x4f4d96)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0xbc2221);};_0x3ada['LMSRnW']=_0x58ab3d,_0x3ada['JCVjPU']={},_0x3ada['imTSIc']=!![];}const _0x3bdabb=_0x1a3f66[0x0],_0x584d69=_0x9993cc+_0x3bdabb,_0x1c2940=_0x3ada['JCVjPU'][_0x584d69];return!_0x1c2940?(_0x3ada2c=_0x3ada['LMSRnW'](_0x3ada2c),_0x3ada['JCVjPU'][_0x584d69]=_0x3ada2c):_0x3ada2c=_0x1c2940,_0x3ada2c;}let pbMunicipiosData=null,pbMunicipiosByName=null,pbMunicipiosLoadingPromise=null;async function pbLoadMunicipiosData(){if(pbMunicipiosByName)return pbMunicipiosByName;if(pbMunicipiosLoadingPromise)return pbMunicipiosLoadingPromise;pbMunicipiosLoadingPromise=((async()=>{const _0xff6135=_0x3ada,_0x5ae6de=await fetch(MUNICIPIOS_GITHUB_RAW_BASE+_0xff6135(0x20d));if(!_0x5ae6de['ok'])throw new Error(_0xff6135(0x205)+_0x5ae6de['status']);const _0x50110a=await _0x5ae6de[_0xff6135(0x1e6)]();return pbMunicipiosData=_0x50110a,pbMunicipiosByName={},_0x50110a[_0xff6135(0x20f)](_0x51e73d=>{pbMunicipiosByName[normalizeAccents(_0x51e73d['municipio'])]=_0x51e73d;}),pbMunicipiosByName;})());try{return await pbMunicipiosLoadingPromise;}catch(_0xad119c){pbMunicipiosLoadingPromise=null;throw _0xad119c;}}async function pbImportZip(_0x49beaf,_0x3f8930,_0x500b4f){const _0x502f83=_0x412134;_0x500b4f[_0x502f83(0x239)]=_0x502f83(0x245)+_0x3f8930+'…';try{const _0x336743=TEAM_API_BASE+_0x502f83(0x1d1)+encodeURIComponent(_0x49beaf),_0x4026ec=await fetch(_0x336743);if(!_0x4026ec['ok']){let _0x7ed742=_0x502f83(0x205)+_0x4026ec[_0x502f83(0x24a)];try{const _0x3d3094=await _0x4026ec[_0x502f83(0x1e6)]();if(_0x3d3094&&_0x3d3094[_0x502f83(0x212)])_0x7ed742=_0x3d3094[_0x502f83(0x212)];}catch(_0x123b00){}throw new Error(_0x7ed742);}const _0x5c5d45=await _0x4026ec['arrayBuffer']();_0x500b4f[_0x502f83(0x239)]=_0x502f83(0x1b8)+_0x3f8930+'\x22…';let _0xac151b=await shp(_0x5c5d45);const _0x3e90d8=Array[_0x502f83(0x1cb)](_0xac151b)?{'type':_0x502f83(0x1ba),'features':_0xac151b[_0x502f83(0x246)](_0x4ef8c4=>_0x4ef8c4&&_0x4ef8c4[_0x502f83(0x1b5)]||[])}:_0xac151b,_0xfc68=pbCreateLayerFromFeatureCollection(_0x3e90d8,_0x3f8930);_0x500b4f[_0x502f83(0x239)]=_0x502f83(0x1b6)+_0x3f8930+'\x22\x20criada\x20com\x20'+_0xfc68[_0x502f83(0x1eb)]+_0x502f83(0x1d0);}catch(_0x499a2e){console[_0x502f83(0x212)](_0x502f83(0x1b9),_0x499a2e),_0x500b4f[_0x502f83(0x239)]='⚠\x20Não\x20foi\x20possível\x20carregar\x20\x22'+_0x3f8930+_0x502f83(0x215)+(_0x499a2e[_0x502f83(0x1db)]||_0x502f83(0x1d2))+').';}}(function wirePortalBridgeUI(){const _0x40c39c=_0x412134,_0x3a36e3=document['getElementById']('btn-portal-bridge'),_0x44a8d0=document['getElementById']('portal-bridge-panel');if(!_0x3a36e3||!_0x44a8d0)return;let _0x4c245d=null,_0x5b107a=null;function _0x38fb67(){const _0x522aae=_0x3ada,_0x1cba6c=_0x3a36e3[_0x522aae(0x23d)](),_0x1d590c=_0x44a8d0[_0x522aae(0x1af)]||0x140;let _0x49e8cf=_0x1cba6c['right']-_0x1d590c;_0x49e8cf=Math['max'](0xc,Math[_0x522aae(0x240)](_0x49e8cf,window[_0x522aae(0x1e3)]-_0x1d590c-0xc));let _0x3e9e64=_0x1cba6c[_0x522aae(0x227)]+0x8;const _0x1df81a=window[_0x522aae(0x1c6)]-0x50;if(_0x3e9e64>_0x1df81a)_0x3e9e64=_0x1df81a;_0x44a8d0[_0x522aae(0x1d5)][_0x522aae(0x1ff)]=_0x49e8cf+'px',_0x44a8d0[_0x522aae(0x1d5)]['top']=_0x3e9e64+'px';}function _0x1b2f4b(_0x247350){const _0x4681a6=_0x3ada;[_0x4681a6(0x20e),_0x4681a6(0x1c9),_0x4681a6(0x1f5)]['forEach'](_0x5cc088=>{const _0x276ad7=_0x4681a6;_0x44a8d0['querySelector'](_0x276ad7(0x21a)+_0x5cc088+'\x22]')[_0x276ad7(0x1e4)]['toggle'](_0x276ad7(0x1f1),_0x5cc088!==_0x247350);});}function _0x2fe21a(){const _0x1c93d9=_0x3ada;_0x4c245d=null,_0x5b107a=null,_0x1b2f4b(_0x1c93d9(0x20e));const _0x58ab6a=document['getElementById'](_0x1c93d9(0x232));_0x58ab6a[_0x1c93d9(0x1ea)]='',document[_0x1c93d9(0x1da)](_0x1c93d9(0x1f0))[_0x1c93d9(0x200)]='',_0x58ab6a[_0x1c93d9(0x231)]();}async function _0x331a26(_0x6c4c99){const _0x29b113=_0x3ada;_0x4c245d=_0x6c4c99,_0x1b2f4b('contents'),document[_0x29b113(0x1da)](_0x29b113(0x1b0))[_0x29b113(0x239)]=_0x6c4c99['m']+'\x20·\x20'+_0x6c4c99['d'];const _0x3dadcf=document[_0x29b113(0x1da)](_0x29b113(0x21e));_0x3dadcf[_0x29b113(0x239)]=_0x29b113(0x1d3),document[_0x29b113(0x1da)](_0x29b113(0x1d9))[_0x29b113(0x200)]='';try{const _0x34e9fe=await pbLoadMunicipiosData();_0x5b107a=_0x34e9fe[normalizeAccents(_0x6c4c99['m'])]||null,_0x3dadcf[_0x29b113(0x239)]=_0x5b107a?'':_0x29b113(0x1c4)+_0x6c4c99['m']+'.';}catch(_0x4ef94e){console[_0x29b113(0x212)](_0x29b113(0x243),_0x4ef94e),_0x3dadcf[_0x29b113(0x239)]=_0x29b113(0x1b4);}_0x7486c3();}function _0x7486c3(){const _0x200ddd=_0x3ada,_0x444e41=document['getElementById'](_0x200ddd(0x1d9));_0x444e41[_0x200ddd(0x200)]=PB_DATASETS[_0x200ddd(0x221)](_0x30edc2=>{const _0x4d2861=_0x200ddd,_0x162f11=_0x30edc2[_0x4d2861(0x1ad)]&&_0x5b107a&&(_0x30edc2['isGroup']?_0x5b107a[_0x30edc2[_0x4d2861(0x210)]]&&Object['keys'](_0x5b107a[_0x30edc2[_0x4d2861(0x210)]])['length']>0x0:!!_0x5b107a[_0x30edc2[_0x4d2861(0x210)]]),_0x5ac41b=!_0x30edc2[_0x4d2861(0x1ad)]?_0x4d2861(0x217):_0x162f11?_0x30edc2['isGroup']?_0x4d2861(0x22b):_0x4d2861(0x1fb):'Sem\x20dados',_0x85db6e=!_0x30edc2['available']||!_0x162f11;return'\x0a\x20\x20\x20\x20\x20\x20\x20\x20<li\x20class=\x22portal-bridge-content-item'+(_0x85db6e?_0x4d2861(0x24d):'')+_0x4d2861(0x229)+_0x30edc2['key']+_0x4d2861(0x228)+PB_ICON+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22portal-bridge-content-text\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<b>'+_0x30edc2['label']+_0x4d2861(0x1dd)+_0x30edc2[_0x4d2861(0x224)]+_0x4d2861(0x23c)+_0x5ac41b+_0x4d2861(0x21d);})[_0x200ddd(0x208)](''),_0x444e41[_0x200ddd(0x23f)](_0x200ddd(0x1c7))[_0x200ddd(0x20f)](_0x1f6933=>{_0x1f6933['addEventListener']('click',()=>{const _0x31704d=_0x3ada,_0x4ffb6d=PB_DATASETS['find'](_0x5a21ae=>_0x5a21ae[_0x31704d(0x220)]===_0x1f6933[_0x31704d(0x204)][_0x31704d(0x1c3)]);if(!_0x4ffb6d)return;const _0x313163=_0x4ffb6d[_0x31704d(0x1ad)]&&_0x5b107a&&(_0x4ffb6d[_0x31704d(0x1f6)]?_0x5b107a[_0x4ffb6d[_0x31704d(0x210)]]&&Object[_0x31704d(0x24b)](_0x5b107a[_0x4ffb6d[_0x31704d(0x210)]])[_0x31704d(0x22d)]>0x0:!!_0x5b107a[_0x4ffb6d[_0x31704d(0x210)]]);if(!_0x4ffb6d[_0x31704d(0x1ad)]||!_0x313163){window[_0x31704d(0x223)](_0x31704d(0x237),_0x31704d(0x1e1),_0x31704d(0x1b7));return;}if(_0x4ffb6d[_0x31704d(0x1f6)])_0x57d2d6(_0x4ffb6d);else{const _0x33a237=_0x4ffb6d[_0x31704d(0x20b)][_0x31704d(0x1e7)](_0x31704d(0x216))[0x0]+_0x31704d(0x1e2)+_0x4c245d['m'];pbImportZip(_0x5b107a[_0x4ffb6d[_0x31704d(0x210)]],_0x33a237,document[_0x31704d(0x1da)]('pb-content-status'));}});});}function _0x57d2d6(_0x1a83e3){const _0x47578b=_0x3ada;_0x1b2f4b(_0x47578b(0x1f5)),document[_0x47578b(0x1da)](_0x47578b(0x1f3))['textContent']='OSM\x20·\x20'+_0x4c245d['m'];const _0x381211=document[_0x47578b(0x1da)](_0x47578b(0x1e0));_0x381211['textContent']='';const _0x1880ab=_0x5b107a[_0x1a83e3[_0x47578b(0x210)]]||{},_0x1a0eb9=document[_0x47578b(0x1da)]('pb-osm-list'),_0x3fe496=Object['keys'](_0x1880ab);if(!_0x3fe496['length']){_0x1a0eb9['innerHTML']='',_0x381211[_0x47578b(0x239)]=_0x47578b(0x236)+_0x4c245d['m']+'.';return;}_0x1a0eb9[_0x47578b(0x200)]=_0x3fe496['map'](_0x5ecca4=>_0x47578b(0x23a)+_0x5ecca4+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22portal-bridge-content-icon\x22>'+PB_ICON+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22portal-bridge-content-text\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<b>'+pbOsmLayerName(_0x5ecca4)+_0x47578b(0x1d6)+(PB_OSM_META[_0x5ecca4]&&PB_OSM_META[_0x5ecca4][_0x47578b(0x234)]||_0x47578b(0x23b))+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22portal-bridge-content-tag\x22>Importar</span>\x0a\x20\x20\x20\x20\x20\x20</li>\x0a\x20\x20\x20\x20')['join'](''),_0x1a0eb9[_0x47578b(0x23f)]('.portal-bridge-content-item')['forEach'](_0x189f56=>{const _0x1fae4f=_0x47578b;_0x189f56[_0x1fae4f(0x1b3)](_0x1fae4f(0x1fa),()=>{const _0x565128=_0x1fae4f,_0x3f98f0=_0x189f56[_0x565128(0x204)][_0x565128(0x1bc)],_0x4b6539=_0x1880ab[_0x3f98f0],_0x45dfc0=_0x565128(0x1ee)+pbOsmLayerName(_0x3f98f0)+'\x20–\x20'+_0x4c245d['m'];pbImportZip(_0x4b6539,_0x45dfc0,_0x381211);});});}function _0x3a5578(){const _0x114128=_0x3ada;_0x44a8d0[_0x114128(0x1e4)][_0x114128(0x1ef)](_0x114128(0x1f1)),_0x3a36e3['setAttribute'](_0x114128(0x1df),_0x114128(0x1be)),_0x38fb67(),_0x2fe21a();}function _0x3bf8b1(){const _0x5469ba=_0x3ada;_0x44a8d0[_0x5469ba(0x1e4)][_0x5469ba(0x1b2)]('hidden'),_0x3a36e3[_0x5469ba(0x1ac)](_0x5469ba(0x1df),'false');}_0x3a36e3[_0x40c39c(0x1b3)](_0x40c39c(0x1fa),_0x1b24d5=>{const _0x2ac49b=_0x40c39c;_0x1b24d5[_0x2ac49b(0x23e)]();if(_0x44a8d0[_0x2ac49b(0x1e4)][_0x2ac49b(0x1de)]('hidden'))_0x3a5578();else _0x3bf8b1();}),document[_0x40c39c(0x1da)](_0x40c39c(0x1c8))[_0x40c39c(0x1b3)](_0x40c39c(0x1fa),_0x3bf8b1),document[_0x40c39c(0x1da)](_0x40c39c(0x1ed))[_0x40c39c(0x1b3)](_0x40c39c(0x1fa),_0x2fe21a),document[_0x40c39c(0x1da)](_0x40c39c(0x22f))[_0x40c39c(0x1b3)]('click',()=>_0x331a26(_0x4c245d)),_0x44a8d0[_0x40c39c(0x1b3)](_0x40c39c(0x1fa),_0x5ba8c7=>_0x5ba8c7[_0x40c39c(0x23e)]()),document[_0x40c39c(0x1b3)](_0x40c39c(0x1fa),_0x3bf8b1),document[_0x40c39c(0x1b3)](_0x40c39c(0x21b),_0x10d4e3=>{const _0x2a6ca8=_0x40c39c;if(_0x10d4e3['key']===_0x2a6ca8(0x20c))_0x3bf8b1();}),window[_0x40c39c(0x1b3)](_0x40c39c(0x1ca),()=>{const _0xe57b4f=_0x40c39c;if(!_0x44a8d0['classList'][_0xe57b4f(0x1de)]('hidden'))_0x38fb67();});const _0x389a3b=document['getElementById'](_0x40c39c(0x232));_0x389a3b['addEventListener']('input',_0x5befe9=>{const _0x1a99a2=_0x40c39c,_0x447192=normalizeAccents(_0x5befe9['target'][_0x1a99a2(0x1ea)][_0x1a99a2(0x244)]()),_0x2a0606=document[_0x1a99a2(0x1da)](_0x1a99a2(0x1f0));_0x2a0606[_0x1a99a2(0x200)]='';if(!_0x447192)return;const _0x837a6c=MUNICIPIOS_INDEX[_0x1a99a2(0x1e8)](_0x30d282=>normalizeAccents(_0x30d282['m'])[_0x1a99a2(0x21f)](_0x447192))[_0x1a99a2(0x22e)](0x0,0x8);if(_0x837a6c['length']===0x0){const _0xa5f8b3=document[_0x1a99a2(0x213)]('li');_0xa5f8b3[_0x1a99a2(0x1d5)]['cursor']=_0x1a99a2(0x238),_0xa5f8b3[_0x1a99a2(0x200)]=_0x1a99a2(0x1f4),_0x2a0606[_0x1a99a2(0x1e9)](_0xa5f8b3);return;}_0x837a6c[_0x1a99a2(0x20f)](_0x283acb=>{const _0x32856b=_0x1a99a2,_0x40c22b=document[_0x32856b(0x213)]('li');_0x40c22b[_0x32856b(0x200)]=_0x32856b(0x209)+_0x283acb['m']+'</span><span\x20class=\x22distrito\x22>'+_0x283acb['d']+_0x32856b(0x24e),_0x40c22b[_0x32856b(0x1b3)](_0x32856b(0x1fa),()=>_0x331a26(_0x283acb)),_0x2a0606[_0x32856b(0x1e9)](_0x40c22b);});});}());function _0x1a3f(){const _0x309325=['C2v0qxr0CMLIDxrL','yxzHAwXHyMXL','u2HHCgvMAwXLignVBxbSzxrVlcbJB21VignHBwfKysbLzgL0W6f2zwW','B2zMC2v0v2LKDgG','CgiTC2vSzwn0zwqTBxvUAwnPCgLV','yMDYAv96Axa','ywrK','ywrKrxzLBNrmAxn0zw5LCG','4PQGie7dO28GzM9PihbVC3pdRxzLBcbSAwDHCIbHBYbWB3j0ywWGkg11BMLJAxbPB3mUANnVBIKU','zMvHDhvYzxm','4PYtienHBwfKysaI','BM9VCgvUzxi','qsbWCM9JzxnZyxiGiG','rxjYBYbHBYbPBxbVCNrHCIbKBYbWB3j0ywW6','rMvHDhvYzunVBgXLy3rPB24','mLDHzKj2vq','CgjpC21myxLLCG','turuiokaLcbnB2rLBg8GzgLNAxrHBcbKBYb0zxjYzw5V','Dhj1zq','CMvWBgfJzq','nwD4BhLYua','y29Zx3PPCa','yxrYAwj1Dg9Z','CgjeyxrHC2v0','u2vTigrHzg9Zig5VihbVCNrHBcbWyxjHia','rwrPzSoTy2LVCW','Aw5UzxjizwLNAhq','lNbVCNrHBc1ICMLKz2uTy29UDgvUDc1PDgvT','Cg9YDgfSlwjYAwrNzs1JBg9Zzq','y29UDgvUDhm','CMvZAxPL','AxnbCNjHEq','nZu5otbuD2Pzzhi','y29Z','mtKYmtC1mKzPCLPSAa','yMDYAq','igDLB21LDhjPysHZks4','l2fWAs9KB3DUBg9Hzd91CMW9','zxjYBYbKzxnJB25OzwnPzg8','qsbJyxjYzwDHCIbJB250zCo6zg9Z4OcM','y2fVCa','C3r5Bgu','pc9IpGOGicaGicaGicaGphnWyw4+','q2fTAw5OB3mGzguGzMvYCM8','thvNyxjLCYaOCg9UDg9Zkq','CgiTy29UDgvUDc1SAxn0','z2v0rwXLBwvUDej5swq','BwvZC2fNzq','ChvZAa','pc9IpGOGicaGicaGicaGica8C3bHBJ4','y29UDgfPBNm','yxjPys1LEhbHBMrLza','CgiTB3nTlxn0yxr1CW','x2jSyw5R','iokaKYa','Aw5UzxjxAwr0Aa','y2XHC3nmAxn0','vhjHBNnWB3j0zxmGkmoHCMvHCYK','ANnVBG','C3bSAxq','zMLSDgvY','yxbWzw5Kq2HPBgq','DMfSDwu','Aw1WB3j0zwq','ue9jicJdOxjLyxmP','CgiTyMfJAY1IDg4','t1nnia','CMvTB3zL','CgiTy2fVCc1Yzxn1BhrZ','AgLKzgvU','ug9SW61NB25VCW','CgiTB3nTlxrPDgXL','phnWyw4+tMvUAhvTig11BMLJW61WAw8Gzw5JB250CMfKBY48l3nWyw4+','B3nT','AxnhCM91Ca','t1nniokaLcbwAwfZlcbLzgLMW61JAw9ZiguGB3v0CM9Z','uMfZDgvYiokaLcbHAw5KysbUW6nVihn1Cg9YDgfKBYbJB21VignHBwfKysbUBYbfBMDLBMG','q3vYC29ZigrLimoHz3vH','y2XPy2S','sw1WB3j0yxi','W4fNDweGkmoHCMvHCYK','z2vVBwv0CNK','vhldOwzLz28GkhbVBNrVCYK','BgvMDa','Aw5Uzxjive1m','vhldOwzLz28GkmoHCMvHCYK','tMf0DxjLEMeGkhbVBNrVCYK','vxnVigrVifnVBg8','zgf0yxnLDa','sfruuca','rxnJB2XOzxiGDw1HignHBwfKysbpu00GkhzPyxmSigvKAwBdRwnPB3mSimoHz3vH4OcMkq','u2vTigDLB21LDhjPyxmGDSoHBgLKyxmGCgfYysbPBxbVCNrHCI4','AM9PBG','phnWyw4+','rxn0CMfKyxm','BgfIzwW','rxnJyxbL','zgf0ys9TDw5Py2LWAw9ZlMPZB24','C2vHCMnO','zM9YrwfJAa','zMLLBgq','q3vSDg8GkmoHCMvHCYK','zxjYB3i','y3jLyxrLrwXLBwvUDa','z2LZx29ZBv8','iIaO','iokaLca','rw0GyNjLDMu','zML0qM91BMrZ','mZmWqKHnvfjA','w2rHDgeTCgiTDMLLDZ0I','A2v5zg93BG','mZyWmZbdDLPzBui','pc9ZCgfUpGOGicaGicaGidWVBgK+cIaGicaGia','CgiTy29UDgvUDc1ZDgf0Dxm','Aw5JBhvKzxm','A2v5','BwfW','nJu3otjUrKnIvgq','B3bLBG','zgvZyW','y2fVCf96Axa','ouDYu1biCq','yM90Dg9T','iJ4kicaGicaGicaGidXZCgfUignSyxnZpsjWB3j0ywWTyNjPzgDLlwnVBNrLBNqTAwnVBIi+','iIbKyxrHlxbIlwrHDgfZzxq9iG','qKDsssaYmdiXiokaLcbcyxnLigDLB2DYW6fMAwnHigrLihjLzMvYzw5JAwhdP8oJBW','vMvYignHBwfKyxm','vhjHBNnWB3j0zxmGkhbVBNrVCYK','BgvUz3rO','C2XPy2u','CgiTB3nTlwjHy2STyNrU','q09tie7dRxzLBca0iokaLcbvC28GzsbVy3vWyCoNW6nVigrVihnVBg8','zM9JDxm','CgiTy2fVCc1ZzwfYy2G','tgLUAgfZ','Bwv0yq','ug9UDg9Z','u2vTignHBwfKyxmGt1nnigrPC3bVBSoTDMvPCYbWyxjHia','Ahr0Chm6lY9KyxrHz2LZChqUz2LZChqUD29YA2vYCY5KzxyV','zgvMyxvSDa','Dgv4DenVBNrLBNq','cIaGicaGidXSAsbJBgfZCZ0ICg9YDgfSlwjYAwrNzs1JB250zw50lwL0zw0IigrHDgeTCgiTB3nTlwXHEwvYpsi','u2HHCgvMAwXL','pc9ZCgfUpGOGicaGicaGicaGpc9ZCgfUpGOGicaGicaGicaGphnWyw4Gy2XHC3m9iNbVCNrHBc1ICMLKz2uTy29UDgvUDc10ywCIpG','z2v0qM91BMrPBMDdBgLLBNrszwn0','C3rVCfbYB3bHz2f0Aw9U','CxvLCNLtzwXLy3rVCKfSBa','BwLU','Bwr0','nJuYnJuYneLly2H1yW','rxjYBYbHBYbJyxjYzwDHCIbTDw5Py2LWAw9ZlMPZB246','DhjPBq','qsbKzxnJyxjYzwDHCIa','zMXHDe1HCa','mtyZntqXmhveAe1cqG','odeXnJC4nhLsrhzLyG','z2v0qM91BMrZ','C3rHDhvZ','A2v5CW','phn2zYb4BwXUCZ0IAhr0CdOVl3D3DY53mY5VCMCVmJaWmc9ZDMCIihDPzhrOpsiXnsiGAgvPz2H0psiXnsiGDMLLD0jVEd0ImcaWidi0idi0iIbMAwXSpsjUB25LiIbZDhjVA2u9iMn1CNjLBNrdB2XVCIiGC3rYB2TLlxDPzhrOpsiYiIbZDhjVA2uTBgLUzwnHCd0ICM91BMqIihn0CM9Rzs1SAw5LAM9PBJ0ICM91BMqIigfYAweTAgLKzgvUpsj0CNvLiJ48Cgf0AcbKpsjnnca5BduTnIa4idiGnca2ltiGos0XmsaXltqTnxOIlZ48l3n2zZ4','igLZlwrPC2fIBgvK','pc9ZCgfUpG'];_0x1a3f=function(){return _0x309325;};return _0x1a3f();}
+/* ============================================================
+   LIGAR AO PORTAL — ponte entre o Engenh e o portal DataGis
+   (https://datagispt.gispt.workers.dev/).
+
+   Fluxo: pesquisar município -> lista de conteúdos disponíveis para
+   esse município -> importar. Cada importação cria uma CAMADA NOVA
+   (nunca sobrescreve nada que já exista no projeto).
+
+   FONTE DOS DADOS: `data/municipios.json` (no mesmo repositório GitHub
+   já usado pelo painel "Limites de município" — MUNICIPIOS_GITHUB_RAW_BASE,
+   definido em js/05-app-main.js). Esse ficheiro tem, por município, os
+   campos caop_preview / cos_preview / bgri_preview / osm_previews: caminhos
+   para GeoJSON servidos via raw.githubusercontent.com, que devolve
+   "access-control-allow-origin: *" — por isso o browser consegue fazer
+   fetch() e importar diretamente.
+
+   DADOS COMPLETOS, NÃO PRÉ-VISUALIZAÇÕES: caop_zip / cos_zip / bgri_zip /
+   osm_zips (em municipios.json) apontam para GitHub Releases com o
+   Shapefile completo em alta resolução. Essas respostas não têm cabeçalho
+   CORS, por isso o browser bloqueia o fetch() direto. Para contornar isto,
+   o Worker `datagis-equipa` (TEAM_API_BASE, definido em js/05-app-main.js)
+   expõe agora a rota `GET /api/download?url=<zip>`, que faz de intermediário
+   (corre no servidor, não está sujeito a CORS) e devolve a resposta com
+   `Access-Control-Allow-Origin`. O .zip devolvido é parseado no browser
+   com `shpjs` (window.shp), já incluído em engenh.html.
+
+   O MDT é um raster (.tif), não um vetor — não há forma de o trazer como
+   camada editável do Engenh da mesma maneira, por isso fica por implementar
+   (ver PB_DATASETS abaixo).
+
+   Para atualizar o endpoint de qualquer dataset, mexe apenas em
+   PB_DATASETS e em pbImportZip() / showOsmView() abaixo.
+   ============================================================ */
+
+/* ---------- criação de camada nova a partir de um FeatureCollection ----------
+   Replica exatamente o padrão já usado em "Selecionar por atributos" (criação
+   de camada nova a partir de uma seleção): regista o schema em `layers`,
+   avança o `layerCounter`, e usa a função de importação já existente
+   (importGeoJSONFeatures) com um resolver fixo para o novo id. Isto garante
+   que a camada resultante se comporta exactamente como qualquer outra do
+   projeto (aparece no painel de camadas, é exportável, tem simbologia, etc.). */
+function pbCreateLayerFromFeatureCollection(geojson, layerName){
+  const features = Array.isArray(geojson && geojson.features)
+    ? geojson.features.filter(f => f && f.geometry)
+    : [];
+  if(!features.length){
+    throw new Error('Sem geometrias válidas para importar.');
+  }
+
+  const firstType = baseGeomType(features[0].geometry.type);
+  const newLayerId = ++layerCounter;
+  const finalName = (layerName && layerName.trim()) || 'Camada do portal';
+
+  layers.push({
+    id: newLayerId,
+    name: finalName,
+    geometryType: firstType,
+    mode: 'atributos',
+    attributes: [],
+    colorAttr: null,
+    baseColor: null,
+    opacity: null,
+    symbology: defaultSymbology()
+  });
+
+  const res = importGeoJSONFeatures(
+    {type: 'FeatureCollection', features},
+    () => newLayerId,
+    /* silent */ true
+  );
+
+  renderLayersPanel();
+  markProjectDirty();
+
+  if(res.imported > 0){
+    try{ map.fitBounds(drawnGroup.getBounds(), {padding:[40,40], maxZoom:18}); }
+    catch(err){ /* bounds inválidos, ignora */ }
+  }
+
+  return {newLayerId, ...res};
+}
+
+/* ---------- conteúdos disponíveis por município ----------
+   Espelha a lista que já mostras no portal (CAOP, COS Nível 4, BGRI 2021,
+   MDT, OSM). Só o CAOP tem, para já, um endpoint confirmado (o mesmo do
+   painel "Limites de município"). Os restantes ficam marcados como
+   "em breve" e abrem o portal — assim que tiveres o endpoint de cada um,
+   basta trocar available:false -> true e escrever a função de fetch
+   (segue exatamente o padrão de pbImportCaop). */
+const PB_DATASETS = [
+  {
+    key: 'caop',
+    label: 'CAOP — Limite administrativo',
+    field: 'caop_zip',
+    desc: 'Shapefile completo, como camada editável',
+    available: true
+  },
+  {
+    key: 'cos',
+    label: 'COS Nível 4 — Uso e ocupação do solo',
+    field: 'cos_zip',
+    desc: 'Shapefile completo, como camada editável',
+    available: true
+  },
+  {
+    key: 'bgri',
+    label: 'BGRI 2021 — Base geográfica de referenciação',
+    field: 'bgri_zip',
+    desc: 'Shapefile completo, como camada editável',
+    available: true
+  },
+  {
+    key: 'osm',
+    label: 'OSM — Vias, edifícios e outros',
+    field: 'osm_zips',
+    desc: 'Escolher uma camada OSM (vias, edifícios, água…)',
+    available: true,
+    isGroup: true
+  },
+  {
+    key: 'mdt',
+    label: 'MDT — Modelo digital do terreno',
+    field: null,
+    desc: 'Raster — ainda não suportado como camada no Engenh',
+    available: false
+  }
+];
+
+/* nomes amigáveis para as sub-camadas OSM, tal como já usas no portal */
+const PB_OSM_META = {
+  'gis_osm_buildings_a_free_1': { nome: 'Edifícios', meta: 'Polígonos' },
+  'gis_osm_landuse_a_free_1': { nome: 'Uso do Solo', meta: 'Polígonos' },
+  'gis_osm_natural_a_free_1': { nome: 'Natureza (áreas)', meta: 'Polígonos' },
+  'gis_osm_natural_free_1': { nome: 'Natureza (pontos)', meta: 'Pontos' },
+  'gis_osm_places_a_free_1': { nome: 'Lugares (áreas)', meta: 'Polígonos' },
+  'gis_osm_places_free_1': { nome: 'Lugares (pontos)', meta: 'Pontos' },
+  'gis_osm_pofw_a_free_1': { nome: 'Culto (áreas)', meta: 'Polígonos' },
+  'gis_osm_pofw_free_1': { nome: 'Culto (pontos)', meta: 'Pontos' },
+  'gis_osm_pois_a_free_1': { nome: 'POI (áreas)', meta: 'Polígonos' },
+  'gis_osm_pois_free_1': { nome: 'POI (pontos)', meta: 'Pontos' },
+  'gis_osm_protected_areas_a_free_1': { nome: 'Áreas Protegidas', meta: 'Polígonos' },
+  'gis_osm_railways_free_1': { nome: 'Caminhos de ferro', meta: 'Linhas' },
+  'gis_osm_roads_free_1': { nome: 'Estradas', meta: 'Linhas' },
+  'gis_osm_traffic_a_free_1': { nome: 'Tráfego (áreas)', meta: 'Polígonos' },
+  'gis_osm_traffic_free_1': { nome: 'Tráfego (pontos)', meta: 'Pontos' },
+  'gis_osm_transport_a_free_1': { nome: 'Transportes (áreas)', meta: 'Polígonos' },
+  'gis_osm_transport_free_1': { nome: 'Transportes (pontos)', meta: 'Pontos' },
+  'gis_osm_water_a_free_1': { nome: 'Água (áreas)', meta: 'Polígonos' },
+  'gis_osm_waterways_free_1': { nome: 'Cursos de água', meta: 'Linhas' }
+};
+
+function pbOsmLayerName(layerName){
+  const meta = PB_OSM_META[layerName];
+  if(meta) return meta.nome;
+  return layerName.replace('gis_osm_', '').replace(/_a_free_1|_free_1/g, '').replace(/_/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase());
+}
+
+const PB_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9l5-6 8 2 4 6-2 9-11 1-4-5z"/></svg>';
+
+/* ---------- data/municipios.json: fonte real dos caminhos de pré-visualização ----------
+   Carregado uma vez e mantido em memória (~1MB, 260+ municípios). */
+let pbMunicipiosData = null;
+let pbMunicipiosByName = null;
+let pbMunicipiosLoadingPromise = null;
+
+async function pbLoadMunicipiosData(){
+  if(pbMunicipiosByName) return pbMunicipiosByName;
+  if(pbMunicipiosLoadingPromise) return pbMunicipiosLoadingPromise;
+
+  pbMunicipiosLoadingPromise = (async () => {
+    const res = await fetch(MUNICIPIOS_GITHUB_RAW_BASE + 'data/municipios.json');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const list = await res.json();
+    pbMunicipiosData = list;
+    pbMunicipiosByName = {};
+    list.forEach(m => { pbMunicipiosByName[normalizeAccents(m.municipio)] = m; });
+    return pbMunicipiosByName;
+  })();
+
+  try{
+    return await pbMunicipiosLoadingPromise;
+  }catch(err){
+    pbMunicipiosLoadingPromise = null; // permite nova tentativa se falhar
+    throw err;
+  }
+}
+
+/* ---------- importar um Shapefile completo (CAOP / COS / BGRI / OSM sub-camada) ----------
+   zipUrl vem de municipios.json (caop_zip/cos_zip/bgri_zip/osm_zips), e aponta
+   para um GitHub Release. Como essas respostas não têm CORS, passamos sempre
+   pelo proxy do worker (TEAM_API_BASE + /api/download?url=...), que devolve o
+   .zip com o cabeçalho certo. O parsing do Shapefile é feito no browser com
+   shpjs (window.shp), já incluído em engenh.html. */
+async function pbImportZip(zipUrl, layerName, statusEl){
+  statusEl.textContent = `A descarregar ${layerName}…`;
+  try{
+    const proxyUrl = `${TEAM_API_BASE}/api/download?url=${encodeURIComponent(zipUrl)}`;
+    const res = await fetch(proxyUrl);
+    if(!res.ok){
+      let msg = 'HTTP ' + res.status;
+      try{ const body = await res.json(); if(body && body.error) msg = body.error; }catch(e){ /* ignora */ }
+      throw new Error(msg);
+    }
+    const buffer = await res.arrayBuffer();
+
+    statusEl.textContent = `A processar "${layerName}"…`;
+    let parsed = await shp(buffer);
+    // shpjs devolve um FeatureCollection, ou um array deles se o .zip tiver
+    // mais do que um Shapefile lá dentro — juntamos tudo numa única camada.
+    const geojson = Array.isArray(parsed)
+      ? {type:'FeatureCollection', features: parsed.flatMap(fc => (fc && fc.features) || [])}
+      : parsed;
+
+    const result = pbCreateLayerFromFeatureCollection(geojson, layerName);
+    statusEl.textContent = `✓ Camada "${layerName}" criada com ${result.imported} geometria(s).`;
+  }catch(err){
+    console.error('Erro ao importar do portal:', err);
+    statusEl.textContent = `⚠ Não foi possível carregar "${layerName}" (${err.message || 'erro desconhecido'}).`;
+  }
+}
+
+/* ============================================================
+   UI — abrir/fechar painel, pesquisa de município, lista de conteúdos,
+   lista de sub-camadas OSM
+   ============================================================ */
+(function wirePortalBridgeUI(){
+  const btn = document.getElementById('btn-portal-bridge');
+  const panel = document.getElementById('portal-bridge-panel');
+  if(!btn || !panel) return;
+
+  let selectedEntry = null;   // {m, d} vindo da pesquisa
+  let selectedMunData = null; // registo correspondente em municipios.json (pode ser null)
+
+  function positionPanel(){
+    const rect = btn.getBoundingClientRect();
+    const width = panel.offsetWidth || 320;
+    let left = rect.right - width;
+    left = Math.max(12, Math.min(left, window.innerWidth - width - 12));
+    let top = rect.bottom + 8;
+    const maxTop = window.innerHeight - 80;
+    if(top > maxTop) top = maxTop;
+    panel.style.left = left + 'px';
+    panel.style.top = top + 'px';
+  }
+
+  function showView(name){
+    ['search', 'contents', 'osm'].forEach(v=>{
+      panel.querySelector(`[data-pb-view="${v}"]`).classList.toggle('hidden', v !== name);
+    });
+  }
+
+  function showSearchView(){
+    selectedEntry = null;
+    selectedMunData = null;
+    showView('search');
+    const search = document.getElementById('pb-caop-search');
+    search.value = '';
+    document.getElementById('pb-caop-results').innerHTML = '';
+    search.focus();
+  }
+
+  async function showContentsView(entry){
+    selectedEntry = entry;
+    showView('contents');
+    document.getElementById('pb-selected-municipio').textContent = `${entry.m} · ${entry.d}`;
+    const statusEl = document.getElementById('pb-content-status');
+    statusEl.textContent = 'A carregar conteúdos…';
+    document.getElementById('pb-content-list').innerHTML = '';
+
+    try{
+      const byName = await pbLoadMunicipiosData();
+      selectedMunData = byName[normalizeAccents(entry.m)] || null;
+      statusEl.textContent = selectedMunData ? '' : `Sem dados no portal para ${entry.m}.`;
+    }catch(err){
+      console.error('Erro ao carregar municipios.json:', err);
+      statusEl.textContent = '⚠ Não foi possível ligar ao portal (municipios.json).';
+    }
+    renderContentList();
+  }
+
+  function renderContentList(){
+    const list = document.getElementById('pb-content-list');
+    list.innerHTML = PB_DATASETS.map(ds => {
+      const hasData = ds.available && selectedMunData && (ds.isGroup
+        ? selectedMunData[ds.field] && Object.keys(selectedMunData[ds.field]).length > 0
+        : !!selectedMunData[ds.field]);
+      const tag = !ds.available ? 'Em breve' : (hasData ? (ds.isGroup ? 'Ver camadas' : 'Importar') : 'Sem dados');
+      const disabled = !ds.available || !hasData;
+      return `
+        <li class="portal-bridge-content-item${disabled ? ' is-disabled' : ''}" data-pb-dataset="${ds.key}">
+          <span class="portal-bridge-content-icon">${PB_ICON}</span>
+          <span class="portal-bridge-content-text">
+            <b>${ds.label}</b>
+            <span>${ds.desc}</span>
+          </span>
+          <span class="portal-bridge-content-tag">${tag}</span>
+        </li>
+      `;
+    }).join('');
+
+    list.querySelectorAll('.portal-bridge-content-item').forEach(li=>{
+      li.addEventListener('click', ()=>{
+        const ds = PB_DATASETS.find(d => d.key === li.dataset.pbDataset);
+        if(!ds) return;
+
+        const hasData = ds.available && selectedMunData && (ds.isGroup
+          ? selectedMunData[ds.field] && Object.keys(selectedMunData[ds.field]).length > 0
+          : !!selectedMunData[ds.field]);
+
+        if(!ds.available || !hasData){
+          window.open('https://datagispt.gispt.workers.dev/', '_blank', 'noopener');
+          return;
+        }
+
+        if(ds.isGroup){
+          showOsmView(ds);
+        } else {
+          const layerName = `${ds.label.split(' — ')[0]} – ${selectedEntry.m}`;
+          pbImportZip(selectedMunData[ds.field], layerName, document.getElementById('pb-content-status'));
+        }
+      });
+    });
+  }
+
+  function showOsmView(ds){
+    showView('osm');
+    document.getElementById('pb-osm-title').textContent = `OSM · ${selectedEntry.m}`;
+    const statusEl = document.getElementById('pb-osm-status');
+    statusEl.textContent = '';
+
+    const zipUrls = selectedMunData[ds.field] || {};
+    const list = document.getElementById('pb-osm-list');
+    const entries = Object.keys(zipUrls);
+
+    if(!entries.length){
+      list.innerHTML = '';
+      statusEl.textContent = `Sem camadas OSM disponíveis para ${selectedEntry.m}.`;
+      return;
+    }
+
+    list.innerHTML = entries.map(layerKey => `
+      <li class="portal-bridge-content-item" data-pb-osm-layer="${layerKey}">
+        <span class="portal-bridge-content-icon">${PB_ICON}</span>
+        <span class="portal-bridge-content-text">
+          <b>${pbOsmLayerName(layerKey)}</b>
+          <span>${(PB_OSM_META[layerKey] && PB_OSM_META[layerKey].meta) || 'Shapefile'}</span>
+        </span>
+        <span class="portal-bridge-content-tag">Importar</span>
+      </li>
+    `).join('');
+
+    list.querySelectorAll('.portal-bridge-content-item').forEach(li=>{
+      li.addEventListener('click', ()=>{
+        const layerKey = li.dataset.pbOsmLayer;
+        const zipUrl = zipUrls[layerKey];
+        const layerName = `OSM ${pbOsmLayerName(layerKey)} – ${selectedEntry.m}`;
+        pbImportZip(zipUrl, layerName, statusEl);
+      });
+    });
+  }
+
+  function openPanel(){
+    panel.classList.remove('hidden');
+    btn.setAttribute('aria-expanded', 'true');
+    positionPanel();
+    showSearchView();
+  }
+
+  function closePanel(){
+    panel.classList.add('hidden');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', e=>{
+    e.stopPropagation();
+    if(panel.classList.contains('hidden')) openPanel();
+    else closePanel();
+  });
+
+  document.getElementById('portal-bridge-close').addEventListener('click', closePanel);
+  document.getElementById('pb-back-btn').addEventListener('click', showSearchView);
+  document.getElementById('pb-osm-back-btn').addEventListener('click', ()=> showContentsView(selectedEntry));
+  panel.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape') closePanel();
+  });
+  window.addEventListener('resize', ()=>{
+    if(!panel.classList.contains('hidden')) positionPanel();
+  });
+
+  /* pesquisa de município (mesma lógica do painel "Limites de município") */
+  const caopSearch = document.getElementById('pb-caop-search');
+  caopSearch.addEventListener('input', e=>{
+    const q = normalizeAccents(e.target.value.trim());
+    const resultsEl = document.getElementById('pb-caop-results');
+    resultsEl.innerHTML = '';
+    if(!q) return;
+
+    const matches = MUNICIPIOS_INDEX
+      .filter(it => normalizeAccents(it.m).includes(q))
+      .slice(0, 8);
+
+    if(matches.length === 0){
+      const li = document.createElement('li');
+      li.style.cursor = 'default';
+      li.innerHTML = '<span>Nenhum município encontrado.</span>';
+      resultsEl.appendChild(li);
+      return;
+    }
+
+    matches.forEach(it=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${it.m}</span><span class="distrito">${it.d}</span>`;
+      li.addEventListener('click', ()=> showContentsView(it));
+      resultsEl.appendChild(li);
+    });
+  });
+})();

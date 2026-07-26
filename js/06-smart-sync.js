@@ -1,1 +1,886 @@
-function _0xd75d(_0x3097f1,_0x5abd1f){_0x3097f1=_0x3097f1-0x66;var _0x9fa95f=_0x9fa9();var _0xd75d87=_0x9fa95f[_0x3097f1];if(_0xd75d['ObMJLg']===undefined){var _0x35272f=function(_0x571341){var _0x3689b9='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x1cea51='',_0x4f9d59='';for(var _0x161f3c=0x0,_0x368669,_0x4eabe2,_0x51f8d4=0x0;_0x4eabe2=_0x571341['charAt'](_0x51f8d4++);~_0x4eabe2&&(_0x368669=_0x161f3c%0x4?_0x368669*0x40+_0x4eabe2:_0x4eabe2,_0x161f3c++%0x4)?_0x1cea51+=String['fromCharCode'](0xff&_0x368669>>(-0x2*_0x161f3c&0x6)):0x0){_0x4eabe2=_0x3689b9['indexOf'](_0x4eabe2);}for(var _0x5bbdf0=0x0,_0x52000c=_0x1cea51['length'];_0x5bbdf0<_0x52000c;_0x5bbdf0++){_0x4f9d59+='%'+('00'+_0x1cea51['charCodeAt'](_0x5bbdf0)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x4f9d59);};_0xd75d['gSAqVS']=_0x35272f,_0xd75d['cffXOO']={},_0xd75d['ObMJLg']=!![];}var _0xd4f728=_0x9fa95f[0x0],_0x321e5b=_0x3097f1+_0xd4f728,_0x4ed8da=_0xd75d['cffXOO'][_0x321e5b];return!_0x4ed8da?(_0xd75d87=_0xd75d['gSAqVS'](_0xd75d87),_0xd75d['cffXOO'][_0x321e5b]=_0xd75d87):_0xd75d87=_0x4ed8da,_0xd75d87;}function _0x9fa9(){var _0x4b17f3=['igLUC2vYAwrVCW','AgLKzgvU','pg9WDgLVBIb2ywX1zt0I','y3jLyxrLt2jQzwn0vvjm','mtq4nJftu0LiBhm','phrKpJXZzwXLy3qGzgf0ys1PzhG9iG','z2vVBwv0CNLuExbL','z2v0','BwvZC2fNzq','zM9YrwfJAa','C3mTyxv0BY1ZDgfYDa','pgrPDIbJBgfZCZ0IC3mTDgfIBguTD3jHCci+phrHyMXLignSyxnZpsjZCY10ywjSzsi+phrOzwfKpJX0CJ48DgG+q2HHDMu8l3rOpJX0Ad5bW6FdO288l3rOpJX0Ad5oB3rHCZWVDgG+pc90CJ48l3rOzwfKpJX0yM9KEt4','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjZCY1LEhbVCNqTCMvWB3j0iJ5fEhbVCNrHCIbYzwXHDmoZCMLVpc9IDxr0B24+','mJG4mg5JCND5rq','4OcIidXIpKnOyxzLihzHEMLHpc9IpIdIGjqGysbSAw5OysbKBYbfEgnLBcbUW6nVihrLBsb2ywXVCIbUysbJB2X1BMeGzxnJB2XOAwrHignVBw8GAwrLBNrPzMLJywrVCI48yNi+','phn1Bw1HCNK+ns4Gqxv0B21HW6FdO28G4Ocuig8GCxvLimoPihbVC3pdRxzLBcbLig8GCxvLig7dO28GW6K8l3n1Bw1HCNK+','tSoJBYbMB2KGCg9ZC8oTDMvSigXLCIbVigzPy2HLAxjVlG','CMvZDwX0CW','y2HLy2TLza','AxmTzhjHzW','A2v5u3rY','rgvZy29UAgvJAwrV','CMvJAxbLs2v5','pc9ZCgfUpJWVzgL2pG','D2L6yxjK','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5dB25MAwD1CMhdP8o1zxmGzguGC2LUy3jVBML6yCoNW6nVigD1yxjKywrHCYaOrMfZzsa3ks4GqMfZDgeGzxnJB2XOzxiGBYbUB3zVigzPy2HLAxjViguGy2XPy2fYigvTicjfEgvJDxrHCIbYzwnLAxrHiI48l3a+','C3mTC2HLzxqTC2vSzwn0','pgXHyMvSpKnHBwfKytWVBgfIzwW+','pgrLDgfPBhmGy2XHC3m9iNnZlwHLBhaTAxrLBsi+','Aw5Uzxjive1m','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5hDwLHihldOxbPzg8SihbHC3nVigeGCgfZC28UienHzgeGyMXVy28GCg9KzsbZzxiGywjLCNrVl2zLy2HHzg8Gy2XPy2fUzg8GBM8GDmoTDhvSBY48l3a+','y29Uy2f0','ChjVDg90ExbL','zhjHz2XLyxzL','CMvHzefZvgv4Da','ihnLBgvJDgvK','DhjPBq','pKv4zwn1DgfYiokgKJWVyNv0Dg9UpG','pc90CJ4','lNnZlw5HDI1IDg4','Bg9Uz2L0DwrLigLUDSoHBgLKyq','4OcIidXIpKXHDgL0DwrLl2XVBMDPDhvKzsbPBNBdOwXPzge8l2i+iokaLcbMB3jHigrVigLUDgvYDMfSBYaTotaVotaGB3uGlte4mc8XodaUpgjYpG','phaGy2XHC3m9iNnZlxn1yNrPDgXLiJ5bDhvHBgL6ysb1BweGy2fTywrHifnjrYbKAxjLDgfTzw50zsbHihbHCNrPCIbKzsb1BsbMAwnOzwLYBYbfEgnLBcbVDsbdu1ySihnLBsbLzgNdP8oJBYbTyw51ywWUpc9WpG','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKGC3mTyNrUlwrHBMDLCIiGzgf0ys1KzwW9iG','pgrPDJ5vDgLSAxPHzg9YoIa','imk3ignOyxzLoIa','C21HCNrtEw5JuMvJAxbLCW','phaGy2XHC3m9iNnZlwvTChr5iJ5pig5HDMvNywrVCI92zxjZW6nVigf0DwfSig7dO28GC3vWB3j0ysbHy2vZC28GysbWyxn0yxmGkezPBguGu3LZDgvTiefJy2vZCYbbueKPlIbfC3rHigz1BMnPB25HBgLKywrLigzPy2eGAw5KAxnWB27dRxzLBcbHCxvPlJWVCd4','r3vHCMrHCIbYzwnLAxrH','khzHEMLVkq','phrHyMXLignSyxnZpsjZCY1TyxaTDgfIBguIpJX0AgvHzd48Dhi+phrOpKnHBxbVifnjrZWVDgG+phrOpKnVBhvUysbKBYbfEgnLBc9du1y8l3rOpJX0Ad5dAgf2ztWVDgG+pc90CJ48l3rOzwfKpJX0yM9KEt4','odm4ohvfyuXqAq','ug9KzxmGzxnJB2XOzxiGDw1HihbHC3rHiguGDw0GAw50zxj2ywXVicHLEdOGysbJywrHide1ig1PBIK7igvUCxvHBNrVigeGyxbWigvZDgL2zxiGywjLCNrHlcbLBgeGDMvYAwzPy2eGysbWyxn0ysbLigfWBgLJysbHihjLy2vPDgeGzxnJB2XOAwrHigeGzMLJAgvPCM9Zig5VDM9Zigf1Dg9TyxrPy2fTzw50zs48yNi+pgjYpG','pc9IpJXKAxyGy2XHC3m9iNnZlwHPBNqIpG','C3mTC3rLCduTBMv4Da','pgrPDIbPzd0IC3mTyxv0BY1MB2XKzxiTC3rHDhvZiIbJBgfZCZ0IC3mTAgLUDciGC3r5Bgu9iM1HCMDPBI10B3a6ohb4oYi+pc9KAxy+','Bgf0','DxbKyxrL','mtm4mtiYsLfzsMfv','C3rYAw5N','ywn0AxzLuMvJAxbLtMfTzq','imk3iezPy2HLAxjVoIa','DxnLCG','y2f0y2G','jNf1B3q7','y3jLyxrLrwXLBwvUDa','phnWyw4+t3uGyxjYyxn0zsbVigzPy2HLAxjVihbHCMeGyxf1AtWVC3bHBJ4','C3mTC3rLCdiTBMv4Da','u2HLzxrZ','uhldQs12Axn1ywXPEMhdP8oJBW','AxmTywn0AxzL','phrKpJXZCgfUignSyxnZpsjZCY10ywCG','ChvZAa','pc9IpJXZCgfUpG','A2v5rxHJzwXdB2W','igf0DwfSAxPHzg9Zimk3iokCKYa','C2v0','yxjYyxK','qsbHChaGy29TCgfYysbVigzPy2HLAxjVignVBsbVihf1zsbQW6eGzxn0W6eGBMeGy2fTywrHiguGzgL6lxrLig8GCxvLig11zgeSigfUDgvZigrLig11zgfYihnLAMeGBYbXDwuGzM9YlG','u2vYDMuGCgfYysbHDhvHBgL6yxiGDw1HignHBwfKysbtsuCGASoHigv4Axn0zw50zsbUysbHChaGzgLYzxrHBwvUDguGysbWyxj0AxiGzguGDw0GzMLJAgvPCM8GrxHJzwWGkc54Bhn4ksbVDsbdu1yGkhnLBsb0zxjLCYbKzsbHyNjPCIbJywrHig9IAMv0BYbLigvKAxrHCIbVCYbJyw1WB3mGW6aGBCoJBYKUia','ic8G','CMvTB3zL','C2HVD0rPCMvJDg9YEvbPy2TLCG','rxjYBYbHigXLCIbVigzPy2HLAxjVoIa','igvYCM9Z','jMX0oW','Bg5Nq29S','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GIpJXIpG','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTy3jLyxrLiJ48yJ7INjmG','CMvWBgfJzq','C3mTCMvJAxbLlw5HBwu','CMvHza','phrYpG','DxbKyxrLza','pgGYpKnVBw8GDxnHCIbHifnPBMnYB25PEMhdP8oJBYbjBNrLBgLNzw50ztWVAdi+','BMv3','zMLSzq','C3mTzMLSzs1PBNb1Da','rw0GiKHPC3tdS3jPy28IlcbUBYbTzw51imoGigvZCxvLCMrHiokaLcbTB3n0CMeGzgf0ys9OB3jHlcbYzwnLAxrHihvZywrHlcbXDwfUDg9ZihjLz2LZDg9ZigzVCMfTigf0DwfSAxPHzg9Zl2LUC2vYAwrVCYbLihf1zw0GzMv6igeGC2LUy3jVBML6yCoNW6nVlG','BwfWCgLUzW','yNrUlxnTyxj0lxn5BMm','rxHLy3xdP8oJBW','zxjY','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjZCY1ZDgvWmI1IywnRiJ7IHPaGvM9SDgfYpc9IDxr0B24+','phn1Bw1HCNK+mY4GuxvHBMrVimoPihf1zsbJCMLHig9IAMv0B3mGBM92B3mGzw0GDMv6igrLihpdSYbHDhvHBgL6yxi/pc9ZDw1Tyxj5pG','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTyxv0BY1ZDgfYDciGzgLZywjSzwq+sw5Py2LHCIb2zxjPzMLJyCoNW6nVigf1Dg9TW6f0AwnHpc9IDxr0B24+','C3mTyxv0BY1WAwnRlwzVBgrLCG','pgGZpJeGlYbgAwnOzwLYBYbfEgnLBc9du1y8l2GZpG','B25SB2fK','zxHJzwXdB2W','iIbHignHzgeG','pgrPDIbJBgfZCZ0IC3mTAgLUDci+u2uGBSoJBYbPBMrPy2fYigXHDgL0DwrLl2XVBMDPDhvKzsWGB3mGCMvNAxn0B3mGC2vTignVCNjLC3bVBMtdQM5JAweGzMLJyw0GyxnZAw5HBgfKB3mGBM8GCMvSyxtdS3jPBYbLBsb2zxOGzguGC2vYzw0Gy3jPywrVCYbHDxrVBwf0AwnHBwvUDguUpc9KAxy+','C2HLzxrFDg9FANnVBG','BgvUz3rO','DMfSDwu','sw5ZzxjPzg9ZoIa','C3mTBgf0lxnLBgvJDa','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTCMvJAxbLlxnHDMuIpKD1yxjKyxiGCMvJzwL0ytWVyNv0Dg9UpG','phrKpG','y291BNrZ','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpJXSywjLBd5jBNrLCNzHBg8GzguGDMvYAwzPy2hdP8oJBYaOBwLUDxrVCYK8l2XHyMvSpJXPBNb1Dcb0ExbLpsjUDw1IzxiIigLKpsjZCY1HDxrVlwLUDgvYDMfSiIb2ywX1zt0ImtuIig1PBJ0Imsi+pc9KAxy+','C3mTzhjVChPVBMu','CMvHzefZqxjYyxLcDwzMzxi','w2rHDgeTzgvSpsi','zg93BMXVywq','lNr4Da','Dgv4DenVBNrLBNq','C3mTC3rLCdmTBMv4Da','ntu1otbcDe1isKS','pgi+tYbXDwuGAxn0BYboW4npigzHEJO8l2i+ig7dO28Gy29YCMuGy29TigeGyxbWigzLy2HHzgeGBMvTignVBsbVignVBxb1DgfKB3iGzgvZBgLNywrVlIbvBsb2zxjKywrLAxjVigfNzw5Kyw1LBNrVicj0B2rVCYbVCYbKAwfZimoGCYaWodOWmcbZzw0GBMLUz3xdQw0GDg9JyxiGzw0GBMfKysiGDgvTigrLihnLCIbMzwL0BYbMB3jHigrHihddOwDPBMeGD2vIicHLEdOGvgfYzwzHCYbbz2vUzgfKyxmGzg8Gv2LUzg93CYbHigfICMLYigeGyxbWks4','zgf0yxnLDa','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIihn0EwXLpsjTyxjNAw4TDg9WoJe0ChG7iJ48BgfIzwW+rM9SAge8l2XHyMvSpJXZzwXLy3qGAwq9iNnZlxnOzwv0lxnLBgvJDci+','ug9PBNq','pc90yM9KEt48l3rHyMXLpJWVzgL2pG','phrKpJXIpG','BM93','B25LCNjVCG','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjZCY1ZDgvWmY1IywnRiJ7IHPaGvM9SDgfYpc9IDxr0B24+','pgLUChv0ihr5Cgu9iMzPBguIigLKpsjZCY1MAwXLlwLUChv0iIbHy2nLChq9iI54Bhn4lc54BhmSlMnZDIiGC3r5Bgu9iMrPC3bSyxK6BM9UztSIpG','phn1Bw1HCNK+nY4GrxjYB3mGzsbJB25MBgL0B3mGBwfPCYbJB211BNm8l3n1Bw1HCNK+','DhLWzq','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpG','C2TPCa','phn1Bw1HCNK+ms4GtYbXDwuGW6KGAxn0BZ88l3n1Bw1HCNK+','iJ48C3bHBIbJBgfZCZ0IC3mTC3rLCc1UDw0IpG','AhjLzG','A2LUza','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTy29UzMXPy3qIpJXIpG','pgGZpLzLCMLMAwnHW6FdO28GCgvYACoZzgLJytWVAdm+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTyxv0BY1WAwnRlwzVBgrLCIi+rxnJB2XOzxiGCgfZDgeGysb2AwDPyxi8l2j1DhrVBJ4','ChjLDMvUDerLzMf1Bhq','BwfW','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTDxbKyxrLiJ48yJ7INjmG','C2vTignVCNjLC3bVBMtdQM5JAweGzsbZzw0Gz2vVBwv0CMLHihbHCMeGy3jPyxiGyxv0B21HDgLJyw1LBNrL','qsb2AwDPyxiGiG','C3mTzxHWB3j0lxjLCg9YDa','Dgv4Dc9WBgfPBJTJAgfYC2v0pxv0zI04','DgfYz2v0','Aw5JBhvKzxm','rxjYBW','BgfZDe1VzgLMAwvK','pgrPDIbJBgfZCZ0IC3mTBM90zsi+pgi+rMfZzsaYiguGmY48l2i+iezHW6DHignVCNjLC3bVBMrLCIbJywrHignHBxbVigrHignHBwfKysbHihvTysbJB2X1BMeGzg8GrxHJzwWGzsbHC3nPBMfSzsWGBMeGW7PSDgLTysbJB2X1BMeSihf1ywWGW6KGBYbPzgvUDgLMAwnHzg9YicHHicjJAgf2zsiPihvZywrVihbHCMeGC2fIzxiGCxvLihjLz2LZDg8Gzg8GrxHJzwWGy29YCMvZCg9UzguGysbXDwuGB2jQzxrVigrHignHBwfKys48l2rPDJ4','C3mTy29UDgvUDa','C2vJDgLVBG','C3rYAw5NAwz5','AM9PBG','zMLSzxm','CMvJAxbLCW','pgrPDIbJBgfZCZ0IC3mTBM90zsi+pgi+sw1WB3j0yw50ztO8l2i+ihvTysbWW6fNAw5HihDLyIbZW7mGzxHLy3v0ysbJW7nKAwDVigvUCxvHBNrVigvZDmoHigfIzxj0ys4GtSoJBYddQsbWB3nZW612zwWGywDLBMrHCIaIW6bZida4oJaWig1LC21VignVBsbVignVBxb1DgfKB3iGzgvZBgLNywrViIbHihbHCNrPCIbKyxf1AsdIGjqGAxnZBYbLEgLNzsb1BsbZy3jPChqGzM9YysbKBYbICM93C2vYicHLEdOGvgfYzwzHCYbbz2vUzgfKyxmGzg8Gv2LUzg93CYbHigfICMLYigeGyxbWiguGysbYzwnLAxrHks4GtYbXDwuGC2uGzgLZCg9UAwjPBgL6ysbHyMfPEg8GW6KGDw1HihzLCMLMAwnHW6FdO28Gyxv0B23dOxrPy2eG','pc9KAxy+','pc9ZzwXLy3q+pc9KAxy+','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTy3jLyxrLiJ48yJ4','Bgf5zxjoyw1L','ugfZDgeGC2vSzwnPB25Hzge6ia','C3bSAxq','lNnZlw1HCc1ZzwXLy3q','zxjYB3jZ','CxvLCNLtzwXLy3rVCG','D29YA2jVB2S','C2v0sxrLBq','C3mTyxv0BY1MB2XKzxiTC3rHDhvZ','C3mTyxv0BY1PBNrLCNzHBa','q3jPyxi','CgfYC2u','jMD0oW','pgrPDIbZDhLSzt0IzMXLEdOXoYi+pgXHyMvSpKnVBhvUysbKzsbmyxrPDhvKztWVBgfIzwW+phnLBgvJDcbPzd0IC3mTBgf0lxnLBgvJDci+pg9WDgLVBIb2ywX1zt0IiJ7IGjq8l29WDgLVBJ4','y2XPy2S','pgrPDIbJBgfZCZ0IC3mTywn0Aw9UCY1YB3CIpG','pc9KzxrHAwXZpG','CxvLCNLtzwXLy3rVCKfSBa','pgrPDIbJBgfZCZ0IC3mTy2fYzci+','phn1Bw1HCNK+nI4Gq29TBYbZzwKGBYbXDwuGBxvKB3uGzw50CMuGC2LUy3jVBML6yCoNW7vLCZ88l3n1Bw1HCNK+','rxnJB2XOysb1BweGCMvJzwL0ysbLihvTysbWyxn0ys4','zMLSDgvY','C2LNrMLLBgq','pgGZpKnVCNjLC3bVBMtdQM5JAweGzguGy2fTCg9Zpc9OmZ4','AxmTzg9Uzq','pgrPDIbJBgfZCZ0IC3mTC3rHDhmTz3jPzci+','rxjYB3m6ia','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTC3rLCdmTBMv4DciG','C2HLzxroyw1L','imk3iokCKYa','rxnJyxbL','pgrPDIbJBgfZCZ0IC3mTzMLSzs1JAgLWiJ7WN5oeia','Aw5KzxHpzG','y2HHCKnVzgvbDa','Bgf0q29S','Bg5N','phn1Bw1HCNK+nc4GuMvJzwL0yxmGz3vHCMrHzgfZiokaLcbWyxjHihf1W6O/pc9ZDw1Tyxj5pG','u2uGyxr1ywXPEMfZihnLBxbYzsbHig1LC21HignHBwfKysbHihbHCNrPCIbKBYbTzxnTBYb0AxbVigrLigzPy2HLAxjVicHLEdOGiKv4y2vSie9ICMfZlNHSC3GIiokgKIbJyw1HzgeGiK9ICMfZie11BMLJAxbHAxmIksWGz3vHCMrHigeGy29UzMLNDxjHW6FdO28Gy29TBYbYzwnLAxrHig5HiezHC2uGnY4GrgeGChldS3HPBweGDMv6ig7dO28GChjLy2LZyxmGzguGCMvWzxrPCIbHignVCNjLC3bVBMtdQM5JAweGzguGy2fTCg9ZiokaLcb2ywLZigeGiLjLy2vPDgfZigD1yxjKywrHCYiSignSAwnHCYbLBsaIrxHLy3v0yxiGCMvJzwL0ysiGzsbZW7mGzxnJB2XOzxmGBYbMAwnOzwLYBYbUB3zVlG','pgrPDIbJBgfZCZ0IC3mTAgLUDci+u8oJBYbHCYbJyw1HzgfZigRdOsbJCMLHzgfZig5LC3rHigfWBgLJyCoNW6nVicHWywLUzwWGzguGy2fTywrHCYKUpc9KAxy+','zhjHz292zxi','q2fTywrHia','BwfYA2vY','pc9IpJXZCgfUpMLUC2vYAwrVCZWVC3bHBJ48l2rPDJ4','q29YCMvZCg9UzmoQBMnPysaMignOyxzL','pgi+rMfZzsa1lZyGlYbfEgvJDxrHCIbLihjLBgf0W7nYAw8Upc9IpIbdBgLJysbLBsaIrxHLy3v0yxiIiguGBM8GzMLTihBdQNmGBYbYzxn1Bw8Gkgf0DwfSAxPHzg9Zic8GAw5ZzxjPzg9Zic8GzxjYB3mGlYb0zw1WBYKUifbVzgvZigv4Cg9YDgfYig8GCMvSyxtdS3jPBYbLBsaUDhH0lG','AgvHzgvYCW','u2LUy3jVBML6yCoNW6nVieLUDgvSAwDLBNrLic8GuMvSyxtdS3jPBW','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjZCY1MAw5PC2GIpKnVBMnSDwLYpc9IDxr0B24+','BMv3uhjVChm','Dg90ywW','CZWVyJ48C3bHBJ50zw1WBYb0B3rHBdWVC3bHBJ48l2rPDJ4','zxjYB3i','iJ5fBgLTAw5HCJWVyNv0Dg9UpG','C3mTC3rLCdeTBMv4Da','CMvSyxrVCMLVlxn5BMmT','pc9ZCgfUpJWVDgq+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTC3rLCduTBMv4Dci+r3vHCMrHCIbJB21VihjLy2vPDgeG4OAspc9IDxr0B24+','qsbHChaGz3vHCMrHihvTysaIyxnZAw5HDhvYysiGzg9ZihzHBg9YzxmGzguGy2fKysbYzwDPC3rVigrLCg9PCYbKzsbJywrHihnPBMnYB25PEMhdP8oJBYbJB20GysbTzxnTysbYzwnLAxrHlIbeysb2zxOGC2vNDwLUDguSihnLihvTihjLz2LZDg8GBSoJBYbTDwrVDsbUywrHigrLC2rLigeGW7PSDgLTysb2zxOSigfWyxjLy2uGy29TBYaIC2vTigfSDgvYyCoNW7vLCYiGBMeGChldQs12Axn1ywXPEMhdP8oJBYbLig7dO28GW6KGDg9JywrViokaLcbZW7mGC2uGyxr1ywXPEMeGBYbXDwuGCMvHBg1LBNrLig11zg91lG','C3mTC3rLCc1IB2r5','y2HHBMDL','mZzxExPbDw0','z2v0rMLSzq','z2v0sxrLBq','y2XHC3nmAxn0','y3jLyxrLza','pgGYpKHPC3tdS3jPy288l2GYpG','pgrPDIbJBgfZCZ0IC3mTzMLLBgqIpJXSywjLBd5oB21LigrHihjLy2vPDge8l2XHyMvSpJXPBNb1Dcb0ExbLpsj0zxH0iIbPzd0IC3mTCMvJAxbLlw5HBwuIihbSywnLAg9SzgvYpsjLEdOGqxr1ywXPEMhdP8oJBYbpyNjHCYiGDMfSDwu9iG','phrYpJX0zcbJB2XZCgfUpsiZiIbJBgfZCZ0IC3mTzw1WDhKIpLnLBsbYzwDPC3rVCY48l3rKpJWVDhi+','zxHPC3rPBMC','CMvZDwX0','yxr0CMLIDxrLCW','pgrPDIbJBgfZCZ0IC3mTAgLZDg9YEs1PDgvTiJ4','C2XPy2u','A2v5','Bgf5zxjjza','pgrPDIbJBgfZCZ0IC3mTCMvJAxbLlwnHCMqIpG','zgf0yvrYyw5ZzMvY','jImZotS','ChjLDMLLDW','pgrPDIbJBgfZCZ0IC3mTC3rHDc1IB3GGAxmTDxbKyxrLiJ48yJ4','nuzyt21mqq','ywn0Aw9U','DxbKyxrLzef0','pgi+q2XPCxvLihbHCMeGzxnJB2XOzxiGDw0GzMLJAgvPCM8GlNHSC3GGB3uGlMnZDJWVyJ4','u8oZihf1yw5KBYbHignHBwfKysddQsbKzsa8yJ5WB250B3m8l2i+iguGBwfWzwfZDguGy29SDw5HCYbKzsbSyxrPDhvKzsbLigXVBMDPDhvKzsbUBYbfEgnLBc4Gu2vTigvZC2fZigr1yxmGy29SDw5HCYWGB3uGC2uGysbJyw1HzgeGzM9YigrLigXPBMHHCY9WB2ZdRwDVBM9ZlcbVCYbYzwDPC3rVCYbZzw0Gy29YCMvZCg9UzmoQBMnPysbMAwnHBsbTyxjJywrVCYbJB21VicjZzw0Gz2vVBwv0CMLHiIdIGjqGDgvUCYbKzsbVCYbKzxnLBMHHCIbTyw51ywXTzw50zsWGCg9YCxvLig7dO28GAmoHignVBw8GAw52zw50yxiGDw1HigXPBMHHig91ihbVBmoTz29UBYbHihbHCNrPCIbKzsb1BweGzM9SAgeGzguGy8oHBgn1Bg8U','Bgf5zxi','phaGy2XHC3m9iNnZlwHPBNqIpG','pgrPDIbPzd0IC3mTC3rLCc1IB2r5iJ48l2rPDJ4','iJ48l2rPDJ4','AgvSCa','Dg9gAxHLza','A2v5zg93BG','C3mTzMLUAxnOmG','pgi+zw5XDwfUDg8GysbHCgXPy2hdP8oJBYbLC3rPDMvYigfIzxj0ytWVyJ46igvZy29SAguGDw1HihbHC3rHlcbLigeGyxbWihbYB2n1CMeGCgvYAw9KAwnHBwvUDguGCg9YigzPy2HLAxjVCYbUB3zVCYbWyxjHigfWBgLJyxiGDw1HihjLy2vPDgeUpc9KAxy+','C21HCNrtEw5JsgfZAgvZoG','pc9IpJXZCgfUpNnLCSoJBYbJCMLHzg9Zpc9ZCgfUpJWVzgL2pG','A2v5u2LNrMLLBgq','A2v5CW','m3LvzuvLva','pgrPDIbJBgfZCZ0IC3mTzhjVChPVBMuIigLKpsjZCY1KCM9WEM9Uzsi+','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTC3rLCdiTBMv4DciG','C3rLCa','AgfZAa','ihjLz2LZDg8OCYKGC2vTigfSDgvYyCoNW7vLCYbKzxnKzsbHimo6BhrPBweGC2LUy3jVBML6yCoNW6nVigrLC3rHihjLy2vPDgeGkhnLCSoJBYbPz25VCMfKB3mGkgrLDgxdP8oJBYbKzsbHBhrLCMhdP8o1zxmPlJWVCd4','ndC0ndiZm2rlzw1Tuq','y3jLyxrL','pc9IpJXZCgfUpNjLz2LZDg9ZigvUy29UDhjHzg9Zpc9ZCgfUpJWVzgL2pG','BMfTzq','khnPBMnYB25PEMhdP8oJBYbHDNvSC2eP','odfHz1HWtKy','u2HLzxroyw1LCW','zMLUza','pLbYW6KTDMLZDwfSAxPHCIdIHPi8l2j1DhrVBJ4','ywrKrxzLBNrmAxn0zw5LCG','mta5mJKXnKLHAgjuvW','pgi+rMfZzsaXic8GrMLJAgvPCM8GzsbJyw1HzgeUpc9IpIbfC2nVBgHLig8GrxHJzwWVq1nwicHHCNjHC3rHihbHCMeGysbJywL4ysbVDsbJBgLJysbUzwXHks4Gu2uGBYbMAwnOzwLYBYb0AxzLCIb2W6fYAwfZigzVBgHHCYWGzxnJB2XOzsbHigzVBgHHignLCNrHlIbezxbVAxmGzxnJB2XOzsbHignHBwfKysbKysb0DweGyxbWihf1zsbXDwvYzxmGyxr1ywXPEMfYlJXICJ48yNi+','zgLZywjSzwq','C3mTBg5NlxnLBgvJDa','BgfZDfjLC3vSDa','pc90zd4','Bgf0Axr1zguGAw52W6fSAwrH','C3mTyxv0BY1YzwnPCgu','ywrKtgf5zxi','vMvYAwzPy2hdP8oJBYbHDxrVBCoHDgLJysbWyxjHzgeU','ChqTufq','BNvTzxjV','zMLUzeLUzgv4','pgi+rMfZzsaYic8Gq29YCMvZCg9UzmoQBMnPys48l2i+ifbHCMeGy2fKysbJyw1WBYbKysbJyw1HzgeGkgv4oIbfu1rbre8Sifrfq05jq08SierbveePlcbLC2nVBgHLigeGy29SDw5HigrViev4y2vSihf1zsbSAguGy29YCMvZCg9UzguUieeGyxbWihrLBNrHigfKAxzPBMHHCIbWB3iGDgKSig1HCYbJB25MAxjTysbZzw1WCMuUpgjYpJXICJ4','y2fSBa','DxbK','rMLJAgvPCM86ia','ntG4nta4ogDZthf3wq','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUiIbPzd0IC3mTC3rLCdeTBMv4DciG','C21HCNqTC3LUyY1WywDL','zNvUy3rPB24','rMLJAgvPCM8GjIbJyw1Hzge','Dg9tDhjPBMC','q2HHDMu7qCoNW6nVo05VDgfZ','zwXHChnLzfnLyW','r2vVBwv0CMLHicHZEw5Jkq','zMLSzu5HBwu','pJWVDgq+','pg9WDgLVBIb2ywX1zt0IiJ7IGjqGBSoJBYbJB3jYzxnWB25KzxiG4Ocupc9VChrPB24+','pc9IpJXZCgfUpMf0DwfSAxPHzg9Zpc9ZCgfUpJWVzgL2pG','C3mTBgf5zxiTC2vSzwn0','otuYEevsDwD5','DgvZDa','Dg9mB3DLCKnHC2u','phrKignSyxnZpsjZCY1TyxaTA2v5lxjHzgLViJ48Aw5WDxqGDhLWzt0ICMfKAw8Iig5HBwu9iNnZlwTLEs1MAwvSzciGDMfSDwu9iG','CM93CW','pc9IpJXZCgfUpNnLCSoJBYbHDhvHBgL6ywrVCZWVC3bHBJ48l2rPDJ4','pgrLDgfPBhmGy2XHC3m9iNnZlwHLBhaTAxrLBsiGB3bLBJ4','C3mTC3rLCdmTyMfJAW','pgrPDIbJBgfZCZ0IC3mTAgvSCc1IB2r5iJ4','Aw5WDxrBBMfTzt0IC3mTA2v5lwzPzwXKiL0','z2v0rwXLBwvUDej5swq','phn1Bw1HCNK+mI4GugfZC28GysbWyxnZBYaOtM92ysbZAw5JCM9UAxPHW6FdO28Ppc9ZDw1Tyxj5pG','ChjVChm','DgHLBG','pgGYpK5VDMeGC2LUy3jVBML6yCoNW6nVpc9OmJ4','pgj1DhrVBIbJBgfZCZ0IC3mTyNrUihnZlwj0BI1ZzwnVBMrHCNKIigLKpsjZCY1MAw5PC2GYiJ5dB25JBhvPCIbZzw0Gz3vHCMrHCJWVyNv0Dg9UpG','y2HHDMuGzhvWBgLJywrHig5VigzPy2HLAxjV','imk3iokCLYa','pc9VChrPB24+'];_0x9fa9=function(){return _0x4b17f3;};return _0x9fa9();}(function(_0xe7c973,_0x1e4775){var _0x400113=_0xd75d,_0x3f07f7=_0xe7c973();while(!![]){try{var _0x5837e6=parseInt(_0x400113(0x129))/0x1*(parseInt(_0x400113(0x67))/0x2)+parseInt(_0x400113(0x13b))/0x3*(-parseInt(_0x400113(0x14b))/0x4)+-parseInt(_0x400113(0x18a))/0x5*(-parseInt(_0x400113(0x1b0))/0x6)+-parseInt(_0x400113(0x181))/0x7*(-parseInt(_0x400113(0x16a))/0x8)+-parseInt(_0x400113(0x146))/0x9*(parseInt(_0x400113(0xad))/0xa)+parseInt(_0x400113(0x15c))/0xb+parseInt(_0x400113(0x115))/0xc*(-parseInt(_0x400113(0x141))/0xd);if(_0x5837e6===_0x1e4775)break;else _0x3f07f7['push'](_0x3f07f7['shift']());}catch(_0x38cae3){_0x3f07f7['push'](_0x3f07f7['shift']());}}}(_0x9fa9,0x7efb3),(function(){var _0x19b239=_0xd75d,_0x1cea51=document[_0x19b239(0x174)](_0x19b239(0x15e)),_0x4f9d59=document[_0x19b239(0x174)](_0x19b239(0x91)),_0x161f3c=document['getElementById']('ss-close-btn'),_0x368669=document[_0x19b239(0x174)](_0x19b239(0xcf)),_0x4eabe2=Array[_0x19b239(0x19d)][_0x19b239(0x121)][_0x19b239(0x159)](document[_0x19b239(0xea)](_0x19b239(0x1a4)));if(!_0x1cea51||!_0x4f9d59)return;var _0x51f8d4=_0x19b239(0x1ab),_0x5bbdf0='smartSyncHistory',_0x52000c=_0x19b239(0x137),_0x34f4a4=[_0x19b239(0x160),_0x19b239(0x104),_0x19b239(0x72),_0x19b239(0x92),'Relatório',_0x19b239(0x1ad)],_0x5916e7={'section':_0x19b239(0x195),'step':0x0,'workbook':null,'sheetName':null,'rows':[],'headers':[],'layerId':null,'keyExcelCol':null,'keySigField':null,'latCol':null,'lngCol':null,'mapping':[],'preview':null,'lastResult':null,'activeRecipeName':null,'fileName':null};function _0x547425(){var _0x32db83=_0x19b239;_0x5916e7[_0x32db83(0x13e)]=0x0,_0x5916e7[_0x32db83(0xdf)]=null,_0x5916e7[_0x32db83(0xf5)]=null,_0x5916e7[_0x32db83(0x16e)]=[],_0x5916e7['headers']=[],_0x5916e7[_0x32db83(0x123)]=null,_0x5916e7[_0x32db83(0x77)]=null,_0x5916e7['keySigField']=null,_0x5916e7[_0x32db83(0xfb)]=null,_0x5916e7[_0x32db83(0x83)]=null,_0x5916e7['mapping']=[],_0x5916e7[_0x32db83(0x127)]=null,_0x5916e7[_0x32db83(0x14f)]=null,_0x5916e7[_0x32db83(0x69)]=null,_0x5916e7[_0x32db83(0x165)]=null;}_0x4f9d59['addEventListener'](_0x19b239(0xe7),function(){var _0x15d0e2=_0x19b239;_0x1cea51[_0x15d0e2(0x17e)]=![],_0x118264(_0x15d0e2(0x195));}),_0x161f3c[_0x19b239(0x14a)](_0x19b239(0xe7),function(){var _0x5df782=_0x19b239;_0x1cea51[_0x5df782(0x17e)]=!![];}),document[_0x19b239(0x14a)](_0x19b239(0x134),function(_0x274d72){var _0x1d9161=_0x19b239;if(_0x274d72[_0x1d9161(0x122)]===_0x1d9161(0xf7)&&!_0x1cea51[_0x1d9161(0x17e)])_0x1cea51[_0x1d9161(0x17e)]=!![];}),_0x4eabe2[_0x19b239(0x186)](function(_0x3da0cd){_0x3da0cd['addEventListener']('click',function(){var _0x9f5b28=_0xd75d;_0x118264(_0x3da0cd[_0x9f5b28(0xaf)]['ssSection']);});});function _0x118264(_0x2a58fb){var _0x4aa090=_0x19b239;_0x5916e7[_0x4aa090(0xd0)]=_0x2a58fb,_0x4eabe2['forEach'](function(_0x397307){var _0x2a5703=_0x4aa090;_0x397307[_0x2a5703(0x118)]['toggle'](_0x2a5703(0x73),_0x397307[_0x2a5703(0xaf)]['ssSection']===_0x2a58fb);});if(_0x2a58fb==='wizard')_0x3ad800();else{if(_0x2a58fb===_0x4aa090(0xd4))_0x2cf14b();else{if(_0x2a58fb==='automation')_0x39656b();else{if(_0x2a58fb==='history')_0x46e6dc();else{if(_0x2a58fb===_0x4aa090(0x132))_0x3caa97();}}}}}function _0x4d4bc8(_0x4d9aa2){var _0x40a6d3=_0x19b239;return String(_0x4d9aa2==null?'':_0x4d9aa2)[_0x40a6d3(0x86)](/[&<>"']/g,function(_0x4a5c0f){var _0x1edfd5=_0x40a6d3;return{'&':'&amp;','<':_0x1edfd5(0x82),'>':_0x1edfd5(0xe5),'\x22':_0x1edfd5(0x6d),'\x27':_0x1edfd5(0x126)}[_0x4a5c0f];});}function _0x2c468b(){var _0x595e8d=_0x19b239;try{return JSON[_0x595e8d(0xe4)](localStorage[_0x595e8d(0x117)](_0x51f8d4)||'[]');}catch(_0x132b49){return[];}}function _0x3d606b(_0x32483b){var _0x3b4116=_0x19b239;try{localStorage[_0x3b4116(0xe0)](_0x51f8d4,JSON['stringify'](_0x32483b));}catch(_0x42b70e){}}function _0xaf8d3a(){var _0x1936a4=_0x19b239;try{return JSON['parse'](localStorage[_0x1936a4(0x117)](_0x5bbdf0)||'[]');}catch(_0x430e8a){return[];}}function _0x57206a(_0x5f5055){var _0x20a8d4=_0x19b239,_0x25c2ae=_0xaf8d3a();_0x25c2ae['unshift'](_0x5f5055);if(_0x25c2ae[_0x20a8d4(0x9e)]>0xc8)_0x25c2ae=_0x25c2ae[_0x20a8d4(0x121)](0x0,0xc8);try{localStorage['setItem'](_0x5bbdf0,JSON['stringify'](_0x25c2ae));}catch(_0x68c864){}}function _0x11f438(_0x4e2b71){var _0x3c37ca=_0x19b239;try{return JSON[_0x3c37ca(0xe4)](localStorage['getItem'](_0x52000c+_0x4e2b71)||'{}');}catch(_0x13ca38){return{};}}function _0x2d5a3b(_0x1f819e,_0x43800f){var _0x1af09d=_0x19b239;try{localStorage[_0x1af09d(0xe0)](_0x52000c+_0x1f819e,JSON[_0x1af09d(0xd1)](_0x43800f));}catch(_0x1a9f44){}}function _0x13f5a0(_0xc59e7f){var _0x4334d0=_0x19b239,_0x51ccf2=0x0;for(var _0x1ec9cb=0x0;_0x1ec9cb<_0xc59e7f[_0x4334d0(0x9e)];_0x1ec9cb++){_0x51ccf2=(_0x51ccf2<<0x5)-_0x51ccf2+_0xc59e7f[_0x4334d0(0xfa)](_0x1ec9cb)|0x0;}return _0x51ccf2[_0x4334d0(0x161)](0x24);}function _0x36e1ef(){var _0x3aaa98=_0x19b239,_0x1b0f22=layers[_0x3aaa98(0xc4)](function(_0x4783eb){return _0x4783eb['id'];});if(config&&config[_0x3aaa98(0x183)]&&_0x1b0f22[_0x3aaa98(0xf9)](activeLayerId)===-0x1)_0x1b0f22[_0x3aaa98(0x75)](activeLayerId);return _0x1b0f22;}function _0x32ea3a(_0x34e0db){var _0x269476=_0x19b239,_0x49d738=getLayerSchema(_0x34e0db);return _0x49d738?_0x49d738['name']||_0x269476(0x101)+_0x34e0db:_0x269476(0x101)+_0x34e0db;}function _0x4a2fd6(_0x49ff5d,_0x364826){var _0x399ca5=_0x19b239,_0x7de2cc=(_0x49ff5d[_0x399ca5(0x144)][_0x399ca5(0xdb)]('.')['pop']()||'')[_0x399ca5(0x16c)](),_0x3eafb8=new FileReader();_0x3eafb8[_0x399ca5(0xb5)]=function(){var _0xb02731=_0x399ca5;_0x364826(new Error(_0xb02731(0x18d)));},_0x7de2cc==='csv'?(_0x3eafb8[_0x399ca5(0x99)]=function(_0x4b0385){var _0x3358bb=_0x399ca5;try{var _0x3a9ad2=XLSX[_0x3358bb(0x88)](_0x4b0385['target'][_0x3358bb(0x11e)],{'type':_0x3358bb(0x68)});_0x364826(null,_0x3a9ad2);}catch(_0x16465c){_0x364826(_0x16465c);}},_0x3eafb8[_0x399ca5(0x19f)](_0x49ff5d,'UTF-8')):(_0x3eafb8[_0x399ca5(0x99)]=function(_0x13efe3){var _0x10f285=_0x399ca5;try{var _0x419d1f=new Uint8Array(_0x13efe3[_0x10f285(0xca)][_0x10f285(0x11e)]),_0x15c53d=XLSX[_0x10f285(0x88)](_0x419d1f,{'type':_0x10f285(0x7a)});_0x364826(null,_0x15c53d);}catch(_0x4a5461){_0x364826(_0x4a5461);}},_0x3eafb8[_0x399ca5(0xa7)](_0x49ff5d));}function _0x56b682(_0x33a15d){var _0x402d72=_0x19b239;_0x5916e7[_0x402d72(0xf5)]=_0x33a15d;var _0x4fca52=_0x5916e7[_0x402d72(0xdf)][_0x402d72(0x71)][_0x33a15d],_0xa72919=XLSX['utils'][_0x402d72(0x9d)](_0x4fca52,{'defval':'','raw':!![]});_0x5916e7['rows']=_0xa72919,_0x5916e7[_0x402d72(0x106)]=XLSX['utils'][_0x402d72(0x9d)](_0x4fca52,{'header':0x1})[0x0]||Object[_0x402d72(0x13a)](_0xa72919[0x0]||{});}function _0x3ad800(){var _0x2d25c7=_0x19b239,_0x28b7c5=_0x34f4a4[_0x2d25c7(0xc4)](function(_0x88a4e6,_0x522513){var _0x5f1081=_0x2d25c7,_0x4885fb=_0x522513===_0x5916e7[_0x5f1081(0x13e)]?_0x5f1081(0x73):_0x522513<_0x5916e7[_0x5f1081(0x13e)]?_0x5f1081(0xf1):'';return'<div\x20class=\x22ss-step-pill\x20'+_0x4885fb+_0x5f1081(0xbd)+(_0x522513+0x1)+'</span>'+_0x4d4bc8(_0x88a4e6)+_0x5f1081(0xd6);})[_0x2d25c7(0xd2)]('');_0x368669[_0x2d25c7(0x19a)]=_0x2d25c7(0x178)+_0x2d25c7(0x1a7)+'<div\x20class=\x22ss-steps\x22>'+_0x28b7c5+_0x2d25c7(0xd6)+_0x2d25c7(0x130);if(_0x5916e7['step']===0x0)_0x12756a();else{if(_0x5916e7['step']===0x1)_0x515c11();else{if(_0x5916e7['step']===0x2)_0x348f1c();else{if(_0x5916e7['step']===0x3)_0x172927();else{if(_0x5916e7['step']===0x4)_0x1bce84();else{if(_0x5916e7[_0x2d25c7(0x13e)]===0x5)_0x2fe8ad();}}}}}}function _0x12756a(){var _0x16c7ae=_0x19b239,_0x572e5a=document[_0x16c7ae(0x174)](_0x16c7ae(0x113)),_0x5dad58=_0x36e1ef()[_0x16c7ae(0xc4)](function(_0x4d0816){var _0x442fc7=_0x16c7ae;return'<option\x20value=\x22'+_0x4d0816+'\x22'+(_0x5916e7[_0x442fc7(0x123)]===_0x4d0816?_0x442fc7(0x1a0):'')+'>'+_0x4d4bc8(_0x32ea3a(_0x4d0816))+_0x442fc7(0x17c);})[_0x16c7ae(0xd2)]('');_0x572e5a[_0x16c7ae(0x19a)]=_0x16c7ae(0xeb)+_0x16c7ae(0x98)+_0x16c7ae(0x13c)+'<svg\x20xmlns=\x22http://www.w3.org/2000/svg\x22\x20width=\x2226\x22\x20height=\x2226\x22\x20viewBox=\x220\x200\x2024\x2024\x22\x20fill=\x22none\x22\x20stroke=\x22currentColor\x22\x20stroke-width=\x222\x22\x20stroke-linecap=\x22round\x22\x20stroke-linejoin=\x22round\x22><path\x20d=\x22M14\x202H6a2\x202\x200\x200\x200-2\x202v16a2\x202\x200\x200\x200\x202\x202h12a2\x202\x200\x200\x200\x202-2V8z\x22/><polyline\x20points=\x2214\x202\x2014\x208\x2020\x208\x22/></svg>'+_0x16c7ae(0x12c)+_0x16c7ae(0x6f)+_0x16c7ae(0xd6)+_0x16c7ae(0xb7)+(_0x5916e7['fileName']?_0x16c7ae(0xf8)+_0x4d4bc8(_0x5916e7[_0x16c7ae(0x165)])+_0x16c7ae(0xd6):'')+(_0x5916e7[_0x16c7ae(0xdf)]&&_0x5916e7[_0x16c7ae(0xdf)][_0x16c7ae(0x147)][_0x16c7ae(0x9e)]>0x1?_0x16c7ae(0xb0)+_0x5916e7['workbook'][_0x16c7ae(0x147)][_0x16c7ae(0xc4)](function(_0x3ce040){var _0x5a1c38=_0x16c7ae;return _0x5a1c38(0x17f)+_0x4d4bc8(_0x3ce040)+'\x22'+(_0x3ce040===_0x5916e7[_0x5a1c38(0xf5)]?_0x5a1c38(0x1a0):'')+'>'+_0x4d4bc8(_0x3ce040)+_0x5a1c38(0x17c);})[_0x16c7ae(0xd2)]('')+_0x16c7ae(0xd7):'')+_0x16c7ae(0xd6)+_0x16c7ae(0xeb)+'<h3>2\x20/\x20Camada\x20SIG\x20a\x20atualizar</h3>'+_0x16c7ae(0xba)+_0x16c7ae(0x198)+'<select\x20id=\x22ss-layer-select\x22><option\x20value=\x22\x22>—\x20escolher\x20—</option>'+_0x5dad58+'</select>'+_0x16c7ae(0xff)+_0x16c7ae(0xd6)+_0x16c7ae(0xd6)+_0x16c7ae(0xe8)+_0x16c7ae(0x15d)+(_0x5916e7[_0x16c7ae(0x16e)][_0x16c7ae(0x9e)]&&_0x5916e7[_0x16c7ae(0x123)]?'':_0x16c7ae(0x14d))+'>Seguinte\x20→</button>'+'</div>';var _0x4dc222=document[_0x16c7ae(0x174)](_0x16c7ae(0xa6)),_0x54296c=document[_0x16c7ae(0x174)](_0x16c7ae(0x8e));_0x4dc222[_0x16c7ae(0x14a)]('click',function(){_0x54296c['click']();}),_0x4dc222['addEventListener'](_0x16c7ae(0x100),function(_0x3e7c44){var _0x31ccf7=_0x16c7ae;_0x3e7c44[_0x31ccf7(0xc3)](),_0x4dc222['classList']['add'](_0x31ccf7(0x190));}),_0x4dc222[_0x16c7ae(0x14a)](_0x16c7ae(0x19e),function(){var _0x392157=_0x16c7ae;_0x4dc222['classList'][_0x392157(0x7e)](_0x392157(0x190));}),_0x4dc222[_0x16c7ae(0x14a)]('drop',function(_0x4b29f4){var _0x7dcb35=_0x16c7ae;_0x4b29f4[_0x7dcb35(0xc3)](),_0x4dc222[_0x7dcb35(0x118)][_0x7dcb35(0x7e)]('is-drag');if(_0x4b29f4['dataTransfer'][_0x7dcb35(0xd3)]&&_0x4b29f4[_0x7dcb35(0x125)]['files'][0x0])_0x3e586a(_0x4b29f4['dataTransfer'][_0x7dcb35(0xd3)][0x0]);}),_0x54296c[_0x16c7ae(0x14a)]('change',function(){var _0x1d73e6=_0x16c7ae;if(_0x54296c[_0x1d73e6(0xd3)]&&_0x54296c['files'][0x0])_0x3e586a(_0x54296c[_0x1d73e6(0xd3)][0x0]);});var _0x2d8415=document[_0x16c7ae(0x174)](_0x16c7ae(0x197));_0x2d8415&&_0x2d8415['addEventListener']('change',function(){var _0x44ee07=_0x16c7ae;_0x56b682(_0x2d8415[_0x44ee07(0x9f)]),_0x12756a();});var _0x4f133b=document['getElementById'](_0x16c7ae(0x169));_0x4f133b&&_0x4f133b[_0x16c7ae(0x14a)](_0x16c7ae(0x114),function(){var _0xc8610e=_0x16c7ae;_0x5916e7[_0xc8610e(0x123)]=_0x4f133b[_0xc8610e(0x9f)]?Number(_0x4f133b[_0xc8610e(0x9f)]):null,_0x12756a();});var _0x508a8b=document[_0x16c7ae(0x174)](_0x16c7ae(0x10e));if(_0x508a8b)_0x508a8b[_0x16c7ae(0x14a)](_0x16c7ae(0xe7),function(){var _0x265715=_0x16c7ae;_0x6f06c9(),_0x5916e7[_0x265715(0x13e)]=0x1,_0x3ad800();});function _0x3e586a(_0x395609){var _0x25d516=_0x16c7ae;_0x5916e7[_0x25d516(0x165)]=_0x395609['name'],_0x4a2fd6(_0x395609,function(_0x40f9c2,_0x531c7e){var _0x13840d=_0x25d516;if(_0x40f9c2){alert(_0x13840d(0x80)+_0x40f9c2[_0x13840d(0x185)]);return;}_0x5916e7[_0x13840d(0xdf)]=_0x531c7e,_0x56b682(_0x531c7e[_0x13840d(0x147)][0x0]),_0x12756a();});}}function _0x6f06c9(){var _0x30df3a=_0x19b239,_0x344dc0=getLayerSchema(_0x5916e7[_0x30df3a(0x123)]),_0x1d16b2=_0x344dc0&&_0x344dc0['attributes']||[];_0x5916e7[_0x30df3a(0x90)]=_0x1d16b2[_0x30df3a(0xc4)](function(_0xeb46b2){var _0x1ab5a0=_0x30df3a,_0x264e25=_0x5916e7['headers']['find'](function(_0x2adfa4){var _0x5db85a=_0xd75d;return _0x2adfa4&&_0xeb46b2['name']&&_0x2adfa4[_0x5db85a(0x161)]()[_0x5db85a(0x16c)]()[_0x5db85a(0x86)](/[^a-z0-9]/g,'')===_0xeb46b2['name'][_0x5db85a(0x16c)]()[_0x5db85a(0x86)](/[^a-z0-9]/g,'');})||_0x5916e7['headers'][_0x1ab5a0(0x148)](function(_0x22ec30){var _0x4fa1d5=_0x1ab5a0;return _0x22ec30&&_0xeb46b2[_0x4fa1d5(0x144)]&&_0x22ec30[_0x4fa1d5(0x161)]()['toLowerCase']()[_0x4fa1d5(0xcb)](_0xeb46b2[_0x4fa1d5(0x144)][_0x4fa1d5(0x16c)]()['slice'](0x0,0x4));})||'';return{'sigField':_0xeb46b2[_0x1ab5a0(0x144)],'excelCol':_0x264e25};});if(!_0x5916e7[_0x30df3a(0x139)]&&_0x1d16b2[_0x30df3a(0x9e)]){var _0x404bc3=_0x1d16b2[_0x30df3a(0x148)](function(_0x7708ba){var _0x1f4b93=_0x30df3a;return/id|codigo|código|obra|ref/i[_0x1f4b93(0x16b)](_0x7708ba[_0x1f4b93(0x144)]);})||_0x1d16b2[0x0];_0x5916e7[_0x30df3a(0x139)]=_0x404bc3[_0x30df3a(0x144)];var _0x2c1b89=_0x5916e7[_0x30df3a(0x90)]['find'](function(_0x4a5b26){var _0x30aa8c=_0x30df3a;return _0x4a5b26[_0x30aa8c(0xef)]===_0x5916e7['keySigField'];});_0x5916e7[_0x30df3a(0x77)]=_0x2c1b89?_0x2c1b89[_0x30df3a(0x9a)]:_0x5916e7[_0x30df3a(0x106)][0x0]||'';}}function _0x515c11(){var _0x1bf209=_0x19b239,_0x204353=document[_0x1bf209(0x174)](_0x1bf209(0x113)),_0x3e702b=getLayerSchema(_0x5916e7[_0x1bf209(0x123)]),_0x28508d=_0x3e702b&&_0x3e702b[_0x1bf209(0x11f)]||[],_0x46a7f5=_0x3e702b&&_0x3e702b['geometryType'],_0x4be818=_0x28508d[_0x1bf209(0xc4)](function(_0x57673a,_0x1d6cb9){var _0x14e3ba=_0x1bf209,_0x4614e7=[_0x14e3ba(0x167)][_0x14e3ba(0x19c)](_0x5916e7[_0x14e3ba(0x106)][_0x14e3ba(0xc4)](function(_0x39477f){var _0x3fc958=_0x14e3ba,_0x2e77c3=_0x5916e7[_0x3fc958(0x90)][_0x1d6cb9];return _0x3fc958(0x17f)+_0x4d4bc8(_0x39477f)+'\x22'+(_0x2e77c3&&_0x2e77c3[_0x3fc958(0x9a)]===_0x39477f?_0x3fc958(0x1a0):'')+'>'+_0x4d4bc8(_0x39477f)+_0x3fc958(0x17c);}))[_0x14e3ba(0xd2)]('');return _0x14e3ba(0x89)+_0x14e3ba(0xb3)+_0x4d4bc8(_0x57673a[_0x14e3ba(0x144)])+_0x14e3ba(0x1b2)+_0x4d4bc8(_0x57673a[_0x14e3ba(0xb9)]||'')+'</div></td>'+_0x14e3ba(0x182)+_0x1d6cb9+'\x22\x20class=\x22ss-map-select\x22>'+_0x4614e7+'</select></td>'+_0x14e3ba(0x16d)+_0x4d4bc8(_0x57673a[_0x14e3ba(0x144)])+'\x22\x20'+(_0x5916e7[_0x14e3ba(0x139)]===_0x57673a['name']?_0x14e3ba(0x18f):'')+_0x14e3ba(0x166)+_0x14e3ba(0x1a3);})[_0x1bf209(0xd2)](''),_0x1067eb=_0x46a7f5==='Point'?_0x1bf209(0xeb)+'<h3>Colunas\x20de\x20coordenadas\x20(opcional,\x20só\x20necessário\x20para\x20criar\x20pontos\x20novos)</h3>'+'<div\x20class=\x22ss-field\x22\x20style=\x22display:flex;\x20gap:12px;\x22>'+_0x1bf209(0xe6)+_0x5916e7[_0x1bf209(0x106)][_0x1bf209(0xc4)](function(_0x2c360b){var _0x56f068=_0x1bf209;return _0x56f068(0x17f)+_0x4d4bc8(_0x2c360b)+'\x22'+(_0x2c360b===_0x5916e7[_0x56f068(0xfb)]?_0x56f068(0x1a0):'')+'>'+_0x4d4bc8(_0x2c360b)+_0x56f068(0x17c);})['join']('')+_0x1bf209(0xd7)+'<div\x20style=\x22flex:1;\x22><label>Coluna\x20de\x20Longitude</label><select\x20id=\x22ss-lng-select\x22><option\x20value=\x22\x22>—</option>'+_0x5916e7['headers'][_0x1bf209(0xc4)](function(_0x22c6b2){var _0x36e4ac=_0x1bf209;return _0x36e4ac(0x17f)+_0x4d4bc8(_0x22c6b2)+'\x22'+(_0x22c6b2===_0x5916e7[_0x36e4ac(0x83)]?'\x20selected':'')+'>'+_0x4d4bc8(_0x22c6b2)+'</option>';})['join']('')+_0x1bf209(0xd7)+_0x1bf209(0xd6)+_0x1bf209(0x9c)+_0x1bf209(0xd6):'';_0x204353['innerHTML']=_0x1bf209(0xce)+_0x1bf209(0xeb)+_0x1bf209(0xf0)+_0x1bf209(0x1af)+_0x4be818+'</tbody></table>'+_0x1bf209(0xd6)+_0x1067eb+_0x1bf209(0xe8)+_0x1bf209(0x94)+_0x1bf209(0x13d)+(_0x5916e7[_0x1bf209(0x139)]?'':_0x1bf209(0x14d))+_0x1bf209(0x149)+_0x1bf209(0xd6),Array[_0x1bf209(0x19d)]['slice'][_0x1bf209(0x159)](document[_0x1bf209(0xea)](_0x1bf209(0xdc)))[_0x1bf209(0x186)](function(_0x47dadd){var _0x1dd7d2=_0x1bf209;_0x47dadd[_0x1dd7d2(0x14a)](_0x1dd7d2(0x114),function(){var _0x377641=_0x1dd7d2,_0x440485=Number(_0x47dadd['dataset']['idx']);_0x5916e7[_0x377641(0x90)][_0x440485]['excelCol']=_0x47dadd['value'];if(_0x5916e7['mapping'][_0x440485][_0x377641(0xef)]===_0x5916e7[_0x377641(0x139)])_0x5916e7[_0x377641(0x77)]=_0x47dadd[_0x377641(0x9f)];});}),Array[_0x1bf209(0x19d)][_0x1bf209(0x121)][_0x1bf209(0x159)](document['querySelectorAll'](_0x1bf209(0x173)))[_0x1bf209(0x186)](function(_0xc352b7){var _0x1d018d=_0x1bf209;_0xc352b7[_0x1d018d(0x14a)](_0x1d018d(0x114),function(){var _0x152a73=_0x1d018d;_0x5916e7[_0x152a73(0x139)]=_0xc352b7[_0x152a73(0x9f)];var _0x488cc0=_0x5916e7[_0x152a73(0x90)]['find'](function(_0x29bd0a){var _0x1cabbb=_0x152a73;return _0x29bd0a[_0x1cabbb(0xef)]===_0x5916e7[_0x1cabbb(0x139)];});_0x5916e7[_0x152a73(0x77)]=_0x488cc0?_0x488cc0[_0x152a73(0x9a)]:'';});});var _0x8fee7=document[_0x1bf209(0x174)](_0x1bf209(0xa1)),_0x302005=document[_0x1bf209(0x174)](_0x1bf209(0x14e));if(_0x8fee7)_0x8fee7[_0x1bf209(0x14a)](_0x1bf209(0x114),function(){var _0x5e1eac=_0x1bf209;_0x5916e7[_0x5e1eac(0xfb)]=_0x8fee7['value'];});if(_0x302005)_0x302005[_0x1bf209(0x14a)](_0x1bf209(0x114),function(){var _0x3ba7dd=_0x1bf209;_0x5916e7[_0x3ba7dd(0x83)]=_0x302005[_0x3ba7dd(0x9f)];});document[_0x1bf209(0x174)]('ss-step2-back')[_0x1bf209(0x14a)](_0x1bf209(0xe7),function(){var _0x5746e1=_0x1bf209;_0x5916e7[_0x5746e1(0x13e)]=0x0,_0x3ad800();}),document[_0x1bf209(0x174)](_0x1bf209(0x70))[_0x1bf209(0x14a)]('click',function(){var _0x2e01c2=_0x1bf209;if(!_0x5916e7[_0x2e01c2(0x77)]){alert('Escolha\x20a\x20coluna\x20do\x20Excel\x20correspondente\x20ao\x20campo-chave.');return;}_0x365770(),_0x5916e7[_0x2e01c2(0x13e)]=0x2,_0x3ad800();});}function _0x365770(){var _0x386174=_0x19b239,_0x155c03=getLayerSchema(_0x5916e7['layerId']),_0x1b72d5=_0x155c03&&_0x155c03[_0x386174(0x11f)]||[],_0x2967a9=_0x5916e7[_0x386174(0x90)][_0x386174(0xee)](function(_0x38fd27){var _0x4d1ef6=_0x386174;return _0x38fd27[_0x4d1ef6(0x9a)];}),_0x2af580=_0x386174(0x12e)+_0x5916e7[_0x386174(0x123)]+':'+_0x5916e7[_0x386174(0x139)],_0x32e770=_0x11f438(_0x2af580),_0x153b2c={};featuresData[_0x386174(0x186)](function(_0x1bc0b2,_0x244a9b){var _0x1b162a=_0x386174;if(_0x1bc0b2[_0x1b162a(0x123)]===_0x5916e7['layerId']){var _0x57fd17=_0x1bc0b2[_0x1b162a(0x176)]?_0x1bc0b2[_0x1b162a(0x176)][_0x5916e7['keySigField']]:undefined;_0x57fd17!==undefined&&_0x57fd17!==null&&_0x57fd17!==''&&(_0x153b2c[String(_0x57fd17)['trim']()]=_0x1bc0b2);}});var _0x5b4185={},_0x314c8b=[],_0x297b38=[];_0x5916e7[_0x386174(0x16e)]['forEach'](function(_0x70530f,_0x592c6b){var _0x191fe9=_0x386174,_0x1b08e3=_0x70530f[_0x5916e7['keyExcelCol']],_0x108b8c=_0x1b08e3===undefined||_0x1b08e3===null?'':String(_0x1b08e3)[_0x191fe9(0x1a1)](),_0x1d7805=[];if(!_0x108b8c)_0x1d7805[_0x191fe9(0x75)]('chave\x20vazia');if(_0x108b8c&&_0x5b4185[_0x108b8c])_0x1d7805[_0x191fe9(0x75)](_0x191fe9(0x17a));_0x5b4185[_0x108b8c]=(_0x5b4185[_0x108b8c]||0x0)+0x1;var _0x2e5b0c={};_0x2967a9['forEach'](function(_0x51cb63){var _0x2d1db6=_0x191fe9,_0x51ab86=_0x1b72d5[_0x2d1db6(0x148)](function(_0x5646cc){var _0x9d1c3f=_0x2d1db6;return _0x5646cc[_0x9d1c3f(0x144)]===_0x51cb63[_0x9d1c3f(0xef)];}),_0x11120a=_0x70530f[_0x51cb63[_0x2d1db6(0x9a)]];_0x51ab86&&_0x51ab86['type']===_0x2d1db6(0x156)&&_0x11120a!==''&&_0x11120a!==undefined&&_0x11120a!==null&&isNaN(Number(_0x11120a))&&_0x1d7805[_0x2d1db6(0x75)]('valor\x20não-numérico\x20em\x20\x22'+_0x51ab86[_0x2d1db6(0x144)]+'\x22'),_0x2e5b0c[_0x51cb63[_0x2d1db6(0xef)]]=_0x11120a===undefined||_0x11120a===null?'':_0x11120a;});var _0x53fcab=_0x5916e7[_0x191fe9(0xfb)]?Number(_0x70530f[_0x5916e7[_0x191fe9(0xfb)]]):null,_0x6be7d7=_0x5916e7[_0x191fe9(0x83)]?Number(_0x70530f[_0x5916e7[_0x191fe9(0x83)]]):null;if(_0x5916e7[_0x191fe9(0xfb)]&&(_0x70530f[_0x5916e7[_0x191fe9(0xfb)]]!==''&&_0x70530f[_0x5916e7[_0x191fe9(0xfb)]]!==undefined)&&(isNaN(_0x53fcab)||_0x53fcab<-0x5a||_0x53fcab>0x5a))_0x1d7805[_0x191fe9(0x75)](_0x191fe9(0x151));if(_0x5916e7[_0x191fe9(0x83)]&&(_0x70530f[_0x5916e7[_0x191fe9(0x83)]]!==''&&_0x70530f[_0x5916e7[_0x191fe9(0x83)]]!==undefined)&&(isNaN(_0x6be7d7)||_0x6be7d7<-0xb4||_0x6be7d7>0xb4))_0x1d7805[_0x191fe9(0x75)](_0x191fe9(0x1a5));var _0x76c46d=_0x13f5a0(JSON[_0x191fe9(0xd1)](_0x2e5b0c)),_0x54b0a7=_0x108b8c&&_0x32e770[_0x108b8c]===_0x76c46d,_0x4aee70=_0x108b8c?_0x153b2c[_0x108b8c]:null,_0x884cb9;if(_0x1d7805[_0x191fe9(0x9e)])_0x884cb9='error';else{if(_0x4aee70)_0x884cb9=_0x54b0a7?'skip':_0x191fe9(0x66);else{var _0x16a10e=_0x155c03&&_0x155c03[_0x191fe9(0x183)],_0x305f1e=_0x16a10e===_0x191fe9(0xb1)&&_0x5916e7[_0x191fe9(0xfb)]&&_0x5916e7[_0x191fe9(0x83)]&&_0x53fcab!==null&&_0x6be7d7!==null&&!isNaN(_0x53fcab)&&!isNaN(_0x6be7d7);_0x884cb9=_0x305f1e?_0x191fe9(0x142):_0x191fe9(0x10c);if(!_0x305f1e&&!_0x1d7805[_0x191fe9(0x9e)])_0x1d7805['push'](_0x191fe9(0xc6));}}_0x314c8b[_0x191fe9(0x75)]({'rowIdx':_0x592c6b,'keyStr':_0x108b8c,'newProps':_0x2e5b0c,'hash':_0x76c46d,'existing':_0x4aee70||null,'action':_0x884cb9,'errors':_0x1d7805,'lat':_0x53fcab,'lng':_0x6be7d7});if(_0x1d7805['length'])_0x297b38[_0x191fe9(0x75)]({'rowIdx':_0x592c6b,'keyStr':_0x108b8c,'errors':_0x1d7805});}),_0x5916e7['preview']={'results':_0x314c8b,'recipeKey':_0x2af580,'counts':{'total':_0x314c8b[_0x386174(0x9e)],'update':_0x314c8b[_0x386174(0xee)](function(_0x4e1b0d){var _0x3dff52=_0x386174;return _0x4e1b0d[_0x3dff52(0x12a)]===_0x3dff52(0x66);})['length'],'create':_0x314c8b['filter'](function(_0x6cc11e){var _0x4a495e=_0x386174;return _0x6cc11e['action']===_0x4a495e(0x142);})[_0x386174(0x9e)],'error':_0x314c8b['filter'](function(_0x2e509a){return _0x2e509a['action']==='error';})[_0x386174(0x9e)],'skip':_0x314c8b[_0x386174(0xee)](function(_0x5b9153){return _0x5b9153['action']==='skip';})[_0x386174(0x9e)]},'validationErrors':_0x297b38};}function _0x348f1c(){var _0x4501c7=_0x19b239,_0x5bcf5c=document[_0x4501c7(0x174)](_0x4501c7(0x113)),_0x54f1f3=_0x5916e7['preview'][_0x4501c7(0xa4)],_0x4ad6d0=_0x5916e7[_0x4501c7(0x127)][_0x4501c7(0x18e)]['slice'](0x0,0x12c)[_0x4501c7(0xc4)](function(_0x551ca6){var _0xe8c5de=_0x4501c7,_0x10cebb={'update':_0xe8c5de(0x15a),'create':_0xe8c5de(0x8c),'error':_0xe8c5de(0x93),'skip':'skip'}[_0x551ca6[_0xe8c5de(0x12a)]],_0x3a06d5={'update':'Atualizar','create':_0xe8c5de(0xe3),'error':_0xe8c5de(0xcc),'skip':'Sem\x20alterações'}[_0x551ca6[_0xe8c5de(0x12a)]];return _0xe8c5de(0x89)+_0xe8c5de(0xa3)+_0x4d4bc8(_0x551ca6[_0xe8c5de(0x191)]||_0xe8c5de(0x1ae))+_0xe8c5de(0x150)+_0xe8c5de(0x74)+_0x10cebb+'\x22>'+_0x3a06d5+_0xe8c5de(0x110)+_0xe8c5de(0xa3)+_0x4d4bc8(_0x551ca6[_0xe8c5de(0xdd)][_0xe8c5de(0xd2)](';\x20'))+_0xe8c5de(0x150)+_0xe8c5de(0x1a3);})[_0x4501c7(0xd2)]('');_0x5bcf5c['innerHTML']=_0x4501c7(0xf2)+_0x4501c7(0x84)+_0x54f1f3[_0x4501c7(0x10a)]+_0x4501c7(0x143)+_0x4501c7(0x128)+_0x54f1f3[_0x4501c7(0x66)]+_0x4501c7(0x16f)+_0x4501c7(0xd8)+_0x54f1f3[_0x4501c7(0x142)]+_0x4501c7(0x138)+_0x4501c7(0xc0)+_0x54f1f3[_0x4501c7(0x10c)]+'</b><span>apresentam\x20erros/conflitos</span></div>'+'</div>'+(_0x54f1f3[_0x4501c7(0xbb)]?_0x4501c7(0x12f)+_0x54f1f3[_0x4501c7(0xbb)]+_0x4501c7(0x140):'')+'<div\x20class=\x22ss-card\x22>'+'<h3>Detalhe\x20por\x20registo</h3>'+_0x4501c7(0x188)+(_0x4ad6d0||_0x4501c7(0x11c))+_0x4501c7(0xb2)+(_0x5916e7[_0x4501c7(0x127)][_0x4501c7(0x18e)]['length']>0x12c?'<div\x20class=\x22ss-hint\x22>A\x20mostrar\x20os\x20primeiros\x20300\x20de\x20'+_0x5916e7[_0x4501c7(0x127)][_0x4501c7(0x18e)]['length']+'\x20registos.</div>':'')+_0x4501c7(0xd6)+_0x4501c7(0xe8)+_0x4501c7(0xb6)+_0x4501c7(0xf4)+(_0x54f1f3[_0x4501c7(0x66)]+_0x54f1f3[_0x4501c7(0x142)]?'':_0x4501c7(0x14d))+_0x4501c7(0x1a2)+'</div>',document[_0x4501c7(0x174)](_0x4501c7(0x171))[_0x4501c7(0x14a)](_0x4501c7(0xe7),function(){var _0x32ba5e=_0x4501c7;_0x5916e7[_0x32ba5e(0x13e)]=0x1,_0x3ad800();}),document[_0x4501c7(0x174)](_0x4501c7(0xac))[_0x4501c7(0x14a)](_0x4501c7(0xe7),function(){var _0x5e39f4=_0x4501c7;_0x5916e7[_0x5e39f4(0x13e)]=0x3,_0x3ad800(),_0x15bfec();});}function _0x172927(){var _0xbc2f9c=_0x19b239,_0x2021a6=document[_0xbc2f9c(0x174)](_0xbc2f9c(0x113));_0x2021a6[_0xbc2f9c(0x19a)]='<div\x20class=\x22ss-card\x22><h3>A\x20executar…</h3><p\x20class=\x22ss-hint\x22>A\x20atualizar\x20objetos\x20na\x20camada.\x20Não\x20feche\x20esta\x20janela.</p></div>';}function _0x15bfec(){var _0x165718=_0x19b239,_0x5b7eae=performance['now'](),_0x45531b=0x0,_0x3fa535=0x0,_0x4dd80f=0x0,_0x3a948d=_0x11f438(_0x5916e7['preview'][_0x165718(0x193)]),_0x3c728f=getLayerSchema(_0x5916e7[_0x165718(0x123)]);_0x5916e7[_0x165718(0x127)][_0x165718(0x18e)]['forEach'](function(_0x5df570){var _0x23cb02=_0x165718;if(_0x5df570[_0x23cb02(0x12a)]==='update')Object['keys'](_0x5df570[_0x23cb02(0x109)])[_0x23cb02(0x186)](function(_0x490f01){var _0x4b8e35=_0x23cb02;_0x5df570[_0x4b8e35(0x11d)][_0x4b8e35(0x176)][_0x490f01]=_0x5df570['newProps'][_0x490f01];}),_0x5df570[_0x23cb02(0x11d)][_0x23cb02(0x12b)]=Date[_0x23cb02(0xb4)](),_0x45531b++,_0x3a948d[_0x5df570[_0x23cb02(0x191)]]=_0x5df570[_0x23cb02(0x13f)];else{if(_0x5df570['action']==='create')try{var _0x1c6ae1=L[_0x23cb02(0x102)]([_0x5df570[_0x23cb02(0x1b5)],_0x5df570[_0x23cb02(0xfc)]]);if(layerVisible[_0x23cb02(0x184)](_0x5916e7[_0x23cb02(0x123)])===undefined)layerVisible[_0x23cb02(0x79)](_0x5916e7[_0x23cb02(0x123)],!![]);if(!layerOrder[_0x23cb02(0xcb)](_0x5916e7[_0x23cb02(0x123)]))layerOrder['unshift'](_0x5916e7[_0x23cb02(0x123)]);drawnGroup[_0x23cb02(0x153)](_0x1c6ae1),assignLayerPane(_0x1c6ae1,_0x5916e7[_0x23cb02(0x123)]);var _0x42ea91=L['Util']['stamp'](_0x1c6ae1),_0x1ff752={'layer':_0x1c6ae1,'props':{..._0x5df570['newProps']},'id':_0x42ea91,'fid':genFid(),'updatedAt':Date[_0x23cb02(0xb4)](),'label':_0x23cb02(0x164),'geomType':_0x23cb02(0xb1),'layerId':_0x5916e7['layerId'],'hasOverlap':![],'overlapsWith':[],'showMeasures':![],'measureTooltips':[]};_0x1ff752[_0x23cb02(0x176)][_0x5916e7[_0x23cb02(0x139)]]=_0x5df570[_0x23cb02(0x191)],featuresData[_0x23cb02(0x79)](_0x42ea91,_0x1ff752),styleLayerDefault(_0x1c6ae1,_0x5916e7[_0x23cb02(0x123)]),_0x3fa535++,_0x3a948d[_0x5df570['keyStr']]=_0x5df570[_0x23cb02(0x13f)];}catch(_0x3370a4){_0x4dd80f++;}else _0x5df570['action']===_0x23cb02(0x10c)&&_0x4dd80f++;}}),_0x2d5a3b(_0x5916e7[_0x165718(0x127)][_0x165718(0x193)],_0x3a948d);if(typeof markProjectDirty===_0x165718(0x15f))markProjectDirty();if(typeof refreshFeatList===_0x165718(0x15f))refreshFeatList();if(typeof applyLayerZOrder==='function')applyLayerZOrder();if(typeof checkAllTopology===_0x165718(0x15f))try{checkAllTopology();}catch(_0x2d7ecc){}var _0x25b612=((performance['now']()-_0x5b7eae)/0x3e8)[_0x165718(0x133)](0x1);_0x5916e7[_0x165718(0x14f)]={'updated':_0x45531b,'created':_0x3fa535,'errors':_0x4dd80f,'total':_0x5916e7['preview'][_0x165718(0xa4)][_0x165718(0x10a)],'elapsedSec':_0x25b612,'at':Date[_0x165718(0xb4)]()},_0x57206a({'at':Date[_0x165718(0xb4)](),'recipeName':_0x5916e7[_0x165718(0x69)]||_0x165718(0x145),'layerName':_0x32ea3a(_0x5916e7['layerId']),'fileName':_0x5916e7['fileName'],'updated':_0x45531b,'created':_0x3fa535,'errors':_0x4dd80f,'user':window['currentAdminUser']||'Desconhecido'}),_0x5916e7['step']=0x4,_0x3ad800();}function _0x1bce84(){var _0x1f316b=_0x19b239,_0x32e689=document[_0x1f316b(0x174)](_0x1f316b(0x113)),_0x214b91=_0x5916e7['lastResult'];_0x32e689['innerHTML']=_0x1f316b(0xf2)+_0x1f316b(0xc5)+_0x214b91[_0x1f316b(0x8a)]+_0x1f316b(0x168)+_0x1f316b(0x85)+_0x214b91['created']+_0x1f316b(0x103)+'<div\x20class=\x22ss-stat-box\x20is-conflict\x22><b>✗\x20'+_0x214b91[_0x1f316b(0xdd)]+'</b><span>erros</span></div>'+'<div\x20class=\x22ss-stat-box\x22><b>'+_0x214b91[_0x1f316b(0x163)]+_0x1f316b(0x10b)+_0x1f316b(0xd6)+_0x1f316b(0xe8)+_0x1f316b(0x189)+_0x1f316b(0x111)+_0x1f316b(0x108)+_0x1f316b(0xd6),document[_0x1f316b(0x174)](_0x1f316b(0xc8))[_0x1f316b(0x14a)](_0x1f316b(0xe7),_0x2da41e),document[_0x1f316b(0x174)](_0x1f316b(0x1b3))[_0x1f316b(0x14a)](_0x1f316b(0xe7),function(){var _0x5241f6=_0x1f316b;_0x5916e7[_0x5241f6(0x13e)]=0x5,_0x3ad800();}),document[_0x1f316b(0x174)]('ss-finish')[_0x1f316b(0x14a)](_0x1f316b(0xe7),function(){_0x547425(),_0x3ad800();});}function _0x2da41e(){var _0x129276=_0x19b239,_0x1bbf5c=[_0x129276(0x107),new Date()['toLocaleString'](_0x129276(0x155)),''];_0x1bbf5c[_0x129276(0x75)]('Camada:\x20'+_0x32ea3a(_0x5916e7['layerId'])),_0x1bbf5c[_0x129276(0x75)](_0x129276(0x15b)+(_0x5916e7[_0x129276(0x165)]||'')),_0x1bbf5c[_0x129276(0x75)]('Atualizados:\x20'+_0x5916e7[_0x129276(0x14f)][_0x129276(0x8a)]),_0x1bbf5c[_0x129276(0x75)](_0x129276(0xa0)+_0x5916e7['lastResult'][_0x129276(0x119)]),_0x1bbf5c['push'](_0x129276(0xf3)+_0x5916e7[_0x129276(0x14f)][_0x129276(0xdd)]),_0x1bbf5c[_0x129276(0x75)]('Tempo:\x20'+_0x5916e7[_0x129276(0x14f)]['elapsedSec']+'s'),_0x1bbf5c[_0x129276(0x75)](''),_0x1bbf5c[_0x129276(0x75)](_0x129276(0x162)),_0x5916e7['preview'][_0x129276(0x18e)]['forEach'](function(_0x3764a0){var _0x5c5b55=_0x129276;_0x1bbf5c[_0x5c5b55(0x75)]([_0x3764a0[_0x5c5b55(0x191)],_0x3764a0[_0x5c5b55(0x12a)],_0x3764a0[_0x5c5b55(0xdd)][_0x5c5b55(0xd2)](_0x5c5b55(0x7d))][_0x5c5b55(0xd2)](';'));});var _0x24dffd=new Blob([_0x1bbf5c['join']('\x0a')],{'type':_0x129276(0xc9)}),_0x25be06=document[_0x129276(0x6e)]('a');_0x25be06[_0x129276(0xbe)]=URL[_0x129276(0x180)](_0x24dffd),_0x25be06[_0x129276(0xa9)]=_0x129276(0x10f)+Date[_0x129276(0xb4)]()+_0x129276(0xaa),_0x25be06[_0x129276(0xe7)]();}function _0x2fe8ad(){var _0x28adc2=_0x19b239,_0x1080e7=document[_0x28adc2(0x174)]('ss-step-body');_0x1080e7[_0x28adc2(0x19a)]=_0x28adc2(0xeb)+'<h3>Guardar\x20esta\x20configuração\x20como\x20receita</h3>'+_0x28adc2(0x11b)+_0x4d4bc8(_0x5916e7[_0x28adc2(0x69)]||'')+_0x28adc2(0x131)+_0x28adc2(0xa2)+_0x28adc2(0xd6)+_0x28adc2(0xe8)+_0x28adc2(0x179)+'</div>',document[_0x28adc2(0x174)]('ss-recipe-save')[_0x28adc2(0x14a)](_0x28adc2(0xe7),function(){var _0x5a0705=_0x28adc2,_0x47e2da=document[_0x5a0705(0x174)](_0x5a0705(0x87))[_0x5a0705(0x9f)][_0x5a0705(0x1a1)]();if(!_0x47e2da){alert('Dê\x20um\x20nome\x20à\x20receita.');return;}var _0x3e0fb2=_0x2c468b(),_0x53a29f={'name':_0x47e2da,'layerId':_0x5916e7[_0x5a0705(0x123)],'keySigField':_0x5916e7[_0x5a0705(0x139)],'keyExcelCol':_0x5916e7[_0x5a0705(0x77)],'mapping':_0x5916e7['mapping'],'latCol':_0x5916e7[_0x5a0705(0xfb)],'lngCol':_0x5916e7['lngCol'],'sheetName':_0x5916e7[_0x5a0705(0xf5)],'createdAt':Date[_0x5a0705(0xb4)]()},_0x1acadf=_0x3e0fb2[_0x5a0705(0x157)](function(_0x3bfa1a){var _0x290759=_0x5a0705;return _0x3bfa1a[_0x290759(0x144)]===_0x47e2da;});if(_0x1acadf>=0x0)_0x3e0fb2[_0x1acadf]=_0x53a29f;else _0x3e0fb2['push'](_0x53a29f);_0x3d606b(_0x3e0fb2),_0x547425(),_0x118264('recipes');}),document['getElementById'](_0x28adc2(0x135))[_0x28adc2(0x14a)](_0x28adc2(0xe7),function(){_0x547425(),_0x3ad800();});}function _0x2cf14b(){var _0x42c6d0=_0x19b239,_0x164767=_0x2c468b(),_0x1c08a8=_0x164767[_0x42c6d0(0xc4)](function(_0x5ccdad,_0x1aac22){var _0x1482bd=_0x42c6d0;return _0x1482bd(0x124)+'<div><b>'+_0x4d4bc8(_0x5ccdad[_0x1482bd(0x144)])+_0x1482bd(0x76)+_0x4d4bc8(_0x32ea3a(_0x5ccdad[_0x1482bd(0x123)]))+_0x1482bd(0x1aa)+_0x4d4bc8(_0x5ccdad[_0x1482bd(0x139)])+_0x1482bd(0x194)+'<div\x20class=\x22ss-recipe-actions\x22>'+'<button\x20class=\x22ss-btn\x22\x20data-run=\x22'+_0x1aac22+'\x22>Executar\x20receita</button>'+_0x1482bd(0x1a8)+_0x1aac22+_0x1482bd(0x10d)+_0x1482bd(0xd6)+_0x1482bd(0xd6);})[_0x42c6d0(0xd2)]('');_0x368669['innerHTML']='<h2>Receitas\x20guardadas</h2>'+_0x42c6d0(0x196)+(_0x1c08a8||'<p\x20class=\x22ss-empty\x22>Ainda\x20não\x20guardou\x20nenhuma\x20receita.</p>'),_0x164767[_0x42c6d0(0x186)](function(_0x39439d,_0x14c787){var _0x417439=_0x42c6d0,_0x1ed606=_0x368669[_0x417439(0xde)]('[data-run=\x22'+_0x14c787+'\x22]'),_0x25f6ad=_0x368669[_0x417439(0xde)](_0x417439(0xa8)+_0x14c787+'\x22]');if(_0x1ed606)_0x1ed606['addEventListener']('click',function(){_0xf5a50e(_0x39439d);});if(_0x25f6ad)_0x25f6ad[_0x417439(0x14a)](_0x417439(0xe7),function(){if(!confirm('Eliminar\x20a\x20receita\x20\x22'+_0x39439d['name']+'\x22?'))return;var _0x5b9fc0=_0x2c468b();_0x5b9fc0['splice'](_0x14c787,0x1),_0x3d606b(_0x5b9fc0),_0x2cf14b();});});}function _0xf5a50e(_0x1dbf30){var _0x4fbf76=_0x19b239;_0x547425(),_0x5916e7[_0x4fbf76(0x69)]=_0x1dbf30[_0x4fbf76(0x144)],_0x5916e7[_0x4fbf76(0x123)]=_0x1dbf30[_0x4fbf76(0x123)],_0x5916e7[_0x4fbf76(0x139)]=_0x1dbf30['keySigField'],_0x5916e7[_0x4fbf76(0x77)]=_0x1dbf30[_0x4fbf76(0x77)],_0x5916e7[_0x4fbf76(0x90)]=_0x1dbf30[_0x4fbf76(0x90)]['slice'](),_0x5916e7[_0x4fbf76(0xfb)]=_0x1dbf30[_0x4fbf76(0xfb)],_0x5916e7[_0x4fbf76(0x83)]=_0x1dbf30[_0x4fbf76(0x83)],_0x118264('wizard');}var _0x2cee3a=null,_0x430ff1=null;function _0x39656b(){var _0x227ef8=_0x19b239,_0x4ecf47=!!window['showDirectoryPicker'];_0x368669[_0x227ef8(0x19a)]='<h2>Automação</h2>'+_0x227ef8(0xd5)+_0x227ef8(0x136)+(!_0x4ecf47?_0x227ef8(0x1ac):_0x227ef8(0xeb)+_0x227ef8(0xc1)+'<div\x20class=\x22ss-field\x22><label>Receita\x20a\x20aplicar</label><select\x20id=\x22ss-auto-recipe\x22><option\x20value=\x22\x22>—\x20escolher\x20—</option>'+_0x2c468b()['map'](function(_0x2d9284,_0x1537e2){var _0x442d20=_0x227ef8;return _0x442d20(0x17f)+_0x1537e2+'\x22>'+_0x4d4bc8(_0x2d9284[_0x442d20(0x144)])+_0x442d20(0x17c);})[_0x227ef8(0xd2)]('')+'</select></div>'+_0x227ef8(0xa5)+_0x227ef8(0xc2)+_0x227ef8(0x1b4)+_0x227ef8(0xe8)+_0x227ef8(0x96)+'<button\x20class=\x22ss-btn\x20ss-btn-secondary\x22\x20id=\x22ss-auto-stop\x22\x20disabled>Parar</button>'+'</div>'+'<div\x20class=\x22ss-hint\x22>A\x20pasta\x20escolhida\x20só\x20fica\x20ativa\x20enquanto\x20esta\x20aba\x20estiver\x20aberta\x20(não\x20persiste\x20depois\x20de\x20fechar/recarregar\x20a\x20página).</div>'+_0x227ef8(0xd6));if(!_0x4ecf47)return;var _0x4ad529=document[_0x227ef8(0x174)](_0x227ef8(0x97)),_0x39fe70=document['getElementById'](_0x227ef8(0x187)),_0x4daebe=document[_0x227ef8(0x174)]('ss-auto-stop'),_0x276c8b=document[_0x227ef8(0x174)](_0x227ef8(0xe1));_0x4ad529[_0x227ef8(0x14a)](_0x227ef8(0xe7),function(){var _0x1ca58d=_0x227ef8;window[_0x1ca58d(0x7f)]()[_0x1ca58d(0x177)](function(_0x2bd4a1){var _0x4b8ad3=_0x1ca58d;_0x430ff1=_0x2bd4a1,_0x276c8b['textContent']=_0x4b8ad3(0xda)+_0x2bd4a1[_0x4b8ad3(0x144)],_0x39fe70[_0x4b8ad3(0x14d)]=![];})[_0x1ca58d(0x6c)](function(){});}),_0x39fe70[_0x227ef8(0x14a)](_0x227ef8(0xe7),function(){var _0x1338b4=_0x227ef8,_0x5524c2=document['getElementById'](_0x1338b4(0x152))['value'],_0x1c07ca=Number(document['getElementById'](_0x1338b4(0xe2))[_0x1338b4(0x9f)])||0xf;if(_0x5524c2===''||!_0x430ff1){alert(_0x1338b4(0xed));return;}var _0x5aeb8f=_0x2c468b()[Number(_0x5524c2)];if(_0x2cee3a)clearInterval(_0x2cee3a);_0x2af6df(_0x430ff1,_0x5aeb8f),_0x2cee3a=setInterval(function(){_0x2af6df(_0x430ff1,_0x5aeb8f);},_0x1c07ca*0xea60),_0x39fe70['disabled']=!![],_0x4daebe[_0x1338b4(0x14d)]=![],_0x276c8b[_0x1338b4(0xab)]=_0x1338b4(0xc7)+_0x430ff1[_0x1338b4(0x144)]+_0x1338b4(0x9b)+_0x1c07ca+'\x20min\x20(enquanto\x20a\x20app\x20estiver\x20aberta).';}),_0x4daebe[_0x227ef8(0x14a)](_0x227ef8(0xe7),function(){var _0x151e19=_0x227ef8;if(_0x2cee3a)clearInterval(_0x2cee3a);_0x2cee3a=null,_0x39fe70[_0x151e19(0x14d)]=![],_0x4daebe[_0x151e19(0x14d)]=!![],_0x276c8b[_0x151e19(0xab)]=_0x151e19(0x154);});}var _0x58b42a=null;function _0x2af6df(_0x4b98b2,_0x1f3471){(async function(){var _0x4b4328=_0xd75d,_0x5502c5=null;for await(var _0x3480fa of _0x4b98b2['values']()){if(_0x3480fa[_0x4b4328(0xbf)]===_0x4b4328(0x8d)&&/\.(xlsx|xls|csv)$/i[_0x4b4328(0x16b)](_0x3480fa[_0x4b4328(0x144)])){var _0x2d95fc=await _0x3480fa[_0x4b4328(0x116)]();if(!_0x5502c5||_0x2d95fc['lastModified']>_0x5502c5[_0x4b4328(0x8d)][_0x4b4328(0xcd)])_0x5502c5={'entry':_0x3480fa,'file':_0x2d95fc};}}if(!_0x5502c5)return;var _0x2e6d30=_0x5502c5[_0x4b4328(0x8d)]['name']+':'+_0x5502c5['file'][_0x4b4328(0xcd)];if(_0x2e6d30===_0x58b42a)return;_0x58b42a=_0x2e6d30,_0x547425(),_0x5916e7['activeRecipeName']=_0x1f3471[_0x4b4328(0x144)],_0x5916e7['layerId']=_0x1f3471['layerId'],_0x5916e7[_0x4b4328(0x139)]=_0x1f3471['keySigField'],_0x5916e7[_0x4b4328(0x77)]=_0x1f3471[_0x4b4328(0x77)],_0x5916e7[_0x4b4328(0x90)]=_0x1f3471[_0x4b4328(0x90)][_0x4b4328(0x121)](),_0x5916e7[_0x4b4328(0xfb)]=_0x1f3471[_0x4b4328(0xfb)],_0x5916e7[_0x4b4328(0x83)]=_0x1f3471[_0x4b4328(0x83)],_0x5916e7[_0x4b4328(0x165)]=_0x5502c5[_0x4b4328(0x8d)][_0x4b4328(0x144)],_0x4a2fd6(_0x5502c5['file'],function(_0x4f045b,_0x524b64){var _0x5c9204=_0x4b4328;if(_0x4f045b)return;_0x5916e7[_0x5c9204(0xdf)]=_0x524b64,_0x56b682(_0x1f3471[_0x5c9204(0xf5)]&&_0x524b64['SheetNames'][_0x5c9204(0xf9)](_0x1f3471['sheetName'])!==-0x1?_0x1f3471[_0x5c9204(0xf5)]:_0x524b64[_0x5c9204(0x147)][0x0]),_0x365770(),_0x15bfec();});}());}function _0x46e6dc(){var _0x5d87b7=_0x19b239,_0xef0319=_0xaf8d3a(),_0x56af79=_0xef0319['map'](function(_0x31da4b){var _0x4ac483=_0xd75d,_0x5f4010=new Date(_0x31da4b['at'])['toLocaleString'](_0x4ac483(0x155));return _0x4ac483(0x120)+'<b>'+_0x4d4bc8(_0x31da4b['recipeName'])+'</b>\x20/\x20'+_0x4d4bc8(_0x31da4b[_0x4ac483(0xd9)]||'')+'<div>'+_0x5f4010+_0x4ac483(0xf6)+_0x31da4b[_0x4ac483(0x8a)]+_0x4ac483(0x78)+_0x31da4b[_0x4ac483(0x119)]+_0x4ac483(0x17d)+(_0x31da4b[_0x4ac483(0xdd)]?_0x4ac483(0x17b)+_0x31da4b[_0x4ac483(0xdd)]+_0x4ac483(0x81):'')+_0x4ac483(0xd6)+_0x4ac483(0x1a9)+_0x4d4bc8(_0x31da4b[_0x4ac483(0x6b)]||_0x4ac483(0x192))+(_0x31da4b['fileName']?_0x4ac483(0x6a)+_0x4d4bc8(_0x31da4b[_0x4ac483(0x165)]):'')+_0x4ac483(0xd6)+_0x4ac483(0xd6);})[_0x5d87b7(0xd2)]('');_0x368669['innerHTML']=_0x5d87b7(0x11a)+'<p\x20class=\x22ss-subtitle\x22>Cada\x20execução\x20de\x20sincronização\x20fica\x20registada\x20aqui\x20(quando\x20e\x20por\x20quem\x20os\x20dados\x20foram\x20atualizados).</p>'+(_0x56af79||'<p\x20class=\x22ss-empty\x22>Ainda\x20não\x20há\x20sincronizações\x20registadas.</p>');}function _0x3caa97(){var _0x58b857=_0x19b239;_0x368669[_0x58b857(0x19a)]=_0x58b857(0x8b)+_0x58b857(0x19b)+_0x58b857(0x170)+_0x58b857(0xbc)+_0x58b857(0x172)+_0x58b857(0x7c)+_0x58b857(0x7b)+_0x58b857(0xd6)+_0x58b857(0xe9)+_0x58b857(0x199)+_0x58b857(0x175)+_0x58b857(0x172)+_0x58b857(0x14c)+_0x58b857(0x158)+'<b>Fase\x203\x20/\x20Chave.</b>\x20Na\x20mesma\x20tabela,\x20marca\x20com\x20o\x20botão\x20de\x20opção\x20qual\x20é\x20o\x20campo\x20que\x20serve\x20de\x20identificador\x20único\x20(ex:\x20ID_OBRA).\x20É\x20assim\x20que\x20a\x20app\x20sabe\x20que\x20a\x20linha\x20\x22ID\x201587\x22\x20do\x20Excel\x20corresponde\x20ao\x20objeto\x20\x22ID_OBRA\x201587\x22\x20da\x20camada.<br><br>'+'<b>Fase\x204\x20/\x20Pré-visualização.</b>\x20A\x20app\x20mostra\x20quantos\x20registos\x20vai\x20atualizar,\x20criar\x20ou\x20que\x20têm\x20erros.\x20Nada\x20é\x20alterado\x20ainda.<br><br>'+_0x58b857(0x105)+_0x58b857(0xd6)+_0x58b857(0xe9)+_0x58b857(0x199)+_0x58b857(0x95)+_0x58b857(0x172)+_0x58b857(0x12d)+_0x58b857(0xd6)+_0x58b857(0xe9)+_0x58b857(0x199)+_0x58b857(0xfd)+_0x58b857(0x172)+_0x58b857(0xfe)+_0x58b857(0xd6)+_0x58b857(0xe9)+'<details\x20class=\x22ss-help-item\x22>'+_0x58b857(0x18c)+_0x58b857(0x172)+_0x58b857(0x1b1)+_0x58b857(0xae)+'</div>'+_0x58b857(0xe9)+'<details\x20class=\x22ss-help-item\x22>'+_0x58b857(0xec)+_0x58b857(0x172)+_0x58b857(0x112)+_0x58b857(0xd6)+_0x58b857(0xe9)+'<details\x20class=\x22ss-help-item\x22>'+_0x58b857(0xb8)+_0x58b857(0x172)+_0x58b857(0x18b)+'•\x20<b>Chave\x20duplicada\x20no\x20ficheiro</b>\x20—\x20dois\x20registos\x20do\x20Excel\x20com\x20o\x20mesmo\x20ID.<br>'+'•\x20<b>Valor\x20não-numérico</b>\x20—\x20um\x20campo\x20definido\x20como\x20número\x20na\x20camada\x20recebeu\x20texto.<br>'+_0x58b857(0x1a6)+'Nenhum\x20destes\x20registos\x20é\x20alterado;\x20ficam\x20listados\x20no\x20relatório\x20para\x20corrigires\x20no\x20Excel\x20e\x20voltares\x20a\x20tentar.'+'</div>'+'</details>'+_0x58b857(0x199)+'<summary>8.\x20Onde\x20fica\x20o\x20histórico?</summary>'+_0x58b857(0x172)+_0x58b857(0x8f)+'</div>'+'</details>';}}()));
+/* ============================================================
+   SINCRONIZAÇÃO INTELIGENTE — Excel/CSV → SIG
+   ============================================================
+   Módulo autónomo. Depende de variáveis/funções já existentes em
+   05-app-main.js (layers, activeLayerId, config, featuresData, map,
+   drawnGroup, layerVisible, layerOrder, getLayerSchema, assignLayerPane,
+   ensureLayerPane, styleLayerDefault, genFid, markProjectDirty,
+   refreshFeatList, applyLayerZOrder, checkAllTopology) e da biblioteca
+   SheetJS (window.XLSX) carregada via CDN.
+
+   Âmbito assumido (importante):
+   - "Camada SIG" = uma das camadas já existentes nesta aplicação
+     (painel de camadas), não um SIG externo.
+   - A ATUALIZAÇÃO de atributos funciona para qualquer tipo de geometria.
+   - A CRIAÇÃO automática de novas entidades (registos sem correspondência)
+     só é feita quando a camada é de PONTOS e o Excel/CSV tem colunas de
+     latitude/longitude mapeadas. Para linhas/polígonos não há forma de
+     inventar geometria a partir de uma folha de cálculo — esses casos
+     ficam assinalados no relatório como "sem geometria" e têm de ser
+     desenhados manualmente.
+   - A "Fase 8 — Automatização total" (agendamento às 08:00 mesmo com a
+     app fechada) não é possível dentro de uma página web: só corre
+     código enquanto a aplicação está aberta. O que se disponibiliza é
+     uma verificação periódica *enquanto a app está aberta* (via File
+     System Access API, suportada no Chromium/Electron). Para um
+     agendamento verdadeiramente ao nível do sistema operativo é preciso
+     um script externo (ex: Tarefas Agendadas do Windows) — fora do
+     alcance de uma página HTML.
+   ============================================================ */
+(function(){
+  var pageEl = document.getElementById('smart-sync-page');
+  var openBtn = document.getElementById('btn-smart-sync');
+  var closeBtn = document.getElementById('ss-close-btn');
+  var contentEl = document.getElementById('ss-content');
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll('.ss-nav-btn'));
+  if(!pageEl || !openBtn) return;
+
+  var LS_RECIPES = 'smartSyncRecipes';
+  var LS_HISTORY = 'smartSyncHistory';
+  var LS_HASHES_PREFIX = 'smartSyncHashes:';
+
+  var STEP_LABELS = ['Ficheiro & camada','Correspondência & chave','Pré-visualização','Execução','Relatório','Guardar receita'];
+
+  /* ---------------- estado da sessão da sincronização atual ---------------- */
+  var S = {
+    section: 'wizard',
+    step: 0,
+    workbook: null,
+    sheetName: null,
+    rows: [],            // array de objetos {coluna: valor} da folha escolhida
+    headers: [],          // nomes das colunas do Excel/CSV
+    layerId: null,
+    keyExcelCol: null,
+    keySigField: null,
+    latCol: null,
+    lngCol: null,
+    mapping: [],          // [{sigField, excelCol}]
+    preview: null,        // resultado calculado da fase 4
+    lastResult: null,     // resultado calculado da fase 5/6
+    activeRecipeName: null,
+    fileName: null
+  };
+
+  function resetSyncState(){
+    S.step = 0; S.workbook = null; S.sheetName = null; S.rows = []; S.headers = [];
+    S.layerId = null; S.keyExcelCol = null; S.keySigField = null; S.latCol = null; S.lngCol = null;
+    S.mapping = []; S.preview = null; S.lastResult = null; S.activeRecipeName = null; S.fileName = null;
+  }
+
+  /* ============================================================
+     ABRIR / FECHAR PÁGINA
+     ============================================================ */
+  openBtn.addEventListener('click', function(){
+    pageEl.hidden = false;
+    switchSection('wizard');
+  });
+  closeBtn.addEventListener('click', function(){
+    pageEl.hidden = true;
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !pageEl.hidden) pageEl.hidden = true;
+  });
+
+  navBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){ switchSection(btn.dataset.ssSection); });
+  });
+
+  function switchSection(name){
+    S.section = name;
+    navBtns.forEach(function(b){ b.classList.toggle('is-active', b.dataset.ssSection === name); });
+    if(name === 'wizard') renderWizard();
+    else if(name === 'recipes') renderRecipes();
+    else if(name === 'automation') renderAutomation();
+    else if(name === 'history') renderHistory();
+    else if(name === 'help') renderHelp();
+  }
+
+  /* ============================================================
+     HELPERS GERAIS
+     ============================================================ */
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function loadRecipes(){
+    try { return JSON.parse(localStorage.getItem(LS_RECIPES) || '[]'); } catch(e){ return []; }
+  }
+  function saveRecipes(list){
+    try { localStorage.setItem(LS_RECIPES, JSON.stringify(list)); } catch(e){}
+  }
+  function loadHistory(){
+    try { return JSON.parse(localStorage.getItem(LS_HISTORY) || '[]'); } catch(e){ return []; }
+  }
+  function pushHistory(entry){
+    var h = loadHistory();
+    h.unshift(entry);
+    if(h.length > 200) h = h.slice(0, 200);
+    try { localStorage.setItem(LS_HISTORY, JSON.stringify(h)); } catch(e){}
+  }
+  function getRowHashes(recipeKey){
+    try { return JSON.parse(localStorage.getItem(LS_HASHES_PREFIX + recipeKey) || '{}'); } catch(e){ return {}; }
+  }
+  function setRowHashes(recipeKey, obj){
+    try { localStorage.setItem(LS_HASHES_PREFIX + recipeKey, JSON.stringify(obj)); } catch(e){}
+  }
+  function simpleHash(str){
+    var h = 0;
+    for(var i=0;i<str.length;i++){ h = ((h<<5)-h + str.charCodeAt(i))|0; }
+    return h.toString(36);
+  }
+
+  /* devolve a lista de camadas disponíveis (arquivadas + a ativa), tal
+     como o resto da app já faz noutros sítios (painel de camadas, etc.) */
+  function getAllLayerIds(){
+    var ids = layers.map(function(l){ return l.id; });
+    if(config && config.geometryType && ids.indexOf(activeLayerId) === -1) ids.push(activeLayerId);
+    return ids;
+  }
+  function getLayerLabel(id){
+    var schema = getLayerSchema(id);
+    return schema ? (schema.name || ('Camada ' + id)) : ('Camada ' + id);
+  }
+
+  /* ============================================================
+     LEITURA DE FICHEIROS (XLSX / XLS / CSV)
+     ============================================================ */
+  function readFile(file, cb){
+    var ext = (file.name.split('.').pop() || '').toLowerCase();
+    var reader = new FileReader();
+    reader.onerror = function(){ cb(new Error('Não foi possível ler o ficheiro.')); };
+    if(ext === 'csv'){
+      reader.onload = function(e){
+        try{
+          var wb = XLSX.read(e.target.result, {type:'string'});
+          cb(null, wb);
+        } catch(err){ cb(err); }
+      };
+      reader.readAsText(file, 'UTF-8');
+    } else {
+      reader.onload = function(e){
+        try{
+          var data = new Uint8Array(e.target.result);
+          var wb = XLSX.read(data, {type:'array'});
+          cb(null, wb);
+        } catch(err){ cb(err); }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  function loadSheet(sheetName){
+    S.sheetName = sheetName;
+    var ws = S.workbook.Sheets[sheetName];
+    var json = XLSX.utils.sheet_to_json(ws, {defval:'', raw:true});
+    S.rows = json;
+    S.headers = XLSX.utils.sheet_to_json(ws, {header:1})[0] || Object.keys(json[0] || {});
+  }
+
+  /* ============================================================
+     WIZARD — RENDER PRINCIPAL
+     ============================================================ */
+  function renderWizard(){
+    var stepsHtml = STEP_LABELS.map(function(label, i){
+      var cls = i === S.step ? 'is-active' : (i < S.step ? 'is-done' : '');
+      return '<div class="ss-step-pill ' + cls + '"><span class="ss-step-num">' + (i+1) + '</span>' + esc(label) + '</div>';
+    }).join('');
+
+    contentEl.innerHTML =
+      '<h2>Nova sincronização</h2>' +
+      '<p class="ss-subtitle">Atualiza uma camada SIG diretamente a partir de um ficheiro Excel ou CSV, sem edição manual.</p>' +
+      '<div class="ss-steps">' + stepsHtml + '</div>' +
+      '<div id="ss-step-body"></div>';
+
+    if(S.step === 0) renderStep1();
+    else if(S.step === 1) renderStep2();
+    else if(S.step === 2) renderStep3Preview();
+    else if(S.step === 3) renderStep4Execute();
+    else if(S.step === 4) renderStep5Report();
+    else if(S.step === 5) renderStep6SaveRecipe();
+  }
+
+  /* ---------------- FASE 1: ficheiro, folha, camada ---------------- */
+  function renderStep1(){
+    var body = document.getElementById('ss-step-body');
+    var layerOptions = getAllLayerIds().map(function(id){
+      return '<option value="' + id + '"' + (S.layerId === id ? ' selected' : '') + '>' + esc(getLayerLabel(id)) + '</option>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="ss-card">' +
+        '<h3>1 / Ficheiro Excel/CSV</h3>' +
+        '<div class="ss-dropzone" id="ss-dropzone">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+          '<b>Clique para escolher um ficheiro .xlsx ou .csv</b>' +
+          '<span>Ou arraste o ficheiro para aqui</span>' +
+        '</div>' +
+        '<input type="file" id="ss-file-input" accept=".xlsx,.xls,.csv" style="display:none;">' +
+        (S.fileName ? '<div class="ss-file-chip">📄 ' + esc(S.fileName) + '</div>' : '') +
+        (S.workbook && S.workbook.SheetNames.length > 1 ?
+          '<div class="ss-field" style="margin-top:14px;"><label>Folha</label><select id="ss-sheet-select">' +
+            S.workbook.SheetNames.map(function(n){ return '<option value="'+esc(n)+'"'+(n===S.sheetName?' selected':'')+'>'+esc(n)+'</option>'; }).join('') +
+          '</select></div>' : '') +
+      '</div>' +
+
+      '<div class="ss-card">' +
+        '<h3>2 / Camada SIG a atualizar</h3>' +
+        '<div class="ss-field">' +
+          '<label>Camada</label>' +
+          '<select id="ss-layer-select"><option value="">— escolher —</option>' + layerOptions + '</select>' +
+          '<div class="ss-hint">São as camadas já criadas nesta aplicação (painel de camadas).</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn" id="ss-step1-next" ' + (S.rows.length && S.layerId ? '' : 'disabled') + '>Seguinte →</button>' +
+      '</div>';
+
+    var dz = document.getElementById('ss-dropzone');
+    var fileInput = document.getElementById('ss-file-input');
+    dz.addEventListener('click', function(){ fileInput.click(); });
+    dz.addEventListener('dragover', function(e){ e.preventDefault(); dz.classList.add('is-drag'); });
+    dz.addEventListener('dragleave', function(){ dz.classList.remove('is-drag'); });
+    dz.addEventListener('drop', function(e){
+      e.preventDefault(); dz.classList.remove('is-drag');
+      if(e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', function(){
+      if(fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+    });
+
+    var sheetSelect = document.getElementById('ss-sheet-select');
+    if(sheetSelect){
+      sheetSelect.addEventListener('change', function(){
+        loadSheet(sheetSelect.value);
+        renderStep1();
+      });
+    }
+
+    var layerSelect = document.getElementById('ss-layer-select');
+    if(layerSelect){
+      layerSelect.addEventListener('change', function(){
+        S.layerId = layerSelect.value ? Number(layerSelect.value) : null;
+        renderStep1();
+      });
+    }
+
+    var nextBtn = document.getElementById('ss-step1-next');
+    if(nextBtn) nextBtn.addEventListener('click', function(){
+      buildDefaultMapping();
+      S.step = 1;
+      renderWizard();
+    });
+
+    function handleFile(file){
+      S.fileName = file.name;
+      readFile(file, function(err, wb){
+        if(err){ alert('Erro a ler o ficheiro: ' + err.message); return; }
+        S.workbook = wb;
+        loadSheet(wb.SheetNames[0]);
+        renderStep1();
+      });
+    }
+  }
+
+  /* tenta adivinhar automaticamente as correspondências entre colunas do
+     Excel e os campos da camada, por semelhança de nome (fase 2) */
+  function buildDefaultMapping(){
+    var schema = getLayerSchema(S.layerId);
+    var attrs = (schema && schema.attributes) || [];
+    S.mapping = attrs.map(function(attr){
+      var guess = S.headers.find(function(h){
+        return h && attr.name && h.toString().toLowerCase().replace(/[^a-z0-9]/g,'') === attr.name.toLowerCase().replace(/[^a-z0-9]/g,'');
+      }) || S.headers.find(function(h){
+        return h && attr.name && h.toString().toLowerCase().includes(attr.name.toLowerCase().slice(0,4));
+      }) || '';
+      return {sigField: attr.name, excelCol: guess};
+    });
+    if(!S.keySigField && attrs.length){
+      // tenta adivinhar qual campo parece ser o identificador
+      var idAttr = attrs.find(function(a){ return /id|codigo|código|obra|ref/i.test(a.name); }) || attrs[0];
+      S.keySigField = idAttr.name;
+      var m = S.mapping.find(function(mm){ return mm.sigField === S.keySigField; });
+      S.keyExcelCol = m ? m.excelCol : (S.headers[0] || '');
+    }
+  }
+
+  /* ---------------- FASE 2/3: correspondência dos campos + chave ---------------- */
+  function renderStep2(){
+    var body = document.getElementById('ss-step-body');
+    var schema = getLayerSchema(S.layerId);
+    var attrs = (schema && schema.attributes) || [];
+    var geomType = schema && schema.geometryType;
+
+    var rowsHtml = attrs.map(function(attr, i){
+      var options = ['<option value="">— não corresponder —</option>'].concat(
+        S.headers.map(function(h){
+          var m = S.mapping[i];
+          return '<option value="'+esc(h)+'"'+(m && m.excelCol===h?' selected':'')+'>'+esc(h)+'</option>';
+        })
+      ).join('');
+      return '<tr>' +
+        '<td><b>' + esc(attr.name) + '</b><div class="ss-hint">' + esc(attr.type||'') + '</div></td>' +
+        '<td><select data-idx="'+i+'" class="ss-map-select">' + options + '</select></td>' +
+        '<td class="ss-map-key-radio"><input type="radio" name="ss-key-field" value="'+esc(attr.name)+'" ' + (S.keySigField===attr.name?'checked':'') + '></td>' +
+      '</tr>';
+    }).join('');
+
+    var latLngHtml = geomType === 'Point' ?
+      '<div class="ss-card">' +
+        '<h3>Colunas de coordenadas (opcional, só necessário para criar pontos novos)</h3>' +
+        '<div class="ss-field" style="display:flex; gap:12px;">' +
+          '<div style="flex:1;"><label>Coluna de Latitude</label><select id="ss-lat-select"><option value="">—</option>' +
+            S.headers.map(function(h){ return '<option value="'+esc(h)+'"'+(h===S.latCol?' selected':'')+'>'+esc(h)+'</option>'; }).join('') +
+          '</select></div>' +
+          '<div style="flex:1;"><label>Coluna de Longitude</label><select id="ss-lng-select"><option value="">—</option>' +
+            S.headers.map(function(h){ return '<option value="'+esc(h)+'"'+(h===S.lngCol?' selected':'')+'>'+esc(h)+'</option>'; }).join('') +
+          '</select></div>' +
+        '</div>' +
+        '<div class="ss-hint">Se não indicar latitude/longitude, os registos sem correspondência ficam assinalados no relatório em vez de serem criados automaticamente.</div>' +
+      '</div>' : '';
+
+    body.innerHTML =
+      '<div class="ss-note"><b>Fase 2 e 3.</b> Faça corresponder cada campo da camada a uma coluna do Excel e assinale, na última coluna, qual é o identificador (a "chave") usado para saber que registo do Excel corresponde a que objeto da camada.</div>' +
+      '<div class="ss-card">' +
+        '<h3>Correspondência de campos</h3>' +
+        '<table class="ss-map-table"><thead><tr><th>Campo SIG</th><th>Coluna do Excel/CSV</th><th>Chave</th></tr></thead><tbody>' + rowsHtml + '</tbody></table>' +
+      '</div>' +
+      latLngHtml +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="ss-step2-back">← Voltar</button>' +
+        '<button class="ss-btn" id="ss-step2-next" ' + (S.keySigField ? '' : 'disabled') + '>Pré-visualizar →</button>' +
+      '</div>';
+
+    Array.prototype.slice.call(document.querySelectorAll('.ss-map-select')).forEach(function(sel){
+      sel.addEventListener('change', function(){
+        var i = Number(sel.dataset.idx);
+        S.mapping[i].excelCol = sel.value;
+        if(S.mapping[i].sigField === S.keySigField) S.keyExcelCol = sel.value;
+      });
+    });
+    Array.prototype.slice.call(document.querySelectorAll('input[name="ss-key-field"]')).forEach(function(radio){
+      radio.addEventListener('change', function(){
+        S.keySigField = radio.value;
+        var m = S.mapping.find(function(mm){ return mm.sigField === S.keySigField; });
+        S.keyExcelCol = m ? m.excelCol : '';
+      });
+    });
+    var latSel = document.getElementById('ss-lat-select');
+    var lngSel = document.getElementById('ss-lng-select');
+    if(latSel) latSel.addEventListener('change', function(){ S.latCol = latSel.value; });
+    if(lngSel) lngSel.addEventListener('change', function(){ S.lngCol = lngSel.value; });
+
+    document.getElementById('ss-step2-back').addEventListener('click', function(){ S.step = 0; renderWizard(); });
+    document.getElementById('ss-step2-next').addEventListener('click', function(){
+      if(!S.keyExcelCol){ alert('Escolha a coluna do Excel correspondente ao campo-chave.'); return; }
+      computePreview();
+      S.step = 2;
+      renderWizard();
+    });
+  }
+
+  /* ---------------- validação (fase 10) + deteção de alterações (fase 9) + preview (fase 4) ---------------- */
+  function computePreview(){
+    var schema = getLayerSchema(S.layerId);
+    var attrs = (schema && schema.attributes) || [];
+    var mapping = S.mapping.filter(function(m){ return m.excelCol; });
+    var recipeKey = 'layer' + S.layerId + ':' + S.keySigField;
+    var lastHashes = getRowHashes(recipeKey);
+
+    // índice das entidades existentes desta camada pela chave
+    var existingByKey = {};
+    featuresData.forEach(function(entry, id){
+      if(entry.layerId === S.layerId){
+        var val = entry.props ? entry.props[S.keySigField] : undefined;
+        if(val !== undefined && val !== null && val !== ''){
+          existingByKey[String(val).trim()] = entry;
+        }
+      }
+    });
+
+    var seenKeys = {};
+    var results = [];
+    var validationErrors = [];
+
+    S.rows.forEach(function(row, rowIdx){
+      var keyVal = row[S.keyExcelCol];
+      var keyStr = (keyVal === undefined || keyVal === null) ? '' : String(keyVal).trim();
+      var rowErrors = [];
+
+      if(!keyStr) rowErrors.push('chave vazia');
+      if(keyStr && seenKeys[keyStr]) rowErrors.push('chave duplicada no ficheiro');
+      seenKeys[keyStr] = (seenKeys[keyStr] || 0) + 1;
+
+      var newProps = {};
+      mapping.forEach(function(m){
+        var attr = attrs.find(function(a){ return a.name === m.sigField; });
+        var val = row[m.excelCol];
+        if(attr && attr.type === 'numero' && val !== '' && val !== undefined && val !== null && isNaN(Number(val))){
+          rowErrors.push('valor não-numérico em "' + attr.name + '"');
+        }
+        newProps[m.sigField] = (val === undefined || val === null) ? '' : val;
+      });
+
+      var lat = S.latCol ? Number(row[S.latCol]) : null;
+      var lng = S.lngCol ? Number(row[S.lngCol]) : null;
+      if(S.latCol && (row[S.latCol] !== '' && row[S.latCol] !== undefined) && (isNaN(lat) || lat < -90 || lat > 90)) rowErrors.push('latitude inválida');
+      if(S.lngCol && (row[S.lngCol] !== '' && row[S.lngCol] !== undefined) && (isNaN(lng) || lng < -180 || lng > 180)) rowErrors.push('longitude inválida');
+
+      var hash = simpleHash(JSON.stringify(newProps));
+      var unchanged = keyStr && lastHashes[keyStr] === hash;
+
+      var existing = keyStr ? existingByKey[keyStr] : null;
+      var action;
+      if(rowErrors.length){
+        action = 'error';
+      } else if(existing){
+        action = unchanged ? 'skip' : 'update';
+      } else {
+        var geomType = schema && schema.geometryType;
+        var canCreate = geomType === 'Point' && S.latCol && S.lngCol && lat !== null && lng !== null && !isNaN(lat) && !isNaN(lng);
+        action = canCreate ? 'create' : 'error';
+        if(!canCreate && !rowErrors.length) rowErrors.push('sem correspondência e sem geometria para criar automaticamente');
+      }
+
+      results.push({
+        rowIdx: rowIdx, keyStr: keyStr, newProps: newProps, hash: hash,
+        existing: existing || null, action: action, errors: rowErrors, lat: lat, lng: lng
+      });
+      if(rowErrors.length) validationErrors.push({rowIdx: rowIdx, keyStr: keyStr, errors: rowErrors});
+    });
+
+    S.preview = {
+      results: results,
+      recipeKey: recipeKey,
+      counts: {
+        total: results.length,
+        update: results.filter(function(r){ return r.action==='update'; }).length,
+        create: results.filter(function(r){ return r.action==='create'; }).length,
+        error: results.filter(function(r){ return r.action==='error'; }).length,
+        skip: results.filter(function(r){ return r.action==='skip'; }).length
+      },
+      validationErrors: validationErrors
+    };
+  }
+
+  /* ---------------- FASE 4: pré-visualização ---------------- */
+  function renderStep3Preview(){
+    var body = document.getElementById('ss-step-body');
+    var c = S.preview.counts;
+    var rowsHtml = S.preview.results.slice(0, 300).map(function(r){
+      var tag = {update:'upd', create:'new', error:'err', skip:'skip'}[r.action];
+      var tagLabel = {update:'Atualizar', create:'Criar', error:'Erro', skip:'Sem alterações'}[r.action];
+      return '<tr>' +
+        '<td>' + esc(r.keyStr || '(vazio)') + '</td>' +
+        '<td><span class="ss-tag ' + tag + '">' + tagLabel + '</span></td>' +
+        '<td>' + esc(r.errors.join('; ')) + '</td>' +
+      '</tr>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="ss-stats-grid">' +
+        '<div class="ss-stat-box"><b>' + c.total + '</b><span>registos encontrados</span></div>' +
+        '<div class="ss-stat-box is-update"><b>' + c.update + '</b><span>serão atualizados</span></div>' +
+        '<div class="ss-stat-box is-create"><b>' + c.create + '</b><span>serão criados</span></div>' +
+        '<div class="ss-stat-box is-conflict"><b>' + c.error + '</b><span>apresentam erros/conflitos</span></div>' +
+      '</div>' +
+      (c.skip ? '<p class="ss-hint">' + c.skip + ' registo(s) sem alterações desde a última sincronização desta receita (serão ignorados (deteção de alterações).</p>' : '') +
+      '<div class="ss-card">' +
+        '<h3>Detalhe por registo</h3>' +
+        '<div class="ss-table-wrap"><table class="ss-table"><thead><tr><th>Chave</th><th>Ação</th><th>Notas</th></tr></thead><tbody>' + (rowsHtml || '<tr><td colspan="3" class="ss-empty">Sem registos.</td></tr>') + '</tbody></table></div>' +
+        (S.preview.results.length > 300 ? '<div class="ss-hint">A mostrar os primeiros 300 de ' + S.preview.results.length + ' registos.</div>' : '') +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="ss-step3-back">← Voltar</button>' +
+        '<button class="ss-btn" id="ss-step3-next" ' + ((c.update + c.create) ? '' : 'disabled') + '>Executar →</button>' +
+      '</div>';
+
+    document.getElementById('ss-step3-back').addEventListener('click', function(){ S.step = 1; renderWizard(); });
+    document.getElementById('ss-step3-next').addEventListener('click', function(){
+      S.step = 3;
+      renderWizard();
+      runExecution();
+    });
+  }
+
+  /* ---------------- FASE 5: execução ---------------- */
+  function renderStep4Execute(){
+    var body = document.getElementById('ss-step-body');
+    body.innerHTML = '<div class="ss-card"><h3>A executar…</h3><p class="ss-hint">A atualizar objetos na camada. Não feche esta janela.</p></div>';
+  }
+
+  function runExecution(){
+    var t0 = performance.now();
+    var updated = 0, created = 0, errors = 0;
+    var hashesToStore = getRowHashes(S.preview.recipeKey);
+    var schema = getLayerSchema(S.layerId);
+
+    S.preview.results.forEach(function(r){
+      if(r.action === 'update'){
+        Object.keys(r.newProps).forEach(function(field){
+          r.existing.props[field] = r.newProps[field];
+        });
+        r.existing.updatedAt = Date.now();
+        updated++;
+        hashesToStore[r.keyStr] = r.hash;
+      } else if(r.action === 'create'){
+        try{
+          var marker = L.marker([r.lat, r.lng]);
+          if(layerVisible.get(S.layerId) === undefined) layerVisible.set(S.layerId, true);
+          if(!layerOrder.includes(S.layerId)) layerOrder.unshift(S.layerId);
+          drawnGroup.addLayer(marker);
+          assignLayerPane(marker, S.layerId);
+          var id = L.Util.stamp(marker);
+          var entry = {
+            layer: marker, props: {...r.newProps}, id: id, fid: genFid(), updatedAt: Date.now(),
+            label: 'Geometria (sync)', geomType: 'Point', layerId: S.layerId,
+            hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]
+          };
+          entry.props[S.keySigField] = r.keyStr;
+          featuresData.set(id, entry);
+          styleLayerDefault(marker, S.layerId);
+          created++;
+          hashesToStore[r.keyStr] = r.hash;
+        } catch(e){
+          errors++;
+        }
+      } else if(r.action === 'error'){
+        errors++;
+      }
+    });
+
+    setRowHashes(S.preview.recipeKey, hashesToStore);
+    if(typeof markProjectDirty === 'function') markProjectDirty();
+    if(typeof refreshFeatList === 'function') refreshFeatList();
+    if(typeof applyLayerZOrder === 'function') applyLayerZOrder();
+    if(typeof checkAllTopology === 'function') { try{ checkAllTopology(); } catch(e){} }
+
+    var elapsedSec = ((performance.now() - t0) / 1000).toFixed(1);
+    S.lastResult = {
+      updated: updated, created: created, errors: errors,
+      total: S.preview.counts.total, elapsedSec: elapsedSec, at: Date.now()
+    };
+
+    pushHistory({
+      at: Date.now(),
+      recipeName: S.activeRecipeName || '(sincronização avulsa)',
+      layerName: getLayerLabel(S.layerId),
+      fileName: S.fileName,
+      updated: updated, created: created, errors: errors,
+      user: window.currentAdminUser || 'Desconhecido'
+    });
+
+    S.step = 4;
+    renderWizard();
+  }
+
+  /* ---------------- FASE 6: relatório ---------------- */
+  function renderStep5Report(){
+    var body = document.getElementById('ss-step-body');
+    var r = S.lastResult;
+    body.innerHTML =
+      '<div class="ss-stats-grid">' +
+        '<div class="ss-stat-box is-update"><b>✓ ' + r.updated + '</b><span>atualizados</span></div>' +
+        '<div class="ss-stat-box is-create"><b>✓ ' + r.created + '</b><span>inseridos</span></div>' +
+        '<div class="ss-stat-box is-conflict"><b>✗ ' + r.errors + '</b><span>erros</span></div>' +
+        '<div class="ss-stat-box"><b>' + r.elapsedSec + 's</b><span>tempo total</span></div>' +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="ss-export-report">Exportar relatório</button>' +
+        '<button class="ss-btn" id="ss-step5-next">Guardar como receita →</button>' +
+        '<button class="ss-btn ss-btn-secondary" id="ss-finish">Concluir</button>' +
+      '</div>';
+
+    document.getElementById('ss-export-report').addEventListener('click', exportReport);
+    document.getElementById('ss-step5-next').addEventListener('click', function(){ S.step = 5; renderWizard(); });
+    document.getElementById('ss-finish').addEventListener('click', function(){ resetSyncState(); renderWizard(); });
+  }
+
+  function exportReport(){
+    var lines = ['Sincronização Inteligente / Relatório', new Date().toLocaleString('pt-PT'), ''];
+    lines.push('Camada: ' + getLayerLabel(S.layerId));
+    lines.push('Ficheiro: ' + (S.fileName || ''));
+    lines.push('Atualizados: ' + S.lastResult.updated);
+    lines.push('Inseridos: ' + S.lastResult.created);
+    lines.push('Erros: ' + S.lastResult.errors);
+    lines.push('Tempo: ' + S.lastResult.elapsedSec + 's');
+    lines.push('');
+    lines.push('Chave;Ação;Notas');
+    S.preview.results.forEach(function(r){
+      lines.push([r.keyStr, r.action, r.errors.join(' / ')].join(';'));
+    });
+    var blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'relatorio-sync-' + Date.now() + '.txt';
+    a.click();
+  }
+
+  /* ---------------- FASE 7: guardar receita ---------------- */
+  function renderStep6SaveRecipe(){
+    var body = document.getElementById('ss-step-body');
+    body.innerHTML =
+      '<div class="ss-card">' +
+        '<h3>Guardar esta configuração como receita</h3>' +
+        '<div class="ss-field"><label>Nome da receita</label><input type="text" id="ss-recipe-name" placeholder="ex: Atualização Obras" value="' + esc(S.activeRecipeName || '') + '"></div>' +
+        '<button class="ss-btn" id="ss-recipe-save">Guardar receita</button>' +
+      '</div>' +
+      '<div class="ss-actions-row">' +
+        '<button class="ss-btn ss-btn-secondary" id="ss-finish2">Concluir sem guardar</button>' +
+      '</div>';
+
+    document.getElementById('ss-recipe-save').addEventListener('click', function(){
+      var name = document.getElementById('ss-recipe-name').value.trim();
+      if(!name){ alert('Dê um nome à receita.'); return; }
+      var recipes = loadRecipes();
+      var recipe = {
+        name: name, layerId: S.layerId, keySigField: S.keySigField, keyExcelCol: S.keyExcelCol,
+        mapping: S.mapping, latCol: S.latCol, lngCol: S.lngCol, sheetName: S.sheetName,
+        createdAt: Date.now()
+      };
+      var idx = recipes.findIndex(function(r){ return r.name === name; });
+      if(idx >= 0) recipes[idx] = recipe; else recipes.push(recipe);
+      saveRecipes(recipes);
+      resetSyncState();
+      switchSection('recipes');
+    });
+    document.getElementById('ss-finish2').addEventListener('click', function(){ resetSyncState(); renderWizard(); });
+  }
+
+  /* ============================================================
+     RECEITAS GUARDADAS
+     ============================================================ */
+  function renderRecipes(){
+    var recipes = loadRecipes();
+    var itemsHtml = recipes.map(function(r, i){
+      return '<div class="ss-recipe-card">' +
+        '<div><b>' + esc(r.name) + '</b><span>' + esc(getLayerLabel(r.layerId)) + ' · chave: ' + esc(r.keySigField) + '</span></div>' +
+        '<div class="ss-recipe-actions">' +
+          '<button class="ss-btn" data-run="' + i + '">Executar receita</button>' +
+          '<button class="ss-btn ss-btn-secondary ss-btn-danger" data-del="' + i + '">Eliminar</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    contentEl.innerHTML =
+      '<h2>Receitas guardadas</h2>' +
+      '<p class="ss-subtitle">Configurações de sincronização guardadas (Fase 7). Basta escolher o novo ficheiro e clicar em "Executar receita".</p>' +
+      (itemsHtml || '<p class="ss-empty">Ainda não guardou nenhuma receita.</p>');
+
+    recipes.forEach(function(r, i){
+      var runBtn = contentEl.querySelector('[data-run="'+i+'"]');
+      var delBtn = contentEl.querySelector('[data-del="'+i+'"]');
+      if(runBtn) runBtn.addEventListener('click', function(){ startFromRecipe(r); });
+      if(delBtn) delBtn.addEventListener('click', function(){
+        if(!confirm('Eliminar a receita "' + r.name + '"?')) return;
+        var list = loadRecipes(); list.splice(i, 1); saveRecipes(list); renderRecipes();
+      });
+    });
+  }
+
+  function startFromRecipe(recipe){
+    resetSyncState();
+    S.activeRecipeName = recipe.name;
+    S.layerId = recipe.layerId;
+    S.keySigField = recipe.keySigField;
+    S.keyExcelCol = recipe.keyExcelCol;
+    S.mapping = recipe.mapping.slice();
+    S.latCol = recipe.latCol;
+    S.lngCol = recipe.lngCol;
+    switchSection('wizard');
+    // fica na fase 1 à espera do novo ficheiro; folha/mapeamento já pré-preenchidos
+  }
+
+  /* ============================================================
+     AUTOMAÇÃO (Fase 8, versão realista dentro de uma página web)
+     ============================================================ */
+  var automationTimer = null;
+  var watchedDirHandle = null;
+
+  function renderAutomation(){
+    var supported = !!window.showDirectoryPicker;
+    contentEl.innerHTML =
+      '<h2>Automação</h2>' +
+      '<div class="ss-note"><b>Importante:</b> uma página web só executa código enquanto está aberta. Não é possível agendar "às 08:00 mesmo com o computador desligado" a partir daqui — isso exige um script fora do browser (ex: Tarefas Agendadas do Windows a abrir a app e a receita). O que se disponibiliza abaixo é uma verificação automática ' +
+        '<b>enquanto a aplicação estiver aberta</b>: escolhe uma pasta, e a app procura periodicamente por ficheiros novos para aplicar uma receita.</div>' +
+      (!supported ? '<p class="ss-empty">O navegador/versão atual não suporta acesso a pastas (File System Access API). Esta funcionalidade fica indisponível aqui.</p>' :
+        '<div class="ss-card">' +
+          '<h3>Verificação periódica</h3>' +
+          '<div class="ss-field"><label>Receita a aplicar</label><select id="ss-auto-recipe"><option value="">— escolher —</option>' +
+            loadRecipes().map(function(r,i){ return '<option value="'+i+'">'+esc(r.name)+'</option>'; }).join('') +
+          '</select></div>' +
+          '<div class="ss-field"><label>Intervalo de verificação (minutos)</label><input type="number" id="ss-auto-interval" value="15" min="1"></div>' +
+          '<button class="ss-btn" id="ss-auto-pick-folder">Escolher pasta a vigiar</button>' +
+          '<div id="ss-auto-folder-status" class="ss-hint" style="margin-top:8px;"></div>' +
+          '<div class="ss-actions-row">' +
+            '<button class="ss-btn" id="ss-auto-start" disabled>Iniciar verificação automática</button>' +
+            '<button class="ss-btn ss-btn-secondary" id="ss-auto-stop" disabled>Parar</button>' +
+          '</div>' +
+          '<div class="ss-hint">A pasta escolhida só fica ativa enquanto esta aba estiver aberta (não persiste depois de fechar/recarregar a página).</div>' +
+        '</div>');
+
+    if(!supported) return;
+
+    var pickBtn = document.getElementById('ss-auto-pick-folder');
+    var startBtn = document.getElementById('ss-auto-start');
+    var stopBtn = document.getElementById('ss-auto-stop');
+    var statusEl = document.getElementById('ss-auto-folder-status');
+
+    pickBtn.addEventListener('click', function(){
+      window.showDirectoryPicker().then(function(handle){
+        watchedDirHandle = handle;
+        statusEl.textContent = 'Pasta selecionada: ' + handle.name;
+        startBtn.disabled = false;
+      }).catch(function(){ /* utilizador cancelou */ });
+    });
+
+    startBtn.addEventListener('click', function(){
+      var recipeIdx = document.getElementById('ss-auto-recipe').value;
+      var minutes = Number(document.getElementById('ss-auto-interval').value) || 15;
+      if(recipeIdx === '' || !watchedDirHandle){ alert('Escolha uma receita e uma pasta.'); return; }
+      var recipe = loadRecipes()[Number(recipeIdx)];
+      if(automationTimer) clearInterval(automationTimer);
+      checkFolderForNewFiles(watchedDirHandle, recipe); // primeira verificação imediata
+      automationTimer = setInterval(function(){ checkFolderForNewFiles(watchedDirHandle, recipe); }, minutes * 60000);
+      startBtn.disabled = true; stopBtn.disabled = false;
+      statusEl.textContent = 'A vigiar "' + watchedDirHandle.name + '" a cada ' + minutes + ' min (enquanto a app estiver aberta).';
+    });
+
+    stopBtn.addEventListener('click', function(){
+      if(automationTimer) clearInterval(automationTimer);
+      automationTimer = null;
+      startBtn.disabled = false; stopBtn.disabled = true;
+      statusEl.textContent = 'Verificação automática parada.';
+    });
+  }
+
+  /* procura o ficheiro .xlsx/.csv mais recente na pasta vigiada e, se for
+     novo desde a última verificação, aplica a receita automaticamente */
+  var lastSeenFile = null;
+  function checkFolderForNewFiles(dirHandle, recipe){
+    (async function(){
+      var newest = null;
+      for await (var entry of dirHandle.values()){
+        if(entry.kind === 'file' && /\.(xlsx|xls|csv)$/i.test(entry.name)){
+          var file = await entry.getFile();
+          if(!newest || file.lastModified > newest.file.lastModified) newest = {entry: entry, file: file};
+        }
+      }
+      if(!newest) return;
+      var signature = newest.file.name + ':' + newest.file.lastModified;
+      if(signature === lastSeenFile) return; // já processado
+      lastSeenFile = signature;
+
+      resetSyncState();
+      S.activeRecipeName = recipe.name;
+      S.layerId = recipe.layerId; S.keySigField = recipe.keySigField; S.keyExcelCol = recipe.keyExcelCol;
+      S.mapping = recipe.mapping.slice(); S.latCol = recipe.latCol; S.lngCol = recipe.lngCol;
+      S.fileName = newest.file.name;
+      readFile(newest.file, function(err, wb){
+        if(err) return;
+        S.workbook = wb;
+        loadSheet(recipe.sheetName && wb.SheetNames.indexOf(recipe.sheetName) !== -1 ? recipe.sheetName : wb.SheetNames[0]);
+        computePreview();
+        runExecution();
+      });
+    })();
+  }
+
+  /* ============================================================
+     HISTÓRICO (Fase 11)
+     ============================================================ */
+  function renderHistory(){
+    var history = loadHistory();
+    var itemsHtml = history.map(function(h){
+      var date = new Date(h.at).toLocaleString('pt-PT');
+      return '<div class="ss-history-item">' +
+        '<b>' + esc(h.recipeName) + '</b> / ' + esc(h.layerName || '') +
+        '<div>' + date + ' · ✓ ' + h.updated + ' atualizados · ✓ ' + h.created + ' inseridos' + (h.errors ? ' · ✗ ' + h.errors + ' erros' : '') + '</div>' +
+        '<div>Utilizador: ' + esc(h.user || 'Desconhecido') + (h.fileName ? ' · Ficheiro: ' + esc(h.fileName) : '') + '</div>' +
+      '</div>';
+    }).join('');
+
+    contentEl.innerHTML =
+      '<h2>Histórico</h2>' +
+      '<p class="ss-subtitle">Cada execução de sincronização fica registada aqui (quando e por quem os dados foram atualizados).</p>' +
+      (itemsHtml || '<p class="ss-empty">Ainda não há sincronizações registadas.</p>');
+  }
+
+  /* ============================================================
+     COMO USAR (menu de ajuda)
+     ============================================================ */
+  function renderHelp(){
+    contentEl.innerHTML =
+      '<h2>Como usar a Sincronização Inteligente</h2>' +
+      '<p class="ss-subtitle">Guia rápido, passo a passo. Cada bloco pode ser aberto/fechado clicando no título.</p>' +
+
+      '<details class="ss-help-item" open>' +
+        '<summary>1. O que é isto?</summary>' +
+        '<div class="ss-help-body">' +
+          'Serve para atualizar uma camada SIG já existente na app diretamente a partir de um ficheiro Excel (.xlsx) ou CSV (sem teres de abrir cada objeto e editar os campos à mão). ' +
+          'A app compara o ficheiro com o que já está na camada e diz-te o que muda, antes de mudar seja o que for.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>2. Passo a passo (Nova sincronização)</summary>' +
+        '<div class="ss-help-body">' +
+          '<b>Fase 1 / Ficheiro e camada.</b> Escolhe o Excel/CSV (arrasta para a caixa ou clica nela). Se o ficheiro tiver várias folhas, escolhe a folha certa. Depois escolhe a camada da tua app que queres atualizar.<br><br>' +
+          '<b>Fase 2 / Correspondência.</b> Para cada campo da camada (ex: ESTADO, TECNICO, DATA), escolhe a coluna do Excel que lhe corresponde. A app tenta adivinhar por ti, mas confirma sempre.<br><br>' +
+          '<b>Fase 3 / Chave.</b> Na mesma tabela, marca com o botão de opção qual é o campo que serve de identificador único (ex: ID_OBRA). É assim que a app sabe que a linha "ID 1587" do Excel corresponde ao objeto "ID_OBRA 1587" da camada.<br><br>' +
+          '<b>Fase 4 / Pré-visualização.</b> A app mostra quantos registos vai atualizar, criar ou que têm erros. Nada é alterado ainda.<br><br>' +
+          '<b>Fase 5/6 / Executar e relatório.</b> Clica em "Executar" e no fim vês o resumo (atualizados / inseridos / erros / tempo). Podes exportar o relatório em .txt.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>3. Quando é que cria objetos novos em vez de só atualizar?</summary>' +
+        '<div class="ss-help-body">' +
+          'Só quando a camada é de <b>pontos</b> e mapeaste colunas de latitude e longitude no Excel. Sem essas duas colunas, ou se a camada for de linhas/polígonos, os registos sem correspondência ficam marcados como "sem geometria" — tens de os desenhar manualmente, porque não há como inventar uma linha ou polígono a partir de uma folha de cálculo.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>4. Receitas guardadas — para quê?</summary>' +
+        '<div class="ss-help-body">' +
+          'Se atualizas sempre a mesma camada a partir do mesmo tipo de ficheiro (ex: "Excel Obras.xlsx" → camada "Obras Municipais"), guarda a configuração como receita na Fase 7. Da próxima vez não precisas de repetir a correspondência de campos — vais a "Receitas guardadas", clicas em "Executar receita" e só escolhes o ficheiro novo.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>5. Automação — o que é possível e o que não é</summary>' +
+        '<div class="ss-help-body">' +
+          'Podes escolher uma pasta e um intervalo (ex: a cada 15 min); enquanto a app estiver aberta, ela verifica a pasta e aplica a receita escolhida a ficheiros novos automaticamente.<br><br>' +
+          '<b>O que isto NÃO faz:</b> não corre com a app fechada nem com o computador desligado. Um verdadeiro agendamento "todos os dias às 08:00 sem ninguém tocar em nada" tem de ser feito fora da página web (ex: Tarefas Agendadas do Windows a abrir a app).' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>6. Como sei o que mudou entre sincronizações?</summary>' +
+        '<div class="ss-help-body">' +
+          'A app guarda uma "assinatura" dos valores de cada registo depois de cada sincronização com a mesma receita. Da vez seguinte, se um registo não mudou nada desde a última vez, aparece como "sem alterações" na pré-visualização e não é tocado — só se atualiza o que realmente mudou.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>7. Erros e conflitos mais comuns</summary>' +
+        '<div class="ss-help-body">' +
+          '• <b>Chave vazia</b> — a linha do Excel não tem valor na coluna escolhida como identificador.<br>' +
+          '• <b>Chave duplicada no ficheiro</b> — dois registos do Excel com o mesmo ID.<br>' +
+          '• <b>Valor não-numérico</b> — um campo definido como número na camada recebeu texto.<br>' +
+          '• <b>Latitude/longitude inválida</b> — fora do intervalo -90/90 ou -180/180.<br>' +
+          'Nenhum destes registos é alterado; ficam listados no relatório para corrigires no Excel e voltares a tentar.' +
+        '</div>' +
+      '</details>' +
+
+      '<details class="ss-help-item">' +
+        '<summary>8. Onde fica o histórico?</summary>' +
+        '<div class="ss-help-body">' +
+          'Em "Histórico", no menu à esquerda — mostra data/hora, receita usada, quantos registos foram atualizados/inseridos e quem fez a sincronização.' +
+        '</div>' +
+      '</details>';
+  }
+
+})();

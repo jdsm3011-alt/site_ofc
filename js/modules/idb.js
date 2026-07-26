@@ -1,1 +1,193 @@
-function _0x36f0(_0x1237c2,_0x2a3609){_0x1237c2=_0x1237c2-0x157;const _0x361921=_0x3619();let _0x36f088=_0x361921[_0x1237c2];if(_0x36f0['kZBFTM']===undefined){var _0x404d63=function(_0x24b33c){const _0x52f148='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x4f35f1='',_0x7cb5af='';for(let _0x38211f=0x0,_0x4ca459,_0x237c36,_0x2571b5=0x0;_0x237c36=_0x24b33c['charAt'](_0x2571b5++);~_0x237c36&&(_0x4ca459=_0x38211f%0x4?_0x4ca459*0x40+_0x237c36:_0x237c36,_0x38211f++%0x4)?_0x4f35f1+=String['fromCharCode'](0xff&_0x4ca459>>(-0x2*_0x38211f&0x6)):0x0){_0x237c36=_0x52f148['indexOf'](_0x237c36);}for(let _0x401587=0x0,_0x2107c1=_0x4f35f1['length'];_0x401587<_0x2107c1;_0x401587++){_0x7cb5af+='%'+('00'+_0x4f35f1['charCodeAt'](_0x401587)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x7cb5af);};_0x36f0['wgHPrH']=_0x404d63,_0x36f0['tWksYP']={},_0x36f0['kZBFTM']=!![];}const _0x1d89b6=_0x361921[0x0],_0x404b55=_0x1237c2+_0x1d89b6,_0x37d6a2=_0x36f0['tWksYP'][_0x404b55];return!_0x37d6a2?(_0x36f088=_0x36f0['wgHPrH'](_0x36f088),_0x36f0['tWksYP'][_0x404b55]=_0x36f088):_0x36f088=_0x37d6a2,_0x36f088;}function _0x3619(){const _0x2e98aa=['B3b0Aw9UCW','DgHLBG','AwrIrgvSzxrLtwv0yq','nwjgzfnMua','AwrIuhv0vgLSzq','y3jLyxrLt2jQzwn0vvjm','yNvPBgruAwXLugXHBG','B2zMBgLUzuTLEq','ywX0','mZeYnZq3vKriAvrp','vgLSzuXHEwvY','BwLU','ota3oxDozLfmzW','w0LeqL0GzgvSzxrLtwv0ysbMywLSzwq6','B25LCNjVCG','Bg9N','Bg9Utgf0vg9uAwXL','yMfZzq','Chv0','y3jLyxrLrwXLBwvUDa','Bwf4wq','DhjHBNnHy3rPB24','nda4nZu2CKrXCe5q','ChvZAa','B2jQzwn0u3rVCMu','w0LeqL0Gz2v0qwXStwv0ysbMywLSzwq6','zMfSC2u','DgLSzvjHBMDLrM9YqM91BMrZ','B2jQzwn0u3rVCMvoyw1LCW','CMv2B2TLt2jQzwn0vvjm','Bwf4wa','y29UDgfPBNm','y3jLyxrLvgLSzq','ChjVDg90ExbL','CMvZDwX0','Aw1Hz2uVANbLzW','r2v0twfW','y3jLyxrLt2jQzwn0u3rVCMu','C29YDa','AwrIu2v0twv0yq','ms4ZlJa','ntiXmtKXCMDhtK15','w0LeqL0Gz2v0vgLSzsbMywLSzwq6','B251CgDYywrLBMvLzgvK','BwLUwa','zgvSzxrL','zMXVB3i','rvbtrZOZodu3','DgLSzxm','z2v0tM9YDgG','mJu2','AwrIr2v0qwXStwv0yq','w0LeqL0GC2v0twv0ysbMywLSzwq6','D21Ztgf5zxi','B25SB2fK','CMvHzg9UBhK','mtjPrxnJwMe','ndqWmZeWrMXevfPt','B25ZDwnJzxnZ','DgfU','C2f2zwrbDa','B3bLBG','odHnzNL4z0m','CMvHzhDYAxrL','Bwv0yq','zxH0zw5K','mtiXmZi2nhP1vwTnuG','z2v0u291DgG','C3jJ','t2zMBgLUzvrPBgvmyxLLCG','v01t','mtjUsg5usgu','w0LeqL0GChv0vgLSzsbMywLSzwq6','mZGZodC0nMX0wKLxDG','mte3zuz5DwT3','z2v0v2vZDa','y29Z','B25JB21WBgv0zq','zxjYB3i','Bwf4','Cg93'];_0x3619=function(){return _0x2e98aa;};return _0x3619();}(function(_0x55e9c8,_0x5eb63d){const _0x18f713=_0x36f0,_0x5aabac=_0x55e9c8();while(!![]){try{const _0x50efe=parseInt(_0x18f713(0x18d))/0x1+-parseInt(_0x18f713(0x175))/0x2+parseInt(_0x18f713(0x19a))/0x3*(-parseInt(_0x18f713(0x17a))/0x4)+parseInt(_0x18f713(0x187))/0x5*(parseInt(_0x18f713(0x17c))/0x6)+-parseInt(_0x18f713(0x190))/0x7*(parseInt(_0x18f713(0x171))/0x8)+-parseInt(_0x18f713(0x17d))/0x9*(-parseInt(_0x18f713(0x16c))/0xa)+-parseInt(_0x18f713(0x15c))/0xb*(parseInt(_0x18f713(0x16b))/0xc);if(_0x50efe===_0x5eb63d)break;else _0x5aabac['push'](_0x5aabac['shift']());}catch(_0x300875){_0x5aabac['push'](_0x5aabac['shift']());}}}(_0x3619,0x6d5a1),(function(){const _0x38ef8a=_0x36f0;let _0x4f35f1=null;function _0x7cb5af(){if(_0x4f35f1)return _0x4f35f1;return _0x4f35f1=new Promise((_0x595446,_0x13787c)=>{const _0x1e23ca=_0x36f0,_0x1929d4=indexedDB[_0x1e23ca(0x170)]('engenh_offline',0x1);_0x1929d4[_0x1e23ca(0x15e)]=()=>{const _0x5e3f51=_0x1e23ca,_0x3f43e5=_0x1929d4['result'];if(!_0x3f43e5['objectStoreNames']['contains'](_0x5e3f51(0x163)))_0x3f43e5[_0x5e3f51(0x158)]('tiles');if(!_0x3f43e5[_0x5e3f51(0x1a0)][_0x5e3f51(0x1a3)](_0x5e3f51(0x173)))_0x3f43e5[_0x5e3f51(0x158)](_0x5e3f51(0x173));},_0x1929d4[_0x1e23ca(0x16d)]=()=>_0x595446(_0x1929d4[_0x1e23ca(0x1a6)]),_0x1929d4[_0x1e23ca(0x192)]=()=>_0x13787c(_0x1929d4['error']);}),_0x4f35f1;}async function _0x38211f(_0x2db1a7,_0x371db0){const _0x4ecbf9=_0x36f0;try{const _0x2b1940=await _0x7cb5af();return new Promise((_0x2ac9d2,_0x4c9444)=>{const _0x378441=_0x36f0,_0x5251f8=_0x2b1940[_0x378441(0x199)](_0x378441(0x163),_0x378441(0x172));_0x5251f8[_0x378441(0x19c)](_0x378441(0x163))[_0x378441(0x196)](_0x371db0,_0x2db1a7),_0x5251f8[_0x378441(0x180)]=()=>_0x2ac9d2(),_0x5251f8['onerror']=()=>_0x4c9444(_0x5251f8[_0x378441(0x181)]);});}catch(_0x16d612){return console[_0x4ecbf9(0x181)](_0x4ecbf9(0x17b),_0x16d612),null;}}async function _0x4ca459(_0x50f8d4){const _0x23c2aa=_0x36f0;try{const _0x567085=await _0x7cb5af();return new Promise(_0xec31c5=>{const _0x5e83d9=_0x36f0,_0x4a0419=_0x567085[_0x5e83d9(0x199)](_0x5e83d9(0x163),_0x5e83d9(0x16a)),_0x4edfb0=_0x4a0419[_0x5e83d9(0x19c)](_0x5e83d9(0x163))['get'](_0x50f8d4);_0x4edfb0[_0x5e83d9(0x16d)]=()=>_0xec31c5(_0x4edfb0[_0x5e83d9(0x1a6)]||null),_0x4edfb0['onerror']=()=>_0xec31c5(null);});}catch(_0x34251c){return console[_0x23c2aa(0x181)](_0x23c2aa(0x15d),_0x34251c),null;}}async function _0x237c36(_0x3e0523){const _0x3658c1=_0x36f0;try{const _0x56cb81=await _0x7cb5af();return new Promise((_0xb9442a,_0x4fe97e)=>{const _0x4a0617=_0x36f0,_0x32bcc9=_0x56cb81[_0x4a0617(0x199)](_0x4a0617(0x173),_0x4a0617(0x172));_0x32bcc9[_0x4a0617(0x19c)](_0x4a0617(0x173))['put'](_0x3e0523,_0x3e0523['id']),_0x32bcc9[_0x4a0617(0x180)]=()=>_0xb9442a(),_0x32bcc9[_0x4a0617(0x192)]=()=>_0x4fe97e(_0x32bcc9[_0x4a0617(0x181)]);});}catch(_0x4c90c7){return console[_0x3658c1(0x181)](_0x3658c1(0x167),_0x4c90c7),null;}}async function _0x2571b5(){const _0x6def63=_0x36f0;try{const _0x4b634c=await _0x7cb5af();return new Promise(_0x507b1e=>{const _0x2849b5=_0x36f0,_0x46ecc0=_0x4b634c[_0x2849b5(0x199)](_0x2849b5(0x173),_0x2849b5(0x16a)),_0x18d12e=_0x46ecc0[_0x2849b5(0x19c)](_0x2849b5(0x173))['getAll']();_0x18d12e[_0x2849b5(0x16d)]=()=>_0x507b1e((_0x18d12e[_0x2849b5(0x1a6)]||[])[_0x2849b5(0x159)]((_0x354c68,_0x3709e6)=>_0x3709e6[_0x2849b5(0x16f)]-_0x354c68[_0x2849b5(0x16f)])),_0x18d12e[_0x2849b5(0x192)]=()=>_0x507b1e([]);});}catch(_0x5c9d9d){return console[_0x6def63(0x181)](_0x6def63(0x19d),_0x5c9d9d),[];}}async function _0x401587(_0x45c983){const _0x524e10=_0x36f0;try{const _0x3f488b=await _0x7cb5af();return new Promise((_0x5e5161,_0x2d5b78)=>{const _0x52b986=_0x36f0,_0x438950=_0x3f488b[_0x52b986(0x199)](_0x52b986(0x173),_0x52b986(0x172));_0x438950['objectStore'](_0x52b986(0x173))[_0x52b986(0x160)](_0x45c983),_0x438950['oncomplete']=()=>_0x5e5161(),_0x438950[_0x52b986(0x192)]=()=>_0x2d5b78(_0x438950[_0x52b986(0x181)]);});}catch(_0x2efe80){return console[_0x524e10(0x181)](_0x524e10(0x191),_0x2efe80),null;}}window[_0x38ef8a(0x178)]=L[_0x38ef8a(0x18e)][_0x38ef8a(0x174)]({'createTile':function(_0x334605,_0x7dc298){const _0x5cc78d=_0x38ef8a,_0xb55243=document[_0x5cc78d(0x197)]('img');_0xb55243[_0x5cc78d(0x18c)]='';const _0x58918b=_0x334605['z'],_0x53c25e=_0x334605['x'],_0x2038bf=_0x334605['y'],_0x8fef05=this[_0x5cc78d(0x184)][_0x5cc78d(0x18b)]+'_'+_0x58918b+'_'+_0x53c25e+'_'+_0x2038bf;return _0x4ca459(_0x8fef05)[_0x5cc78d(0x185)](_0x2e30be=>{const _0xa1f721=_0x5cc78d;if(!this['_map']){_0x7dc298(null,_0xb55243);return;}if(_0x2e30be){const _0x2e3eca=URL[_0xa1f721(0x189)](_0x2e30be);_0xb55243[_0xa1f721(0x169)]=()=>{const _0x2da05e=_0xa1f721;URL[_0x2da05e(0x1a1)](_0x2e3eca),_0x7dc298(null,_0xb55243);},_0xb55243[_0xa1f721(0x192)]=()=>_0x7dc298(null,_0xb55243),_0xb55243[_0xa1f721(0x177)]=_0x2e3eca;}else _0xb55243[_0xa1f721(0x169)]=()=>_0x7dc298(null,_0xb55243),_0xb55243['onerror']=_0x2f00c6=>_0x7dc298(_0x2f00c6,_0xb55243),_0xb55243[_0xa1f721(0x177)]=this['getTileUrl'](_0x334605);}),_0xb55243;}}),window['OfflineWMSTileLayer']=L[_0x38ef8a(0x18e)]['WMS']['extend']({'createTile':OfflineTileLayer[_0x38ef8a(0x1a5)][_0x38ef8a(0x1a4)]});function _0x2107c1(_0x53b52c,_0x3eef61,_0x42ccbb){const _0x37adca=_0x38ef8a,_0x547c94=20037508.342789244,_0x45d3a6=0x2*_0x547c94/Math[_0x37adca(0x183)](0x2,_0x53b52c),_0x101f6=-_0x547c94+_0x3eef61*_0x45d3a6,_0x2c5796=-_0x547c94+(_0x3eef61+0x1)*_0x45d3a6,_0x2a9a31=_0x547c94-_0x42ccbb*_0x45d3a6,_0x41bc7f=_0x547c94-(_0x42ccbb+0x1)*_0x45d3a6;return[_0x101f6,_0x41bc7f,_0x2c5796,_0x2a9a31];}function _0x274757(_0x55626d,_0x5bb867){const _0xdbf52e=_0x38ef8a,[_0x2657f5,_0x422ebe,_0x1ab38b,_0x33fb9d]=_0x2107c1(_0x5bb867['z'],_0x5bb867['x'],_0x5bb867['y']),_0x462b1e=new URLSearchParams({'service':_0xdbf52e(0x179),'version':_0xdbf52e(0x15b),'request':_0xdbf52e(0x157),'layers':_0x55626d[_0xdbf52e(0x168)],'styles':'','format':_0xdbf52e(0x1a7),'transparent':_0xdbf52e(0x19e),'width':_0xdbf52e(0x165),'height':_0xdbf52e(0x165),'crs':_0xdbf52e(0x162),'bbox':_0x2657f5+','+_0x422ebe+','+_0x1ab38b+','+_0x33fb9d});return _0x55626d[_0xdbf52e(0x195)]+'?'+_0x462b1e['toString']();}window[_0x38ef8a(0x194)]=function(_0x3fe8cc,_0x1b9981,_0xd9d87f){const _0x10fc37=_0x38ef8a,_0x8a0117=Math[_0x10fc37(0x183)](0x2,_0xd9d87f),_0x3abc6a=Math[_0x10fc37(0x161)]((_0x3fe8cc+0xb4)/0x168*_0x8a0117),_0x18aeea=_0x1b9981*Math['PI']/0xb4,_0x116eb1=Math[_0x10fc37(0x161)]((0x1-Math[_0x10fc37(0x193)](Math[_0x10fc37(0x16e)](_0x18aeea)+0x1/Math[_0x10fc37(0x17f)](_0x18aeea))/Math['PI'])/0x2*_0x8a0117);return{'x':_0x3abc6a,'y':_0x116eb1};},window[_0x38ef8a(0x19f)]=function(_0x390916,_0x32eeb6){const _0x568a07=_0x38ef8a,_0x2aed07=lonLatToTile(_0x390916[_0x568a07(0x17e)](),_0x390916[_0x568a07(0x164)](),_0x32eeb6),_0x25a0e1=lonLatToTile(_0x390916['getEast'](),_0x390916[_0x568a07(0x176)](),_0x32eeb6);return{'minX':Math[_0x568a07(0x18f)](_0x2aed07['x'],_0x25a0e1['x']),'maxX':Math[_0x568a07(0x182)](_0x2aed07['x'],_0x25a0e1['x']),'minY':Math[_0x568a07(0x18f)](_0x2aed07['y'],_0x25a0e1['y']),'maxY':Math[_0x568a07(0x182)](_0x2aed07['y'],_0x25a0e1['y'])};},window[_0x38ef8a(0x18a)]=function(_0x2c6fd8,_0x105b5b,_0x41f433){const _0x1fa15e=_0x38ef8a,_0x230205=[];for(let _0x34ecc5=_0x105b5b;_0x34ecc5<=_0x41f433;_0x34ecc5++){const _0x54b4fc=tileRangeForBounds(_0x2c6fd8,_0x34ecc5);for(let _0x17a058=_0x54b4fc[_0x1fa15e(0x15f)];_0x17a058<=_0x54b4fc[_0x1fa15e(0x1a2)];_0x17a058++){for(let _0x468bcb=_0x54b4fc['minY'];_0x468bcb<=_0x54b4fc[_0x1fa15e(0x198)];_0x468bcb++){_0x230205[_0x1fa15e(0x19b)]({'z':_0x34ecc5,'x':_0x17a058,'y':_0x468bcb});}}}return _0x230205;},window[_0x38ef8a(0x188)]=_0x38211f,window['idbGetTile']=_0x4ca459,window[_0x38ef8a(0x15a)]=_0x237c36,window[_0x38ef8a(0x166)]=_0x2571b5,window[_0x38ef8a(0x186)]=_0x401587;}()));
+/* === MÓDULO: IndexedDB & Tile Utils === */
+/* IndexedDB wrapper (idbOpen, idbPutTile, idbGetTile, idbSetMeta,
+   idbGetAllMeta, idbDeleteMeta), OfflineTileLayer, OfflineWMSTileLayer,
+   tile math (tile3857BBox, buildWmsTileUrl, lonLatToTile, tileRangeForBounds,
+   buildTilePlan) */
+/* Origem: 05-app-main.js — ver remoções correspondentes */
+(function(){
+
+/* ---------- IndexedDB ---------- */
+let _idbPromise = null;
+function idbOpen(){
+  if(_idbPromise) return _idbPromise;
+  _idbPromise = new Promise((resolve, reject)=>{
+    const req = indexedDB.open('engenh_offline', 1);
+    req.onupgradeneeded = ()=>{
+      const db = req.result;
+      if(!db.objectStoreNames.contains('tiles')) db.createObjectStore('tiles');
+      if(!db.objectStoreNames.contains('meta')) db.createObjectStore('meta');
+    };
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+  return _idbPromise;
+}
+async function idbPutTile(key, blob){
+  try {
+    const db = await idbOpen();
+    return new Promise((resolve, reject)=>{
+      const tx = db.transaction('tiles', 'readwrite');
+      tx.objectStore('tiles').put(blob, key);
+      tx.oncomplete = ()=> resolve();
+      tx.onerror = ()=> reject(tx.error);
+    });
+  } catch(err) {
+    console.error('[IDB] putTile failed:', err);
+    return null;
+  }
+}
+async function idbGetTile(key){
+  try {
+    const db = await idbOpen();
+    return new Promise((resolve)=>{
+      const tx = db.transaction('tiles', 'readonly');
+      const req = tx.objectStore('tiles').get(key);
+      req.onsuccess = ()=> resolve(req.result || null);
+      req.onerror = ()=> resolve(null);
+    });
+  } catch(err) {
+    console.error('[IDB] getTile failed:', err);
+    return null;
+  }
+}
+
+async function idbSetMeta(meta){
+  try {
+    const db = await idbOpen();
+    return new Promise((resolve, reject)=>{
+      const tx = db.transaction('meta', 'readwrite');
+      tx.objectStore('meta').put(meta, meta.id);
+      tx.oncomplete = ()=> resolve();
+      tx.onerror = ()=> reject(tx.error);
+    });
+  } catch(err) {
+    console.error('[IDB] setMeta failed:', err);
+    return null;
+  }
+}
+
+async function idbGetAllMeta(){
+  try {
+    const db = await idbOpen();
+    return new Promise((resolve)=>{
+      const tx = db.transaction('meta', 'readonly');
+      const req = tx.objectStore('meta').getAll();
+      req.onsuccess = ()=> resolve((req.result || []).sort((a,b)=> b.savedAt - a.savedAt));
+      req.onerror = ()=> resolve([]);
+    });
+  } catch(err) {
+    console.error('[IDB] getAllMeta failed:', err);
+    return [];
+  }
+}
+async function idbDeleteMeta(id){
+  try {
+    const db = await idbOpen();
+    return new Promise((resolve, reject)=>{
+      const tx = db.transaction('meta', 'readwrite');
+      tx.objectStore('meta').delete(id);
+      tx.oncomplete = ()=> resolve();
+      tx.onerror = ()=> reject(tx.error);
+    });
+  } catch(err) {
+    console.error('[IDB] deleteMeta failed:', err);
+    return null;
+  }
+}
+
+/* ---------- camada de tiles com cache offline ---------- */
+window.OfflineTileLayer = L.TileLayer.extend({
+  createTile: function(coords, done){
+    const tile = document.createElement('img');
+    tile.alt = '';
+    const z = coords.z, x = coords.x, y = coords.y;
+    const offlineKey = this.options.offlineKey + '_' + z + '_' + x + '_' + y;
+
+    idbGetTile(offlineKey).then(blob=>{
+      // a camada pode ter sido removida do mapa enquanto esta consulta ao
+      // IndexedDB estava pendente (zoom rápido, troca de basemap ao entrar
+      // no modo de georreferenciação, etc.) — nesse caso this._map já é
+      // null, e tanto getTileUrl() (TileLayer.WMS) como qualquer uso futuro
+      // desta tile por parte do Leaflet rebentam ao tentar fazer unproject()
+      // num mapa que já não existe. Sem esta guarda, a exceção escapa de
+      // dentro da promise e nunca é apanhada em lado nenhum.
+      if(!this._map){
+        done(null, tile);
+        return;
+      }
+      if(blob){
+        const url = URL.createObjectURL(blob);
+        tile.onload = ()=>{ URL.revokeObjectURL(url); done(null, tile); };
+        tile.onerror = ()=> done(null, tile);
+        tile.src = url;
+      } else {
+        tile.onload = ()=> done(null, tile);
+        tile.onerror = (e)=> done(e, tile);
+        tile.src = this.getTileUrl(coords);
+      }
+    });
+    return tile;
+  }
+});
+
+/* camada WMS (usada para o basemap de alta resolução da DGT) com o mesmo cache offline */
+window.OfflineWMSTileLayer = L.TileLayer.WMS.extend({
+  createTile: OfflineTileLayer.prototype.createTile
+});
+
+/* converte coordenadas de tile z/x/y para bbox em metros (EPSG:3857) — usado para montar
+   pedidos WMS (GetMap) equivalentes ao tile XYZ pedido pelo Leaflet */
+function tile3857BBox(z, x, y){
+  const EARTH = 20037508.342789244;
+  const size = (2 * EARTH) / Math.pow(2, z);
+  const minX = -EARTH + x * size;
+  const maxX = -EARTH + (x + 1) * size;
+  const maxY = EARTH - y * size;
+  const minY = EARTH - (y + 1) * size;
+  return [minX, minY, maxX, maxY];
+}
+function buildWmsTileUrl(info, t){
+  const [minX, minY, maxX, maxY] = tile3857BBox(t.z, t.x, t.y);
+  const params = new URLSearchParams({
+    service: 'WMS', version: '1.3.0', request: 'GetMap',
+    layers: info.wmsLayer, styles: '', format: 'image/jpeg', transparent: 'false',
+    width: '256', height: '256', crs: 'EPSG:3857',
+    bbox: `${minX},${minY},${maxX},${maxY}`
+  });
+  return `${info.base}?${params.toString()}`;
+}
+
+/* ---------- utilidades de tiles ---------- */
+window.lonLatToTile = function(lon, lat, z){
+  const n = Math.pow(2, z);
+  const x = Math.floor((lon + 180) / 360 * n);
+  const latRad = lat * Math.PI / 180;
+  const y = Math.floor((1 - Math.log(Math.tan(latRad) + 1/Math.cos(latRad)) / Math.PI) / 2 * n);
+  return {x, y};
+};
+window.tileRangeForBounds = function(bounds, z){
+  const nw = lonLatToTile(bounds.getWest(), bounds.getNorth(), z);
+  const se = lonLatToTile(bounds.getEast(), bounds.getSouth(), z);
+  return {minX: Math.min(nw.x, se.x), maxX: Math.max(nw.x, se.x), minY: Math.min(nw.y, se.y), maxY: Math.max(nw.y, se.y)};
+};
+window.buildTilePlan = function(bounds, minZoom, maxZoom){
+  const plan = [];
+  for(let z=minZoom; z<=maxZoom; z++){
+    const r = tileRangeForBounds(bounds, z);
+    for(let x=r.minX; x<=r.maxX; x++){
+      for(let y=r.minY; y<=r.maxY; y++){
+        plan.push({z, x, y});
+      }
+    }
+  }
+  return plan;
+};
+
+/* expor funções IDB para uso por módulos offline/equipa */
+window.idbPutTile = idbPutTile;
+window.idbGetTile = idbGetTile;
+window.idbSetMeta = idbSetMeta;
+window.idbGetAllMeta = idbGetAllMeta;
+window.idbDeleteMeta = idbDeleteMeta;
+
+})();

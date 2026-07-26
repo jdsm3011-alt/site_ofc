@@ -1,1 +1,120 @@
-(function(_0x41d4b6,_0x5ad993){const _0x493b59=_0x1673,_0x445f5f=_0x41d4b6();while(!![]){try{const _0x5a8ba4=-parseInt(_0x493b59(0x1e2))/0x1*(parseInt(_0x493b59(0x1ea))/0x2)+parseInt(_0x493b59(0x1f5))/0x3*(-parseInt(_0x493b59(0x20c))/0x4)+parseInt(_0x493b59(0x1f8))/0x5*(-parseInt(_0x493b59(0x1f9))/0x6)+-parseInt(_0x493b59(0x209))/0x7+-parseInt(_0x493b59(0x1fa))/0x8*(parseInt(_0x493b59(0x1ed))/0x9)+parseInt(_0x493b59(0x1f6))/0xa*(parseInt(_0x493b59(0x1ee))/0xb)+parseInt(_0x493b59(0x1e6))/0xc;if(_0x5a8ba4===_0x5ad993)break;else _0x445f5f['push'](_0x445f5f['shift']());}catch(_0x1662f1){_0x445f5f['push'](_0x445f5f['shift']());}}}(_0x2ef5,0x4965f),(function(){const _0x42a8c8=_0x1673;function _0x123238(){const _0x22b041=_0x1673;if(typeof turf==='undefined')return;const _0x3ba98a=[];featuresData[_0x22b041(0x1f7)](_0x35800f=>{const _0x5b967c=_0x22b041;if(!_0x35800f['layer'][_0x5b967c(0x20f)])return;const _0x306896=_0x35800f[_0x5b967c(0x208)]['toGeoJSON']();if(_0x306896[_0x5b967c(0x20b)][_0x5b967c(0x1f0)]!=='Polygon')return;_0x35800f['hasOverlap']=![],_0x35800f[_0x5b967c(0x1fc)]=[];let _0x62b134=null;try{_0x62b134=turf[_0x5b967c(0x1e1)](_0x306896);}catch(_0x18136b){_0x62b134=null;}_0x3ba98a['push']({'entry':_0x35800f,'gj':_0x306896,'bbox':_0x62b134});});for(let _0x1792bf=0x0;_0x1792bf<_0x3ba98a['length'];_0x1792bf++){const _0x1b1652=_0x3ba98a[_0x1792bf];for(let _0x4cfbb2=_0x1792bf+0x1;_0x4cfbb2<_0x3ba98a[_0x22b041(0x1de)];_0x4cfbb2++){const _0xcae01e=_0x3ba98a[_0x4cfbb2];if(_0x1b1652[_0x22b041(0x1e3)][_0x22b041(0x1e7)]!==_0xcae01e[_0x22b041(0x1e3)][_0x22b041(0x1e7)])continue;if(_0x1b1652['bbox']&&_0xcae01e[_0x22b041(0x1e1)]){const _0xc802a=_0x1b1652[_0x22b041(0x1e1)][0x2]<_0xcae01e['bbox'][0x0]||_0xcae01e[_0x22b041(0x1e1)][0x2]<_0x1b1652[_0x22b041(0x1e1)][0x0]||_0x1b1652[_0x22b041(0x1e1)][0x3]<_0xcae01e[_0x22b041(0x1e1)][0x1]||_0xcae01e[_0x22b041(0x1e1)][0x3]<_0x1b1652[_0x22b041(0x1e1)][0x1];if(_0xc802a)continue;}let _0x69c22c=![];try{_0x69c22c=turf[_0x22b041(0x1f1)](_0x1b1652['gj'],_0xcae01e['gj'])||turf[_0x22b041(0x204)](_0x1b1652['gj'],_0xcae01e['gj'])||turf['booleanContains'](_0xcae01e['gj'],_0x1b1652['gj']);}catch(_0x1204b3){_0x69c22c=![];}_0x69c22c&&(_0x1b1652[_0x22b041(0x1e3)][_0x22b041(0x203)]=!![],_0x1b1652['entry']['overlapsWith']['push'](_0xcae01e[_0x22b041(0x1e3)][_0x22b041(0x1ef)]),_0xcae01e[_0x22b041(0x1e3)][_0x22b041(0x203)]=!![],_0xcae01e[_0x22b041(0x1e3)][_0x22b041(0x1fc)][_0x22b041(0x1fe)](_0x1b1652[_0x22b041(0x1e3)]['label']));}}_0x3ba98a[_0x22b041(0x1f7)](({entry:_0x3c19d7})=>{_0x51a84a(_0x3c19d7),refreshStatsIfOpen(_0x3c19d7);}),refreshFeatList(),_0x29ccdf();}function _0x474071(){const _0x2365d7=_0x1673,_0x3d9f41=getComputedStyle(document[_0x2365d7(0x1f3)])['getPropertyValue'](_0x2365d7(0x212))['trim']();return _0x3d9f41||'#B5472B';}let _0x1f3587=localStorage[_0x42a8c8(0x1e8)](_0x42a8c8(0x210))!=='1';function _0x437a8f(){const _0x2f5314=_0x42a8c8;_0x1f3587=!_0x1f3587;try{localStorage[_0x2f5314(0x1f2)]('dgpt_topology_warnings_off',_0x1f3587?'0':'1');}catch(_0x59b87d){}featuresData[_0x2f5314(0x1f7)](_0x12655c=>{const _0x4a04eb=_0x2f5314;if(_0x12655c[_0x4a04eb(0x203)])_0x51a84a(_0x12655c);}),refreshFeatList(),_0x29ccdf();}function _0x29ccdf(){const _0x342893=_0x42a8c8,_0x137c4b=document[_0x342893(0x1e4)](_0x342893(0x20a));if(!_0x137c4b)return;let _0x34dfec=![];featuresData['forEach'](_0x3d01a0=>{if(_0x3d01a0['hasOverlap'])_0x34dfec=!![];}),_0x137c4b[_0x342893(0x1fd)][_0x342893(0x1df)]('hidden',!_0x34dfec),_0x137c4b[_0x342893(0x1fd)][_0x342893(0x1df)](_0x342893(0x1e5),_0x34dfec&&_0x1f3587),_0x137c4b[_0x342893(0x1fd)][_0x342893(0x1df)]('is-active',_0x34dfec&&!_0x1f3587),_0x137c4b[_0x342893(0x206)](_0x342893(0x1e9),String(!_0x1f3587)),_0x137c4b[_0x342893(0x1ff)]=_0x1f3587?_0x342893(0x1fb):'Avisos\x20de\x20sobreposição\x20desligados\x20—\x20clicar\x20para\x20voltar\x20a\x20ligar';}document[_0x42a8c8(0x1e4)](_0x42a8c8(0x20a))?.[_0x42a8c8(0x201)](_0x42a8c8(0x20d),_0x437a8f);function _0x51a84a(_0x4690c9){const _0xde83e9=_0x42a8c8;if(!_0x4690c9['layer'][_0xde83e9(0x200)])return;if(_0x4690c9[_0xde83e9(0x203)]&&_0x1f3587)_0x4690c9[_0xde83e9(0x208)]['setStyle']({'color':_0x474071(),'weight':0x4,'dashArray':_0xde83e9(0x20e),'fillOpacity':0.25});else{const _0x20f49f=getLayerSchema(_0x4690c9[_0xde83e9(0x1e7)]);styleLayerByClass(_0x4690c9),(!_0x20f49f||_0x20f49f['mode']!==_0xde83e9(0x1f4))&&styleLayerDefault(_0x4690c9['layer'],_0x4690c9[_0xde83e9(0x1e7)]);}}function _0x2d58f7(_0x296ebd){const _0x5d825a=_0x42a8c8;return _0x296ebd=_0x296ebd||DEFAULT_COLOR,L[_0x5d825a(0x205)]({'className':_0x5d825a(0x211),'html':_0x5d825a(0x1e0)+_0x296ebd+';\x20border:3px\x20solid\x20var(--paper-elevated,\x20#fff);\x0a\x20\x20\x20\x20\x20\x20box-shadow:0\x201px\x203px\x20rgba(0,0,0,.35),\x200\x200\x200\x201px\x20rgba(0,0,0,.12);\x0a\x20\x20\x20\x20\x22></span>','iconSize':[0x12,0x12],'iconAnchor':[0x9,0x9]});}window[_0x42a8c8(0x202)]=_0x123238,window[_0x42a8c8(0x1eb)]=_0x51a84a,window[_0x42a8c8(0x207)]=_0x437a8f,window[_0x42a8c8(0x213)]=_0x29ccdf,window[_0x42a8c8(0x1ec)]=_0x2d58f7;}()));function _0x1673(_0x418c76,_0x2b7b93){_0x418c76=_0x418c76-0x1de;const _0x2ef53f=_0x2ef5();let _0x1673b2=_0x2ef53f[_0x418c76];if(_0x1673['cIksez']===undefined){var _0x6d4993=function(_0x22fa57){const _0x25489b='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x123238='',_0x474071='';for(let _0x1f3587=0x0,_0x437a8f,_0x29ccdf,_0x51a84a=0x0;_0x29ccdf=_0x22fa57['charAt'](_0x51a84a++);~_0x29ccdf&&(_0x437a8f=_0x1f3587%0x4?_0x437a8f*0x40+_0x29ccdf:_0x29ccdf,_0x1f3587++%0x4)?_0x123238+=String['fromCharCode'](0xff&_0x437a8f>>(-0x2*_0x1f3587&0x6)):0x0){_0x29ccdf=_0x25489b['indexOf'](_0x29ccdf);}for(let _0x2d58f7=0x0,_0x3ba98a=_0x123238['length'];_0x2d58f7<_0x3ba98a;_0x2d58f7++){_0x474071+='%'+('00'+_0x123238['charCodeAt'](_0x2d58f7)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x474071);};_0x1673['OPGFJE']=_0x6d4993,_0x1673['dmvnhA']={},_0x1673['cIksez']=!![];}const _0x34eb97=_0x2ef53f[0x0],_0x41f7da=_0x418c76+_0x34eb97,_0x27af4d=_0x1673['dmvnhA'][_0x41f7da];return!_0x27af4d?(_0x1673b2=_0x1673['OPGFJE'](_0x1673b2),_0x1673['dmvnhA'][_0x41f7da]=_0x1673b2):_0x1673b2=_0x27af4d,_0x1673b2;}function _0x2ef5(){const _0x2d1f00=['mte1odq1uhzOCgfc','mtu2ntGXmfvpyKrjyG','zM9YrwfJAa','nZm3nZbcDvHUrMi','mZzjs3PLqwq','mJuYmJrJrMX2Bei','u29ICMvWB3nPW6FdTwvZigrLDgv0ywrHCYdIGjqGy2XPy2fYihbHCMeGzgvZBgLNyxiGB3mGyxzPC29Z','B3zLCMXHChnxAxrO','y2XHC3nmAxn0','ChvZAa','DgL0Bgu','C2v0u3r5Bgu','ywrKrxzLBNrmAxn0zw5LCG','y2HLy2TbBgXuB3bVBg9NEq','AgfZt3zLCMXHCa','yM9VBgvHBKnVBNrHAw5Z','zgL2swnVBG','C2v0qxr0CMLIDxrL','Dg9Nz2XLvg9WB2XVz3LxyxjUAw5NCW','Bgf5zxi','mJGWmZiYmhDTBhfwsa','yNrUlxrVCg9SB2D5lxDHCM4TDg9Nz2XL','z2vVBwv0CNK','mJbbwMDcy1y','y2XPy2S','oca1','Dg9hzw9ku09o','zgDWDf90B3bVBg9NEv93yxjUAw5NC19VzMy','zgf0ywDPCY1WB2LUDc1TyxjRzxi','ls13yxjU','DxbKyxrLvg9WB2XVz3LxyxjUqNv0Dg9U','BgvUz3rO','Dg9Nz2XL','phnWyw4GC3r5Bgu9iGOGicaGicbKAxnWBgf5oMjSB2nRoYb3Awr0AdOXohb4oYbOzwLNAhq6mtHWEdSGyM9YzgvYlxjHzgL1CZO1mcu7cIaGicaGigjHy2TNCM91BMq6','yMjVEa','ndu4otu5rvPAwe5A','zw50CNK','z2v0rwXLBwvUDej5swq','AgfZlw92zxjSyxaTD2fYBG','mtq5nde4nZjJufLmteq','Bgf5zxjjza','z2v0sxrLBq','yxjPys1WCMvZC2vK','mNjKEwTlBG','yxbWBhLuB3bVBg9NEvzPC3vHBa','zgf0yuDPC01HCMTLCKLJB24','mZmZtLnvAerO','mJjZBu5WBhK','BgfIzwW','DhLWzq','yM9VBgvHBK92zxjSyxa','C2v0sxrLBq','zg9JDw1LBNrfBgvTzw50','yxrYAwj1Dg9Z'];_0x2ef5=function(){return _0x2d1f00;};return _0x2ef5();}
+/* === MÓDULO: TOPOLOGIA === */
+/* Polygon overlap detection, visual warnings, topology toggle button */
+/* Origem: 05-app-main.js linhas 4897-5009 */
+(function(){
+
+function checkAllTopology(){
+  if(typeof turf === 'undefined') return;
+
+  const polyEntries = [];
+  featuresData.forEach(entry=>{
+    if(!entry.layer.toGeoJSON) return;
+    const gj = entry.layer.toGeoJSON();
+    if(gj.geometry.type !== 'Polygon') return;
+    entry.hasOverlap = false;
+    entry.overlapsWith = [];
+    let bbox = null;
+    try{ bbox = turf.bbox(gj); }catch(err){ bbox = null; }
+    polyEntries.push({ entry, gj, bbox });
+  });
+
+  for(let i=0; i<polyEntries.length; i++){
+    const a = polyEntries[i];
+    for(let j=i+1; j<polyEntries.length; j++){
+      const b = polyEntries[j];
+      if(a.entry.layerId !== b.entry.layerId) continue;
+
+      if(a.bbox && b.bbox){
+        const noOverlap = a.bbox[2] < b.bbox[0] || b.bbox[2] < a.bbox[0] ||
+                           a.bbox[3] < b.bbox[1] || b.bbox[3] < a.bbox[1];
+        if(noOverlap) continue;
+      }
+
+      let overlaps = false;
+      try{
+        overlaps = turf.booleanOverlap(a.gj, b.gj) ||
+                   turf.booleanContains(a.gj, b.gj) ||
+                   turf.booleanContains(b.gj, a.gj);
+      }catch(err){
+        overlaps = false;
+      }
+      if(overlaps){
+        a.entry.hasOverlap = true; a.entry.overlapsWith.push(b.entry.label);
+        b.entry.hasOverlap = true; b.entry.overlapsWith.push(a.entry.label);
+      }
+    }
+  }
+
+  polyEntries.forEach(({entry})=>{
+    applyTopologyVisual(entry);
+    refreshStatsIfOpen(entry);
+  });
+
+  refreshFeatList();
+  updateTopologyWarnButton();
+}
+
+function getWarnColor(){
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--warn').trim();
+  return v || '#B5472B';
+}
+
+let topologyWarningsEnabled = localStorage.getItem('dgpt_topology_warnings_off') !== '1';
+
+function toggleTopologyWarnings(){
+  topologyWarningsEnabled = !topologyWarningsEnabled;
+  try{ localStorage.setItem('dgpt_topology_warnings_off', topologyWarningsEnabled ? '0' : '1'); }
+  catch(err){ /* localStorage indisponível, ignora */ }
+
+  featuresData.forEach(entry=>{ if(entry.hasOverlap) applyTopologyVisual(entry); });
+  refreshFeatList();
+  updateTopologyWarnButton();
+}
+
+function updateTopologyWarnButton(){
+  const btn = document.getElementById('btn-topology-warn-toggle');
+  if(!btn) return;
+  let hasAnyOverlap = false;
+  featuresData.forEach(e => { if(e.hasOverlap) hasAnyOverlap = true; });
+  btn.classList.toggle('hidden', !hasAnyOverlap);
+  btn.classList.toggle('has-overlap-warn', hasAnyOverlap && topologyWarningsEnabled);
+  btn.classList.toggle('is-active', hasAnyOverlap && !topologyWarningsEnabled);
+  btn.setAttribute('aria-pressed', String(!topologyWarningsEnabled));
+  btn.title = topologyWarningsEnabled
+    ? 'Sobreposições detetadas — clicar para desligar os avisos'
+    : 'Avisos de sobreposição desligados — clicar para voltar a ligar';
+}
+
+document.getElementById('btn-topology-warn-toggle')?.addEventListener('click', toggleTopologyWarnings);
+
+function applyTopologyVisual(entry){
+  if(!entry.layer.setStyle) return;
+  if(entry.hasOverlap && topologyWarningsEnabled){
+    entry.layer.setStyle({color: getWarnColor(), weight:4, dashArray:'8 5', fillOpacity:.25});
+  } else {
+    const schema = getLayerSchema(entry.layerId);
+    styleLayerByClass(entry);
+    if(!schema || schema.mode !== 'atributos'){ styleLayerDefault(entry.layer, entry.layerId); }
+  }
+}
+
+function dataGisMarkerIcon(color){
+  color = color || DEFAULT_COLOR;
+  return L.divIcon({
+    className:'datagis-point-marker',
+    html:`<span style="
+      display:block; width:18px; height:18px; border-radius:50%;
+      background:${color}; border:3px solid var(--paper-elevated, #fff);
+      box-shadow:0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.12);
+    "></span>`,
+    iconSize:[18,18], iconAnchor:[9,9]
+  });
+}
+
+window.checkAllTopology = checkAllTopology;
+window.applyTopologyVisual = applyTopologyVisual;
+window.toggleTopologyWarnings = toggleTopologyWarnings;
+window.updateTopologyWarnButton = updateTopologyWarnButton;
+window.dataGisMarkerIcon = dataGisMarkerIcon;
+
+})();

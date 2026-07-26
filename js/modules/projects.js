@@ -1,1 +1,705 @@
-function _0x1514(){const _0x432224=['C2L6zq','zgLZCgXHEq','Bg9JywXqCM9Qzwn0u3rHDgu','Aw5WDxq','CMvTB3zLsxrLBq','C2v0','C3rYAw5NAwz5','yxv0B3nHDMuTC3vNz2vZDc15zxm','C2HVD0f1Dg9ZyxzLvg9HC3q','Bw91C2v1Ca','C2LSzw50','yxrYAwj1Dg9Z','C3rHCNqTChjVAMvJDc1Uyw1L','Bw91C2vKB3DU','CgfYC2u','C3rHCNrdAg9Py2u','yxr0CMLIDxrLCW','uhjVAMv0BZOG','DMfSAwrHDgvtDgfYDfbYB2PLy3rdB250Aw51zq','CxvLCNLtzwXLy3rVCG','yxv0B1nHDMvjBNrLCNzHBa','Dg91y2HLBMq','BM93','DMLZAwjSzq','ChjVAMvJDerPCNr5','y2XLyxjmyxLLCNm','ywn0AxzL','CMvZDg9YzuXHEwvYu2nOzw1HC0zYB21hzw9ku09o','Bg9JywWTChjVAMvJDhmTBgLZDa','C2vSzwn0zwq','CMfZDgvYtgf5zxjZ','x19SyxLLCKLK','zMLUza','BgfUzgLUzY1Iyw5Uzxi','B3bHy2L0Eq','B2zMC2v0v2LKDgG','D2fYBG','mte2ndzXBMHVyxO','ChvSC2vtyxzLswnVBG','yMfZzunVBg9Y','BM92BW','mtu1mMD3uKnzvW','ChjVAMvJDc1ZDgf0DxmTyMfKz2u','iIbNDwfYzgfKBY4','z2vVBwv0CNLuExbL','mJGZnZe1ufniswnK','C3LTyM9SB2D5','qwjYAxiGzxn0zsbWCM9QzxrVihzHAsbZDwjZDgL0DwLYigfZigDLB21LDhjPyxmGyxr1ywLZig5Vig1HCgeUienVBNrPBNvHCJ8','AxngAw5PDgu','Bgf5zxjdB3vUDgvY','zNvUy3rPB24','rwXPBwLUyxiGBYbWCM9QzxrVici','BgvUz3rO','C29Tzq','AgLKzgvU','C3rHCNrZv2L0Aa','Bgf5zxjjza','DxbKyxrLzef0','y29SB3jbDhrY','yxv0B3nHDMuTC3vNz2vZDc1UBW','tSoJBYbMB2KGCg9ZC8oTDMvSigD1yxjKyxiGB3mGChjVAMv0B3mGBg9JywLZlG','A2v5CW','yxv0B3nHDMuTB24','CMvUzgvYtg9JywXqCM9Qzwn0C0XPC3q','Ag9SzgLUzY1ZyxzL','zMvHDhvYzxm','CMvTB3zL','zgLZywjSzuf1Dg9tyxzL','zw5Nzw5Olwf1Dg9ZyxzLlxn1z2DLC3qTzgvJBgLUzwq','Bg9JywWTChjVAMvJDhmTB3zLCMXHEq','BwfW','CxvLCNLtzwXLy3rVCKfSBa','zM9JDxm','DxbKyxrLuhjVAMvJDfn0yxr1C1vj','mtviquHMAuS','yNrUlxn0yxj0lxbYB2PLy3q','B3bLBKXVy2fS','y29UzMLN','ywrK','zgvSzxrLtg9JywW','zw5Nzw5OlwXVy2fSlxbYB2PLy3rZ','C3rHCNqTChjVAMvJDc1JB250Aw51zq','AxnbCNjHEq','Dgv4Dg8','y2XHC3nmAxn0','zMLUywXPEMvmB2fKzwrqCM9Qzwn0u3rHDgu','AxmTDMLZAwjSzq','y2XPy2S','cIaGicaGidXKAxyGy2XHC3m9iMXVy2fSlxbYB2PLy3qTCM93iJ4kicaGicaGica8zgL2ignSyxnZpsjPBMzViJ4kicaGicaGicaGidXIpG','w2rHDgeTC3rHCNqTy2HVAwnLxq','z2vVANnVBG','ota5nJu0sgrfBwzg','C3rHCNqTChjVAMvJDc1Uyw1LlxjVDW','Aw5Uzxjive1m','Bw91C2vSzwf2zq','C2v0sxrLBq','Dgv4DenVBNrLBNq','zw5ZDxjLqwn0AxzLtgf5zxjgB3jjBxbVCNrLzfbYB2PLy3q','phaGy2XHC3m9iNn1yIi+qwLUzgeGBSoJBYbNDwfYzgfZDguGBMvUAhvTihbYB2PLDg8GBMvZDguGzgLZCg9ZAxrPDM8Upc9WpG','BwfYA1bYB2PLy3reAxj0Eq','ChjVAMvJDc1ZDgf0DxmTyMfKz2uTDgv4Da','Dg91y2HJyw5JzwW','yxv0B3nHDMuTC3vNz2vZDc1VDMvYBgf5','C3rHCNqTChjVAMvJDc1VDMvYBgf5','yxv0B1nHDMvfBMfIBgvK','iJ5byNjPCJWVyNv0Dg9UpGOGicaGicaGicaGpgj1DhrVBIb0ExbLpsjIDxr0B24IignSyxnZpsjIDg4GD2fYBIiGzgf0ys1KzwXLDguTBg9JywW9iG','Bgf5zxjZ','C2HHCgvoyw1L','zw5Nzw5OlwfJDgL2zs1WCM9Qzwn0lw5HBwu','zxjYB3i','mJe1mdm2DffduxDf','z2v0rwXLBwvUDej5swq','mte3odHosLDUC0e','zgf0yxnLDa','ywn0AxzLtgf5zxjjza','Bgf5zxjpCMrLCG','C2XPy2u','DhjPBq','ChvZAa','w2rHDgeTzgvSzxrLlwXVy2fSxq','yxv0B3nHDMuTChvSC2u','BMfTzq','C3rHCNqTChjVAMvJDc1Uyw1LlwvYCM9Y','Aw5SAw5LlwzSzxG','y29UDgLUDwfY','DMfSDwvZ','y29Uy2f0','z2vVBvr5Cgu','yNrUlxnHDMuTChjVAMvJDa','z2v0ugfUzq','y2XLyxi','BM9Uzq','ywrKrxzLBNrmAxn0zw5LCG','zMLSDgvY','BMv4Da','z2v0tg9JywXqCM9Qzwn0CW','qwLUzgeGBSoJBYb0zw5Zig5LBMH1BsbWCM9QzxrVigD1yxjKywrVig5LC3rLigrPC3bVC2L0AxzVlIbdCMLHihvTihbYB2PLDg8GBM92BYbVDsb0CMfIywXOysbZzw0Gz3jHDMfYlG','C3rHCNqTChjVAMvJDc13yxjUAw5N','AxmTBgvHDMLUzW','yxv0B1nHDMvjBNrLCNzHBe1Z','uhjVAMv0BYaI','C2vT','C2vYAwfSAxPLtgf5zxjty2HLBwfZrM9Yr2vVsLnptG','z2v0','qwLUzgeGBSoJBYb0zw5ZihvTihbYB2PLDg8GyxrPDM8UietdOsb1BsbUB21LihbHCMeGz3vHCMrHCMvZig8GDhjHyMfSAg86','iIbNDwfYzgfKBYbUzxn0zsbKAxnWB3nPDgL2BZ8Grxn0ysbHW6FdO28GBSoJBYbWB2rLihnLCIbKzxnMzwL0ys4','z2v0sxrLBq','nJa3nJy0rM1dAhzZ','iIbHyMvYDg8U','idXZCgfUihn0EwXLpsjJB2XVCJP2yxiOls1NCMvLBIK7iJ4OyxrPDM8Ppc9ZCgfUpG','C3rHCNrqCM9Qzwn0q2HVAwnL','Bgf5zxi','tNv2zw06ia','DgL0Bgu','Bgf5zxjZlwXPC3q','B2jQzwn0','y2XLyxjnyxbmyxLLCLn0yxrL','Bwf4','rxjYBYbHBYbSAw1WyxiGBYbLC3rHzg8Gyw50zxjPB3iGyw50zxmGzguGywjYAxiGBYbWCM9QzxrVlG','C3r5Bgu','zgLZywjSzwq','Dg91y2HZDgfYDa','Bw9Kzq','C29YDa','mta1mte1nZDtwKP2B2e','x2HPzgvuAw1LCG','igDLB21LDhjPysHZksdcTYbNDwfYzgfKBYbLBsa','pc9ZCgfUpGOGicaGicaGidWVzgL2pGOGicaGicaGidXKAxyGy2XHC3m9iMfJDgLVBNmIpGOGicaGicaGicaGpgj1DhrVBIb0ExbLpsjIDxr0B24IignSyxnZpsjIDg4IigrHDgeTB3bLBI1SB2nHBd0I','yxv0B3nHDMuTDg9HC3q','Aw5JBhvKzxm','zgvMAw5LuhjVCgvYDhK','yNrUlw9Wzw4TBg9JywWTChjVAMvJDhm','DMfSDwu','zM9YrwfJAa'];_0x1514=function(){return _0x432224;};return _0x1514();}function _0x25cf(_0xd61277,_0x6c91b4){_0xd61277=_0xd61277-0x121;const _0x1514d7=_0x1514();let _0x25cf4c=_0x1514d7[_0xd61277];if(_0x25cf['FAStvh']===undefined){var _0xa5b4f0=function(_0x481aab){const _0x4b7743='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x269240='',_0x3a0141='';for(let _0x4ade5d=0x0,_0x331c2d,_0xd770f0,_0x1fe64b=0x0;_0xd770f0=_0x481aab['charAt'](_0x1fe64b++);~_0xd770f0&&(_0x331c2d=_0x4ade5d%0x4?_0x331c2d*0x40+_0xd770f0:_0xd770f0,_0x4ade5d++%0x4)?_0x269240+=String['fromCharCode'](0xff&_0x331c2d>>(-0x2*_0x4ade5d&0x6)):0x0){_0xd770f0=_0x4b7743['indexOf'](_0xd770f0);}for(let _0x34ec0f=0x0,_0x27919a=_0x269240['length'];_0x34ec0f<_0x27919a;_0x34ec0f++){_0x3a0141+='%'+('00'+_0x269240['charCodeAt'](_0x34ec0f)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x3a0141);};_0x25cf['SnSvmW']=_0xa5b4f0,_0x25cf['lWDfEI']={},_0x25cf['FAStvh']=!![];}const _0x51d47e=_0x1514d7[0x0],_0xfbb491=_0xd61277+_0x51d47e,_0x37d51a=_0x25cf['lWDfEI'][_0xfbb491];return!_0x37d51a?(_0x25cf4c=_0x25cf['SnSvmW'](_0x25cf4c),_0x25cf['lWDfEI'][_0xfbb491]=_0x25cf4c):_0x25cf4c=_0x37d51a,_0x25cf4c;}(function(_0x1e3940,_0x245f71){const _0x30c345=_0x25cf,_0x166f4a=_0x1e3940();while(!![]){try{const _0x1ffa9c=-parseInt(_0x30c345(0x19d))/0x1+parseInt(_0x30c345(0x130))/0x2+-parseInt(_0x30c345(0x1cb))/0x3+-parseInt(_0x30c345(0x155))/0x4+-parseInt(_0x30c345(0x1ba))/0x5*(parseInt(_0x30c345(0x195))/0x6)+parseInt(_0x30c345(0x132))/0x7*(-parseInt(_0x30c345(0x199))/0x8)+parseInt(_0x30c345(0x166))/0x9;if(_0x1ffa9c===_0x245f71)break;else _0x166f4a['push'](_0x166f4a['shift']());}catch(_0x53f897){_0x166f4a['push'](_0x166f4a['shift']());}}}(_0x1514,0x31d47),(function(){const _0x3a36ac=_0x25cf,_0x269240=_0x3a36ac(0x1c0),_0x3a0141=_0x3a36ac(0x12e);let _0x4ade5d={'name':null,'active':![]},_0x331c2d=null,_0xd770f0=![];function _0x1fe64b(){_0xd770f0=!![],persistCurrentWorkspaceState();if(_0x5394ea)_0x35330c();}function _0x34ec0f(){const _0x1d9a18=_0x3a36ac;try{return JSON[_0x1d9a18(0x17e)](localStorage[_0x1d9a18(0x154)](_0x269240))||{};}catch(_0x2fc961){return console['warn']('Não\x20foi\x20possível\x20ler\x20os\x20projetos\x20locais\x20guardados.',_0x2fc961),{};}}function _0x27919a(_0x13986f){const _0x1b1a86=_0x3a36ac;try{localStorage[_0x1b1a86(0x121)](_0x269240,JSON[_0x1b1a86(0x176)](_0x13986f));}catch(_0x4a43e3){console[_0x1b1a86(0x194)](_0x1b1a86(0x1ac),_0x4a43e3),showAppAlert('Não\x20foi\x20possível\x20guardar\x20o\x20projeto\x20localmente\x20(armazenamento\x20cheio\x20ou\x20indisponível).',{'error':!![]});}}function _0xafb233(){const _0x2a8365=_0x3a36ac,_0x18e7dc=document[_0x2a8365(0x131)](_0x2a8365(0x19a)),_0x81f88f=document[_0x2a8365(0x131)](_0x2a8365(0x126)),_0x17174c=teamState['connected']&&teamState[_0x2a8365(0x13b)]?_0x2a8365(0x15a)+teamState['name']:'',_0x55014b=_0x4ade5d[_0x2a8365(0x18a)]&&_0x4ade5d[_0x2a8365(0x13b)]?_0x2a8365(0x181)+_0x4ade5d[_0x2a8365(0x13b)]:'',_0x3729c3=_0x17174c||_0x55014b;_0x3729c3?(_0x18e7dc['style']['display']=_0x2a8365(0x13d),_0x81f88f[_0x2a8365(0x122)]=_0x3729c3):(_0x18e7dc[_0x2a8365(0x161)]['display']='none',_0x81f88f[_0x2a8365(0x122)]='');const _0x2b61f0=document[_0x2a8365(0x131)](_0x2a8365(0x142));_0x2b61f0&&(_0x2b61f0[_0x2a8365(0x15b)]=_0x4ade5d[_0x2a8365(0x18a)]&&_0x4ade5d[_0x2a8365(0x13b)]?'Guardar\x20em\x20\x22'+_0x4ade5d[_0x2a8365(0x13b)]+'\x22':'Guardar\x20projeto');}function _0x406ae8(){const _0x3d63db=_0x3a36ac;_0x4ade5d[_0x3d63db(0x13b)]=null,_0x4ade5d[_0x3d63db(0x18a)]=![];try{localStorage[_0x3d63db(0x174)](_0x3a0141);}catch(_0x13d763){}_0xafb233();}function _0x44f660(){const _0x30b2a5=_0x3a36ac;if(drawnGroup)drawnGroup[_0x30b2a5(0x189)]();if(measuresGroup)measuresGroup[_0x30b2a5(0x189)]();featuresData['clear'](),layers[_0x30b2a5(0x1a4)]=0x0,layerVisible[_0x30b2a5(0x144)](),layerOrder['length']=0x0,symbologyLayerId=null,config[_0x30b2a5(0x12d)]=null,config[_0x30b2a5(0x164)]=null,config[_0x30b2a5(0x180)]=[],config[_0x30b2a5(0x19c)]=null,config[_0x30b2a5(0x1aa)]=null,config[_0x30b2a5(0x197)]=null,config[_0x30b2a5(0x192)]=null,config[_0x30b2a5(0x19e)]=defaultSymbology(),layerPanes[_0x30b2a5(0x16f)]((_0x324823,_0x192896)=>{const _0x170d3a=_0x30b2a5,_0x39f392=map&&map[_0x170d3a(0x143)](_0x324823);if(_0x39f392)_0x39f392[_0x170d3a(0x1b2)]();}),layerPanes['clear'](),activeLayerId=++layerCounter,layerVisible[_0x30b2a5(0x175)](activeLayerId,!![]),layerOrder=[activeLayerId];if(typeof clearRasterLayerState===_0x30b2a5(0x1a2))clearRasterLayerState();}function _0x2abdab(){const _0x3e3da7=_0x3a36ac,_0x16ecc5=layers[_0x3e3da7(0x1b6)](_0xe90cd3=>_0xe90cd3['id'])[_0x3e3da7(0x140)](config[_0x3e3da7(0x19c)]?[activeLayerId]:[]);return _0x16ecc5[_0x3e3da7(0x1b6)](_0x4129b9=>{const _0x2c7b54=_0x3e3da7,_0x472e97=getLayerSchema(_0x4129b9);if(!_0x472e97)return null;return{'id':_0x4129b9,'name':_0x472e97[_0x2c7b54(0x13b)],'geometryType':_0x472e97[_0x2c7b54(0x19c)],'mode':_0x472e97[_0x2c7b54(0x164)],'attributes':Array['isArray'](_0x472e97[_0x2c7b54(0x180)])?_0x472e97['attributes'][_0x2c7b54(0x1b6)](_0x41d828=>({..._0x41d828})):[],'colorAttr':_0x472e97[_0x2c7b54(0x1aa)]||null,'baseColor':_0x472e97['baseColor']||null,'opacity':_0x472e97['opacity'],'symbology':cloneSymbology(_0x472e97[_0x2c7b54(0x19e)]),'visible':layerVisible[_0x2c7b54(0x151)](_0x4129b9)!==![]};})[_0x3e3da7(0x147)](Boolean);}function _0x348187(_0x6bdfe8){const _0x23e7a4=_0x3a36ac,_0x242479=Array['isArray'](_0x6bdfe8&&_0x6bdfe8['__layers'])?_0x6bdfe8['__layers']:[];if(!_0x242479['length'])return![];layers[_0x23e7a4(0x1a4)]=0x0,layerVisible[_0x23e7a4(0x144)](),layerOrder[_0x23e7a4(0x1a4)]=0x0;const _0x1fee81=[];_0x242479['forEach'](_0x522115=>{const _0x45e270=_0x23e7a4,_0xdcc54e=Number(_0x522115['id']);if(!Number[_0x45e270(0x1a0)](_0xdcc54e))return;_0x1fee81[_0x45e270(0x138)](_0xdcc54e),layers['push']({'id':_0xdcc54e,'name':_0x522115[_0x45e270(0x13b)]||null,'geometryType':_0x522115[_0x45e270(0x19c)]||null,'mode':_0x522115[_0x45e270(0x164)]||_0x45e270(0x17b),'attributes':Array[_0x45e270(0x1c2)](_0x522115[_0x45e270(0x180)])?_0x522115['attributes'][_0x45e270(0x1b6)](_0x583f53=>({..._0x583f53})):[],'colorAttr':_0x522115[_0x45e270(0x1aa)]||null,'baseColor':_0x522115['baseColor']||null,'opacity':_0x522115[_0x45e270(0x192)],'symbology':cloneSymbology(_0x522115['symbology'])}),layerVisible['set'](_0xdcc54e,_0x522115[_0x45e270(0x187)]!==![]);});if(!_0x1fee81[_0x23e7a4(0x1a4)])return![];layerCounter=Math[_0x23e7a4(0x15f)](layerCounter,..._0x1fee81);const _0x43f1b5=Number(_0x6bdfe8['__activeLayerId']);activeLayerId=_0x1fee81[_0x23e7a4(0x16b)](_0x43f1b5)?_0x43f1b5:_0x1fee81[0x0],layerOrder=_0x1fee81[_0x23e7a4(0x136)]();const _0x41d88f=_0x242479[_0x23e7a4(0x190)](_0x1fc833=>Number(_0x1fc833['id'])===activeLayerId)||_0x242479[0x0];return config[_0x23e7a4(0x12d)]=_0x41d88f&&_0x41d88f['name']?_0x41d88f['name']:null,config[_0x23e7a4(0x164)]=_0x41d88f&&_0x41d88f[_0x23e7a4(0x164)]?_0x41d88f[_0x23e7a4(0x164)]:'atributos',config['attributes']=Array['isArray'](_0x41d88f&&_0x41d88f[_0x23e7a4(0x180)])?_0x41d88f[_0x23e7a4(0x180)][_0x23e7a4(0x1b6)](_0x306d14=>({..._0x306d14})):[],config[_0x23e7a4(0x19c)]=_0x41d88f&&_0x41d88f[_0x23e7a4(0x19c)]?_0x41d88f['geometryType']:null,config[_0x23e7a4(0x1aa)]=_0x41d88f&&_0x41d88f['colorAttr']?_0x41d88f[_0x23e7a4(0x1aa)]:null,config[_0x23e7a4(0x197)]=_0x41d88f&&_0x41d88f[_0x23e7a4(0x197)]?_0x41d88f[_0x23e7a4(0x197)]:null,config[_0x23e7a4(0x192)]=_0x41d88f&&_0x41d88f[_0x23e7a4(0x192)]!=null?_0x41d88f['opacity']:null,config[_0x23e7a4(0x19e)]=cloneSymbology(_0x41d88f&&_0x41d88f[_0x23e7a4(0x19e)]),!![];}function _0x59f6d7(_0x5c7fa5,_0x369cb8){const _0x27c0ac=_0x3a36ac,_0x159fe7=_0x369cb8&&typeof _0x369cb8===_0x27c0ac(0x15d)?_0x369cb8:{},_0x30b7b4=Object['keys'](_0x159fe7)['filter'](_0x5b51dd=>_0x5b51dd&&!_0x5b51dd[_0x27c0ac(0x1a7)]('__'));if(!_0x30b7b4['length'])return;const _0x361581=getLayerSchema(_0x5c7fa5);if(!_0x361581)return;const _0x5ab53d=Array[_0x27c0ac(0x1c2)](_0x361581[_0x27c0ac(0x180)])&&_0x361581[_0x27c0ac(0x180)][_0x27c0ac(0x1a4)]>0x0;if(_0x5ab53d)return;const _0x45475f=_0x30b7b4[_0x27c0ac(0x1b6)](_0x36e40b=>({'name':_0x36e40b,'type':_0x27c0ac(0x1c3)}));if(_0x5c7fa5===activeLayerId){config[_0x27c0ac(0x180)]=_0x45475f;if(!config['mode'])config[_0x27c0ac(0x164)]='atributos';}else{const _0x16e30e=layers[_0x27c0ac(0x190)](_0x362789=>_0x362789['id']===_0x5c7fa5);if(_0x16e30e){_0x16e30e['attributes']=_0x45475f;if(!_0x16e30e['mode'])_0x16e30e[_0x27c0ac(0x164)]=_0x27c0ac(0x17b);}}}function _0x291c8c(){const _0x394189=_0x3a36ac;if(config['geometryType']||featuresData[_0x394189(0x170)]===0x0)return;const _0x4420e5=featuresData[_0x394189(0x13f)]()[_0x394189(0x148)]()['value'];if(!_0x4420e5)return;config['geometryType']=_0x4420e5[_0x394189(0x141)],config['shapeName']='Camada\x20importada',config[_0x394189(0x164)]='atributos',config[_0x394189(0x180)]=[],config[_0x394189(0x1aa)]=null,config['baseColor']=null,config[_0x394189(0x192)]=null,config['symbology']=defaultSymbology();}function _0x396f85(){const _0x17c7e9=_0x3a36ac;map&&map['pm']&&(applyGeometryConfig(),refreshLayerEditability());refreshFeatList();if(document[_0x17c7e9(0x131)](_0x17c7e9(0x15c)))renderLayersPanel();}document['getElementById'](_0x3a36ac(0x1bb))[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),()=>{const _0x162c96=_0x3a36ac;_0x43fb38(),document['getElementById'](_0x162c96(0x129))[_0x162c96(0x1c4)][_0x162c96(0x1b2)](_0x162c96(0x1a6));});function _0x43fb38(){const _0x15434b=_0x3a36ac,_0x5a74d7=document[_0x15434b(0x131)]('start-project-warning');_0x5a74d7[_0x15434b(0x1c4)][_0x15434b(0x1be)]('hidden'),_0x5a74d7[_0x15434b(0x122)]='';}document[_0x3a36ac(0x1b7)](_0x3a36ac(0x1c9))[_0x3a36ac(0x16f)](_0x379142=>{const _0x31c290=_0x3a36ac;_0x379142[_0x31c290(0x146)]('click',()=>{const _0x20417e=_0x31c290;document[_0x20417e(0x1b7)](_0x20417e(0x1c9))['forEach'](_0x3fe33f=>_0x3fe33f[_0x20417e(0x1c4)][_0x20417e(0x1b2)](_0x20417e(0x18d))),_0x379142['classList'][_0x20417e(0x1be)](_0x20417e(0x18d)),_0x331c2d=_0x379142[_0x20417e(0x133)][_0x20417e(0x17f)],_0x43fb38();const _0x559cb6=document[_0x20417e(0x131)](_0x20417e(0x1cc)),_0x17d85d=document[_0x20417e(0x131)](_0x20417e(0x13c));_0x17d85d[_0x20417e(0x161)][_0x20417e(0x171)]=_0x20417e(0x145),_0x331c2d===_0x20417e(0x198)?(_0x559cb6[_0x20417e(0x1c4)][_0x20417e(0x1b2)](_0x20417e(0x1a6)),document['getElementById'](_0x20417e(0x17c))[_0x20417e(0x1b8)]()):_0x559cb6[_0x20417e(0x1c4)][_0x20417e(0x1be)](_0x20417e(0x1a6)),_0x410c77();});}),document[_0x3a36ac(0x131)]('start-project-name')['addEventListener'](_0x3a36ac(0x173),_0x410c77);function _0x410c77(){const _0x34af48=_0x3a36ac,_0x4449e9=document['getElementById']('start-project-continue');if(_0x331c2d===_0x34af48(0x14f)||_0x331c2d===_0x34af48(0x13e)){_0x4449e9[_0x34af48(0x162)]=![];return;}if(_0x331c2d===_0x34af48(0x198)){_0x4449e9[_0x34af48(0x162)]=document[_0x34af48(0x131)](_0x34af48(0x17c))[_0x34af48(0x16e)][_0x34af48(0x137)]()[_0x34af48(0x1a4)]===0x0;return;}_0x4449e9[_0x34af48(0x162)]=!![];}document['getElementById'](_0x3a36ac(0x1c1))[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),()=>{const _0xf81969=_0x3a36ac;if(_0x331c2d===_0xf81969(0x13e)){const _0x10eaf2=_0x34ec0f();if(Object['keys'](_0x10eaf2)['length']===0x0){const _0x57c34b=document[_0xf81969(0x131)](_0xf81969(0x14b));_0x57c34b[_0xf81969(0x122)]=_0xf81969(0x14a),_0x57c34b[_0xf81969(0x1c4)][_0xf81969(0x1b2)](_0xf81969(0x1a6));return;}document[_0xf81969(0x131)]('start-project-overlay')[_0xf81969(0x1c4)][_0xf81969(0x1be)](_0xf81969(0x1a6)),proceedToMap(),_0x57ae33(),document[_0xf81969(0x131)](_0xf81969(0x1b5))[_0xf81969(0x1c4)][_0xf81969(0x1b2)](_0xf81969(0x1a6));return;}if(_0x331c2d===_0xf81969(0x198)){const _0x522c92=document[_0xf81969(0x131)]('start-project-name')[_0xf81969(0x16e)]['trim']();if(!_0x522c92)return;const _0x413762=_0x34ec0f();!_0x413762[_0x522c92]&&(_0x413762[_0x522c92]={'name':_0x522c92,'updatedAt':Date['now'](),'config':null,'geojson':{'type':'FeatureCollection','features':[]}},_0x27919a(_0x413762));_0x4ade5d['name']=_0x522c92,_0x4ade5d[_0xf81969(0x18a)]=!![];try{localStorage[_0xf81969(0x121)](_0x3a0141,_0x522c92);}catch(_0x2fbdc4){}}else{_0x4ade5d[_0xf81969(0x13b)]=null,_0x4ade5d[_0xf81969(0x18a)]=![];try{localStorage[_0xf81969(0x174)](_0x3a0141);}catch(_0x4d8351){}}_0xafb233(),document[_0xf81969(0x131)](_0xf81969(0x129))[_0xf81969(0x1c4)][_0xf81969(0x1be)](_0xf81969(0x1a6)),proceedToMap();});function _0x54a6e3(_0x4e0dc4){const _0x3858b5=_0x3a36ac;_0x4e0dc4=_0x4e0dc4||{};if(!_0x4ade5d['active']||!_0x4ade5d[_0x3858b5(0x13b)])try{const _0x58e6c0=localStorage[_0x3858b5(0x154)](_0x3a0141);if(_0x58e6c0){const _0x522e52=_0x34ec0f();_0x522e52[_0x58e6c0]&&(_0x4ade5d[_0x3858b5(0x13b)]=_0x58e6c0,_0x4ade5d[_0x3858b5(0x18a)]=!![],_0xafb233());}}catch(_0x2b7f91){}if(!_0x4ade5d[_0x3858b5(0x18a)]||!_0x4ade5d[_0x3858b5(0x13b)]){if(_0x4e0dc4['silent'])return![];const _0x1ccdce=prompt(_0x3858b5(0x152));if(!_0x1ccdce||!_0x1ccdce[_0x3858b5(0x137)]())return![];_0x4ade5d[_0x3858b5(0x13b)]=_0x1ccdce[_0x3858b5(0x137)](),_0x4ade5d[_0x3858b5(0x18a)]=!![],_0xafb233();}const _0x19f333=_0x34ec0f(),_0x491079=layers[_0x3858b5(0x1b6)](_0x3e97cd=>_0x3e97cd['id'])[_0x3858b5(0x140)](config['geometryType']?[activeLayerId]:[]),_0x1e0412=_0x491079[_0x3858b5(0x1b6)](_0x290c9f=>{const _0x44bd8b=_0x3858b5,_0x9c6bba=getLayerSchema(_0x290c9f);return{'id':_0x290c9f,'name':_0x9c6bba['name'],'geometryType':_0x9c6bba['geometryType'],'mode':_0x9c6bba['mode'],'attributes':_0x9c6bba[_0x44bd8b(0x180)],'colorAttr':_0x9c6bba[_0x44bd8b(0x1aa)],'baseColor':_0x9c6bba[_0x44bd8b(0x197)],'opacity':_0x9c6bba[_0x44bd8b(0x192)],'symbology':cloneSymbology(_0x9c6bba['symbology']),'visible':layerVisible[_0x44bd8b(0x151)](_0x290c9f)!==![]};});return _0x19f333[_0x4ade5d[_0x3858b5(0x13b)]]={'name':_0x4ade5d['name'],'updatedAt':Date[_0x3858b5(0x186)](),'layers':_0x1e0412,'activeLayerId':activeLayerId,'layerCounter':layerCounter,'layerOrder':layerOrder['slice'](),'geojson':buildGeoJSON(![],!![]),'rasterLayers':serializeRasterLayersForProject()},_0x27919a(_0x19f333),_0xd770f0=![],persistCurrentWorkspaceState(),!_0x4e0dc4[_0x3858b5(0x17a)]&&showTeamToast(_0x3858b5(0x14e)+_0x4ade5d[_0x3858b5(0x13b)]+_0x3858b5(0x19b)),!![];}document[_0x3a36ac(0x131)]('btn-save-project')[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),_0x54a6e3);function _0x4176be(){const _0x1c65bf=_0x3a36ac;if(!_0x5394ea)return;_0x5394ea=![];const _0x3126e8=document[_0x1c65bf(0x131)]('btn-save-project');if(_0x3126e8)_0x3126e8[_0x1c65bf(0x1c4)][_0x1c65bf(0x1b2)](_0x1c65bf(0x1ae));_0x49feb2&&(clearInterval(_0x49feb2),_0x49feb2=null);}let _0x5394ea=![],_0x49feb2=null,_0x448122=null;function _0x101e99(_0x39cd57){const _0x1da2df=_0x3a36ac,_0x3fc903=document[_0x1da2df(0x131)](_0x1da2df(0x16a));if(!_0x3fc903)return;_0x3fc903[_0x1da2df(0x183)]('.message')[_0x1da2df(0x122)]=_0x39cd57,_0x3fc903[_0x1da2df(0x1c4)]['remove'](_0x1da2df(0x14c)),void _0x3fc903[_0x1da2df(0x193)],_0x3fc903[_0x1da2df(0x1c4)][_0x1da2df(0x1be)](_0x1da2df(0x1c6)),clearTimeout(_0x3fc903[_0x1da2df(0x167)]),_0x3fc903['_hideTimer']=setTimeout(()=>{const _0x14df39=_0x1da2df;_0x3fc903[_0x14df39(0x1c4)]['remove'](_0x14df39(0x1c6)),_0x3fc903[_0x14df39(0x1c4)]['add'](_0x14df39(0x14c));},0xc80);}function _0x35330c(){const _0x532474=_0x3a36ac,_0x4df0b3=document[_0x532474(0x131)](_0x532474(0x142));if(!_0x4df0b3)return;_0x4df0b3[_0x532474(0x1c4)][_0x532474(0x1b2)]('autosave-pulse'),void _0x4df0b3[_0x532474(0x193)],_0x4df0b3['classList'][_0x532474(0x1be)](_0x532474(0x13a)),setTimeout(()=>_0x4df0b3['classList'][_0x532474(0x1b2)](_0x532474(0x13a)),0x3e8);}function _0xaf8920(){const _0x2e011b=_0x3a36ac;if(_0x5394ea)return;_0x5394ea=!![],settings[_0x2e011b(0x12a)]=!![],saveSettings();const _0x139025=document[_0x2e011b(0x131)]('btn-save-project');if(_0x139025)_0x139025[_0x2e011b(0x1c4)][_0x2e011b(0x1be)](_0x2e011b(0x1ae));_0x101e99('A\x20guardar\x20automaticamente…');if(_0x49feb2)clearInterval(_0x49feb2);_0x49feb2=setInterval(()=>{if(!_0xd770f0)return;const _0x1a5895=_0x54a6e3({'silent':!![]});if(_0x1a5895)_0x35330c();},settings[_0x2e011b(0x14d)]||0x4e20);}let _0x2aacc2=0x0;const _0x2fa780=_0x3a36ac(0x1b4);document[_0x3a36ac(0x131)](_0x3a36ac(0x142))[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),()=>{const _0x4ced03=_0x3a36ac;if(_0x5394ea)return;if(localStorage[_0x4ced03(0x154)](_0x2fa780)==='1')return;_0x2aacc2++,_0x2aacc2>=0x3&&document['getElementById'](_0x4ced03(0x128))[_0x4ced03(0x1c4)][_0x4ced03(0x1b2)]('hidden');}),document[_0x3a36ac(0x131)](_0x3a36ac(0x177))['addEventListener']('click',()=>{const _0x131a20=_0x3a36ac;document[_0x131a20(0x131)](_0x131a20(0x128))[_0x131a20(0x1c4)][_0x131a20(0x1be)]('hidden'),_0xaf8920();}),document[_0x3a36ac(0x131)](_0x3a36ac(0x1ab))[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),()=>{const _0x330da2=_0x3a36ac;try{localStorage[_0x330da2(0x121)](_0x2fa780,'1');}catch(_0x4ba129){}document[_0x330da2(0x131)](_0x330da2(0x128))[_0x330da2(0x1c4)]['add'](_0x330da2(0x1a6));}),function _0x31d63f(){const _0x75951e=_0x3a36ac,_0x245be2=document[_0x75951e(0x131)](_0x75951e(0x142));if(!_0x245be2)return;function _0x53ac7f(){const _0x2c0cd6=_0x75951e;if(_0x5394ea)return;clearTimeout(_0x448122),_0x245be2[_0x2c0cd6(0x1c4)]['add'](_0x2c0cd6(0x1b0)),_0x448122=setTimeout(()=>{const _0x497034=_0x2c0cd6;_0x245be2['classList'][_0x497034(0x1b2)](_0x497034(0x1b0)),_0xaf8920();},0xbb8);}function _0x5d63ea(){const _0x24b0d2=_0x75951e;clearTimeout(_0x448122),_0x245be2[_0x24b0d2(0x1c4)][_0x24b0d2(0x1b2)](_0x24b0d2(0x1b0));}_0x245be2['addEventListener'](_0x75951e(0x17d),_0x53ac7f),_0x245be2[_0x75951e(0x146)](_0x75951e(0x163),_0x53ac7f,{'passive':!![]}),[_0x75951e(0x179),_0x75951e(0x1ce),_0x75951e(0x185),_0x75951e(0x127)][_0x75951e(0x16f)](_0x41a2a3=>{_0x245be2['addEventListener'](_0x41a2a3,_0x5d63ea);});}(),document[_0x3a36ac(0x131)](_0x3a36ac(0x16d))[_0x3a36ac(0x146)]('click',()=>{const _0x25207a=_0x3a36ac;_0x57ae33(),document['getElementById'](_0x25207a(0x1b5))[_0x25207a(0x1c4)]['remove']('hidden');}),document[_0x3a36ac(0x131)]('local-projects-close')[_0x3a36ac(0x146)](_0x3a36ac(0x1c7),()=>{const _0x34b385=_0x3a36ac;document[_0x34b385(0x131)](_0x34b385(0x1b5))[_0x34b385(0x1c4)][_0x34b385(0x1be)]('hidden');});function _0x57ae33(){const _0x4c954e=_0x3a36ac,_0x59e3e9=document[_0x4c954e(0x131)](_0x4c954e(0x18c)),_0x44f4fb=_0x34ec0f(),_0x448a88=Object[_0x4c954e(0x1ad)](_0x44f4fb)[_0x4c954e(0x165)]((_0xe47cca,_0x32f39b)=>(_0x44f4fb[_0x32f39b]['updatedAt']||0x0)-(_0x44f4fb[_0xe47cca][_0x4c954e(0x1a9)]||0x0));if(_0x448a88[_0x4c954e(0x1a4)]===0x0){_0x59e3e9[_0x4c954e(0x1cd)]=_0x4c954e(0x124);return;}_0x59e3e9[_0x4c954e(0x1cd)]=_0x448a88[_0x4c954e(0x1b6)](_0x5e8239=>{const _0x526c5c=_0x4c954e,_0xd93180=_0x44f4fb[_0x5e8239],_0x3a2a16=_0xd93180['geojson']&&_0xd93180[_0x526c5c(0x1ca)]['features']?_0xd93180[_0x526c5c(0x1ca)][_0x526c5c(0x1b1)][_0x526c5c(0x1a4)]:0x0,_0x27cb3e=_0xd93180[_0x526c5c(0x1a9)]?new Date(_0xd93180[_0x526c5c(0x1a9)])['toLocaleString']('pt-PT'):'—',_0x2da815=_0x4ade5d[_0x526c5c(0x18a)]&&_0x4ade5d[_0x526c5c(0x13b)]===_0x5e8239;return _0x526c5c(0x1c8)+escapeHtml(_0x5e8239)+(_0x2da815?_0x526c5c(0x157):'')+'</b>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span>'+_0x3a2a16+_0x526c5c(0x168)+_0x27cb3e+_0x526c5c(0x169)+escapeHtml(_0x5e8239)+_0x526c5c(0x12b)+escapeHtml(_0x5e8239)+'\x22\x20title=\x22Eliminar\x22>🗑</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20</div>';})['join'](''),_0x59e3e9['querySelectorAll']('[data-open-local]')[_0x4c954e(0x16f)](_0x1772f8=>{const _0x1e0706=_0x4c954e;_0x1772f8['addEventListener'](_0x1e0706(0x1c7),()=>_0x492cc1(_0x1772f8[_0x1e0706(0x133)][_0x1e0706(0x1bc)]));}),_0x59e3e9[_0x4c954e(0x1b7)](_0x4c954e(0x139))[_0x4c954e(0x16f)](_0x150998=>{const _0x378994=_0x4c954e;_0x150998[_0x378994(0x146)](_0x378994(0x1c7),()=>_0x2d1703(_0x150998[_0x378994(0x133)][_0x378994(0x1bf)]));});}function _0x492cc1(_0x6bfa9f,_0x2ab1e1={}){const _0x2bf92b=_0x3a36ac,_0x4d85be=_0x34ec0f(),_0x3a5412=_0x4d85be[_0x6bfa9f];if(!_0x3a5412)return;const _0x235887=Boolean(_0x2ab1e1['suppressRestoreErrorAlert']||suppressProjectRestoreErrorAlert);if(featuresData['size']>0x0&&!requestConfirmation(_0x2bf92b(0x19f)))return;try{_0x44f660();}catch(_0x2b08b1){console['error'](_0x2bf92b(0x160),_0x2b08b1);}try{if(_0x3a5412[_0x2bf92b(0x12c)]&&Array[_0x2bf92b(0x1c2)](_0x3a5412[_0x2bf92b(0x12c)])&&_0x3a5412[_0x2bf92b(0x12c)]['length']){layerCounter=Number[_0x2bf92b(0x1a0)](_0x3a5412[_0x2bf92b(0x1a1)])?_0x3a5412[_0x2bf92b(0x1a1)]:Math['max'](..._0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x1b6)](_0x30f57a=>_0x30f57a['id']),0x0),activeLayerId=_0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x1a5)](_0x16c72e=>_0x16c72e['id']===_0x3a5412[_0x2bf92b(0x134)])?_0x3a5412['activeLayerId']:_0x3a5412['layers'][_0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x1a4)]-0x1]['id'],_0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x16f)](_0x507055=>{const _0x1daa91=_0x2bf92b;layerVisible['set'](_0x507055['id'],_0x507055[_0x1daa91(0x187)]!==![]),_0x507055['id']!==activeLayerId&&layers[_0x1daa91(0x138)]({'id':_0x507055['id'],'name':_0x507055[_0x1daa91(0x13b)],'geometryType':_0x507055[_0x1daa91(0x19c)],'mode':_0x507055[_0x1daa91(0x164)],'attributes':_0x507055[_0x1daa91(0x180)]||[],'colorAttr':_0x507055[_0x1daa91(0x1aa)]||null,'baseColor':_0x507055[_0x1daa91(0x197)]||null,'opacity':_0x507055[_0x1daa91(0x192)]!=null?_0x507055['opacity']:null,'symbology':cloneSymbology(_0x507055['symbology'])});});const _0x167cdf=_0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x190)](_0x10e496=>_0x10e496['id']===activeLayerId);config[_0x2bf92b(0x164)]=_0x167cdf?_0x167cdf[_0x2bf92b(0x164)]||null:null,config['attributes']=_0x167cdf?_0x167cdf[_0x2bf92b(0x180)]||[]:[],config[_0x2bf92b(0x19c)]=_0x167cdf?_0x167cdf[_0x2bf92b(0x19c)]||null:null,config[_0x2bf92b(0x12d)]=_0x167cdf?_0x167cdf[_0x2bf92b(0x13b)]||null:null,config[_0x2bf92b(0x1aa)]=_0x167cdf?_0x167cdf[_0x2bf92b(0x1aa)]||null:null,config[_0x2bf92b(0x197)]=_0x167cdf?_0x167cdf[_0x2bf92b(0x197)]||null:null,config['opacity']=_0x167cdf&&_0x167cdf[_0x2bf92b(0x192)]!=null?_0x167cdf[_0x2bf92b(0x192)]:null,config['symbology']=cloneSymbology(_0x167cdf&&_0x167cdf[_0x2bf92b(0x19e)]);const _0x12683d=_0x3a5412[_0x2bf92b(0x12c)][_0x2bf92b(0x1b6)](_0x30864d=>_0x30864d['id']);Array['isArray'](_0x3a5412[_0x2bf92b(0x135)])&&_0x3a5412[_0x2bf92b(0x135)]['length']?(layerOrder=_0x3a5412[_0x2bf92b(0x135)]['filter'](_0x17738f=>_0x12683d[_0x2bf92b(0x16b)](_0x17738f)),_0x12683d[_0x2bf92b(0x16f)](_0x48ad3e=>{const _0x3ff1cc=_0x2bf92b;if(!layerOrder[_0x3ff1cc(0x16b)](_0x48ad3e))layerOrder['unshift'](_0x48ad3e);})):layerOrder=_0x12683d['slice'](),_0x3a5412[_0x2bf92b(0x1ca)]&&_0x3a5412['geojson'][_0x2bf92b(0x1b1)]&&_0x3a5412[_0x2bf92b(0x1ca)]['features']['length']?(importGeoJSONFeatures(_0x3a5412[_0x2bf92b(0x1ca)],_0x2d012b=>{const _0xee3c1d=_0x2bf92b,_0x272efc=Number(_0x2d012b[_0xee3c1d(0x18f)]);return Number['isFinite'](_0x272efc)?_0x272efc:activeLayerId;}),featuresData[_0x2bf92b(0x16f)](_0x3c41d9=>{const _0x9f935f=_0x2bf92b;if(layerVisible[_0x9f935f(0x151)](_0x3c41d9[_0x9f935f(0x1a8)])===![])drawnGroup['removeLayer'](_0x3c41d9[_0x9f935f(0x159)]);})):refreshFeatList();}else activeLayerId=++layerCounter,layerVisible['set'](activeLayerId,!![]),layerOrder=[activeLayerId],_0x3a5412['config']&&(config[_0x2bf92b(0x164)]=_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x164)]||null,config[_0x2bf92b(0x180)]=_0x3a5412['config'][_0x2bf92b(0x180)]||[],config[_0x2bf92b(0x19c)]=_0x3a5412[_0x2bf92b(0x1bd)]['geometryType']||null,config['shapeName']=_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x12d)]||null,config['colorAttr']=_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x1aa)]||null,config[_0x2bf92b(0x197)]=_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x197)]||null,config['opacity']=_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x192)]!=null?_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x192)]:null,config[_0x2bf92b(0x19e)]=cloneSymbology(_0x3a5412[_0x2bf92b(0x1bd)][_0x2bf92b(0x19e)])),_0x3a5412[_0x2bf92b(0x1ca)]&&_0x3a5412[_0x2bf92b(0x1ca)][_0x2bf92b(0x1b1)]&&_0x3a5412['geojson']['features'][_0x2bf92b(0x1a4)]?importGeoJSONFeatures(_0x3a5412[_0x2bf92b(0x1ca)]):refreshFeatList();}catch(_0x10bfe5){console[_0x2bf92b(0x12f)]('Erro\x20ao\x20carregar\x20geometrias\x20do\x20projeto\x20guardado:',_0x10bfe5),_0x44f660(),activeLayerId=++layerCounter,layerVisible[_0x2bf92b(0x175)](activeLayerId,!![]),layerOrder=[activeLayerId],config[_0x2bf92b(0x164)]=null,config[_0x2bf92b(0x180)]=[],config[_0x2bf92b(0x19c)]=null,config[_0x2bf92b(0x12d)]=null,config['colorAttr']=null,config['baseColor']=null,config[_0x2bf92b(0x192)]=null,config['symbology']=defaultSymbology(),!_0x235887&&showAppAlert('Não\x20foi\x20possível\x20restaurar\x20este\x20projeto\x20corretamente.\x20O\x20estado\x20foi\x20limpo\x20e\x20ficou\x20pronto\x20para\x20começar\x20de\x20novo.',{'error':!![]});}applyLayerZOrder(),_0x396f85(),restoreRasterLayersFromProject(_0x3a5412[_0x2bf92b(0x18e)]),_0x4ade5d[_0x2bf92b(0x13b)]=_0x6bfa9f,_0x4ade5d[_0x2bf92b(0x18a)]=!![],_0xd770f0=![];try{localStorage['setItem'](_0x3a0141,_0x6bfa9f);}catch(_0x50952c){}document[_0x2bf92b(0x131)](_0x2bf92b(0x191))&&!document[_0x2bf92b(0x131)](_0x2bf92b(0x191))['classList']['contains'](_0x2bf92b(0x1a6))&&document[_0x2bf92b(0x131)](_0x2bf92b(0x191))[_0x2bf92b(0x1c4)][_0x2bf92b(0x1be)](_0x2bf92b(0x1a6)),config['geometryType']&&(applyGeometryConfig(),setupSummary()),_0xafb233(),document[_0x2bf92b(0x131)](_0x2bf92b(0x1b5))['classList'][_0x2bf92b(0x1be)]('hidden'),showTeamToast('Projeto\x20\x22'+_0x6bfa9f+_0x2bf92b(0x156)),refreshLayerEditability();}function _0x2d1703(_0x2f1613){const _0x25b117=_0x3a36ac;if(!requestConfirmation(_0x25b117(0x1a3)+_0x2f1613+_0x25b117(0x153)))return;const _0x551907=_0x34ec0f();delete _0x551907[_0x2f1613],_0x27919a(_0x551907);if(_0x4ade5d[_0x25b117(0x13b)]===_0x2f1613){_0x4ade5d[_0x25b117(0x13b)]=null,_0x4ade5d[_0x25b117(0x18a)]=![];try{localStorage[_0x25b117(0x174)](_0x3a0141);}catch(_0x2a09a9){}_0xafb233();}_0x57ae33();}window[_0x3a36ac(0x149)]=_0x34ec0f,window['saveLocalProjects']=_0x27919a,window['openLocalProject']=_0x492cc1,window['deleteLocalProject']=_0x2d1703,window[_0x3a36ac(0x1af)]=_0x57ae33,window[_0x3a36ac(0x1b9)]=_0xafb233,window['clearLocalProjectState']=_0x406ae8,window[_0x3a36ac(0x15e)]=_0x44f660,window['saveCurrentProject']=_0x54a6e3,window[_0x3a36ac(0x125)]=_0x1fe64b,window['enableAutoSave']=_0xaf8920,window[_0x3a36ac(0x1b3)]=_0x4176be,window[_0x3a36ac(0x150)]=_0x2abdab,window[_0x3a36ac(0x18b)]=_0x348187,window['inferLayerAttributesFromProps']=_0x59f6d7,window[_0x3a36ac(0x123)]=_0x291c8c,window[_0x3a36ac(0x1c5)]=_0x396f85,window[_0x3a36ac(0x182)]=_0x410c77,window['hideStartProjectWarning']=_0x43fb38,window[_0x3a36ac(0x178)]=_0x101e99,window[_0x3a36ac(0x196)]=_0x35330c,Object[_0x3a36ac(0x16c)](window,_0x3a36ac(0x172),{'get':function(){return _0x4ade5d;},'set':function(_0x105bde){_0x4ade5d=_0x105bde;},'configurable':!![]}),Object['defineProperty'](window,_0x3a36ac(0x158),{'get':function(){return _0x331c2d;},'set':function(_0x3f3a8a){_0x331c2d=_0x3f3a8a;},'configurable':!![]}),Object[_0x3a36ac(0x16c)](window,_0x3a36ac(0x188),{'get':function(){return _0xd770f0;},'set':function(_0x419519){_0xd770f0=_0x419519;},'configurable':!![]}),Object[_0x3a36ac(0x16c)](window,_0x3a36ac(0x12a),{'get':function(){return _0x5394ea;},'set':function(_0x42d0af){_0x5394ea=_0x42d0af;},'configurable':!![]}),Object['defineProperty'](window,_0x3a36ac(0x184),{'get':function(){return _0x49feb2;},'set':function(_0x11bb1b){_0x49feb2=_0x11bb1b;},'configurable':!![]});}()));
+/* === MÓDULO: PROJETOS LOCAIS === */
+/* Local project CRUD, save/open/delete, project status UI,
+   auto-save, save current project, clear/restore state,
+   serialize/restore layer schemas, start project modal */
+/* Origem: 05-app-main.js linhas 508-1155 */
+(function(){
+/* ============================================================
+   PROJETOS LOCAIS (guardados na aplicação, neste dispositivo)
+   ============================================================ */
+const LOCAL_PROJECTS_KEY = 'engenh-local-projects';
+const ACTIVE_PROJECT_KEY = 'engenh-active-project-name'; // guarda qual o projeto ativo, como rede de segurança
+let localProjectState = { name: null, active: false };
+let startProjectChoice = null; // 'novo' | 'sem'
+
+// marca que há alterações nas geometrias ainda não guardadas no projeto local;
+// usado para avisar o utilizador antes de sair/fechar/recomeçar
+let projectDirty = false;
+function markProjectDirty(){
+  projectDirty = true;
+  persistCurrentWorkspaceState();
+  if(autoSaveEnabled) pulseSaveIcon(); // feedback imediato: "alteração registada, será guardada"
+}
+
+function getLocalProjects(){
+  try{
+    return JSON.parse(localStorage.getItem(LOCAL_PROJECTS_KEY)) || {};
+  }catch(err){
+    console.warn('Não foi possível ler os projetos locais guardados.', err);
+    return {};
+  }
+}
+
+function saveLocalProjects(projects){
+  try{
+    localStorage.setItem(LOCAL_PROJECTS_KEY, JSON.stringify(projects));
+  }catch(err){
+    console.warn('Não foi possível guardar os projetos locais.', err);
+    showAppAlert('Não foi possível guardar o projeto localmente (armazenamento cheio ou indisponível).', {error: true});
+  }
+}
+
+function updateProjectStatusUI(){
+  const badge = document.getElementById('project-status-badge');
+  const badgeText = document.getElementById('project-status-badge-text');
+  const onlineLabel = teamState.connected && teamState.name ? `Nuvem: ${teamState.name}` : '';
+  const localLabel = localProjectState.active && localProjectState.name ? `Projeto: ${localProjectState.name}` : '';
+  const label = onlineLabel || localLabel;
+  if(label){
+    badge.style.display = 'inline-flex';
+    badgeText.textContent = label;
+  } else {
+    badge.style.display = 'none';
+    badgeText.textContent = '';
+  }
+  const saveBtn = document.getElementById('btn-save-project');
+  if(saveBtn){
+    saveBtn.title = (localProjectState.active && localProjectState.name)
+      ? `Guardar em "${localProjectState.name}"`
+      : 'Guardar projeto';
+  }
+}
+
+function clearLocalProjectState(){
+  localProjectState.name = null;
+  localProjectState.active = false;
+  try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
+  updateProjectStatusUI();
+}
+
+function clearMapLayerState(){
+  if(drawnGroup) drawnGroup.clearLayers();
+  if(measuresGroup) measuresGroup.clearLayers();
+  featuresData.clear();
+  layers.length = 0;
+  layerVisible.clear();
+  layerOrder.length = 0;
+  symbologyLayerId = null;
+  config.shapeName = null;
+  config.mode = null;
+  config.attributes = [];
+  config.geometryType = null;
+  config.colorAttr = null;
+  config.baseColor = null;
+  config.opacity = null;
+  config.symbology = defaultSymbology();
+  layerPanes.forEach((paneName, id)=>{
+    const pane = map && map.getPane(paneName);
+    if(pane) pane.remove();
+  });
+  layerPanes.clear();
+  activeLayerId = ++layerCounter;
+  layerVisible.set(activeLayerId, true);
+  layerOrder = [activeLayerId];
+  if(typeof clearRasterLayerState === 'function') clearRasterLayerState();
+}
+
+function serializeLayerSchemasForGeoJSON(){
+  const allLayerIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
+  return allLayerIds.map(id=>{
+    const schema = getLayerSchema(id);
+    if(!schema) return null;
+    return {
+      id,
+      name: schema.name,
+      geometryType: schema.geometryType,
+      mode: schema.mode,
+      attributes: Array.isArray(schema.attributes) ? schema.attributes.map(a=>({...a})) : [],
+      colorAttr: schema.colorAttr || null,
+      baseColor: schema.baseColor || null,
+      opacity: schema.opacity,
+      symbology: cloneSymbology(schema.symbology),
+      visible: layerVisible.get(id) !== false
+    };
+  }).filter(Boolean);
+}
+
+function restoreLayerSchemasFromGeoJSON(geojson){
+  const schemas = Array.isArray(geojson && geojson.__layers) ? geojson.__layers : [];
+  if(!schemas.length) return false;
+
+  layers.length = 0;
+  layerVisible.clear();
+  layerOrder.length = 0;
+
+  const importedIds = [];
+  schemas.forEach(meta=>{
+    const id = Number(meta.id);
+    if(!Number.isFinite(id)) return;
+    importedIds.push(id);
+
+    layers.push({
+      id,
+      name: meta.name || null,
+      geometryType: meta.geometryType || null,
+      mode: meta.mode || 'atributos',
+      attributes: Array.isArray(meta.attributes) ? meta.attributes.map(a=>({...a})) : [],
+      colorAttr: meta.colorAttr || null,
+      baseColor: meta.baseColor || null,
+      opacity: meta.opacity,
+      symbology: cloneSymbology(meta.symbology)
+    });
+    layerVisible.set(id, meta.visible !== false);
+  });
+
+  if(!importedIds.length) return false;
+
+  layerCounter = Math.max(layerCounter, ...importedIds);
+  const preferredActive = Number(geojson.__activeLayerId);
+  activeLayerId = importedIds.includes(preferredActive) ? preferredActive : importedIds[0];
+  layerOrder = importedIds.slice();
+
+  const activeMeta = schemas.find(meta=>Number(meta.id)===activeLayerId) || schemas[0];
+  config.shapeName = activeMeta && activeMeta.name ? activeMeta.name : null;
+  config.mode = activeMeta && activeMeta.mode ? activeMeta.mode : 'atributos';
+  config.attributes = Array.isArray(activeMeta && activeMeta.attributes) ? activeMeta.attributes.map(a=>({...a})) : [];
+  config.geometryType = activeMeta && activeMeta.geometryType ? activeMeta.geometryType : null;
+  config.colorAttr = activeMeta && activeMeta.colorAttr ? activeMeta.colorAttr : null;
+  config.baseColor = activeMeta && activeMeta.baseColor ? activeMeta.baseColor : null;
+  config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+  config.symbology = cloneSymbology(activeMeta && activeMeta.symbology);
+
+  return true;
+}
+
+function inferLayerAttributesFromProps(layerId, props){
+  const source = props && typeof props === 'object' ? props : {};
+  const keys = Object.keys(source).filter(k=>k && !k.startsWith('__'));
+  if(!keys.length) return;
+
+  const schema = getLayerSchema(layerId);
+  if(!schema) return;
+
+  const hasExistingAttrs = Array.isArray(schema.attributes) && schema.attributes.length > 0;
+  if(hasExistingAttrs) return;
+
+  const attrs = keys.map(name=>({name, type:'texto'}));
+  if(layerId === activeLayerId){
+    config.attributes = attrs;
+    if(!config.mode) config.mode = 'atributos';
+  } else {
+    const layerMeta = layers.find(l=>l.id === layerId);
+    if(layerMeta){
+      layerMeta.attributes = attrs;
+      if(!layerMeta.mode) layerMeta.mode = 'atributos';
+    }
+  }
+}
+
+function ensureActiveLayerForImportedProject(){
+  if(config.geometryType || featuresData.size === 0) return;
+  const firstEntry = featuresData.values().next().value;
+  if(!firstEntry) return;
+  config.geometryType = firstEntry.geomType;
+  config.shapeName = 'Camada importada';
+  config.mode = 'atributos';
+  config.attributes = [];
+  config.colorAttr = null;
+  config.baseColor = null;
+  config.opacity = null;
+  config.symbology = defaultSymbology();
+}
+
+function finalizeLoadedProjectState(){
+  if(map && map.pm){
+    applyGeometryConfig();
+    refreshLayerEditability();
+  }
+  refreshFeatList();
+  if(document.getElementById('layers-list')) renderLayersPanel();
+}
+
+/* ---------- modal de escolha ao iniciar ---------- */
+document.getElementById('btn-start-project').addEventListener('click', ()=>{
+  hideStartProjectWarning();
+  document.getElementById('start-project-overlay').classList.remove('hidden');
+});
+
+function hideStartProjectWarning(){
+  const warning = document.getElementById('start-project-warning');
+  warning.classList.add('hidden');
+  warning.textContent = '';
+}
+
+document.querySelectorAll('[data-start-choice]').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-start-choice]').forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    startProjectChoice = card.dataset.startChoice;
+    hideStartProjectWarning();
+
+    const nameRow = document.getElementById('start-project-name-row');
+    const nameError = document.getElementById('start-project-name-error');
+    nameError.style.display = 'none';
+    if(startProjectChoice === 'novo'){
+      nameRow.classList.remove('hidden');
+      document.getElementById('start-project-name').focus();
+    } else {
+      nameRow.classList.add('hidden');
+    }
+    validateStartProjectContinue();
+  });
+});
+
+document.getElementById('start-project-name').addEventListener('input', validateStartProjectContinue);
+
+function validateStartProjectContinue(){
+  const btn = document.getElementById('start-project-continue');
+  if(startProjectChoice === 'sem' || startProjectChoice === 'continuar'){ btn.disabled = false; return; }
+  if(startProjectChoice === 'novo'){
+    btn.disabled = document.getElementById('start-project-name').value.trim().length === 0;
+    return;
+  }
+  btn.disabled = true;
+}
+
+document.getElementById('start-project-continue').addEventListener('click', ()=>{
+  if(startProjectChoice === 'continuar'){
+    const projects = getLocalProjects();
+    if(Object.keys(projects).length === 0){
+      const warning = document.getElementById('start-project-warning');
+      warning.textContent = 'Ainda não tens nenhum projeto guardado neste dispositivo. Cria um projeto novo ou trabalha sem gravar.';
+      warning.classList.remove('hidden');
+      return; // fica no mesmo modal, não avança
+    }
+    // equivale a abrir diretamente o painel de "Projetos guardados"
+    document.getElementById('start-project-overlay').classList.add('hidden');
+    proceedToMap();
+    renderLocalProjectsList();
+    document.getElementById('local-projects-overlay').classList.remove('hidden');
+    return;
+  }
+
+  if(startProjectChoice === 'novo'){
+    const rawName = document.getElementById('start-project-name').value.trim();
+    if(!rawName) return;
+
+    const projects = getLocalProjects();
+    if(!projects[rawName]){
+      projects[rawName] = { name: rawName, updatedAt: Date.now(), config: null, geojson: {type:'FeatureCollection', features:[]} };
+      saveLocalProjects(projects);
+    }
+    localProjectState.name = rawName;
+    localProjectState.active = true;
+    try{ localStorage.setItem(ACTIVE_PROJECT_KEY, rawName); }catch(err){ /* ignora */ }
+  } else {
+    localProjectState.name = null;
+    localProjectState.active = false;
+    try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
+  }
+
+  updateProjectStatusUI();
+  document.getElementById('start-project-overlay').classList.add('hidden');
+  proceedToMap();
+});
+
+/* ---------- guardar projeto ---------- */
+// devolve true se guardou com sucesso, false se o utilizador cancelou (ex: não deu nome)
+// opts.silent=true -> usado pelo guardar automático: nunca pede nome e não mostra o toast normal
+function saveCurrentProject(opts){
+  opts = opts || {};
+  if(!localProjectState.active || !localProjectState.name){
+    // rede de segurança: se por algum motivo o estado em memória se perdeu mas
+    // sabemos qual foi o último projeto aberto (e ele ainda existe), recupera-o
+    // em vez de assumir que não há nenhum projeto e pedir para criar um novo.
+    try{
+      const lastActive = localStorage.getItem(ACTIVE_PROJECT_KEY);
+      if(lastActive){
+        const existing = getLocalProjects();
+        if(existing[lastActive]){
+          localProjectState.name = lastActive;
+          localProjectState.active = true;
+          updateProjectStatusUI();
+        }
+      }
+    }catch(err){ /* ignora */ }
+  }
+
+  if(!localProjectState.active || !localProjectState.name){
+    if(opts.silent) return false; // nada para guardar automaticamente ainda
+    const name = prompt('Ainda não tens um projeto ativo. Dá um nome para guardares o trabalho:');
+    if(!name || !name.trim()) return false;
+    localProjectState.name = name.trim();
+    localProjectState.active = true;
+    updateProjectStatusUI();
+  }
+
+  const projects = getLocalProjects();
+  const allLayerIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
+  const layersMeta = allLayerIds.map(id=>{
+    const schema = getLayerSchema(id);
+    return {
+      id,
+      name: schema.name,
+      geometryType: schema.geometryType,
+      mode: schema.mode,
+      attributes: schema.attributes,
+      colorAttr: schema.colorAttr,
+      baseColor: schema.baseColor,
+      opacity: schema.opacity,
+      symbology: cloneSymbology(schema.symbology),
+      visible: layerVisible.get(id) !== false
+    };
+  });
+  projects[localProjectState.name] = {
+    name: localProjectState.name,
+    updatedAt: Date.now(),
+    layers: layersMeta,
+    activeLayerId: activeLayerId,
+    layerCounter: layerCounter,
+    layerOrder: layerOrder.slice(),
+    geojson: buildGeoJSON(false, true),
+    rasterLayers: serializeRasterLayersForProject()
+  };
+  saveLocalProjects(projects);
+  projectDirty = false;
+  persistCurrentWorkspaceState();
+  if(!opts.silent){
+    showTeamToast(`Projeto "${localProjectState.name}" guardado.`);
+  }
+  return true;
+}
+document.getElementById('btn-save-project').addEventListener('click', saveCurrentProject);
+
+function disableAutoSave(){
+  if(!autoSaveEnabled) return;
+  autoSaveEnabled = false;
+  const btn = document.getElementById('btn-save-project');
+  if(btn) btn.classList.remove('autosave-on');
+  if(autoSaveInterval){ clearInterval(autoSaveInterval); autoSaveInterval = null; }
+}
+
+/* ---------- guardar automático: segurar o botão de guardar 3s ativa-o ---------- */
+let autoSaveEnabled = false;
+let autoSaveInterval = null;
+let saveHoldTimer = null;
+
+function showAutosaveToast(message){
+  const toast = document.getElementById('autosave-toast');
+  if(!toast) return;
+  toast.querySelector('.message').textContent = message;
+  toast.classList.remove('is-leaving');
+  void toast.offsetWidth;
+  toast.classList.add('is-visible');
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(()=>{
+    toast.classList.remove('is-visible');
+    toast.classList.add('is-leaving');
+  }, 3200);
+}
+
+function pulseSaveIcon(){
+  const btn = document.getElementById('btn-save-project');
+  if(!btn) return;
+  btn.classList.remove('autosave-pulse');
+  void btn.offsetWidth; // reinicia a animação mesmo em disparos consecutivos
+  btn.classList.add('autosave-pulse');
+  setTimeout(()=>btn.classList.remove('autosave-pulse'), 1000);
+}
+
+function enableAutoSave(){
+  if(autoSaveEnabled) return;
+  autoSaveEnabled = true;
+  settings.autoSaveEnabled = true;
+  saveSettings();
+  const btn = document.getElementById('btn-save-project');
+  if(btn) btn.classList.add('autosave-on');
+  showAutosaveToast('A guardar automaticamente…');
+  if(autoSaveInterval) clearInterval(autoSaveInterval);
+  autoSaveInterval = setInterval(()=>{
+    if(!projectDirty) return; // nada mudou desde o último guardado, não faz nada
+    const saved = saveCurrentProject({ silent:true });
+    if(saved) pulseSaveIcon();
+  }, settings.autoSaveIntervalMs || 20000);
+}
+
+/* ---------- sugestão de guardar automático após 3 gravações manuais ----------
+   Ao 3º clique no botão Guardar (sem já ter o auto-save ativo), pergunta-se ao
+   utilizador se quer ativá-lo. Se disser "Não", a pergunta não volta a aparecer
+   (fica gravado no localStorage deste dispositivo). */
+let manualSaveClickCount = 0;
+const AUTOSAVE_SUGGEST_DECLINED_KEY = 'engenh-autosave-suggest-declined';
+
+document.getElementById('btn-save-project').addEventListener('click', ()=>{
+  if(autoSaveEnabled) return;
+  if(localStorage.getItem(AUTOSAVE_SUGGEST_DECLINED_KEY) === '1') return;
+  manualSaveClickCount++;
+  if(manualSaveClickCount >= 3){
+    document.getElementById('autosave-suggest-overlay').classList.remove('hidden');
+  }
+});
+
+document.getElementById('autosave-suggest-yes').addEventListener('click', ()=>{
+  document.getElementById('autosave-suggest-overlay').classList.add('hidden');
+  enableAutoSave();
+});
+
+document.getElementById('autosave-suggest-no').addEventListener('click', ()=>{
+  try{ localStorage.setItem(AUTOSAVE_SUGGEST_DECLINED_KEY, '1'); }catch(err){ /* ignora */ }
+  document.getElementById('autosave-suggest-overlay').classList.add('hidden');
+});
+
+(function setupSaveButtonHold(){
+  const btn = document.getElementById('btn-save-project');
+  if(!btn) return;
+
+  function startHold(){
+    if(autoSaveEnabled) return; // já ativo, não precisa de segurar outra vez
+    clearTimeout(saveHoldTimer);
+    btn.classList.add('holding-save');
+    saveHoldTimer = setTimeout(()=>{
+      btn.classList.remove('holding-save');
+      enableAutoSave();
+    }, 3000);
+  }
+  function cancelHold(){
+    clearTimeout(saveHoldTimer);
+    btn.classList.remove('holding-save');
+  }
+
+  btn.addEventListener('mousedown', startHold);
+  btn.addEventListener('touchstart', startHold, { passive:true });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt=>{
+    btn.addEventListener(evt, cancelHold);
+  });
+})();
+
+/* ---------- consultar / abrir / eliminar projetos guardados ---------- */
+document.getElementById('btn-open-local-projects').addEventListener('click', ()=>{
+  renderLocalProjectsList();
+  document.getElementById('local-projects-overlay').classList.remove('hidden');
+});
+document.getElementById('local-projects-close').addEventListener('click', ()=>{
+  document.getElementById('local-projects-overlay').classList.add('hidden');
+});
+
+function renderLocalProjectsList(){
+  const container = document.getElementById('local-projects-list');
+  const projects = getLocalProjects();
+  const names = Object.keys(projects).sort((a,b)=> (projects[b].updatedAt||0) - (projects[a].updatedAt||0));
+
+  if(names.length === 0){
+    container.innerHTML = '<p class="sub">Ainda não guardaste nenhum projeto neste dispositivo.</p>';
+    return;
+  }
+
+  container.innerHTML = names.map(name=>{
+    const p = projects[name];
+    const count = (p.geojson && p.geojson.features) ? p.geojson.features.length : 0;
+    const date = p.updatedAt ? new Date(p.updatedAt).toLocaleString('pt-PT') : '—';
+    const isActive = localProjectState.active && localProjectState.name === name;
+    return `
+      <div class="local-project-row">
+        <div class="info">
+          <b>${escapeHtml(name)}${isActive ? ' <span style="color:var(--green);">(ativo)</span>' : ''}</b>
+          <span>${count} geometria(s) · guardado em ${date}</span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn" data-open-local="${escapeHtml(name)}">Abrir</button>
+          <button type="button" class="btn warn" data-delete-local="${escapeHtml(name)}" title="Eliminar">🗑</button>
+        </div>
+      </div>`;
+  }).join('');
+
+  container.querySelectorAll('[data-open-local]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openLocalProject(btn.dataset.openLocal));
+  });
+  container.querySelectorAll('[data-delete-local]').forEach(btn=>{
+    btn.addEventListener('click', ()=> deleteLocalProject(btn.dataset.deleteLocal));
+  });
+}
+
+function openLocalProject(name, options = {}){
+  const projects = getLocalProjects();
+  const p = projects[name];
+  if(!p) return;
+  const suppressAlert = Boolean(options.suppressRestoreErrorAlert || suppressProjectRestoreErrorAlert);
+
+  if(featuresData.size > 0 && !requestConfirmation('Abrir este projeto vai substituir as geometrias atuais no mapa. Continuar?')) return;
+
+  try{
+    clearMapLayerState();
+  }catch(err){
+    console.error('Erro ao limpar o estado anterior antes de abrir o projeto.', err);
+  }
+
+  // Tudo o que se segue lida com dados que podem estar em formatos antigos/incompletos
+  // (ficheiros guardados antes de alguma alteração ao esquema). Isola-se num try/catch
+  // para que um erro a interpretar geometrias antigas nunca impeça o passo seguinte
+  // (marcar este projeto como "ativo") — é isso que garante que o botão "Guardar"
+  // continua a saber em que projeto gravar, mesmo que algo aqui corra mal.
+  try{
+    if(p.layers && Array.isArray(p.layers) && p.layers.length){
+      // formato novo: guarda todas as camadas (não só a última a ser editada)
+      layerCounter = Number.isFinite(p.layerCounter) ? p.layerCounter : Math.max(...p.layers.map(l=>l.id), 0);
+      activeLayerId = p.layers.some(l=>l.id === p.activeLayerId) ? p.activeLayerId : p.layers[p.layers.length-1].id;
+
+      p.layers.forEach(l=>{
+        layerVisible.set(l.id, l.visible !== false);
+        if(l.id !== activeLayerId){
+          layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null, baseColor:l.baseColor || null, opacity: (l.opacity != null ? l.opacity : null), symbology: cloneSymbology(l.symbology)});
+        }
+      });
+
+      const activeMeta = p.layers.find(l=>l.id === activeLayerId);
+      config.mode = activeMeta ? (activeMeta.mode || null) : null;
+      config.attributes = activeMeta ? (activeMeta.attributes || []) : [];
+      config.geometryType = activeMeta ? (activeMeta.geometryType || null) : null;
+      config.shapeName = activeMeta ? (activeMeta.name || null) : null;
+      config.colorAttr = activeMeta ? (activeMeta.colorAttr || null) : null;
+      config.baseColor = activeMeta ? (activeMeta.baseColor || null) : null;
+      config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+      config.symbology = cloneSymbology(activeMeta && activeMeta.symbology);
+
+      // ordem de empilhamento no mapa: usa a guardada no projeto (se existir e continuar
+      // válida), preenchendo com quaisquer camadas em falta para não desaparecerem do topo.
+      const knownIds = p.layers.map(l=>l.id);
+      if(Array.isArray(p.layerOrder) && p.layerOrder.length){
+        layerOrder = p.layerOrder.filter(id=>knownIds.includes(id));
+        knownIds.forEach(id=>{ if(!layerOrder.includes(id)) layerOrder.unshift(id); });
+      } else {
+        layerOrder = knownIds.slice();
+      }
+
+      if(p.geojson && p.geojson.features && p.geojson.features.length){
+        importGeoJSONFeatures(p.geojson, (rawProps)=>{
+          const lid = Number(rawProps.__layerId);
+          return Number.isFinite(lid) ? lid : activeLayerId;
+        });
+        // esconde de novo as geometrias das camadas que estavam marcadas como ocultas
+        featuresData.forEach(entry=>{
+          if(layerVisible.get(entry.layerId) === false) drawnGroup.removeLayer(entry.layer);
+        });
+      } else {
+        refreshFeatList();
+      }
+    } else {
+      // formato antigo (projetos guardados antes de existir suporte a várias camadas)
+      activeLayerId = ++layerCounter;
+      layerVisible.set(activeLayerId, true);
+      layerOrder = [activeLayerId];
+
+      if(p.config){
+        config.mode = p.config.mode || null;
+        config.attributes = p.config.attributes || [];
+        config.geometryType = p.config.geometryType || null;
+        config.shapeName = p.config.shapeName || null;
+        config.colorAttr = p.config.colorAttr || null;
+        config.baseColor = p.config.baseColor || null;
+        config.opacity = p.config.opacity != null ? p.config.opacity : null;
+        config.symbology = cloneSymbology(p.config.symbology);
+      }
+
+      if(p.geojson && p.geojson.features && p.geojson.features.length){
+        importGeoJSONFeatures(p.geojson);
+      } else {
+        refreshFeatList();
+      }
+    }
+  }catch(err){
+    console.error('Erro ao carregar geometrias do projeto guardado:', err);
+    clearMapLayerState();
+    activeLayerId = ++layerCounter;
+    layerVisible.set(activeLayerId, true);
+    layerOrder = [activeLayerId];
+    config.mode = null;
+    config.attributes = [];
+    config.geometryType = null;
+    config.shapeName = null;
+    config.colorAttr = null;
+    config.baseColor = null;
+    config.opacity = null;
+    config.symbology = defaultSymbology();
+    if(!suppressAlert){
+      showAppAlert('Não foi possível restaurar este projeto corretamente. O estado foi limpo e ficou pronto para começar de novo.', {error: true});
+    }
+  }
+
+  applyLayerZOrder();
+  finalizeLoadedProjectState();
+  restoreRasterLayersFromProject(p.rasterLayers);
+
+  localProjectState.name = name;
+  localProjectState.active = true;
+  projectDirty = false;
+  try{ localStorage.setItem(ACTIVE_PROJECT_KEY, name); }catch(err){ /* ignora */ }
+
+  if(document.getElementById('landing-banner') && !document.getElementById('landing-banner').classList.contains('hidden')){
+    document.getElementById('landing-banner').classList.add('hidden');
+  }
+
+  if(config.geometryType){
+    applyGeometryConfig();
+    setupSummary();
+  }
+
+  updateProjectStatusUI();
+  document.getElementById('local-projects-overlay').classList.add('hidden');
+  showTeamToast(`Projeto "${name}" aberto.`);
+  refreshLayerEditability();
+}
+
+function deleteLocalProject(name){
+  if(!requestConfirmation(`Eliminar o projeto "${name}" guardado neste dispositivo? Esta ação não pode ser desfeita.`)) return;
+  const projects = getLocalProjects();
+  delete projects[name];
+  saveLocalProjects(projects);
+  if(localProjectState.name === name){
+    localProjectState.name = null;
+    localProjectState.active = false;
+    try{ localStorage.removeItem(ACTIVE_PROJECT_KEY); }catch(err){ /* ignora */ }
+    updateProjectStatusUI();
+  }
+  renderLocalProjectsList();
+}
+
+/* --- Expõe no window para05-app-main.js e outros módulos --- */
+window.getLocalProjects = getLocalProjects;
+window.saveLocalProjects = saveLocalProjects;
+window.openLocalProject = openLocalProject;
+window.deleteLocalProject = deleteLocalProject;
+window.renderLocalProjectsList = renderLocalProjectsList;
+window.updateProjectStatusUI = updateProjectStatusUI;
+window.clearLocalProjectState = clearLocalProjectState;
+window.clearMapLayerState = clearMapLayerState;
+window.saveCurrentProject = saveCurrentProject;
+window.markProjectDirty = markProjectDirty;
+window.enableAutoSave = enableAutoSave;
+window.disableAutoSave = disableAutoSave;
+window.serializeLayerSchemasForGeoJSON = serializeLayerSchemasForGeoJSON;
+window.restoreLayerSchemasFromGeoJSON = restoreLayerSchemasFromGeoJSON;
+window.inferLayerAttributesFromProps = inferLayerAttributesFromProps;
+window.ensureActiveLayerForImportedProject = ensureActiveLayerForImportedProject;
+window.finalizeLoadedProjectState = finalizeLoadedProjectState;
+window.validateStartProjectContinue = validateStartProjectContinue;
+window.hideStartProjectWarning = hideStartProjectWarning;
+window.showAutosaveToast = showAutosaveToast;
+window.pulseSaveIcon = pulseSaveIcon;
+
+Object.defineProperty(window, 'localProjectState', {
+  get: function(){ return localProjectState; },
+  set: function(v){ localProjectState = v; },
+  configurable: true
+});
+Object.defineProperty(window, 'startProjectChoice', {
+  get: function(){ return startProjectChoice; },
+  set: function(v){ startProjectChoice = v; },
+  configurable: true
+});
+Object.defineProperty(window, 'projectDirty', {
+  get: function(){ return projectDirty; },
+  set: function(v){ projectDirty = v; },
+  configurable: true
+});
+Object.defineProperty(window, 'autoSaveEnabled', {
+  get: function(){ return autoSaveEnabled; },
+  set: function(v){ autoSaveEnabled = v; },
+  configurable: true
+});
+Object.defineProperty(window, 'autoSaveInterval', {
+  get: function(){ return autoSaveInterval; },
+  set: function(v){ autoSaveInterval = v; },
+  configurable: true
+});
+
+})();

@@ -1,1 +1,1927 @@
-(function(_0x1cb0e6,_0x349d55){var _0x263512=_0x5e5b,_0x43caf4=_0x1cb0e6();while(!![]){try{var _0x1f4e66=parseInt(_0x263512(0x1b5))/0x1*(-parseInt(_0x263512(0x264))/0x2)+parseInt(_0x263512(0x16c))/0x3+parseInt(_0x263512(0x153))/0x4+-parseInt(_0x263512(0x2a8))/0x5*(parseInt(_0x263512(0x1a8))/0x6)+parseInt(_0x263512(0x2b2))/0x7+-parseInt(_0x263512(0x1e2))/0x8+-parseInt(_0x263512(0x1b2))/0x9*(-parseInt(_0x263512(0x192))/0xa);if(_0x1f4e66===_0x349d55)break;else _0x43caf4['push'](_0x43caf4['shift']());}catch(_0x2f04c5){_0x43caf4['push'](_0x43caf4['shift']());}}}(_0x4c6a,0xa5c50),(function(){'use strict';var _0x2ff0ae=_0x5e5b;console[_0x2ff0ae(0x204)](_0x2ff0ae(0x263));var _0x4a2cf8={'active':![],'step':0x1,'selectedClass':_0x2ff0ae(0x155),'areaBounds':null,'areaLayer':null,'samples':[],'sampleDrawing':![],'sampleLabel':null,'vaDrawingActive':![],'magicWandActive':![],'magicWandLabel':null,'mwCropCache':null,'geojson':null,'stats':null,'reviewLayers':[],'worker':null};function _0x228d31(_0xdab028){var _0x2d1745=_0x2ff0ae;return document[_0x2d1745(0x214)](_0xdab028);}function _0x2dc6d2(){var _0xa95f3f=_0x2ff0ae;return!_0x4a2cf8[_0xa95f3f(0x270)]&&(_0x4a2cf8[_0xa95f3f(0x270)]=new Worker(_0xa95f3f(0x290)),_0x4a2cf8[_0xa95f3f(0x270)][_0xa95f3f(0x177)]=_0x175c53,_0x4a2cf8['worker'][_0xa95f3f(0x223)]=function(_0x9d222){var _0x2b8f00=_0xa95f3f;console[_0x2b8f00(0x1ac)](_0x2b8f00(0x15d),_0x9d222),showAppAlert(_0x2b8f00(0x18b)+(_0x9d222[_0x2b8f00(0x2b0)]||_0x2b8f00(0x21e)),{'error':!![]}),_0x79bc7b(0x4);}),_0x4a2cf8[_0xa95f3f(0x270)];}function _0x2d3bbf(){var _0x11a36f=_0x2ff0ae;if(_0x4a2cf8[_0x11a36f(0x1c0)])return;_0x4a2cf8[_0x11a36f(0x1c0)]=!![],_0x4a2cf8[_0x11a36f(0x247)]=0x1,_0x4a2cf8[_0x11a36f(0x1c5)]=null,_0x4a2cf8[_0x11a36f(0x18d)]=null,_0x4a2cf8[_0x11a36f(0x1c3)]=[],_0x4a2cf8['geojson']=null,_0x4a2cf8['stats']=null,_0x4a2cf8['reviewLayers']=[],_0x4a2cf8[_0x11a36f(0x1b6)]=null,_0x4a2cf8['magicWandActive']=![],_0x4a2cf8[_0x11a36f(0x1f9)]=null,_0x228d31(_0x11a36f(0x178))[_0x11a36f(0x291)]=![],_0x3cfd94(''),_0x2787b5(0x0,0x0),_0x79bc7b(0x1),_0x1f7880();}function _0x22f2b2(){var _0x181592=_0x2ff0ae;if(!_0x4a2cf8[_0x181592(0x1c0)])return;_0x4a2cf8[_0x181592(0x1c0)]=![],_0x4a2cf8[_0x181592(0x247)]=0x1,_0x1eef91(),_0x25e69a(),_0x46022c(),_0x4a2cf8['mwCropCache']=null,_0x4a2cf8[_0x181592(0x18d)]&&map['removeLayer'](_0x4a2cf8[_0x181592(0x18d)]),_0x55831b(),_0x17434f(),_0x4a2cf8[_0x181592(0x270)]&&(_0x4a2cf8['worker'][_0x181592(0x194)](),_0x4a2cf8['worker']=null),_0x228d31(_0x181592(0x178))[_0x181592(0x291)]=!![];}function _0x79bc7b(_0x1af350){var _0x243f17=_0x2ff0ae;_0x4a2cf8[_0x243f17(0x247)]=_0x1af350,document[_0x243f17(0x1b0)](_0x243f17(0x165))['forEach'](function(_0x1e5a0c){var _0x9d6aa6=_0x243f17;_0x1e5a0c[_0x9d6aa6(0x289)][_0x9d6aa6(0x286)]('is-visible',Number(_0x1e5a0c[_0x9d6aa6(0x20c)][_0x9d6aa6(0x26b)])===_0x1af350);}),_0x1f7880();}function _0x1f7880(){var _0x3f3862=_0x2ff0ae;document[_0x3f3862(0x1b0)]('.va-nav-btn[data-va-step]')['forEach'](function(_0x42277e){var _0x3ca569=_0x3f3862,_0x408749=Number(_0x42277e[_0x3ca569(0x20c)][_0x3ca569(0x26b)]);_0x42277e[_0x3ca569(0x289)][_0x3ca569(0x286)]('is-active',_0x408749===_0x4a2cf8['step']),_0x42277e[_0x3ca569(0x289)][_0x3ca569(0x286)](_0x3ca569(0x2ac),_0x408749<_0x4a2cf8[_0x3ca569(0x247)]);});}function _0x153686(_0x3d4842){var _0x57cc76=_0x2ff0ae,_0x5f0a2a=document[_0x57cc76(0x1b8)](_0x57cc76(0x1ee)+_0x3d4842+'\x22]');if(!_0x5f0a2a||_0x5f0a2a[_0x57cc76(0x289)][_0x57cc76(0x1fd)]('disabled'))return;document['querySelectorAll']('.va-class-card')[_0x57cc76(0x15a)](function(_0x4483e7){var _0x5b494c=_0x57cc76;_0x4483e7[_0x5b494c(0x289)][_0x5b494c(0x23c)](_0x5b494c(0x298));}),_0x5f0a2a['classList'][_0x57cc76(0x224)](_0x57cc76(0x298)),_0x4a2cf8[_0x57cc76(0x1cd)]=_0x3d4842;}function _0x49e400(){var _0x1a8f09=_0x2ff0ae;_0x25e69a(),_0x4a2cf8[_0x1a8f09(0x1a5)]=!![],window[_0x1a8f09(0x1a5)]=!![],_0x228d31(_0x1a8f09(0x178))['classList']['add'](_0x1a8f09(0x25f)),_0x228d31('va-draw-banner')[_0x1a8f09(0x289)][_0x1a8f09(0x23c)](_0x1a8f09(0x291)),map['pm'][_0x1a8f09(0x160)](_0x1a8f09(0x1c6));}function _0x1eef91(){var _0x55a641=_0x2ff0ae;_0x4a2cf8[_0x55a641(0x1a5)]=![],window[_0x55a641(0x1a5)]=![],_0x228d31(_0x55a641(0x178))[_0x55a641(0x289)][_0x55a641(0x23c)]('va-drawing'),_0x228d31('va-draw-banner')[_0x55a641(0x289)]['add']('hidden');if(map['pm']['globalDrawModeEnabled']())map['pm'][_0x55a641(0x1e1)]();}function _0x4293d9(_0x2e8c7){var _0x26b723=_0x2ff0ae;_0x1eef91(),_0x4a2cf8[_0x26b723(0x18d)]=_0x2e8c7,_0x4a2cf8[_0x26b723(0x1c5)]=_0x2e8c7['getBounds'](),_0x4a2cf8[_0x26b723(0x1b6)]=null;var _0x17163c=_0x2eaeee(_0x4a2cf8['areaBounds']),_0x9a60e4=_0x4a2cf8[_0x26b723(0x1c5)][_0x26b723(0x299)]()[_0x26b723(0x1a0)],_0x52bfcc=_0x35917a(_0x9a60e4),_0xfc4c17=_0x3af539(_0x4a2cf8[_0x26b723(0x1c5)],_0x52bfcc),_0x4b60cc=_0x2b932e(_0xfc4c17);_0x228d31(_0x26b723(0x1c4))[_0x26b723(0x226)]=_0x2e317a(_0x17163c),_0x228d31(_0x26b723(0x27c))[_0x26b723(0x226)]=_0xfc4c17,_0x228d31(_0x26b723(0x20f))['textContent']=_0x52bfcc,_0x228d31('va-estimate-time')[_0x26b723(0x226)]=_0x4b60cc,_0x228d31(_0x26b723(0x189))[_0x26b723(0x289)][_0x26b723(0x23c)](_0x26b723(0x291)),_0x55831b(),_0xf9954a();var _0x14e049=_0xfc4c17>_0x491187;_0x36950e(_0x14e049,_0xfc4c17,_0x52bfcc),_0x228d31(_0x26b723(0x1b3))['disabled']=_0x14e049;if(_0x14e049)return;_0x4529ed(_0x4a2cf8[_0x26b723(0x1c5)],_0x52bfcc,_0x17163c);}var _0x196bbb=_0x2ff0ae(0x232),_0x461abe=0x19,_0x5a42d7=0x4,_0x271219=0xc,_0x4b9666=0x6,_0x7d6803=0x1e;function _0x45881f(_0x14202f,_0x23ec6f){var _0xa440b3=_0x2ff0ae;return 156543.03392*Math['cos'](_0x14202f*Math['PI']/0xb4)/Math[_0xa440b3(0x17b)](0x2,_0x23ec6f);}function _0x5cda6e(_0xdbba60,_0x563e83){var _0x4bb0e1=_0x45881f(_0xdbba60,_0x563e83)*_0x271219,_0xc9d8a1=_0x4bb0e1*2.5;if(_0xc9d8a1<_0x4b9666)_0xc9d8a1=_0x4b9666;if(_0xc9d8a1>_0x7d6803)_0xc9d8a1=_0x7d6803;return _0xc9d8a1;}function _0x4014da(_0x5823d4){var _0x3236ad=_0x2ff0ae;return[_0x5823d4[_0x3236ad(0x2aa)](),_0x5823d4[_0x3236ad(0x15b)](),_0x5823d4[_0x3236ad(0x2a1)](),_0x5823d4[_0x3236ad(0x26f)]()][_0x3236ad(0x27d)](',');}function _0x1028ee(_0x356082){var _0x45007d=_0x2ff0ae;return _0x45007d(0x176)+_0x461abe+'];'+'('+_0x45007d(0x18c)+_0x356082+');'+_0x45007d(0x1e6)+_0x356082+');'+_0x45007d(0x287)+_0x356082+');'+_0x45007d(0x164)+_0x356082+');'+_0x45007d(0x1f6)+_0x356082+');'+');'+_0x45007d(0x2ab);}function _0x159bff(_0x182702){var _0x19b33e=_0x2ff0ae,_0x32b585=_0x182702[0x0],_0x45410d=_0x182702[_0x182702[_0x19b33e(0x23d)]-0x1];if(_0x32b585[0x0]!==_0x45410d[0x0]||_0x32b585[0x1]!==_0x45410d[0x1])_0x182702[_0x19b33e(0x288)]([_0x32b585[0x0],_0x32b585[0x1]]);return _0x182702;}function _0x2b2622(_0x4e1349){var _0x22d5cd=_0x2ff0ae,_0x455f7b=_0x1028ee(_0x4014da(_0x4e1349));return fetch(_0x196bbb,{'method':_0x22d5cd(0x1d2),'headers':{'Content-Type':_0x22d5cd(0x213)},'body':_0x455f7b})[_0x22d5cd(0x254)](function(_0x4b618f){var _0x3e169d=_0x22d5cd;if(!_0x4b618f['ok'])throw new Error(_0x3e169d(0x1ca)+_0x4b618f[_0x3e169d(0x1f1)]);return _0x4b618f[_0x3e169d(0x25d)]();})[_0x22d5cd(0x254)](function(_0x29fe87){var _0x3ba73f=_0x22d5cd,_0xf28ead=_0x29fe87&&_0x29fe87[_0x3ba73f(0x15e)]||[],_0x5005f8=[],_0x33ced3=[],_0x492c52=[];return _0xf28ead[_0x3ba73f(0x15a)](function(_0x145d1f){var _0x33b86e=_0x3ba73f;if(_0x145d1f['type']!==_0x33b86e(0x1db)||!_0x145d1f[_0x33b86e(0x17e)]||_0x145d1f[_0x33b86e(0x17e)][_0x33b86e(0x23d)]<0x2)return;var _0x332b0d=_0x145d1f['geometry']['map'](function(_0x138e49){var _0x2d123f=_0x33b86e;return[_0x138e49['lat'],_0x138e49[_0x2d123f(0x1bf)]];}),_0x4566d7=_0x145d1f[_0x33b86e(0x1ed)]||{};if(_0x4566d7[_0x33b86e(0x155)]){if(_0x332b0d[_0x33b86e(0x23d)]<0x3)return;_0x5005f8[_0x33b86e(0x288)](_0x159bff(_0x332b0d));}else{if(_0x4566d7['natural']===_0x33b86e(0x2a6)||_0x4566d7['landuse']===_0x33b86e(0x262)){if(_0x332b0d[_0x33b86e(0x23d)]<0x3)return;_0x33ced3[_0x33b86e(0x288)]({'ring':_0x159bff(_0x332b0d),'kind':_0x33b86e(0x28e)});}else{if(_0x4566d7[_0x33b86e(0x279)]===_0x33b86e(0x275)){if(_0x332b0d[_0x33b86e(0x23d)]<0x3)return;_0x33ced3[_0x33b86e(0x288)]({'ring':_0x159bff(_0x332b0d),'kind':'agricola'});}else _0x4566d7[_0x33b86e(0x163)]&&_0x492c52[_0x33b86e(0x288)](_0x332b0d);}}}),{'buildingRings':_0x5005f8,'landcoverRings':_0x33ced3,'roadLines':_0x492c52};});}function _0x4adec8(_0x3ca859,_0x33b254,_0x4d29ae){var _0x59a9be=_0x2ff0ae,_0x5af6cb=![];for(var _0x17ed7e=0x0,_0x2256d8=_0x4d29ae[_0x59a9be(0x23d)]-0x2;_0x17ed7e<_0x4d29ae[_0x59a9be(0x23d)]-0x1;_0x2256d8=_0x17ed7e++){var _0x486124=_0x4d29ae[_0x17ed7e][0x0],_0x1aa76f=_0x4d29ae[_0x17ed7e][0x1],_0x8dc17b=_0x4d29ae[_0x2256d8][0x0],_0x4bfd3c=_0x4d29ae[_0x2256d8][0x1],_0x5aae7b=_0x486124>_0x3ca859!==_0x8dc17b>_0x3ca859&&_0x33b254<(_0x4bfd3c-_0x1aa76f)*(_0x3ca859-_0x486124)/(_0x8dc17b-_0x486124)+_0x1aa76f;if(_0x5aae7b)_0x5af6cb=!_0x5af6cb;}return _0x5af6cb;}function _0x92fead(_0x3f1291,_0x4108c2,_0x53b3e7){var _0x2e3b58=_0x2ff0ae;for(var _0x106709=0x0;_0x106709<_0x53b3e7[_0x2e3b58(0x23d)];_0x106709++){if(_0x4adec8(_0x3f1291,_0x4108c2,_0x53b3e7[_0x106709]))return!![];}return![];}function _0x369086(_0x3f0a59,_0xf0870,_0xc184c6,_0x459f8e){var _0x488264=_0x2ff0ae,_0x3e93b9=(_0xc184c6-_0x3f0a59)*0x1b2d8,_0x16fe75=(_0x459f8e-_0xf0870)*0x1b2d8*Math[_0x488264(0x185)](_0x3f0a59*Math['PI']/0xb4);return Math[_0x488264(0x183)](_0x3e93b9*_0x3e93b9+_0x16fe75*_0x16fe75);}function _0x1786f8(_0x19fe5c,_0x229504,_0x4da913){var _0xcd051=_0x2ff0ae,_0xbfb362=_0x4da913/0x2/0x1b2d8,_0x34205c=_0x4da913/0x2/(0x1b2d8*Math[_0xcd051(0x185)](_0x19fe5c*Math['PI']/0xb4));return[[_0x19fe5c-_0xbfb362,_0x229504-_0x34205c],[_0x19fe5c-_0xbfb362,_0x229504+_0x34205c],[_0x19fe5c+_0xbfb362,_0x229504+_0x34205c],[_0x19fe5c+_0xbfb362,_0x229504-_0x34205c],[_0x19fe5c-_0xbfb362,_0x229504-_0x34205c]];}var _0xb64ff9=0x2,_0x3eaa81=0x6;function _0x25f34e(_0x59c02b,_0x2f50bb,_0x49d646,_0x15b489){var _0x38237e=_0x2ff0ae;return _0x49d646[_0x38237e(0x201)](function(_0x39df5a){var _0x5b460e=_0x38237e;return _0x39df5a[_0x5b460e(0x201)](function(_0x5029b1){return _0x369086(_0x59c02b,_0x2f50bb,_0x5029b1[0x0],_0x5029b1[0x1])<_0x15b489;});});}function _0x46517f(_0x192b28,_0x1d219a,_0x50f5e1,_0xe5ea0d){return _0x50f5e1['some'](function(_0x34fdb0){return _0x369086(_0x192b28,_0x1d219a,_0x34fdb0[0x0],_0x34fdb0[0x1])<_0xe5ea0d;});}function _0xa4adc3(_0xed9c77,_0x226706){var _0xf349a9=_0x2ff0ae,_0x7609ef=Infinity,_0x57abbf=-Infinity,_0xa41a34=Infinity,_0x4c74f0=-Infinity;for(var _0x282d25=0x0;_0x282d25<_0xed9c77[_0xf349a9(0x23d)]-0x1;_0x282d25++){var _0x2f830c=_0xed9c77[_0x282d25][0x0],_0x16bd19=_0xed9c77[_0x282d25][0x1];if(_0x2f830c<_0x7609ef)_0x7609ef=_0x2f830c;if(_0x2f830c>_0x57abbf)_0x57abbf=_0x2f830c;if(_0x16bd19<_0xa41a34)_0xa41a34=_0x16bd19;if(_0x16bd19>_0x4c74f0)_0x4c74f0=_0x16bd19;}for(var _0x4ee776=0x0;_0x4ee776<_0x226706;_0x4ee776++){var _0x2f830c=_0x7609ef+Math[_0xf349a9(0x1b9)]()*(_0x57abbf-_0x7609ef),_0x16bd19=_0xa41a34+Math[_0xf349a9(0x1b9)]()*(_0x4c74f0-_0xa41a34);if(_0x4adec8(_0x2f830c,_0x16bd19,_0xed9c77))return[_0x2f830c,_0x16bd19];}return null;}function _0x43f242(_0x5f4685,_0x2037d1){var _0x2fd6a0=_0x2ff0ae,_0x1c1211=[],_0x4e779b=0x0;for(var _0x2703b5=0x0;_0x2703b5<_0x5f4685[_0x2fd6a0(0x23d)]-0x1;_0x2703b5++){var _0x223340=_0x369086(_0x5f4685[_0x2703b5][0x0],_0x5f4685[_0x2703b5][0x1],_0x5f4685[_0x2703b5+0x1][0x0],_0x5f4685[_0x2703b5+0x1][0x1]);_0x1c1211[_0x2fd6a0(0x288)](_0x223340),_0x4e779b+=_0x223340;}if(_0x4e779b<=0x0)return[];var _0x5f0563=[];for(var _0x5e3a90=0x1;_0x5e3a90<=_0x2037d1;_0x5e3a90++){var _0x137eb7=_0x4e779b*_0x5e3a90/(_0x2037d1+0x1),_0x14081d=0x0;for(var _0x2703b5=0x0;_0x2703b5<_0x1c1211[_0x2fd6a0(0x23d)];_0x2703b5++){if(_0x14081d+_0x1c1211[_0x2703b5]>=_0x137eb7||_0x2703b5===_0x1c1211[_0x2fd6a0(0x23d)]-0x1){var _0x226c29=_0x1c1211[_0x2703b5]>0x0?(_0x137eb7-_0x14081d)/_0x1c1211[_0x2703b5]:0x0;_0x226c29=Math[_0x2fd6a0(0x198)](0x0,Math[_0x2fd6a0(0x260)](0x1,_0x226c29)),_0x5f0563[_0x2fd6a0(0x288)]([_0x5f4685[_0x2703b5][0x0]+(_0x5f4685[_0x2703b5+0x1][0x0]-_0x5f4685[_0x2703b5][0x0])*_0x226c29,_0x5f4685[_0x2703b5][0x1]+(_0x5f4685[_0x2703b5+0x1][0x1]-_0x5f4685[_0x2703b5][0x1])*_0x226c29]);break;}_0x14081d+=_0x1c1211[_0x2703b5];}}return _0x5f0563;}function _0x5bf19b(_0x6919ad,_0xb92e51,_0x27a6df,_0x21ea5c,_0x3800ac,_0x295f61){var _0x139320=_0x2ff0ae;if(_0x92fead(_0x6919ad,_0xb92e51,_0x21ea5c))return![];if(_0x25f34e(_0x6919ad,_0xb92e51,_0x21ea5c,_0x3800ac))return![];if(_0x46517f(_0x6919ad,_0xb92e51,_0x295f61,_0x27a6df))return![];var _0x5315a4=_0x1786f8(_0x6919ad,_0xb92e51,_0x27a6df),_0x1030ec=L[_0x139320(0x22e)](_0x5315a4)[_0x139320(0x1c9)](map);return _0x24e0a9(_0x1030ec,'non-building'),_0x295f61[_0x139320(0x288)]([_0x6919ad,_0xb92e51]),!![];}function _0x1db740(_0x1d8b20,_0x412443,_0x14c4e9,_0x551fe1,_0x55e321){var _0x381332=_0x2ff0ae,_0x285873=_0x1d8b20[_0x381332(0x2a1)](),_0x5baddd=_0x1d8b20[_0x381332(0x2aa)](),_0x7eb343=_0x1d8b20[_0x381332(0x26f)](),_0x3d1bd1=_0x1d8b20[_0x381332(0x15b)](),_0x5b810d=(_0x285873+_0x5baddd)/0x2,_0x421ba5=_0x5cda6e(_0x5b810d,_0x55e321),_0x264365=_0x421ba5*1.2,_0x63957b=[],_0x45911a=0x0,_0x57aaec={'floresta':0x0,'agricola':0x0,'estrada':0x0};['floresta','agricola']['forEach'](function(_0x519e66){var _0x9e6fce=_0x381332,_0x1b1522=_0x14c4e9[_0x9e6fce(0x1a6)](function(_0x1e5e50){var _0x44d2db=_0x9e6fce;return _0x1e5e50[_0x44d2db(0x2b1)]===_0x519e66;})[_0x9e6fce(0x292)](0x0,_0x3eaa81);_0x1b1522[_0x9e6fce(0x15a)](function(_0x345862){var _0x5e0c9d=_0x9e6fce;if(_0x57aaec[_0x519e66]>=_0xb64ff9)return;var _0x5a5ad8=_0xa4adc3(_0x345862[_0x5e0c9d(0x250)],0x8);if(!_0x5a5ad8)return;_0x5bf19b(_0x5a5ad8[0x0],_0x5a5ad8[0x1],_0x421ba5,_0x412443,_0x264365,_0x63957b)&&(_0x45911a++,_0x57aaec[_0x519e66]++);});}),_0x551fe1[_0x381332(0x292)](0x0,_0x3eaa81)['forEach'](function(_0x5e838d){var _0x29aaed=_0x381332;if(_0x57aaec[_0x29aaed(0x187)]>=_0xb64ff9)return;_0x43f242(_0x5e838d,0x1)[_0x29aaed(0x15a)](function(_0x4dec9a){var _0x432418=_0x29aaed;if(_0x57aaec[_0x432418(0x187)]>=_0xb64ff9)return;_0x5bf19b(_0x4dec9a[0x0],_0x4dec9a[0x1],_0x421ba5,_0x412443,_0x264365,_0x63957b)&&(_0x45911a++,_0x57aaec[_0x432418(0x187)]++);});});if(_0x45911a<_0x5a42d7){var _0x505805=0x6,_0x11aee6=[];for(var _0x578f29=0x1;_0x578f29<_0x505805;_0x578f29++){for(var _0x1f90af=0x1;_0x1f90af<_0x505805;_0x1f90af++){_0x11aee6[_0x381332(0x288)]([_0x5baddd+(_0x285873-_0x5baddd)*_0x578f29/_0x505805,_0x3d1bd1+(_0x7eb343-_0x3d1bd1)*_0x1f90af/_0x505805]);}}for(var _0x3767a5=0x0;_0x3767a5<_0x11aee6['length']&&_0x45911a<_0x5a42d7;_0x3767a5++){var _0x5055df=_0x11aee6[_0x3767a5];_0x5bf19b(_0x5055df[0x0],_0x5055df[0x1],_0x421ba5,_0x412443,_0x264365,_0x63957b)&&_0x45911a++;}}return{'added':_0x45911a,'byKind':_0x57aaec};}function _0x3cfd94(_0x1f58d4){var _0x42c859=_0x2ff0ae,_0x1ac27e=_0x228d31('va-osm-status');if(_0x1ac27e)_0x1ac27e[_0x42c859(0x226)]=_0x1f58d4;}function _0x3be748(_0x5129e7){var _0x106e1d=_0x2ff0ae,_0x3e00e6=[];if(_0x5129e7['floresta']>0x0)_0x3e00e6[_0x106e1d(0x288)](_0x5129e7['floresta']+'\x20floresta');if(_0x5129e7['agricola']>0x0)_0x3e00e6[_0x106e1d(0x288)](_0x5129e7['agricola']+_0x106e1d(0x20a));if(_0x5129e7[_0x106e1d(0x187)]>0x0)_0x3e00e6[_0x106e1d(0x288)](_0x5129e7[_0x106e1d(0x187)]+'\x20estrada');return _0x3e00e6[_0x106e1d(0x23d)]>0x0?'\x20('+_0x3e00e6[_0x106e1d(0x27d)](',\x20')+')':'';}function _0x35ccd8(_0x143a88){var _0x4c3f4a=_0x2ff0ae,_0x1e412e=_0x143a88['length']-0x1;if(_0x1e412e<0x3)return 0x0;var _0x54228d=0x0;for(var _0x30584b=0x0;_0x30584b<_0x1e412e;_0x30584b++)_0x54228d+=_0x143a88[_0x30584b][0x0];var _0x597285=_0x54228d/_0x1e412e,_0x459d2d=0x1b2d8,_0x36d79e=0x1b2d8*Math['cos'](_0x597285*Math['PI']/0xb4),_0x31a033=0x0;for(var _0x30584b=0x0;_0x30584b<_0x1e412e;_0x30584b++){var _0xab23e4=(_0x30584b+0x1)%_0x1e412e,_0xca1824=_0x143a88[_0x30584b][0x1]*_0x36d79e,_0x40d8b6=_0x143a88[_0x30584b][0x0]*_0x459d2d,_0xa481ff=_0x143a88[_0xab23e4][0x1]*_0x36d79e,_0x2dab13=_0x143a88[_0xab23e4][0x0]*_0x459d2d;_0x31a033+=_0xca1824*_0x2dab13-_0xa481ff*_0x40d8b6;}return Math[_0x4c3f4a(0x18a)](_0x31a033)/0x2;}var _0xfc2b9e=0.28,_0x1c41e0=0x19;function _0x2787b5(_0x348311,_0x31e356){var _0x13eaf4=_0x2ff0ae,_0x441dba=_0x228d31(_0x13eaf4(0x202));if(!_0x441dba)return;var _0x18f6a9=_0x348311>=_0xfc2b9e||_0x31e356>=_0x1c41e0;if(_0x18f6a9){var _0x3a299d=_0x228d31(_0x13eaf4(0x281));if(_0x3a299d)_0x3a299d['textContent']=Math[_0x13eaf4(0x241)](_0x348311*0x64);var _0x3b32d7=_0x228d31(_0x13eaf4(0x1fe));if(_0x3b32d7)_0x3b32d7[_0x13eaf4(0x226)]=_0x31e356;}_0x441dba[_0x13eaf4(0x289)][_0x13eaf4(0x286)](_0x13eaf4(0x291),!_0x18f6a9);}function _0x1d4584(){var _0x10448c=_0x2ff0ae;if(_0x228d31(_0x10448c(0x249)))return;var _0x52ee10=_0x228d31(_0x10448c(0x189));if(!_0x52ee10||!_0x52ee10[_0x10448c(0x179)])return;var _0x5ec5ea=document['createElement'](_0x10448c(0x242));_0x5ec5ea['id']=_0x10448c(0x249),_0x5ec5ea[_0x10448c(0x203)]=_0x10448c(0x291),_0x5ec5ea[_0x10448c(0x215)][_0x10448c(0x230)]=_0x10448c(0x21f)+_0x10448c(0x255)+_0x10448c(0x283),_0x5ec5ea[_0x10448c(0x1f2)]=_0x10448c(0x1ef)+_0x10448c(0x293)+_0x10448c(0x17a)+_0x491187+_0x10448c(0x209),_0x52ee10['parentNode'][_0x10448c(0x20b)](_0x5ec5ea,_0x52ee10['nextSibling']);}function _0x36950e(_0x1a697c,_0x517e6c,_0x33995e){var _0x28e00b=_0x2ff0ae;_0x1d4584();var _0x3c5158=_0x228d31(_0x28e00b(0x249));if(!_0x3c5158)return;if(_0x1a697c){var _0x4b05c3=_0x228d31(_0x28e00b(0x267));if(_0x4b05c3)_0x4b05c3[_0x28e00b(0x226)]=_0x517e6c;var _0x596402=_0x228d31('va-area-toolarge-zoom');if(_0x596402)_0x596402['textContent']=_0x33995e;}_0x3c5158[_0x28e00b(0x289)][_0x28e00b(0x286)](_0x28e00b(0x291),!_0x1a697c);}function _0x4529ed(_0x3af643,_0x50ac77,_0x210b76){var _0x526704=_0x2ff0ae;_0x3cfd94('A\x20importar\x20edificios\x20e\x20cobertura\x20do\x20solo\x20(OpenStreetMap)...'),_0x2787b5(0x0,0x0),_0x2b2622(_0x3af643)['then'](function(_0x4f1886){var _0x3a41af=_0x5e5b;_0x4f1886[_0x3a41af(0x243)][_0x3a41af(0x15a)](function(_0x41c274){var _0x41811c=_0x3a41af,_0x1ddbf4=L[_0x41811c(0x22e)](_0x41c274)['addTo'](map);_0x24e0a9(_0x1ddbf4,_0x41811c(0x155));});var _0xedb100=_0x4f1886[_0x3a41af(0x243)][_0x3a41af(0x28a)](function(_0x217dc,_0x4f8f00){return _0x217dc+_0x35ccd8(_0x4f8f00);},0x0),_0x1f69f0=_0x210b76>0x0?_0xedb100/_0x210b76:0x0;_0x2787b5(_0x1f69f0,_0x4f1886['buildingRings']['length']);var _0x389458=_0x1db740(_0x3af643,_0x4f1886[_0x3a41af(0x243)],_0x4f1886['landcoverRings'],_0x4f1886['roadLines'],_0x50ac77),_0x570d75=_0x3be748(_0x389458[_0x3a41af(0x22f)]);_0x4f1886[_0x3a41af(0x243)][_0x3a41af(0x23d)]>0x0?_0x3cfd94(_0x4f1886[_0x3a41af(0x243)][_0x3a41af(0x23d)]+'\x20edificio(s)\x20OSM\x20importado(s)\x20como\x20amostra\x20positiva'+(_0x4f1886[_0x3a41af(0x243)][_0x3a41af(0x23d)]===0x1?'':'s')+(_0x389458['added']>0x0?';\x20'+_0x389458[_0x3a41af(0x1d7)]+_0x3a41af(0x16d)+_0x570d75+'.':'.')):_0x3cfd94(_0x3a41af(0x256)+(_0x389458['added']>0x0?'\x20('+_0x389458[_0x3a41af(0x1d7)]+_0x3a41af(0x16d)+_0x570d75+').':'.')+_0x3a41af(0x173));})[_0x526704(0x218)](function(_0x400bd7){var _0x1ae312=_0x526704;console[_0x1ae312(0x1ac)](_0x1ae312(0x1dd),_0x400bd7),_0x3cfd94(_0x1ae312(0x2a2)+_0x400bd7[_0x1ae312(0x2b0)]+_0x1ae312(0x22b));});}function _0x575438(_0x5baa7a){var _0x41113b=_0x2ff0ae;_0x1eef91(),_0x4a2cf8['vaDrawingActive']=!![],window['vaDrawingActive']=!![],_0x4a2cf8[_0x41113b(0x1ad)]=!![],_0x4a2cf8[_0x41113b(0x29c)]=_0x5baa7a,_0x228d31(_0x41113b(0x178))[_0x41113b(0x289)][_0x41113b(0x224)]('va-drawing');var _0x8add58=_0x228d31(_0x41113b(0x1da));_0x8add58[_0x41113b(0x289)]['remove'](_0x41113b(0x291)),_0x228d31(_0x41113b(0x1f8))[_0x41113b(0x226)]=_0x5baa7a===_0x41113b(0x155)?_0x41113b(0x23b):_0x41113b(0x17d),map['pm'][_0x41113b(0x160)]('Polygon');}function _0x25e69a(){var _0x33c343=_0x2ff0ae;_0x4a2cf8[_0x33c343(0x1a5)]=![],window[_0x33c343(0x1a5)]=![],_0x4a2cf8[_0x33c343(0x1ad)]=![],_0x4a2cf8[_0x33c343(0x29c)]=null,_0x228d31('va-page')[_0x33c343(0x289)][_0x33c343(0x23c)](_0x33c343(0x25f)),_0x228d31(_0x33c343(0x1da))[_0x33c343(0x289)][_0x33c343(0x224)]('hidden');if(map['pm'][_0x33c343(0x1bb)]())map['pm']['disableDraw']();if(_0x4a2cf8[_0x33c343(0x277)])_0x46022c();}function _0x2c635b(_0x12bf9d){var _0x1b3bf5=_0x2ff0ae;if(!_0x4a2cf8['sampleDrawing'])return![];var _0x151d5b=_0x4a2cf8[_0x1b3bf5(0x29c)];return _0x25e69a(),_0x24e0a9(_0x12bf9d,_0x151d5b),!![];}function _0x24e0a9(_0x4b855d,_0x459471){var _0xfcd1ec=_0x2ff0ae,_0x350a5b=_0xfcd1ec(0x206)+Date['now']()+'-'+Math['floor'](Math[_0xfcd1ec(0x1b9)]()*0x3e8),_0x425b04={'id':_0x350a5b,'label':_0x459471,'layer':_0x4b855d};_0x4a2cf8[_0xfcd1ec(0x1c3)][_0xfcd1ec(0x288)](_0x425b04);var _0x3f731f=_0x459471===_0xfcd1ec(0x155)?'#2f7d4f':_0xfcd1ec(0x1fc);_0x4b855d[_0xfcd1ec(0x1cb)]({'color':_0x3f731f,'weight':0x2,'fillColor':_0x3f731f,'fillOpacity':0.25,'dashArray':'4\x204'}),_0xf9954a();}function _0xf9954a(){var _0x74ad2=_0x2ff0ae,_0x503c6c=_0x4a2cf8[_0x74ad2(0x1c3)][_0x74ad2(0x1a6)](function(_0x49a0bc){var _0x2249ca=_0x74ad2;return _0x49a0bc[_0x2249ca(0x1e0)]===_0x2249ca(0x155);})[_0x74ad2(0x23d)],_0x4e54a5=_0x4a2cf8[_0x74ad2(0x1c3)][_0x74ad2(0x1a6)](function(_0xc9d8e2){var _0x4f303d=_0x74ad2;return _0xc9d8e2[_0x4f303d(0x1e0)]===_0x4f303d(0x158);})[_0x74ad2(0x23d)];_0x228d31('va-sample-pos-count')['textContent']=_0x503c6c,_0x228d31('va-sample-neg-count')[_0x74ad2(0x226)]=_0x4e54a5,_0x228d31(_0x74ad2(0x26c))[_0x74ad2(0x2ad)]=!(_0x503c6c>=0x3&&_0x4e54a5>=0x3);var _0x47f3cb=_0x228d31('va-sample-list');_0x47f3cb[_0x74ad2(0x1f2)]=_0x4a2cf8[_0x74ad2(0x1c3)][_0x74ad2(0x1ab)](function(_0x228aec,_0x2f4735){var _0x5dd8d2=_0x74ad2,_0x577859=_0x228aec[_0x5dd8d2(0x1e0)]===_0x5dd8d2(0x155)?_0x5dd8d2(0x228):_0x5dd8d2(0x29f),_0x306393=_0x228aec[_0x5dd8d2(0x1e0)]===_0x5dd8d2(0x155)?_0x5dd8d2(0x1b4):_0x5dd8d2(0x1a7);return _0x5dd8d2(0x27f)+_0x306393+';\x22>'+_0x577859+'\x20#'+(_0x2f4735+0x1)+'</span>';})[_0x74ad2(0x27d)]('');}var _0x479f13=0x46,_0x518fef=0x82,_0x5d0d3c={'baixa':0x19,'media':0x2a,'alta':0x3c},_0x579037=0x13,_0x51ac28=0x2d;function _0x1b6165(_0x256c07,_0x36ead8,_0x58f448){var _0x1197f1=_0x58f448/0x1b2d8,_0x421882=_0x58f448/(0x1b2d8*Math['cos'](_0x256c07*Math['PI']/0xb4));return{'north':_0x256c07+_0x1197f1,'south':_0x256c07-_0x1197f1,'east':_0x36ead8+_0x421882,'west':_0x36ead8-_0x421882};}function _0x2cbdd8(_0x411c90,_0x26a82d){var _0x23630b=_0x2ff0ae;if(!_0x26a82d)return![];var _0x1f3730=(_0x26a82d[_0x23630b(0x19a)][_0x23630b(0x29a)]-_0x26a82d['bounds'][_0x23630b(0x21d)])*0.2,_0x35fa05=(_0x26a82d[_0x23630b(0x19a)][_0x23630b(0x19e)]-_0x26a82d[_0x23630b(0x19a)]['west'])*0.2;return _0x411c90[_0x23630b(0x1a0)]>_0x26a82d[_0x23630b(0x19a)]['south']+_0x1f3730&&_0x411c90[_0x23630b(0x1a0)]<_0x26a82d[_0x23630b(0x19a)]['north']-_0x1f3730&&_0x411c90[_0x23630b(0x1c8)]>_0x26a82d[_0x23630b(0x19a)][_0x23630b(0x27b)]+_0x35fa05&&_0x411c90[_0x23630b(0x1c8)]<_0x26a82d[_0x23630b(0x19a)]['east']-_0x35fa05;}function _0x5646ef(_0x30568d){var _0x44a9ce=_0x2ff0ae;if(_0x2cbdd8(_0x30568d,_0x4a2cf8[_0x44a9ce(0x1b6)]))return Promise[_0x44a9ce(0x1d8)](_0x4a2cf8[_0x44a9ce(0x1b6)]);var _0x3d82c2=_0x1b6165(_0x30568d[_0x44a9ce(0x1a0)],_0x30568d[_0x44a9ce(0x1c8)],_0x51ac28);return _0x275dd1(_0x44a9ce(0x1d6)),_0x21771c(_0x3d82c2,_0x579037)[_0x44a9ce(0x254)](function(_0x4193fb){var _0x366ef5=_0x44a9ce;return _0x4a2cf8[_0x366ef5(0x1b6)]=_0x4193fb,_0x275dd1(_0x1532d()),_0x4193fb;})[_0x44a9ce(0x218)](function(_0x37a318){var _0x50f312=_0x44a9ce;_0x275dd1('Erro\x20ao\x20carregar\x20imagem:\x20'+_0x37a318[_0x50f312(0x2b0)]);throw _0x37a318;});}function _0x1532d(){var _0x2a5878=_0x2ff0ae;return _0x4a2cf8[_0x2a5878(0x1f9)]===_0x2a5878(0x155)?_0x2a5878(0x1aa):_0x2a5878(0x161);}function _0x275dd1(_0x29e9f4){var _0x590557=_0x2ff0ae,_0x4a0686=_0x228d31('va-magicwand-banner-text');if(_0x4a0686)_0x4a0686[_0x590557(0x226)]=_0x29e9f4;}function _0x5bd03a(_0x25cdb1){var _0x3a8064=_0x2ff0ae;_0x1eef91(),_0x25e69a(),_0x4a2cf8[_0x3a8064(0x277)]=!![],_0x4a2cf8[_0x3a8064(0x1f9)]=_0x25cdb1,window[_0x3a8064(0x1a5)]=!![],_0x228d31(_0x3a8064(0x178))[_0x3a8064(0x289)]['add'](_0x3a8064(0x25f));var _0x11ae21=_0x228d31(_0x3a8064(0x231));if(_0x11ae21)_0x11ae21[_0x3a8064(0x289)][_0x3a8064(0x23c)]('hidden');_0x275dd1(_0x1532d());if(map&&map['getContainer']())map[_0x3a8064(0x2a7)]()[_0x3a8064(0x215)][_0x3a8064(0x24a)]=_0x3a8064(0x265);if(map)map['on'](_0x3a8064(0x1fb),_0x5b402c);}function _0x46022c(){var _0x1c9a4f=_0x2ff0ae;_0x4a2cf8[_0x1c9a4f(0x277)]=![],_0x4a2cf8[_0x1c9a4f(0x1f9)]=null,window[_0x1c9a4f(0x1a5)]=![],_0x228d31(_0x1c9a4f(0x178))['classList'][_0x1c9a4f(0x23c)](_0x1c9a4f(0x25f));var _0x4893e0=_0x228d31(_0x1c9a4f(0x231));if(_0x4893e0)_0x4893e0[_0x1c9a4f(0x289)][_0x1c9a4f(0x224)](_0x1c9a4f(0x291));if(map&&map['getContainer']())map[_0x1c9a4f(0x2a7)]()[_0x1c9a4f(0x215)][_0x1c9a4f(0x24a)]='';if(map)map['off'](_0x1c9a4f(0x1fb),_0x5b402c);}function _0x5b402c(_0x537ba3){var _0x3ed8fe=_0x2ff0ae;if(!_0x4a2cf8['magicWandActive'])return;_0x5646ef(_0x537ba3[_0x3ed8fe(0x162)])[_0x3ed8fe(0x254)](function(_0x236a41){var _0x4d0a15=_0x3ed8fe;_0x375c7c(_0x537ba3[_0x4d0a15(0x162)],_0x236a41);})[_0x3ed8fe(0x218)](function(){});}function _0x375c7c(_0x4b99fe,_0x4dac87){var _0x5a8829=_0x2ff0ae,_0x3f2449=_0x4dac87['bounds'],_0x5241e5=Math[_0x5a8829(0x241)]((_0x4b99fe['lng']-_0x3f2449[_0x5a8829(0x27b)])/(_0x3f2449[_0x5a8829(0x19e)]-_0x3f2449[_0x5a8829(0x27b)])*_0x4dac87['width']),_0x571f74=Math['round']((_0x3f2449[_0x5a8829(0x29a)]-_0x4b99fe[_0x5a8829(0x1a0)])/(_0x3f2449[_0x5a8829(0x29a)]-_0x3f2449[_0x5a8829(0x21d)])*_0x4dac87[_0x5a8829(0x171)]);if(_0x5241e5<0x0||_0x5241e5>=_0x4dac87[_0x5a8829(0x1ce)]||_0x571f74<0x0||_0x571f74>=_0x4dac87['height']){showAppAlert(_0x5a8829(0x282));return;}var _0x599859=_0x228d31(_0x5a8829(0x219)),_0x56d9e4=_0x5d0d3c[_0x599859&&_0x599859[_0x5a8829(0x17f)]||_0x5a8829(0x197)],_0x565ab3=_0x144211(_0x4dac87['pixelData'],_0x4dac87[_0x5a8829(0x1ce)],_0x4dac87[_0x5a8829(0x171)],_0x5241e5,_0x571f74,_0x56d9e4,_0x479f13);if(!_0x565ab3){showAppAlert(_0x5a8829(0x1b7),{'error':!![]});return;}var _0x554dc4=_0x29e539(_0x565ab3[_0x5a8829(0x172)],_0x565ab3['w'],_0x565ab3['h'],_0x565ab3[_0x5a8829(0x248)],_0x565ab3[_0x5a8829(0x1e3)]);if(!_0x554dc4||_0x554dc4[_0x5a8829(0x23d)]<0x4){showAppAlert('Nao\x20foi\x20possivel\x20tracar\x20um\x20contorno\x20valido\x20nesse\x20ponto.\x20Tenta\x20outro\x20clique.',{'error':!![]});return;}_0x554dc4=_0x3ead76(_0x554dc4,0x4);if(_0x554dc4[_0x5a8829(0x23d)]<0x4){showAppAlert(_0x5a8829(0x1f5),{'error':!![]});return;}_0x554dc4=_0x3c4c32(_0x554dc4),_0x554dc4=_0x2fa219(_0x554dc4,0x3),_0x554dc4=_0x3c4c32(_0x554dc4);var _0x55c557=_0x228d31(_0x5a8829(0x25a));(!_0x55c557||_0x55c557[_0x5a8829(0x20e)])&&(_0x554dc4=_0x2704fc(_0x554dc4),_0x554dc4=_0x3c4c32(_0x554dc4),_0x554dc4=_0x2fa219(_0x554dc4,0x2));_0x554dc4['length']>0x0&&_0x554dc4[_0x5a8829(0x288)]([_0x554dc4[0x0][0x0],_0x554dc4[0x0][0x1]]);var _0x16cb1e=_0x554dc4[_0x5a8829(0x1ab)](function(_0x11440b){var _0x572171=_0x5a8829,_0x3d671e=_0x11440b[0x0]+_0x565ab3[_0x572171(0x28f)],_0x7e7053=_0x11440b[0x1]+_0x565ab3[_0x572171(0x170)],_0x305cdc=_0x3f2449[_0x572171(0x27b)]+_0x3d671e/_0x4dac87[_0x572171(0x1ce)]*(_0x3f2449[_0x572171(0x19e)]-_0x3f2449[_0x572171(0x27b)]),_0x3ca3ca=_0x3f2449['north']-_0x7e7053/_0x4dac87['height']*(_0x3f2449[_0x572171(0x29a)]-_0x3f2449[_0x572171(0x21d)]);return[_0x3ca3ca,_0x305cdc];}),_0x1af28a=L['polygon'](_0x16cb1e)['addTo'](map);if(_0x1af28a['pm']&&typeof _0x1af28a['pm']['enable']===_0x5a8829(0x278))try{_0x1af28a['pm'][_0x5a8829(0x272)]();}catch(_0x3ca97f){}_0x24e0a9(_0x1af28a,_0x4a2cf8[_0x5a8829(0x1f9)]);}function _0x144211(_0x410a05,_0x46f730,_0x3fa300,_0x3c766c,_0x3de606,_0x351588,_0x209e0c){var _0x1127f0=_0x2ff0ae,_0x4e5e77=Math['max'](0x0,_0x3c766c-_0x209e0c),_0x34a49c=Math[_0x1127f0(0x260)](_0x46f730-0x1,_0x3c766c+_0x209e0c),_0x45555d=Math[_0x1127f0(0x198)](0x0,_0x3de606-_0x209e0c),_0x4170cf=Math[_0x1127f0(0x260)](_0x3fa300-0x1,_0x3de606+_0x209e0c),_0x5903d8=_0x34a49c-_0x4e5e77+0x1,_0x174f84=_0x4170cf-_0x45555d+0x1;function _0x4089f7(_0x592bd0,_0x582962){var _0x1a846c=(_0x582962*_0x46f730+_0x592bd0)*0x4;return[_0x410a05[_0x1a846c],_0x410a05[_0x1a846c+0x1],_0x410a05[_0x1a846c+0x2]];}function _0x25b571(_0x4203f4,_0x162d1c){var _0x16290e=(_0x162d1c*_0x46f730+_0x4203f4)*0x4;return _0x410a05[_0x16290e]*0.299+_0x410a05[_0x16290e+0x1]*0.587+_0x410a05[_0x16290e+0x2]*0.114;}var _0x331181=new Uint8Array(_0x5903d8*_0x174f84);for(var _0x2d7f18=0x0;_0x2d7f18<_0x174f84;_0x2d7f18++){for(var _0x5dcffd=0x0;_0x5dcffd<_0x5903d8;_0x5dcffd++){var _0x5a5287=_0x4e5e77+_0x5dcffd,_0x42e4e1=_0x45555d+_0x2d7f18;if(_0x5a5287<0x1||_0x5a5287>=_0x46f730-0x1||_0x42e4e1<0x1||_0x42e4e1>=_0x3fa300-0x1){_0x331181[_0x2d7f18*_0x5903d8+_0x5dcffd]=0xff;continue;}var _0x2bd505=-_0x25b571(_0x5a5287-0x1,_0x42e4e1-0x1)+_0x25b571(_0x5a5287+0x1,_0x42e4e1-0x1)-0x2*_0x25b571(_0x5a5287-0x1,_0x42e4e1)+0x2*_0x25b571(_0x5a5287+0x1,_0x42e4e1)-_0x25b571(_0x5a5287-0x1,_0x42e4e1+0x1)+_0x25b571(_0x5a5287+0x1,_0x42e4e1+0x1),_0x2cec26=-_0x25b571(_0x5a5287-0x1,_0x42e4e1-0x1)-0x2*_0x25b571(_0x5a5287,_0x42e4e1-0x1)-_0x25b571(_0x5a5287+0x1,_0x42e4e1-0x1)+_0x25b571(_0x5a5287-0x1,_0x42e4e1+0x1)+0x2*_0x25b571(_0x5a5287,_0x42e4e1+0x1)+_0x25b571(_0x5a5287+0x1,_0x42e4e1+0x1);_0x331181[_0x2d7f18*_0x5903d8+_0x5dcffd]=Math[_0x1127f0(0x183)](_0x2bd505*_0x2bd505+_0x2cec26*_0x2cec26)>_0x518fef?0xff:0x0;}}var _0x3bd3c0=0x0,_0x462a63=0x0,_0x4f6b30=0x0,_0x2dd8b5=0x0;for(var _0x46c54a=-0x1;_0x46c54a<=0x1;_0x46c54a++){for(var _0x439816=-0x1;_0x439816<=0x1;_0x439816++){var _0x10581a=_0x3c766c+_0x439816,_0x429bc5=_0x3de606+_0x46c54a;if(_0x10581a<0x0||_0x10581a>=_0x46f730||_0x429bc5<0x0||_0x429bc5>=_0x3fa300)continue;var _0x2cfd5d=_0x4089f7(_0x10581a,_0x429bc5);_0x3bd3c0+=_0x2cfd5d[0x0],_0x462a63+=_0x2cfd5d[0x1],_0x4f6b30+=_0x2cfd5d[0x2],_0x2dd8b5++;}}var _0x4fd74b=Math[_0x1127f0(0x241)](_0x3bd3c0/_0x2dd8b5),_0x3000bc=Math[_0x1127f0(0x241)](_0x462a63/_0x2dd8b5),_0x40abec=Math['round'](_0x4f6b30/_0x2dd8b5),_0x5be37b=new Uint8Array(_0x5903d8*_0x174f84),_0x295753=new Uint8Array(_0x5903d8*_0x174f84),_0x59cb24=[[_0x3c766c-_0x4e5e77,_0x3de606-_0x45555d]];_0x295753[(_0x3de606-_0x45555d)*_0x5903d8+(_0x3c766c-_0x4e5e77)]=0x1;var _0x414119=0x0,_0x386387=Math[_0x1127f0(0x1d0)](_0x5903d8*_0x174f84*0.6),_0x211c69={'minX':_0x3c766c-_0x4e5e77,'minY':_0x3de606-_0x45555d,'maxX':_0x3c766c-_0x4e5e77,'maxY':_0x3de606-_0x45555d},_0x5a7ea5=_0x4fd74b,_0x1eca0d=_0x3000bc,_0x5bfb77=_0x40abec,_0x5a15dc=_0x351588*1.4,_0x45a2b5=_0x4fd74b,_0x164675=_0x3000bc,_0x11b9f7=_0x40abec,_0x2629a1=0x0,_0x335bf=_0x351588*0.55;while(_0x59cb24[_0x1127f0(0x23d)]>0x0){var _0x24edfa=_0x59cb24[_0x1127f0(0x227)](),_0x39ff4a=_0x24edfa[0x0],_0x2b904f=_0x24edfa[0x1],_0x2abbbe=_0x4089f7(_0x39ff4a+_0x4e5e77,_0x2b904f+_0x45555d),_0x232a31=Math['sqrt'](Math[_0x1127f0(0x17b)](_0x2abbbe[0x0]-_0x45a2b5,0x2)+Math['pow'](_0x2abbbe[0x1]-_0x164675,0x2)+Math[_0x1127f0(0x17b)](_0x2abbbe[0x2]-_0x11b9f7,0x2));if(_0x232a31>_0x351588)continue;var _0x31869a=Math[_0x1127f0(0x183)](Math['pow'](_0x2abbbe[0x0]-_0x5a7ea5,0x2)+Math[_0x1127f0(0x17b)](_0x2abbbe[0x1]-_0x1eca0d,0x2)+Math[_0x1127f0(0x17b)](_0x2abbbe[0x2]-_0x5bfb77,0x2));if(_0x31869a>_0x5a15dc)continue;_0x5be37b[_0x2b904f*_0x5903d8+_0x39ff4a]=0x1,_0x414119++;if(_0x414119>_0x386387)return null;_0x232a31<_0x335bf&&(_0x45a2b5+=Math[_0x1127f0(0x241)]((_0x2abbbe[0x0]-_0x45a2b5)*0.1),_0x164675+=Math[_0x1127f0(0x241)]((_0x2abbbe[0x1]-_0x164675)*0.1),_0x11b9f7+=Math[_0x1127f0(0x241)]((_0x2abbbe[0x2]-_0x11b9f7)*0.1));if(_0x39ff4a<_0x211c69[_0x1127f0(0x280)])_0x211c69[_0x1127f0(0x280)]=_0x39ff4a;if(_0x39ff4a>_0x211c69[_0x1127f0(0x23f)])_0x211c69[_0x1127f0(0x23f)]=_0x39ff4a;if(_0x2b904f<_0x211c69[_0x1127f0(0x154)])_0x211c69[_0x1127f0(0x154)]=_0x2b904f;if(_0x2b904f>_0x211c69[_0x1127f0(0x217)])_0x211c69[_0x1127f0(0x217)]=_0x2b904f;_0x2629a1++;if(_0x2629a1>=0x40){_0x2629a1=0x0;var _0x34fc2b=_0x211c69['maxX']-_0x211c69['minX']+0x1,_0x237550=_0x211c69[_0x1127f0(0x217)]-_0x211c69[_0x1127f0(0x154)]+0x1,_0x3627ba=_0x34fc2b>_0x237550?_0x34fc2b/_0x237550:_0x237550/_0x34fc2b;if(_0x3627ba>0x6&&_0x414119>0xc8)return null;}var _0x5949c5=[[_0x39ff4a-0x1,_0x2b904f],[_0x39ff4a+0x1,_0x2b904f],[_0x39ff4a,_0x2b904f-0x1],[_0x39ff4a,_0x2b904f+0x1]];for(var _0x154d52=0x0;_0x154d52<_0x5949c5[_0x1127f0(0x23d)];_0x154d52++){var _0x17c1db=_0x5949c5[_0x154d52][0x0],_0xe523a9=_0x5949c5[_0x154d52][0x1];if(_0x17c1db<0x0||_0x17c1db>=_0x5903d8||_0xe523a9<0x0||_0xe523a9>=_0x174f84)continue;var _0x5ba94c=_0xe523a9*_0x5903d8+_0x17c1db;if(_0x295753[_0x5ba94c])continue;_0x295753[_0x5ba94c]=0x1;if(_0x331181[_0x5ba94c]===0xff){var _0x31aea3=_0x4089f7(_0x17c1db+_0x4e5e77,_0xe523a9+_0x45555d),_0x1c1f20=Math['sqrt'](Math[_0x1127f0(0x17b)](_0x31aea3[0x0]-_0x45a2b5,0x2)+Math[_0x1127f0(0x17b)](_0x31aea3[0x1]-_0x164675,0x2)+Math[_0x1127f0(0x17b)](_0x31aea3[0x2]-_0x11b9f7,0x2));if(_0x1c1f20>_0x351588*0.7)continue;}_0x59cb24[_0x1127f0(0x288)]([_0x17c1db,_0xe523a9]);}}if(_0x414119<0x4)return null;var _0x1af359=_0x2bf0d7(_0x5be37b,_0x5903d8,_0x174f84),_0x544f86=_0x29267e(_0x1af359,_0x5903d8,_0x174f84),_0x2d14e9=_0x3c766c-_0x4e5e77,_0x1d4e87=_0x3de606-_0x45555d,_0x38770c=_0x5ef439(_0x544f86,_0x5903d8,_0x174f84,_0x2d14e9,_0x1d4e87);return _0x38770c&&_0x38770c[_0x1127f0(0x1ba)]>=0x4&&(_0x5be37b=_0x38770c[_0x1127f0(0x172)]),{'mask':_0x5be37b,'w':_0x5903d8,'h':_0x174f84,'offsetX':_0x4e5e77,'offsetY':_0x45555d,'seedLx':_0x2d14e9,'seedLy':_0x1d4e87};}function _0x29267e(_0x288fa7,_0x5b2b92,_0x49b844){function _0x3fb3cc(_0x9d8cae,_0x401771,_0x271be6){if(_0x401771<0x0||_0x401771>=_0x5b2b92||_0x271be6<0x0||_0x271be6>=_0x49b844)return 0x0;return _0x9d8cae[_0x271be6*_0x5b2b92+_0x401771];}var _0x43024f=new Uint8Array(_0x5b2b92*_0x49b844);for(var _0x230a44=0x0;_0x230a44<_0x49b844;_0x230a44++){for(var _0x2060e0=0x0;_0x2060e0<_0x5b2b92;_0x2060e0++){_0x3fb3cc(_0x288fa7,_0x2060e0,_0x230a44)&&_0x3fb3cc(_0x288fa7,_0x2060e0-0x1,_0x230a44)&&_0x3fb3cc(_0x288fa7,_0x2060e0+0x1,_0x230a44)&&_0x3fb3cc(_0x288fa7,_0x2060e0,_0x230a44-0x1)&&_0x3fb3cc(_0x288fa7,_0x2060e0,_0x230a44+0x1)&&(_0x43024f[_0x230a44*_0x5b2b92+_0x2060e0]=0x1);}}var _0x352380=new Uint8Array(_0x5b2b92*_0x49b844);for(var _0x230a44=0x0;_0x230a44<_0x49b844;_0x230a44++){for(var _0x2060e0=0x0;_0x2060e0<_0x5b2b92;_0x2060e0++){(_0x3fb3cc(_0x43024f,_0x2060e0,_0x230a44)||_0x3fb3cc(_0x43024f,_0x2060e0-0x1,_0x230a44)||_0x3fb3cc(_0x43024f,_0x2060e0+0x1,_0x230a44)||_0x3fb3cc(_0x43024f,_0x2060e0,_0x230a44-0x1)||_0x3fb3cc(_0x43024f,_0x2060e0,_0x230a44+0x1))&&(_0x352380[_0x230a44*_0x5b2b92+_0x2060e0]=0x1);}}return _0x352380;}function _0x2bf0d7(_0x9e8332,_0x554505,_0x2cbb0b){function _0x548e0b(_0x2b0761,_0xcd1cdd,_0x51ef2f){if(_0xcd1cdd<0x0||_0xcd1cdd>=_0x554505||_0x51ef2f<0x0||_0x51ef2f>=_0x2cbb0b)return 0x0;return _0x2b0761[_0x51ef2f*_0x554505+_0xcd1cdd];}var _0xff9010=new Uint8Array(_0x554505*_0x2cbb0b);for(var _0x44e031=0x0;_0x44e031<_0x2cbb0b;_0x44e031++){for(var _0x2d20f1=0x0;_0x2d20f1<_0x554505;_0x2d20f1++){(_0x548e0b(_0x9e8332,_0x2d20f1,_0x44e031)||_0x548e0b(_0x9e8332,_0x2d20f1-0x1,_0x44e031)||_0x548e0b(_0x9e8332,_0x2d20f1+0x1,_0x44e031)||_0x548e0b(_0x9e8332,_0x2d20f1,_0x44e031-0x1)||_0x548e0b(_0x9e8332,_0x2d20f1,_0x44e031+0x1))&&(_0xff9010[_0x44e031*_0x554505+_0x2d20f1]=0x1);}}var _0x7b1857=new Uint8Array(_0x554505*_0x2cbb0b);for(var _0x44e031=0x0;_0x44e031<_0x2cbb0b;_0x44e031++){for(var _0x2d20f1=0x0;_0x2d20f1<_0x554505;_0x2d20f1++){_0x548e0b(_0xff9010,_0x2d20f1,_0x44e031)&&_0x548e0b(_0xff9010,_0x2d20f1-0x1,_0x44e031)&&_0x548e0b(_0xff9010,_0x2d20f1+0x1,_0x44e031)&&_0x548e0b(_0xff9010,_0x2d20f1,_0x44e031-0x1)&&_0x548e0b(_0xff9010,_0x2d20f1,_0x44e031+0x1)&&(_0x7b1857[_0x44e031*_0x554505+_0x2d20f1]=0x1);}}return _0x7b1857;}function _0x5ef439(_0x2d3222,_0x3b903c,_0xc0e042,_0x94e6cd,_0x1c004a){var _0x1730d5=_0x2ff0ae;if(_0x94e6cd<0x0||_0x94e6cd>=_0x3b903c||_0x1c004a<0x0||_0x1c004a>=_0xc0e042)return null;if(!_0x2d3222[_0x1c004a*_0x3b903c+_0x94e6cd])return null;var _0x872f18=new Uint8Array(_0x3b903c*_0xc0e042),_0x3a110c=new Uint8Array(_0x3b903c*_0xc0e042),_0x283e8f=[[_0x94e6cd,_0x1c004a]];_0x3a110c[_0x1c004a*_0x3b903c+_0x94e6cd]=0x1;var _0xc9c277=0x0;while(_0x283e8f[_0x1730d5(0x23d)]>0x0){var _0x542874=_0x283e8f[_0x1730d5(0x227)](),_0x36563b=_0x542874[0x0],_0x525bcc=_0x542874[0x1];_0x872f18[_0x525bcc*_0x3b903c+_0x36563b]=0x1,_0xc9c277++;var _0x4fad0a=[[_0x36563b-0x1,_0x525bcc],[_0x36563b+0x1,_0x525bcc],[_0x36563b,_0x525bcc-0x1],[_0x36563b,_0x525bcc+0x1]];for(var _0x24fcb4=0x0;_0x24fcb4<_0x4fad0a[_0x1730d5(0x23d)];_0x24fcb4++){var _0x3bdbf3=_0x4fad0a[_0x24fcb4][0x0],_0x18f9e1=_0x4fad0a[_0x24fcb4][0x1];if(_0x3bdbf3<0x0||_0x3bdbf3>=_0x3b903c||_0x18f9e1<0x0||_0x18f9e1>=_0xc0e042)continue;var _0x52fd9a=_0x18f9e1*_0x3b903c+_0x3bdbf3;if(_0x3a110c[_0x52fd9a]||!_0x2d3222[_0x52fd9a])continue;_0x3a110c[_0x52fd9a]=0x1,_0x283e8f[_0x1730d5(0x288)]([_0x3bdbf3,_0x18f9e1]);}}return{'mask':_0x872f18,'count':_0xc9c277};}function _0x109ec4(_0x4e90d1,_0x18cc8a,_0x450724){var _0xafd845=_0x2ff0ae,_0x3a9cf2=![];for(var _0x45f42e=0x0,_0x334224=_0x450724[_0xafd845(0x23d)]-0x2;_0x45f42e<_0x450724[_0xafd845(0x23d)]-0x1;_0x334224=_0x45f42e++){var _0xd08362=_0x450724[_0x45f42e][0x0],_0x5d2c92=_0x450724[_0x45f42e][0x1],_0xe8d7c3=_0x450724[_0x334224][0x0],_0x5ac8e7=_0x450724[_0x334224][0x1],_0x5f30af=_0x5d2c92>_0x18cc8a!==_0x5ac8e7>_0x18cc8a&&_0x4e90d1<(_0xe8d7c3-_0xd08362)*(_0x18cc8a-_0x5d2c92)/(_0x5ac8e7-_0x5d2c92)+_0xd08362;if(_0x5f30af)_0x3a9cf2=!_0x3a9cf2;}return _0x3a9cf2;}function _0x29e539(_0x46f141,_0xeb1705,_0x330d5e,_0xaac76a,_0x5b0a08){var _0x513ceb=_0x2ff0ae;function _0x5d16ca(_0x3e5911,_0x16a4fb){if(_0x3e5911<0x0||_0x3e5911>=_0xeb1705||_0x16a4fb<0x0||_0x16a4fb>=_0x330d5e)return![];return _0x46f141[_0x16a4fb*_0xeb1705+_0x3e5911]===0x1;}var _0x26acad=[];for(var _0x488847=0x0;_0x488847<_0x330d5e;_0x488847++){for(var _0x133a68=0x0;_0x133a68<_0xeb1705;_0x133a68++){if(!_0x5d16ca(_0x133a68,_0x488847))continue;if(!_0x5d16ca(_0x133a68,_0x488847-0x1))_0x26acad[_0x513ceb(0x288)]([[_0x133a68,_0x488847],[_0x133a68+0x1,_0x488847]]);if(!_0x5d16ca(_0x133a68+0x1,_0x488847))_0x26acad[_0x513ceb(0x288)]([[_0x133a68+0x1,_0x488847],[_0x133a68+0x1,_0x488847+0x1]]);if(!_0x5d16ca(_0x133a68,_0x488847+0x1))_0x26acad[_0x513ceb(0x288)]([[_0x133a68+0x1,_0x488847+0x1],[_0x133a68,_0x488847+0x1]]);if(!_0x5d16ca(_0x133a68-0x1,_0x488847))_0x26acad['push']([[_0x133a68,_0x488847+0x1],[_0x133a68,_0x488847]]);}}if(_0x26acad['length']<0x3)return null;var _0x9141d0=function(_0x1a3c9a){return _0x1a3c9a[0x0]+','+_0x1a3c9a[0x1];},_0x320e65=_0x26acad['map'](function(_0x3ace6b){return{'edge':_0x3ace6b,'used':![]};}),_0x507af1={};_0x320e65[_0x513ceb(0x15a)](function(_0x30221d){var _0x406600=_0x513ceb,_0x1c7335=_0x9141d0(_0x30221d['edge'][0x0]);if(!_0x507af1[_0x1c7335])_0x507af1[_0x1c7335]=[];_0x507af1[_0x1c7335][_0x406600(0x288)](_0x30221d);});function _0x3279eb(_0x435275){return[_0x435275[0x1][0x0]-_0x435275[0x0][0x0],_0x435275[0x1][0x1]-_0x435275[0x0][0x1]];}function _0x2c34f7(_0x7bb28f,_0x106d55){var _0x11a4cd=_0x7bb28f[0x0]*_0x106d55[0x0]+_0x7bb28f[0x1]*_0x106d55[0x1],_0x4ee07d=_0x7bb28f[0x0]*_0x106d55[0x1]-_0x7bb28f[0x1]*_0x106d55[0x0];if(_0x4ee07d>0.5)return 0x0;if(_0x11a4cd>0.5)return 0x1;if(_0x4ee07d<-0.5)return 0x2;return 0x3;}var _0x4c4716=[],_0x3d1f5e=_0x320e65['length']+0x2;for(var _0xfcb71f=0x0;_0xfcb71f<_0x320e65[_0x513ceb(0x23d)];_0xfcb71f++){var _0x3353bd=_0x320e65[_0xfcb71f];if(_0x3353bd[_0x513ceb(0x166)])continue;var _0x3c6514=[],_0x256683=_0x3353bd,_0x28c79c=_0x9141d0(_0x3353bd[_0x513ceb(0x200)][0x0]),_0x10cbce=0x0;while(!![]){_0x256683[_0x513ceb(0x166)]=!![];var _0x5045b7=_0x256683['edge'];_0x3c6514[_0x513ceb(0x288)](_0x5045b7[0x0]);var _0x44d2c7=_0x3279eb(_0x5045b7),_0xdca5f8=_0x9141d0(_0x5045b7[0x1]);_0x10cbce++;if(_0xdca5f8===_0x28c79c||_0x10cbce>_0x3d1f5e)break;var _0xfc3d78=_0x507af1[_0xdca5f8];if(!_0xfc3d78)break;var _0x3fd8c5=null,_0x585b6f=Infinity;for(var _0x16730f=0x0;_0x16730f<_0xfc3d78[_0x513ceb(0x23d)];_0x16730f++){var _0x57586a=_0xfc3d78[_0x16730f];if(_0x57586a[_0x513ceb(0x166)])continue;var _0xaffd2e=_0x2c34f7(_0x44d2c7,_0x3279eb(_0x57586a['edge']));_0xaffd2e<_0x585b6f&&(_0x585b6f=_0xaffd2e,_0x3fd8c5=_0x57586a);}if(!_0x3fd8c5)break;_0x256683=_0x3fd8c5;}_0x3c6514['length']>=0x3&&(_0x3c6514[_0x513ceb(0x288)](_0x3c6514[0x0]['slice']()),_0x4c4716['push'](_0x3c6514));}if(_0x4c4716[_0x513ceb(0x23d)]===0x0)return null;var _0xfc3d78=[];for(var _0x2be8b4=0x0;_0x2be8b4<_0x4c4716['length'];_0x2be8b4++){var _0x2972cc=0x0;for(var _0x193cba=0x0;_0x193cba<_0x4c4716[_0x2be8b4][_0x513ceb(0x23d)]-0x1;_0x193cba++){_0x2972cc+=_0x4c4716[_0x2be8b4][_0x193cba][0x0]*_0x4c4716[_0x2be8b4][_0x193cba+0x1][0x1]-_0x4c4716[_0x2be8b4][_0x193cba+0x1][0x0]*_0x4c4716[_0x2be8b4][_0x193cba][0x1];}_0xfc3d78[_0x513ceb(0x288)]({'loop':_0x4c4716[_0x2be8b4],'area':Math['abs'](_0x2972cc/0x2)});}if(typeof _0xaac76a==='number'&&typeof _0x5b0a08===_0x513ceb(0x258)){var _0x564ff2=null;for(var _0xae0ace=0x0;_0xae0ace<_0xfc3d78[_0x513ceb(0x23d)];_0xae0ace++){if(_0x109ec4(_0xaac76a+0.5,_0x5b0a08+0.5,_0xfc3d78[_0xae0ace]['loop'])){if(!_0x564ff2||_0xfc3d78[_0xae0ace]['area']>_0x564ff2[_0x513ceb(0x2a0)])_0x564ff2=_0xfc3d78[_0xae0ace];}}if(_0x564ff2)return _0x564ff2[_0x513ceb(0x1f7)];}var _0x31e301=null,_0x4019b1=-0x1;for(var _0x48e8cb=0x0;_0x48e8cb<_0xfc3d78[_0x513ceb(0x23d)];_0x48e8cb++){_0xfc3d78[_0x48e8cb][_0x513ceb(0x2a0)]>_0x4019b1&&(_0x4019b1=_0xfc3d78[_0x48e8cb][_0x513ceb(0x2a0)],_0x31e301=_0xfc3d78[_0x48e8cb][_0x513ceb(0x1f7)]);}return _0x31e301;}function _0x2704fc(_0x306051){var _0x3a4e28=_0x2ff0ae;if(_0x306051[_0x3a4e28(0x23d)]<0x5)return _0x306051;var _0x28b752=_0x306051['length']-0x1,_0x23c081=Math['abs'](_0x1f16fa(_0x306051));if(_0x23c081<0.000001)return _0x306051;var _0x2627a3=0x0,_0x48130d=0x0;for(var _0x564f15=0x0;_0x564f15<_0x28b752;_0x564f15++){_0x2627a3+=_0x306051[_0x564f15][0x0],_0x48130d+=_0x306051[_0x564f15][0x1];}_0x2627a3/=_0x28b752,_0x48130d/=_0x28b752;var _0x3c2fc8=0x0;for(var _0x564f15=0x0;_0x564f15<_0x28b752;_0x564f15++){var _0x63622a=_0x306051[(_0x564f15-0x1+_0x28b752)%_0x28b752],_0x55772b=_0x306051[_0x564f15],_0x209fa6=_0x306051[(_0x564f15+0x1)%_0x28b752],_0x1c06ff=_0x55772b[0x0]-_0x63622a[0x0],_0x4ab25d=_0x55772b[0x1]-_0x63622a[0x1],_0xbd67fa=_0x209fa6[0x0]-_0x55772b[0x0],_0x47aca3=_0x209fa6[0x1]-_0x55772b[0x1],_0x5a891a=_0x1c06ff*_0xbd67fa+_0x4ab25d*_0x47aca3,_0x56ee49=_0x1c06ff*_0x47aca3-_0x4ab25d*_0xbd67fa,_0x29f5fd=Math[_0x3a4e28(0x2a9)](Math['abs'](_0x56ee49),_0x5a891a);if(Math['abs'](_0x29f5fd-Math['PI']/0x2)<0.5)_0x3c2fc8++;}if(_0x3c2fc8<Math['floor'](_0x28b752*0.3))return _0x306051;var _0x5e5c89=_0x306051[_0x3a4e28(0x292)]()[_0x3a4e28(0x1ab)](function(_0x46c86b){var _0x489bd8=_0x3a4e28;return _0x46c86b[_0x489bd8(0x292)]();}),_0x1c5243=0.05;for(var _0x4a0b70=0x0;_0x4a0b70<0xa;_0x4a0b70++){var _0x2b5820=_0x1c5243*(0x1-_0x4a0b70/0xc);for(var _0x564f15=0x0;_0x564f15<_0x28b752;_0x564f15++){var _0x63622a=_0x5e5c89[(_0x564f15-0x1+_0x28b752)%_0x28b752],_0x55772b=_0x5e5c89[_0x564f15],_0x209fa6=_0x5e5c89[(_0x564f15+0x1)%_0x28b752],_0x1c06ff=_0x55772b[0x0]-_0x63622a[0x0],_0x4ab25d=_0x55772b[0x1]-_0x63622a[0x1],_0xbd67fa=_0x209fa6[0x0]-_0x55772b[0x0],_0x47aca3=_0x209fa6[0x1]-_0x55772b[0x1],_0x506c95=Math[_0x3a4e28(0x183)](_0x1c06ff*_0x1c06ff+_0x4ab25d*_0x4ab25d),_0x58b337=Math[_0x3a4e28(0x183)](_0xbd67fa*_0xbd67fa+_0x47aca3*_0x47aca3);if(_0x506c95<1e-9||_0x58b337<1e-9)continue;var _0x11b414=Math['atan2'](_0x4ab25d,_0x1c06ff),_0xe3bf50=Math[_0x3a4e28(0x2a9)](_0x47aca3,_0xbd67fa),_0x1223ae=(_0x11b414+_0xe3bf50)/0x2;if(Math[_0x3a4e28(0x18a)](_0x11b414-_0xe3bf50)>Math['PI'])_0x1223ae+=Math['PI'];var _0x2fad79=Math[_0x3a4e28(0x241)](_0x1223ae/(Math['PI']/0x2))*(Math['PI']/0x2),_0x22e6c7=_0x2fad79-_0x1223ae,_0x51be63=(_0x506c95+_0x58b337)/0x2,_0x373230=_0x2fad79+Math['PI']/0x2,_0x5935f3=_0x51be63*_0x2b5820*(0x1+Math['abs'](_0x22e6c7)*0x2),_0x36260e=Math[_0x3a4e28(0x185)](_0x373230)*_0x5935f3,_0x298d9a=Math['sin'](_0x373230)*_0x5935f3,_0x4c2469=_0x1c06ff*_0x47aca3-_0x4ab25d*_0xbd67fa,_0x496848=_0x4c2469>0x0?0x1:-0x1;_0x5e5c89[_0x564f15]=[_0x55772b[0x0]+_0x36260e*_0x496848,_0x55772b[0x1]+_0x298d9a*_0x496848];}}_0x5e5c89[_0x28b752]=[_0x5e5c89[0x0][0x0],_0x5e5c89[0x0][0x1]];var _0x1ed12e=Math[_0x3a4e28(0x18a)](_0x1f16fa(_0x5e5c89));if(_0x1ed12e>0.000001){var _0x553392=Math[_0x3a4e28(0x183)](_0x23c081/_0x1ed12e),_0x4bc79f=0x0,_0x3cdaca=0x0;for(var _0x564f15=0x0;_0x564f15<_0x28b752;_0x564f15++){_0x4bc79f+=_0x5e5c89[_0x564f15][0x0],_0x3cdaca+=_0x5e5c89[_0x564f15][0x1];}_0x4bc79f/=_0x28b752,_0x3cdaca/=_0x28b752;for(var _0x564f15=0x0;_0x564f15<_0x28b752;_0x564f15++){_0x5e5c89[_0x564f15][0x0]=_0x2627a3+(_0x5e5c89[_0x564f15][0x0]-_0x4bc79f)*_0x553392,_0x5e5c89[_0x564f15][0x1]=_0x48130d+(_0x5e5c89[_0x564f15][0x1]-_0x3cdaca)*_0x553392;}_0x5e5c89[_0x28b752]=[_0x5e5c89[0x0][0x0],_0x5e5c89[0x0][0x1]];}return _0x5e5c89;}function _0x1f16fa(_0x12fa96){var _0x1f1852=_0x2ff0ae,_0x20a1e5=0x0,_0x3736fd=_0x12fa96[_0x1f1852(0x23d)]-0x1;for(var _0x17133c=0x0;_0x17133c<_0x3736fd;_0x17133c++){_0x20a1e5+=_0x12fa96[_0x17133c][0x0]*_0x12fa96[_0x17133c+0x1][0x1]-_0x12fa96[_0x17133c+0x1][0x0]*_0x12fa96[_0x17133c][0x1];}return _0x20a1e5/0x2;}function _0x3ead76(_0x4f96f8,_0x20914d){var _0x296068=_0x2ff0ae;if(_0x4f96f8['length']<=0x2)return _0x4f96f8;var _0x541bde=0x0,_0x541fda=0x0,_0x497263=_0x4f96f8[0x0],_0x319263=_0x4f96f8[_0x4f96f8['length']-0x1];for(var _0x5c262f=0x1;_0x5c262f<_0x4f96f8[_0x296068(0x23d)]-0x1;_0x5c262f++){var _0x41adde=_0x52a046(_0x4f96f8[_0x5c262f],_0x497263,_0x319263);_0x41adde>_0x541bde&&(_0x541bde=_0x41adde,_0x541fda=_0x5c262f);}if(_0x541bde>_0x20914d){var _0x53b82d=_0x3ead76(_0x4f96f8[_0x296068(0x292)](0x0,_0x541fda+0x1),_0x20914d),_0x2b841f=_0x3ead76(_0x4f96f8[_0x296068(0x292)](_0x541fda),_0x20914d);return _0x53b82d[_0x296068(0x292)](0x0,_0x53b82d[_0x296068(0x23d)]-0x1)['concat'](_0x2b841f);}return[_0x497263,_0x319263];}function _0x52a046(_0x14a63e,_0x1767f3,_0x1175ef){var _0x4a59cb=_0x2ff0ae,_0x5383da=_0x1175ef[0x0]-_0x1767f3[0x0],_0x3e533d=_0x1175ef[0x1]-_0x1767f3[0x1],_0x32f500=Math[_0x4a59cb(0x183)](_0x5383da*_0x5383da+_0x3e533d*_0x3e533d);if(_0x32f500===0x0)return Math[_0x4a59cb(0x183)](Math[_0x4a59cb(0x17b)](_0x14a63e[0x0]-_0x1767f3[0x0],0x2)+Math['pow'](_0x14a63e[0x1]-_0x1767f3[0x1],0x2));return Math[_0x4a59cb(0x18a)](_0x3e533d*_0x14a63e[0x0]-_0x5383da*_0x14a63e[0x1]+_0x1175ef[0x0]*_0x1767f3[0x1]-_0x1175ef[0x1]*_0x1767f3[0x0])/_0x32f500;}function _0x3c4c32(_0x16ae81,_0x33f89d){var _0x41bf36=_0x2ff0ae;_0x33f89d=_0x33f89d||0.97;var _0x1a1193=_0x16ae81['length'];if(_0x1a1193<0x4)return _0x16ae81;var _0x552de3=[];for(var _0x31a0f7=0x0;_0x31a0f7<_0x1a1193;_0x31a0f7++){var _0x3062e9=_0x16ae81[(_0x31a0f7-0x1+_0x1a1193)%_0x1a1193],_0xe5cca1=_0x16ae81[_0x31a0f7],_0x704cc9=_0x16ae81[(_0x31a0f7+0x1)%_0x1a1193],_0x59a665=_0xe5cca1[0x0]-_0x3062e9[0x0],_0x5d4ad2=_0xe5cca1[0x1]-_0x3062e9[0x1],_0x101839=_0x704cc9[0x0]-_0xe5cca1[0x0],_0x5579b0=_0x704cc9[0x1]-_0xe5cca1[0x1],_0x14cce9=Math[_0x41bf36(0x183)](_0x59a665*_0x59a665+_0x5d4ad2*_0x5d4ad2),_0x5daea8=Math[_0x41bf36(0x183)](_0x101839*_0x101839+_0x5579b0*_0x5579b0);if(_0x14cce9<0.5||_0x5daea8<0.5)continue;var _0x477f22=(_0x59a665*_0x101839+_0x5d4ad2*_0x5579b0)/(_0x14cce9*_0x5daea8);if(_0x477f22<_0x33f89d)_0x552de3[_0x41bf36(0x288)]([_0xe5cca1[0x0],_0xe5cca1[0x1]]);}if(_0x552de3[_0x41bf36(0x23d)]<0x3)return _0x16ae81;return _0x552de3;}function _0x2fa219(_0x8d30af,_0x1c90b5){var _0x2fc4ed=_0x2ff0ae;if(_0x8d30af['length']<0x3)return _0x8d30af;var _0x378a27=[];_0x378a27[_0x2fc4ed(0x288)]([_0x8d30af[0x0][0x0],_0x8d30af[0x0][0x1]]);for(var _0x3d5318=0x1;_0x3d5318<_0x8d30af[_0x2fc4ed(0x23d)];_0x3d5318++){var _0x581b5e=_0x378a27[_0x378a27[_0x2fc4ed(0x23d)]-0x1],_0x2acd46=_0x8d30af[_0x3d5318],_0x4179ac=_0x2acd46[0x0]-_0x581b5e[0x0],_0x15bb56=_0x2acd46[0x1]-_0x581b5e[0x1];if(Math[_0x2fc4ed(0x183)](_0x4179ac*_0x4179ac+_0x15bb56*_0x15bb56)<_0x1c90b5){var _0xf45395=(_0x581b5e[0x0]+_0x2acd46[0x0])/0x2,_0x164b02=(_0x581b5e[0x1]+_0x2acd46[0x1])/0x2;_0x378a27[_0x378a27[_0x2fc4ed(0x23d)]-0x1]=[_0xf45395,_0x164b02];}else _0x378a27[_0x2fc4ed(0x288)]([_0x2acd46[0x0],_0x2acd46[0x1]]);}if(_0x378a27[_0x2fc4ed(0x23d)]>=0x3){var _0x4b69c0=_0x378a27[_0x378a27[_0x2fc4ed(0x23d)]-0x1],_0x1edfc=_0x378a27[0x0],_0x4179ac=_0x4b69c0[0x0]-_0x1edfc[0x0],_0x15bb56=_0x4b69c0[0x1]-_0x1edfc[0x1];if(Math['sqrt'](_0x4179ac*_0x4179ac+_0x15bb56*_0x15bb56)<_0x1c90b5){var _0xf45395=(_0x4b69c0[0x0]+_0x1edfc[0x0])/0x2,_0x164b02=(_0x4b69c0[0x1]+_0x1edfc[0x1])/0x2;_0x378a27[0x0]=[_0xf45395,_0x164b02],_0x378a27[_0x2fc4ed(0x227)]();}}return _0x378a27[_0x2fc4ed(0x23d)]>=0x3?_0x378a27:_0x8d30af;}function _0x47fe41(){var _0x1a35fd=_0x2ff0ae;_0x79bc7b(0x5),_0x228d31('va-progress-fill')['style'][_0x1a35fd(0x1ce)]='0%',_0x228d31(_0x1a35fd(0x261))[_0x1a35fd(0x226)]=_0x1a35fd(0x238),_0x228d31(_0x1a35fd(0x1a1))[_0x1a35fd(0x1f2)]='';var _0x2ee6f1={'north':_0x4a2cf8['areaBounds']['getNorth'](),'south':_0x4a2cf8[_0x1a35fd(0x1c5)]['getSouth'](),'east':_0x4a2cf8[_0x1a35fd(0x1c5)][_0x1a35fd(0x26f)](),'west':_0x4a2cf8['areaBounds'][_0x1a35fd(0x15b)]()},_0x5189c8=_0x4a2cf8['samples'][_0x1a35fd(0x1ab)](function(_0x2bffd7){var _0xf4e2b=_0x1a35fd,_0x1adc36=_0x2bffd7[_0xf4e2b(0x271)]['toGeoJSON']();return{'label':_0x2bffd7[_0xf4e2b(0x1e0)],'geometry':_0x1adc36[_0xf4e2b(0x17e)]};});_0x55831b();var _0x121b37=_0x35917a(_0x4a2cf8[_0x1a35fd(0x1c5)][_0x1a35fd(0x299)]()[_0x1a35fd(0x1a0)]);_0x21771c(_0x2ee6f1,_0x121b37)[_0x1a35fd(0x254)](function(_0x2a178a){var _0x436447=_0x1a35fd;_0x4b1c6e(_0x436447(0x237)+_0x2a178a[_0x436447(0x1ce)]+'x'+_0x2a178a['height']+_0x436447(0x1e9),_0x436447(0x204)),_0x228d31(_0x436447(0x261))['textContent']=_0x436447(0x152);var _0x2f4699=_0x2dc6d2();_0x2f4699['postMessage']({'type':_0x436447(0x229),'mosaicWidth':_0x2a178a[_0x436447(0x1ce)],'mosaicHeight':_0x2a178a[_0x436447(0x171)],'pixelData':_0x2a178a[_0x436447(0x212)],'mosaicBounds':_0x2a178a[_0x436447(0x19a)],'bounds':_0x2ee6f1,'samples':_0x5189c8,'zoom':_0x121b37},[_0x2a178a[_0x436447(0x212)][_0x436447(0x2a4)]]);})[_0x1a35fd(0x218)](function(_0x1ab20a){var _0x8c6633=_0x1a35fd;_0x4b1c6e('Erro\x20ao\x20capturar\x20basemap:\x20'+_0x1ab20a[_0x8c6633(0x2b0)],_0x8c6633(0x1ac)),showAppAlert(_0x8c6633(0x1c7)+_0x1ab20a['message'],{'error':!![]}),setTimeout(function(){_0x79bc7b(0x4);},0x5dc);});}function _0x21771c(_0x1160c0,_0x49cd06){var _0x51af1c=_0x2ff0ae,_0x4e5d9a=Math[_0x51af1c(0x17b)](0x2,_0x49cd06),_0x3290d8=_0xee05e2(_0x1160c0[_0x51af1c(0x29a)],_0x1160c0[_0x51af1c(0x27b)],_0x49cd06),_0x5d8de0=_0xee05e2(_0x1160c0[_0x51af1c(0x21d)],_0x1160c0[_0x51af1c(0x19e)],_0x49cd06),_0x2f4584=Math[_0x51af1c(0x260)](_0x3290d8['x'],_0x5d8de0['x']),_0x339875=Math[_0x51af1c(0x198)](_0x3290d8['x'],_0x5d8de0['x']),_0x399d1f=Math[_0x51af1c(0x260)](_0x3290d8['y'],_0x5d8de0['y']),_0x42bdb7=Math[_0x51af1c(0x198)](_0x3290d8['y'],_0x5d8de0['y']),_0x320f19=_0x339875-_0x2f4584+0x1,_0x58206a=_0x42bdb7-_0x399d1f+0x1,_0x37c8e2=0x100,_0x4c3124=_0x320f19*_0x37c8e2,_0x2cd0de=_0x58206a*_0x37c8e2,_0x4e6608=_0x1d9588(),_0x4b8d9c=document[_0x51af1c(0x2ae)]('canvas');_0x4b8d9c[_0x51af1c(0x1ce)]=_0x4c3124,_0x4b8d9c['height']=_0x2cd0de;var _0x2dcd28=_0x4b8d9c[_0x51af1c(0x1a4)]('2d'),_0x1b20dd=[];for(var _0x4ace73=_0x2f4584;_0x4ace73<=_0x339875;_0x4ace73++){for(var _0x178389=_0x399d1f;_0x178389<=_0x42bdb7;_0x178389++){(function(_0x4198f1,_0x4a354f){var _0x9123c2=_0x51af1c,_0x432d74;_0x4e6608[_0x9123c2(0x2b4)]?_0x432d74=_0x4e6608[_0x9123c2(0x24c)]['replace'](_0x9123c2(0x1c1),_0x37c8e2)[_0x9123c2(0x1df)](_0x9123c2(0x18f),_0x37c8e2)[_0x9123c2(0x1df)](_0x9123c2(0x196),_0x4e6608['bboxForTile'](_0x4198f1,_0x4a354f,_0x49cd06)):_0x432d74=_0x4e6608[_0x9123c2(0x24c)][_0x9123c2(0x1df)](_0x9123c2(0x235),_0x49cd06)[_0x9123c2(0x1df)](_0x9123c2(0x15f),_0x4198f1)['replace'](_0x9123c2(0x1d1),_0x4a354f)[_0x9123c2(0x1df)](_0x9123c2(0x1e8),'a');var _0x4e9f32=new Image();_0x4e9f32['crossOrigin']='anonymous';var _0x3f7c81=new Promise(function(_0x40f6fe,_0x4ea637){var _0x4c201a=_0x9123c2;_0x4e9f32[_0x4c201a(0x253)]=function(){_0x2dcd28['drawImage'](_0x4e9f32,(_0x4198f1-_0x2f4584)*_0x37c8e2,(_0x4a354f-_0x399d1f)*_0x37c8e2,_0x37c8e2,_0x37c8e2),_0x40f6fe();},_0x4e9f32[_0x4c201a(0x223)]=function(){_0x4ea637(new Error('Falha\x20ao\x20carregar\x20tile\x20'+_0x4198f1+'/'+_0x4a354f));};});_0x4e9f32[_0x9123c2(0x285)]=_0x432d74,_0x1b20dd[_0x9123c2(0x288)](_0x3f7c81);}(_0x4ace73,_0x178389));}}var _0x152db6={'north':_0x3dfeb5(_0x2f4584,_0x399d1f,_0x49cd06)[_0x51af1c(0x29a)],'south':_0x3dfeb5(_0x339875,_0x42bdb7,_0x49cd06)[_0x51af1c(0x21d)],'east':_0x3dfeb5(_0x339875,_0x399d1f,_0x49cd06)['east'],'west':_0x3dfeb5(_0x2f4584,_0x399d1f,_0x49cd06)['west']};return Promise[_0x51af1c(0x22c)](_0x1b20dd)[_0x51af1c(0x254)](function(){var _0x2c4ce1=_0x51af1c,_0x12f9ca=_0x2dcd28[_0x2c4ce1(0x15c)](0x0,0x0,_0x4c3124,_0x2cd0de);return{'width':_0x4c3124,'height':_0x2cd0de,'pixelData':_0x12f9ca[_0x2c4ce1(0x220)],'bounds':_0x152db6};});}function _0x3dfeb5(_0x82384f,_0x13b02c,_0x508c2a){var _0x289559=_0x2ff0ae,_0x1831a9=Math[_0x289559(0x17b)](0x2,_0x508c2a),_0x398353=_0x82384f/_0x1831a9*0x168-0xb4,_0x5e9498=(_0x82384f+0x1)/_0x1831a9*0x168-0xb4,_0x4b99b9=Math[_0x289559(0x2a5)](Math[_0x289559(0x1f3)](Math['PI']*(0x1-0x2*_0x13b02c/_0x1831a9)))*0xb4/Math['PI'],_0x5257cd=Math['atan'](Math[_0x289559(0x1f3)](Math['PI']*(0x1-0x2*(_0x13b02c+0x1)/_0x1831a9)))*0xb4/Math['PI'];return{'north':_0x4b99b9,'south':_0x5257cd,'east':_0x5e9498,'west':_0x398353};}function _0x1d9588(){var _0x310326=_0x2ff0ae;function _0x1a3eb5(_0x3e1dc8,_0x211b01,_0x52f21e){var _0x19a919=20037508.342789244,_0xce754d=0x2*_0x19a919/Math['pow'](0x2,_0x3e1dc8),_0x2a2467=-_0x19a919+_0x211b01*_0xce754d,_0x1590e0=-_0x19a919+(_0x211b01+0x1)*_0xce754d,_0x15b810=_0x19a919-_0x52f21e*_0xce754d,_0xeb594f=_0x19a919-(_0x52f21e+0x1)*_0xce754d;return[_0x2a2467,_0xeb594f,_0x1590e0,_0x15b810];}var _0x40b799=window['__activeBaseLayerKey']||_0x310326(0x266),_0x1efb99=window[_0x310326(0x1f0)];if(!_0x1efb99||!_0x1efb99[_0x40b799])return _0x400a84();var _0x303b78=_0x1efb99[_0x40b799],_0x52bed0=null;if(_0x303b78 instanceof L[_0x310326(0x295)])_0x52bed0=_0x303b78;else{if(_0x303b78[_0x310326(0x27a)]&&typeof _0x303b78['getLayers']===_0x310326(0x278)){var _0x4d8557=_0x303b78[_0x310326(0x27a)]();for(var _0x31e58c=0x0;_0x31e58c<_0x4d8557['length'];_0x31e58c++){if(_0x4d8557[_0x31e58c]instanceof L[_0x310326(0x295)]){_0x52bed0=_0x4d8557[_0x31e58c];break;}}}}if(!_0x52bed0)return _0x400a84();var _0x25cd78=_0x52bed0 instanceof L[_0x310326(0x295)][_0x310326(0x208)];if(_0x25cd78){var _0xbb6870=_0x52bed0[_0x310326(0x24b)],_0x4e1c65=[];for(var _0x22135a in _0xbb6870){if(_0x22135a==='maxZoom'||_0x22135a==='maxNativeZoom'||_0x22135a===_0x310326(0x156)||_0x22135a===_0x310326(0x1bd)||_0x22135a==='offlineKey'||_0x22135a===_0x310326(0x2a3)||_0x22135a===_0x310326(0x239)||_0x22135a===_0x310326(0x1bc)||_0x22135a===_0x310326(0x207))continue;}var _0x229a11=_0x52bed0[_0x310326(0x195)],_0x2de369=_0x229a11[_0x310326(0x1f4)]('?')>=0x0?'&':'?',_0x58beae=_0x229a11+_0x2de369+_0x310326(0x29b)+(_0xbb6870[_0x310326(0x1bc)]||_0x310326(0x23a))+_0x310326(0x167)+(_0xbb6870[_0x310326(0x239)]||_0x310326(0x19d))+_0x310326(0x21a)+(_0xbb6870[_0x310326(0x2a3)]!==![]?_0x310326(0x169):'FALSE')+'&LAYERS='+(_0xbb6870[_0x310326(0x207)]||'')+'&CRS=EPSG:3857&WIDTH={width}&HEIGHT={height}&BBOX={bbox}';return{'isWMS':!![],'urlTemplate':_0x58beae,'bboxForTile':function(_0x59fc63,_0x5ac130,_0x3896cd){var _0x1756e6=_0x1a3eb5(_0x3896cd,_0x59fc63,_0x5ac130);return _0x1756e6[0x0]+','+_0x1756e6[0x1]+','+_0x1756e6[0x2]+','+_0x1756e6[0x3];}};}var _0x63d132=_0x52bed0[_0x310326(0x195)][_0x310326(0x1df)](_0x310326(0x1e8),'a');return{'isWMS':![],'urlTemplate':_0x63d132};}function _0x400a84(){var _0x4f5cd0=_0x2ff0ae;return{'isWMS':![],'urlTemplate':_0x4f5cd0(0x1e7)};}function _0x175c53(_0x451ae0){var _0x4457e5=_0x2ff0ae,_0x29a5b0=_0x451ae0[_0x4457e5(0x220)];if(_0x29a5b0[_0x4457e5(0x296)]==='progress')_0x228d31(_0x4457e5(0x2af))['style'][_0x4457e5(0x1ce)]=(_0x29a5b0[_0x4457e5(0x1e4)]||0x0)+'%',_0x228d31(_0x4457e5(0x261))[_0x4457e5(0x226)]=_0x29a5b0[_0x4457e5(0x18e)]||'A\x20processar...',_0x4b1c6e(_0x29a5b0[_0x4457e5(0x18e)],'log');else{if(_0x29a5b0['type']===_0x4457e5(0x204))_0x4b1c6e(_0x29a5b0['text'],_0x29a5b0[_0x4457e5(0x246)]||_0x4457e5(0x204));else{if(_0x29a5b0[_0x4457e5(0x296)]===_0x4457e5(0x26a))showAppAlert(_0x29a5b0[_0x4457e5(0x24d)][_0x4457e5(0x23d)]+_0x4457e5(0x245)+_0x29a5b0['totalSamples']+_0x4457e5(0x28c)+_0x4457e5(0x19b),{'error':!![]});else{if(_0x29a5b0[_0x4457e5(0x296)]==='done')_0x228d31(_0x4457e5(0x2af))[_0x4457e5(0x215)][_0x4457e5(0x1ce)]=_0x4457e5(0x1a9),_0x228d31(_0x4457e5(0x261))[_0x4457e5(0x226)]=_0x4457e5(0x25e),_0x4b1c6e(_0x4457e5(0x1b1),_0x4457e5(0x204)),_0x4a2cf8[_0x4457e5(0x20d)]=_0x29a5b0[_0x4457e5(0x20d)],_0x4a2cf8[_0x4457e5(0x1d5)]=_0x29a5b0[_0x4457e5(0x1d5)],setTimeout(function(){_0x17e330();},0x258);else _0x29a5b0[_0x4457e5(0x296)]==='error'&&(_0x4b1c6e(_0x4457e5(0x157)+_0x29a5b0[_0x4457e5(0x2b0)],_0x4457e5(0x1ac)),showAppAlert('Erro\x20no\x20processamento:\x20'+_0x29a5b0[_0x4457e5(0x2b0)],{'error':!![]}),setTimeout(function(){_0x79bc7b(0x4);},0x5dc));}}}}function _0x4b1c6e(_0x200d78,_0x2d39ca){var _0x52d7da=_0x2ff0ae,_0x20960b=_0x228d31(_0x52d7da(0x1a1)),_0x1747ed=document[_0x52d7da(0x2ae)]('div');_0x1747ed[_0x52d7da(0x203)]='va-progress-log-line\x20is-'+(_0x2d39ca||'log');var _0x3499e5=new Date()['toTimeString']()[_0x52d7da(0x292)](0x0,0x8),_0x438f8c=document[_0x52d7da(0x2ae)](_0x52d7da(0x186));_0x438f8c[_0x52d7da(0x203)]='va-progress-log-ts',_0x438f8c[_0x52d7da(0x226)]=_0x3499e5;var _0x17b37d=document[_0x52d7da(0x2ae)]('span');_0x17b37d[_0x52d7da(0x203)]=_0x52d7da(0x259),_0x17b37d[_0x52d7da(0x226)]=_0x200d78||'',_0x1747ed['appendChild'](_0x438f8c),_0x1747ed['appendChild'](_0x17b37d),_0x20960b[_0x52d7da(0x16e)](_0x1747ed),_0x20960b[_0x52d7da(0x16a)]=_0x20960b[_0x52d7da(0x29d)];}function _0x17e330(){var _0x5323a8=_0x2ff0ae;_0x17434f(),_0x79bc7b(0x6);var _0x4c03f8=_0x228d31('va-progress-log')?_0x228d31(_0x5323a8(0x1a1))['innerHTML']:'',_0x140253=_0x228d31('va-review-log');if(_0x140253)_0x140253[_0x5323a8(0x1f2)]=_0x4c03f8;var _0x51470c=_0x4a2cf8[_0x5323a8(0x20d)]?_0x4a2cf8['geojson'][_0x5323a8(0x26e)]||[]:[],_0x3b10d0=_0x4a2cf8['stats']||{};_0x228d31(_0x5323a8(0x205))['textContent']=_0x3b10d0['count']||_0x51470c[_0x5323a8(0x23d)],_0x228d31('va-review-area')[_0x5323a8(0x226)]=_0x2e317a(_0x3b10d0['area']||0x0),_0x228d31(_0x5323a8(0x22a))['textContent']=(_0x3b10d0[_0x5323a8(0x274)]||0x0)[_0x5323a8(0x21c)](0x0)+'%',_0x51470c['forEach'](function(_0x380c81,_0x2bdc32){var _0x3bd6cc=_0x5323a8,_0x4bbdb9=_0x380c81[_0x3bd6cc(0x252)]&&_0x380c81[_0x3bd6cc(0x252)]['confianca_pct']||0x0,_0x2823d6=_0x4bbdb9>0x50?_0x3bd6cc(0x1d4):_0x4bbdb9>0x32?_0x3bd6cc(0x28d):'#b5472b',_0x1394e2=L[_0x3bd6cc(0x211)](_0x380c81,{'style':{'color':_0x2823d6,'weight':0x2,'fillColor':_0x2823d6,'fillOpacity':0.3}})[_0x3bd6cc(0x1c9)](map);_0x1394e2[_0x3bd6cc(0x25b)]=_0x2bdc32,_0x1394e2[_0x3bd6cc(0x1eb)]=![],_0x1394e2['on'](_0x3bd6cc(0x1fb),function(){var _0x5a6995=_0x3bd6cc;this[_0x5a6995(0x1eb)]?(this[_0x5a6995(0x1cb)]({'fillOpacity':0.3,'opacity':0x1}),this['_vaEliminated']=![]):(this['setStyle']({'fillOpacity':0.08,'opacity':0.3,'dashArray':'4\x204'}),this[_0x5a6995(0x1eb)]=!![]);}),_0x4a2cf8[_0x3bd6cc(0x1d9)][_0x3bd6cc(0x288)](_0x1394e2);}),_0x4a2cf8[_0x5323a8(0x1c5)]&&map[_0x5323a8(0x1cf)](_0x4a2cf8[_0x5323a8(0x1c5)],{'padding':[0x28,0x28]});}function _0x17434f(){var _0x5eef51=_0x2ff0ae;_0x4a2cf8[_0x5eef51(0x1d9)][_0x5eef51(0x15a)](function(_0x10d10a){map['removeLayer'](_0x10d10a);}),_0x4a2cf8[_0x5eef51(0x1d9)]=[];}function _0x55831b(){var _0x13f4ad=_0x2ff0ae;_0x4a2cf8['samples'][_0x13f4ad(0x15a)](function(_0x338aaa){var _0x198db8=_0x13f4ad;if(_0x338aaa['layer']&&map[_0x198db8(0x28b)](_0x338aaa['layer']))map[_0x198db8(0x1cc)](_0x338aaa['layer']);}),_0x4a2cf8['samples']=[];}function _0x40657f(){var _0x564e78=_0x2ff0ae,_0x3ca412=0x0;_0x4a2cf8[_0x564e78(0x1d9)][_0x564e78(0x15a)](function(_0x4be089){var _0xaed95a=_0x564e78;_0x4be089[_0xaed95a(0x1eb)]&&(map[_0xaed95a(0x1cc)](_0x4be089),_0x3ca412++);}),_0x3ca412>0x0?showAppAlert(_0x3ca412+_0x564e78(0x1d3)):showAppAlert('Nenhum\x20poligono\x20selecionado\x20para\x20eliminar.\x20Clica\x20num\x20poligono\x20no\x20mapa\x20primeiro.');}function _0x1ed749(){var _0x46804b=_0x2ff0ae,_0x2c6693=(_0x4a2cf8['geojson'][_0x46804b(0x26e)]||[])[_0x46804b(0x1a6)](function(_0x4f2b06,_0x51e457){var _0x1942b6=_0x46804b,_0x34147b=_0x4a2cf8[_0x1942b6(0x1d9)][_0x51e457];return _0x34147b&&!_0x34147b['_vaEliminated'];});if(_0x2c6693[_0x46804b(0x23d)]===0x0){showAppAlert('Nao\x20restam\x20poligonos\x20para\x20criar\x20a\x20camada.');return;}var _0x5a0967={'type':_0x46804b(0x1ff),'features':_0x2c6693};if(typeof importGeoJSONFeatures===_0x46804b(0x278)){var _0x30483c=++layerCounter;layers[_0x46804b(0x288)]({'id':_0x30483c,'name':_0x46804b(0x1dc),'geometryType':_0x46804b(0x294),'mode':_0x46804b(0x273),'attributes':[],'colorAttr':null,'baseColor':null,'opacity':null,'symbology':typeof defaultSymbology===_0x46804b(0x278)?defaultSymbology():{}}),layerVisible[_0x46804b(0x182)](_0x30483c,!![]),layerOrder[_0x46804b(0x288)](_0x30483c),ensureLayerPane(_0x30483c),importGeoJSONFeatures(_0x5a0967,function(){return _0x30483c;},![]),activeLayerId=_0x30483c;if(typeof renderLayersPanel===_0x46804b(0x278))renderLayersPanel();}else{var _0x470bcf=L[_0x46804b(0x211)](_0x5a0967)[_0x46804b(0x1c9)](map);drawnGroup[_0x46804b(0x24f)](_0x470bcf);}_0x4a2cf8[_0x46804b(0x18d)]&&map['removeLayer'](_0x4a2cf8[_0x46804b(0x18d)]),_0x55831b(),_0x17434f(),_0x5f0e37(),showAppAlert(_0x46804b(0x1be)+_0x2c6693['length']+_0x46804b(0x21b));}function _0x5f0e37(){var _0x1f665e=_0x2ff0ae;_0x79bc7b(0x7);var _0x2f50a2=_0x4a2cf8['stats']||{};_0x228d31(_0x1f665e(0x1a3))[_0x1f665e(0x226)]=_0x2f50a2[_0x1f665e(0x1ba)]||0x0,_0x228d31('va-summary-area')[_0x1f665e(0x226)]=_0x2e317a(_0x2f50a2[_0x1f665e(0x2a0)]||0x0),_0x228d31(_0x1f665e(0x221))[_0x1f665e(0x226)]=_0x2f50a2[_0x1f665e(0x19f)]?(_0x2f50a2[_0x1f665e(0x19f)]/0x3e8)[_0x1f665e(0x21c)](0x1)+'s':'-',_0x228d31('va-summary-confidence')['textContent']=(_0x2f50a2[_0x1f665e(0x274)]||0x0)['toFixed'](0x0)+'%';}function _0x1065c2(_0x230aea){var _0x235f5b=_0x2ff0ae;if(!_0x4a2cf8[_0x235f5b(0x1c0)])return;if(_0x4a2cf8[_0x235f5b(0x1ad)]){if(_0x2c635b(_0x230aea['layer'])){drawnGroup['removeLayer'](_0x230aea[_0x235f5b(0x271)]);return;}}if(_0x4a2cf8[_0x235f5b(0x247)]===0x3&&!_0x4a2cf8[_0x235f5b(0x18d)]){drawnGroup[_0x235f5b(0x1cc)](_0x230aea['layer']),_0x4293d9(_0x230aea[_0x235f5b(0x271)]);return;}}function _0x2eaeee(_0x40d147){var _0x2facff=_0x2ff0ae,_0x31eacb=_0x40d147[_0x2facff(0x234)](),_0xcc180=_0x40d147[_0x2facff(0x1c2)](),_0x5e1165=0x1b2d8,_0x28bcfc=0x1b2d8*Math['cos']((_0x31eacb[_0x2facff(0x1a0)]+_0xcc180[_0x2facff(0x1a0)])/0x2*Math['PI']/0xb4);return Math['abs'](_0x31eacb['lat']-_0xcc180[_0x2facff(0x1a0)])*_0x5e1165*Math[_0x2facff(0x18a)](_0x31eacb[_0x2facff(0x1c8)]-_0xcc180[_0x2facff(0x1c8)])*_0x28bcfc;}var _0xf1f1c2=0.6,_0x4a2ad6=0x10,_0x20f928=0x13,_0x491187=0x100;function _0x35917a(_0x1b9461){var _0x5844e7=_0x2ff0ae,_0x4a054e=typeof _0x1b9461==='number'&&!isNaN(_0x1b9461)?_0x1b9461:0x29,_0xbcda5d=156543.03392*Math['cos'](_0x4a054e*Math['PI']/0xb4),_0x479bb1=Math[_0x5844e7(0x244)](Math['log2'](_0xbcda5d/_0xf1f1c2));if(_0x479bb1<_0x4a2ad6)_0x479bb1=_0x4a2ad6;if(_0x479bb1>_0x20f928)_0x479bb1=_0x20f928;return _0x479bb1;}function _0x3af539(_0xb9b3b7,_0x3ce2a0){var _0x1bbb2a=_0x2ff0ae,_0x4665c1=_0xb9b3b7['getNorthEast'](),_0x514ebd=_0xb9b3b7[_0x1bbb2a(0x1c2)](),_0x42bbc7=_0xee05e2(_0x4665c1[_0x1bbb2a(0x1a0)],_0x4665c1[_0x1bbb2a(0x1c8)],_0x3ce2a0),_0x107efb=_0xee05e2(_0x514ebd[_0x1bbb2a(0x1a0)],_0x514ebd['lng'],_0x3ce2a0);return Math['max'](0x1,_0x42bbc7['x']-_0x107efb['x']+0x1)*Math[_0x1bbb2a(0x198)](0x1,_0x42bbc7['y']-_0x107efb['y']+0x1);}function _0xee05e2(_0x178629,_0x4ce19c,_0x4d5675){var _0x1ab07c=_0x2ff0ae,_0xcd838=Math['pow'](0x2,_0x4d5675),_0x214f61=Math[_0x1ab07c(0x1d0)]((_0x4ce19c+0xb4)/0x168*_0xcd838),_0x51c5f7=Math[_0x1ab07c(0x1d0)]((0x1-Math[_0x1ab07c(0x204)](Math[_0x1ab07c(0x23e)](_0x178629*Math['PI']/0xb4)+0x1/Math['cos'](_0x178629*Math['PI']/0xb4))/Math['PI'])/0x2*_0xcd838);return{'x':_0x214f61,'y':_0x51c5f7};}function _0x2b932e(_0x53d99e){var _0x561240=_0x2ff0ae,_0x11de8a=_0x53d99e*0x2+0xa;if(_0x11de8a<0x3c)return'~'+_0x11de8a+'s';return'~'+Math[_0x561240(0x244)](_0x11de8a/0x3c)+_0x561240(0x260);}function _0x2e317a(_0x59cd95){var _0x99d44a=_0x2ff0ae;if(_0x59cd95>=0xf4240)return(_0x59cd95/0xf4240)[_0x99d44a(0x21c)](0x1)+_0x99d44a(0x284);if(_0x59cd95>=0x2710)return(_0x59cd95/0x3e8)[_0x99d44a(0x21c)](0x1)+_0x99d44a(0x222);return Math[_0x99d44a(0x241)](_0x59cd95)[_0x99d44a(0x22d)]('pt-PT')+_0x99d44a(0x27e);}function _0x33245a(){var _0x5f1bae=_0x2ff0ae;if(_0x228d31('va-osm-status'))return;var _0x2e4379=_0x228d31(_0x5f1bae(0x189));if(!_0x2e4379||!_0x2e4379[_0x5f1bae(0x179)])return;var _0x327cbb=document['createElement'](_0x5f1bae(0x242));_0x327cbb['id']=_0x5f1bae(0x2b3),_0x2e4379[_0x5f1bae(0x179)][_0x5f1bae(0x20b)](_0x327cbb,_0x2e4379[_0x5f1bae(0x184)]);}var _0x1be251=_0x2ff0ae(0x216);function _0x39204c(){var _0x18d8da=_0x2ff0ae;if(_0x228d31(_0x18d8da(0x231)))return;var _0x4fb388=_0x228d31(_0x18d8da(0x1da)),_0x1ab1fc=document[_0x18d8da(0x2ae)](_0x18d8da(0x242));_0x1ab1fc['id']='va-magicwand-banner',_0x1ab1fc['className']=_0x18d8da(0x168);var _0x547cae=document[_0x18d8da(0x2ae)](_0x18d8da(0x186));_0x547cae['id']='va-magicwand-banner-text';var _0x3f8ac7=document[_0x18d8da(0x2ae)](_0x18d8da(0x1af));_0x3f8ac7[_0x18d8da(0x296)]=_0x18d8da(0x1af),_0x3f8ac7[_0x18d8da(0x226)]=_0x18d8da(0x29e),_0x3f8ac7[_0x18d8da(0x236)](_0x18d8da(0x1fb),_0x46022c),_0x1ab1fc[_0x18d8da(0x16e)](_0x547cae),_0x1ab1fc[_0x18d8da(0x16e)](_0x3f8ac7);if(_0x4fb388&&_0x4fb388[_0x18d8da(0x179)])_0x4fb388[_0x18d8da(0x179)][_0x18d8da(0x20b)](_0x1ab1fc,_0x4fb388['nextSibling']);else map&&map[_0x18d8da(0x2a7)]()&&map[_0x18d8da(0x2a7)]()[_0x18d8da(0x16e)](_0x1ab1fc);var _0xe4f73a=_0x228d31('va-sample-btn-neg'),_0x589db1=document['createElement'](_0x18d8da(0x186));_0x589db1[_0x18d8da(0x203)]='va-mw-toolbar';var _0x2507bc=document[_0x18d8da(0x2ae)](_0x18d8da(0x1af));_0x2507bc[_0x18d8da(0x296)]=_0x18d8da(0x1af),_0x2507bc['id']='va-magicwand-btn-pos',_0x2507bc[_0x18d8da(0x203)]=_0x18d8da(0x19c),_0x2507bc[_0x18d8da(0x16b)]=_0x18d8da(0x251),_0x2507bc[_0x18d8da(0x1f2)]=_0x1be251+_0x18d8da(0x269),_0x2507bc[_0x18d8da(0x236)](_0x18d8da(0x1fb),function(){var _0x24ad05=_0x18d8da;_0x5bd03a(_0x24ad05(0x155));});var _0x2978e5=document[_0x18d8da(0x2ae)]('button');_0x2978e5['type']='button',_0x2978e5['id']=_0x18d8da(0x26d),_0x2978e5[_0x18d8da(0x203)]=_0x18d8da(0x1ae),_0x2978e5[_0x18d8da(0x16b)]='Clica\x20sobre\x20uma\x20area\x20NAO-edificio\x20na\x20imagem\x20e\x20o\x20algoritmo\x20desenha\x20o\x20limite\x20automaticamente',_0x2978e5[_0x18d8da(0x1f2)]=_0x1be251+'<span>Nao-edificio\x20(clique)</span>',_0x2978e5[_0x18d8da(0x236)](_0x18d8da(0x1fb),function(){var _0x7f5362=_0x18d8da;_0x5bd03a(_0x7f5362(0x158));});var _0x452c64=document[_0x18d8da(0x2ae)](_0x18d8da(0x1e0));_0x452c64[_0x18d8da(0x203)]=_0x18d8da(0x233),_0x452c64[_0x18d8da(0x16e)](document[_0x18d8da(0x1ec)](_0x18d8da(0x191)));var _0x53c856=document[_0x18d8da(0x2ae)]('select');_0x53c856['id']=_0x18d8da(0x219),[_0x18d8da(0x276),'media','alta'][_0x18d8da(0x15a)](function(_0x13ecbd){var _0x1334e0=_0x18d8da,_0x526804=document[_0x1334e0(0x2ae)]('option');_0x526804[_0x1334e0(0x17f)]=_0x13ecbd,_0x526804[_0x1334e0(0x226)]=_0x13ecbd==='baixa'?_0x1334e0(0x159):_0x13ecbd===_0x1334e0(0x197)?_0x1334e0(0x1ea):_0x1334e0(0x1fa);if(_0x13ecbd===_0x1334e0(0x197))_0x526804[_0x1334e0(0x298)]=!![];_0x53c856['appendChild'](_0x526804);}),_0x452c64[_0x18d8da(0x16e)](_0x53c856);var _0x81d690=document['createElement'](_0x18d8da(0x1e0));_0x81d690[_0x18d8da(0x203)]='va-mw-field';var _0xf4b73f=document[_0x18d8da(0x2ae)](_0x18d8da(0x257));_0xf4b73f['type']=_0x18d8da(0x199),_0xf4b73f['id']=_0x18d8da(0x25a),_0xf4b73f[_0x18d8da(0x20e)]=!![],_0xf4b73f['title']=_0x18d8da(0x240),_0x81d690['appendChild'](_0xf4b73f),_0x81d690[_0x18d8da(0x16e)](document[_0x18d8da(0x1ec)](_0x18d8da(0x181))),_0x589db1[_0x18d8da(0x16e)](_0x2507bc),_0x589db1[_0x18d8da(0x16e)](_0x2978e5),_0x589db1[_0x18d8da(0x16e)](_0x452c64),_0x589db1['appendChild'](_0x81d690),_0xe4f73a&&_0xe4f73a['parentNode']&&_0xe4f73a['parentNode'][_0x18d8da(0x20b)](_0x589db1,_0xe4f73a[_0x18d8da(0x184)]);}function _0xb8344b(){var _0x5466e0=_0x2ff0ae;_0x39204c(),_0x33245a(),_0x228d31(_0x5466e0(0x225))[_0x5466e0(0x236)]('click',_0x22f2b2),_0x228d31(_0x5466e0(0x16f))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x22f2b2),_0x228d31(_0x5466e0(0x210))['addEventListener'](_0x5466e0(0x1fb),_0x22f2b2),_0x228d31('va-summary-new')[_0x5466e0(0x236)]('click',function(){_0x22f2b2(),_0x2d3bbf();}),_0x228d31('va-step1-next')[_0x5466e0(0x236)](_0x5466e0(0x1fb),function(){_0x79bc7b(0x2);}),document['querySelectorAll'](_0x5466e0(0x1a2))[_0x5466e0(0x15a)](function(_0x3541e8){var _0x4fb87b=_0x5466e0;_0x3541e8['addEventListener'](_0x4fb87b(0x1fb),function(){var _0x54fe2b=_0x4fb87b;_0x153686(_0x3541e8[_0x54fe2b(0x20c)][_0x54fe2b(0x1e5)]);});}),_0x228d31(_0x5466e0(0x268))[_0x5466e0(0x236)](_0x5466e0(0x1fb),function(){_0x79bc7b(0x3);}),_0x228d31(_0x5466e0(0x17c))['addEventListener'](_0x5466e0(0x1fb),function(){_0x79bc7b(0x1);}),_0x228d31(_0x5466e0(0x180))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x49e400),_0x228d31(_0x5466e0(0x24e))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x1eef91),_0x228d31(_0x5466e0(0x175))[_0x5466e0(0x236)]('click',function(){_0x79bc7b(0x2);}),_0x228d31('va-step3-next')['addEventListener']('click',function(){_0x79bc7b(0x4);}),_0x228d31(_0x5466e0(0x193))['addEventListener'](_0x5466e0(0x1fb),function(){var _0x4b57f7=_0x5466e0;_0x575438(_0x4b57f7(0x155));}),_0x228d31(_0x5466e0(0x297))[_0x5466e0(0x236)](_0x5466e0(0x1fb),function(){var _0x2f91c0=_0x5466e0;_0x575438(_0x2f91c0(0x158));}),_0x228d31(_0x5466e0(0x25c))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x25e69a),_0x228d31('va-step4-back')[_0x5466e0(0x236)](_0x5466e0(0x1fb),function(){var _0x4471dd=_0x5466e0;_0x25e69a(),_0x4a2cf8[_0x4471dd(0x1c3)][_0x4471dd(0x15a)](function(_0xe3524){var _0x79ebb8=_0x4471dd;drawnGroup[_0x79ebb8(0x1cc)](_0xe3524[_0x79ebb8(0x271)]);}),_0x4a2cf8[_0x4471dd(0x1c3)]=[],_0x79bc7b(0x3);}),_0x228d31(_0x5466e0(0x26c))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x47fe41),_0x228d31('va-review-reject')['addEventListener']('click',_0x40657f),_0x228d31(_0x5466e0(0x188))[_0x5466e0(0x236)](_0x5466e0(0x1fb),_0x1ed749),map&&map['on']('pm:create',_0x1065c2);}document[_0x2ff0ae(0x174)]===_0x2ff0ae(0x190)?document[_0x2ff0ae(0x236)](_0x2ff0ae(0x1de),_0xb8344b):_0xb8344b();}()));function _0x5e5b(_0xa46aa9,_0x780f90){_0xa46aa9=_0xa46aa9-0x152;var _0x4c6afd=_0x4c6a();var _0x5e5b20=_0x4c6afd[_0xa46aa9];if(_0x5e5b['pXNEqM']===undefined){var _0x14f7f5=function(_0x121b97){var _0x245efc='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x4a2cf8='',_0x228d31='';for(var _0x2dc6d2=0x0,_0x2d3bbf,_0x22f2b2,_0x79bc7b=0x0;_0x22f2b2=_0x121b97['charAt'](_0x79bc7b++);~_0x22f2b2&&(_0x2d3bbf=_0x2dc6d2%0x4?_0x2d3bbf*0x40+_0x22f2b2:_0x22f2b2,_0x2dc6d2++%0x4)?_0x4a2cf8+=String['fromCharCode'](0xff&_0x2d3bbf>>(-0x2*_0x2dc6d2&0x6)):0x0){_0x22f2b2=_0x245efc['indexOf'](_0x22f2b2);}for(var _0x1f7880=0x0,_0x153686=_0x4a2cf8['length'];_0x1f7880<_0x153686;_0x1f7880++){_0x228d31+='%'+('00'+_0x4a2cf8['charCodeAt'](_0x1f7880)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x228d31);};_0x5e5b['cfNQZg']=_0x14f7f5,_0x5e5b['ThhycX']={},_0x5e5b['pXNEqM']=!![];}var _0x5da576=_0x4c6afd[0x0],_0x413976=_0xa46aa9+_0x5da576,_0x5d0922=_0x5e5b['ThhycX'][_0x413976];return!_0x5d0922?(_0x5e5b20=_0x5e5b['cfNQZg'](_0x5e5b20),_0x5e5b['ThhycX'][_0x413976]=_0x5e5b20):_0x5e5b20=_0x5d0922,_0x5e5b20;}function _0x4c6a(){var _0x236834=['x19IyxnLBwfWtgf5zxjZ','C3rHDhvZ','Aw5Uzxjive1m','C2LUAa','Aw5KzxHpzG','q29UDg9YBM8GzgvTyxnPywrVihbLCxvLBM8GyxbVCYbZAw1WBgLMAwnHy2fVlG','D2f5wYjOAwDOD2f5iL0O','Bg9VCa','DMeTC2fTCgXLlwjHBM5LCI10zxH0','BwfNAwnxyw5KtgfIzwW','qwX0yq','y2XPy2S','i2i1ndCYyG','y29UDgfPBNm','DMeTB3nTlwnVDMvYywDLlwnVDw50','rMvHDhvYzunVBgXLy3rPB24','zwrNzq','C29Tzq','DMeTB3nTlwnVDMvYywDLlxDHCM4','y2XHC3noyw1L','Bg9N','DMeTCMv2Awv3lwnVDw50','DMeTC2fTCgXLlq','Bgf5zxjZ','v01t','ks4GrgvZzw5Ozsb1BweGW6fYzweGBwfPCYbWzxf1zw5HihbHCMeGy29UDgLUDwfYlG','igfNCMLJB2XH','Aw5Zzxj0qMvMB3jL','zgf0yxnLDa','z2vVANnVBG','y2HLy2TLza','DMeTzxn0Aw1HDguTEM9VBq','DMeTC3vTBwfYEs1JBg9Zzq','z2vVsLnptG','CgL4zwXeyxrH','Dgv4Dc9WBgfPBG','z2v0rwXLBwvUDej5swq','C3r5Bgu','phn2zYb4BwXUCZ0IAhr0CdOVl3D3DY53mY5VCMCVmJaWmc9ZDMCIihzPzxDcB3G9iJaGmcaYncaYnciGzMLSBd0IBM9UzsiGC3rYB2TLpsjJDxjYzw50q29SB3iIihn0CM9Rzs13Awr0Ad0ImIiGC3rYB2TLlwXPBMvJyxa9iNjVDw5KiIbZDhjVA2uTBgLUzwPVAw49iNjVDw5KiIbHCMLHlwHPzgrLBJ0IDhj1zsi+phbHDgGGzd0IBtiXlJy0idmUnJqTms4Yoc0XlJi4yteUmJeGms4YmsaWidaGmc0XlJCYidbmmI4ZnIaXoc42ngeXlJiXideUmJeGmcaWidaGmcaXlJCYBdeUmJGGms4YogeXlJiGms4YidaGmcaWideUnZiGmeWYms42nca1lJm2yteUmIaXlJiGmcaWidaGmc0XlJCYwIiVpJXWyxrOigq9iM0Xnca3idmGmYiVpJXWyxrOigq9iK01idz2nciVpJXWyxrOigq9iK0XosaXnhy0iI8+phbHDgGGzd0ItteWidj2mIiVpJXWyxrOigq9iK03idHimYiVpJXWyxrOigq9iK0YmsaXnMGTnciVpJXWyxrOigq9iK0XmsaZsdKIlZ48l3n2zZ4','Bwf4wq','y2f0y2G','DMeTBwfNAwn3yw5KlxrVBgvYyw5Jzq','jLrsqu5tuefsru5upq','igvKAwzPy2LVCY4','Dg9gAxHLza','C291DgG','rxjYBYbKzxnJB25OzwnPzg8U','BwfYz2LUlxrVCdO4ChG7CgfKzgLUzZOXmhb4ideYChG7yM9YzgvYoJfWEcbZB2XPzcb2yxiOls13yxjUlcaJyJq1mZa5ktS','zgf0yq','DMeTC3vTBwfYEs10Aw1L','igHH','B25LCNjVCG','ywrK','DMeTy2XVC2uTyNrU','Dgv4DenVBNrLBNq','Cg9W','rwrPzMLJAw8','ChjVy2vZCW','DMeTCMv2Awv3lwnVBMzPzgvUy2u','ks4Gug9KzxmGy29UDgLUDwfYig1HBNvHBg1LBNrLig5VihbHC3nVihnLz3vPBNrLlG','ywXS','Dg9mB2nHBgvtDhjPBMC','Cg9SEwDVBG','yNLlAw5K','y3nZvgv4Da','DMeTBwfNAwn3yw5KlwjHBM5LCG','Ahr0Chm6lY9VDMvYCgfZCY1HCgKUzguVyxbPl2LUDgvYChjLDgvY','DMeTBxCTzMLLBgq','z2v0tM9YDgHfyxn0','E3P9','ywrKrxzLBNrmAxn0zw5LCG','sw1Hz2vTignHChr1CMfKytOG','qsbJyxb0DxjHCIbPBwfNzw0Gzg8GyMfZzw1HCc4UlG','zM9YBwf0','ms4ZlJa','rgvZzw5Oysb1BsbWB2XPz29UBYbZB2jYzsb1BsbLzgLMAwnPBY4','CMvTB3zL','BgvUz3rO','DgfU','Bwf4wa','qwP1C3rHig8Gy29UDg9YBM8Gzgv0zxrHzg8GCgfYysbHBMD1Bg9ZihjLDg9ZicG5mcbNCMf1CYKSihf1yw5KBYbVigzVCM1HDg8GAMeGzsbTywLVCML0yxjPyw1LBNrLihjLDgfUz3vSyxiU','CM91BMq','zgL2','yNvPBgrPBMDsAw5NCW','y2vPBa','igrLia','Bgv2zwW','C3rLCa','C2vLzeX4','DMeTyxjLys10B29SyxjNzs13yxjU','y3vYC29Y','B3b0Aw9UCW','DxjSvgvTCgXHDgu','zgvHzfnHBxbSzxm','DMeTzhjHDY1Jyw5JzwW','ywrKtgf5zxi','CMLUzW','q2XPy2eGC29ICMuGDw0GzwrPzMLJAw8GBMeGAw1Hz2vTiguGBYbHBgDVCML0Bw8GzgvZzw5OysbVigXPBwL0zsbHDxrVBwf0AwnHBwvUDgu','ChjVCgvYDgLLCW','B25SB2fK','DgHLBG','yM9YzgvYlxjHzgL1CZP2yxiOls1YywrPDxmTC20SidzWEcK7yMfJA2DYB3vUzdPYz2jHkde4mcW4mYW5ldaUmdGPoW','tMvUAhvTigvKAwzPy2LVie9ttsbLBMnVBNrYywrVig5LC3rHigfYzwe','Aw5WDxq','BNvTyMvY','DMeTChjVz3jLC3mTBg9Nlw1ZzW','DMeTBwfNAwn3yw5Klw9YDgHV','x3zHsw5KzxG','DMeTC2fTCgXLlwnHBMnLBa','ANnVBG','q29Uy2X1AwrViq','DMeTzhjHD2LUzW','BwLU','DMeTChjVz3jLC3mTCgHHC2u','zM9Yzxn0','w3zLDg9YAxPHy2fVlwfZC2LZDgLKyv0GmtqTyxnZAxn0zwqTDMvJDc5QCYbIDwLSzd1VC20Tyxv0BY1Zyw1WBgvZlxyYicHTywDPyYb3yw5KoIbJCM9WigrLigfSDgeGCMvZB2X1y2fVihbVCIbJBgLXDwuGkYb0CMf2ysbKzsbKzxjPDMeGzguGy29YoYbHBw9ZDhjHCYbHDxrVBwf0AwnHCYb2AweGzwrPzMLJAw9Zie9tts9pDMvYCgfZCZSGBMvNyxrPDMfZigf1Dg9TyxrPy2fZihbVCIbJB2jLCNr1CMeGzg8GC29SBYbpu00Gls0GzMXVCMvZDgeVywDYAwnVBgeVzxn0CMfKysaTlsbJB20Gz3jLBgHHignLz2eGC28Gy29TBYbJB21WBgvTzw50BYK','mtu2mJy4nfrbsuftsq','y3jVC3nOywLY','C2f0zwXPDgu','DMeTyxjLys10B29SyxjNzs10AwXLCW','DMeTC3rLCdiTBMv4Da','phnWyw4+rwrPzMLJAw8GkgnSAxf1zsK8l3nWyw4+','C2fTCgXLv2fYBMLUzW','DMftDgvW','DMeTC3rLCdqTC3rHCNq','DMeTBwfNAwn3yw5Klwj0BI1UzwC','zMvHDhvYzxm','z2v0rwfZDa','D29YA2vY','Bgf5zxi','zw5HyMXL','yxrYAwj1Dg9Z','yxzNq29UzMLKzw5Jzq','zMfYBwXHBMq','yMfPEge','BwfNAwnxyw5Kqwn0AxzL','zNvUy3rPB24','BgfUzhvZzq','z2v0tgf5zxjZ','D2vZDa','DMeTzxn0Aw1HDguTDgLSzxm','AM9PBG','ig0Y','phnWyw4GC3r5Bgu9iMrPC3bSyxK6Aw5SAw5LlwjSB2nRo3bHzgrPBMC6mNb4idzWEdTIB3jKzxiTCMfKAxvZoJrWEdTTyxjNAw46mNb4o2zVBNqTC2L6ztOXmhb4o2jHy2TNCM91BMq6','BwLUwa','DMeTB3nTlwnVDMvYywDLlxbJDa','q2XPy2eGzgvUDhjVigrHigfYzweGzguGDhjHyMfSAg8GzgvZzw5OywrHig5VihbHC3nVigfUDgvYAw9YlG','y29SB3i6DMfYkc0TD2fYBIWGi2i0ntmWosK7zM9UDc1ZAxPLoJaUodvYzw07BgLUzs1OzwLNAhq6ms40oW','igTTmG','C3jJ','Dg9Nz2XL','D2f5wYjSyw5KDxnLiJ0IzM9Yzxn0iL0O','ChvZAa','y2XHC3nmAxn0','CMvKDwnL','AgfZtgf5zxi','igfTB3n0CMeOCYKGBMfVignVBNrYAwj1AxjHBsbWyxjHig8GDhjLAw5Via','i2mWogeYma','zMXVCMvZDge','B2zMC2v0wa','ANmVmtrIlwfZC2LZDgvKlxzLy3qTD29YA2vYlMPZ','AgLKzgvU','C2XPy2u','kdXZCgfUigLKpsj2ys1HCMvHlxrVB2XHCMDLlxrPBgvZiJ48l3nWyw4+ihrPBgvZigeGEM9VBsa8C3bHBIbPzd0IDMeTyxjLys10B29SyxjNzs16B29TiJ48l3nWyw4+lca','ug9SEwDVBG','vgLSzuXHEwvY','DhLWzq','DMeTC2fTCgXLlwj0BI1UzwC','C2vSzwn0zwq','z2v0q2vUDgvY','BM9YDgG','u0vsvKLdrt1xtvmMvKvsu0LptJ0','C2fTCgXLtgfIzwW','C2nYB2XSsgvPz2H0','q2fUy2vSyxi','tMfVlwvKAwzPy2LV','yxjLyq','z2v0tM9YDgG','tMfVigzVAsbWB3nZAxzLBcbPBxbVCNrHCIbKywrVCYbpu00Gka','DhjHBNnWyxjLBNq','yNvMzMvY','yxrHBG','D29Vza','z2v0q29UDgfPBMvY','mtu1nZCZmg1RvKPdtW','yxrHBJi','z2v0u291DgG','B3v0igDLB207','AxmTzg9Uzq','zgLZywjSzwq','y3jLyxrLrwXLBwvUDa','DMeTChjVz3jLC3mTzMLSBa','BwvZC2fNzq','A2LUza','mtm5nZi3EM9prgrA','DMeTB3nTlxn0yxr1CW','Axnxtvm','qsbWCM9JzxnZyxiUlI4','mtaZmdG3nLrbvxPLwq','BwLUwq','yNvPBgrPBMC','BwLUtMf0AxzLwM9VBq','rxjYBZOG','BM9Ulwj1AwXKAw5N','qMfPEge','zM9YrwfJAa','z2v0v2vZDa','z2v0sw1Hz2veyxrH','w1zLDefZC2LZDf0Gv29YA2vYigvYCM9YoG','zwXLBwvUDhm','E3H9','zw5HyMXLrhjHDW','q2XPy2eGC29ICMuGDw1HigfYzweGtKfplwvKAwzPy2LVihbHCMeGBYbHBgDVCML0Bw8GzgvZzw5OyxiGBYbSAw1PDguGyxv0B21HDgLJyw1LBNrLlG','Bgf0Bg5N','AgLNAhDHEq','D2f5wYjSyw5KDxnLiJ0IzMfYBwXHBMqIxsG','lNzHlxn0zxa','DxnLza','jLjfuvvfu1q9r2v0twfWjKzpuK1bvd0','DMeTBwfNAwn3yw5KlwjHBM5LCIbOAwrKzw4','vfjvrq','C2nYB2XSvg9W','DgL0Bgu','mZiYotq5ngfAzeXowG','igfTB3n0CMeOCYKGBMvNyxrPDMeOCYKGz2vYywrHCYbHDxrVBwf0AwnHBwvUDgu','yxbWzw5Kq2HPBgq','DMeTy2fUy2vSlwj0BG','B2zMC2v0wq','AgvPz2H0','BwfZAW','ifvZysbVigrLC2vUAg8GBwfUDwfSig91ig8GBwfNAwmGD2fUzcbUBYbWyxnZBYbZzwD1Aw50zs4','CMvHzhLtDgf0zq','DMeTC3rLCdmTyMfJAW','w291DdPQC29UxvT0Aw1LB3v0oG','B25TzxnZywDL','DMeTCgfNzq','CgfYzw50tM9Kzq','BgLTAxrLigrLia','Cg93','DMeTC3rLCdiTyMfJAW','rgvZzw5Oysb1BsbWB2XPz29UBYbZB2jYzsb1BweGyxjLysboqu8TzwrPzMLJAw8GkhzLz2v0ywnHBYWGzxn0CMfKysWGC29SBYWGzxrJlIKU','z2vVBwv0CNK','DMfSDwu','DMeTC3rLCdmTzhjHDW','t3j0B2DVBMfSAxPHCG','C2v0','C3fYDa','BMv4DfnPyMXPBMC','y29Z','C3bHBG','zxn0CMfKyq','DMeTCMv2Awv3lwfJy2vWDa','DMeTzxn0Aw1HDgu','ywjZ','rxjYBYbUBYbWCM9JzxnZyw1LBNrVoIa','D2f5wYjIDwLSzgLUzYjDka','yxjLyuXHEwvY','Dgv4Da','E2HLAwDODh0','Bg9HzgLUzW','u2vUC2LIAwXPzgfKztO','mZbPAMDgsxu','DMeTC2fTCgXLlwj0BI1WB3m','DgvYBwLUyxrL','x3vYBa','E2jIB3H9','BwvKAwe','Bwf4','y2HLy2TIB3G','yM91BMrZ','kgrLBwfZAwfKBYbWzxf1zw5HCYbWyxjHigeGz3jLBgHHihvZywrHigeGzxn0zsb6B29Tks4GvMuGBYbYzwDPC3rVihbHCMeGzgv0ywXOzxmU','DMeTBxCTyNrUihbVCW','Aw1Hz2uVANbLzW','zwfZDa','DgLTzq','Bgf0','DMeTChjVz3jLC3mTBg9N','lNzHlwnSyxnZlwnHCMrBzgf0ys12ys1JBgfZC10','DMeTC3vTBwfYEs1JB3vUDa','z2v0q29UDgv4Da','DMfeCMf3Aw5Nqwn0AxzL','zMLSDgvY','CMDIysGXodeSnZeSndmSlJeP','mtjqvxbVA0G','mtaWjq','q2XPy2eGC29ICMuGDw0GzwrPzMLJAw8GCgfYysbVigfSz29YAxrTBYbKzxnLBMHHCIbVigXPBwL0zsbHDxrVBwf0AwnHBwvUDguU','BwfW','zxjYB3i','C2fTCgXLrhjHD2LUzW','DMeTBxCTyNrUig5LzW','yNv0Dg9U','CxvLCNLtzwXLy3rVCKfSBa','uhjVy2vZC2fTzw50BYbJB25JBhvPzg8U','mZy4nJiZogjsCLD3uW','DMeTC3rLCdmTBMv4Da','CMDIysG0nYWXmJuSnZKSlJeP','muveuMzyuq','BxDdCM9Wq2fJAgu','tMfVigzVAsbWB3nZAxzLBcbPC29SyxiGDw1HigfYzweGzgvMAw5PzgeUifrLBNrHignSAwnHCIbTywLZigfVignLBNrYBYbKBYbLzgLMAwnPBYWGB3uGCMvKDxOGysbZzw5ZAwjPBgLKywrLlG','CxvLCNLtzwXLy3rVCG','CMfUzg9T','y291BNq','z2XVyMfSrhjHD01VzgvfBMfIBgvK','DMvYC2LVBG','yxr0CMLIDxrPB24','q2fTywrHignYAwfKysbJB20G','Bg9U','ywn0AxzL','E3DPzhrOFq','z2v0u291DgHxzxn0','C2fTCgXLCW','DMeTzxn0Aw1HDguTyxjLyq','yxjLyujVDw5KCW','uMvJDgfUz2XL','rxjYBYbHBYbJyxb0DxjHCIbPBwfNzw06ia','Bg5N','ywrKvg8','t3zLCNbHC3mGCMvZCg9Uzgv1ia','C2v0u3r5Bgu','CMvTB3zLtgf5zxi','C2vSzwn0zwrdBgfZCW','D2LKDgG','zML0qM91BMrZ','zMXVB3i','E3L9','ue9tva','ihbVBgLNB25VCYbLBgLTAw5Hzg9ZlG','iZjMn2q0zG','C3rHDhm','qsbJyxjYzwDHCIbPBwfNzw0GzguGywX0ysbYzxnVBhvJyw8UlI4','ywrKzwq','CMvZB2X2zq','CMv2Awv3tgf5zxjZ','DMeTC2fTCgXLlwjHBM5LCG','D2f5','vMv0B3jPEMfJyw8GqxnZAxn0AwrH','w1zLDefZC2LZDf0GrxjYBYbpDMvYCgfZCZO','re9nq29UDgvUDeXVywrLza','CMvWBgfJzq','BgfIzwW','zgLZywjSzurYyxC','mZK5ntK4ngrSAuntBG','C2vLzeX5','Cgn0','DMfdBgfZCW','D2f5wYjUyxr1CMfSiJ0ID29VzcjDka','Ahr0Chm6lY9Zzxj2zxiUyxjJz2LZB25SAw5LlMnVBs9bCMnhsvmVCMvZDc9Zzxj2AwnLCY9xB3jSzf9jBwfNzxj5l01HCfnLCNzLCI90AwXLl3T6Fs97Ex0VE3H9','E3n9','ihb4','twvKAwe','x3zHrwXPBwLUyxrLza','y3jLyxrLvgv4De5Vzgu','DgfNCW','lNzHlwnSyxnZlwnHCMrBzgf0ys12ys1JBgfZCZ0I','W4fYzweGzgvTyxnPywrVigDYyw5KzsbWyxjHigeGCMvZB2X1W6FdO28GzguGy2XHC3nPzMLJyCoNW6nVig5Ly2vZC8oHCMLHia'];_0x4c6a=function(){return _0x236834;};return _0x4c6a();}
+/* ============================================================
+   VETORIZACAO ASSISTIDA — modulo UI (main thread)
+   ============================================================ */
+(function(){
+  'use strict';
+  console.log('[vetorizacao-assistida] 14-assisted-vect.js build=osm-auto-samples-v2 (magic wand: crop de alta resolucao por clique + trava de deriva de cor; amostras automaticas via edificios OSM/Overpass; negativas automaticas por cobertura do solo OSM -- floresta/agricola/estrada -- com grelha cega so como complemento)');
+
+  var vaState = {
+    active: false,
+    step: 1,
+    selectedClass: 'building',
+    areaBounds: null,
+    areaLayer: null,
+    samples: [],
+    sampleDrawing: false,
+    sampleLabel: null,
+    vaDrawingActive: false,
+    magicWandActive: false,
+    magicWandLabel: null,
+    mwCropCache: null,
+    geojson: null,
+    stats: null,
+    reviewLayers: [],
+    worker: null
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  function ensureWorker(){
+    if(!vaState.worker){
+      vaState.worker = new Worker('js/14b-assisted-vect-worker.js');
+      vaState.worker.onmessage = onWorkerMessage;
+      vaState.worker.onerror = function(e){
+        console.error('[VetAssist] Worker error:', e);
+        showAppAlert('Erro no processamento: ' + (e.message || 'Erro desconhecido.'), {error:true});
+        showStep(4);
+      };
+    }
+    return vaState.worker;
+  }
+
+  /* ---- Abrir / Fechar ---- */
+  function openVetAssist(){
+    if(vaState.active) return;
+    vaState.active = true;
+    vaState.step = 1;
+    vaState.areaBounds = null;
+    vaState.areaLayer = null;
+    vaState.samples = [];
+    vaState.geojson = null;
+    vaState.stats = null;
+    vaState.reviewLayers = [];
+    vaState.mwCropCache = null;
+    vaState.magicWandActive = false;
+    vaState.magicWandLabel = null;
+    $('va-page').hidden = false;
+    setOsmStatusText('');
+    updateOsmCoverageWarning(0, 0);
+    showStep(1);
+    updateNav();
+  }
+
+  function closeVetAssist(){
+    if(!vaState.active) return;
+    vaState.active = false;
+    vaState.step = 1;
+    cancelAreaDrawing();
+    cancelSampleDrawing();
+    cancelMagicWand();
+    vaState.mwCropCache = null;
+    if(vaState.areaLayer){ map.removeLayer(vaState.areaLayer); }
+    clearSampleLayers();
+    clearReviewLayers();
+    if(vaState.worker){
+      vaState.worker.terminate();
+      vaState.worker = null;
+    }
+    $('va-page').hidden = true;
+  }
+
+  /* ---- Navegacao por steps ---- */
+  function showStep(n){
+    vaState.step = n;
+    document.querySelectorAll('.va-step').forEach(function(s){
+      s.classList.toggle('is-visible', Number(s.dataset.vaStep) === n);
+    });
+    updateNav();
+  }
+
+  function updateNav(){
+    document.querySelectorAll('.va-nav-btn[data-va-step]').forEach(function(btn){
+      var s = Number(btn.dataset.vaStep);
+      btn.classList.toggle('is-active', s === vaState.step);
+      btn.classList.toggle('is-done', s < vaState.step);
+    });
+  }
+
+  /* ---- Step 2: Selecionar classe ---- */
+  function selectClass(cls){
+    var card = document.querySelector('.va-class-card[data-va-class="' + cls + '"]');
+    if(!card || card.classList.contains('disabled')) return;
+    document.querySelectorAll('.va-class-card').forEach(function(c){ c.classList.remove('selected'); });
+    card.classList.add('selected');
+    vaState.selectedClass = cls;
+  }
+
+  /* ---- Step 3: Area ---- */
+  function startAreaDrawing(){
+    cancelSampleDrawing();
+    vaState.vaDrawingActive = true;
+    window.vaDrawingActive = true;
+    $('va-page').classList.add('va-drawing');
+    $('va-draw-banner').classList.remove('hidden');
+    map.pm.enableDraw('Rectangle');
+  }
+
+  function cancelAreaDrawing(){
+    vaState.vaDrawingActive = false;
+    window.vaDrawingActive = false;
+    $('va-page').classList.remove('va-drawing');
+    $('va-draw-banner').classList.add('hidden');
+    if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw();
+  }
+
+  function onAreaDrawn(layer){
+    cancelAreaDrawing();
+    vaState.areaLayer = layer;
+    vaState.areaBounds = layer.getBounds();
+    vaState.mwCropCache = null; // area mudou -- invalida a imagem cacheada para o magic wand
+    var areaM2 = calcAreaM2(vaState.areaBounds);
+    var centerLat = vaState.areaBounds.getCenter().lat;
+    var zoom = estimateZoom(centerLat);
+    var tiles = estimateTiles(vaState.areaBounds, zoom);
+    var timeEst = estimateTime(tiles);
+    $('va-estimate-area').textContent = formatArea(areaM2);
+    $('va-estimate-tiles').textContent = tiles;
+    $('va-estimate-zoom').textContent = zoom;
+    $('va-estimate-time').textContent = timeEst;
+    $('va-estimate').classList.remove('hidden');
+
+    /* Area nova -- as amostras anteriores (se existirem, de uma area
+       diferente) deixam de fazer sentido geograficamente. */
+    clearSampleLayers();
+    updateSampleUI();
+
+    /* zoom ja nao baixa para compensar areas grandes (ver estimateZoom) --
+       em vez disso, se a area desenhada exigir demasiados tiles ao zoom de
+       classificacao, bloqueia-se o avanco em vez de degradar a resolucao
+       silenciosamente. */
+    var tooLarge = tiles > CLASSIFICATION_MAX_TILES;
+    updateAreaTooLargeWarning(tooLarge, tiles, zoom);
+    $('va-step3-next').disabled = tooLarge;
+    if(tooLarge) return;
+
+    importOsmBuildingsForArea(vaState.areaBounds, zoom, areaM2);
+  }
+
+  /* ============================================================
+     Importacao automatica de edificios OSM (Overpass API)
+     ------------------------------------------------------------
+     Em vez de depender so do click manual / magic wand para gerar
+     amostras positivas, pedimos os poligonos `building=*` que ja
+     existem no OpenStreetMap dentro da area de trabalho e usamo-los
+     directamente como amostras de treino "edificio". A geometria vem
+     certa (sem deriva de cor, sem ambiguidade de bordas) porque nao
+     estamos a adivinhar nada a partir de pixels.
+     Complementamos com algumas amostras "nao-edificio" geradas por
+     amostragem em grelha dentro da area, evitando pontos proximos de
+     qualquer edificio OSM -- assim o utilizador ja chega ao passo 4
+     com amostras minimas prontas (3+3), podendo sempre acrescentar/
+     remover manualmente.
+     ============================================================ */
+  var OSM_OVERPASS_ENDPOINT = 'https://overpass-api.de/api/interpreter';
+  var OSM_OVERPASS_TIMEOUT_S = 25;
+  var OSM_AUTO_NEG_COUNT = 4;      // quantas amostras negativas tentar gerar automaticamente
+  /* IMPORTANTE: o worker classifica por SUPERPIXEL (grid de SLIC_GRID_STEP=12px,
+     ver 14b-assisted-vect-worker.js), e so' considera uma amostra se esta
+     contiver o CENTRO de pelo menos um desses superpixels (ver
+     prepareTrainingData/pointInPixelBounds no worker). Um quadrado de
+     tamanho fixo em metros pode ser MENOR do que uma celula do grid a zooms
+     baixos (usados em areas grandes) -- nesse caso a amostra e' aceite na
+     UI mas contribui ZERO linhas de treino. Sem nenhuma amostra negativa
+     real, o classificador aprende so' "edificio" e classifica a area
+     inteira como um unico edificio (foi exatamente o bug reportado).
+     Por isso o tamanho e' calculado dinamicamente a partir do zoom que vai
+     ser mesmo usado no processamento (mesma formula de metros/pixel do
+     Web Mercator), com margem generosa (2.5x a celula) para garantir que
+     cobre sempre o centro de pelo menos um superpixel, seja qual for o
+     desfasamento entre o quadrado e a grelha. */
+  var SLIC_GRID_STEP_REF = 12; // tem de acompanhar SLIC_GRID_STEP no worker
+  var OSM_AUTO_NEG_MIN_SIZE_M = 6;   // nunca gerar amostras mais pequenas do que isto
+  var OSM_AUTO_NEG_MAX_SIZE_M = 30;  // nem maiores do que isto (evita invadir zonas vizinhas)
+
+  function metersPerPixelAt(lat, zoom){
+    return 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom);
+  }
+
+  function autoNegSampleSizeM(lat, zoom){
+    var cellSizeM = metersPerPixelAt(lat, zoom) * SLIC_GRID_STEP_REF;
+    var size = cellSizeM * 2.5;
+    if(size < OSM_AUTO_NEG_MIN_SIZE_M) size = OSM_AUTO_NEG_MIN_SIZE_M;
+    if(size > OSM_AUTO_NEG_MAX_SIZE_M) size = OSM_AUTO_NEG_MAX_SIZE_M;
+    return size;
+  }
+
+  function boundsToOverpassBBox(bounds){
+    return [bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()].join(',');
+  }
+
+  /* Um unico pedido Overpass que traz, alem dos edificios, tres classes de
+     cobertura do solo (floresta, terreno agricola, estradas) para servirem
+     de amostras negativas "verdadeiras". Antes so pediamos edificios e
+     adivinhavamos pontos "vazios" numa grelha cega -- isso falha quando a
+     area tem floresta/sombra de copa ou estrada, porque o classificador
+     nunca via um exemplo negativo desse tipo especifico e acabava por
+     confundir textura de copa ou aresta de asfalto com telhado. Aqui
+     aplicamos a mesma logica que ja usamos para "building": o OSM ja sabe
+     onde e floresta/campo/estrada, por isso perguntamos diretamente em vez
+     de adivinhar. So `way` -- relations (multipolygon) ficam de fora por
+     agora, ver nota equivalente que existia antes para edificios. */
+  function buildOverpassTrainingQuery(bbox){
+    return '[out:json][timeout:' + OSM_OVERPASS_TIMEOUT_S + '];' +
+      '(' +
+      'way["building"](' + bbox + ');' +
+      'way["natural"="wood"](' + bbox + ');' +
+      'way["landuse"="forest"](' + bbox + ');' +
+      'way["landuse"="farmland"](' + bbox + ');' +
+      'way["highway"](' + bbox + ');' +
+      ');' +
+      'out geom;';
+  }
+
+  function closeRingIfNeeded(coords){
+    var first = coords[0], last = coords[coords.length - 1];
+    if(first[0] !== last[0] || first[1] !== last[1]) coords.push([first[0], first[1]]);
+    return coords;
+  }
+
+  /* Devolve edificios (rings fechados, como antes) e, separadamente,
+     poligonos de floresta/agricola (rings fechados, com o tipo em `kind`)
+     e linhas de estrada (polilinhas abertas) -- usados so' para gerar
+     amostras negativas automaticas, nunca desenhados como amostra
+     positiva. */
+  function fetchOsmTrainingFeatures(bounds){
+    var query = buildOverpassTrainingQuery(boundsToOverpassBBox(bounds));
+    return fetch(OSM_OVERPASS_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: query
+    }).then(function(resp){
+      if(!resp.ok) throw new Error('Overpass respondeu ' + resp.status);
+      return resp.json();
+    }).then(function(data){
+      var elements = (data && data.elements) || [];
+      var buildingRings = [];
+      var landcoverRings = [];
+      var roadLines = [];
+      elements.forEach(function(el){
+        if(el.type !== 'way' || !el.geometry || el.geometry.length < 2) return;
+        var coords = el.geometry.map(function(pt){ return [pt.lat, pt.lon]; });
+        var tags = el.tags || {};
+        if(tags.building){
+          if(coords.length < 3) return;
+          buildingRings.push(closeRingIfNeeded(coords));
+        } else if(tags.natural === 'wood' || tags.landuse === 'forest'){
+          if(coords.length < 3) return;
+          landcoverRings.push({ ring: closeRingIfNeeded(coords), kind: 'floresta' });
+        } else if(tags.landuse === 'farmland'){
+          if(coords.length < 3) return;
+          landcoverRings.push({ ring: closeRingIfNeeded(coords), kind: 'agricola' });
+        } else if(tags.highway){
+          roadLines.push(coords);
+        }
+      });
+      return { buildingRings: buildingRings, landcoverRings: landcoverRings, roadLines: roadLines };
+    });
+  }
+
+  function pointInRing(lat, lng, ring){
+    var inside = false;
+    for(var i = 0, j = ring.length - 2; i < ring.length - 1; j = i++){
+      var yi = ring[i][0], xi = ring[i][1];
+      var yj = ring[j][0], xj = ring[j][1];
+      var intersect = ((yi > lat) !== (yj > lat)) &&
+        (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function pointInAnyRing(lat, lng, rings){
+    for(var i = 0; i < rings.length; i++){
+      if(pointInRing(lat, lng, rings[i])) return true;
+    }
+    return false;
+  }
+
+  function metersBetween(lat1, lng1, lat2, lng2){
+    var dLat = (lat2 - lat1) * 111320;
+    var dLng = (lng2 - lng1) * 111320 * Math.cos(lat1 * Math.PI / 180);
+    return Math.sqrt(dLat * dLat + dLng * dLng);
+  }
+
+  function squareRingAround(lat, lng, sizeM){
+    var dLat = (sizeM / 2) / 111320;
+    var dLng = (sizeM / 2) / (111320 * Math.cos(lat * Math.PI / 180));
+    return [
+      [lat - dLat, lng - dLng],
+      [lat - dLat, lng + dLng],
+      [lat + dLat, lng + dLng],
+      [lat + dLat, lng - dLng],
+      [lat - dLat, lng - dLng]
+    ];
+  }
+
+  var OSM_AUTO_NEG_PER_CLASS = 2;              // quantas amostras negativas tentar tirar de CADA classe (floresta, agricola, estrada)
+  var OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS = 6; // nao percorrer centenas de poligonos/linhas -- so os primeiros N encontrados por classe
+
+  function tooCloseToRings(lat, lng, rings, minDistM){
+    return rings.some(function(ring){
+      return ring.some(function(v){
+        return metersBetween(lat, lng, v[0], v[1]) < minDistM;
+      });
+    });
+  }
+
+  function tooCloseToPoints(lat, lng, points, minDistM){
+    return points.some(function(p){
+      return metersBetween(lat, lng, p[0], p[1]) < minDistM;
+    });
+  }
+
+  /* Ponto aleatorio dentro de um ring, por rejection sampling na bounding
+     box (rings de floresta/campo do OSM tendem a ser irregulares, por
+     isso nao basta usar o centroide -- pode cair fora da forma). */
+  function randomPointInRing(ring, maxTries){
+    var minLat = Infinity, maxLat = -Infinity, minLng = Infinity, maxLng = -Infinity;
+    for(var i = 0; i < ring.length - 1; i++){
+      var lat = ring[i][0], lng = ring[i][1];
+      if(lat < minLat) minLat = lat;
+      if(lat > maxLat) maxLat = lat;
+      if(lng < minLng) minLng = lng;
+      if(lng > maxLng) maxLng = lng;
+    }
+    for(var t = 0; t < maxTries; t++){
+      var lat = minLat + Math.random() * (maxLat - minLat);
+      var lng = minLng + Math.random() * (maxLng - minLng);
+      if(pointInRing(lat, lng, ring)) return [lat, lng];
+    }
+    return null;
+  }
+
+  /* Distribui `count` pontos ao longo do comprimento total da polilinha,
+     evitando os extremos (que podem cair fora da area de trabalho). */
+  function pointsAlongLine(line, count){
+    var segLens = [];
+    var total = 0;
+    for(var i = 0; i < line.length - 1; i++){
+      var d = metersBetween(line[i][0], line[i][1], line[i + 1][0], line[i + 1][1]);
+      segLens.push(d);
+      total += d;
+    }
+    if(total <= 0) return [];
+    var pts = [];
+    for(var k = 1; k <= count; k++){
+      var target = total * k / (count + 1);
+      var acc = 0;
+      for(var i = 0; i < segLens.length; i++){
+        if(acc + segLens[i] >= target || i === segLens.length - 1){
+          var segT = segLens[i] > 0 ? (target - acc) / segLens[i] : 0;
+          segT = Math.max(0, Math.min(1, segT));
+          pts.push([
+            line[i][0] + (line[i + 1][0] - line[i][0]) * segT,
+            line[i][1] + (line[i + 1][1] - line[i][1]) * segT
+          ]);
+          break;
+        }
+        acc += segLens[i];
+      }
+    }
+    return pts;
+  }
+
+  /* Tenta adicionar uma amostra negativa num ponto: rejeita se cair dentro
+     de um edificio, perto demais de um edificio, ou perto demais de outra
+     amostra negativa ja adicionada (evita desperdicar amostras coladas
+     umas as outras). Devolve true/false consoante conseguiu. */
+  function tryAddNegativeSampleAt(lat, lng, sizeM, buildingRings, minDistM, addedPoints){
+    if(pointInAnyRing(lat, lng, buildingRings)) return false;
+    if(tooCloseToRings(lat, lng, buildingRings, minDistM)) return false;
+    if(tooCloseToPoints(lat, lng, addedPoints, sizeM)) return false;
+    var ring = squareRingAround(lat, lng, sizeM);
+    var layer = L.polygon(ring).addTo(map);
+    addSampleFromLayer(layer, 'non-building');
+    addedPoints.push([lat, lng]);
+    return true;
+  }
+
+  /* Amostragem negativa automatica em duas fases:
+     1. Cobertura do solo real do OSM (floresta, agricola, estrada) -- da
+        diversidade espectral ao classificador (sombra de copa, asfalto,
+        terra) que faltava por completo antes: se a area tinha floresta e
+        a grelha cega calhava so em campo agricola, o classificador nunca
+        aprendia "isto tambem e nao-edificio" para sombra de arvore, e
+        confundia-a com telhado (era exatamente o padrao visto nos
+        resultados: mancha gigante sobre copas + faixa fina ao longo de
+        uma estrada).
+     2. Grelha cega, como complemento/fallback, ate perfazer
+        OSM_AUTO_NEG_COUNT no total -- continua a ser util quando a area
+        nao tem nenhuma floresta/campo/estrada mapeada no OSM. */
+  function generateAutoNegativeSamples(bounds, buildingRings, landcoverRings, roadLines, zoom){
+    var north = bounds.getNorth(), south = bounds.getSouth();
+    var east = bounds.getEast(), west = bounds.getWest();
+    var latMid = (north + south) / 2;
+    var sizeM = autoNegSampleSizeM(latMid, zoom);
+    var minDistM = sizeM * 1.2;
+    var addedPoints = [];
+    var added = 0;
+    var byKind = { floresta: 0, agricola: 0, estrada: 0 };
+
+    ['floresta', 'agricola'].forEach(function(kind){
+      var feats = landcoverRings.filter(function(f){ return f.kind === kind; }).slice(0, OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS);
+      feats.forEach(function(f){
+        if(byKind[kind] >= OSM_AUTO_NEG_PER_CLASS) return;
+        var pt = randomPointInRing(f.ring, 8);
+        if(!pt) return;
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+          byKind[kind]++;
+        }
+      });
+    });
+
+    roadLines.slice(0, OSM_AUTO_NEG_MAX_FEATURES_PER_CLASS).forEach(function(line){
+      if(byKind.estrada >= OSM_AUTO_NEG_PER_CLASS) return;
+      pointsAlongLine(line, 1).forEach(function(pt){
+        if(byKind.estrada >= OSM_AUTO_NEG_PER_CLASS) return;
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+          byKind.estrada++;
+        }
+      });
+    });
+
+    if(added < OSM_AUTO_NEG_COUNT){
+      var gridN = 6;
+      var candidates = [];
+      for(var i = 1; i < gridN; i++){
+        for(var j = 1; j < gridN; j++){
+          candidates.push([
+            south + (north - south) * i / gridN,
+            west + (east - west) * j / gridN
+          ]);
+        }
+      }
+      for(var k = 0; k < candidates.length && added < OSM_AUTO_NEG_COUNT; k++){
+        var pt = candidates[k];
+        if(tryAddNegativeSampleAt(pt[0], pt[1], sizeM, buildingRings, minDistM, addedPoints)){
+          added++;
+        }
+      }
+    }
+
+    return { added: added, byKind: byKind };
+  }
+
+  function setOsmStatusText(text){
+    var el = $('va-osm-status');
+    if(el) el.textContent = text;
+  }
+
+  function formatNegKindSummary(byKind){
+    var parts = [];
+    if(byKind.floresta > 0) parts.push(byKind.floresta + ' floresta');
+    if(byKind.agricola > 0) parts.push(byKind.agricola + ' agricola');
+    if(byKind.estrada > 0) parts.push(byKind.estrada + ' estrada');
+    return parts.length > 0 ? ' (' + parts.join(', ') + ')' : '';
+  }
+
+  /* Area aproximada de um ring (lat/lng) em m2, por projecao local
+     equirectangular (suficiente para uma estimativa de cobertura -- nao
+     precisa da precisao geodesica usada no worker para os poligonos
+     finais). */
+  function ringAreaM2(ring){
+    var n = ring.length - 1;
+    if(n < 3) return 0;
+    var latSum = 0;
+    for(var i = 0; i < n; i++) latSum += ring[i][0];
+    var latMid = latSum / n;
+    var latM = 111320;
+    var lngM = 111320 * Math.cos(latMid * Math.PI / 180);
+    var area = 0;
+    for(var i = 0; i < n; i++){
+      var j = (i + 1) % n;
+      var x1 = ring[i][1] * lngM, y1 = ring[i][0] * latM;
+      var x2 = ring[j][1] * lngM, y2 = ring[j][0] * latM;
+      area += x1 * y2 - x2 * y1;
+    }
+    return Math.abs(area) / 2;
+  }
+
+  /* Se a area desenhada ja esta densamente coberta por edificios OSM
+     (centro urbano ja mapeado), correr o classificador nao ajuda -- o
+     objetivo desta ferramenta e detetar construcoes que o OSM AINDA NAO
+     tem. Nesses casos os edificios OSM ja importados como amostra positiva
+     (passo seguinte) sao, na pratica, o resultado que se quer: mais vale
+     avisar e sugerir reduzir a area a zonas sem cobertura. */
+  var OSM_COVERAGE_WARN_AREA_RATIO = 0.28; // >=28% da area desenhada ja coberta por edificios OSM
+  var OSM_COVERAGE_WARN_MIN_COUNT = 25;    // ou simplesmente muitos edificios OSM na area, zona urbana densa
+
+  function updateOsmCoverageWarning(coverageRatio, buildingCount){
+    var el = $('va-osm-coverage-warn');
+    if(!el) return;
+    var show = coverageRatio >= OSM_COVERAGE_WARN_AREA_RATIO || buildingCount >= OSM_COVERAGE_WARN_MIN_COUNT;
+    if(show){
+      var pctEl = $('va-osm-coverage-pct');
+      if(pctEl) pctEl.textContent = Math.round(coverageRatio * 100);
+      var countEl = $('va-osm-coverage-count');
+      if(countEl) countEl.textContent = buildingCount;
+    }
+    el.classList.toggle('hidden', !show);
+  }
+
+  /* Aviso "area demasiado grande" -- ver nota junto a estimateZoom() sobre
+     porque o zoom de classificacao deixou de baixar com a area (isso e'
+     que causava a celula do SLIC/grid ficar maior do que ruas/edificios
+     em areas grandes). Como agora o zoom fica sempre alto o suficiente
+     para uma resolucao fiavel, o numero de tiles/pixels do mosaico pode
+     crescer muito em areas grandes -- em vez de deixar continuar (o que
+     pode esgotar memoria do canvas ou demorar minutos), bloqueamos o
+     avanco do passo 3 e pedimos uma area mais pequena. O elemento HTML
+     nao existe no template (page injetado antes do resto do app existir),
+     por isso e' criado por JS na primeira vez, tal como injectOsmStatusUI. */
+  function injectAreaTooLargeWarningUI(){
+    if($('va-area-toolarge-warn')) return;
+    var estimate = $('va-estimate');
+    if(!estimate || !estimate.parentNode) return;
+    var el = document.createElement('div');
+    el.id = 'va-area-toolarge-warn';
+    el.className = 'hidden';
+    el.style.cssText = 'margin-top:8px;padding:10px 12px;border:1px solid var(--warn, #b45309);' +
+      'border-radius:var(--radius-sm, 6px);background:rgba(180,83,9,0.08);' +
+      'color:var(--warn, #b45309);font-size:0.85rem;line-height:1.4;';
+    el.innerHTML = 'Área demasiado grande para a resolução de classificação necessária ' +
+      '(<span id="va-area-toolarge-tiles"></span> tiles a zoom <span id="va-area-toolarge-zoom"></span>, ' +
+      'limite de ' + CLASSIFICATION_MAX_TILES + '). Desenhe uma área mais pequena para continuar.';
+    estimate.parentNode.insertBefore(el, estimate.nextSibling);
+  }
+
+  function updateAreaTooLargeWarning(show, tiles, zoom){
+    injectAreaTooLargeWarningUI();
+    var el = $('va-area-toolarge-warn');
+    if(!el) return;
+    if(show){
+      var tilesEl = $('va-area-toolarge-tiles');
+      if(tilesEl) tilesEl.textContent = tiles;
+      var zoomEl = $('va-area-toolarge-zoom');
+      if(zoomEl) zoomEl.textContent = zoom;
+    }
+    el.classList.toggle('hidden', !show);
+  }
+
+  function importOsmBuildingsForArea(bounds, zoom, areaM2){
+    setOsmStatusText('A importar edificios e cobertura do solo (OpenStreetMap)...');
+    updateOsmCoverageWarning(0, 0);
+    fetchOsmTrainingFeatures(bounds).then(function(data){
+      data.buildingRings.forEach(function(ring){
+        var layer = L.polygon(ring).addTo(map);
+        addSampleFromLayer(layer, 'building');
+      });
+      var totalBuildingAreaM2 = data.buildingRings.reduce(function(sum, ring){ return sum + ringAreaM2(ring); }, 0);
+      var coverageRatio = areaM2 > 0 ? totalBuildingAreaM2 / areaM2 : 0;
+      updateOsmCoverageWarning(coverageRatio, data.buildingRings.length);
+      var neg = generateAutoNegativeSamples(bounds, data.buildingRings, data.landcoverRings, data.roadLines, zoom);
+      var kindText = formatNegKindSummary(neg.byKind);
+      if(data.buildingRings.length > 0){
+        setOsmStatusText(data.buildingRings.length + ' edificio(s) OSM importado(s) como amostra positiva' + (data.buildingRings.length === 1 ? '' : 's') +
+          (neg.added > 0 ? '; ' + neg.added + ' amostra(s) negativa(s) geradas automaticamente' + kindText + '.' : '.'));
+      } else {
+        setOsmStatusText('Nenhum edificio OSM encontrado nesta area' +
+          (neg.added > 0 ? ' (' + neg.added + ' amostra(s) negativa(s) geradas automaticamente' + kindText + ').' : '.') +
+          ' Usa o desenho manual ou o magic wand no passo seguinte.');
+      }
+    }).catch(function(err){
+      console.error('[VetAssist] Erro Overpass:', err);
+      setOsmStatusText('Nao foi possivel importar dados OSM (' + err.message + '). Podes continuar manualmente no passo seguinte.');
+    });
+  }
+
+  /* ---- Step 4: Amostras ---- */
+  function startSampleDrawing(label){
+    cancelAreaDrawing();
+    vaState.vaDrawingActive = true;
+    window.vaDrawingActive = true;
+    vaState.sampleDrawing = true;
+    vaState.sampleLabel = label;
+    $('va-page').classList.add('va-drawing');
+    var banner = $('va-sample-banner');
+    banner.classList.remove('hidden');
+    $('va-sample-banner-text').textContent = label === 'building'
+      ? 'Desenha um poligono sobre um edificio.'
+      : 'Desenha um poligono sobre uma area NAO-edificio (vegetacao, estrada, solo, etc.).';
+    map.pm.enableDraw('Polygon');
+  }
+
+  function cancelSampleDrawing(){
+    vaState.vaDrawingActive = false;
+    window.vaDrawingActive = false;
+    vaState.sampleDrawing = false;
+    vaState.sampleLabel = null;
+    $('va-page').classList.remove('va-drawing');
+    $('va-sample-banner').classList.add('hidden');
+    if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw();
+    if(vaState.magicWandActive) cancelMagicWand();
+  }
+
+  function onSampleDrawn(layer){
+    if(!vaState.sampleDrawing) return false;
+    var savedLabel = vaState.sampleLabel;
+    cancelSampleDrawing();
+    addSampleFromLayer(layer, savedLabel);
+    return true;
+  }
+
+  /* Adiciona uma layer (poligono) como amostra de treino, seja ela vinda do
+     desenho manual (leaflet-geoman) ou da selecao automatica por clique
+     (magic wand). Centraliza estilo + registo em vaState.samples. */
+  function addSampleFromLayer(layer, label){
+    var id = 'va-sample-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    var entry = { id: id, label: label, layer: layer };
+    vaState.samples.push(entry);
+    var color = label === 'building' ? '#2f7d4f' : '#b5472b';
+    layer.setStyle({ color: color, weight: 2, fillColor: color, fillOpacity: 0.25, dashArray: '4 4' });
+    updateSampleUI();
+  }
+
+  function updateSampleUI(){
+    var posCount = vaState.samples.filter(function(s){ return s.label === 'building'; }).length;
+    var negCount = vaState.samples.filter(function(s){ return s.label === 'non-building'; }).length;
+    $('va-sample-pos-count').textContent = posCount;
+    $('va-sample-neg-count').textContent = negCount;
+    $('va-step4-start').disabled = !(posCount >= 3 && negCount >= 3);
+    var list = $('va-sample-list');
+    list.innerHTML = vaState.samples.map(function(s, i){
+      var tag = s.label === 'building' ? 'Edificio' : 'Nao-edificio';
+      var bg = s.label === 'building' ? 'rgba(47,125,79,.1)' : 'rgba(181,71,43,.1)';
+      return '<span style="display:inline-block;padding:2px 6px;border-radius:4px;margin:2px;font-size:10px;background:' + bg + ';">' + tag + ' #' + (i+1) + '</span>';
+    }).join('');
+  }
+
+  /* ============================================================
+     Selecao automatica por clique ("magic wand")
+     ------------------------------------------------------------
+     Em vez de desenhar manualmente o poligono da amostra, o utilizador
+     clica sobre um ponto (ex: um telhado) e o algoritmo:
+       1. Faz "region growing" (flood fill) a partir desse pixel,
+          agregando pixels vizinhos com cor semelhante (dentro de uma
+          janela local, para nao "rebentar" para a imagem toda se o
+          clique cair numa area grande e uniforme).
+       2. Traca o contorno da mancha resultante usando o MESMO algoritmo
+          de arestas direcionadas ja usado no worker para vetorizar os
+          poligonos finais (robusto a formas complexas, sem as diagonais
+          gigantes do tracing antigo).
+       3. Converte o contorno de pixels do mosaico para lat/lng e cria
+          um poligono editavel (arrastavel, via leaflet-geoman) que e
+          adicionado como amostra de treino.
+     ============================================================ */
+  var MW_WINDOW_RADIUS_PX = 70; // raio (em px do CROP de alta resolucao) da janela de procura a volta do clique
+  var MW_GRADIENT_THRESHOLD = 130; // magnitude Sobel: arestas fortes param o flood fill
+
+  var MW_TOLERANCE_PRESETS = { baixa: 25, media: 42, alta: 60 }; // distancia euclidiana RGB (0-441)
+
+  /* O magic wand precisa de resolucao ao nivel do edificio (~0.2-0.3 m/px),
+     independentemente do zoom escolhido para a captura da area de trabalho
+     inteira (esse zoom e propositadamente baixo em areas grandes, para nao
+     pedir milhares de tiles -- ver estimateZoom). Reutilizar esse mosaico de
+     baixa resolucao para o magic wand foi o bug real por tras dos "vazamentos"
+     gigantes: uma janela de poucas dezenas de pixels nesse mosaico podia
+     corresponder a dezenas de metros reais no terreno, cobrindo varias casas,
+     arvores e a rua -- nao era a comparacao de cor que estava errada, era a
+     area coberta por cada pixel que era grande demais.
+     Por isso o magic wand agora pede sempre um crop pequeno e de zoom fixo
+     e elevado, centrado no ponto clicado, em vez de reutilizar o mosaico
+     grande. Mantem-se em cache o ultimo crop pedido para evitar pedidos de
+     tiles repetidos quando o utilizador clica varias vezes perto uns dos
+     outros. */
+  var MW_CAPTURE_ZOOM = 19; // ~0.2-0.3 m/px a latitudes de Portugal -- suficiente para separar edificios individuais
+  var MW_CAPTURE_RADIUS_M = 45; // raio (em metros) do crop pedido a volta de cada clique
+
+  function boundsAroundLatLng(lat, lng, radiusM){
+    var dLat = radiusM / 111320;
+    var dLng = radiusM / (111320 * Math.cos(lat * Math.PI / 180));
+    return { north: lat + dLat, south: lat - dLat, east: lng + dLng, west: lng - dLng };
+  }
+
+  function latLngWithinCropMargin(latlng, crop){
+    if(!crop) return false;
+    var marginLat = (crop.bounds.north - crop.bounds.south) * 0.2;
+    var marginLng = (crop.bounds.east - crop.bounds.west) * 0.2;
+    return latlng.lat > crop.bounds.south + marginLat && latlng.lat < crop.bounds.north - marginLat &&
+           latlng.lng > crop.bounds.west + marginLng && latlng.lng < crop.bounds.east - marginLng;
+  }
+
+  function ensureHighResCropAroundClick(latlng){
+    if(latLngWithinCropMargin(latlng, vaState.mwCropCache)){
+      return Promise.resolve(vaState.mwCropCache);
+    }
+    var bounds = boundsAroundLatLng(latlng.lat, latlng.lng, MW_CAPTURE_RADIUS_M);
+    setMagicWandBannerText('A carregar imagem de alta resolucao...');
+    return captureBasemapPixels(bounds, MW_CAPTURE_ZOOM).then(function(result){
+      vaState.mwCropCache = result;
+      setMagicWandBannerText(magicWandBannerDefaultText());
+      return result;
+    }).catch(function(err){
+      setMagicWandBannerText('Erro ao carregar imagem: ' + err.message);
+      throw err;
+    });
+  }
+
+  function magicWandBannerDefaultText(){
+    return vaState.magicWandLabel === 'building'
+      ? 'Clica sobre um edificio para o algoritmo desenhar o limite automaticamente.'
+      : 'Clica sobre uma area NAO-edificio para o algoritmo desenhar o limite automaticamente.';
+  }
+
+  function setMagicWandBannerText(text){
+    var el = $('va-magicwand-banner-text');
+    if(el) el.textContent = text;
+  }
+
+  function startMagicWand(label){
+    cancelAreaDrawing();
+    cancelSampleDrawing();
+    vaState.magicWandActive = true;
+    vaState.magicWandLabel = label;
+    window.vaDrawingActive = true;
+    $('va-page').classList.add('va-drawing');
+    var banner = $('va-magicwand-banner');
+    if(banner) banner.classList.remove('hidden');
+    setMagicWandBannerText(magicWandBannerDefaultText());
+    if(map && map.getContainer()) map.getContainer().style.cursor = 'crosshair';
+    if(map) map.on('click', onMagicWandClick);
+    /* Nao ha imagem para pre-carregar aqui -- o crop de alta resolucao e
+       pedido a volta do primeiro clique, ja que so ai sabemos onde o
+       utilizador quer clicar. */
+  }
+
+  function cancelMagicWand(){
+    vaState.magicWandActive = false;
+    vaState.magicWandLabel = null;
+    window.vaDrawingActive = false;
+    $('va-page').classList.remove('va-drawing');
+    var banner = $('va-magicwand-banner');
+    if(banner) banner.classList.add('hidden');
+    if(map && map.getContainer()) map.getContainer().style.cursor = '';
+    if(map) map.off('click', onMagicWandClick);
+  }
+
+  function onMagicWandClick(e){
+    if(!vaState.magicWandActive) return;
+    ensureHighResCropAroundClick(e.latlng).then(function(crop){
+      processMagicWandClick(e.latlng, crop);
+    }).catch(function(){ /* erro ja reportado em ensureHighResCropAroundClick */ });
+  }
+
+  function processMagicWandClick(latlng, mosaic){
+    var b = mosaic.bounds;
+    var seedX = Math.round((latlng.lng - b.west) / (b.east - b.west) * mosaic.width);
+    var seedY = Math.round((b.north - latlng.lat) / (b.north - b.south) * mosaic.height);
+    if(seedX < 0 || seedX >= mosaic.width || seedY < 0 || seedY >= mosaic.height){
+      showAppAlert('Clica dentro da area de trabalho desenhada no passo anterior.');
+      return;
+    }
+
+    var toleranceSel = $('va-magicwand-tolerance');
+    var tolerance = MW_TOLERANCE_PRESETS[(toleranceSel && toleranceSel.value) || 'media'];
+
+    var result = floodFillMask(mosaic.pixelData, mosaic.width, mosaic.height, seedX, seedY, tolerance, MW_WINDOW_RADIUS_PX);
+    if(!result){
+      showAppAlert('Nao foi possivel isolar uma area definida. Tenta clicar mais ao centro do edificio, ou reduz a sensibilidade.', {error:true});
+      return;
+    }
+
+    var ring = traceMaskBoundary(result.mask, result.w, result.h, result.seedLx, result.seedLy);
+    if(!ring || ring.length < 4){
+      showAppAlert('Nao foi possivel tracar um contorno valido nesse ponto. Tenta outro clique.', {error:true});
+      return;
+    }
+
+    /* Simplificacao agressiva: DP com 4px para reduzir centenas de
+       verticces para ~10-25. Depois remove colineares e verticces
+       muito proximos. So depois ortogonaliza se necessario. */
+    ring = douglasPeucker(ring, 4.0);
+    if(ring.length < 4){
+      showAppAlert('Contorno demasiado pequeno apos simplificacao.', {error:true});
+      return;
+    }
+    ring = removeCollinearPoints(ring);
+    ring = weldNearPoints(ring, 3.0);
+    ring = removeCollinearPoints(ring);
+
+    var orthoCheckbox = $('va-magicwand-ortho');
+    if(!orthoCheckbox || orthoCheckbox.checked){
+      ring = orthogonalizeRing(ring);
+      ring = removeCollinearPoints(ring);
+      ring = weldNearPoints(ring, 2.0);
+    }
+
+    /* Fecha o anel (garantir que primeiro e ultimo coincidem) */
+    if(ring.length > 0){
+      ring.push([ring[0][0], ring[0][1]]);
+    }
+
+    var latlngs = ring.map(function(pt){
+      var gx = pt[0] + result.offsetX;
+      var gy = pt[1] + result.offsetY;
+      var lng = b.west + (gx / mosaic.width) * (b.east - b.west);
+      var lat = b.north - (gy / mosaic.height) * (b.north - b.south);
+      return [lat, lng];
+    });
+
+    var layer = L.polygon(latlngs).addTo(map);
+    if(layer.pm && typeof layer.pm.enable === 'function'){
+      try { layer.pm.enable(); } catch(err){ /* geoman pode nao estar disponivel para esta layer */ }
+    }
+    addSampleFromLayer(layer, vaState.magicWandLabel);
+  }
+
+function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, windowRadius){
+    var minX = Math.max(0, seedX - windowRadius);
+    var maxX = Math.min(mosaicW - 1, seedX + windowRadius);
+    var minY = Math.max(0, seedY - windowRadius);
+    var maxY = Math.min(mosaicH - 1, seedY + windowRadius);
+    var winW = maxX - minX + 1;
+    var winH = maxY - minY + 1;
+
+    function readPx(x, y){
+      var i = (y * mosaicW + x) * 4;
+      return [pixelData[i], pixelData[i + 1], pixelData[i + 2]];
+    }
+    function gray(x, y){
+      var i = (y * mosaicW + x) * 4;
+      return pixelData[i] * 0.299 + pixelData[i + 1] * 0.587 + pixelData[i + 2] * 0.114;
+    }
+
+    /* Pre-computa gradiente Sobel 3x3 na ROI (só gray) */
+    var grad = new Uint8Array(winW * winH);
+    for(var y = 0; y < winH; y++){
+      for(var x = 0; x < winW; x++){
+        var gx = minX + x, gy = minY + y;
+        if(gx < 1 || gx >= mosaicW - 1 || gy < 1 || gy >= mosaicH - 1){
+          grad[y * winW + x] = 255; continue;
+        }
+        var gxVal = -gray(gx - 1, gy - 1) + gray(gx + 1, gy - 1)
+                    -2 * gray(gx - 1, gy) + 2 * gray(gx + 1, gy)
+                    -gray(gx - 1, gy + 1) + gray(gx + 1, gy + 1);
+        var gyVal = -gray(gx - 1, gy - 1) -2 * gray(gx, gy - 1) - gray(gx + 1, gy - 1)
+                    +gray(gx - 1, gy + 1) + 2 * gray(gx, gy + 1) + gray(gx + 1, gy + 1);
+        grad[y * winW + x] = Math.sqrt(gxVal * gxVal + gyVal * gyVal) > MW_GRADIENT_THRESHOLD ? 255 : 0;
+      }
+    }
+
+    /* Cor de referencia = media 3x3 a volta do clique */
+    var rSum = 0, gSum = 0, bSum = 0, nRef = 0;
+    for(var dy = -1; dy <= 1; dy++){
+      for(var dx = -1; dx <= 1; dx++){
+        var sx = seedX + dx, sy = seedY + dy;
+        if(sx < 0 || sx >= mosaicW || sy < 0 || sy >= mosaicH) continue;
+        var c0 = readPx(sx, sy);
+        rSum += c0[0]; gSum += c0[1]; bSum += c0[2]; nRef++;
+      }
+    }
+    var refR = Math.round(rSum / nRef), refG = Math.round(gSum / nRef), refB = Math.round(bSum / nRef);
+
+    var mask = new Uint8Array(winW * winH);
+    var visited = new Uint8Array(winW * winH);
+    var stack = [[seedX - minX, seedY - minY]];
+    visited[(seedY - minY) * winW + (seedX - minX)] = 1;
+    var filledCount = 0;
+    var maxFill = Math.floor(winW * winH * 0.6);
+    var bb = { minX: seedX - minX, minY: seedY - minY, maxX: seedX - minX, maxY: seedY - minY };
+
+    /* Adaptive reference: actualiza lentamente para seguir variacao suave dentro do telhado.
+       MAS sem nenhum travao, esta adaptacao sofre de "color drift" (color
+       walk): cada passo e pequeno e "razoavel" localmente (dentro da
+       tolerancia face a referencia atual), mas ao fim de centenas de
+       pixels a referencia pode ter-se afastado muito da cor original do
+       clique, permitindo que o fill atravesse telhado -> sombra -> rua ->
+       outro telhado sem nunca violar a tolerancia local. Isto e exatamente
+       o que estava a fundir varios edificios/ruas/logradouros numa mancha
+       so. Fix: alem da distancia a referencia adaptativa, exige-se tambem
+       que a cor nunca se afaste mais do que maxDriftFromAnchor da cor
+       ORIGINAL do clique (que nunca muda) -- um travao duro independente
+       da deriva gradual. */
+    var anchorR = refR, anchorG = refG, anchorB = refB;
+    var maxDriftFromAnchor = tolerance * 1.4;
+    var adaptR = refR, adaptG = refG, adaptB = refB;
+    var adaptCount = 0;
+    var maxAdaptDist = tolerance * 0.55;
+
+    while(stack.length > 0){
+      var cur = stack.pop();
+      var lx = cur[0], ly = cur[1];
+      var c = readPx(lx + minX, ly + minY);
+      var dist = Math.sqrt(Math.pow(c[0] - adaptR, 2) + Math.pow(c[1] - adaptG, 2) + Math.pow(c[2] - adaptB, 2));
+      if(dist > tolerance) continue;
+      var distAnchor = Math.sqrt(Math.pow(c[0] - anchorR, 2) + Math.pow(c[1] - anchorG, 2) + Math.pow(c[2] - anchorB, 2));
+      if(distAnchor > maxDriftFromAnchor) continue;
+      mask[ly * winW + lx] = 1;
+      filledCount++;
+      if(filledCount > maxFill) return null;
+
+      /* Adaptive ref: se o pixel estiver dentro de um limiar menor,
+         actualiza lentamente a referencia para seguir o telhado */
+      if(dist < maxAdaptDist){
+        adaptR += Math.round((c[0] - adaptR) * 0.1);
+        adaptG += Math.round((c[1] - adaptG) * 0.1);
+        adaptB += Math.round((c[2] - adaptB) * 0.1);
+      }
+
+      if(lx < bb.minX) bb.minX = lx;
+      if(lx > bb.maxX) bb.maxX = lx;
+      if(ly < bb.minY) bb.minY = ly;
+      if(ly > bb.maxY) bb.maxY = ly;
+      adaptCount++;
+      if(adaptCount >= 64){
+        adaptCount = 0;
+        var bbW = bb.maxX - bb.minX + 1;
+        var bbH = bb.maxY - bb.minY + 1;
+        var ratio = bbW > bbH ? bbW / bbH : bbH / bbW;
+        if(ratio > 6.0 && filledCount > 200) return null;
+      }
+
+      var neigh = [[lx - 1, ly], [lx + 1, ly], [lx, ly - 1], [lx, ly + 1]];
+      for(var k = 0; k < neigh.length; k++){
+        var nx = neigh[k][0], ny = neigh[k][1];
+        if(nx < 0 || nx >= winW || ny < 0 || ny >= winH) continue;
+        var vi = ny * winW + nx;
+        if(visited[vi]) continue;
+        visited[vi] = 1;
+
+        /* Edge-stop: se o vizinho tem gradiente forte, verifica se
+           a cor ainda e semelhante - se nao for, e uma aresta real */
+        if(grad[vi] === 255){
+          var nc = readPx(nx + minX, ny + minY);
+          var nd = Math.sqrt(Math.pow(nc[0] - adaptR, 2) + Math.pow(nc[1] - adaptG, 2) + Math.pow(nc[2] - adaptB, 2));
+          if(nd > tolerance * 0.7) continue; // aresta real: nao cruza
+        }
+        stack.push([nx, ny]);
+      }
+    }
+    if(filledCount < 4) return null;
+
+    /* Close (preenche buracos) + open (corta pontes) */
+    var closed = closeMask(mask, winW, winH);
+    var opened = openMask(closed, winW, winH);
+
+    var seedLx = seedX - minX, seedLy = seedY - minY;
+    var isolated = keepComponentContainingSeed(opened, winW, winH, seedLx, seedLy);
+    if(isolated && isolated.count >= 4){
+      mask = isolated.mask;
+    }
+
+    return { mask: mask, w: winW, h: winH, offsetX: minX, offsetY: minY, seedLx: seedLx, seedLy: seedLy };
+  }
+
+  /* Erosao seguida de dilatacao (4-conectividade), 1 iteracao: remove
+     pontes/protuberancias com menos de ~2px de largura mantendo a forma
+     geral de blobs solidos. */
+  function openMask(mask, w, h){
+    function get(m, x, y){
+      if(x < 0 || x >= w || y < 0 || y >= h) return 0;
+      return m[y * w + x];
+    }
+    var eroded = new Uint8Array(w * h);
+    for(var y = 0; y < h; y++){
+      for(var x = 0; x < w; x++){
+        if(get(mask, x, y) && get(mask, x - 1, y) && get(mask, x + 1, y) &&
+           get(mask, x, y - 1) && get(mask, x, y + 1)){
+          eroded[y * w + x] = 1;
+        }
+      }
+    }
+    var dilated = new Uint8Array(w * h);
+    for(var y = 0; y < h; y++){
+      for(var x = 0; x < w; x++){
+        if(get(eroded, x, y) || get(eroded, x - 1, y) || get(eroded, x + 1, y) ||
+           get(eroded, x, y - 1) || get(eroded, x, y + 1)){
+          dilated[y * w + x] = 1;
+        }
+      }
+    }
+    return dilated;
+  }
+
+  /* Fecho morfologico (dilatacao seguida de erosao, 1 iteracao 4-viz):
+     preenche pequenos buracos e une fragmentos proximos sem alterar
+     a forma geral. */
+  function closeMask(mask, w, h){
+    function get(m, x, y){
+      if(x < 0 || x >= w || y < 0 || y >= h) return 0;
+      return m[y * w + x];
+    }
+    var dilated = new Uint8Array(w * h);
+    for(var y = 0; y < h; y++){
+      for(var x = 0; x < w; x++){
+        if(get(mask, x, y) || get(mask, x - 1, y) || get(mask, x + 1, y) ||
+           get(mask, x, y - 1) || get(mask, x, y + 1)){
+          dilated[y * w + x] = 1;
+        }
+      }
+    }
+    var closed = new Uint8Array(w * h);
+    for(var y = 0; y < h; y++){
+      for(var x = 0; x < w; x++){
+        if(get(dilated, x, y) && get(dilated, x - 1, y) && get(dilated, x + 1, y) &&
+           get(dilated, x, y - 1) && get(dilated, x, y + 1)){
+          closed[y * w + x] = 1;
+        }
+      }
+    }
+    return closed;
+  }
+
+  /* Isola, por BFS 4-conectado, apenas a componente conexa que contem
+     (seedLx, seedLy). Devolve null se o pixel de partida ja nao estiver
+     preenchido nessa mascara (ex: opening removeu-o). */
+  function keepComponentContainingSeed(mask, w, h, seedLx, seedLy){
+    if(seedLx < 0 || seedLx >= w || seedLy < 0 || seedLy >= h) return null;
+    if(!mask[seedLy * w + seedLx]) return null;
+
+    var result = new Uint8Array(w * h);
+    var visited = new Uint8Array(w * h);
+    var stack = [[seedLx, seedLy]];
+    visited[seedLy * w + seedLx] = 1;
+    var count = 0;
+    while(stack.length > 0){
+      var cur = stack.pop();
+      var x = cur[0], y = cur[1];
+      result[y * w + x] = 1;
+      count++;
+      var neigh = [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]];
+      for(var k = 0; k < neigh.length; k++){
+        var nx = neigh[k][0], ny = neigh[k][1];
+        if(nx < 0 || nx >= w || ny < 0 || ny >= h) continue;
+        var vi = ny * w + nx;
+        if(visited[vi] || !mask[vi]) continue;
+        visited[vi] = 1;
+        stack.push([nx, ny]);
+      }
+    }
+    return { mask: result, count: count };
+  }
+
+  /* ---- Tracing de contorno por arestas direcionadas (mesma tecnica do
+     worker, adaptada para operar sobre uma mascara binaria pixel-a-pixel
+     em vez de uma grelha de superpixels) ---- */
+  function pointInPolygonXY(x, y, ring){
+    var inside = false;
+    for(var i = 0, j = ring.length - 2; i < ring.length - 1; j = i++){
+      var xi = ring[i][0], yi = ring[i][1];
+      var xj = ring[j][0], yj = ring[j][1];
+      var intersect = ((yi > y) !== (yj > y)) &&
+        (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function traceMaskBoundary(mask, w, h, seedLx, seedLy){
+    function filled(x, y){
+      if(x < 0 || x >= w || y < 0 || y >= h) return false;
+      return mask[y * w + x] === 1;
+    }
+    var edges = [];
+    for(var y = 0; y < h; y++){
+      for(var x = 0; x < w; x++){
+        if(!filled(x, y)) continue;
+        if(!filled(x, y - 1)) edges.push([[x, y], [x + 1, y]]);         // topo
+        if(!filled(x + 1, y)) edges.push([[x + 1, y], [x + 1, y + 1]]); // direita
+        if(!filled(x, y + 1)) edges.push([[x + 1, y + 1], [x, y + 1]]); // baixo
+        if(!filled(x - 1, y)) edges.push([[x, y + 1], [x, y]]);          // esquerda
+      }
+    }
+    if(edges.length < 3) return null;
+
+    var vKey = function(v){ return v[0] + ',' + v[1]; };
+    var entries = edges.map(function(ed){ return { edge: ed, used: false }; });
+    var byStart = {};
+    entries.forEach(function(en){
+      var k = vKey(en.edge[0]);
+      if(!byStart[k]) byStart[k] = [];
+      byStart[k].push(en);
+    });
+
+    function edgeDir(edge){ return [edge[1][0] - edge[0][0], edge[1][1] - edge[0][1]]; }
+    function turnPriority(dirIn, dirOut){
+      var dot = dirIn[0] * dirOut[0] + dirIn[1] * dirOut[1];
+      var cross = dirIn[0] * dirOut[1] - dirIn[1] * dirOut[0];
+      if(cross > 0.5) return 0;
+      if(dot > 0.5) return 1;
+      if(cross < -0.5) return 2;
+      return 3;
+    }
+
+    var loops = [];
+    var maxSteps = entries.length + 2;
+    for(var idx = 0; idx < entries.length; idx++){
+      var startEntry = entries[idx];
+      if(startEntry.used) continue;
+      var loopPts = [];
+      var curEntry = startEntry;
+      var startKey = vKey(startEntry.edge[0]);
+      var guard = 0;
+      while(true){
+        curEntry.used = true;
+        var edge = curEntry.edge;
+        loopPts.push(edge[0]);
+        var dir = edgeDir(edge);
+        var endKey = vKey(edge[1]);
+        guard++;
+        if(endKey === startKey || guard > maxSteps) break;
+        var candidates = byStart[endKey];
+        if(!candidates) break;
+        var best = null, bestScore = Infinity;
+        for(var ci = 0; ci < candidates.length; ci++){
+          var cand = candidates[ci];
+          if(cand.used) continue;
+          var score = turnPriority(dir, edgeDir(cand.edge));
+          if(score < bestScore){ bestScore = score; best = cand; }
+        }
+        if(!best) break;
+        curEntry = best;
+      }
+      if(loopPts.length >= 3){
+        loopPts.push(loopPts[0].slice());
+        loops.push(loopPts);
+      }
+    }
+    if(loops.length === 0) return null;
+
+    var candidates = [];
+    for(var i = 0; i < loops.length; i++){
+      var a = 0;
+      for(var j = 0; j < loops[i].length - 1; j++){
+        a += loops[i][j][0] * loops[i][j + 1][1] - loops[i][j + 1][0] * loops[i][j][1];
+      }
+      candidates.push({ loop: loops[i], area: Math.abs(a / 2) });
+    }
+
+    /* Uma mascara isolada por keepComponentContainingSeed continua a poder
+       gerar mais do que um loop se a forma se tocar a si propria num unico
+       vertice (ex: edificio em L, ou dois "colados" por um so pixel).
+       ANTES escolhia-se sempre o loop de maior area -- se o lobo que o
+       utilizador clicou fosse o mais pequeno dos dois, o poligono devolvido
+       nem sequer continha o ponto do clique. Agora: preferir sempre o loop
+       que contem o pixel clicado; so cair para "maior area" se, por algum
+       motivo inesperado, nenhum loop contiver o ponto. */
+    if(typeof seedLx === 'number' && typeof seedLy === 'number'){
+      var seedRing = null;
+      for(var i2 = 0; i2 < candidates.length; i2++){
+        if(pointInPolygonXY(seedLx + 0.5, seedLy + 0.5, candidates[i2].loop)){
+          if(!seedRing || candidates[i2].area > seedRing.area) seedRing = candidates[i2];
+        }
+      }
+      if(seedRing) return seedRing.loop;
+    }
+
+    var bestRing = null, bestArea = -1;
+    for(var i3 = 0; i3 < candidates.length; i3++){
+      if(candidates[i3].area > bestArea){ bestArea = candidates[i3].area; bestRing = candidates[i3].loop; }
+    }
+    return bestRing;
+  }
+
+  /* ---- Ortogonalizacao do contorno tracado pelo magic wand ----
+     Portado de orthogonalizePolygon() no worker (14b), adaptado para
+     operar em coordenadas de pixel da janela local (em vez de graus
+     lng/lat): a projecao Web Mercator e localmente conforme, por isso
+     ortogonalizar em pixels ANTES de converter para lat/lng preserva
+     melhor os angulos do que ortogonalizar em graus (que distorce com
+     a latitude), e evita duplicar a logica de projecao para metros que
+     o worker usa para a simplificacao em lote.
+     Ao contrario da versao do worker (que so atua se confidence >= 0.4,
+     vindo do classificador), aqui nao ha "confidence" -- e o utilizador
+     que clicou a dizer "isto e um edificio" -- por isso o unico filtro
+     e a proporcao de angulos ja proximos de 90 graus, para nao forcar
+     formas claramente nao-retangulares (ex: telhados curvos). */
+  function orthogonalizeRing(ring){
+    if(ring.length < 5) return ring;
+    var n = ring.length - 1;
+
+    var origArea = Math.abs(signedAreaXY(ring));
+    if(origArea < 1e-6) return ring;
+
+    var origCx = 0, origCy = 0;
+    for(var i = 0; i < n; i++){ origCx += ring[i][0]; origCy += ring[i][1]; }
+    origCx /= n; origCy /= n;
+
+    var rightAngles = 0;
+    for(var i = 0; i < n; i++){
+      var prev = ring[(i - 1 + n) % n];
+      var cur = ring[i];
+      var next = ring[(i + 1) % n];
+      var dx1 = cur[0] - prev[0], dy1 = cur[1] - prev[1];
+      var dx2 = next[0] - cur[0], dy2 = next[1] - cur[1];
+      var dot = dx1 * dx2 + dy1 * dy2;
+      var cross = dx1 * dy2 - dy1 * dx2;
+      var angle = Math.atan2(Math.abs(cross), dot);
+      if(Math.abs(angle - Math.PI / 2) < 0.5) rightAngles++;
+    }
+    if(rightAngles < Math.floor(n * 0.3)) return ring; // nao parece retangular -- nao mexer
+
+    var result = ring.slice().map(function(p){ return p.slice(); });
+    var baseStep = 0.05;
+
+    for(var iter = 0; iter < 10; iter++){
+      var step = baseStep * (1 - iter / 12);
+      for(var i = 0; i < n; i++){
+        var prev = result[(i - 1 + n) % n];
+        var cur = result[i];
+        var next = result[(i + 1) % n];
+        var dx1 = cur[0] - prev[0], dy1 = cur[1] - prev[1];
+        var dx2 = next[0] - cur[0], dy2 = next[1] - cur[1];
+        var len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+        var len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+        if(len1 < 1e-9 || len2 < 1e-9) continue;
+
+        var a1 = Math.atan2(dy1, dx1);
+        var a2 = Math.atan2(dy2, dx2);
+        var avgA = (a1 + a2) / 2;
+        if(Math.abs(a1 - a2) > Math.PI) avgA += Math.PI;
+
+        var targetAngle = Math.round(avgA / (Math.PI / 2)) * (Math.PI / 2);
+        var angleDelta = targetAngle - avgA;
+
+        var avgLen = (len1 + len2) / 2;
+        var bisectAngle = targetAngle + Math.PI / 2;
+        var mag = avgLen * step * (1 + Math.abs(angleDelta) * 2);
+        var dx = Math.cos(bisectAngle) * mag;
+        var dy = Math.sin(bisectAngle) * mag;
+
+        var crossVal = dx1 * dy2 - dy1 * dx2;
+        var crossSign = crossVal > 0 ? 1 : -1;
+        result[i] = [cur[0] + dx * crossSign, cur[1] + dy * crossSign];
+      }
+    }
+
+    result[n] = [result[0][0], result[0][1]];
+
+    var newArea = Math.abs(signedAreaXY(result));
+    if(newArea > 1e-6){
+      var scale = Math.sqrt(origArea / newArea);
+      var newCx = 0, newCy = 0;
+      for(var i = 0; i < n; i++){ newCx += result[i][0]; newCy += result[i][1]; }
+      newCx /= n; newCy /= n;
+      for(var i = 0; i < n; i++){
+        result[i][0] = origCx + (result[i][0] - newCx) * scale;
+        result[i][1] = origCy + (result[i][1] - newCy) * scale;
+      }
+      result[n] = [result[0][0], result[0][1]];
+    }
+
+    return result;
+  }
+
+  function signedAreaXY(ring){
+    var a = 0;
+    var n = ring.length - 1;
+    for(var i = 0; i < n; i++){
+      a += ring[i][0] * ring[i + 1][1] - ring[i + 1][0] * ring[i][1];
+    }
+    return a / 2;
+  }
+
+  function douglasPeucker(points, tolerance){
+    if(points.length <= 2) return points;
+    var maxDist = 0, maxIdx = 0;
+    var first = points[0], last = points[points.length - 1];
+    for(var i = 1; i < points.length - 1; i++){
+      var d = perpendicularDist(points[i], first, last);
+      if(d > maxDist){ maxDist = d; maxIdx = i; }
+    }
+    if(maxDist > tolerance){
+      var left = douglasPeucker(points.slice(0, maxIdx + 1), tolerance);
+      var right = douglasPeucker(points.slice(maxIdx), tolerance);
+      return left.slice(0, left.length - 1).concat(right);
+    }
+    return [first, last];
+  }
+
+  function perpendicularDist(point, lineStart, lineEnd){
+    var dx = lineEnd[0] - lineStart[0];
+    var dy = lineEnd[1] - lineStart[1];
+    var len = Math.sqrt(dx * dx + dy * dy);
+    if(len === 0) return Math.sqrt(Math.pow(point[0] - lineStart[0], 2) + Math.pow(point[1] - lineStart[1], 2));
+    return Math.abs(dy * point[0] - dx * point[1] + lineEnd[0] * lineStart[1] - lineEnd[1] * lineStart[0]) / len;
+  }
+
+  /* Remove vertices colineares: se o angulo entre (prev->cur) e
+     (cur->next) for ~180°, cur e redundante. */
+  function removeCollinearPoints(ring, angleThreshold){
+    angleThreshold = angleThreshold || 0.97;
+    var n = ring.length;
+    if(n < 4) return ring;
+    var result = [];
+    for(var i = 0; i < n; i++){
+      var prev = ring[(i - 1 + n) % n];
+      var cur = ring[i];
+      var next = ring[(i + 1) % n];
+      var dx1 = cur[0] - prev[0], dy1 = cur[1] - prev[1];
+      var dx2 = next[0] - cur[0], dy2 = next[1] - cur[1];
+      var len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+      var len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+      if(len1 < 0.5 || len2 < 0.5) continue;
+      var dot = (dx1 * dx2 + dy1 * dy2) / (len1 * len2);
+      if(dot < angleThreshold) result.push([cur[0], cur[1]]);
+    }
+    if(result.length < 3) return ring;
+    return result;
+  }
+
+  /* Solda vertices muito proximos (< distMin px) substituindo cada
+     par por um ponto medio. */
+  function weldNearPoints(ring, distMin){
+    if(ring.length < 3) return ring;
+    var result = [];
+    result.push([ring[0][0], ring[0][1]]);
+    for(var i = 1; i < ring.length; i++){
+      var prev = result[result.length - 1];
+      var cur = ring[i];
+      var dx = cur[0] - prev[0], dy = cur[1] - prev[1];
+      if(Math.sqrt(dx * dx + dy * dy) < distMin){
+        var mx = (prev[0] + cur[0]) / 2, my = (prev[1] + cur[1]) / 2;
+        result[result.length - 1] = [mx, my];
+      } else {
+        result.push([cur[0], cur[1]]);
+      }
+    }
+    if(result.length >= 3){
+      var last = result[result.length - 1];
+      var first = result[0];
+      var dx = last[0] - first[0], dy = last[1] - first[1];
+      if(Math.sqrt(dx * dx + dy * dy) < distMin){
+        var mx = (last[0] + first[0]) / 2, my = (last[1] + first[1]) / 2;
+        result[0] = [mx, my];
+        result.pop();
+      }
+    }
+    return result.length >= 3 ? result : ring;
+  }
+
+  /* ---- Processamento ---- */
+  function startProcessing(){
+    showStep(5);
+    $('va-progress-fill').style.width = '0%';
+    $('va-progress-phase').textContent = 'A capturar imagem do basemap...';
+    $('va-progress-log').innerHTML = '';
+
+    var bounds = {
+      north: vaState.areaBounds.getNorth(),
+      south: vaState.areaBounds.getSouth(),
+      east: vaState.areaBounds.getEast(),
+      west: vaState.areaBounds.getWest()
+    };
+    var sampleData = vaState.samples.map(function(s){
+      var gj = s.layer.toGeoJSON();
+      return { label: s.label, geometry: gj.geometry };
+    });
+    clearSampleLayers();
+    var zoom = estimateZoom(vaState.areaBounds.getCenter().lat);
+
+    captureBasemapPixels(bounds, zoom).then(function(result){
+      appendLog('Imagem capturada: ' + result.width + 'x' + result.height + ' px', 'log');
+      $('va-progress-phase').textContent = 'A processar...';
+      var worker = ensureWorker();
+      worker.postMessage({
+        type: 'process',
+        mosaicWidth: result.width,
+        mosaicHeight: result.height,
+        pixelData: result.pixelData,
+        mosaicBounds: result.bounds,
+        bounds: bounds,
+        samples: sampleData,
+        zoom: zoom
+      }, [result.pixelData.buffer]);
+    }).catch(function(err){
+      appendLog('Erro ao capturar basemap: ' + err.message, 'error');
+      showAppAlert('Erro ao capturar imagem: ' + err.message, {error:true});
+      setTimeout(function(){ showStep(4); }, 1500);
+    });
+  }
+
+  function captureBasemapPixels(bounds, zoom){
+    var n = Math.pow(2, zoom);
+    var nwTile = latLngToTile(bounds.north, bounds.west, zoom);
+    var seTile = latLngToTile(bounds.south, bounds.east, zoom);
+    var minTileX = Math.min(nwTile.x, seTile.x);
+    var maxTileX = Math.max(nwTile.x, seTile.x);
+    var minTileY = Math.min(nwTile.y, seTile.y);
+    var maxTileY = Math.max(nwTile.y, seTile.y);
+    var nCols = maxTileX - minTileX + 1;
+    var nRows = maxTileY - minTileY + 1;
+    var TILE = 256;
+    var mosaicW = nCols * TILE;
+    var mosaicH = nRows * TILE;
+
+    /* Usa o basemap ativo em vez do ArcGIS fixo */
+    var tileInfo = getActiveTileInfo();
+
+    var canvas = document.createElement('canvas');
+    canvas.width = mosaicW;
+    canvas.height = mosaicH;
+    var ctx = canvas.getContext('2d');
+
+    var promises = [];
+    for(var tx = minTileX; tx <= maxTileX; tx++){
+      for(var ty = minTileY; ty <= maxTileY; ty++){
+        (function(cx, cy){
+          var url;
+          if(tileInfo.isWMS){
+            url = tileInfo.urlTemplate
+              .replace('{width}', TILE).replace('{height}', TILE)
+              .replace('{bbox}', tileInfo.bboxForTile(cx, cy, zoom));
+          } else {
+            url = tileInfo.urlTemplate
+              .replace('{z}', zoom).replace('{x}', cx).replace('{y}', cy)
+              .replace('{s}', 'a');
+          }
+          var img = new Image();
+          img.crossOrigin = 'anonymous';
+          var p = new Promise(function(resolve, reject){
+            img.onload = function(){
+              ctx.drawImage(img, (cx - minTileX) * TILE, (cy - minTileY) * TILE, TILE, TILE);
+              resolve();
+            };
+            img.onerror = function(){ reject(new Error('Falha ao carregar tile ' + cx + '/' + cy)); };
+          });
+          img.src = url;
+          promises.push(p);
+        })(tx, ty);
+      }
+    }
+
+    /* mosaicBounds tem de corresponder EXATAMENTE aos pixels desenhados no
+       canvas (tiles minTileX..maxTileX, minTileY..maxTileY). Usar
+       minTileX+nCols / minTileY+nRows aqui seria pedir os limites do tile
+       SEGUINTE (um tile inteiro, 256px, alem do que esta realmente
+       pintado) -- isso alarga o mosaicBounds para alem da imagem real e
+       faz com que toda a conversao pixel->lat/lng (features, amostras de
+       treino, poligono final) fique esticada/desfasada. Correto e usar o
+       INDICE do ultimo tile realmente desenhado (maxTileX/maxTileY). */
+    var mosaicBounds = {
+      north: tileToBounds(minTileX, minTileY, zoom).north,
+      south: tileToBounds(maxTileX, maxTileY, zoom).south,
+      east: tileToBounds(maxTileX, minTileY, zoom).east,
+      west: tileToBounds(minTileX, minTileY, zoom).west
+    };
+
+    return Promise.all(promises).then(function(){
+      var imageData = ctx.getImageData(0, 0, mosaicW, mosaicH);
+      return { width: mosaicW, height: mosaicH, pixelData: imageData.data, bounds: mosaicBounds };
+    });
+  }
+
+  function tileToBounds(x, y, z){
+    var n = Math.pow(2, z);
+    var lngW = x / n * 360 - 180;
+    var lngE = (x + 1) / n * 360 - 180;
+    var latN = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n))) * 180 / Math.PI;
+    var latS = Math.atan(Math.sinh(Math.PI * (1 - 2 * (y + 1) / n))) * 180 / Math.PI;
+    return { north: latN, south: latS, east: lngE, west: lngW };
+  }
+
+  function getActiveTileInfo(){
+    function tile3857BBox(z, x, y){
+      var EARTH = 20037508.342789244;
+      var size = (2 * EARTH) / Math.pow(2, z);
+      var minX = -EARTH + x * size;
+      var maxX = -EARTH + (x + 1) * size;
+      var maxY = EARTH - y * size;
+      var minY = EARTH - (y + 1) * size;
+      return [minX, minY, maxX, maxY];
+    }
+    var key = window.__activeBaseLayerKey || 'satelite';
+    var groups = window.__basemapLayers;
+    if(!groups || !groups[key]) return getFallbackTileInfo();
+    var group = groups[key];
+    /* Procura a primeira tile layer dentro do grupo */
+    var tileLayer = null;
+    if(group instanceof L.TileLayer){
+      tileLayer = group;
+    } else if(group.getLayers && typeof group.getLayers === 'function'){
+      var layers = group.getLayers();
+      for(var i = 0; i < layers.length; i++){
+        if(layers[i] instanceof L.TileLayer){ tileLayer = layers[i]; break; }
+      }
+    }
+    if(!tileLayer) return getFallbackTileInfo();
+
+    var isWMS = tileLayer instanceof L.TileLayer.WMS;
+    if(isWMS){
+      var wmsOpts = tileLayer.options;
+      var params = [];
+      for(var k in wmsOpts){
+        if(k === 'maxZoom' || k === 'maxNativeZoom' || k === 'minNativeZoom' ||
+           k === 'attribution' || k === 'offlineKey' || k === 'transparent' ||
+           k === 'format' || k === 'version' || k === 'layers') continue;
+        /* passar parametros adicionais */
+      }
+      var baseUrl = tileLayer._url;
+      var sep = baseUrl.indexOf('?') >= 0 ? '&' : '?';
+      var urlTemplate = baseUrl + sep +
+        'SERVICE=WMS&VERSION=' + (wmsOpts.version || '1.3.0') +
+        '&REQUEST=GetMap&FORMAT=' + (wmsOpts.format || 'image/jpeg') +
+        '&TRANSPARENT=' + (wmsOpts.transparent !== false ? 'TRUE' : 'FALSE') +
+        '&LAYERS=' + (wmsOpts.layers || '') +
+        '&CRS=EPSG:3857&WIDTH={width}&HEIGHT={height}&BBOX={bbox}';
+      return {
+        isWMS: true,
+        urlTemplate: urlTemplate,
+        bboxForTile: function(x, y, z){
+          var box = tile3857BBox(z, x, y);
+          return box[0] + ',' + box[1] + ',' + box[2] + ',' + box[3];
+        }
+      };
+    }
+    /* XYZ: substitui {s} por 'a' o mais cedo possivel */
+    var tpl = tileLayer._url.replace('{s}', 'a');
+    return { isWMS: false, urlTemplate: tpl };
+  }
+
+  function getFallbackTileInfo(){
+    return {
+      isWMS: false,
+      urlTemplate: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+    };
+  }
+
+  function onWorkerMessage(e){
+    var msg = e.data;
+    if(msg.type === 'progress'){
+      $('va-progress-fill').style.width = (msg.pct || 0) + '%';
+      $('va-progress-phase').textContent = msg.text || 'A processar...';
+      appendLog(msg.text, 'log');
+    } else if(msg.type === 'log'){
+      appendLog(msg.text, msg.level || 'log');
+    } else if(msg.type === 'sampleWarning'){
+      /* O worker ja' escreveu os detalhes no log (nivel 'warning'); aqui so'
+         reforcamos com um alerta visivel, porque isto muda a fiabilidade do
+         resultado (menos amostras reais do que as que o utilizador desenhou)
+         e e' facil perder uma linha de log a meio do processamento. */
+      showAppAlert(
+        msg.deadSamples.length + ' de ' + msg.totalSamples + ' amostra(s) nao contribuiram para o treino ' +
+        '(demasiado pequenas para a grelha usada a este zoom). Ve o registo para detalhes.',
+        {error:true}
+      );
+    } else if(msg.type === 'done'){
+      $('va-progress-fill').style.width = '100%';
+      $('va-progress-phase').textContent = 'Concluido!';
+      appendLog('Processamento concluido.', 'log');
+      vaState.geojson = msg.geojson;
+      vaState.stats = msg.stats;
+      setTimeout(function(){ showReview(); }, 600);
+    } else if(msg.type === 'error'){
+      appendLog('Erro: ' + msg.message, 'error');
+      showAppAlert('Erro no processamento: ' + msg.message, {error:true});
+      setTimeout(function(){ showStep(4); }, 1500);
+    }
+  }
+
+  function appendLog(text, level){
+    var log = $('va-progress-log');
+    var line = document.createElement('div');
+    line.className = 'va-progress-log-line is-' + (level || 'log');
+    var ts = new Date().toTimeString().slice(0, 8);
+    var tsSpan = document.createElement('span');
+    tsSpan.className = 'va-progress-log-ts';
+    tsSpan.textContent = ts;
+    var msgSpan = document.createElement('span');
+    msgSpan.className = 'va-progress-log-msg';
+    msgSpan.textContent = text || '';
+    line.appendChild(tsSpan);
+    line.appendChild(msgSpan);
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  /* ---- Review ---- */
+  function showReview(){
+    clearReviewLayers();
+    showStep(6);
+    var logContent = $('va-progress-log') ? $('va-progress-log').innerHTML : '';
+    var reviewLog = $('va-review-log');
+    if(reviewLog) reviewLog.innerHTML = logContent;
+    var features = vaState.geojson ? (vaState.geojson.features || []) : [];
+    var stats = vaState.stats || {};
+    $('va-review-count').textContent = stats.count || features.length;
+    $('va-review-area').textContent = formatArea(stats.area || 0);
+    $('va-review-confidence').textContent = (stats.avgConfidence || 0).toFixed(0) + '%';
+    features.forEach(function(f, i){
+      var conf = (f.properties && f.properties.confianca_pct) || 0;
+      var color = conf > 80 ? '#2f7d4f' : conf > 50 ? '#c08a20' : '#b5472b';
+      var layer = L.geoJSON(f, {
+        style: { color: color, weight: 2, fillColor: color, fillOpacity: 0.3 }
+      }).addTo(map);
+      layer._vaIndex = i;
+      layer._vaEliminated = false;
+      layer.on('click', function(){
+        if(this._vaEliminated){
+          this.setStyle({ fillOpacity: 0.3, opacity: 1 });
+          this._vaEliminated = false;
+        } else {
+          this.setStyle({ fillOpacity: 0.08, opacity: 0.3, dashArray: '4 4' });
+          this._vaEliminated = true;
+        }
+      });
+      vaState.reviewLayers.push(layer);
+    });
+    if(vaState.areaBounds){
+      map.fitBounds(vaState.areaBounds, { padding: [40, 40] });
+    }
+  }
+
+  function clearReviewLayers(){
+    vaState.reviewLayers.forEach(function(l){ map.removeLayer(l); });
+    vaState.reviewLayers = [];
+  }
+
+  function clearSampleLayers(){
+    vaState.samples.forEach(function(s){
+      if(s.layer && map.hasLayer(s.layer)) map.removeLayer(s.layer);
+    });
+    vaState.samples = [];
+  }
+
+  function eliminateSelected(){
+    var eliminated = 0;
+    vaState.reviewLayers.forEach(function(l){
+      if(l._vaEliminated){
+        map.removeLayer(l);
+        eliminated++;
+      }
+    });
+    if(eliminated > 0){
+      showAppAlert(eliminated + ' poligonos eliminados.');
+    } else {
+      showAppAlert('Nenhum poligono selecionado para eliminar. Clica num poligono no mapa primeiro.');
+    }
+  }
+
+  /* ---- Criacao da camada ---- */
+  function acceptAndCreateLayer(){
+    var features = (vaState.geojson.features || []).filter(function(f, i){
+      var layer = vaState.reviewLayers[i];
+      return layer && !layer._vaEliminated;
+    });
+    if(features.length === 0){
+      showAppAlert('Nao restam poligonos para criar a camada.');
+      return;
+    }
+    var geojson = { type: 'FeatureCollection', features: features };
+    if(typeof importGeoJSONFeatures === 'function'){
+      var newLayerId = ++layerCounter;
+      layers.push({
+        id: newLayerId,
+        name: 'Vetorizacao Assistida',
+        geometryType: 'Polygon',
+        mode: 'atributos',
+        attributes: [],
+        colorAttr: null,
+        baseColor: null,
+        opacity: null,
+        symbology: typeof defaultSymbology === 'function' ? defaultSymbology() : {}
+      });
+      layerVisible.set(newLayerId, true);
+      layerOrder.push(newLayerId);
+      ensureLayerPane(newLayerId);
+      importGeoJSONFeatures(geojson, function(){ return newLayerId; }, false);
+      activeLayerId = newLayerId;
+      if(typeof renderLayersPanel === 'function') renderLayersPanel();
+    } else {
+      var layer = L.geoJSON(geojson).addTo(map);
+      drawnGroup.addLayer(layer);
+    }
+    if(vaState.areaLayer){ map.removeLayer(vaState.areaLayer); }
+    clearSampleLayers();
+    clearReviewLayers();
+    showSummary();
+    showAppAlert('Camada criada com ' + features.length + ' edificios.');
+  }
+
+  function showSummary(){
+    showStep(7);
+    var stats = vaState.stats || {};
+    $('va-summary-count').textContent = stats.count || 0;
+    $('va-summary-area').textContent = formatArea(stats.area || 0);
+    $('va-summary-time').textContent = stats.time ? (stats.time / 1000).toFixed(1) + 's' : '-';
+    $('va-summary-confidence').textContent = (stats.avgConfidence || 0).toFixed(0) + '%';
+  }
+
+  /* ---- pm:create handler ---- */
+  function onPmCreate(e){
+    if(!vaState.active) return;
+    if(vaState.sampleDrawing){
+      if(onSampleDrawn(e.layer)){
+        drawnGroup.removeLayer(e.layer);
+        return;
+      }
+    }
+    if(vaState.step === 3 && !vaState.areaLayer){
+      drawnGroup.removeLayer(e.layer);
+      onAreaDrawn(e.layer);
+      return;
+    }
+  }
+
+  /* ---- Utilitarios ---- */
+  function calcAreaM2(bounds){
+    var ne = bounds.getNorthEast();
+    var sw = bounds.getSouthWest();
+    var latM = 111320;
+    var lngM = 111320 * Math.cos((ne.lat + sw.lat) / 2 * Math.PI / 180);
+    return Math.abs(ne.lat - sw.lat) * latM * Math.abs(ne.lng - sw.lng) * lngM;
+  }
+
+  /* estimateZoom era area-based (baldes por m2): quanto maior a area
+     desenhada, mais baixo o zoom escolhido. Isso confundia duas coisas
+     diferentes -- "quanto tempo/tiles vai demorar" e "que resolucao e'
+     preciso para classificar edificios" -- e em areas grandes dava um
+     zoom baixo demais para o classificador funcionar (celula do SLIC
+     maior do que ruas estreitas/edificios colados, ver nota junto a
+     SLIC_GRID_STEP_REF). A resolucao de classificacao NAO deve depender
+     da area desenhada: decoupled agora por metros/pixel alvo (constante,
+     independente da area), com a area grande a ser tratada em vez disso
+     como um bloqueio explicito (ver updateAreaTooLargeWarning) em vez de
+     um zoom mais baixo e silenciosamente pior. */
+  var CLASSIFICATION_TARGET_MPP = 0.6;  // metros/pixel alvo (~zoom 18 a latitude de Portugal)
+  var CLASSIFICATION_MIN_ZOOM = 16;
+  var CLASSIFICATION_MAX_ZOOM = 19;     // acima disto os providers de tiles usados nao tem mais detalhe
+  var CLASSIFICATION_MAX_TILES = 256;   // ~16x16 tiles (4096x4096px) -- limite seguro de memoria/canvas
+
+  function estimateZoom(lat){
+    var latForCalc = (typeof lat === 'number' && !isNaN(lat)) ? lat : 41; // ~latitude media de Portugal continental
+    var mppAtZoom0 = 156543.03392 * Math.cos(latForCalc * Math.PI / 180);
+    var z = Math.ceil(Math.log2(mppAtZoom0 / CLASSIFICATION_TARGET_MPP));
+    if(z < CLASSIFICATION_MIN_ZOOM) z = CLASSIFICATION_MIN_ZOOM;
+    if(z > CLASSIFICATION_MAX_ZOOM) z = CLASSIFICATION_MAX_ZOOM;
+    return z;
+  }
+
+  function estimateTiles(bounds, zoom){
+    var ne = bounds.getNorthEast();
+    var sw = bounds.getSouthWest();
+    var n = latLngToTile(ne.lat, ne.lng, zoom);
+    var s = latLngToTile(sw.lat, sw.lng, zoom);
+    return Math.max(1, (n.x - s.x + 1)) * Math.max(1, (n.y - s.y + 1));
+  }
+
+  function latLngToTile(lat, lng, z){
+    var n = Math.pow(2, z);
+    var x = Math.floor((lng + 180) / 360 * n);
+    var y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * n);
+    return { x: x, y: y };
+  }
+
+  function estimateTime(tiles){
+    var sec = tiles * 2 + 10;
+    if(sec < 60) return '~' + sec + 's';
+    return '~' + Math.ceil(sec / 60) + 'min';
+  }
+
+  function formatArea(m2){
+    if(m2 >= 1000000) return (m2 / 1000000).toFixed(1) + ' km2';
+    if(m2 >= 10000) return (m2 / 1000).toFixed(1) + ' ha';
+    return Math.round(m2).toLocaleString('pt-PT') + ' m2';
+  }
+
+  /* Injeta a UI do magic wand dinamicamente (banner + botoes + sensibilidade).
+     O estilo vive agora em classes CSS (ver <style> em engenh.html, bloco
+     "Vetorizacao assistida: ferramentas OSM/magic wand"), consistente com o
+     resto da app -- antes tinha cores fixas inline aqui, o que destoava do
+     .btn usado no resto do painel. */
+  /* Injeta uma linha de estado (texto simples) por baixo do bloco de
+     estimativa do passo 3, usada para reportar o progresso/resultado da
+     importacao automatica de edificios OSM. Mesma logica do
+     injectMagicWandUI: nao ha garantia de que o template HTML tenha este
+     elemento, por isso criamo-lo por JS. */
+  function injectOsmStatusUI(){
+    if($('va-osm-status')) return;
+    var estimate = $('va-estimate');
+    if(!estimate || !estimate.parentNode) return;
+    var el = document.createElement('div');
+    el.id = 'va-osm-status';
+    estimate.parentNode.insertBefore(el, estimate.nextSibling);
+  }
+
+  var MW_WAND_ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>';
+
+  function injectMagicWandUI(){
+    if($('va-magicwand-banner')) return; // ja injetado
+
+    var sampleBanner = $('va-sample-banner');
+    var banner = document.createElement('div');
+    banner.id = 'va-magicwand-banner';
+    banner.className = 'va-magicwand-banner hidden';
+    var text = document.createElement('span');
+    text.id = 'va-magicwand-banner-text';
+    var cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.textContent = 'Cancelar';
+    cancelBtn.addEventListener('click', cancelMagicWand);
+    banner.appendChild(text);
+    banner.appendChild(cancelBtn);
+    if(sampleBanner && sampleBanner.parentNode){
+      sampleBanner.parentNode.insertBefore(banner, sampleBanner.nextSibling);
+    } else if(map && map.getContainer()){
+      map.getContainer().appendChild(banner);
+    }
+
+    var negBtn = $('va-sample-btn-neg');
+    var wrap = document.createElement('span');
+    wrap.className = 'va-mw-toolbar';
+
+    var mwPosBtn = document.createElement('button');
+    mwPosBtn.type = 'button';
+    mwPosBtn.id = 'va-magicwand-btn-pos';
+    mwPosBtn.className = 'va-mw-btn pos';
+    mwPosBtn.title = 'Clica sobre um edificio na imagem e o algoritmo desenha o limite automaticamente';
+    mwPosBtn.innerHTML = MW_WAND_ICON_SVG + '<span>Edificio (clique)</span>';
+    mwPosBtn.addEventListener('click', function(){ startMagicWand('building'); });
+
+    var mwNegBtn = document.createElement('button');
+    mwNegBtn.type = 'button';
+    mwNegBtn.id = 'va-magicwand-btn-neg';
+    mwNegBtn.className = 'va-mw-btn neg';
+    mwNegBtn.title = 'Clica sobre uma area NAO-edificio na imagem e o algoritmo desenha o limite automaticamente';
+    mwNegBtn.innerHTML = MW_WAND_ICON_SVG + '<span>Nao-edificio (clique)</span>';
+    mwNegBtn.addEventListener('click', function(){ startMagicWand('non-building'); });
+
+    var tolLabel = document.createElement('label');
+    tolLabel.className = 'va-mw-field';
+    tolLabel.appendChild(document.createTextNode('Sensibilidade:'));
+    var tolSelect = document.createElement('select');
+    tolSelect.id = 'va-magicwand-tolerance';
+    ['baixa', 'media', 'alta'].forEach(function(opt){
+      var o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt === 'baixa' ? 'Baixa' : opt === 'media' ? 'Media' : 'Alta';
+      if(opt === 'media') o.selected = true;
+      tolSelect.appendChild(o);
+    });
+    tolLabel.appendChild(tolSelect);
+
+    var orthoLabel = document.createElement('label');
+    orthoLabel.className = 'va-mw-field';
+    var orthoCheckbox = document.createElement('input');
+    orthoCheckbox.type = 'checkbox';
+    orthoCheckbox.id = 'va-magicwand-ortho';
+    orthoCheckbox.checked = true;
+    orthoCheckbox.title = 'Ajusta o contorno detetado para angulos retos (90 graus), quando o formato ja e maioritariamente retangular.';
+    orthoLabel.appendChild(orthoCheckbox);
+    orthoLabel.appendChild(document.createTextNode('Ortogonalizar'));
+
+    wrap.appendChild(mwPosBtn);
+    wrap.appendChild(mwNegBtn);
+    wrap.appendChild(tolLabel);
+    wrap.appendChild(orthoLabel);
+
+    if(negBtn && negBtn.parentNode){
+      negBtn.parentNode.insertBefore(wrap, negBtn.nextSibling);
+    }
+  }
+
+  /* ---- Bind events ---- */
+  function bindEvents(){
+    injectMagicWandUI();
+    injectOsmStatusUI();
+
+    // Comentado: o botão btn-vetassist agora é gerido pelo SAM (18-sam-segment.js)
+    // $('btn-vetassist').addEventListener('click', openVetAssist);
+    $('va-close-btn').addEventListener('click', closeVetAssist);
+    $('va-cancel-btn').addEventListener('click', closeVetAssist);
+    $('va-summary-close').addEventListener('click', closeVetAssist);
+    $('va-summary-new').addEventListener('click', function(){ closeVetAssist(); openVetAssist(); });
+
+    $('va-step1-next').addEventListener('click', function(){ showStep(2); });
+
+    document.querySelectorAll('.va-class-card[data-va-class]').forEach(function(card){
+      card.addEventListener('click', function(){ selectClass(card.dataset.vaClass); });
+    });
+
+    $('va-step2-next').addEventListener('click', function(){ showStep(3); });
+    $('va-step2-back').addEventListener('click', function(){ showStep(1); });
+
+    $('va-step3-draw').addEventListener('click', startAreaDrawing);
+    $('va-draw-cancel').addEventListener('click', cancelAreaDrawing);
+    $('va-step3-back').addEventListener('click', function(){ showStep(2); });
+    $('va-step3-next').addEventListener('click', function(){ showStep(4); });
+
+    $('va-sample-btn-pos').addEventListener('click', function(){ startSampleDrawing('building'); });
+    $('va-sample-btn-neg').addEventListener('click', function(){ startSampleDrawing('non-building'); });
+    $('va-sample-cancel').addEventListener('click', cancelSampleDrawing);
+    $('va-step4-back').addEventListener('click', function(){
+      cancelSampleDrawing();
+      vaState.samples.forEach(function(s){ drawnGroup.removeLayer(s.layer); });
+      vaState.samples = [];
+      showStep(3);
+    });
+    $('va-step4-start').addEventListener('click', startProcessing);
+
+    $('va-review-reject').addEventListener('click', eliminateSelected);
+    $('va-review-accept').addEventListener('click', acceptAndCreateLayer);
+
+    if(map){
+      map.on('pm:create', onPmCreate);
+    }
+  }
+
+  /* ---- Init ---- */
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', bindEvents);
+  } else {
+    bindEvents();
+  }
+
+})();

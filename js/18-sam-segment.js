@@ -1,1 +1,675 @@
-(function(_0x17cc29,_0x1d2859){var _0x2b35f2=_0x2561,_0x372c8e=_0x17cc29();while(!![]){try{var _0x365a1d=parseInt(_0x2b35f2(0x192))/0x1*(parseInt(_0x2b35f2(0x114))/0x2)+parseInt(_0x2b35f2(0x15c))/0x3*(parseInt(_0x2b35f2(0xf2))/0x4)+parseInt(_0x2b35f2(0x120))/0x5+-parseInt(_0x2b35f2(0x128))/0x6+parseInt(_0x2b35f2(0x145))/0x7*(-parseInt(_0x2b35f2(0x196))/0x8)+parseInt(_0x2b35f2(0x115))/0x9*(-parseInt(_0x2b35f2(0x139))/0xa)+-parseInt(_0x2b35f2(0x197))/0xb;if(_0x365a1d===_0x1d2859)break;else _0x372c8e['push'](_0x372c8e['shift']());}catch(_0x4f3a2e){_0x372c8e['push'](_0x372c8e['shift']());}}}(_0x8a3e,0x7124b),(function(){'use strict';var _0x5d30a3=_0x2561;var _0x4f369e=![],_0x2e9c38=null,_0x51fd22=null,_0x5144c5=![],_0x2ca86f=null,_0x5396d9=![],_0x526b81=null,_0x503ad9=null;function _0x48be13(){var _0xf79876=_0x2561;if(_0x503ad9)return;var _0x20f220=document[_0xf79876(0x177)](_0xf79876(0x131));if(!_0x20f220||typeof MutationObserver===_0xf79876(0x102))return;_0x503ad9=new MutationObserver(function(){var _0x170840=_0xf79876;_0x4f369e&&!_0x20f220[_0x170840(0x108)][_0x170840(0xf5)](_0x170840(0x123))&&(typeof __console!=='undefined'&&__console[_0x170840(0x154)](_0x170840(0x164),_0x170840(0x137)),_0x186af2());}),_0x503ad9[_0xf79876(0x16c)](_0x20f220,{'attributes':!![],'attributeFilter':['class']});}var _0x401e13=null,_0x2c1dc3={},_0x49c5e4=0x1;function _0x195216(){var _0x34431d=_0x2561;return!_0x401e13&&(_0x401e13=new Worker(_0x34431d(0x116)),_0x401e13[_0x34431d(0x180)]=_0x24dc17,_0x401e13[_0x34431d(0x12c)]=function(_0x4b00f6){var _0x504c57=_0x34431d,_0x367b9c=_0x4b00f6&&_0x4b00f6[_0x504c57(0x18b)]?_0x4b00f6[_0x504c57(0x18b)]:_0x504c57(0x168);if(typeof __console!=='undefined')__console[_0x504c57(0x154)](_0x504c57(0x195)+_0x367b9c,_0x504c57(0x119));Object[_0x504c57(0x14f)](_0x2c1dc3)[_0x504c57(0x179)](function(_0x49c432){_0x2c1dc3[_0x49c432]['reject'](new Error(_0x367b9c)),delete _0x2c1dc3[_0x49c432];});}),_0x401e13;}function _0x24dc17(_0x53d3f2){var _0x4ba0a9=_0x2561,_0x19cf81=_0x53d3f2[_0x4ba0a9(0x190)];if(_0x19cf81[_0x4ba0a9(0x138)]===_0x4ba0a9(0x154)){if(typeof __console!==_0x4ba0a9(0x102))__console[_0x4ba0a9(0x154)](_0x4ba0a9(0x191)+_0x19cf81[_0x4ba0a9(0x15e)],_0x19cf81[_0x4ba0a9(0x125)]||_0x4ba0a9(0x137));return;}if(_0x19cf81['type']==='progress'){if(typeof __console!==_0x4ba0a9(0x102))__console['log'](_0x4ba0a9(0x191)+_0x19cf81[_0x4ba0a9(0x15e)],_0x4ba0a9(0x137));return;}if(_0x19cf81['type']===_0x4ba0a9(0x16a)){_0x5144c5=!![];return;}var _0x23e080=_0x2c1dc3[_0x19cf81[_0x4ba0a9(0x174)]];if(!_0x23e080)return;delete _0x2c1dc3[_0x19cf81[_0x4ba0a9(0x174)]];if(_0x19cf81[_0x4ba0a9(0x138)]==='error')_0x23e080[_0x4ba0a9(0x11a)](new Error(_0x19cf81[_0x4ba0a9(0x18b)]));else _0x23e080[_0x4ba0a9(0x17c)](_0x19cf81);}function _0x1d4cef(_0x477f55,_0x579950){return new Promise(function(_0x14d013,_0xe4117d){var _0x1af4fd=_0x2561,_0x31fbec=_0x49c5e4++;_0x2c1dc3[_0x31fbec]={'resolve':_0x14d013,'reject':_0xe4117d},_0x477f55[_0x1af4fd(0x174)]=_0x31fbec,_0x195216()[_0x1af4fd(0x10b)](_0x477f55,_0x579950||[]);});}function _0x2465ed(){var _0x3baf5e=_0x2561;_0x195216()[_0x3baf5e(0x10b)]({'type':_0x3baf5e(0x17d)});}window[_0x5d30a3(0x11e)]={get 'active'(){return _0x4f369e;},get 'loaded'(){return _0x5144c5;},'activate':_0x1cdba0,'deactivate':_0x186af2,'load':_0x2465ed};var _0x2e00de=_0x5d30a3(0x12a);function _0x1cdba0(){var _0x151dc4=_0x5d30a3;if(_0x4f369e)return;_0x2465ed(),_0x4f369e=!![];typeof window[_0x151dc4(0x169)]===_0x151dc4(0x126)&&window[_0x151dc4(0x169)](new CustomEvent(_0x151dc4(0x147),{'detail':{'active':!![]}}));if(typeof window[_0x151dc4(0x10e)]===_0x151dc4(0x126)){var _0xd5a46e=window[_0x151dc4(0x176)];window[_0x151dc4(0x10e)](_0x2e00de),typeof __console!==_0x151dc4(0x102)&&__console[_0x151dc4(0x154)]('SAM:\x20basemap\x20fixado\x20em\x20\x22satelite\x22\x20(CORS-safe)\x20e\x20resolução\x20automática\x20desligada\x20para\x20toda\x20a\x20sessão'+(_0xd5a46e!==_0x2e00de?_0x151dc4(0xff)+_0xd5a46e+'\x22)':'\x20(já\x20estava\x20em\x20\x22satelite\x22)')+'.',_0x151dc4(0x137));}else typeof __console!==_0x151dc4(0x102)&&__console['log']('SAM:\x20aviso\x20--\x20window.__forceBasemap\x20não\x20encontrado;\x20o\x20ficheiro\x2005-app-main.js\x20pode\x20não\x20estar\x20atualizado.\x20A\x20captura\x20pode\x20falhar\x20se\x20o\x20basemap\x20ativo\x20for\x20\x22dgt\x22.','warning');var _0x24e801=document['getElementById'](_0x151dc4(0x131));if(!_0x24e801)return;_0x2e9c38=document[_0x151dc4(0x141)](_0x151dc4(0x167)),_0x2e9c38[_0x151dc4(0x10a)][_0x151dc4(0x107)]=_0x151dc4(0xfb),_0x24e801[_0x151dc4(0x166)](_0x2e9c38),_0x51fd22=document[_0x151dc4(0x141)](_0x151dc4(0x167)),_0x51fd22['style'][_0x151dc4(0x107)]=_0x151dc4(0xfd),_0x51fd22[_0x151dc4(0x18d)]=_0x151dc4(0x12f),_0x24e801[_0x151dc4(0x166)](_0x51fd22),_0x24e801[_0x151dc4(0x10a)][_0x151dc4(0x10c)]=_0x151dc4(0x146),_0x48be13();if(window['__eagleAssistant'])window[_0x151dc4(0x150)][_0x151dc4(0x13e)]();_0x2e9c38[_0x151dc4(0x162)]('click',_0x38f06e),window[_0x151dc4(0x131)]&&typeof window['map']['on']===_0x151dc4(0x126)&&(_0x526b81=function(){var _0x5dda7c=_0x151dc4;_0x2ca86f=null;if(_0x401e13)_0x401e13[_0x5dda7c(0x10b)]({'type':_0x5dda7c(0x17e)});},map['on']('movestart\x20zoomstart',_0x526b81));}function _0x186af2(){var _0x5d8e36=_0x5d30a3;if(!_0x4f369e)return;_0x4f369e=![];_0x2e9c38&&_0x2e9c38[_0x5d8e36(0x127)]&&(_0x2e9c38['parentNode'][_0x5d8e36(0x17a)](_0x2e9c38),_0x51fd22['parentNode']['removeChild'](_0x51fd22));_0x2e9c38=null,_0x51fd22=null;var _0x3dcb87=document[_0x5d8e36(0x177)](_0x5d8e36(0x131));if(_0x3dcb87)_0x3dcb87[_0x5d8e36(0x10a)][_0x5d8e36(0x10c)]='';if(map)map[_0x5d8e36(0x142)][_0x5d8e36(0x13b)]();window[_0x5d8e36(0x131)]&&_0x526b81&&(map['off']('movestart\x20zoomstart',_0x526b81),_0x526b81=null);_0x2ca86f=null;if(_0x401e13)_0x401e13['postMessage']({'type':_0x5d8e36(0x17e)});_0x5396d9=![];if(window[_0x5d8e36(0x150)])window[_0x5d8e36(0x150)][_0x5d8e36(0x182)]();typeof window[_0x5d8e36(0x169)]===_0x5d8e36(0x126)&&window[_0x5d8e36(0x169)](new CustomEvent(_0x5d8e36(0x147),{'detail':{'active':![]}}));}function _0x38f06e(_0x57a8bc){var _0x34b70f=_0x5d30a3;_0x57a8bc[_0x34b70f(0x171)]();if(!window[_0x34b70f(0x131)])return;if(_0x5396d9)return;_0x5396d9=!![];var _0x59b8c6=document[_0x34b70f(0x177)](_0x34b70f(0x131)),_0x41dac0=_0x59b8c6[_0x34b70f(0x121)](),_0x27c61d=_0x57a8bc[_0x34b70f(0xf6)]-_0x41dac0[_0x34b70f(0xfc)],_0x3bf674=_0x57a8bc[_0x34b70f(0x134)]-_0x41dac0['top'],_0x5123ca=map[_0x34b70f(0x181)](),_0x38cd78=map[_0x34b70f(0xf3)]();if(_0x2e9c38)_0x2e9c38[_0x34b70f(0x10a)][_0x34b70f(0x10c)]='wait';var _0xddd338=document[_0x34b70f(0x141)](_0x34b70f(0x167));_0xddd338[_0x34b70f(0x10a)][_0x34b70f(0x107)]=_0x34b70f(0x198),_0xddd338['textContent']=_0x34b70f(0x158),_0x59b8c6[_0x34b70f(0x166)](_0xddd338);if(window[_0x34b70f(0x150)])window[_0x34b70f(0x150)][_0x34b70f(0x112)]();_0x28185e(_0x27c61d,_0x3bf674,_0x5123ca,_0x38cd78,_0x59b8c6)[_0x34b70f(0x144)](function(_0x233bb6){var _0x412499=_0x34b70f;_0x59b8c6['removeChild'](_0xddd338);if(!_0x4f369e)return;if(_0x233bb6){if(window['__eagleAssistant'])window['__eagleAssistant'][_0x412499(0x15d)]();}else{_0x54df2f(_0x59b8c6,_0x412499(0x15b));if(window['__eagleAssistant'])window['__eagleAssistant'][_0x412499(0x13e)]();}})[_0x34b70f(0x155)](function(_0x6357cb){var _0x4151bf=_0x34b70f;_0x59b8c6[_0x4151bf(0x17a)](_0xddd338);if(typeof __console!==_0x4151bf(0x102))__console[_0x4151bf(0x154)](_0x4151bf(0x132)+_0x6357cb['message'],'error');if(!_0x4f369e)return;_0x54df2f(_0x59b8c6,_0x4151bf(0x104)+(_0x6357cb&&_0x6357cb[_0x4151bf(0x18b)]?_0x6357cb[_0x4151bf(0x18b)]:_0x4151bf(0x14e)));if(window['__eagleAssistant'])window[_0x4151bf(0x150)][_0x4151bf(0x13e)]();})[_0x34b70f(0x160)](function(){var _0x2a8512=_0x34b70f;_0x5396d9=![];if(_0x2e9c38)_0x2e9c38[_0x2a8512(0x10a)]['cursor']='crosshair';});}function _0x54df2f(_0x549dda,_0x31b66b){var _0x357c7f=_0x5d30a3,_0x10d736=document['createElement']('div');_0x10d736[_0x357c7f(0x10a)][_0x357c7f(0x107)]=_0x357c7f(0x14b),_0x10d736[_0x357c7f(0x18d)]=_0x31b66b,_0x549dda['appendChild'](_0x10d736),setTimeout(function(){var _0x28dc80=_0x357c7f;if(_0x10d736['parentNode'])_0x10d736[_0x28dc80(0x127)][_0x28dc80(0x17a)](_0x10d736);},0xfa0);}var _0x1c82b4=null;function _0x3742f0(_0x4e3256,_0x56a028,_0x9c5ef3,_0x330c98){var _0x5e9763=_0x5d30a3;_0x1c82b4&&_0x1c82b4[_0x5e9763(0x127)]&&_0x1c82b4['parentNode'][_0x5e9763(0x17a)](_0x1c82b4);var _0x336f16=0xdc,_0x3aa25c=document[_0x5e9763(0x141)](_0x5e9763(0x110));_0x3aa25c[_0x5e9763(0xf1)]=_0x336f16,_0x3aa25c['height']=_0x336f16;var _0x503eba=_0x3aa25c[_0x5e9763(0x18e)]('2d');_0x503eba['drawImage'](_0x56a028,0x0,0x0,_0x56a028[_0x5e9763(0xf1)],_0x56a028[_0x5e9763(0x185)],0x0,0x0,_0x336f16,_0x336f16);var _0x117631=_0x9c5ef3/_0x56a028['width']*_0x336f16,_0xc571c4=_0x330c98/_0x56a028[_0x5e9763(0x185)]*_0x336f16;_0x503eba[_0x5e9763(0x159)]=_0x5e9763(0x152),_0x503eba[_0x5e9763(0x165)]=0x2,_0x503eba[_0x5e9763(0x130)](),_0x503eba[_0x5e9763(0x106)](_0x117631-0x8,_0xc571c4),_0x503eba[_0x5e9763(0x143)](_0x117631+0x8,_0xc571c4),_0x503eba[_0x5e9763(0x106)](_0x117631,_0xc571c4-0x8),_0x503eba['lineTo'](_0x117631,_0xc571c4+0x8),_0x503eba[_0x5e9763(0x13d)](),_0x503eba[_0x5e9763(0x130)](),_0x503eba[_0x5e9763(0x186)](_0x117631,_0xc571c4,0x5,0x0,Math['PI']*0x2),_0x503eba[_0x5e9763(0x159)]='#fff',_0x503eba[_0x5e9763(0x165)]=0x1,_0x503eba[_0x5e9763(0x13d)](),_0x1c82b4=document[_0x5e9763(0x141)](_0x5e9763(0x167)),_0x1c82b4[_0x5e9763(0x10a)][_0x5e9763(0x107)]=_0x5e9763(0x10f);var _0x3efc9b=document[_0x5e9763(0x141)](_0x5e9763(0x167));_0x3efc9b[_0x5e9763(0x10a)][_0x5e9763(0x107)]=_0x5e9763(0x11f);var _0x220323=document[_0x5e9763(0x141)](_0x5e9763(0x193));_0x220323[_0x5e9763(0x18d)]=_0x5e9763(0x12e);var _0x5a6f7f=document[_0x5e9763(0x141)](_0x5e9763(0x11b));_0x5a6f7f[_0x5e9763(0x138)]=_0x5e9763(0x11b),_0x5a6f7f[_0x5e9763(0x18d)]='✕',_0x5a6f7f[_0x5e9763(0x10a)][_0x5e9763(0x107)]='background:none;border:none;color:#fff;cursor:pointer;font-size:13px;line-height:1;padding:2px\x204px;',_0x5a6f7f[_0x5e9763(0x162)](_0x5e9763(0x184),function(){var _0x45d929=_0x5e9763;if(_0x1c82b4&&_0x1c82b4['parentNode'])_0x1c82b4[_0x45d929(0x127)][_0x45d929(0x17a)](_0x1c82b4);}),_0x3efc9b['appendChild'](_0x220323),_0x3efc9b['appendChild'](_0x5a6f7f),_0x1c82b4['appendChild'](_0x3aa25c),_0x1c82b4[_0x5e9763(0x166)](_0x3efc9b),document[_0x5e9763(0xfe)]['appendChild'](_0x1c82b4),typeof __console!==_0x5e9763(0x102)&&__console['log']('SAM\x20debug:\x20preview\x20do\x20ROI\x20mostrado\x20no\x20canto\x20inferior\x20direito\x20(fixo,\x20por\x20cima\x20de\x20tudo)\x20--\x20confirma\x20se\x20a\x20cruz\x20cai\x20em\x20cima\x20do\x20edificio\x20clicado.',_0x5e9763(0x137));}function _0xb8806f(_0x459531){var _0x1ac6b3=_0x5d30a3,_0x4e9c07=_0x459531['getContext']('2d'),_0x38558b=_0x4e9c07[_0x1ac6b3(0x16e)](0x0,0x0,_0x459531[_0x1ac6b3(0xf1)],_0x459531[_0x1ac6b3(0x185)])['data'],_0x4fedba=0x8,_0x3fcca1=_0x459531['width']*0x4,_0x2e24c3=0x0,_0x2c1c26=0x0,_0xc9fa04=0x0,_0x3b3ac1=0xff,_0x400e6a=0x0,_0x5f1751=0xff,_0xcb8702=0x0,_0x972e32=0xff,_0x241238=0x0;for(var _0x2a97fe=0x0;_0x2a97fe<_0x459531[_0x1ac6b3(0x185)];_0x2a97fe+=_0x4fedba){for(var _0x4e325f=0x0;_0x4e325f<_0x459531[_0x1ac6b3(0xf1)];_0x4e325f+=_0x4fedba){var _0x2a14af=_0x2a97fe*_0x3fcca1+_0x4e325f*0x4,_0x2c40a2=_0x38558b[_0x2a14af],_0x30f99a=_0x38558b[_0x2a14af+0x1],_0x525418=_0x38558b[_0x2a14af+0x2];if(_0x2c40a2<_0x3b3ac1)_0x3b3ac1=_0x2c40a2;if(_0x2c40a2>_0x400e6a)_0x400e6a=_0x2c40a2;if(_0x30f99a<_0x5f1751)_0x5f1751=_0x30f99a;if(_0x30f99a>_0xcb8702)_0xcb8702=_0x30f99a;if(_0x525418<_0x972e32)_0x972e32=_0x525418;if(_0x525418>_0x241238)_0x241238=_0x525418;_0x2e24c3+=_0x2c40a2+_0x30f99a+_0x525418,_0x2c1c26+=_0x2c40a2*_0x2c40a2+_0x30f99a*_0x30f99a+_0x525418*_0x525418,_0xc9fa04+=0x3;}}var _0x336069=_0x2e24c3/_0xc9fa04,_0x36b963=_0x2c1c26/_0xc9fa04-_0x336069*_0x336069,_0x3b25e2=_0x36b963<0x4;return typeof __console!==_0x1ac6b3(0x102)&&__console[_0x1ac6b3(0x154)]('SAM:\x20analise\x20do\x20ROI\x20capturado\x20--\x20media='+_0x336069['toFixed'](0x1)+_0x1ac6b3(0xf9)+_0x36b963[_0x1ac6b3(0x129)](0x1)+'\x20R['+_0x3b3ac1+'-'+_0x400e6a+_0x1ac6b3(0x187)+_0x5f1751+'-'+_0xcb8702+_0x1ac6b3(0x163)+_0x972e32+'-'+_0x241238+']'+(_0x3b25e2?_0x1ac6b3(0x111):''),_0x3b25e2?_0x1ac6b3(0x113):_0x1ac6b3(0x137)),_0x3b25e2;}async function _0x1e7ef3(_0xcef32c,_0x40faf3,_0x5e3647){var _0x4fcd1d=_0x5d30a3;if(typeof window[_0x4fcd1d(0x10e)]===_0x4fcd1d(0x126)&&window[_0x4fcd1d(0x176)]!==_0x2e00de){typeof __console!==_0x4fcd1d(0x102)&&__console['log']('SAM:\x20basemap\x20tinha\x20mudado\x20para\x20\x22'+window['__activeBaseLayerKey']+'\x22\x20a\x20meio\x20da\x20sessão\x20--\x20a\x20forçar\x20de\x20volta\x20para\x20\x22satelite\x22\x20antes\x20de\x20capturar.',_0x4fcd1d(0x113));window[_0x4fcd1d(0x10e)](_0x2e00de),_0x2ca86f=null;if(_0x401e13)_0x401e13['postMessage']({'type':_0x4fcd1d(0x17e)});await new Promise(function(_0x51d044){setTimeout(_0x51d044,0x1f4);});}if(_0x2ca86f&&_0x2ca86f[_0x4fcd1d(0x14c)]===_0x5e3647&&_0x2ca86f['bounds'][_0x4fcd1d(0xf8)](_0x40faf3))return _0x2ca86f;var _0x103295=await html2canvas(_0xcef32c,{'useCORS':!![],'logging':![],'scale':0x1}),_0x5671c3=_0x103295[_0x4fcd1d(0xf1)],_0x5a54d5=_0x103295[_0x4fcd1d(0x185)];if(_0xb8806f(_0x103295)){var _0x2288f4=typeof window[_0x4fcd1d(0x176)]!==_0x4fcd1d(0x102)?window[_0x4fcd1d(0x176)]:null,_0x485044=_0x2288f4===_0x4fcd1d(0x188)?_0x4fcd1d(0x148):'\x20Tenta\x20mudar\x20de\x20basemap\x20(ex.\x20\x22Satelite\x22)\x20e\x20repetir.';typeof __console!=='undefined'&&__console['log'](_0x4fcd1d(0x12b)+_0x2288f4+_0x4fcd1d(0x18c),_0x4fcd1d(0x119));throw new Error(_0x4fcd1d(0x16d)+_0x485044);}var _0x34de07=0x384,_0x508d26=Math['min'](0x1,_0x34de07/Math[_0x4fcd1d(0x103)](_0x5671c3,_0x5a54d5)),_0x4aa7d5=document[_0x4fcd1d(0x141)](_0x4fcd1d(0x110));_0x4aa7d5[_0x4fcd1d(0xf1)]=Math['round'](_0x5671c3*_0x508d26),_0x4aa7d5['height']=Math[_0x4fcd1d(0x175)](_0x5a54d5*_0x508d26),_0x4aa7d5[_0x4fcd1d(0x18e)]('2d')[_0x4fcd1d(0x183)](_0x103295,0x0,0x0,_0x4aa7d5[_0x4fcd1d(0xf1)],_0x4aa7d5[_0x4fcd1d(0x185)]);var _0x1ea889=await createImageBitmap(_0x103295);return await _0x1d4cef({'type':_0x4fcd1d(0x199),'bitmap':_0x1ea889,'w':_0x5671c3,'h':_0x5a54d5,'zoom':_0x5e3647},[_0x1ea889]),_0x2ca86f={'previewCanvas':_0x4aa7d5,'previewScale':_0x508d26,'w':_0x5671c3,'h':_0x5a54d5,'bounds':_0x40faf3,'zoom':_0x5e3647},typeof __console!==_0x4fcd1d(0x102)&&__console[_0x4fcd1d(0x154)](_0x4fcd1d(0x12d)+_0x5e3647+')\x20--\x20proximos\x20cliques\x20na\x20mesma\x20vista\x20so\x27\x20pedem\x20o\x20decode.','info'),_0x2ca86f;}async function _0x28185e(_0x2bf21e,_0xea927c,_0x3b0f70,_0x583042,_0x3446de){var _0x430c3e=_0x5d30a3,_0x4c4595=_0x3446de['getBoundingClientRect'](),_0x23f745=await _0x1e7ef3(_0x3446de,_0x3b0f70,_0x583042),_0x2752df=_0x23f745['w']/_0x4c4595[_0x430c3e(0xf1)],_0x2666b9=_0x23f745['h']/_0x4c4595[_0x430c3e(0x185)];_0x2bf21e=_0x2bf21e*_0x2752df,_0xea927c=_0xea927c*_0x2666b9;typeof __console!==_0x430c3e(0x102)&&__console['log'](_0x430c3e(0x122)+_0x2752df[_0x430c3e(0x129)](0x2)+'x'+_0x2666b9[_0x430c3e(0x129)](0x2)+_0x430c3e(0x11c)+(window[_0x430c3e(0x157)]||0x1)+')','info');var _0x358c5e=_0x23f745['w'],_0xd07b7f=_0x23f745['h'],_0x43c406=_0x23f745[_0x430c3e(0x105)],_0x5a2e80=!![];if(_0x5a2e80){var _0x19cade=_0x23f745[_0x430c3e(0x101)],_0x55fc69=_0x2bf21e*_0x19cade,_0x343119=_0xea927c*_0x19cade,_0x471a29=Math[_0x430c3e(0x103)](0x3c,Math[_0x430c3e(0x175)](0x190*_0x19cade)),_0x22fb90=_0x471a29/0x2,_0x13ee3d=Math[_0x430c3e(0x103)](0x0,Math[_0x430c3e(0xf7)](_0x55fc69-_0x22fb90,_0x23f745[_0x430c3e(0x17f)][_0x430c3e(0xf1)]-_0x471a29)),_0x11317e=Math[_0x430c3e(0x103)](0x0,Math[_0x430c3e(0xf7)](_0x343119-_0x22fb90,_0x23f745[_0x430c3e(0x17f)][_0x430c3e(0x185)]-_0x471a29)),_0x3a6941=document['createElement']('canvas');_0x3a6941['width']=_0x471a29,_0x3a6941[_0x430c3e(0x185)]=_0x471a29,_0x3a6941[_0x430c3e(0x18e)]('2d')[_0x430c3e(0x183)](_0x23f745[_0x430c3e(0x17f)],_0x13ee3d,_0x11317e,_0x471a29,_0x471a29,0x0,0x0,_0x471a29,_0x471a29),_0x3742f0(_0x3446de,_0x3a6941,_0x55fc69-_0x13ee3d,_0x343119-_0x11317e);}var _0xd8728=await _0x1d4cef({'type':_0x430c3e(0x172),'x':_0x2bf21e,'y':_0xea927c}),_0x474772=[];if(_0xd8728[_0x430c3e(0x124)]){var _0x4b7d0f=_0xd8728[_0x430c3e(0x124)][_0x430c3e(0x131)](function(_0x3deac5){var _0x193663=_0x430c3e,_0x211d28=_0x3deac5[0x0],_0x3b4bb1=_0x3deac5[0x1],_0x13771a=_0x43c406[_0x193663(0x15f)]()+_0x211d28/_0x358c5e*(_0x43c406[_0x193663(0x18a)]()-_0x43c406[_0x193663(0x15f)]()),_0x373d15=_0x43c406[_0x193663(0x189)]()-_0x3b4bb1/_0xd07b7f*(_0x43c406[_0x193663(0x189)]()-_0x43c406['getSouth']());return[_0x373d15,_0x13771a];});_0x474772[_0x430c3e(0xf0)](_0x4b7d0f);}var _0x5af84e=_0x5d906e();_0x474772[_0x430c3e(0x179)](function(_0x4186ac){var _0x4617d1=_0x430c3e,_0x2321df=L['polygon'](_0x4186ac,{'color':'#4ecb71','weight':0x2,'fillColor':_0x4617d1(0x117),'fillOpacity':0.25})[_0x4617d1(0x16b)](map);_0x28213b(_0x2321df,_0x5af84e);});var _0x39c64b=typeof _0xd8728[_0x430c3e(0x13f)]===_0x430c3e(0x13c)?_0x430c3e(0x151)+_0xd8728[_0x430c3e(0x13f)]['toFixed'](0x3)+')':'',_0x3596b2=_0x430c3e(0x191)+_0x474772[_0x430c3e(0x149)]+_0x430c3e(0x10d)+_0x39c64b;if(typeof __console!==_0x430c3e(0x102))__console[_0x430c3e(0x154)](_0x3596b2,'info');return _0x474772[_0x430c3e(0x149)];}function _0x5d906e(){var _0x30e683=_0x5d30a3;if(typeof config===_0x30e683(0x102)||typeof layers===_0x30e683(0x102)||typeof activeLayerId===_0x30e683(0x102))return null;if(config[_0x30e683(0x153)]==='Polygon')return activeLayerId;var _0x485cdf=layers['find'](function(_0x452420){var _0x483a3a=_0x30e683;return _0x452420['name']===_0x483a3a(0x15a);});if(_0x485cdf)return _0x485cdf['id'];if(!config[_0x30e683(0x153)]&&layers['length']===0x0){config[_0x30e683(0x178)]=_0x30e683(0x15a),config['mode']=_0x30e683(0x194),config[_0x30e683(0x100)]=[],config['geometryType']=_0x30e683(0x133),config[_0x30e683(0x17b)]=null,config[_0x30e683(0x16f)]=null,config[_0x30e683(0x156)]=null,config[_0x30e683(0xfa)]=typeof defaultSymbology==='function'?defaultSymbology():undefined;if(typeof applyGeometryConfig==='function')applyGeometryConfig();if(typeof refreshLayerEditability===_0x30e683(0x126))refreshLayerEditability();if(typeof __console!==_0x30e683(0x102))__console[_0x30e683(0x154)]('SAM:\x20criada\x20camada\x20\x22poligonos_AAV\x22\x20(era\x20a\x20primeira\x20camada\x20do\x20projeto).','info');return activeLayerId;}var _0xd2a478=++layerCounter;layers['push']({'id':_0xd2a478,'name':'poligonos_AAV','geometryType':'Polygon','mode':_0x30e683(0x194),'attributes':[],'colorAttr':null,'baseColor':null,'opacity':null,'symbology':typeof defaultSymbology==='function'?defaultSymbology():undefined}),layerVisible[_0x30e683(0x170)](_0xd2a478,!![]);if(typeof __console!==_0x30e683(0x102))__console[_0x30e683(0x154)](_0x30e683(0x13a),'info');return _0xd2a478;}function _0x28213b(_0x1d67b1,_0x49fbd2){var _0x5c55cf=_0x5d30a3;if(_0x49fbd2===null){if(typeof drawnGroup!==_0x5c55cf(0x102)&&drawnGroup)drawnGroup[_0x5c55cf(0x140)](_0x1d67b1);return;}if(typeof drawnGroup!==_0x5c55cf(0x102)&&drawnGroup)drawnGroup[_0x5c55cf(0x140)](_0x1d67b1);if(typeof assignLayerPane==='function')assignLayerPane(_0x1d67b1,_0x49fbd2);if(typeof featureCounter!==_0x5c55cf(0x102))featureCounter++;var _0x416a84=L[_0x5c55cf(0x161)]['stamp'](_0x1d67b1),_0x181819={'layer':_0x1d67b1,'props':{},'id':_0x416a84,'fid':_0x296b9f(),'updatedAt':Date[_0x5c55cf(0x18f)](),'label':_0x5c55cf(0x14d)+featureCounter,'geomType':_0x5c55cf(0x133),'layerId':_0x49fbd2,'hasOverlap':![],'overlapsWith':[],'showMeasures':![],'measureTooltips':[]};if(typeof featuresData!==_0x5c55cf(0x102))featuresData[_0x5c55cf(0x170)](_0x416a84,_0x181819);if(typeof markProjectDirty===_0x5c55cf(0x126))markProjectDirty();if(typeof styleLayerDefault===_0x5c55cf(0x126))styleLayerDefault(_0x1d67b1,_0x49fbd2);if(typeof bindFeatureContextMenu===_0x5c55cf(0x126))bindFeatureContextMenu(_0x181819);if(typeof bindFeatureEditTracking===_0x5c55cf(0x126))bindFeatureEditTracking(_0x181819);if(typeof refreshFeatList===_0x5c55cf(0x126))refreshFeatList();if(typeof checkAllTopology===_0x5c55cf(0x126))checkAllTopology();}function _0x296b9f(){var _0x3e9cf=_0x5d30a3;if(typeof genFid===_0x3e9cf(0x126))return genFid();return window['crypto']&&crypto[_0x3e9cf(0xf4)]?crypto[_0x3e9cf(0xf4)]():_0x3e9cf(0x118)+Date[_0x3e9cf(0x18f)]()+'-'+Math['random']()[_0x3e9cf(0x135)](0x24)[_0x3e9cf(0x11d)](0x2);}window[_0x5d30a3(0x11e)]['clearModelCache']=function(){var _0x28589c=_0x5d30a3;return _0x1d4cef({'type':_0x28589c(0x109)})[_0x28589c(0x155)](function(_0x35314e){var _0x57a991=_0x28589c;if(typeof __console!==_0x57a991(0x102))__console[_0x57a991(0x154)](_0x57a991(0x14a)+_0x35314e[_0x57a991(0x18b)],_0x57a991(0x119));return![];});},document[_0x5d30a3(0x162)](_0x5d30a3(0x136),function(_0x38c2b2){var _0x296f51=_0x5d30a3;if(_0x38c2b2['key']===_0x296f51(0x173)&&_0x4f369e)_0x186af2();});}()));function _0x2561(_0x263791,_0x43423c){_0x263791=_0x263791-0xf0;var _0x8a3e5c=_0x8a3e();var _0x256183=_0x8a3e5c[_0x263791];if(_0x2561['tCPHgG']===undefined){var _0xde66e5=function(_0x17b134){var _0x2e6b6d='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x4f369e='',_0x2e9c38='';for(var _0x51fd22=0x0,_0x5144c5,_0x2ca86f,_0x5396d9=0x0;_0x2ca86f=_0x17b134['charAt'](_0x5396d9++);~_0x2ca86f&&(_0x5144c5=_0x51fd22%0x4?_0x5144c5*0x40+_0x2ca86f:_0x2ca86f,_0x51fd22++%0x4)?_0x4f369e+=String['fromCharCode'](0xff&_0x5144c5>>(-0x2*_0x51fd22&0x6)):0x0){_0x2ca86f=_0x2e6b6d['indexOf'](_0x2ca86f);}for(var _0x526b81=0x0,_0x503ad9=_0x4f369e['length'];_0x526b81<_0x503ad9;_0x526b81++){_0x2e9c38+='%'+('00'+_0x4f369e['charCodeAt'](_0x526b81)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2e9c38);};_0x2561['WoJhHF']=_0xde66e5,_0x2561['KqwczK']={},_0x2561['tCPHgG']=!![];}var _0x12d1c4=_0x8a3e5c[0x0],_0x547b6b=_0x263791+_0x12d1c4,_0x3d6709=_0x2561['KqwczK'][_0x547b6b];return!_0x3d6709?(_0x256183=_0x2561['WoJhHF'](_0x256183),_0x2561['KqwczK'][_0x547b6b]=_0x256183):_0x256183=_0x3d6709,_0x256183;}function _0x8a3e(){var _0x4ef306=['ywrKvg8','B2jZzxj2zq','sw1Hz2vTigjHC2uGBMfVignHChr1CMfKysaOyMXVCxvLAw8Gq09suYbKyxmGDgLSzxmPlG','z2v0sw1Hz2veyxrH','yMfZzunVBg9Y','C2v0','C3rVCfbYB3bHz2f0Aw9U','zgvJB2rLq2XPy2S','rxnJyxbL','CMvXswq','CM91BMq','x19Hy3rPDMvcyxnLtgf5zxjlzxK','z2v0rwXLBwvUDej5swq','C2HHCgvoyw1L','zM9YrwfJAa','CMvTB3zLq2HPBgq','y29SB3jbDhrY','CMvZB2X2zq','Bg9Hze1VzgvSCW','Aw52ywXPzgf0zvzPzxC','ChjLDMLLD0nHBNzHCW','B25TzxnZywDL','z2v0qM91BMrZ','AgLKzq','zhjHD0LTywDL','y2XPy2S','AgvPz2H0','yxjJ','xsbhwW','zgD0','z2v0tM9YDgG','z2v0rwfZDa','BwvZC2fNzq','iIKGls0GChjVDMf2zwWGyMXVCxvLAw8Gq09suYbKyxmGDgLSzxmGCgvSBYbODg1SmMnHBNzHCY4GqsbHyM9YDgfYihnLBsbJAgfTyxiGBYb3B3jRzxiU','Dgv4DenVBNrLBNq','z2v0q29UDgv4Da','BM93','zgf0yq','u0fnoIa','mJros0fOrLO','C3bHBG','C2LTCgXLCW','u0fnoIbLCNjVig5VihDVCMTLCJOG','mtzIqLrfC1K','ntqXnZCYEw5mzgXn','Cg9ZAxrPB246ywjZB2X1Dgu7Dg9WoJuWjtTSzwz0oJuWjtT0CMfUC2zVCM06DhjHBNnSyxrLkc01mcuSltuWjsK7EI1PBMrLEdO2mta7yMfJA2DYB3vUzdPYz2jHkdaSmcWWlc44ktTJB2XVCJOJzMzMo3bHzgrPBMC6mtbWEcaYmhb4o2jVCMrLCI1YywrPDxm6ohb4o2zVBNqTC2L6ztOXm3b4o2zVBNqTzMfTAwX5oNnHBNmTC2vYAwy7Cg9PBNrLCI1LDMvUDhm6BM9UztS','zw5JB2rLvMLLDW','ChvZAa','D2LKDgG','nJmXmZK2EhHfrff5','z2v0wM9VBq','CMfUzg9Tvvvjra','y29UDgfPBNm','y2XPzw50wa','BwLU','zxf1ywXZ','ihzHCMLHBMnPyt0','C3LTyM9SB2D5','Cg9ZAxrPB246ywjZB2X1Dgu7Aw5Zzxq6mdT6lwLUzgv4oJyWmJTJDxjZB3i6y3jVC3nOywLYo2jHy2TNCM91BMq6CMDIysGWlde4mcWXmdaSlJa3ktS','BgvMDa','Cg9ZAxrPB246ywjZB2X1Dgu7yM90Dg9ToJeWChG7BgvMDdO1mcu7DhjHBNnMB3jToNrYyw5ZBgf0zvGOltuWjsK7EI1PBMrLEdO2mdm7yMfJA2DYB3vUzdPYz2jHkdaSmcWWlc43ktTJB2XVCJOJzMzMo3bHzgrPBMC6nNb4ide0ChG7yM9YzgvYlxjHzgL1CZO2ChG7zM9UDc1ZAxPLoJeYChG7zM9UDc1Myw1PBhK6C2fUCY1ZzxjPzJTWB2LUDgvYlwv2zw50CZPUB25Lo3DOAxrLlxnWywnLoM5VD3jHCdS','yM9KEq','icH0CM9JB3uGzguGiG','yxr0CMLIDxrLCW','ChjLDMLLD1nJywXL','Dw5KzwzPBMvK','Bwf4','rxjYBYbUysbZzwDTzw50ywnHBZOG','yM91BMrZ','Bw92zvrV','y3nZvgv4Da','y2XHC3nmAxn0','y2XLyxjnB2rLBenHy2HL','C3r5Bgu','Cg9ZDe1LC3nHz2u','y3vYC29Y','ihbVBgLNB25VkhmPignYAwfKBYHZkq','x19MB3jJzujHC2vTyxa','Cg9ZAxrPB246zML4zwq7yM90Dg9ToJe2ChG7CMLNAhq6mtzWEdT6lwLUzgv4oJiXndC0odm2ndC7yMfJA2DYB3vUzdOJmdaWo2jVCMrLCJOZChGGC29SAwqGi2zMmMqYzdTIB3jKzxiTCMfKAxvZoJzWEdTVDMvYzMXVDZPOAwrKzw47yM94lxnOywrVDZOWidrWEcaYmhb4ihjNyMeOmcWWldaSlJyPoW','y2fUDMfZ','ic0+ignVBNnPzgvYywrVievniejsqu5dtW','C3rHCNrcBgLUA2LUzW','D2fYBMLUzW','nJe2mJzyCKvUAxy','ow5Rq1fQDG','ANmVmtHIlxnHBs1ZzwDTzw50lxDVCMTLCI5QCW','iZrLy2i3mq','zMLKlq','zxjYB3i','CMvQzwn0','yNv0Dg9U','icHKzxzPy2vqAxHLBfjHDgLVpq','C2XPy2u','x19Zyw0','y29SB3i6i2zMzJTMB250oJeYChGGC2fUCY1ZzxjPzJTWywrKAw5NoJrWEca4ChG7yMfJA2DYB3vUzdPYz2jHkdaSmcWWlc44nsK7zgLZCgXHEtPMBgv4o2P1C3rPzNKTy29UDgvUDdPZCgfJzs1Izxr3zwvUo2fSAwDUlwL0zw1ZoMnLBNrLCJTNyxa6ohb4oW','ndm2ndq1nujJt1fnBW','z2v0qM91BMrPBMDdBgLLBNrszwn0','u0fnoIbLC2nHBgeGy2fUDMfZl0ntuYa9ia','Cg0TDg9VBgjHCI12AxnPyMXL','Cg9PBNrZ','Bgv2zwW','zNvUy3rPB24','CgfYzw50tM9Kzq','ndy0nde2mNrYvNvxva','Dg9gAxHLza','C2f0zwXPDgu','u0fnoIbJyxb0DxjHigvZDgeGzw0GyNjHBMnVl3vUAwzVCM1LicHIyxnLBwfWpsi','B25LCNjVCG','u0fnoIb2Axn0ysbLBNzPywrHiguGy29KAwzPy2fKysbUBYb3B3jRzxiGkhPVB20G','u0fnigrLyNvNoIbYzwnVCNrLicSGCg9UDg8Gzw52AwfKBW','q2XPy2eGBNvTigvKAwBdRwnPBYbWyxjHihnLz21LBNrHCI4GrxnJihbHCMeGy2fUy2vSyxiU','yMvNAw5qyxrO','BwfW','u0fnigvYCM86ia','ug9SEwDVBG','y2XPzw50wq','Dg9tDhjPBMC','A2v5zg93BG','Aw5MBW','DhLWzq','ntuXmZG3mhrbwND4zq','u0fnoIbJCMLHzgeGBM92ysbJyw1HzgeGiNbVBgLNB25VC19bqvyIicHHignHBwfKysbHDgL2ysbLCMeGzguGB3v0CM8GDgLWBYbKzsbNzw9TzxrYAwePlG','zw5HyMXL','BNvTyMvY','C3rYB2TL','C2HVD0LKBgu','C2nVCMu','ywrKtgf5zxi','y3jLyxrLrwXLBwvUDa','zhjHz2DPBMC','BgLUzvrV','DgHLBG','mtqXotK0m0XsDg5WvG','y3jVC3nOywLY','C2fToNn0yxrL','ie8GyMfZzw1HCcaIreDuie9YDg9ZiIbHDhvHBcbUyw8Gzw52AweGy2fIzwnHBgHVCYbdt1jtic0Tig11zgeGCgfYysaIu2f0zwXPDguIicHbCMnhsvmPiguGDgvUDgeGB3v0CMeGDMv6lG','BgvUz3rO','u0fnoIbLCNjVigfVigXPBxbHCIbJywnOzsbKzsbTB2rLBg9ZoIa','Cg9ZAxrPB246ywjZB2X1Dgu7yM90Dg9ToJuWChG7BgvMDdO1mcu7DhjHBNnMB3jToNrYyw5ZBgf0zvGOltuWjsK7EI1PBMrLEdO2mta7yMfJA2DYB3vUzdPYz2jHkde4mcW0mcW0mcWUosK7y29SB3i6i2zMzJTWywrKAw5NoJHWEcaXnNb4o2jVCMrLCI1YywrPDxm6nNb4o2zVBNqTC2L6ztOXmNb4o2zVBNqTzMfTAwX5oNnHBNmTC2vYAwy7Cg9PBNrLCI1LDMvUDhm6BM9UztTTyxGTD2LKDgG6odaLo3rLEhqTywXPz246y2vUDgvYoW','EM9VBq','r2vVBwv0CMLHia','zxjYBYbKzxnJB25OzwnPzg8','A2v5CW','x19LywDSzufZC2LZDgfUDa','icHZy29YztOG','i2zMmMqYza','z2vVBwv0CNLuExbL','Bg9N','y2f0y2G','B3bHy2L0Eq','zgv2AwnLugL4zwXsyxrPBW','qsbZzwDTzw50yxiUlI4','C3rYB2TLu3r5Bgu','Cg9SAwDVBM9Zx0fbvG','tMfVigzVAsbKzxrLDgfKBYbUzw5ODw0Gy29UDg9YBM8GDMfSAwrVig5LC3nLihbVBNrVlIbuzw50ysbJBgLJyxiGBwfPCYbHBYbJzw50CM8Gzg8GzwrPzMLJAw8U','mtj1uvDfs2K','yxr0ywnR','Dgv4Da','z2v0v2vZDa','zMLUywXSEq','vxrPBa','ywrKrxzLBNrmAxn0zw5LCG','xsbcwW','u0fnoIb0B29SyMfYigrLigvKACoNW6nVigzLy2HHzgeGls0GysbKzxnHDgL2yxiGysbwzxrVCML6yCoNW6nViefZC2LZDgLKysbHDxrVBwf0AwnHBwvUDguU','BgLUzvDPzhrO','yxbWzw5Kq2HPBgq','zgL2','rxjYBYbKzxnJB25OzwnPzg8GBM8GD29YA2vYifnbts4','zgLZCgf0y2HfDMvUDa','Bw9KzwXZtg9HzgvK'];_0x8a3e=function(){return _0x4ef306;};return _0x8a3e();}
+/* FeatherGIS — Segment Anything (SAM) via ONNX Runtime Web (main thread)
+   Clique → captura → worker (SAM) → contorno → polígono no mapa
+   ============================================================
+   O encoder/decoder ONNX corre num Web Worker dedicado
+   (18b-sam-segment-worker.js), NAO aqui. ANTES tudo corria nesta thread
+   (captura + inferencia + pos-processamento) e o browser ficava
+   completamente irresponsivo durante a segmentacao (single-thread do JS +
+   um ViT-B a 1024x1024 e' pesado). AGORA esta thread so' trata de DOM/
+   Leaflet (captura via html2canvas, que precisa de DOM e por isso NAO pode
+   correr no worker) e de orquestrar pedidos ao worker por postMessage --
+   toda a computacao pesada (encoder.run, decoder.run, limpeza morfologica,
+   tracado de contorno) corre la', deixando esta thread livre para pintar
+   e reagir a cliques durante o processamento.
+*/
+(function(){
+  'use strict';
+
+  // ========== Estado ==========
+  var active = false;
+  var overlayEl = null;
+  var overlayGuide = null;
+  var LOADED = false; // refletido a partir da mensagem 'modelsLoaded' do worker
+
+  /* Metadados da vista atualmente codificada (o embedding em si fica no
+     worker, nunca vem para aqui -- ver VIEW_CACHE em 18b-sam-segment-
+     worker.js). Serve para 1) decidir se um novo clique pode reaproveitar
+     a vista ja codificada (mesmos bounds/zoom) e 2) converter os pontos
+     que o worker devolve (em pixels do canvas) para lat/lng.
+     Campos: { previewCanvas, previewScale, w, h, bounds, zoom }. */
+  var VIEW_META = null;
+  var processingClick = false; // evita dois cliques a processar em simultaneo
+  var mapInvalidateHandler = null; // listener movestart/zoomstart p/ invalidar VIEW_META
+
+  /* O botão da Vetorização Assistida só existe visualmente enquanto
+     #map tem a classe "pm-toolbar-visible" (ver css/pm-toolbar.css --
+     o botão vive no mesmo grupo da toolbar de edição do Geoman). Se
+     essa classe for removida por qualquer motivo (fechar a toolbar de
+     edição, por exemplo) enquanto o modo SAM ainda está ativo, o botão
+     desaparece e deixa de haver forma de clicar para desligar -- só
+     restava a tecla Esc. Este observer garante que o próprio modo se
+     desativa sozinho nesse caso, em vez de depender de o utilizador
+     saber que o Esc ainda funciona. */
+  var toolbarVisibilityObserver = null;
+
+  function ensureToolbarVisibilityObserver(){
+    if(toolbarVisibilityObserver) return;
+    var mapDiv = document.getElementById('map');
+    if(!mapDiv || typeof MutationObserver === 'undefined') return;
+    toolbarVisibilityObserver = new MutationObserver(function(){
+      if(active && !mapDiv.classList.contains('pm-toolbar-visible')){
+        if(typeof __console !== 'undefined'){
+          __console.log('SAM: toolbar de edição fechada -- a desativar a Vetorização Assistida automaticamente.', 'info');
+        }
+        deactivate();
+      }
+    });
+    toolbarVisibilityObserver.observe(mapDiv, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  // ========== Worker + protocolo de mensagens ==========
+  var samWorker = null;
+  var pendingRequests = {}; // reqId -> {resolve, reject}
+  var nextReqId = 1;
+
+  function ensureWorker(){
+    if(!samWorker){
+      samWorker = new Worker('js/18b-sam-segment-worker.js');
+      samWorker.onmessage = onWorkerMessage;
+      samWorker.onerror = function(e){
+        var errMsg = e && e.message ? e.message : 'Erro desconhecido no worker SAM.';
+        if(typeof __console !== 'undefined') __console.log('SAM: erro no worker: ' + errMsg, 'error');
+        // Nenhum pedido pendente vai ser respondido -- rejeitar todos para nao ficarem presos.
+        Object.keys(pendingRequests).forEach(function(id){
+          pendingRequests[id].reject(new Error(errMsg));
+          delete pendingRequests[id];
+        });
+      };
+    }
+    return samWorker;
+  }
+
+  function onWorkerMessage(e){
+    var msg = e.data;
+    if(msg.type === 'log'){
+      if(typeof __console !== 'undefined') __console.log('SAM: ' + msg.text, msg.level || 'info');
+      return;
+    }
+    if(msg.type === 'progress'){
+      if(typeof __console !== 'undefined') __console.log('SAM: ' + msg.text, 'info');
+      return;
+    }
+    if(msg.type === 'modelsLoaded'){
+      LOADED = true;
+      return;
+    }
+    // Respostas a pedidos concretos (encodeView/decodeClick) tem reqId.
+    var pending = pendingRequests[msg.reqId];
+    if(!pending) return;
+    delete pendingRequests[msg.reqId];
+    if(msg.type === 'error') pending.reject(new Error(msg.message));
+    else pending.resolve(msg);
+  }
+
+  // Envia um pedido ao worker e devolve uma Promise que resolve/rejeita
+  // quando a resposta com o mesmo reqId chegar (ver onWorkerMessage).
+  function callWorker(payload, transferList){
+    return new Promise(function(resolve, reject){
+      var reqId = nextReqId++;
+      pendingRequests[reqId] = { resolve: resolve, reject: reject };
+      payload.reqId = reqId;
+      ensureWorker().postMessage(payload, transferList || []);
+    });
+  }
+
+  function loadModels(){
+    ensureWorker().postMessage({ type: 'loadModels' });
+  }
+
+  // ========== API pública ==========
+  window.__sam = {
+    get active(){ return active; },
+    get loaded(){ return LOADED; },
+    activate: activate,
+    deactivate: deactivate,
+    load: loadModels,
+  };
+
+  // ========== Ativar / desativar modo SAM ==========
+  /* Basemap CORS-safe exigido pela captura via html2canvas (ver
+     ensureEmbedding/isCanvasBlank) -- 'dgt' (Ortos2021,
+     cartografia.dgterritorio.gov.pt) nao envia cabecalhos CORS, pelo que
+     qualquer captura feita com esse basemap ativo fica em branco. Ha
+     ainda o agravante da troca automatica satelite<->dgt por zoom
+     (maybeAutoSwitchBasemap em 05-app-main.js, ativa >=zoom 17 dentro de
+     Portugal) -- exatamente o nivel de zoom tipico para traçar um
+     edificio -- o que explicava os resultados inconsistentes: a mesma
+     sessao podia comecar no satelite e trocar sozinha para dgt mesmo a
+     meio do trabalho. */
+  var SAM_REQUIRED_BASEMAP = 'satelite';
+
+  function activate(){
+    if(active) return;
+    loadModels(); // fire-and-forget -- o worker debate internamente se ja esta LOADED/LOADING
+    active = true;
+    if(typeof window.dispatchEvent === 'function'){
+      window.dispatchEvent(new CustomEvent('sam:state', { detail: { active: true } }));
+    }
+
+    // Forçar o basemap CORS-safe e desligar a troca automatica por zoom.
+    // ANTES: só se chamava __forceBasemap quando o basemap ainda NAO era
+    // "satelite" -- mas se já estava em "satelite" no momento do clique
+    // no botão SAM, a resolução automática (maybeAutoSwitchBasemap,
+    // 05-app-main.js) ficava LIGADA na mesma, e disparava sozinha assim
+    // que se desse zoom >=17 para acertar no edifício -- exatamente o
+    // que se estava a passar aqui. AGORA chama-se sempre, independente-
+    // mente do basemap atual, porque o que importa nao e' só trocar de
+    // basemap uma vez, e' garantir que a resolução automática fica
+    // desligada durante toda a sessao de SAM.
+    if(typeof window.__forceBasemap === 'function'){
+      var wasBasemap = window.__activeBaseLayerKey;
+      window.__forceBasemap(SAM_REQUIRED_BASEMAP);
+      if(typeof __console !== 'undefined'){
+        __console.log('SAM: basemap fixado em "satelite" (CORS-safe) e resolução automática desligada para toda a sessão' +
+          (wasBasemap !== SAM_REQUIRED_BASEMAP ? ' (trocou de "' + wasBasemap + '")' : ' (já estava em "satelite")') + '.', 'info');
+      }
+    } else if(typeof __console !== 'undefined'){
+      __console.log('SAM: aviso -- window.__forceBasemap não encontrado; o ficheiro 05-app-main.js pode não estar atualizado. A captura pode falhar se o basemap ativo for "dgt".', 'warning');
+    }
+
+    // Mostrar indicador visual
+    var mapDiv = document.getElementById('map');
+    if(!mapDiv) return;
+
+    overlayEl = document.createElement('div');
+    overlayEl.style.cssText = 'position:absolute;inset:0;z-index:602;cursor:crosshair;background:rgba(0,180,100,.07);';
+    mapDiv.appendChild(overlayEl);
+
+    overlayGuide = document.createElement('div');
+    overlayGuide.style.cssText = 'position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:603;background:rgba(0,0,0,.7);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-family:sans-serif;pointer-events:none;white-space:nowrap;';
+    overlayGuide.textContent = 'Clica num edifício para segmentar. Esc para cancelar.';
+    mapDiv.appendChild(overlayGuide);
+
+    mapDiv.style.cursor = 'crosshair';
+
+    // Vigiar o fecho da toolbar de edição para auto-desativar (ver comentário acima)
+    ensureToolbarVisibilityObserver();
+
+    // Águia animada: indicador visual do estado da IA (ver 19-eagle-assistant.js)
+    if(window.__eagleAssistant) window.__eagleAssistant.showIdle();
+
+    overlayEl.addEventListener('click', handleClick);
+
+    /* Invalidar a vista codificada assim que o mapa comeca a mexer --
+       'movestart'/'zoomstart' (nao 'moveend'/'zoomend') porque queremos
+       cortar a cache ANTES de qualquer clique poder chegar a meio de um
+       pan/zoom em curso, nao so' depois de ele terminar. Avisa-se tambem
+       o worker, para nao ficar a decodificar sobre um embedding de uma
+       vista que ja nao e' a atual. */
+    if(window.map && typeof window.map.on === 'function'){
+      mapInvalidateHandler = function(){
+        VIEW_META = null;
+        if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
+      };
+      map.on('movestart zoomstart', mapInvalidateHandler);
+    }
+  }
+
+  function deactivate(){
+    if(!active) return;
+    active = false;
+    if(overlayEl && overlayEl.parentNode){
+      overlayEl.parentNode.removeChild(overlayEl);
+      overlayGuide.parentNode.removeChild(overlayGuide);
+    }
+    overlayEl = null;
+    overlayGuide = null;
+    var mapDiv = document.getElementById('map');
+    if(mapDiv) mapDiv.style.cursor = '';
+    if(map) map.dragging.enable();
+
+    if(window.map && mapInvalidateHandler){
+      map.off('movestart zoomstart', mapInvalidateHandler);
+      mapInvalidateHandler = null;
+    }
+    VIEW_META = null; // basemap ou vista podem mudar entre sessoes -- nao arriscar cache stale
+    if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
+    processingClick = false;
+
+    // Águia animada: remover completamente e libertar timers/animações
+    if(window.__eagleAssistant) window.__eagleAssistant.hide();
+
+    if(typeof window.dispatchEvent === 'function'){
+      window.dispatchEvent(new CustomEvent('sam:state', { detail: { active: false } }));
+    }
+  }
+
+  // ========== Handler de clique no mapa ==========
+  function handleClick(e){
+    e.stopPropagation();
+    if(!window.map) return;
+
+    /* O modo fica ativo entre cliques (para aproveitar a cache do
+       embedding no worker ao traçar varios edificios seguidos na mesma
+       vista); so' se ignora um novo clique enquanto o anterior ainda
+       esta a processar. */
+    if(processingClick) return;
+    processingClick = true;
+
+    var mapDiv = document.getElementById('map');
+    var rect = mapDiv.getBoundingClientRect();
+    var clickX = e.clientX - rect.left;
+    var clickY = e.clientY - rect.top;
+    var bounds = map.getBounds();
+    var zoom = map.getZoom();
+
+    if(overlayEl) overlayEl.style.cursor = 'wait';
+
+    // Mostrar "a processar"
+    var status = document.createElement('div');
+    status.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:610;background:rgba(0,0,0,.8);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-family:sans-serif;pointer-events:none;';
+    status.textContent = 'A segmentar...';
+    mapDiv.appendChild(status);
+
+    // Águia animada: começa a piscar enquanto a IA analisa a imagem
+    if(window.__eagleAssistant) window.__eagleAssistant.startBlinking();
+
+    runSegmentation(clickX, clickY, bounds, zoom, mapDiv).then(function(count){
+      mapDiv.removeChild(status);
+      if(!active) return; // modo AAV foi desativado enquanto este pedido estava em curso -- não reanimar a águia
+      if(count){
+        // Águia animada: encontrou um polígono -- interromper o piscar e atacar
+        if(window.__eagleAssistant) window.__eagleAssistant.attack();
+      } else {
+        showTransientMessage(mapDiv, 'Nao foi detetado nenhum contorno valido nesse ponto. Tenta clicar mais ao centro do edificio.');
+        if(window.__eagleAssistant) window.__eagleAssistant.showIdle();
+      }
+    }).catch(function(err){
+      mapDiv.removeChild(status);
+      if(typeof __console !== 'undefined') __console.log('SAM erro: ' + err.message, 'error');
+      if(!active) return; // idem -- já desativado, não mostrar mensagem/águia sobre um modo que já não está ligado
+      showTransientMessage(mapDiv, 'Erro na segmentacao: ' + (err && err.message ? err.message : 'erro desconhecido'));
+      if(window.__eagleAssistant) window.__eagleAssistant.showIdle();
+    }).finally(function(){
+      processingClick = false;
+      if(overlayEl) overlayEl.style.cursor = 'crosshair';
+    });
+  }
+
+  // Mensagem breve sobre o mapa (sucesso-vazio ou erro), some sozinha --
+  // ANTES so' o __console interno era avisado, por isso um clique sem
+  // resultado (mascara vazia) ou um erro pareciam "nao fazer nada".
+  function showTransientMessage(mapDiv, text){
+    var el = document.createElement('div');
+    el.style.cssText = 'position:absolute;bottom:50px;left:50%;transform:translateX(-50%);z-index:610;background:rgba(180,40,40,.9);color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;font-family:sans-serif;pointer-events:none;max-width:80%;text-align:center;';
+    el.textContent = text;
+    mapDiv.appendChild(el);
+    setTimeout(function(){
+      if(el.parentNode) el.parentNode.removeChild(el);
+    }, 4000);
+  }
+
+  // ========== DEBUG: preview do recorte enviado ao modelo ==========
+  /* Thumbnail flutuante com um recorte a volta do clique (so' para
+     visualizacao) e uma cruz vermelha no ponto exato (relX, relY) que
+     sera' mandado como prompt positivo ao decoder (no worker).
+     ANTES: anexava-se dentro de mapDiv com position:absolute e
+     z-index:611 -- ficava la, mas ESCONDIDO atras de paineis flutuantes
+     que vivem dentro de #map com z-index muito mais alto. AGORA anexa-se
+     a document.body (fora de #map) com position:fixed e um z-index
+     extremo, para garantir que fica sempre visivel. */
+  var debugPreviewEl = null;
+  function showDebugPreview(mapDiv, roiCanvas, relX, relY){
+    if(debugPreviewEl && debugPreviewEl.parentNode){
+      debugPreviewEl.parentNode.removeChild(debugPreviewEl);
+    }
+    var thumbSize = 220;
+    var previewCanvas = document.createElement('canvas');
+    previewCanvas.width = thumbSize;
+    previewCanvas.height = thumbSize;
+    var pctx = previewCanvas.getContext('2d');
+    pctx.drawImage(roiCanvas, 0, 0, roiCanvas.width, roiCanvas.height, 0, 0, thumbSize, thumbSize);
+
+    // Cruz vermelha no ponto de clique (convertido para a escala do thumbnail)
+    var tx = (relX / roiCanvas.width) * thumbSize;
+    var ty = (relY / roiCanvas.height) * thumbSize;
+    pctx.strokeStyle = '#ff2d2d';
+    pctx.lineWidth = 2;
+    pctx.beginPath();
+    pctx.moveTo(tx - 8, ty); pctx.lineTo(tx + 8, ty);
+    pctx.moveTo(tx, ty - 8); pctx.lineTo(tx, ty + 8);
+    pctx.stroke();
+    pctx.beginPath();
+    pctx.arc(tx, ty, 5, 0, Math.PI * 2);
+    pctx.strokeStyle = '#fff';
+    pctx.lineWidth = 1;
+    pctx.stroke();
+
+    debugPreviewEl = document.createElement('div');
+    debugPreviewEl.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:2147483647;background:#000;border:3px solid #ff2d2d;border-radius:6px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.6);';
+    var caption = document.createElement('div');
+    caption.style.cssText = 'color:#fff;font:12px sans-serif;padding:4px 8px;background:rgba(0,0,0,.85);display:flex;justify-content:space-between;align-items:center;gap:8px;';
+    var captionText = document.createElement('span');
+    captionText.textContent = 'SAM debug: recorte + ponto enviado';
+    var closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = '✕';
+    closeBtn.style.cssText = 'background:none;border:none;color:#fff;cursor:pointer;font-size:13px;line-height:1;padding:2px 4px;';
+    closeBtn.addEventListener('click', function(){
+      if(debugPreviewEl && debugPreviewEl.parentNode) debugPreviewEl.parentNode.removeChild(debugPreviewEl);
+    });
+    caption.appendChild(captionText);
+    caption.appendChild(closeBtn);
+    debugPreviewEl.appendChild(previewCanvas);
+    debugPreviewEl.appendChild(caption);
+    document.body.appendChild(debugPreviewEl);
+
+    if(typeof __console !== 'undefined'){
+      __console.log('SAM debug: preview do ROI mostrado no canto inferior direito (fixo, por cima de tudo) -- confirma se a cruz cai em cima do edificio clicado.', 'info');
+    }
+  }
+
+  // ========== Deteção de canvas em branco/uniforme ==========
+  /* Um recorte real de ortofoto tem sempre alguma variacao de cor
+     (telhados, vegetacao, estradas); um recorte que o html2canvas nao
+     conseguiu desenhar (tile cross-origin ignorada, ou tile ainda a
+     carregar no momento da captura) fica com uma cor de fundo lisa.
+     Verifica-se aqui, na main thread, LOGO A SEGUIR a captura -- antes de
+     sequer se criar a ImageBitmap e mandar ao worker -- para falhar rapido
+     sem gastar uma viagem ao worker (nem, pior, tempo de encoder) numa
+     imagem que ja se sabe estar vazia. */
+  function isCanvasBlank(canvas){
+    var ctx = canvas.getContext('2d');
+    var full = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    var stepPx = 8; // amostra 1 em cada 8 pixeis (em cada eixo) do array RGBA
+    var rowBytes = canvas.width * 4;
+    var sum = 0, sumSq = 0, n = 0;
+    var rMin = 255, rMax = 0, gMin = 255, gMax = 0, bMin = 255, bMax = 0;
+    for(var y = 0; y < canvas.height; y += stepPx){
+      for(var x = 0; x < canvas.width; x += stepPx){
+        var o = y * rowBytes + x * 4;
+        var r = full[o], g = full[o+1], b = full[o+2];
+        if(r < rMin) rMin = r; if(r > rMax) rMax = r;
+        if(g < gMin) gMin = g; if(g > gMax) gMax = g;
+        if(b < bMin) bMin = b; if(b > bMax) bMax = b;
+        sum += r + g + b; sumSq += r*r + g*g + b*b; n += 3;
+      }
+    }
+    var mean = sum / n;
+    var variance = (sumSq / n) - (mean * mean);
+    var blank = variance < 4; // desvio-padrao < 2 em escala 0-255 -- praticamente uma cor sólida
+    if(typeof __console !== 'undefined'){
+      __console.log('SAM: analise do ROI capturado -- media=' + mean.toFixed(1) + ' variancia=' + variance.toFixed(1) +
+        ' R[' + rMin + '-' + rMax + '] G[' + gMin + '-' + gMax + '] B[' + bMin + '-' + bMax + ']' +
+        (blank ? ' -> considerado EM BRANCO' : ''), blank ? 'warning' : 'info');
+    }
+    return blank;
+  }
+
+  // ========== Captura + pedido de encode ao worker (CACHEADO por vista) ==========
+  /* Corre no maximo uma vez por vista do mapa: captura o mapDiv inteiro,
+     manda para o worker codificar, e guarda so' os METADADOS da vista
+     (VIEW_META) -- o embedding em si fica residente no worker. Cada
+     clique seguinte na mesma vista salta direto para o pedido de decode
+     (ver runSegmentation). Invalida-se quando o mapa se mexe (pan/zoom)
+     ou o modo SAM e' desativado (ver listeners em activate()/deactivate()). */
+  async function ensureEmbedding(mapDiv, bounds, zoom){
+    /* Rede de segurança final -- mesmo com o basemap fixado em activate(),
+       o utilizador pode trocar de basemap à mão no menu a meio de uma
+       sessão de SAM. Confirma-se aqui, mesmo antes de capturar, e
+       força-se outra vez se necessário. Uma troca de basemap invalida
+       sempre a vista codificada (a imagem por baixo mudou). */
+    if(typeof window.__forceBasemap === 'function' && window.__activeBaseLayerKey !== SAM_REQUIRED_BASEMAP){
+      if(typeof __console !== 'undefined'){
+        __console.log('SAM: basemap tinha mudado para "' + window.__activeBaseLayerKey + '" a meio da sessão -- a forçar de volta para "satelite" antes de capturar.', 'warning');
+      }
+      window.__forceBasemap(SAM_REQUIRED_BASEMAP);
+      VIEW_META = null;
+      if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
+      await new Promise(function(r){ setTimeout(r, 500); }); // dar tempo às tiles novas carregarem
+    }
+
+    // Vista ja codificada e ainda valida (mesmos bounds+zoom)? Nao pedir outra vez ao worker.
+    if(VIEW_META && VIEW_META.zoom === zoom && VIEW_META.bounds.equals(bounds)){
+      return VIEW_META;
+    }
+
+    /* 1. Capturar viewport (DOM -- so' pode correr aqui, nao no worker).
+       scale:1 -- captura a pixels CSS, nao ao devicePixelRatio do ecra
+       (2x+ em retina/HiDPI seria puro desperdicio, ja que o encoder reduz
+       tudo para 1024x1024 de qualquer forma). useCORS:true para o
+       html2canvas conseguir desenhar as tiles do basemap (outra origem). */
+    var canvas = await html2canvas(mapDiv, { useCORS: true, logging: false, scale: 1 });
+    var w = canvas.width, h = canvas.height;
+
+    if(isCanvasBlank(canvas)){
+      var basemapKey = (typeof window.__activeBaseLayerKey !== 'undefined') ? window.__activeBaseLayerKey : null;
+      var basemapNote = basemapKey === 'dgt'
+        ? ' O basemap "DGT Ortos" atual nao envia cabecalhos CORS -- muda para "Satelite" (ArcGIS) e tenta outra vez.'
+        : ' Tenta mudar de basemap (ex. "Satelite") e repetir.';
+      if(typeof __console !== 'undefined'){
+        __console.log('SAM: captura esta em branco/uniforme (basemap="' + basemapKey + '") -- provavel bloqueio CORS das tiles pelo html2canvas. A abortar sem chamar o worker.', 'error');
+      }
+      throw new Error('Imagem base nao capturada (bloqueio CORS das tiles).' + basemapNote);
+    }
+
+    // 2. Miniatura para o debug preview (fica so' aqui na main thread, nunca vai ao worker).
+    var PREVIEW_MAX = 900;
+    var previewScale = Math.min(1, PREVIEW_MAX / Math.max(w, h));
+    var previewCanvas = document.createElement('canvas');
+    previewCanvas.width = Math.round(w * previewScale);
+    previewCanvas.height = Math.round(h * previewScale);
+    previewCanvas.getContext('2d').drawImage(canvas, 0, 0, previewCanvas.width, previewCanvas.height);
+
+    /* 3. Transferir para o worker via ImageBitmap (transferable -- zero
+       copias extra no postMessage, so' a copia unica feita pelo proprio
+       createImageBitmap). O worker fica DONO do embedding resultante;
+       aqui so' guardamos os metadados da vista, nao os pixels nem o
+       embedding. */
+    var bitmap = await createImageBitmap(canvas);
+    await callWorker({ type: 'encodeView', bitmap: bitmap, w: w, h: h, zoom: zoom }, [bitmap]);
+
+    VIEW_META = {
+      previewCanvas: previewCanvas, previewScale: previewScale,
+      w: w, h: h, bounds: bounds, zoom: zoom,
+    };
+    if(typeof __console !== 'undefined'){
+      __console.log('SAM: vista enviada e codificada no worker (zoom ' + zoom + ') -- proximos cliques na mesma vista so\' pedem o decode.', 'info');
+    }
+    return VIEW_META;
+  }
+
+  // ========== Pipeline por clique (pede so' o decode ao worker) ==========
+  async function runSegmentation(clickX, clickY, bounds, zoom, mapDiv){
+    /* ANTES: clickX/clickY (pixels CSS) eram usados diretamente contra o
+       canvas do html2canvas, que por omissao captura a devicePixelRatio
+       do ecra (2x+ em retina/HiDPI) -- desalinhava o ponto enviado ao SAM
+       do sitio onde realmente se clicou. AGORA converte-se sempre para
+       pixels do CANVAS antes de qualquer calculo. */
+    var mapRect = mapDiv.getBoundingClientRect();
+
+    var meta = await ensureEmbedding(mapDiv, bounds, zoom);
+    var scaleX = meta.w / mapRect.width;
+    var scaleY = meta.h / mapRect.height;
+    clickX = clickX * scaleX;
+    clickY = clickY * scaleY;
+    if(typeof __console !== 'undefined'){
+      __console.log('SAM: escala canvas/CSS = ' + scaleX.toFixed(2) + 'x' + scaleY.toFixed(2) + ' (devicePixelRatio=' + (window.devicePixelRatio || 1) + ')', 'info');
+    }
+
+    var w = meta.w, h = meta.h, metaBounds = meta.bounds; // usar sempre os da vista que gerou o embedding
+
+    /* DEBUG: pre-visualizacao de um recorte a volta do ponto -- so' para
+       diagnostico visual, nao afeta a inferencia (que corre no worker).
+       Fonte: a miniatura cacheada (meta.previewCanvas). */
+    var SAM_DEBUG_PREVIEW = true;
+    if(SAM_DEBUG_PREVIEW){
+      var pScale = meta.previewScale;
+      var pClickX = clickX * pScale, pClickY = clickY * pScale;
+      var dbgSize = Math.max(60, Math.round(400 * pScale)), dbgHalf = dbgSize / 2;
+      var dbgRx = Math.max(0, Math.min(pClickX - dbgHalf, meta.previewCanvas.width - dbgSize));
+      var dbgRy = Math.max(0, Math.min(pClickY - dbgHalf, meta.previewCanvas.height - dbgSize));
+      var dbgCanvas = document.createElement('canvas');
+      dbgCanvas.width = dbgSize; dbgCanvas.height = dbgSize;
+      dbgCanvas.getContext('2d').drawImage(meta.previewCanvas, dbgRx, dbgRy, dbgSize, dbgSize, 0, 0, dbgSize, dbgSize);
+      showDebugPreview(mapDiv, dbgCanvas, pClickX - dbgRx, pClickY - dbgRy);
+    }
+
+    // Pedido de decode ao worker -- so' isto bloqueia (aguarda resposta),
+    // e mesmo assim NAO trava a UI: e' so' uma await numa Promise, o
+    // trabalho pesado corre na outra thread.
+    var res = await callWorker({ type: 'decodeClick', x: clickX, y: clickY });
+
+    /* Converter pontos (pixels do canvas capturado, devolvidos pelo
+       worker) para lat/lng -- o worker nao sabe nada de Leaflet/bounds,
+       so' esta thread e' que tem essa informacao. */
+    var polygons = [];
+    if(res.points){
+      var pts = res.points.map(function(pt){
+        var gx = pt[0], gy = pt[1];
+        var lng = metaBounds.getWest() + (gx / w) * (metaBounds.getEast() - metaBounds.getWest());
+        var lat = metaBounds.getNorth() - (gy / h) * (metaBounds.getNorth() - metaBounds.getSouth());
+        return [lat, lng];
+      });
+      polygons.push(pts);
+    }
+
+    // Criar polígono(s) no mapa -- associados à camada ativa (ou a uma nova
+    // camada "poligonos_AAV", se ainda não existir nenhuma) em vez de
+    // ficarem soltos: ver getOrCreateSamLayerId/registerSamFeature acima.
+    var samLayerId = getOrCreateSamLayerId();
+    polygons.forEach(function(pts){
+      var polygon = L.polygon(pts, {
+        color: '#4ecb71', weight: 2, fillColor: '#4ecb71', fillOpacity: 0.25,
+      }).addTo(map);
+      registerSamFeature(polygon, samLayerId);
+    });
+
+    var scoreTxt = (typeof res.score === 'number') ? ' (score: ' + res.score.toFixed(3) + ')' : '';
+    var msgTxt = 'SAM: ' + polygons.length + ' poligono(s) criado(s)' + scoreTxt;
+    if(typeof __console !== 'undefined') __console.log(msgTxt, 'info');
+    return polygons.length;
+  }
+
+  // ========== Integração com o painel de camadas ==========
+  /* O SAM funciona como um "assistente": os polígonos que gera não devem
+     ficar soltos no mapa, devem entrar no mesmo sistema de camadas do
+     resto da aplicação (painel, cores, tabela de atributos, etc.) --
+     ver js/modules/features.js (renderLayersPanel, featuresData) e
+     js/05-app-main.js (onFeatureCreated, que faz o mesmo para as
+     geometrias desenhadas à mão).
+
+     Regra pedida:
+       1) Se já existe uma camada ativa e essa camada é de polígonos
+          -> usar essa mesma camada (é o caso mais comum: o utilizador
+          já criou a camada "Edifícios" e está a traçar para lá).
+       2) Senão, se já existe uma camada "poligonos_AAV" criada por uma
+          sessão anterior do SAM (arquivada no painel) -> reaproveitá-la,
+          para não ficar a criar uma camada nova a cada sessão.
+       3) Senão, se não existe NENHUMA camada no projeto -> esta passa a
+          ser a própria camada ativa (fica igual a ter passado pelo
+          wizard "Vetorizar").
+       4) Senão (há uma camada ativa mas é de outro tipo de geometria,
+          ex. Pontos/Linhas) -> cria-se uma camada "poligonos_AAV" nova,
+          arquivada logo à parte, SEM mexer na camada que o utilizador
+          tem selecionada de momento (não lhe interrompe o que está a
+          fazer). Fica acessível/editável no painel como qualquer outra.
+  */
+  function getOrCreateSamLayerId(){
+    if(typeof config === 'undefined' || typeof layers === 'undefined' || typeof activeLayerId === 'undefined'){
+      return null; // sistema de camadas não disponível (ex: página de testes isolada)
+    }
+
+    if(config.geometryType === 'Polygon'){
+      return activeLayerId;
+    }
+
+    var existing = layers.find(function(l){ return l.name === 'poligonos_AAV'; });
+    if(existing) return existing.id;
+
+    if(!config.geometryType && layers.length === 0){
+      config.shapeName = 'poligonos_AAV';
+      config.mode = 'simples';
+      config.attributes = [];
+      config.geometryType = 'Polygon';
+      config.colorAttr = null;
+      config.baseColor = null;
+      config.opacity = null;
+      config.symbology = (typeof defaultSymbology === 'function') ? defaultSymbology() : undefined;
+      if(typeof applyGeometryConfig === 'function') applyGeometryConfig();
+      if(typeof refreshLayerEditability === 'function') refreshLayerEditability();
+      if(typeof __console !== 'undefined') __console.log('SAM: criada camada "poligonos_AAV" (era a primeira camada do projeto).', 'info');
+      return activeLayerId;
+    }
+
+    var newId = ++layerCounter;
+    layers.push({
+      id: newId,
+      name: 'poligonos_AAV',
+      geometryType: 'Polygon',
+      mode: 'simples',
+      attributes: [],
+      colorAttr: null,
+      baseColor: null,
+      opacity: null,
+      symbology: (typeof defaultSymbology === 'function') ? defaultSymbology() : undefined
+    });
+    layerVisible.set(newId, true);
+    if(typeof __console !== 'undefined') __console.log('SAM: criada nova camada "poligonos_AAV" (a camada ativa era de outro tipo de geometria).', 'info');
+    return newId;
+  }
+
+  /* Regista um polígono do SAM exatamente como uma geometria desenhada à
+     mão (ver onFeatureCreated em 05-app-main.js) -- entra em featuresData,
+     ganha pane/estilo da camada de destino, aparece na tabela/painel e
+     conta para a verificação de topologia. */
+  function registerSamFeature(polygon, layerId){
+    if(layerId === null){
+      // sistema de camadas indisponível -- manter o comportamento antigo (só no mapa)
+      if(typeof drawnGroup !== 'undefined' && drawnGroup) drawnGroup.addLayer(polygon);
+      return;
+    }
+
+    if(typeof drawnGroup !== 'undefined' && drawnGroup) drawnGroup.addLayer(polygon);
+    if(typeof assignLayerPane === 'function') assignLayerPane(polygon, layerId);
+
+    if(typeof featureCounter !== 'undefined') featureCounter++;
+    var id = L.Util.stamp(polygon);
+    var entry = {
+      layer: polygon, props: {}, id: id, fid: samGenFid(),
+      updatedAt: Date.now(), label: 'Geometria ' + featureCounter,
+      geomType: 'Polygon', layerId: layerId,
+      hasOverlap: false, overlapsWith: [], showMeasures: false, measureTooltips: []
+    };
+    if(typeof featuresData !== 'undefined') featuresData.set(id, entry);
+    if(typeof markProjectDirty === 'function') markProjectDirty();
+    if(typeof styleLayerDefault === 'function') styleLayerDefault(polygon, layerId);
+    if(typeof bindFeatureContextMenu === 'function') bindFeatureContextMenu(entry);
+    if(typeof bindFeatureEditTracking === 'function') bindFeatureEditTracking(entry);
+    if(typeof refreshFeatList === 'function') refreshFeatList();
+    if(typeof checkAllTopology === 'function') checkAllTopology();
+  }
+
+  // Fallback caso este ficheiro seja alguma vez carregado sem 05-app-main.js
+  // (onde genFid() já existe como função global) -- nome próprio para não
+  // sombrear/confundir com o global.
+  function samGenFid(){
+    if(typeof genFid === 'function') return genFid();
+    return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('fid-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+  }
+
+
+  /* O download/cache dos pesos ONNX vive agora no worker (Cache Storage
+     API, tambem disponivel la, nao so' em Service Workers). Mantem-se
+     aqui so' o utilitario de limpeza manual, delegado ao worker. */
+  window.__sam.clearModelCache = function(){
+    return callWorker({ type: 'clearModelCache' }).catch(function(err){
+      if(typeof __console !== 'undefined') __console.log('SAM: erro ao limpar cache de modelos: ' + err.message, 'error');
+      return false;
+    });
+  };
+
+  // ========== Escape para cancelar ==========
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && active) deactivate();
+  });
+
+  // ========== Botão ==========
+  /* O botão da Vetorização Assistida já não vive no header -- passou a
+     ser um controlo Leaflet próprio, criado logo por baixo da toolbar
+     de edição do Geoman (ver "VetAssistControl" em 05-app-main.js, a
+     seguir ao map.pm.addControls principal). Esse controlo já chama
+     diretamente window.__sam.activate()/deactivate(), pelo que não há
+     nada a ligar aqui.
+  */
+})();

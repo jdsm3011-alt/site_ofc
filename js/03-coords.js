@@ -1,1 +1,29 @@
-const _0x119a1a=_0x5a8a;(function(_0x4105f0,_0x1b557b){const _0x481929=_0x5a8a,_0x580acc=_0x4105f0();while(!![]){try{const _0x4635e6=-parseInt(_0x481929(0x16f))/0x1+parseInt(_0x481929(0x172))/0x2*(-parseInt(_0x481929(0x17d))/0x3)+-parseInt(_0x481929(0x173))/0x4+parseInt(_0x481929(0x166))/0x5+-parseInt(_0x481929(0x171))/0x6+parseInt(_0x481929(0x170))/0x7+parseInt(_0x481929(0x176))/0x8;if(_0x4635e6===_0x1b557b)break;else _0x580acc['push'](_0x580acc['shift']());}catch(_0x115bbb){_0x580acc['push'](_0x580acc['shift']());}}}(_0x4bbe,0x5cb03),proj4[_0x119a1a(0x16a)](_0x119a1a(0x17a),'+proj=tmerc\x20+lat_0=39.66825833333333\x20+lon_0=-8.133108333333334\x20+k=1\x20+x_0=0\x20+y_0=0\x20+ellps=GRS80\x20+towgs84=0,0,0,0,0,0,0\x20+units=m\x20+no_defs'));function _0x4bbe(){const _0x18de83=['mtiZnZK3mvfIvfjdwG','oduXodK4D0rfC21s','mKz2su1WsW','mJa4mdq3nNnyENDRra','v0Dtodq','DgL0Bgu','ota3nZm2me1Twxbira','qwX0zxjUyxiGCgfYysbxr1m4na','pgi+','Aw5Uzxjive1m','rvbtrZOZnZyZ','pc9IpIbTifbulvrnmdy','y3jZlxn3AxrJAa','ndu4ntiZrxztthPf','Dgv4DenVBNrLBNq','mZa5oteXnwvvtgnZAW','y29VCMqTDMfSDwu','z2v0rwXLBwvUDej5swq','ywrKrxzLBNrmAxn0zw5LCG','zgvMCW','y2XPy2S','Dg9gAxHLza','qwX0zxjUyxiGCgfYysbfvfjtodKGlYbqvc1utta2','D2DZodq','nZm2nZuYqM5VCgLn'];_0x4bbe=function(){return _0x18de83;};return _0x4bbe();}let coordMode='wgs84';const crsSwitchBtn=document[_0x119a1a(0x168)](_0x119a1a(0x17c)),coordValueEl=document[_0x119a1a(0x168)](_0x119a1a(0x167));function _0x5a8a(_0x10f56b,_0x2f658){_0x10f56b=_0x10f56b-0x166;const _0x4bbe16=_0x4bbe();let _0x5a8a8b=_0x4bbe16[_0x10f56b];if(_0x5a8a['uyrzUr']===undefined){var _0x1bccb2=function(_0x529066){const _0x580b93='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x36f1d3='',_0x4c797f='';for(let _0x5aef1f=0x0,_0x28e583,_0x3dcc6b,_0x1da3b7=0x0;_0x3dcc6b=_0x529066['charAt'](_0x1da3b7++);~_0x3dcc6b&&(_0x28e583=_0x5aef1f%0x4?_0x28e583*0x40+_0x3dcc6b:_0x3dcc6b,_0x5aef1f++%0x4)?_0x36f1d3+=String['fromCharCode'](0xff&_0x28e583>>(-0x2*_0x5aef1f&0x6)):0x0){_0x3dcc6b=_0x580b93['indexOf'](_0x3dcc6b);}for(let _0x16cf10=0x0,_0x261755=_0x36f1d3['length'];_0x16cf10<_0x261755;_0x16cf10++){_0x4c797f+='%'+('00'+_0x36f1d3['charCodeAt'](_0x16cf10)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x4c797f);};_0x5a8a['UswnKf']=_0x1bccb2,_0x5a8a['ykpwwr']={},_0x5a8a['uyrzUr']=!![];}const _0x3d2c76=_0x4bbe16[0x0],_0xcb6be0=_0x10f56b+_0x3d2c76,_0x575984=_0x5a8a['ykpwwr'][_0xcb6be0];return!_0x575984?(_0x5a8a8b=_0x5a8a['UswnKf'](_0x5a8a8b),_0x5a8a['ykpwwr'][_0xcb6be0]=_0x5a8a8b):_0x5a8a8b=_0x575984,_0x5a8a8b;}crsSwitchBtn[_0x119a1a(0x169)](_0x119a1a(0x16b),()=>{const _0x2b9630=_0x119a1a;coordMode=coordMode==='wgs84'?'pttm06':_0x2b9630(0x16e);const _0x36f1d3=coordMode==='wgs84'?'PT-TM06':_0x2b9630(0x174);crsSwitchBtn[_0x2b9630(0x17e)]=_0x36f1d3,coordMode===_0x2b9630(0x16e)?crsSwitchBtn[_0x2b9630(0x175)]=_0x2b9630(0x16d):crsSwitchBtn[_0x2b9630(0x175)]=_0x2b9630(0x177);});function updateCoordBar(_0x4c797f,_0x5aef1f){const _0x54c2b3=_0x119a1a;if(coordMode===_0x54c2b3(0x16e))coordValueEl[_0x54c2b3(0x179)]=_0x54c2b3(0x178)+_0x4c797f['toFixed'](0x5)+',\x20'+_0x5aef1f[_0x54c2b3(0x16c)](0x5)+'</b>\x20WGS84';else{const [_0x28e583,_0x3dcc6b]=proj4('EPSG:4326',_0x54c2b3(0x17a),[_0x5aef1f,_0x4c797f]);coordValueEl[_0x54c2b3(0x179)]='<b>'+_0x28e583['toFixed'](0x1)+',\x20'+_0x3dcc6b['toFixed'](0x1)+_0x54c2b3(0x17b);}}
+/* ============================================================
+   SISTEMAS DE COORDENADAS — WGS84 (mapa/exportação) e
+   ETRS89 / PT-TM06 (EPSG:3763, referência oficial em Portugal)
+   ============================================================ */
+proj4.defs('EPSG:3763', '+proj=tmerc +lat_0=39.66825833333333 +lon_0=-8.133108333333334 +k=1 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
+
+let coordMode = 'wgs84'; // 'wgs84' | 'pttm06'
+const crsSwitchBtn = document.getElementById('crs-switch');
+const coordValueEl = document.getElementById('coord-value');
+
+crsSwitchBtn.addEventListener('click', ()=>{
+  coordMode = coordMode === 'wgs84' ? 'pttm06' : 'wgs84';
+  const label = coordMode === 'wgs84' ? 'PT-TM06' : 'WGS84';
+  crsSwitchBtn.textContent = label;
+  if(coordMode === 'wgs84'){
+    crsSwitchBtn.title = 'Alternar para ETRS89 / PT-TM06';
+  } else {
+    crsSwitchBtn.title = 'Alternar para WGS84';
+  }
+});
+
+function updateCoordBar(lat, lng){
+  if(coordMode === 'wgs84'){
+    coordValueEl.innerHTML = `<b>${lat.toFixed(5)}, ${lng.toFixed(5)}</b> WGS84`;
+  } else {
+    const [x, y] = proj4('EPSG:4326', 'EPSG:3763', [lng, lat]);
+    coordValueEl.innerHTML = `<b>${x.toFixed(1)}, ${y.toFixed(1)}</b> m PT-TM06`;
+  }
+}

@@ -1,1 +1,2394 @@
-(function(_0x2d0114,_0x123755){const _0x2b382b=_0x1dba,_0x311da9=_0x2d0114();while(!![]){try{const _0xc66ecf=parseInt(_0x2b382b(0x14a))/0x1*(-parseInt(_0x2b382b(0x29c))/0x2)+-parseInt(_0x2b382b(0x1b7))/0x3*(parseInt(_0x2b382b(0xcf))/0x4)+parseInt(_0x2b382b(0x2b8))/0x5*(-parseInt(_0x2b382b(0x125))/0x6)+parseInt(_0x2b382b(0x21e))/0x7+parseInt(_0x2b382b(0x28f))/0x8*(parseInt(_0x2b382b(0x2a5))/0x9)+parseInt(_0x2b382b(0x295))/0xa+-parseInt(_0x2b382b(0x27f))/0xb*(parseInt(_0x2b382b(0x1e2))/0xc);if(_0xc66ecf===_0x123755)break;else _0x311da9['push'](_0x311da9['shift']());}catch(_0x214be0){_0x311da9['push'](_0x311da9['shift']());}}}(_0x23d1,0xa8bc5),(function(){const _0x2bad41=_0x1dba,_0x4419c7=new Map();let _0x57c350=null,_0x508cfb=0x0;const _0x424c26=/\.(jpe?g|png|tiff?|tif)$/i,_0x1dc133=/\.(pgw|jgw|tfw|wld)$/i;function _0x44882c(){const _0x2559bd=_0x1dba;return window[_0x2559bd(0x108)]&&crypto[_0x2559bd(0x279)]?crypto['randomUUID']():'raster-'+Date[_0x2559bd(0x268)]()+'-'+Math[_0x2559bd(0x13f)]()['toString'](0x24)[_0x2559bd(0x10d)](0x2);}function _0x38e0cb(_0xe01e10){return new Promise((_0x59f8d8,_0x76ed34)=>{const _0x112f55=_0x1dba,_0x1bd7ea=new FileReader();_0x1bd7ea[_0x112f55(0x162)]=()=>_0x59f8d8(_0x1bd7ea['result']),_0x1bd7ea[_0x112f55(0x101)]=()=>_0x76ed34(new Error(_0x112f55(0x133))),_0x1bd7ea['readAsDataURL'](_0xe01e10);});}function _0x4e57df(_0x4d1c85){const _0x372436=_0x1dba,_0x5f1bde=[],_0x16e25f=[],_0x2911b3=[];return _0x4d1c85[_0x372436(0x1bf)](_0x55b365=>{const _0x4e0303=_0x372436;if(_0x424c26['test'](_0x55b365[_0x4e0303(0x29f)]))_0x5f1bde['push'](_0x55b365);else{if(_0x1dc133[_0x4e0303(0x1ea)](_0x55b365[_0x4e0303(0x29f)]))_0x16e25f[_0x4e0303(0x22f)](_0x55b365);else _0x2911b3['push'](_0x55b365);}}),{'images':_0x5f1bde,'worldFiles':_0x16e25f,'rest':_0x2911b3};}function _0x56fbc3(_0x512a7a){const _0x87d6b2=_0x1dba;return String(_0x512a7a||'')['replace'](/\.[^.]+$/,'')[_0x87d6b2(0x12c)]();}async function _0x3bec2c(_0x1ab150){const _0xd2dfad=_0x1dba;try{const _0x366b3e=_0x1ab150['split'](/\r?\n/)[_0xd2dfad(0xeb)](_0x58c9fa=>_0x58c9fa[_0xd2dfad(0x266)]())[_0xd2dfad(0xf5)](_0x189550=>_0x189550[_0xd2dfad(0x164)])[_0xd2dfad(0xeb)](Number);if(_0x366b3e[_0xd2dfad(0x164)]<0x6||_0x366b3e['some'](_0x305948=>Number[_0xd2dfad(0x1b6)](_0x305948)))return null;const [_0x53215a,_0x192267,_0x1aca5b,_0x464b42,_0x18b43d,_0x5c5622]=_0x366b3e;return{'a':_0x53215a,'b':_0x1aca5b,'c':_0x18b43d,'d':_0x192267,'e':_0x464b42,'f':_0x5c5622};}catch(_0x4ad0be){return console[_0xd2dfad(0x188)]('[WorldFile]\x20parse\x20error:',_0x4ad0be),null;}}function _0x5d2d1c(_0x57922d){const _0x17e135=_0x1dba,_0x1372d8=_0x57922d&&_0x57922d[_0x17e135(0x10c)];if(!_0x1372d8)return![];if(typeof _0x1372d8[_0x17e135(0x1b4)]===_0x17e135(0xc8))return _0x1372d8[_0x17e135(0x1b4)]('ModelTiepoint')||_0x1372d8[_0x17e135(0x1b4)]('ModelPixelScale')||_0x1372d8[_0x17e135(0x1b4)](_0x17e135(0x158));return!!(_0x1372d8[_0x17e135(0xe4)]||_0x1372d8['ModelPixelScale']||_0x1372d8['ModelTransformation']);}function _0x3fc572(_0x21f583){const _0x24529b=_0x1dba;if(!_0x57c350)_0x57c350=L[_0x24529b(0x16a)]()[_0x24529b(0x263)](map);_0x21f583['overlay']&&(_0x57c350['removeLayer'](_0x21f583['overlay']),_0x21f583['overlay']=null);if(_0x21f583[_0x24529b(0x250)]){const _0x3ac501=Georef['affineToCorners'](_0x21f583['transform'],_0x21f583[_0x24529b(0x26a)],_0x21f583[_0x24529b(0x224)]);_0x21f583[_0x24529b(0x1ca)]=L[_0x24529b(0x116)]['rotated'](_0x21f583[_0x24529b(0x284)],_0x3ac501[_0x24529b(0x23d)],_0x3ac501[_0x24529b(0x292)],_0x3ac501[_0x24529b(0x28a)],{'opacity':0.9,'className':'raster-overlay-image'});}else{const _0x36621a=0.02,_0x159b43=_0x21f583[_0x24529b(0x224)]>0x0?_0x21f583['height']/_0x21f583['width']:0x1,_0x36c849=_0x36621a,_0x20fd73=_0x36621a*_0x159b43,_0x2d48dc=L[_0x24529b(0x288)]([0x0,0x0],[_0x20fd73,_0x36c849]);_0x21f583[_0x24529b(0x1ca)]=L[_0x24529b(0x116)](_0x21f583['url'],_0x2d48dc,{'opacity':0.9,'className':_0x24529b(0xd6)});}_0x21f583[_0x24529b(0x1ca)][_0x24529b(0x263)](_0x57c350);}function _0x188bcb(_0x229ef1){const _0x5b7068=_0x1dba;if(!_0x229ef1[_0x5b7068(0x1ca)])return;try{map[_0x5b7068(0x239)](_0x229ef1['overlay']['getBounds'](),{'maxZoom':0x12,'padding':[0x28,0x28]});}catch(_0xe89a88){}}function _0x573390(_0x35087d){const _0x5ed0e1=_0x1dba,_0x3f6cf4=_0x4419c7['get'](_0x35087d);if(!_0x3f6cf4)return;if(_0x3f6cf4[_0x5ed0e1(0x1ca)]&&_0x57c350)_0x57c350[_0x5ed0e1(0x251)](_0x3f6cf4[_0x5ed0e1(0x1ca)]);if(_0x3f6cf4[_0x5ed0e1(0x284)]&&_0x3f6cf4[_0x5ed0e1(0x284)][_0x5ed0e1(0x10b)](_0x5ed0e1(0x1c6)))URL[_0x5ed0e1(0x176)](_0x3f6cf4[_0x5ed0e1(0x284)]);_0x4419c7[_0x5ed0e1(0x226)](_0x35087d),_0x53e141();}function _0xcad6b1(){const _0x5c2095=_0x1dba;return Array[_0x5c2095(0x282)](_0x4419c7['values']())[_0x5c2095(0xeb)](_0x30492d=>({'id':_0x30492d['id'],'name':_0x30492d[_0x5c2095(0x29f)],'width':_0x30492d[_0x5c2095(0x26a)],'height':_0x30492d['height'],'georeferenced':Boolean(_0x30492d[_0x5c2095(0x1d3)]),'pending':Boolean(_0x30492d['pending']),'autoGeoTiff':Boolean(_0x30492d[_0x5c2095(0x23e)]),'gcps':Array[_0x5c2095(0xd5)](_0x30492d[_0x5c2095(0x1e0)])?_0x30492d['gcps'][_0x5c2095(0xeb)](_0x15a868=>({'img':{'x':_0x15a868[_0x5c2095(0x198)]['x'],'y':_0x15a868['img']['y']},'map':{'lng':_0x15a868[_0x5c2095(0xeb)]['lng'],'lat':_0x15a868[_0x5c2095(0xeb)]['lat']}})):[],'transform':_0x30492d[_0x5c2095(0x250)]?{..._0x30492d['transform']}:null,'rmsError':typeof _0x30492d['rmsError']===_0x5c2095(0x2b0)?_0x30492d['rmsError']:null,'rmsUnit':_0x30492d[_0x5c2095(0x130)]||null,'source':_0x30492d[_0x5c2095(0x1d5)]||null,'dataUrl':_0x30492d[_0x5c2095(0x2aa)]||null}));}function _0x2ac870(){const _0x5f0374=_0x1dba;_0x4419c7[_0x5f0374(0x1bf)](_0xdbdf66=>{const _0x42171c=_0x5f0374;if(_0xdbdf66[_0x42171c(0x1ca)]&&_0x57c350)_0x57c350[_0x42171c(0x251)](_0xdbdf66[_0x42171c(0x1ca)]);if(_0xdbdf66[_0x42171c(0x284)]&&_0xdbdf66[_0x42171c(0x284)][_0x42171c(0x10b)](_0x42171c(0x1c6)))URL[_0x42171c(0x176)](_0xdbdf66[_0x42171c(0x284)]);}),_0x4419c7[_0x5f0374(0x142)](),_0x53e141();}function _0x3c2eed(_0x72eecf){const _0x4db51e=_0x1dba;_0x2ac870();if(!Array[_0x4db51e(0xd5)](_0x72eecf)||!_0x72eecf[_0x4db51e(0x164)])return;_0x72eecf[_0x4db51e(0x1bf)](_0xc2bfc6=>{const _0x5c260a=_0x4db51e;if(!_0xc2bfc6||!_0xc2bfc6['dataUrl'])return;const _0x2a5a0a={'id':_0xc2bfc6['id']||_0x44882c(),'name':_0xc2bfc6[_0x5c260a(0x29f)]||'Imagem','url':_0xc2bfc6[_0x5c260a(0x2aa)],'dataUrl':_0xc2bfc6[_0x5c260a(0x2aa)],'width':_0xc2bfc6[_0x5c260a(0x26a)],'height':_0xc2bfc6[_0x5c260a(0x224)],'georeferenced':Boolean(_0xc2bfc6[_0x5c260a(0x1d3)]),'pending':Boolean(_0xc2bfc6[_0x5c260a(0x195)]),'autoGeoTiff':Boolean(_0xc2bfc6[_0x5c260a(0x23e)]),'gcps':Array['isArray'](_0xc2bfc6['gcps'])?_0xc2bfc6[_0x5c260a(0x1e0)]:[],'transform':_0xc2bfc6[_0x5c260a(0x250)]||null,'overlay':null,'source':_0xc2bfc6[_0x5c260a(0x1d5)]||null};typeof _0xc2bfc6[_0x5c260a(0x209)]===_0x5c260a(0x2b0)&&(_0x2a5a0a[_0x5c260a(0x209)]=_0xc2bfc6[_0x5c260a(0x209)],_0x2a5a0a[_0x5c260a(0x130)]=_0xc2bfc6[_0x5c260a(0x130)]||'m'),_0x4419c7[_0x5c260a(0x1de)](_0x2a5a0a['id'],_0x2a5a0a),_0x3fc572(_0x2a5a0a);}),_0x53e141();}function _0x4e5349(_0x5df0e6){const _0x12fa68=_0x1dba,_0x46b39a=/\.([a-z0-9]+)$/i['exec'](_0x5df0e6||''),_0x172c7b=_0x46b39a?_0x46b39a[0x1][_0x12fa68(0x12c)]():'';if(_0x172c7b==='jpg'||_0x172c7b===_0x12fa68(0x1a1))return _0x12fa68(0x293);if(_0x172c7b===_0x12fa68(0xbc))return'pgw';if(_0x172c7b===_0x12fa68(0x196)||_0x172c7b===_0x12fa68(0x298))return _0x12fa68(0xfb);return _0x12fa68(0x283);}function _0x172077(_0x5df3d0){const _0x215ffe=_0x1dba,_0x48ca65=_0x4ab563=>Number(_0x4ab563)[_0x215ffe(0x112)](0xa);return[_0x5df3d0['a'],_0x5df3d0['d'],_0x5df3d0['b'],_0x5df3d0['e'],_0x5df3d0['c'],_0x5df3d0['f']][_0x215ffe(0xeb)](_0x48ca65)[_0x215ffe(0xf6)]('\x0a')+'\x0a';}function _0xcb2cc8(_0x344dad,_0x74b54){const _0x3940c2=_0x1dba,_0x2e8dfd=URL['createObjectURL'](_0x344dad),_0x5068b3=document['createElement']('a');_0x5068b3[_0x3940c2(0x2ae)]=_0x2e8dfd,_0x5068b3[_0x3940c2(0x1e5)]=_0x74b54,document[_0x3940c2(0x1e8)][_0x3940c2(0xec)](_0x5068b3),_0x5068b3[_0x3940c2(0xf7)](),_0x5068b3[_0x3940c2(0x22c)](),setTimeout(()=>URL[_0x3940c2(0x176)](_0x2e8dfd),0x3e8);}function _0x4e9b90(_0x5a027b){const _0x2fd3d6=_0x1dba;if(!_0x5a027b||!_0x5a027b[_0x2fd3d6(0x250)]){showAppAlert(_0x2fd3d6(0x140));return;}const _0x5b7c8d=_0x172077(_0x5a027b['transform']),_0xd4a7f1=_0x56fbc3(_0x5a027b[_0x2fd3d6(0x1d5)]||_0x5a027b['name']||'imagem'),_0x28c921=_0x4e5349(_0x5a027b[_0x2fd3d6(0x1d5)]||_0x5a027b['name']);_0xcb2cc8(new Blob([_0x5b7c8d],{'type':_0x2fd3d6(0x1b5)}),_0xd4a7f1+'.'+_0x28c921);}function _0x58d5b4(_0x541a0e){return new Promise((_0x22ac73,_0x1812ef)=>{const _0x43f3a5=_0x1dba,_0x389455=new Image();_0x389455[_0x43f3a5(0x162)]=()=>_0x22ac73(_0x389455),_0x389455[_0x43f3a5(0x101)]=()=>_0x1812ef(new Error('Não\x20foi\x20possível\x20carregar\x20a\x20imagem\x20original.')),_0x389455[_0x43f3a5(0xce)]=_0x541a0e[_0x43f3a5(0x2aa)]||_0x541a0e['url'];});}async function _0x143d0b(_0x111555){const _0x200bbd=_0x1dba;try{const _0x45bd76=await _0x58d5b4(_0x111555),_0x2a424f=document[_0x200bbd(0x269)](_0x200bbd(0x271));_0x2a424f[_0x200bbd(0x26a)]=_0x111555[_0x200bbd(0x26a)],_0x2a424f['height']=_0x111555[_0x200bbd(0x224)];const _0x526b15=_0x2a424f[_0x200bbd(0x235)]('2d');return _0x526b15[_0x200bbd(0x13a)](_0x45bd76,0x0,0x0,_0x111555[_0x200bbd(0x26a)],_0x111555['height']),_0x526b15[_0x200bbd(0x200)](0x0,0x0,_0x111555[_0x200bbd(0x26a)],_0x111555[_0x200bbd(0x224)]);}catch(_0x29efc3){console['error'](_0x200bbd(0xc9),_0x29efc3);throw _0x29efc3;}}function _0x4ff400(_0x114706){return[_0x114706['a'],_0x114706['b'],0x0,_0x114706['c'],_0x114706['d'],_0x114706['e'],0x0,_0x114706['f'],0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1];}function _0x19bd61(_0x6990b7){const _0x4aa263=_0x1dba,_0x56eaa9=Math['max'](Math[_0x4aa263(0x179)](_0x6990b7['a']),Math['abs'](_0x6990b7['e']))||0x1,_0x47c42c=0.000001;return Math[_0x4aa263(0x179)](_0x6990b7['b'])>_0x56eaa9*_0x47c42c||Math['abs'](_0x6990b7['d'])>_0x56eaa9*_0x47c42c;}function _0x53c558(_0xb1ab4d){return{'ModelPixelScale':[_0xb1ab4d['a'],-_0xb1ab4d['e'],0x0],'ModelTiepoint':[0x0,0x0,0x0,_0xb1ab4d['c'],_0xb1ab4d['f'],0x0]};}async function _0xfc9d0c(_0x4b3740){const _0x4a440a=_0x1dba;if(!_0x4b3740||!_0x4b3740[_0x4a440a(0x250)]){showAppAlert(_0x4a440a(0x140));return;}if(typeof JSZip===_0x4a440a(0x21c)){showAppAlert(_0x4a440a(0x199));return;}let _0x4bdc4c;try{const _0x158f54=await fetch(_0x4b3740[_0x4a440a(0x2aa)]||_0x4b3740[_0x4a440a(0x284)]);_0x4bdc4c=await _0x158f54[_0x4a440a(0x256)]();}catch(_0x2f4291){console['error'](_0x4a440a(0xdb),_0x2f4291),showAppAlert(_0x4a440a(0x146),{'error':!![]});return;}const _0x394d19=_0x56fbc3(_0x4b3740[_0x4a440a(0x1d5)]||_0x4b3740[_0x4a440a(0x29f)]||_0x4a440a(0x290)),_0x479b14=(/\.([a-z0-9]+)$/i[_0x4a440a(0x167)](_0x4b3740[_0x4a440a(0x1d5)]||_0x4b3740[_0x4a440a(0x29f)]||'')||[null,_0x4a440a(0xed)])[0x1][_0x4a440a(0x12c)](),_0xb1988d=_0x4e5349(_0x4b3740[_0x4a440a(0x1d5)]||_0x4b3740['name']),_0x1e5ed1=new JSZip();_0x1e5ed1['file'](_0x394d19+'.'+_0x479b14,_0x4bdc4c),_0x1e5ed1['file'](_0x394d19+'.'+_0xb1988d,_0x172077(_0x4b3740[_0x4a440a(0x250)]));const _0x348f26=await _0x1e5ed1[_0x4a440a(0x14d)]({'type':_0x4a440a(0x22e)});_0xcb2cc8(_0x348f26,_0x394d19+_0x4a440a(0x24d));}async function _0x13f093(_0xbada96){const _0x437d88=_0x1dba;if(!_0xbada96||!_0xbada96['transform']){showAppAlert(_0x437d88(0x182));return;}if(typeof GeoTIFF===_0x437d88(0x21c)||typeof GeoTIFF[_0x437d88(0x14e)]!==_0x437d88(0xc8)){showAppAlert('Esta\x20versão\x20da\x20biblioteca\x20GeoTIFF\x20(geotiff.js)\x20não\x20suporta\x20exportação.\x20Atualiza\x20o\x20script\x20no\x20engenh.html\x20para\x20uma\x20versão\x20mais\x20recente.');return;}let _0x4c5c7a;try{_0x4c5c7a=await _0x143d0b(_0xbada96);}catch(_0x11fc1e){console[_0x437d88(0x188)](_0x437d88(0x2b1),_0x11fc1e),showAppAlert(_0x437d88(0x18a),{'error':!![]});return;}const {data:_0x1f6ad7,width:_0x4ca5a7,height:_0x305ed2}=_0x4c5c7a;let _0x12b11f=![];for(let _0x2d1fbb=0x3;_0x2d1fbb<_0x1f6ad7[_0x437d88(0x164)];_0x2d1fbb+=0x4){if(_0x1f6ad7[_0x2d1fbb]<0xff){_0x12b11f=!![];break;}}let _0x5a7d3d,_0x9ad95;if(_0x12b11f)_0x5a7d3d=new Uint8Array(_0x1f6ad7[_0x437d88(0xb9)][_0x437d88(0x10d)](0x0)),_0x9ad95=0x4;else{_0x5a7d3d=new Uint8Array(_0x4ca5a7*_0x305ed2*0x3);for(let _0x3e2de2=0x0,_0x152610=0x0;_0x3e2de2<_0x1f6ad7[_0x437d88(0x164)];_0x3e2de2+=0x4,_0x152610+=0x3){_0x5a7d3d[_0x152610]=_0x1f6ad7[_0x3e2de2],_0x5a7d3d[_0x152610+0x1]=_0x1f6ad7[_0x3e2de2+0x1],_0x5a7d3d[_0x152610+0x2]=_0x1f6ad7[_0x3e2de2+0x2];}_0x9ad95=0x3;}const _0x26644a=_0x19bd61(_0xbada96[_0x437d88(0x250)]),_0x3c6545={'width':_0x4ca5a7,'height':_0x305ed2,'GTModelTypeGeoKey':0x2,'GTRasterTypeGeoKey':0x1,'GeographicTypeGeoKey':0x10e6,'SamplesPerPixel':_0x9ad95,'PhotometricInterpretation':0x2};if(_0x12b11f)_0x3c6545[_0x437d88(0xf4)]=[0x2];if(_0x26644a)_0x3c6545[_0x437d88(0x158)]=_0x4ff400(_0xbada96[_0x437d88(0x250)]);else{const {ModelPixelScale:_0x58baef,ModelTiepoint:_0x4c789d}=_0x53c558(_0xbada96[_0x437d88(0x250)]);_0x3c6545[_0x437d88(0x19d)]=_0x58baef,_0x3c6545['ModelTiepoint']=_0x4c789d;}let _0x4d2e7a;try{_0x4d2e7a=await GeoTIFF[_0x437d88(0x14e)](_0x5a7d3d,_0x3c6545);}catch(_0x2037ac){console[_0x437d88(0x188)](_0x437d88(0x148),_0x2037ac),showAppAlert(_0x437d88(0x113)+_0x2037ac['message'],{'error':!![]});return;}const _0x2760ca=_0x56fbc3(_0xbada96[_0x437d88(0x1d5)]||_0xbada96['name']||_0x437d88(0x290));_0xcb2cc8(new Blob([_0x4d2e7a],{'type':_0x437d88(0x258)}),_0x2760ca+'_georreferenciada.tif');}function _0x150868(){const _0x4699c5=_0x1dba;document[_0x4699c5(0x1d1)](_0x4699c5(0xbe))?.[_0x4699c5(0x174)][_0x4699c5(0x173)](_0x4699c5(0x27c));}function _0xb5e88(_0x39f716,_0x1d7877){const _0x335316=_0x1dba,_0x311bc9=document[_0x335316(0x1d1)](_0x335316(0xbe)),_0x4063e0=document[_0x335316(0x1d1)](_0x335316(0xf2));if(!_0x311bc9||!_0x4063e0||!_0x1d7877)return;const _0x4fddfd=[{'key':'worldfile','label':_0x335316(0x2b7),'hint':'.'+_0x4e5349(_0x39f716[_0x335316(0x1d5)]||_0x39f716[_0x335316(0x29f)])+_0x335316(0xef)},{'key':_0x335316(0x203),'label':_0x335316(0x16d),'hint':_0x335316(0x17f)},{'key':'geotiff','label':_0x335316(0x232),'hint':_0x335316(0xda)}];_0x4063e0['innerHTML']=_0x4fddfd['map'](_0x2545d1=>'\x0a\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22raster-export-item\x22\x20data-raster-export-opt=\x22'+_0x2545d1[_0x335316(0x1ad)]+_0x335316(0x1c1)+_0x2545d1['label']+'</span>\x0a\x20\x20\x20\x20\x20\x20<span\x20class=\x22raster-export-item-hint\x22>'+_0x2545d1['hint']+'</span>\x0a\x20\x20\x20\x20</button>')[_0x335316(0xf6)](''),_0x4063e0['querySelectorAll'](_0x335316(0x171))[_0x335316(0x1bf)](_0x335061=>{const _0x50c367=_0x335316;_0x335061[_0x50c367(0xfd)](_0x50c367(0xf7),()=>{const _0x116bea=_0x50c367,_0x5a03cf=_0x335061[_0x116bea(0x241)]['rasterExportOpt'];_0x150868();if(_0x5a03cf===_0x116bea(0x270))_0x4e9b90(_0x39f716);else{if(_0x5a03cf==='zip')_0xfc9d0c(_0x39f716);else{if(_0x5a03cf==='geotiff')_0x13f093(_0x39f716);}}});});const _0x2782a8=_0x1d7877[_0x335316(0x278)]();_0x311bc9[_0x335316(0x174)][_0x335316(0x22c)](_0x335316(0x27c));const _0x1dd02e=_0x311bc9[_0x335316(0x278)]();_0x311bc9[_0x335316(0x29e)][_0x335316(0x244)]=_0x2782a8[_0x335316(0x139)]+0x6+'px',_0x311bc9[_0x335316(0x29e)][_0x335316(0xcb)]=Math['max'](0x8,Math[_0x335316(0x27e)](_0x2782a8[_0x335316(0x218)]-_0x1dd02e[_0x335316(0x26a)],window['innerWidth']-_0x1dd02e[_0x335316(0x26a)]-0x8))+'px';}document[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x513a5b=>{const _0x2829ad=_0x2bad41,_0x5a8838=document[_0x2829ad(0x1d1)](_0x2829ad(0xbe));if(!_0x5a8838||_0x5a8838[_0x2829ad(0x174)][_0x2829ad(0x240)]('hidden'))return;if(!_0x5a8838[_0x2829ad(0x240)](_0x513a5b[_0x2829ad(0x21f)])&&!_0x513a5b['target'][_0x2829ad(0x236)](_0x2829ad(0x11f)))_0x150868();});async function _0x3f2e42(_0x3b69c7,_0x3b4ff5){const _0x9f32fa=_0x2bad41,_0x53fadd=/\.tiff?$/i[_0x9f32fa(0x1ea)](_0x3b69c7[_0x9f32fa(0x29f)]),_0x59657d=_0x56fbc3(_0x3b69c7['name']),_0x4cf817=_0x3b4ff5[_0x9f32fa(0x117)](_0x59657d)||null;_0x508cfb++;const _0x44979e=_0x44882c(),_0x4844d4=getImportedLayerName(_0x3b69c7[_0x9f32fa(0x29f)]);if(_0x53fadd){const _0x385522=await _0x3b69c7[_0x9f32fa(0x256)]();let _0x5983cb,_0xc97d4b;try{_0x5983cb=await GeoTIFF[_0x9f32fa(0x1b1)](_0x385522),_0xc97d4b=await _0x5983cb[_0x9f32fa(0x267)]();}catch(_0x24300b){return console[_0x9f32fa(0x188)](_0x9f32fa(0x197),_0x24300b),{'status':_0x9f32fa(0x188),'name':_0x3b69c7[_0x9f32fa(0x29f)],'message':'Não\x20foi\x20possível\x20ler\x20o\x20ficheiro\x20TIFF\x20(formato/compressão\x20não\x20suportada).'};}const _0x5703db=_0xc97d4b[_0x9f32fa(0xe9)](),_0x296318=_0xc97d4b[_0x9f32fa(0x157)]();if(_0x5d2d1c(_0xc97d4b)){const _0x1a4fde=URL[_0x9f32fa(0x1e4)](_0x3b69c7),_0x230d33=await _0x38e0cb(_0x3b69c7)['catch'](_0x507876=>{const _0x35512d=_0x9f32fa;return console[_0x35512d(0x2b6)](_0x35512d(0x2bd),_0x507876),null;});return _0x4419c7['set'](_0x44979e,{'id':_0x44979e,'name':_0x4844d4,'url':_0x1a4fde,'dataUrl':_0x230d33,'width':_0x5703db,'height':_0x296318,'georeferenced':!![],'pending':![],'autoGeoTiff':!![],'gcps':[],'transform':null,'overlay':null,'source':_0x3b69c7[_0x9f32fa(0x29f)]}),{'status':_0x9f32fa(0x1aa),'name':_0x3b69c7[_0x9f32fa(0x29f)]};}const _0x4437b3=URL[_0x9f32fa(0x1e4)](_0x3b69c7),_0x2ce708=await _0x38e0cb(_0x3b69c7)['catch'](_0x3abf40=>{return console['warn']('Não\x20foi\x20possível\x20gerar\x20data\x20URL\x20para\x20persistência:',_0x3abf40),null;}),_0x45381d={'id':_0x44979e,'name':_0x4844d4,'url':_0x4437b3,'dataUrl':_0x2ce708,'width':_0x5703db,'height':_0x296318,'georeferenced':![],'pending':!![],'gcps':[],'transform':null,'overlay':null,'source':_0x3b69c7[_0x9f32fa(0x29f)]};if(_0x4cf817){const _0x260413=await _0x3bec2c(await _0x4cf817['text']());_0x260413&&(_0x45381d['transform']=_0x260413,_0x45381d[_0x9f32fa(0x1d3)]=!![],_0x45381d[_0x9f32fa(0x195)]=![]);}return _0x4419c7['set'](_0x44979e,_0x45381d),_0x3fc572(_0x45381d),{'status':_0x45381d[_0x9f32fa(0x195)]?_0x9f32fa(0x195):_0x9f32fa(0x270),'name':_0x3b69c7['name']};}const _0x3aecb8=URL[_0x9f32fa(0x1e4)](_0x3b69c7),_0x297a0b=await new Promise((_0x22514c,_0x1dc706)=>{const _0x38d91b=_0x9f32fa,_0x43058f=new Image();_0x43058f[_0x38d91b(0x162)]=()=>_0x22514c({'width':_0x43058f['naturalWidth'],'height':_0x43058f['naturalHeight']}),_0x43058f[_0x38d91b(0x101)]=()=>_0x1dc706(new Error('Imagem\x20inválida\x20ou\x20corrompida.')),_0x43058f[_0x38d91b(0xce)]=_0x3aecb8;})['catch'](_0x4e3463=>{const _0x5dd147=_0x9f32fa;return console[_0x5dd147(0x188)](_0x4e3463),null;});if(!_0x297a0b)return URL['revokeObjectURL'](_0x3aecb8),{'status':'error','name':_0x3b69c7[_0x9f32fa(0x29f)],'message':_0x9f32fa(0x12a)};const _0x5f29a1=await _0x38e0cb(_0x3b69c7)[_0x9f32fa(0x25c)](_0x42ae73=>{const _0x3180c8=_0x9f32fa;return console[_0x3180c8(0x2b6)]('Não\x20foi\x20possível\x20gerar\x20data\x20URL\x20para\x20persistência:',_0x42ae73),null;}),_0x290682={'id':_0x44979e,'name':_0x4844d4,'url':_0x3aecb8,'dataUrl':_0x5f29a1,'width':_0x297a0b[_0x9f32fa(0x26a)],'height':_0x297a0b[_0x9f32fa(0x224)],'georeferenced':![],'pending':!![],'gcps':[],'transform':null,'overlay':null,'source':_0x3b69c7[_0x9f32fa(0x29f)]};if(_0x4cf817){const _0x478304=await _0x3bec2c(await _0x4cf817[_0x9f32fa(0x1df)]());_0x478304&&(_0x290682[_0x9f32fa(0x250)]=_0x478304,_0x290682[_0x9f32fa(0x1d3)]=!![],_0x290682[_0x9f32fa(0x195)]=![]);}return _0x4419c7['set'](_0x44979e,_0x290682),_0x3fc572(_0x290682),{'status':_0x290682[_0x9f32fa(0x195)]?'pending':_0x9f32fa(0x270),'name':_0x3b69c7['name']};}async function _0x3c0bbe(_0x32d79a,_0x59e3c5){const _0x420448=_0x2bad41;try{const _0x2b17c2=new Map();_0x59e3c5[_0x420448(0x1bf)](_0x4e3c21=>_0x2b17c2[_0x420448(0x1de)](_0x56fbc3(_0x4e3c21['name']),_0x4e3c21));const _0xc4a27=await Promise[_0x420448(0xe3)](_0x32d79a[_0x420448(0xeb)](_0x32fda7=>_0x3f2e42(_0x32fda7,_0x2b17c2)));_0x53e141();const _0x3a61ee=_0xc4a27[_0x420448(0xf5)](_0x529fb5=>_0x529fb5['status']===_0x420448(0x195))[_0x420448(0x164)],_0x11ee79=_0xc4a27[_0x420448(0xf5)](_0x197896=>_0x197896['status']===_0x420448(0x270))[_0x420448(0x164)],_0x2688db=_0xc4a27[_0x420448(0xf5)](_0x2125e7=>_0x2125e7['status']===_0x420448(0x1aa))['length'],_0x2e6bfc=_0xc4a27['filter'](_0xd2f19=>_0xd2f19[_0x420448(0xe5)]===_0x420448(0x188)),_0x27c374=[];if(_0x11ee79>0x0)_0x27c374[_0x420448(0x22f)](_0x11ee79+_0x420448(0x29d));if(_0x2688db>0x0)_0x27c374['push'](_0x2688db+_0x420448(0x21a));if(_0x3a61ee>0x0)_0x27c374[_0x420448(0x22f)](_0x3a61ee+_0x420448(0x17b));if(_0x2e6bfc[_0x420448(0x164)]>0x0)_0x27c374[_0x420448(0x22f)](_0x2e6bfc[_0x420448(0x164)]+_0x420448(0x28b)+_0x2e6bfc[_0x420448(0xeb)](_0x191ab6=>_0x191ab6[_0x420448(0x29f)])[_0x420448(0xf6)](',\x20')+'.');if(_0x27c374['length'])showAppAlert(_0x27c374[_0x420448(0xf6)]('\x0a'));}catch(_0x41ced7){console['error'](_0x420448(0x1a2),_0x41ced7),showAppAlert(_0x420448(0xe1),{'error':!![]});}}function _0x53e141(){const _0x236733=_0x2bad41,_0x463dbf=document[_0x236733(0x1d1)](_0x236733(0xd0)),_0xf3f085=document[_0x236733(0x1d1)](_0x236733(0x147));if(!_0x463dbf||!_0xf3f085)return;if(_0x4419c7[_0x236733(0xee)]===0x0){_0x463dbf[_0x236733(0x174)]['add'](_0x236733(0x27c)),_0xf3f085[_0x236733(0x1ba)]='',_0x4c8abb();return;}_0x463dbf[_0x236733(0x174)]['remove'](_0x236733(0x27c)),_0xf3f085[_0x236733(0x1ba)]=Array[_0x236733(0x282)](_0x4419c7['values']())[_0x236733(0xeb)](_0x2de515=>{const _0x2a1d7a=_0x236733,_0x306ae8=typeof _0x2de515[_0x2a1d7a(0x209)]===_0x2a1d7a(0x2b0)?_0x2a1d7a(0x243)+_0x2de515[_0x2a1d7a(0x209)][_0x2a1d7a(0x112)](_0x2de515[_0x2a1d7a(0x130)]==='m'?0x2:0x6)+'\x20'+(_0x2de515['rmsUnit']||'')+')':'',_0x1f1c83=_0x2de515[_0x2a1d7a(0x195)]?_0x2a1d7a(0x217):_0x2de515[_0x2a1d7a(0x23e)]?_0x2a1d7a(0x21b):_0x2a1d7a(0x18e)+_0x306ae8,_0x3048b2=_0x2de515[_0x2a1d7a(0x195)]?'⚠️':'🌍',_0xdfe0bd=_0x2de515[_0x2a1d7a(0x250)]?'<button\x20type=\x22button\x22\x20class=\x22raster-focus-btn\x22\x20data-raster-export\x20title=\x22Exportar\x20(World\x20File\x20/\x20imagem\x20/\x20GeoTIFF)\x22>💾</button>':'';return _0x2a1d7a(0x291)+(_0x2de515[_0x2a1d7a(0x195)]?_0x2a1d7a(0xd2):'')+_0x2a1d7a(0x102)+_0x2de515['id']+_0x2a1d7a(0x1ce)+escapeHtml(_0x2de515[_0x2a1d7a(0x29f)])+_0x2a1d7a(0x1ed)+_0x3048b2+_0x2a1d7a(0x2a9)+escapeHtml(_0x2de515['name'])+_0x2a1d7a(0xd3)+_0x1f1c83+'</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22raster-focus-btn\x22\x20data-raster-focus\x20title=\x22Centrar\x20no\x20mapa\x22>🎯</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20'+_0xdfe0bd+_0x2a1d7a(0x110);})[_0x236733(0xf6)](''),_0xf3f085['querySelectorAll'](_0x236733(0x13b))[_0x236733(0x1bf)](_0x22cca4=>{const _0x3387cc=_0x236733,_0x354bb3=_0x22cca4[_0x3387cc(0x241)][_0x3387cc(0xd7)],_0xf8de91=_0x4419c7[_0x3387cc(0x117)](_0x354bb3);if(!_0xf8de91)return;_0x22cca4[_0x3387cc(0x2b9)](_0x3387cc(0x111))?.['addEventListener'](_0x3387cc(0xf7),_0x1380c1=>{const _0x454c67=_0x3387cc;_0x1380c1[_0x454c67(0x128)](),_0x188bcb(_0xf8de91);}),_0x22cca4[_0x3387cc(0x2b9)]('[data-raster-export]')?.[_0x3387cc(0xfd)](_0x3387cc(0xf7),_0x2d6a0d=>{const _0x46beb6=_0x3387cc;_0x2d6a0d[_0x46beb6(0x128)](),_0xb5e88(_0xf8de91,_0x2d6a0d[_0x46beb6(0x156)]);}),_0x22cca4['querySelector'](_0x3387cc(0x25d))?.['addEventListener'](_0x3387cc(0xf7),_0x5eea52=>{const _0x5d9308=_0x3387cc;_0x5eea52[_0x5d9308(0x128)]();if(confirm(_0x5d9308(0x1c7)+_0xf8de91[_0x5d9308(0x29f)]+'\x22?'))_0x573390(_0x354bb3);});}),_0x4c8abb();}function _0x470a7(){const _0x2f2fae=_0x2bad41;return Array[_0x2f2fae(0x282)](_0x4419c7[_0x2f2fae(0x1ef)]())['filter'](_0x36e41d=>_0x36e41d[_0x2f2fae(0x195)]);}function _0x4c8abb(){const _0x2c85dc=_0x2bad41,_0x53e852=document[_0x2c85dc(0x1d1)](_0x2c85dc(0x11d)),_0x4a20ed=document['getElementById']('georef-btn-badge');if(!_0x53e852)return;const _0x25da85=_0x470a7(),_0x3e5c68=_0x53e852[_0x2c85dc(0x174)][_0x2c85dc(0x240)](_0x2c85dc(0x27c));_0x53e852[_0x2c85dc(0x174)]['toggle'](_0x2c85dc(0x27c),_0x25da85[_0x2c85dc(0x164)]===0x0),_0x53e852[_0x2c85dc(0x172)]=_0x25da85['length']>0x1?_0x2c85dc(0x107)+_0x25da85[_0x2c85dc(0x164)]+_0x2c85dc(0x149):'Georreferenciar\x20imagem';if(_0x25da85[_0x2c85dc(0x164)]===0x0){_0x53e852[_0x2c85dc(0x174)][_0x2c85dc(0x22c)]('is-attention',_0x2c85dc(0x1cb));if(_0x4a20ed)_0x4a20ed['classList']['add'](_0x2c85dc(0x27c));return;}_0x3e5c68&&(_0x53e852[_0x2c85dc(0x174)][_0x2c85dc(0x22c)](_0x2c85dc(0x225)),void _0x53e852[_0x2c85dc(0x26c)],_0x53e852[_0x2c85dc(0x174)][_0x2c85dc(0x173)]('is-attention'),_0x53e852[_0x2c85dc(0x174)]['remove'](_0x2c85dc(0x1cb))),_0x4a20ed&&(_0x25da85['length']>0x1?(_0x4a20ed[_0x2c85dc(0x126)]=String(_0x25da85[_0x2c85dc(0x164)]),_0x4a20ed[_0x2c85dc(0x174)][_0x2c85dc(0x22c)](_0x2c85dc(0x27c))):_0x4a20ed[_0x2c85dc(0x174)]['add']('hidden'));}function _0x3a7fe0(_0x464380){const _0x88af8=_0x2bad41;document[_0x88af8(0x1d1)]('btn-georef-mode')?.[_0x88af8(0x174)][_0x88af8(0x17c)](_0x88af8(0x1cb),!!_0x464380);}function _0x3388bd(){const _0x47c662=_0x2bad41,_0x2e0187=_0x470a7(),_0x2f34e4=document[_0x47c662(0x1d1)]('georef-picker-menu'),_0x5a0642=document[_0x47c662(0x1d1)]('georef-picker-list'),_0x51a218=document[_0x47c662(0x1d1)](_0x47c662(0x11d));if(!_0x2f34e4||!_0x5a0642||!_0x51a218)return;_0x5a0642['innerHTML']=_0x2e0187[_0x47c662(0xeb)](_0x7cf41d=>_0x47c662(0x1c2)+_0x7cf41d['id']+_0x47c662(0x274)+escapeHtml(_0x7cf41d[_0x47c662(0x29f)])+_0x47c662(0xd8))['join'](''),_0x5a0642[_0x47c662(0x1e6)](_0x47c662(0x100))[_0x47c662(0x1bf)](_0x50cfb4=>{const _0x34af14=_0x47c662;_0x50cfb4[_0x34af14(0xfd)](_0x34af14(0xf7),()=>{const _0x27240e=_0x34af14,_0x2c5ac9=_0x4419c7[_0x27240e(0x117)](_0x50cfb4['dataset'][_0x27240e(0xf0)]);_0x206d2f();if(_0x2c5ac9)_0x1336c8(_0x2c5ac9);});});const _0x481976=_0x51a218[_0x47c662(0x278)]();_0x2f34e4[_0x47c662(0x174)][_0x47c662(0x22c)](_0x47c662(0x27c));const _0x5efe6a=_0x2f34e4[_0x47c662(0x278)]();_0x2f34e4[_0x47c662(0x29e)][_0x47c662(0x244)]=_0x481976['bottom']+0x6+'px',_0x2f34e4[_0x47c662(0x29e)][_0x47c662(0xcb)]=Math['max'](0x8,Math['min'](_0x481976[_0x47c662(0x218)]-_0x5efe6a[_0x47c662(0x26a)],window[_0x47c662(0x16e)]-_0x5efe6a[_0x47c662(0x26a)]-0x8))+'px',_0x3a7fe0(!![]);}function _0x206d2f(){const _0x217d40=_0x2bad41;document[_0x217d40(0x1d1)](_0x217d40(0x1ff))?.[_0x217d40(0x174)][_0x217d40(0x173)](_0x217d40(0x27c)),_0x3a7fe0(![]);}document['addEventListener'](_0x2bad41(0xf7),_0x28967b=>{const _0x160bea=_0x2bad41,_0x568a75=document['getElementById'](_0x160bea(0x1ff)),_0x1104e6=document['getElementById'](_0x160bea(0x11d));if(!_0x568a75||_0x568a75[_0x160bea(0x174)][_0x160bea(0x240)]('hidden'))return;if(!_0x568a75[_0x160bea(0x240)](_0x28967b[_0x160bea(0x21f)])&&_0x28967b['target']!==_0x1104e6&&!_0x1104e6[_0x160bea(0x240)](_0x28967b['target']))_0x206d2f();}),document[_0x2bad41(0x1d1)]('btn-georef-mode')?.[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x7a8514=>{const _0x1ac83e=_0x2bad41;_0x7a8514['stopPropagation']();const _0x379659=_0x470a7();if(_0x379659[_0x1ac83e(0x164)]===0x0)return;if(_0x379659[_0x1ac83e(0x164)]===0x1){_0x1336c8(_0x379659[0x0]);return;}const _0x5bf1f6=document[_0x1ac83e(0x1d1)](_0x1ac83e(0x1ff));if(_0x5bf1f6[_0x1ac83e(0x174)][_0x1ac83e(0x240)](_0x1ac83e(0x27c)))_0x3388bd();else _0x206d2f();});const _0x467f0d={'active':![],'entry':null,'gcps':[],'pendingImagePoint':null,'pendingMapPoint':null,'autoGeorefCompleted':![],'manualGeorefUnlocked':![]};let _0x13b529=null,_0x4377a6=null,_0x1bc180=0x0;function _0x1e7064(){const _0xca9d4d=_0x2bad41;document[_0xca9d4d(0x1e8)][_0xca9d4d(0x174)][_0xca9d4d(0x173)]('georef-mode-active');const _0x4d893a=document[_0xca9d4d(0x1d1)](_0xca9d4d(0xeb));_0x4d893a[_0xca9d4d(0x174)][_0xca9d4d(0x22c)](_0xca9d4d(0x129));const _0x313949=document[_0xca9d4d(0x1d1)]('btn-toggle-pm-toolbar');_0x313949&&(_0x313949[_0xca9d4d(0x174)][_0xca9d4d(0x22c)]('is-active'),_0x313949[_0xca9d4d(0x1d8)]('aria-pressed',_0xca9d4d(0x27b)));if(map['pm'][_0xca9d4d(0x264)]())map['pm'][_0xca9d4d(0x2b4)]();if(map['pm'][_0xca9d4d(0x152)]())map['pm']['disableGlobalEditMode']();if(map['pm'][_0xca9d4d(0x26b)]())map['pm'][_0xca9d4d(0x16c)]();if(map['pm'][_0xca9d4d(0x192)]())map['pm'][_0xca9d4d(0x214)]();}function _0x5ea97b(){const _0x231e35=_0x2bad41;document['body'][_0x231e35(0x174)][_0x231e35(0x22c)](_0x231e35(0x1a3));}function _0x3ad5ec(){const _0x353cd9=_0x2bad41,_0x7f65dc=document[_0x353cd9(0x1d1)](_0x353cd9(0xeb))['getBoundingClientRect'](),_0x545101=_0x7f65dc[_0x353cd9(0x26a)]/0x2,_0x37b87e=document['getElementById'](_0x353cd9(0x204));_0x37b87e&&!_0x37b87e['classList'][_0x353cd9(0x240)]('hidden')&&(_0x37b87e[_0x353cd9(0x29e)]['left']=_0x7f65dc[_0x353cd9(0xcb)]+_0x545101/0x2+'px',_0x37b87e['style'][_0x353cd9(0x244)]=_0x7f65dc[_0x353cd9(0x244)]+0xe+'px');const _0x3d8566=document['getElementById'](_0x353cd9(0xcd));_0x3d8566&&!_0x3d8566[_0x353cd9(0x174)][_0x353cd9(0x240)](_0x353cd9(0x27c))&&(_0x3d8566[_0x353cd9(0x29e)][_0x353cd9(0xcb)]=_0x7f65dc[_0x353cd9(0xcb)]+_0x545101+'px',_0x3d8566[_0x353cd9(0x29e)][_0x353cd9(0x244)]=_0x7f65dc[_0x353cd9(0x244)]+'px',_0x3d8566[_0x353cd9(0x29e)][_0x353cd9(0x26a)]=_0x545101+'px',_0x3d8566[_0x353cd9(0x29e)][_0x353cd9(0x224)]=_0x7f65dc['height']+'px');const _0x14611a=document[_0x353cd9(0x1d1)](_0x353cd9(0x206));_0x14611a&&!_0x14611a['classList'][_0x353cd9(0x240)](_0x353cd9(0x27c))&&(_0x14611a[_0x353cd9(0x29e)][_0x353cd9(0xcb)]=_0x7f65dc[_0x353cd9(0xcb)]+0x10+'px',_0x14611a[_0x353cd9(0x29e)][_0x353cd9(0x139)]=Math[_0x353cd9(0x227)](0x10,window[_0x353cd9(0x294)]-_0x7f65dc[_0x353cd9(0x139)]+0x10)+'px');}window[_0x2bad41(0xfd)](_0x2bad41(0x1c8),()=>{const _0x1739ba=_0x2bad41;if(_0x467f0d[_0x1739ba(0x121)])_0x3ad5ec();});function _0x1336c8(_0x2412a4){_0x4b1a97(_0x2412a4);}const _0x5a4c39=L['latLngBounds']([36.8,-9.6],[42.3,-6.1]);let _0x2d575f=null;function _0x1272c4(){const _0x37d1b3=_0x2bad41;if(typeof map===_0x37d1b3(0x21c)||!map)return;const _0x1b49f8=document[_0x37d1b3(0x1d1)](_0x37d1b3(0xeb)),_0x46ccce=_0x1b49f8?_0x1b49f8[_0x37d1b3(0x278)]()[_0x37d1b3(0x26a)]:map['getSize']()['x'],_0x351b7d=_0x46ccce/0x2;map[_0x37d1b3(0x239)](_0x5a4c39,{'paddingTopLeft':[0x18,0x18],'paddingBottomRight':[_0x351b7d+0x18,0x18]});const _0x468214=map[_0x37d1b3(0x23c)](),_0x4f0c32=L[_0x37d1b3(0x11a)](_0x351b7d/0x2,_0x468214['y']/0x2),_0xf5d49b=map[_0x37d1b3(0x2bc)](_0x4f0c32);_0x2d575f&&(map[_0x37d1b3(0xe8)](_0x2d575f),_0x2d575f=null),_0x2d575f=L[_0x37d1b3(0x215)]({'className':'georef-ready-popup','closeOnClick':![]})[_0x37d1b3(0x19a)](_0xf5d49b)[_0x37d1b3(0x143)](_0x37d1b3(0x248))[_0x37d1b3(0x17a)](map),clearTimeout(_0x1272c4[_0x37d1b3(0x1cc)]),_0x1272c4[_0x37d1b3(0x1cc)]=setTimeout(()=>{const _0x5f0984=_0x37d1b3;_0x2d575f&&(map[_0x5f0984(0xe8)](_0x2d575f),_0x2d575f=null);},0xfa0);}function _0x49f0cd(){const _0x1a2ebe=_0x2bad41;let _0x59b2a2=document[_0x1a2ebe(0x1d1)](_0x1a2ebe(0x275));if(_0x59b2a2)return _0x59b2a2;const _0x5dc0f7=document['getElementById'](_0x1a2ebe(0xcd));if(!_0x5dc0f7)return null;return _0x59b2a2=document['createElement'](_0x1a2ebe(0x1d2)),_0x59b2a2[_0x1a2ebe(0x1f5)]=_0x1a2ebe(0x1d2),_0x59b2a2['id']=_0x1a2ebe(0x275),_0x59b2a2[_0x1a2ebe(0x16b)]=_0x1a2ebe(0x275),_0x59b2a2[_0x1a2ebe(0x1d8)](_0x1a2ebe(0x246),_0x1a2ebe(0x26e)),_0x59b2a2[_0x1a2ebe(0x172)]='Cancelar\x20georreferenciação',_0x59b2a2[_0x1a2ebe(0x1ba)]=_0x1a2ebe(0xbb),_0x59b2a2[_0x1a2ebe(0xfd)](_0x1a2ebe(0xf7),_0x27c1fb=>{const _0x16e15d=_0x1a2ebe;_0x27c1fb[_0x16e15d(0x128)](),_0x33ec74();}),_0x5dc0f7['appendChild'](_0x59b2a2),_0x59b2a2;}function _0x4b1a97(_0x4d2b4f){const _0x49c19d=_0x2bad41;if(_0x467f0d[_0x49c19d(0x121)])return;_0x467f0d[_0x49c19d(0x121)]=!![],_0x3a7fe0(!![]),_0x467f0d[_0x49c19d(0x23b)]=_0x4d2b4f,_0x467f0d[_0x49c19d(0x1e0)]=[],_0x467f0d['pendingImagePoint']=null,_0x467f0d['pendingMapPoint']=null,_0x467f0d[_0x49c19d(0x105)]=![],_0x467f0d[_0x49c19d(0x2a6)]=![],_0x38082a(),_0x51f96c(),_0x160782(![]),_0x1e7064(),document[_0x49c19d(0x1d1)](_0x49c19d(0x234))[_0x49c19d(0x126)]=_0x4d2b4f[_0x49c19d(0x29f)];const _0x25c596=document['getElementById'](_0x49c19d(0x28c));_0x25c596[_0x49c19d(0x126)]='—',_0x25c596[_0x49c19d(0x16b)]='georef-topbar-rms';const _0x38aedd=document[_0x49c19d(0x1d1)]('georef-topbar-apply');_0x38aedd[_0x49c19d(0x1fc)]=!![],_0x38aedd['textContent']='Aplicar',document[_0x49c19d(0x1d1)](_0x49c19d(0x29a))[_0x49c19d(0x1fc)]=![];const _0x2bd33a=document[_0x49c19d(0x1d1)](_0x49c19d(0x1d7));_0x2bd33a[_0x49c19d(0xce)]=_0x4d2b4f[_0x49c19d(0x284)],_0x2bd33a[_0x49c19d(0x134)]=_0x4d2b4f[_0x49c19d(0x29f)],_0x3f2737(_0x49c19d(0x178),![],_0x49c19d(0x159)),document[_0x49c19d(0x1d1)](_0x49c19d(0xcd))[_0x49c19d(0x174)][_0x49c19d(0x22c)](_0x49c19d(0x27c)),document['getElementById'](_0x49c19d(0x206))[_0x49c19d(0x174)][_0x49c19d(0x22c)](_0x49c19d(0x27c)),_0x49f0cd(),_0x370f8c(),_0x3b703a(),_0x41f1b2(),_0x3dabdc(),_0x3ad5ec(),_0x1272c4(),typeof AutoGeoref!==_0x49c19d(0x21c)&&AutoGeoref[_0x49c19d(0x17d)]&&AutoGeoref[_0x49c19d(0x17d)]();}function _0x2b283e(){const _0x5d4c13=_0x2bad41;document[_0x5d4c13(0x1d1)](_0x5d4c13(0x204))?.[_0x5d4c13(0x174)][_0x5d4c13(0x173)](_0x5d4c13(0x27c)),document[_0x5d4c13(0x1d1)](_0x5d4c13(0xcd))?.[_0x5d4c13(0x174)]['add'](_0x5d4c13(0x27c)),document[_0x5d4c13(0x1d1)]('georef-active-banner')?.['classList'][_0x5d4c13(0x173)]('hidden'),_0x788016();_0x2d575f&&typeof map!==_0x5d4c13(0x21c)&&map&&(map[_0x5d4c13(0xe8)](_0x2d575f),_0x2d575f=null);_0x48a0a4();_0x13b529&&_0x13b529[_0x5d4c13(0x1f7)]();_0x4377a6=null,document[_0x5d4c13(0x1e6)]('.georef-gcp-image-marker,\x20.georef-gcp-pending-marker')['forEach'](_0x529925=>_0x529925['remove']());const _0x22d741=document['getElementById']('georef-image-el');_0x22d741?.['removeAttribute']('src'),_0x5ea97b(),_0x3a7fe0(![]),_0x467f0d['active']=![],_0x467f0d[_0x5d4c13(0x23b)]=null,_0x467f0d['gcps']=[],_0x467f0d[_0x5d4c13(0x127)]=null,_0x467f0d[_0x5d4c13(0x1c9)]=null,_0x467f0d[_0x5d4c13(0x105)]=![],_0x467f0d[_0x5d4c13(0x2a6)]=![],_0x38082a(),_0x51f96c();}function _0x33ec74(){const _0x13ffdc=_0x2bad41;if(!_0x467f0d[_0x13ffdc(0x121)])return;_0x2b283e();}document[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x25ee1d=>{const _0x5d0401=_0x2bad41;if(_0x25ee1d[_0x5d0401(0x21f)]['closest'](_0x5d0401(0x13c)))_0x33ec74();}),document[_0x2bad41(0x1d1)](_0x2bad41(0xde))?.[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x5c4328=>{const _0x452f36=_0x2bad41;_0x5c4328[_0x452f36(0x128)](),_0x4d912c();});function _0x853c50(_0x425adf,_0x2e6793){const _0x2c7d6e=_0x2bad41;try{let _0x14acf4=0x0;return _0x425adf[_0x2c7d6e(0x1bf)](_0x596151=>{const _0x1c3c30=_0x2c7d6e,_0x46f37b=_0x2e6793['a']*_0x596151[_0x1c3c30(0x198)]['x']+_0x2e6793['b']*_0x596151[_0x1c3c30(0x198)]['y']+_0x2e6793['c'],_0x2967b6=_0x2e6793['d']*_0x596151['img']['x']+_0x2e6793['e']*_0x596151[_0x1c3c30(0x198)]['y']+_0x2e6793['f'],_0x1c08de=proj4(_0x1c3c30(0x29b),'EPSG:3763',[_0x46f37b,_0x2967b6]),_0x504b6f=proj4(_0x1c3c30(0x29b),_0x1c3c30(0x2a0),[_0x596151['map'][_0x1c3c30(0x138)],_0x596151[_0x1c3c30(0xeb)][_0x1c3c30(0x19b)]]),_0x4d9710=_0x1c08de[0x0]-_0x504b6f[0x0],_0x2a4659=_0x1c08de[0x1]-_0x504b6f[0x1];_0x14acf4+=_0x4d9710*_0x4d9710+_0x2a4659*_0x2a4659;}),{'value':Math['sqrt'](_0x14acf4/_0x425adf[_0x2c7d6e(0x164)]),'unit':'m'};}catch(_0x1e465c){return console['warn'](_0x2c7d6e(0x2a4),_0x1e465c),{'value':_0x2e6793['rms'],'unit':'°'};}}function _0x4991a3(_0x526bf6){const _0x5c9c39=_0x2bad41;return _0x526bf6['value']['toFixed'](_0x526bf6[_0x5c9c39(0x262)]==='m'?0x2:0x6)+'\x20'+_0x526bf6[_0x5c9c39(0x262)];}function _0x1f7a71(_0x50a6dc){const _0x1f5049=_0x2bad41;if(_0x50a6dc[_0x1f5049(0x262)]!=='m')return'';if(_0x50a6dc['value']<0x1)return _0x1f5049(0x27d);if(_0x50a6dc[_0x1f5049(0x247)]<=0x5)return _0x1f5049(0x289);return _0x1f5049(0x22a);}function _0x22ed1b(_0xdb8214,_0x3c9565){const _0x50a3f5=_0x2bad41;if(!_0xdb8214||_0xdb8214['length']<0x3)return null;let _0x283f60;try{_0x283f60=Georef[_0x50a3f5(0x186)](_0xdb8214[_0x50a3f5(0xeb)](_0x38f66e=>({'img':_0x38f66e[_0x50a3f5(0x198)],'map':_0x38f66e[_0x50a3f5(0xeb)]})));}catch(_0x23f50b){return null;}const _0x20adfb=_0xdb8214['map'](_0x3573c5=>{const _0x350ad0=_0x50a3f5,_0x585f92=_0x283f60['a']*_0x3573c5[_0x350ad0(0x198)]['x']+_0x283f60['b']*_0x3573c5[_0x350ad0(0x198)]['y']+_0x283f60['c'],_0x17851d=_0x283f60['d']*_0x3573c5[_0x350ad0(0x198)]['x']+_0x283f60['e']*_0x3573c5[_0x350ad0(0x198)]['y']+_0x283f60['f'];try{const _0x1cc2ed=proj4('EPSG:4326',_0x350ad0(0x2a0),[_0x585f92,_0x17851d]),_0x4f4171=proj4(_0x350ad0(0x29b),_0x350ad0(0x2a0),[_0x3573c5[_0x350ad0(0xeb)][_0x350ad0(0x138)],_0x3573c5['map'][_0x350ad0(0x19b)]]);return Math[_0x350ad0(0x18f)]((_0x1cc2ed[0x0]-_0x4f4171[0x0])**0x2+(_0x1cc2ed[0x1]-_0x4f4171[0x1])**0x2);}catch(_0x958668){const _0x2fbc46=(_0x585f92-_0x3573c5[_0x350ad0(0xeb)][_0x350ad0(0x138)])*0x1b2d8*Math[_0x350ad0(0x132)](_0x3573c5[_0x350ad0(0xeb)][_0x350ad0(0x19b)]*Math['PI']/0xb4),_0x67f905=(_0x17851d-_0x3573c5[_0x350ad0(0xeb)][_0x350ad0(0x19b)])*0x1b2d8;return Math[_0x350ad0(0x18f)](_0x2fbc46*_0x2fbc46+_0x67f905*_0x67f905);}}),_0x245884=[..._0x20adfb]['sort']((_0x4eca44,_0xd0c310)=>_0x4eca44-_0xd0c310),_0x5b0263=Math['sqrt'](_0x20adfb['reduce']((_0x2d0c7c,_0x7ac4a)=>_0x2d0c7c+_0x7ac4a*_0x7ac4a,0x0)/_0x20adfb[_0x50a3f5(0x164)]),_0x2e19e0=_0x20adfb[_0x50a3f5(0x212)]((_0x5c94d6,_0x4e26a7)=>_0x5c94d6+_0x4e26a7,0x0)/_0x20adfb[_0x50a3f5(0x164)],_0x182b4b=_0x245884[_0x245884[_0x50a3f5(0x164)]-0x1],_0x46de3b=_0x245884[Math[_0x50a3f5(0x28e)](_0x245884[_0x50a3f5(0x164)]*0.9)]||_0x182b4b,_0x2d6115=_0xdb8214[_0x50a3f5(0xeb)]((_0x280201,_0x50a254)=>({'id':_0x280201['id']||_0x50a254+0x1,'error':_0x20adfb[_0x50a254]}));return{'rms':_0x5b0263,'avg':_0x2e19e0,'max':_0x182b4b,'p90':_0x46de3b,'pointCount':_0xdb8214[_0x50a3f5(0x164)],'inlierCount':_0x3c9565?.[_0x50a3f5(0x24a)]??_0xdb8214[_0x50a3f5(0x164)],'totalMatches':_0x3c9565?.['totalMatches']??_0xdb8214[_0x50a3f5(0x164)],'inlierRatio':_0x3c9565?.['inlierRatio']??0x1,'perGcpErrors':_0x2d6115};}function _0x289fa1(_0xbe9f7d){const _0x4da2c0=_0x2bad41,_0x3460a0=document['getElementById'](_0x4da2c0(0x2c1)),_0x4a2b26=document['getElementById'](_0x4da2c0(0x160)),_0x3b6257=document[_0x4da2c0(0x1d1)](_0x4da2c0(0x2b3));if(!_0x3460a0||!_0x4a2b26)return;if(!_0xbe9f7d){_0x3460a0['classList'][_0x4da2c0(0x173)](_0x4da2c0(0x27c));return;}_0x3460a0[_0x4da2c0(0x174)]['remove'](_0x4da2c0(0x27c));const _0x3c4548=_0x4a3ca1=>_0x4a3ca1<0.1?_0x4da2c0(0x2a7):_0x4a3ca1<0xa?_0x4a3ca1['toFixed'](0x1):Math[_0x4da2c0(0x10a)](_0x4a3ca1),_0x433252=_0x1fa0af=>_0x1fa0af<0x1?_0x4da2c0(0x1fa):_0x1fa0af<0x5?_0x4da2c0(0x2b6):_0x4da2c0(0x280);_0x4a2b26['innerHTML']='\x0a\x20\x20\x20\x20<div\x20class=\x22georef-stat-card\x20'+_0x433252(_0xbe9f7d['rms'])+_0x4da2c0(0x2a3)+_0x3c4548(_0xbe9f7d[_0x4da2c0(0x2b2)])+_0x4da2c0(0x1a8)+_0x433252(_0xbe9f7d[_0x4da2c0(0x276)])+'\x22><span\x20class=\x22georef-stat-value\x22>'+_0x3c4548(_0xbe9f7d[_0x4da2c0(0x276)])+'</span><span\x20class=\x22georef-stat-label\x22>Médio\x20(m)</span></div>\x0a\x20\x20\x20\x20<div\x20class=\x22georef-stat-card\x20'+_0x433252(_0xbe9f7d[_0x4da2c0(0x227)])+'\x22><span\x20class=\x22georef-stat-value\x22>'+_0x3c4548(_0xbe9f7d[_0x4da2c0(0x227)])+'</span><span\x20class=\x22georef-stat-label\x22>Máx.\x20(m)</span></div>\x0a\x20\x20\x20\x20<div\x20class=\x22georef-stat-card\x20'+_0x433252(_0xbe9f7d[_0x4da2c0(0x1a4)])+'\x22><span\x20class=\x22georef-stat-value\x22>'+_0x3c4548(_0xbe9f7d['p90'])+_0x4da2c0(0x1f6)+_0xbe9f7d[_0x4da2c0(0x1e1)]+_0x4da2c0(0x18b)+(_0xbe9f7d[_0x4da2c0(0x15d)]*0x64)['toFixed'](0x0)+_0x4da2c0(0x1dc);if(!_0x3b6257)return;let _0x31800a='';_0xbe9f7d['totalMatches']&&_0xbe9f7d[_0x4da2c0(0x183)]!==_0xbe9f7d[_0x4da2c0(0x1e1)]&&(_0x31800a+=_0x4da2c0(0x135)+_0xbe9f7d[_0x4da2c0(0x24a)]+'/'+_0xbe9f7d[_0x4da2c0(0x183)]+'</span></div>');if(_0xbe9f7d[_0x4da2c0(0x106)]&&_0xbe9f7d['perGcpErrors'][_0x4da2c0(0x164)]){const _0x34b77f=Math[_0x4da2c0(0x227)](..._0xbe9f7d[_0x4da2c0(0x106)][_0x4da2c0(0xeb)](_0x4a4d08=>_0x4a4d08[_0x4da2c0(0x188)]),0.1),_0x52698a=_0x34d012=>Math[_0x4da2c0(0x27e)](_0x34d012/_0x34b77f*0x64,0x64),_0x5f42d0=_0x54ded0=>_0x54ded0<0x1?'#2f7d4f':_0x54ded0<0x5?_0x4da2c0(0xe7):_0x4da2c0(0x1cf);_0x31800a+=_0x4da2c0(0x18c),_0xbe9f7d['perGcpErrors'][_0x4da2c0(0x1bf)]((_0x32659e,_0x2102bd)=>{const _0x134f6a=_0x4da2c0,_0x454b24=_0x5f42d0(_0x32659e[_0x134f6a(0x188)]);_0x31800a+=_0x134f6a(0x1ec)+(_0x2102bd+0x1)+'</span><span\x20style=\x22color:'+_0x454b24+_0x134f6a(0x20d)+_0x3c4548(_0x32659e[_0x134f6a(0x188)])+_0x134f6a(0x15e),_0x31800a+=_0x134f6a(0x165)+_0x52698a(_0x32659e[_0x134f6a(0x188)])+_0x134f6a(0x23a)+_0x454b24+'\x22></div></div>';}),_0x31800a+=_0x4da2c0(0x11c);}_0x3b6257[_0x4da2c0(0x1ba)]=_0x31800a;}function _0x788016(){const _0x3832d7=_0x2bad41,_0x28967f=document[_0x3832d7(0x1d1)](_0x3832d7(0x2c1));if(_0x28967f)_0x28967f[_0x3832d7(0x174)][_0x3832d7(0x173)]('hidden');}function _0x35a8fd(){const _0x37122e=_0x2bad41;if(!_0x467f0d[_0x37122e(0x121)])return;const _0xb669f4=_0x467f0d['entry'],_0x323ec2=_0x467f0d['gcps'];if(!_0xb669f4||_0x323ec2[_0x37122e(0x164)]<0x4)return;let _0x4a001a;try{_0x4a001a=Georef[_0x37122e(0x186)](_0x323ec2);}catch(_0x42befd){showAppAlert(_0x37122e(0x1f2)+_0x42befd[_0x37122e(0x177)],{'error':!![]});return;}const _0xa46cd2=_0x853c50(_0x323ec2,_0x4a001a);_0x467f0d[_0x37122e(0x121)]=![];const _0x4acdd8=document['getElementById'](_0x37122e(0x28c));_0x4acdd8[_0x37122e(0x126)]='RMS:\x20'+_0x4991a3(_0xa46cd2),_0x4acdd8[_0x37122e(0x16b)]='georef-topbar-rms\x20'+_0x1f7a71(_0xa46cd2);const _0x3d60fd=document[_0x37122e(0x1d1)](_0x37122e(0x2c2)),_0x548c16=document[_0x37122e(0x1d1)](_0x37122e(0x29a));_0x3d60fd[_0x37122e(0x1fc)]=!![],_0x548c16[_0x37122e(0x1fc)]=!![],_0x3d60fd[_0x37122e(0x126)]=_0x37122e(0xd4),_0xb669f4[_0x37122e(0x1e0)]=_0x323ec2['map'](_0xd5a2b9=>({'img':{'x':_0xd5a2b9[_0x37122e(0x198)]['x'],'y':_0xd5a2b9[_0x37122e(0x198)]['y']},'map':{'lng':_0xd5a2b9[_0x37122e(0xeb)]['lng'],'lat':_0xd5a2b9[_0x37122e(0xeb)][_0x37122e(0x19b)]}})),_0xb669f4[_0x37122e(0x250)]=_0x4a001a,_0xb669f4[_0x37122e(0x1d3)]=!![],_0xb669f4['pending']=![],_0xb669f4[_0x37122e(0x209)]=_0xa46cd2[_0x37122e(0x247)],_0xb669f4[_0x37122e(0x130)]=_0xa46cd2[_0x37122e(0x262)],_0x3fc572(_0xb669f4),_0x53e141(),setTimeout(()=>{const _0x52404d=_0x37122e;_0x2b283e(),_0x188bcb(_0xb669f4),_0x3d60fd[_0x52404d(0x126)]='Aplicar',_0x3d60fd[_0x52404d(0x1fc)]=![],_0x548c16['disabled']=![],showTeamToast('\x22'+_0xb669f4[_0x52404d(0x29f)]+'\x22\x20georreferenciada\x20com\x20sucesso\x20(RMS\x20'+_0x4991a3(_0xa46cd2)+').');},0x44c);}document[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x26209a=>{const _0x2c0487=_0x2bad41;if(_0x26209a[_0x2c0487(0x21f)][_0x2c0487(0x236)](_0x2c0487(0x1be)))_0x35a8fd();}),document['addEventListener']('keydown',_0xc085ca=>{const _0x1966de=_0x2bad41;if(_0xc085ca[_0x1966de(0x1ad)]==='Escape'&&_0x467f0d[_0x1966de(0x121)])_0x33ec74();});function _0x28e9a8(){const _0x4437ac=_0x2bad41;let _0xeca24a=document['getElementById'](_0x4437ac(0x14b));if(_0xeca24a)return _0xeca24a;const _0x1ad465=document[_0x4437ac(0x1d1)](_0x4437ac(0xde));if(!_0x1ad465||!_0x1ad465[_0x4437ac(0x189)])return null;let _0x231288=_0x1ad465[_0x4437ac(0x189)]['classList']['contains'](_0x4437ac(0x21d))?_0x1ad465[_0x4437ac(0x189)]:null;return!_0x231288&&(_0x231288=document[_0x4437ac(0x269)](_0x4437ac(0x114)),_0x231288['className']=_0x4437ac(0x21d),_0x1ad465[_0x4437ac(0x189)][_0x4437ac(0x245)](_0x231288,_0x1ad465),_0x231288['appendChild'](_0x1ad465)),_0xeca24a=document[_0x4437ac(0x269)](_0x4437ac(0x1d2)),_0xeca24a['type']=_0x4437ac(0x1d2),_0xeca24a['id']=_0x4437ac(0x14b),_0xeca24a[_0x4437ac(0x16b)]=_0x4437ac(0xe6),_0xeca24a[_0x4437ac(0x126)]=_0x4437ac(0x1c4),_0xeca24a[_0x4437ac(0xfd)]('click',_0x21d9fd=>{const _0x11556a=_0x4437ac;_0x21d9fd[_0x11556a(0x128)]();if(!_0x467f0d['autoGeorefCompleted']||_0xeca24a[_0x11556a(0x1fc)])return;_0xeca24a[_0x11556a(0x1fc)]=!![],_0x35a8fd();}),_0x231288['appendChild'](_0xeca24a),_0xeca24a;}function _0x346776(_0x1a1831,_0x1f5cf7){const _0x2fc63a=_0x2bad41;document[_0x2fc63a(0x1d1)](_0x2fc63a(0x204))?.['classList'][_0x2fc63a(0x173)](_0x2fc63a(0x27c)),_0x51f96c(),document[_0x2fc63a(0x2b9)](_0x2fc63a(0x201))?.[_0x2fc63a(0x174)][_0x2fc63a(0x22c)](_0x2fc63a(0x27c)),document[_0x2fc63a(0x2b9)]('.georef-image-panel-body')?.['classList'][_0x2fc63a(0x22c)]('georef-manual-active');const _0x251c78=_0x1a1831===0x1?'':'s';_0x3f2737('✓\x20Georreferenciação\x20automática\x20concluída.\x20Foram\x20encontrados\x20'+_0x1a1831+_0x2fc63a(0xc2)+_0x251c78+_0x2fc63a(0x22b),![],_0x2fc63a(0x253)),_0x3b703a();const _0x126f3d=_0x28e9a8();_0x126f3d&&(_0x126f3d[_0x2fc63a(0x1fc)]=![],_0x126f3d[_0x2fc63a(0x174)][_0x2fc63a(0x22c)](_0x2fc63a(0x27c))),_0x3ad5ec();}function _0x38082a(){const _0x2c5740=_0x2bad41,_0x5018d7=document[_0x2c5740(0x1d1)](_0x2c5740(0x14b));_0x5018d7&&(_0x5018d7[_0x2c5740(0x174)]['add'](_0x2c5740(0x27c)),_0x5018d7[_0x2c5740(0x1fc)]=![]);}function _0x160782(_0x1ce1f5){const _0x25e7c2=_0x2bad41,_0x5d6318=document['getElementById'](_0x25e7c2(0x204)),_0x552d37=document[_0x25e7c2(0x2b9)](_0x25e7c2(0x201)),_0x1929d7=document['querySelector'](_0x25e7c2(0x1ab));if(_0x5d6318)_0x5d6318[_0x25e7c2(0x174)][_0x25e7c2(0x17c)](_0x25e7c2(0x27c),!_0x1ce1f5);if(_0x552d37)_0x552d37['classList'][_0x25e7c2(0x17c)]('hidden',!_0x1ce1f5);_0x1929d7&&_0x1929d7[_0x25e7c2(0x174)][_0x25e7c2(0x17c)](_0x25e7c2(0x25f),_0x1ce1f5&&!_0x467f0d[_0x25e7c2(0x105)]);if(_0x1ce1f5)_0x3ad5ec();}function _0xfd7bc9(){const _0x344cfa=_0x2bad41;let _0xe374eb=document[_0x344cfa(0x1d1)]('georef-manual-fallback-btn');if(_0xe374eb)return _0xe374eb;const _0xeca65b=document[_0x344cfa(0x1d1)](_0x344cfa(0x123));if(!_0xeca65b)return null;return _0xe374eb=document['createElement'](_0x344cfa(0x1d2)),_0xe374eb['type']=_0x344cfa(0x1d2),_0xe374eb['id']='georef-manual-fallback-btn',_0xe374eb['className']=_0x344cfa(0x1b2),_0xe374eb[_0x344cfa(0x126)]=_0x344cfa(0x2a1),_0xe374eb[_0x344cfa(0xfd)](_0x344cfa(0xf7),_0x507bed=>{const _0x4417f4=_0x344cfa;_0x507bed[_0x4417f4(0x128)](),_0x373729();}),_0xeca65b[_0x344cfa(0xec)](_0xe374eb),_0xe374eb;}function _0x512091(){const _0x474ccf=_0x2bad41;_0xfd7bc9()?.[_0x474ccf(0x174)][_0x474ccf(0x22c)]('hidden');}function _0x51f96c(){const _0x1471bd=_0x2bad41;document[_0x1471bd(0x1d1)]('georef-manual-fallback-btn')?.[_0x1471bd(0x174)]['add'](_0x1471bd(0x27c));}function _0x373729(){const _0x1798d6=_0x2bad41;if(!_0x467f0d[_0x1798d6(0x121)]||_0x467f0d['autoGeorefCompleted'])return;_0x467f0d[_0x1798d6(0x2a6)]=!![],_0x51f96c(),_0x160782(!![]),_0x3f2737(_0x1798d6(0x25b),![],'idle'),_0x41f1b2(),_0x3ad5ec();}function _0x227c23(){return _0x467f0d['manualGeorefUnlocked']&&!_0x467f0d['autoGeorefCompleted'];}function _0x41f1b2(){const _0x3e3c60=_0x2bad41,_0x44346e=_0x467f0d[_0x3e3c60(0x1e0)][_0x3e3c60(0x164)];document[_0x3e3c60(0x1d1)](_0x3e3c60(0x151))[_0x3e3c60(0x126)]=_0x44346e<=0x4?_0x3e3c60(0x1f9)+_0x44346e+'/4':'Pontos:\x20'+_0x44346e+'\x20(mín.\x204)',document[_0x3e3c60(0x1d1)](_0x3e3c60(0x2c2))[_0x3e3c60(0x1fc)]=_0x44346e<0x4;}function _0x370f8c(){const _0x817fae=_0x2bad41;if(!_0x13b529)_0x13b529=L[_0x817fae(0x16a)]()['addTo'](map);_0x13b529['clearLayers'](),_0x4377a6=null;const _0x5bc0a8=document['getElementById'](_0x817fae(0x17e));_0x5bc0a8[_0x817fae(0x1e6)](_0x817fae(0x254))[_0x817fae(0x1bf)](_0x33015f=>_0x33015f[_0x817fae(0x22c)]());const _0x522b11=_0x467f0d[_0x817fae(0x23b)];if(!_0x522b11)return;_0x467f0d[_0x817fae(0x1e0)][_0x817fae(0x1bf)]((_0x5b8db3,_0x5af353)=>{const _0x4127fd=_0x817fae,_0x46f8fd=_0x5af353+0x1,_0x436979=L['divIcon']({'className':_0x4127fd(0x1fd),'html':'<span>'+_0x46f8fd+_0x4127fd(0xfc),'iconSize':[0x16,0x16],'iconAnchor':[0xb,0xb]});L[_0x4127fd(0x1c0)]([_0x5b8db3['map'][_0x4127fd(0x19b)],_0x5b8db3[_0x4127fd(0xeb)][_0x4127fd(0x138)]],{'icon':_0x436979,'interactive':![]})['addTo'](_0x13b529);const _0x420f04=document[_0x4127fd(0x269)](_0x4127fd(0x11b));_0x420f04[_0x4127fd(0x16b)]='georef-gcp-image-marker',_0x420f04['textContent']=_0x46f8fd,_0x420f04['style'][_0x4127fd(0xcb)]=_0x5b8db3[_0x4127fd(0x198)]['x']/_0x522b11[_0x4127fd(0x26a)]*0x64+'%',_0x420f04[_0x4127fd(0x29e)][_0x4127fd(0x244)]=_0x5b8db3['img']['y']/_0x522b11[_0x4127fd(0x224)]*0x64+'%',_0x5bc0a8[_0x4127fd(0xec)](_0x420f04);}),_0x5e91ce();}function _0x5e91ce(){const _0x43eafa=_0x2bad41;document[_0x43eafa(0x1e6)](_0x43eafa(0x11e))[_0x43eafa(0x1bf)](_0x1e8742=>_0x1e8742[_0x43eafa(0x22c)]());_0x4377a6&&_0x13b529&&(_0x13b529[_0x43eafa(0x251)](_0x4377a6),_0x4377a6=null);const _0x2a6c84=_0x467f0d[_0x43eafa(0x23b)];if(_0x467f0d['pendingImagePoint']&&_0x2a6c84){const _0x334d6b=document[_0x43eafa(0x1d1)](_0x43eafa(0x17e)),_0x12bb44=document[_0x43eafa(0x269)](_0x43eafa(0x11b));_0x12bb44[_0x43eafa(0x16b)]='georef-gcp-pending-marker',_0x12bb44[_0x43eafa(0x29e)][_0x43eafa(0xcb)]=_0x467f0d['pendingImagePoint']['x']/_0x2a6c84[_0x43eafa(0x26a)]*0x64+'%',_0x12bb44[_0x43eafa(0x29e)]['top']=_0x467f0d['pendingImagePoint']['y']/_0x2a6c84[_0x43eafa(0x224)]*0x64+'%',_0x334d6b[_0x43eafa(0xec)](_0x12bb44);}if(_0x467f0d[_0x43eafa(0x1c9)]&&_0x13b529){const _0x17248e=L[_0x43eafa(0x1b8)]({'className':'georef-gcp-pending-map-marker','html':'','iconSize':[0x12,0x12],'iconAnchor':[0x9,0x9]});_0x4377a6=L['marker']([_0x467f0d[_0x43eafa(0x1c9)][_0x43eafa(0x19b)],_0x467f0d['pendingMapPoint'][_0x43eafa(0x138)]],{'icon':_0x17248e,'interactive':![]})[_0x43eafa(0x263)](_0x13b529);}}function _0x3b703a(_0x4141be){const _0x45c3c6=_0x2bad41;if(Array[_0x45c3c6(0xd5)](_0x4141be)){if(!_0x467f0d[_0x45c3c6(0x121)])return;_0x467f0d[_0x45c3c6(0x1e0)]=_0x4141be[_0x45c3c6(0xeb)](_0x550383=>{const _0x1cc223=_0x45c3c6;return _0x1bc180++,{'id':_0x1cc223(0x25a)+_0x1bc180,'img':{'x':_0x550383[_0x1cc223(0x198)]['x'],'y':_0x550383[_0x1cc223(0x198)]['y']},'map':{'lng':_0x550383[_0x1cc223(0xeb)][_0x1cc223(0x138)],'lat':_0x550383['map'][_0x1cc223(0x19b)]},'error':null};}),_0x467f0d[_0x45c3c6(0x127)]=null,_0x467f0d[_0x45c3c6(0x1c9)]=null,_0x370f8c(),_0x41f1b2();}const _0x59be6d=document[_0x45c3c6(0x1d1)](_0x45c3c6(0x1bc));if(!_0x59be6d)return;if(_0x467f0d['gcps'][_0x45c3c6(0x164)]===0x0){_0x59be6d['innerHTML']=_0x45c3c6(0x1ee);return;}_0x59be6d[_0x45c3c6(0x1ba)]=_0x467f0d[_0x45c3c6(0x1e0)][_0x45c3c6(0xeb)]((_0x469e61,_0x4a8387)=>{const _0x3ba6dd=_0x45c3c6,_0x10abba=_0x4a8387+0x1,_0x46dfa2=_0x469e61['error']===null||_0x469e61[_0x3ba6dd(0x188)]===undefined?'—':_0x469e61[_0x3ba6dd(0x188)],_0x50b200=_0x467f0d[_0x3ba6dd(0x105)]?'':'\x0a\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22georef-gcp-item-edit\x22\x20data-gcp-edit=\x22'+_0x469e61['id']+'\x22\x20title=\x22Voltar\x20a\x20marcar\x20o\x20lado\x20do\x20mapa\x22>✎</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<button\x20type=\x22button\x22\x20class=\x22georef-gcp-item-remove\x22\x20data-gcp-remove=\x22'+_0x469e61['id']+_0x3ba6dd(0x24b);return _0x3ba6dd(0x131)+_0x469e61['id']+'\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22georef-gcp-item-num\x22>✔\x20'+_0x10abba+_0x3ba6dd(0x25e)+Math[_0x3ba6dd(0x10a)](_0x469e61[_0x3ba6dd(0x198)]['x'])+',\x20'+Math[_0x3ba6dd(0x10a)](_0x469e61[_0x3ba6dd(0x198)]['y'])+_0x3ba6dd(0x136)+_0x469e61[_0x3ba6dd(0xeb)]['lat']['toFixed'](0x5)+',\x20'+_0x469e61[_0x3ba6dd(0xeb)][_0x3ba6dd(0x138)][_0x3ba6dd(0x112)](0x5)+_0x3ba6dd(0x103)+_0x46dfa2+_0x3ba6dd(0xfc)+_0x50b200+_0x3ba6dd(0x169);})[_0x45c3c6(0xf6)](''),_0x59be6d[_0x45c3c6(0x1e6)](_0x45c3c6(0x281))['forEach'](_0x131983=>{const _0x276d98=_0x45c3c6;_0x131983[_0x276d98(0xfd)]('click',_0x9b4a5=>{const _0xe18152=_0x276d98;_0x9b4a5[_0xe18152(0x128)](),_0x4a0165(_0x131983[_0xe18152(0x241)]['gcpRemove']);});}),_0x59be6d[_0x45c3c6(0x1e6)](_0x45c3c6(0x1e7))[_0x45c3c6(0x1bf)](_0x487a6b=>{const _0x77d34f=_0x45c3c6;_0x487a6b['addEventListener'](_0x77d34f(0xf7),_0x55ef43=>{const _0x556eb1=_0x77d34f;_0x55ef43[_0x556eb1(0x128)](),_0x53323d(_0x487a6b[_0x556eb1(0x241)][_0x556eb1(0x2bb)]);});});}function _0x245112(_0x573c73){const _0x396d05=_0x2bad41;if(!_0x573c73)return _0x573c73;const _0x550207=_0x573c73[_0x396d05(0x181)](/\[[^\]]*\]\s*/g,'')[_0x396d05(0x266)]();if(!_0x550207)return _0x573c73;return _0x550207[_0x396d05(0x14f)](0x0)[_0x396d05(0x1fe)]()+_0x550207[_0x396d05(0x10d)](0x1);}function _0x3f2737(_0x50b852,_0x3de3fa,_0x4632fa,_0xa49fab,_0xdecf6){const _0x88376e=_0x2bad41,_0x162d71=_0x245112(_0x50b852),_0x1130ef=document[_0x88376e(0x1d1)](_0x88376e(0x24f));if(_0x1130ef){const _0x59a4b2=document[_0x88376e(0x1d1)](_0x88376e(0x249));_0x59a4b2?_0x59a4b2[_0x88376e(0x126)]=_0x162d71:_0x1130ef['textContent']=_0x162d71,_0x1130ef[_0x88376e(0x174)][_0x88376e(0x17c)](_0x88376e(0x211),!!_0x3de3fa),_0x1130ef['dataset'][_0x88376e(0x15c)]=_0x4632fa||(_0x3de3fa?'error':_0x88376e(0x213));}_0xf86fff&&(_0x2f0698(_0x50b852,_0xa49fab,_0x3de3fa),!_0xdecf6&&_0x50b852&&_0x5e215c(_0x88376e(0x237)+_0x50b852,_0x3de3fa?_0x88376e(0x188):_0x88376e(0x14c)));}let _0x27bd92=null,_0xf86fff=![];const _0x150d28=0xfa;function _0x2ce790(){const _0x4351b9=_0x2bad41,_0x53b997=document[_0x4351b9(0x2b9)](_0x4351b9(0x1c3));if(_0x53b997)_0x53b997[_0x4351b9(0x1ba)]='';}function _0x5e215c(_0xcc22f7,_0x5bd11f){const _0x5c93b3=_0x2bad41;if(!_0xcc22f7)return;_0x209d68();const _0x2caf5f=document[_0x5c93b3(0x2b9)](_0x5c93b3(0x1c3));if(!_0x2caf5f)return;const _0x2514be=document[_0x5c93b3(0x269)](_0x5c93b3(0x114));_0x2514be['className']=_0x5c93b3(0x2ac)+(_0x5bd11f||_0x5c93b3(0x14c));const _0x135176=document['createElement']('span');_0x135176[_0x5c93b3(0x16b)]='georef-auto-console-ts',_0x135176[_0x5c93b3(0x126)]=new Date()['toTimeString']()[_0x5c93b3(0x10d)](0x0,0x8);const _0x436092=document[_0x5c93b3(0x269)]('span');_0x436092[_0x5c93b3(0x16b)]=_0x5c93b3(0x2be),_0x436092[_0x5c93b3(0x126)]=_0xcc22f7,_0x2514be[_0x5c93b3(0xec)](_0x135176),_0x2514be[_0x5c93b3(0xec)](_0x436092),_0x2caf5f['appendChild'](_0x2514be);while(_0x2caf5f[_0x5c93b3(0x26f)][_0x5c93b3(0x164)]>_0x150d28){_0x2caf5f[_0x5c93b3(0x2a8)](_0x2caf5f[_0x5c93b3(0x205)]);}_0x2caf5f[_0x5c93b3(0x242)]=_0x2caf5f[_0x5c93b3(0x216)];}(function _0xb6613a(){const _0x34dbed=_0x2bad41,_0xb73fbe=['[AutoGeoref',_0x34dbed(0x2ba),_0x34dbed(0x153)],_0x80ae7f={'log':console[_0x34dbed(0x14c)][_0x34dbed(0x144)](console),'warn':console[_0x34dbed(0x2b6)][_0x34dbed(0x144)](console),'error':console[_0x34dbed(0x188)][_0x34dbed(0x144)](console)};function _0xb7b3f5(_0x4b24b1){const _0x40b85a=_0x34dbed;return _0x4b24b1[_0x40b85a(0xeb)](_0x523d43=>{const _0x1149f9=_0x40b85a;if(_0x523d43==null)return String(_0x523d43);if(_0x523d43 instanceof Error)return _0x523d43[_0x1149f9(0x1a0)]||_0x523d43[_0x1149f9(0x177)];if(typeof _0x523d43==='object')try{return JSON[_0x1149f9(0x145)](_0x523d43);}catch(_0x4d3761){return String(_0x523d43);}return String(_0x523d43);})[_0x40b85a(0xf6)]('\x20');}function _0x398cd6(_0x58a604){const _0xaa87bf=_0x34dbed;return _0xb73fbe['some'](_0x308760=>_0x58a604[_0xaa87bf(0x194)](_0x308760)!==-0x1);}function _0x1096cc(_0x2c3ced,_0x1712a7){const _0x2e94e9=_0x34dbed,_0x1de286=_0xb7b3f5(_0x1712a7);_0xf86fff&&_0x398cd6(_0x1de286)&&_0x5e215c(_0x1de286,_0x2c3ced),_0x80ae7f[_0x2c3ced][_0x2e94e9(0x154)](console,_0x1712a7);}console['log']=(..._0x5aa0f2)=>_0x1096cc(_0x34dbed(0x14c),_0x5aa0f2),console[_0x34dbed(0x2b6)]=(..._0x173731)=>_0x1096cc(_0x34dbed(0x2b6),_0x173731),console[_0x34dbed(0x188)]=(..._0x7531b)=>_0x1096cc(_0x34dbed(0x188),_0x7531b);}());function _0x209d68(){const _0x58bb60=_0x2bad41;if(document[_0x58bb60(0x1d1)]('georef-auto-progress'))return;const _0x14fc09=document['createElement']('div');_0x14fc09['id']='georef-auto-progress',_0x14fc09[_0x58bb60(0x16b)]='hidden',_0x14fc09[_0x58bb60(0x1ba)]=_0x58bb60(0x261),document[_0x58bb60(0x1e8)][_0x58bb60(0xec)](_0x14fc09);}function _0x317911({active:active=!![],text:text='A\x20preparar…',tone:tone=_0x2bad41(0x1fb),pill:pill='A\x20processar',sourceLabel:sourceLabel=''}={}){const _0x1fe2bb=_0x2bad41;_0x209d68();const _0x3f8636=document[_0x1fe2bb(0x1d1)](_0x1fe2bb(0x1bd)),_0x2b576a=_0x3f8636?.[_0x1fe2bb(0x2b9)](_0x1fe2bb(0x12d)),_0x29f808=_0x3f8636?.[_0x1fe2bb(0x2b9)]('.georef-auto-console-source');if(!_0x3f8636)return;_0x27bd92&&(clearTimeout(_0x27bd92),_0x27bd92=null);_0x3f8636[_0x1fe2bb(0x174)][_0x1fe2bb(0x17c)](_0x1fe2bb(0x27c),!active),_0x3f8636['classList']['toggle']('is-success',tone===_0x1fe2bb(0x253)),_0x3f8636['classList'][_0x1fe2bb(0x17c)](_0x1fe2bb(0x211),tone===_0x1fe2bb(0x188)),_0x3f8636[_0x1fe2bb(0x174)][_0x1fe2bb(0x17c)](_0x1fe2bb(0x297),tone===_0x1fe2bb(0x1fb));if(_0x2b576a)_0x2b576a[_0x1fe2bb(0x126)]=pill;if(_0x29f808)_0x29f808[_0x1fe2bb(0x126)]=sourceLabel?_0x1fe2bb(0x221)+sourceLabel:'';_0xf86fff=active,active&&tone!=='working'&&(_0x27bd92=setTimeout(()=>{const _0x54e8ff=_0x1fe2bb;_0x3f8636[_0x54e8ff(0x174)][_0x54e8ff(0x173)]('hidden'),_0xf86fff=![],_0x27bd92=null;},0xc80));}function _0x3ccd59({text:text=_0x2bad41(0xc6),pill:pill=_0x2bad41(0x233),tone:tone='working',sourceLabel:sourceLabel=''}={}){const _0x503472=_0x2bad41;_0x317911({'active':!![],'text':text,'tone':tone,'pill':pill,'sourceLabel':sourceLabel});if(text)_0x5e215c(_0x503472(0x237)+text,_0x503472(0x10f));}function _0x2f0698(_0x517a78,_0x43eff7){const _0x19c9e8=_0x2bad41;if(!_0xf86fff)return;const _0xf63cd3=document['getElementById'](_0x19c9e8(0x1bd)),_0x6a1443=_0xf63cd3?.[_0x19c9e8(0x2b9)](_0x19c9e8(0x1db));if(_0x6a1443&&_0x43eff7)_0x6a1443['textContent']=_0x19c9e8(0x221)+_0x43eff7;}function _0x189e8b({text:text=_0x2bad41(0x20f),tone:tone=_0x2bad41(0x253),pill:pill=_0x2bad41(0x23f),sourceLabel:sourceLabel=''}={}){const _0x12dd59=_0x2bad41;if(!_0xf86fff)return;text&&_0x5e215c('[AutoGeoref]\x20'+text,tone==='error'?_0x12dd59(0x188):'log'),tone===_0x12dd59(0x1fb)?_0x317911({'active':![],'text':text,'tone':tone,'pill':pill,'sourceLabel':sourceLabel}):_0x317911({'active':!![],'text':text,'tone':tone,'pill':pill,'sourceLabel':sourceLabel});}function _0x48a0a4(){const _0x3768a3=_0x2bad41;_0x27bd92&&(clearTimeout(_0x27bd92),_0x27bd92=null);const _0x255266=document[_0x3768a3(0x1d1)]('georef-auto-progress');if(_0x255266)_0x255266['classList'][_0x3768a3(0x173)]('hidden');_0xf86fff=![];}function _0x5b7643(_0x1ef9c5,_0x478f1f){const _0x197efd=_0x2bad41,_0x13ad33=Math[_0x197efd(0xc4)](0x2,_0x478f1f),_0x3f2f11=Math[_0x197efd(0x272)](Math[_0x197efd(0x2bf)](Math['PI']*(0x1-0x2*_0x1ef9c5/_0x13ad33)));return _0x3f2f11*0xb4/Math['PI'];}function _0x1cf927(_0x236e15,_0x32e8d5,_0x127f1c){const _0x5d3dd3=_0x2bad41,_0x2991ef=Math[_0x5d3dd3(0xc4)](0x2,_0x236e15);return{'west':_0x32e8d5/_0x2991ef*0x168-0xb4,'east':(_0x32e8d5+0x1)/_0x2991ef*0x168-0xb4,'north':_0x5b7643(_0x127f1c,_0x236e15),'south':_0x5b7643(_0x127f1c+0x1,_0x236e15)};}async function _0xde29ee(_0x1cc72c){const _0x397cd3=_0x2bad41;try{return await new Promise((_0x40b628,_0x35c311)=>{const _0x2f202c=_0x1dba,_0x599812=new Image();_0x599812[_0x2f202c(0x162)]=()=>_0x40b628(_0x599812),_0x599812['onerror']=()=>_0x35c311(new Error('Não\x20foi\x20possível\x20carregar\x20a\x20imagem\x20de\x20referência.')),_0x599812[_0x2f202c(0xce)]=_0x1cc72c;});}catch(_0x25dd4a){console[_0x397cd3(0x188)](_0x397cd3(0x1e9),_0x25dd4a);throw _0x25dd4a;}}async function _0x25511f(_0x5a0565){const _0x5626e9=_0x2bad41;try{if(typeof TEAM_API_BASE===_0x5626e9(0x21c)||!TEAM_API_BASE)throw new Error(_0x5626e9(0x104));const _0x53dbb8=TEAM_API_BASE+_0x5626e9(0x15f)+encodeURIComponent(_0x5a0565),_0xd06388=await fetch(_0x53dbb8);if(!_0xd06388['ok'])throw new Error(_0x5626e9(0x175)+_0xd06388['status']);return _0xd06388;}catch(_0x24ceb1){console[_0x5626e9(0x188)]('[Proxy]\x20fetch\x20failed:',_0x24ceb1);throw _0x24ceb1;}}async function _0x24e6d4(_0x538060){const _0x54596a=_0x2bad41;try{if(typeof TEAM_API_BASE===_0x54596a(0x21c)||!TEAM_API_BASE)throw new Error(_0x54596a(0x104));const _0x31e78d=TEAM_API_BASE+_0x54596a(0x1ae)+encodeURIComponent(_0x538060),_0x515c3e=await fetch(_0x31e78d);if(!_0x515c3e['ok']){const _0x3b547a=await _0x515c3e[_0x54596a(0x1df)]()[_0x54596a(0x25c)](()=>null);throw new Error(_0x54596a(0xfa)+_0x515c3e[_0x54596a(0xe5)]+(_0x3b547a?'\x20—\x20'+_0x3b547a[_0x54596a(0x10d)](0x0,0xc8):''));}return _0x515c3e;}catch(_0x1fc030){console['error'](_0x54596a(0xdf),_0x1fc030);throw _0x1fc030;}}async function _0x1c4cd7(_0x2957b5){const _0x56d89d=_0x2bad41;try{const _0x3b15ae=await fetch(_0x2957b5);if(!_0x3b15ae['ok'])throw new Error(_0x56d89d(0x15a)+_0x3b15ae[_0x56d89d(0xe5)]);return _0x3b15ae;}catch(_0x3d4ad8){console[_0x56d89d(0x188)](_0x56d89d(0x255),_0x3d4ad8);throw _0x3d4ad8;}}function _0x2816bb(_0x43f4b0){const _0x5f317b=_0x2bad41;try{const _0xe2aa13=new URL(_0x43f4b0,window[_0x5f317b(0x1b9)][_0x5f317b(0x1f3)]),_0x4ab73d=new URLSearchParams(_0xe2aa13[_0x5f317b(0x2ad)]);if(!_0x4ab73d[_0x5f317b(0x299)]('bbox'))return null;const _0x1ce571=_0x4ab73d[_0x5f317b(0x117)](_0x5f317b(0x16f))['split'](',')[_0x5f317b(0xeb)](Number);if(_0x1ce571['length']!==0x4||_0x1ce571[_0x5f317b(0x150)](_0xf8277=>!Number[_0x5f317b(0x1f0)](_0xf8277)))return null;return{'west':_0x1ce571[0x0],'south':_0x1ce571[0x1],'east':_0x1ce571[0x2],'north':_0x1ce571[0x3]};}catch(_0x24fc7e){return null;}}const _0x3c2933=20037508.342789244;function _0x1adba3(_0x556c5f,_0x515a71){const _0x3859a8=_0x2bad41,_0x40a114=_0x556c5f/_0x3c2933*0xb4,_0x68ffc4=Math['atan'](Math[_0x3859a8(0x26d)](_0x515a71/_0x3c2933*Math['PI'])),_0x1cc7b0=_0x68ffc4*0xb4/Math['PI'];return[_0x40a114,_0x1cc7b0];}const _0x5af44b=0x3,_0x237f49=Math[_0x2bad41(0x28e)](_0x5af44b/0x2),_0x21c15c=_0x5af44b*0x100;function _0x5a9e9c(_0x2369c1,_0x599728,_0x18318b,_0x2ecb15){const [_0x2f8095]=tile3857BBox(_0x2369c1,_0x599728-_0x2ecb15,_0x18318b),[,,_0x38be82]=tile3857BBox(_0x2369c1,_0x599728+_0x2ecb15,_0x18318b),[,_0x29fb13]=tile3857BBox(_0x2369c1,_0x599728,_0x18318b+_0x2ecb15),[,,,_0x3aeef1]=tile3857BBox(_0x2369c1,_0x599728,_0x18318b-_0x2ecb15);return[_0x2f8095,_0x29fb13,_0x38be82,_0x3aeef1];}function _0x2118cd(_0x5c8819,_0x2b9c05,_0xcc2379,_0x4ecb16){const _0x2f0e3f=_0x2bad41,_0x107023=_0x1cf927(_0x5c8819,_0x2b9c05-_0x4ecb16,_0xcc2379),_0x13324a=_0x1cf927(_0x5c8819,_0x2b9c05+_0x4ecb16,_0xcc2379),_0x4050b9=_0x1cf927(_0x5c8819,_0x2b9c05,_0xcc2379-_0x4ecb16),_0x2c56c2=_0x1cf927(_0x5c8819,_0x2b9c05,_0xcc2379+_0x4ecb16);return{'west':_0x107023[_0x2f0e3f(0xbd)],'east':_0x13324a[_0x2f0e3f(0x1f4)],'north':_0x4050b9[_0x2f0e3f(0x207)],'south':_0x2c56c2['south']};}function _0x605c94(_0x5aa916,_0x38e3de,_0x4b3a31,_0x5dc1f2,_0xb6732b){const _0x7b0bc7=_0x2bad41,[_0x210ff8,_0x2c84d8,_0x55f5df,_0x8d5ac3]=_0x5a9e9c(_0x38e3de,_0x4b3a31,_0x5dc1f2,_0xb6732b),_0x468390=(_0xb6732b*0x2+0x1)*0x100,_0x532579=new URLSearchParams({'service':'WMS','version':_0x7b0bc7(0x19c),'request':_0x7b0bc7(0x223),'layers':_0x5aa916[_0x7b0bc7(0x202)],'styles':'','format':_0x7b0bc7(0xe2),'transparent':_0x7b0bc7(0x27b),'width':String(_0x468390),'height':String(_0x468390),'crs':_0x7b0bc7(0x180),'bbox':_0x210ff8+','+_0x2c84d8+','+_0x55f5df+','+_0x8d5ac3});return _0x5aa916[_0x7b0bc7(0x12e)]+'?'+_0x532579[_0x7b0bc7(0xc7)]();}function _0x14aa0d(_0x475098){const _0x25b7ea=_0x2bad41;if(!_0x467f0d['active']||!_0x467f0d['entry'])return;_0x467f0d[_0x25b7ea(0x1e0)]=_0x475098['map'](_0x2678c=>{const _0x587bfb=_0x25b7ea;return _0x1bc180++,{'id':_0x587bfb(0x25a)+_0x1bc180,'img':{'x':_0x2678c[_0x587bfb(0x198)]['x'],'y':_0x2678c[_0x587bfb(0x198)]['y']},'map':{'lng':_0x2678c[_0x587bfb(0xeb)][_0x587bfb(0x138)],'lat':_0x2678c[_0x587bfb(0xeb)][_0x587bfb(0x19b)]},'error':null};}),_0x467f0d[_0x25b7ea(0x127)]=null,_0x467f0d[_0x25b7ea(0x1c9)]=null,_0x370f8c(),_0x3b703a(),_0x41f1b2();}function _0xdbcefa(){const _0x312218=_0x2bad41;if(typeof map===_0x312218(0x21c)||!map)return![];const _0x356c83=map[_0x312218(0x122)]();return Number[_0x312218(0x1f0)](_0x356c83)&&_0x356c83>=GEOREF_AUTO_MIN_ZOOM&&_0x356c83<=GEOREF_AUTO_MAX_ZOOM;}function _0x3dabdc(){const _0x122aaf=_0x2bad41,_0x133a6c=document['getElementById'](_0x122aaf(0xde));if(!_0x133a6c)return;const _0x35329c=_0xdbcefa();_0x133a6c[_0x122aaf(0x1fc)]=!_0x35329c,_0x133a6c[_0x122aaf(0x1d8)](_0x122aaf(0x155),_0x35329c?_0x122aaf(0x27b):_0x122aaf(0xc1)),_0x35329c?(_0x133a6c[_0x122aaf(0x174)][_0x122aaf(0x22c)]('is-disabled'),_0x133a6c[_0x122aaf(0x172)]=_0x122aaf(0x1d0)):(_0x133a6c[_0x122aaf(0x174)]['add'](_0x122aaf(0x257)),_0x133a6c[_0x122aaf(0x172)]='Aproxima\x20o\x20mapa\x20até\x20ao\x20zoom\x2017–20\x20para\x20ativar\x20a\x20autogeorreferenciar.');}function _0x1ef6ba(_0x35f6e7){const _0xf9a5e7=_0x2bad41,_0x3cd178=document['getElementById'](_0xf9a5e7(0xde));if(!_0x3cd178)return;const _0x47a4fc=_0x3cd178['querySelector'](_0xf9a5e7(0x166));if(_0x35f6e7){_0x47a4fc&&!_0x3cd178[_0xf9a5e7(0x241)][_0xf9a5e7(0x185)]&&(_0x3cd178[_0xf9a5e7(0x241)][_0xf9a5e7(0x185)]=_0x47a4fc[_0xf9a5e7(0x126)],_0x47a4fc['textContent']=_0xf9a5e7(0x222));_0x3cd178[_0xf9a5e7(0x174)]['add'](_0xf9a5e7(0x238));const _0x2ca9d0=document[_0xf9a5e7(0x1d1)](_0xf9a5e7(0x24f));_0x2ca9d0&&_0x2ca9d0[_0xf9a5e7(0x241)]['state']!==_0xf9a5e7(0x188)&&(_0x2ca9d0['dataset'][_0xf9a5e7(0x15c)]='working');}else _0x47a4fc&&_0x3cd178['dataset'][_0xf9a5e7(0x185)]&&(_0x47a4fc[_0xf9a5e7(0x126)]=_0x3cd178['dataset'][_0xf9a5e7(0x185)],delete _0x3cd178[_0xf9a5e7(0x241)][_0xf9a5e7(0x185)]),_0x3cd178[_0xf9a5e7(0x174)][_0xf9a5e7(0x22c)]('is-busy');}function _0x13c18d(){const _0x57d970=_0x2bad41;if(_0xdbcefa())return![];const _0x46d798=typeof map!==_0x57d970(0x21c)&&map?map['getZoom']():null;if(_0x46d798===null||!Number[_0x57d970(0x1f0)](_0x46d798))_0x3f2737(_0x57d970(0x1f1),!![]);else _0x46d798<GEOREF_AUTO_MIN_ZOOM?_0x3f2737('Zoom\x20demasiado\x20reduzido\x20('+_0x46d798+_0x57d970(0x27a),!![]):_0x3f2737(_0x57d970(0x10e)+_0x46d798+_0x57d970(0x2ab),!![]);return!![];}async function _0x29aa7e(_0x20b78e,_0x266b34,_0x9f4698){const _0x207666=_0x2bad41,_0x6d08d1=_0x605c94({'base':_0x207666(0x1cd),'wmsLayer':'Ortos2021-RGB'},_0x20b78e,_0x266b34,_0x9f4698,_0x237f49);let _0x4eb473;try{_0x4eb473=await _0x24e6d4(_0x6d08d1);}catch(_0x40dcd3){console[_0x207666(0x2b6)]('Proxy\x20DGT\x20do\x20worker\x20falhou,\x20a\x20tentar\x20fetch\x20directo:',_0x40dcd3);try{_0x4eb473=await _0x1c4cd7(_0x6d08d1);}catch(_0x329219){throw new Error(_0x207666(0x1c5)+_0x40dcd3['message']+_0x207666(0xc3)+_0x329219[_0x207666(0x177)]);}}const _0x224697=_0x4eb473[_0x207666(0x2af)][_0x207666(0x117)]('Content-Type')||'';if(_0x224697&&!_0x224697['startsWith'](_0x207666(0x120))){const _0x40e6c0=await _0x4eb473['text']()['catch'](()=>null);throw new Error(_0x207666(0x1f8)+_0x224697+'\x20'+(_0x40e6c0?'Resposta:\x20'+_0x40e6c0[_0x207666(0x10d)](0x0,0xc8):''));}const _0x24f7e9=await _0x4eb473[_0x207666(0x22e)](),_0x4f17cf=URL[_0x207666(0x1e4)](_0x24f7e9);try{const _0x348791=await _0xde29ee(_0x4f17cf),_0x4864e4=_0x2816bb(_0x6d08d1);let _0x388828=null;if(_0x4864e4){const [_0x3f6c38,_0x1efd67]=_0x1adba3(_0x4864e4['west'],_0x4864e4[_0x207666(0x24e)]),[_0x3065e7,_0x3ec39c]=_0x1adba3(_0x4864e4[_0x207666(0x1f4)],_0x4864e4['north']);_0x388828={'west':_0x3f6c38,'south':_0x1efd67,'east':_0x3065e7,'north':_0x3ec39c};}return{'img':_0x348791,'objectUrl':_0x4f17cf,'bounds':_0x388828};}catch(_0x170dc4){URL['revokeObjectURL'](_0x4f17cf);throw _0x170dc4;}}async function _0x2e0d16(_0x42e5ad,_0xf88a74,_0x511f36){const _0x4b28ea=_0x2bad41,_0x1c75d3=_0x237f49,_0x206fb7=_0x1c75d3*0x2+0x1,_0x2048d9=_0x206fb7*0x100,_0x3caae8=[];for(let _0x38eed2=-_0x1c75d3;_0x38eed2<=_0x1c75d3;_0x38eed2++){for(let _0x27ed9b=-_0x1c75d3;_0x27ed9b<=_0x1c75d3;_0x27ed9b++){_0x3caae8['push']({'dx':_0x27ed9b,'dy':_0x38eed2,'tx':_0xf88a74+_0x27ed9b,'ty':_0x511f36+_0x38eed2});}}async function _0x4767a9(_0x21a1d2,_0x2008a0){const _0x321e76=_0x1dba,_0x6e3057=_0x321e76(0x228)+_0x42e5ad+'/'+_0x2008a0+'/'+_0x21a1d2;let _0x1d29c1;try{_0x1d29c1=await _0x1c4cd7(_0x6e3057);}catch(_0xd2fbb6){_0x1d29c1=await _0x25511f(_0x6e3057);}const _0x2a1347=_0x1d29c1['headers'][_0x321e76(0x117)](_0x321e76(0x277))||'';if(_0x2a1347&&!_0x2a1347[_0x321e76(0x10b)](_0x321e76(0x120)))throw new Error(_0x321e76(0x124)+_0x2a1347+').');const _0x3f444e=await _0x1d29c1[_0x321e76(0x22e)](),_0x26adf3=URL['createObjectURL'](_0x3f444e);try{const _0x196595=await _0xde29ee(_0x26adf3);return{'img':_0x196595,'objectUrl':_0x26adf3};}catch(_0x1ae686){URL[_0x321e76(0x176)](_0x26adf3);throw _0x1ae686;}}const _0x3965b1=await Promise['allSettled'](_0x3caae8['map'](_0x30c034=>_0x4767a9(_0x30c034['tx'],_0x30c034['ty']))),_0x375ab1=_0x3caae8[_0x4b28ea(0xe0)](_0x38a605=>_0x38a605['dx']===0x0&&_0x38a605['dy']===0x0);if(_0x3965b1[_0x375ab1][_0x4b28ea(0xe5)]===_0x4b28ea(0x190))throw _0x3965b1[_0x375ab1]['reason']||new Error(_0x4b28ea(0x1b3));const _0x33cc46=document[_0x4b28ea(0x269)]('canvas');_0x33cc46[_0x4b28ea(0x26a)]=_0x2048d9,_0x33cc46[_0x4b28ea(0x224)]=_0x2048d9;const _0x20af60=_0x33cc46['getContext']('2d');let _0x5ba8b3=0x0;return _0x3965b1[_0x4b28ea(0x1bf)]((_0x3575c8,_0x593818)=>{const _0x2dd9f5=_0x4b28ea;if(_0x3575c8[_0x2dd9f5(0xe5)]!==_0x2dd9f5(0x20c)){console['warn'](_0x2dd9f5(0x19e),_0x3caae8[_0x593818]['tx'],_0x3caae8[_0x593818]['ty'],_0x2dd9f5(0x20e),_0x3575c8[_0x2dd9f5(0x141)]);return;}const {dx:_0x5d4cf1,dy:_0x3028b7}=_0x3caae8[_0x593818];_0x20af60[_0x2dd9f5(0x13a)](_0x3575c8[_0x2dd9f5(0x247)]['img'],(_0x5d4cf1+_0x1c75d3)*0x100,(_0x3028b7+_0x1c75d3)*0x100,0x100,0x100),URL[_0x2dd9f5(0x176)](_0x3575c8[_0x2dd9f5(0x247)]['objectUrl']),_0x5ba8b3++;}),console[_0x4b28ea(0x14c)]('[AutoGeoref]\x20Mosaico\x20Satélite:\x20'+_0x5ba8b3+'/'+_0x3caae8['length']+_0x4b28ea(0x1a6)+_0x2048d9+'×'+_0x2048d9+'px).'),{'img':_0x33cc46,'objectUrl':null,'bounds':_0x2118cd(_0x42e5ad,_0xf88a74,_0x511f36,_0x1c75d3)};}const _0x440d71=[{'key':_0x2bad41(0xca),'label':_0x2bad41(0x187),'fetchTile':_0x29aa7e},{'key':_0x2bad41(0x1da),'label':_0x2bad41(0x208),'fetchTile':_0x2e0d16}],_0x15fa04=[0x0,-0x2,-0x4],_0x337aa9=0xc;async function _0x4d912c(){const _0x400ab0=_0x2bad41;if(!_0x467f0d[_0x400ab0(0x121)]||!_0x467f0d[_0x400ab0(0x23b)]){showAppAlert(_0x400ab0(0x1dd));return;}if(_0x13c18d())return;_0x467f0d[_0x400ab0(0x105)]=!![],_0x467f0d[_0x400ab0(0x2a6)]=![],_0x51f96c(),_0x160782(![]),_0x467f0d[_0x400ab0(0x1e0)]=[],_0x467f0d['pendingImagePoint']=null,_0x467f0d['pendingMapPoint']=null,_0x370f8c(),_0x3b703a();const _0xcfd813=document[_0x400ab0(0x1d1)](_0x400ab0(0xde));_0xcfd813&&(_0xcfd813[_0x400ab0(0x1fc)]=!![],_0x1ef6ba(!![]));const _0x2e1c81=document[_0x400ab0(0x1d1)](_0x400ab0(0x1d7));if(!_0x2e1c81||!_0x2e1c81[_0x400ab0(0xea)]){_0x3f2737('A\x20imagem\x20ainda\x20não\x20está\x20pronta\x20para\x20deteção.',!![]),_0x467f0d[_0x400ab0(0x105)]=![];_0xcfd813&&(_0xcfd813[_0x400ab0(0x1fc)]=![],_0x1ef6ba(![]));return;}_0x2ce790(),_0x3ccd59({'text':_0x400ab0(0x18d),'pill':_0x400ab0(0x233),'tone':'working'});const _0x237292=Math[_0x400ab0(0x227)](0x11,Math[_0x400ab0(0x27e)](map[_0x400ab0(0x122)](),0x14)),_0x480f3b=map[_0x400ab0(0x1e3)](),_0x4001fb={'width':_0x21c15c,'height':_0x21c15c};let _0x34c0d5=null,_0x26451a=null,_0x55a30b=null;const _0x3d1fe0=new Set();_0x8ed84e:for(let _0x21a8f9=0x0;_0x21a8f9<_0x15fa04[_0x400ab0(0x164)];_0x21a8f9++){const _0x14ea03=_0x15fa04[_0x21a8f9],_0x3d7c46=Math['max'](_0x337aa9,_0x237292+_0x14ea03);if(_0x3d1fe0['has'](_0x3d7c46))continue;_0x3d1fe0['add'](_0x3d7c46);const _0x289d4e=lonLatToTile(_0x480f3b[_0x400ab0(0x138)],_0x480f3b[_0x400ab0(0x19b)],_0x3d7c46),_0x4a2fbc=_0x14ea03===0x0?'':_0x400ab0(0x13e)+_0x3d7c46+_0x400ab0(0xf3)+Math[_0x400ab0(0x10a)](Math[_0x400ab0(0xc4)](0x2,-Math[_0x400ab0(0x27e)](0x0,_0x14ea03)))+_0x400ab0(0x231);for(let _0x20ca72=0x0;_0x20ca72<_0x440d71['length'];_0x20ca72++){const _0x29cf52=_0x440d71[_0x20ca72],_0xc8c8b6=_0x21a8f9===_0x15fa04[_0x400ab0(0x164)]-0x1&&_0x20ca72===_0x440d71[_0x400ab0(0x164)]-0x1,_0x38c4db=!_0xc8c8b6?_0x20ca72+0x1<_0x440d71[_0x400ab0(0x164)]?_0x440d71[_0x20ca72+0x1][_0x400ab0(0x161)]:_0x400ab0(0x12f):null;let _0x37834c;_0x3ccd59({'text':'A\x20preparar\x20o\x20tile\x20de\x20referência\x20'+_0x29cf52['label']+_0x4a2fbc+'…','pill':_0x400ab0(0x233),'tone':_0x400ab0(0x1fb),'sourceLabel':_0x29cf52[_0x400ab0(0x161)]});try{_0x37834c=await _0x29cf52['fetchTile'](_0x3d7c46,_0x289d4e['x'],_0x289d4e['y']);}catch(_0x2e238e){console['error'](_0x2e238e),_0x55a30b=_0x400ab0(0x109)+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc+':\x20'+_0x2e238e[_0x400ab0(0x177)],_0x3f2737(_0x55a30b+(_0x38c4db?_0x400ab0(0x1b0)+_0x38c4db+'…':''),!![]);continue;}_0x3f2737(_0x400ab0(0x219)+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc+_0x400ab0(0xcc),![],_0x400ab0(0x1fb),_0x29cf52[_0x400ab0(0x161)]);try{const _0x5a1f51=await AutoGeoref[_0x400ab0(0xff)](_0x2e1c81,_0x37834c[_0x400ab0(0x198)],_0x37834c[_0x400ab0(0x22d)],_0x4001fb,{'detect':{'scales':[0x1,0.75,0.5,1.25]},'ransac':{'iterations':0x1f4,'inlierThresholdPx':0x8}},_0x393a59=>_0x3f2737(_0x393a59,![],_0x400ab0(0x1fb),_0x29cf52['label'],!![]));if(_0x5a1f51[_0x400ab0(0x253)]&&Array['isArray'](_0x5a1f51[_0x400ab0(0x1e0)])&&_0x5a1f51[_0x400ab0(0x1e0)][_0x400ab0(0x164)]>=0x4){_0x34c0d5=_0x5a1f51,_0x26451a=_0x14ea03===0x0?_0x29cf52[_0x400ab0(0x161)]:''+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc;break _0x8ed84e;}_0x55a30b=!_0x5a1f51[_0x400ab0(0x253)]?_0x400ab0(0x296)+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc+_0x400ab0(0x13d)+(_0x5a1f51[_0x400ab0(0x141)]||'resultado\x20inválido'):_0x400ab0(0x296)+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc+_0x400ab0(0xf1),_0x3f2737(_0x55a30b+(_0x38c4db?_0x400ab0(0x1b0)+_0x38c4db+'…':''),!![]);}catch(_0x3a4e79){console[_0x400ab0(0x188)](_0x3a4e79),_0x55a30b=_0x400ab0(0x229)+_0x29cf52[_0x400ab0(0x161)]+_0x4a2fbc+':\x20'+(_0x3a4e79[_0x400ab0(0x177)]||_0x3a4e79),_0x3f2737(_0x55a30b+(_0x38c4db?'\x20—\x20a\x20tentar\x20com\x20'+_0x38c4db+'…':''),!![]);}finally{if(_0x37834c&&_0x37834c['objectUrl'])URL[_0x400ab0(0x176)](_0x37834c[_0x400ab0(0x28d)]);}}}if(!_0x34c0d5){_0x467f0d[_0x400ab0(0x105)]=![],_0x3f2737(_0x55a30b||'Deteção\x20automática\x20falhou\x20em\x20todas\x20as\x20fontes\x20de\x20referência\x20(DGT\x20e\x20Satélite)\x20e\x20zooms\x20tentados.',!![]),_0x189e8b({'text':_0x400ab0(0xd9),'tone':'error','pill':'Erro'}),_0x512091();_0xcfd813&&(_0xcfd813[_0x400ab0(0x1fc)]=![],_0x1ef6ba(![]));return;}if(!_0x467f0d['active']){_0x48a0a4(),_0x788016();return;}_0x14aa0d(_0x34c0d5[_0x400ab0(0x1e0)]),_0x346776(_0x34c0d5['gcps']['length'],_0x26451a),_0x189e8b({'text':_0x400ab0(0x210),'tone':_0x400ab0(0x253),'pill':_0x400ab0(0x23f),'sourceLabel':_0x26451a}),_0x289fa1(_0x22ed1b(_0x34c0d5[_0x400ab0(0x1e0)],_0x34c0d5['quality'])),_0xcfd813&&(_0xcfd813[_0x400ab0(0x1fc)]=![],_0x1ef6ba(![]));}function _0x3249df(_0x5f4773,_0x5e75f1){const _0x590af3=_0x2bad41;if(!_0x227c23())return;_0x1bc180++;const _0x8c28c6=_0x590af3(0x25a)+_0x1bc180;_0x467f0d['gcps']['push']({'id':_0x8c28c6,'img':{'x':_0x5f4773['x'],'y':_0x5f4773['y']},'map':{'lng':_0x5e75f1[_0x590af3(0x138)],'lat':_0x5e75f1[_0x590af3(0x19b)]},'error':null}),_0x370f8c(),_0x3b703a(),_0x41f1b2();if(_0x467f0d[_0x590af3(0x1e0)][_0x590af3(0x164)]>=0x3)_0x289fa1(_0x22ed1b(_0x467f0d['gcps']));}function _0x4a0165(_0x2274d3){const _0x21728e=_0x2bad41;if(!_0x227c23())return;const _0x586580=_0x467f0d[_0x21728e(0x1e0)]['findIndex'](_0x25184c=>_0x25184c['id']===_0x2274d3);if(_0x586580===-0x1)return;_0x467f0d['gcps'][_0x21728e(0xbf)](_0x586580,0x1),_0x370f8c(),_0x3b703a(),_0x41f1b2();if(_0x467f0d['gcps'][_0x21728e(0x164)]>=0x3)_0x289fa1(_0x22ed1b(_0x467f0d[_0x21728e(0x1e0)]));else _0x788016();}function _0x53323d(_0x34f878){const _0x49a0ed=_0x2bad41;if(!_0x227c23())return;const _0x877996=_0x467f0d[_0x49a0ed(0x1e0)]['findIndex'](_0x3f03d3=>_0x3f03d3['id']===_0x34f878);if(_0x877996===-0x1)return;const [_0x15d8b9]=_0x467f0d['gcps'][_0x49a0ed(0xbf)](_0x877996,0x1);_0x467f0d[_0x49a0ed(0x127)]={'x':_0x15d8b9[_0x49a0ed(0x198)]['x'],'y':_0x15d8b9[_0x49a0ed(0x198)]['y']},_0x467f0d['pendingMapPoint']=null,_0x370f8c(),_0x3b703a(),_0x41f1b2();}function _0x1a0ecd(_0x3944b1){const _0x2989bf=_0x2bad41;if(!_0x227c23())return;if(_0x467f0d['pendingMapPoint']){const _0x2d10bc=_0x467f0d[_0x2989bf(0x1c9)];_0x467f0d['pendingMapPoint']=null,_0x3249df(_0x3944b1,_0x2d10bc);}else _0x467f0d[_0x2989bf(0x127)]=_0x3944b1,_0x5e91ce();}function _0x101142(_0x23e5a5){const _0x3e691e=_0x2bad41;if(!_0x227c23())return;if(_0x467f0d['pendingImagePoint']){const _0x55d02f=_0x467f0d[_0x3e691e(0x127)];_0x467f0d[_0x3e691e(0x127)]=null,_0x3249df(_0x55d02f,_0x23e5a5);}else _0x467f0d[_0x3e691e(0x1c9)]=_0x23e5a5,_0x5e91ce();}document[_0x2bad41(0x1d1)](_0x2bad41(0x17e))?.[_0x2bad41(0xfd)](_0x2bad41(0xf7),_0x2b2b28=>{const _0x34b98f=_0x2bad41;if(!_0x467f0d[_0x34b98f(0x121)]||!_0x467f0d['entry'])return;if(!_0x227c23())return;const _0x3a5c68=document[_0x34b98f(0x1d1)]('georef-image-el'),_0x163b51=_0x3a5c68[_0x34b98f(0x278)]();if(_0x163b51['width']===0x0||_0x163b51[_0x34b98f(0x224)]===0x0)return;const _0x5548b4=(_0x2b2b28[_0x34b98f(0x1eb)]-_0x163b51[_0x34b98f(0xcb)])/_0x163b51[_0x34b98f(0x26a)],_0x2f1c9b=(_0x2b2b28[_0x34b98f(0x1d4)]-_0x163b51[_0x34b98f(0x244)])/_0x163b51[_0x34b98f(0x224)];if(_0x5548b4<0x0||_0x5548b4>0x1||_0x2f1c9b<0x0||_0x2f1c9b>0x1)return;const _0x2efebd=_0x467f0d['entry'];_0x1a0ecd({'x':_0x5548b4*_0x2efebd[_0x34b98f(0x26a)],'y':_0x2f1c9b*_0x2efebd[_0x34b98f(0x224)]});});function _0x1f5263(){const _0x28aa4b=_0x2bad41;map['on'](_0x28aa4b(0xf7),_0x2750f5=>{const _0x4027d4=_0x28aa4b;if(!_0x467f0d[_0x4027d4(0x121)])return;if(!_0x227c23())return;_0x101142({'lng':_0x2750f5['latlng']['lng'],'lat':_0x2750f5[_0x4027d4(0x20a)][_0x4027d4(0x19b)]});});}async function _0x39187f(_0x2217f4){const _0x51dcb2=_0x2bad41;try{if(!_0x2217f4['length'])return;const {images:_0x2ea48a,worldFiles:_0x5c86bb,rest:_0x5a33f4}=_0x4e57df(_0x2217f4);if(_0x2ea48a[_0x51dcb2(0x164)]>0x0)try{await _0x3c0bbe(_0x2ea48a,_0x5c86bb);}catch(_0x54f2c9){console[_0x51dcb2(0x188)]('Erro\x20ao\x20importar\x20imagem(ns):',_0x54f2c9),showAppAlert('Não\x20foi\x20possível\x20importar\x20uma\x20ou\x20mais\x20imagens.\x20Verifica\x20se\x20os\x20ficheiros\x20não\x20estão\x20corrompidos.',{'error':!![]});}if(_0x5a33f4['length']===0x0)return;_0x2217f4=_0x5a33f4;try{const _0x19b878=_0x2217f4[_0x51dcb2(0x150)](_0x353953=>/\.shp$/i[_0x51dcb2(0x1ea)](_0x353953[_0x51dcb2(0x29f)]));if(_0x19b878){const _0x2a1e87=await parseLooseShapefileParts(_0x2217f4);let _0x19ffbe=0x0,_0xb361b5=0x0,_0x2726b5=0x0;for(const _0x23aafa of _0x2a1e87){const _0x3bf97f=await importFeaturesInChunks(_0x23aafa,_0x23aafa[_0x51dcb2(0x191)]||_0x51dcb2(0x1a7));_0x19ffbe+=_0x3bf97f['imported'],_0xb361b5+=_0x3bf97f[_0x51dcb2(0x119)],_0x2726b5+=_0x3bf97f[_0x51dcb2(0x260)];}const _0xadfb29=[];if(_0x19ffbe>0x0)_0xadfb29[_0x51dcb2(0x22f)](_0x51dcb2(0x259)+_0x19ffbe+_0x51dcb2(0x265));if(_0xb361b5>0x0)_0xadfb29['push'](_0xb361b5+_0x51dcb2(0xfe));if(_0x2726b5>0x0)_0xadfb29['push'](_0x2726b5+_0x51dcb2(0x15b));showAppAlert(_0xadfb29['length']?_0xadfb29['join']('\x20'):_0x51dcb2(0x2a2)),markProjectDirty();return;}const _0x885fa0=_0x2217f4[0x0],_0x54e456=_0x885fa0['size']/(0x400*0x400);if(_0x54e456>0x50){const _0x3803ed=confirm('O\x20ficheiro\x20\x22'+_0x885fa0[_0x51dcb2(0x29f)]+_0x51dcb2(0xba)+_0x54e456[_0x51dcb2(0x112)](0x0)+_0x51dcb2(0x1a9)+_0x51dcb2(0xdc)+_0x51dcb2(0xd1));if(!_0x3803ed)return;}const _0x4aa018=await parseImportedFile(_0x885fa0);if(!_0x4aa018)return;const _0x5dfd14=_0x4aa018[_0x51dcb2(0x191)]||getImportedLayerName(_0x885fa0[_0x51dcb2(0x29f)]),_0x2c7bd5=await importFeaturesInChunks(_0x4aa018,_0x5dfd14),_0x20ef8f=[];if(_0x2c7bd5[_0x51dcb2(0x273)]>0x0)_0x20ef8f[_0x51dcb2(0x22f)](_0x51dcb2(0x259)+_0x2c7bd5[_0x51dcb2(0x273)]+_0x51dcb2(0x265));if(_0x2c7bd5[_0x51dcb2(0x119)]>0x0)_0x20ef8f[_0x51dcb2(0x22f)](_0x2c7bd5['skipped']+'\x20geometria(s)\x20inválida(s)\x20ou\x20ilegível(is)\x20foram\x20ignoradas.');if(_0x2c7bd5[_0x51dcb2(0x260)]>0x0)_0x20ef8f[_0x51dcb2(0x22f)](_0x2c7bd5[_0x51dcb2(0x260)]+_0x51dcb2(0x287));showAppAlert(_0x20ef8f[_0x51dcb2(0x164)]?_0x20ef8f[_0x51dcb2(0xf6)]('\x20'):'Nenhuma\x20geometria\x20válida\x20encontrada\x20no\x20ficheiro.'),markProjectDirty();}catch(_0x5e42ab){console['error'](_0x51dcb2(0xf9),_0x5e42ab),showAppAlert(_0x51dcb2(0x285),{'error':!![]});}}catch(_0x5b032d){console[_0x51dcb2(0x188)](_0x51dcb2(0x252),_0x5b032d),showAppAlert(_0x51dcb2(0x170)+_0x5b032d[_0x51dcb2(0x177)],{'error':!![]});}}document[_0x2bad41(0x1d1)]('import-file-input')[_0x2bad41(0xfd)](_0x2bad41(0xc0),async _0x357542=>{const _0x4d5360=_0x2bad41;try{const _0x332d51=Array[_0x4d5360(0x282)](_0x357542[_0x4d5360(0x21f)][_0x4d5360(0x168)]||[]);_0x357542[_0x4d5360(0x21f)][_0x4d5360(0x247)]='',await _0x39187f(_0x332d51);}catch(_0x173a8a){console[_0x4d5360(0x188)](_0x4d5360(0x1d6),_0x173a8a),showAppAlert(_0x4d5360(0x184),{'error':!![]});}}),window[_0x2bad41(0x2c0)]=_0x4419c7,window[_0x2bad41(0x163)]=_0x4e57df,window[_0x2bad41(0x2b5)]=_0x38e0cb,window[_0x2bad41(0xdd)]=_0x3c0bbe,window['serializeRasterLayersForProject']=_0xcad6b1,window[_0x2bad41(0xc5)]=_0x2ac870,window[_0x2bad41(0x1a5)]=_0x3c2eed,window[_0x2bad41(0x19f)]=_0x53e141,window[_0x2bad41(0x1ac)]=_0x3fc572,window[_0x2bad41(0x20b)]=_0x188bcb,window['removeRasterLayer']=_0x573390,window[_0x2bad41(0x12b)]=_0x4e5349,window['buildWorldFileText']=_0x172077,window[_0x2bad41(0x137)]=_0xcb2cc8,window['exportRasterWorldFile']=_0x4e9b90,window[_0x2bad41(0xf8)]=_0x58d5b4,window[_0x2bad41(0x1af)]=_0x143d0b,window[_0x2bad41(0x1bb)]=_0x5d2d1c,window[_0x2bad41(0x1d9)]=_0x56fbc3,window[_0x2bad41(0x230)]=_0x3bec2c,window['genRasterId']=_0x44882c,window[_0x2bad41(0x115)]=_0x4c8abb,window[_0x2bad41(0x193)]=_0x33ec74,window[_0x2bad41(0x286)]=_0x1336c8,window[_0x2bad41(0x24c)]=_0x470a7,window[_0x2bad41(0x118)]=_0x467f0d,window['setupGeorefMapEvents']=_0x1f5263,window[_0x2bad41(0x220)]=_0x3dabdc;}()));function _0x1dba(_0x26037,_0x470e05){_0x26037=_0x26037-0xb9;const _0x23d100=_0x23d1();let _0x1dba18=_0x23d100[_0x26037];if(_0x1dba['RmEZxu']===undefined){var _0x5797dc=function(_0x462391){const _0x4f5694='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x4419c7='',_0x57c350='';for(let _0x508cfb=0x0,_0x424c26,_0x1dc133,_0x44882c=0x0;_0x1dc133=_0x462391['charAt'](_0x44882c++);~_0x1dc133&&(_0x424c26=_0x508cfb%0x4?_0x424c26*0x40+_0x1dc133:_0x1dc133,_0x508cfb++%0x4)?_0x4419c7+=String['fromCharCode'](0xff&_0x424c26>>(-0x2*_0x508cfb&0x6)):0x0){_0x1dc133=_0x4f5694['indexOf'](_0x1dc133);}for(let _0x38e0cb=0x0,_0x4e57df=_0x4419c7['length'];_0x38e0cb<_0x4e57df;_0x38e0cb++){_0x57c350+='%'+('00'+_0x4419c7['charCodeAt'](_0x38e0cb)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x57c350);};_0x1dba['sjPRtp']=_0x5797dc,_0x1dba['MaqQzr']={},_0x1dba['RmEZxu']=!![];}const _0x50d458=_0x23d100[0x0],_0x236fbd=_0x26037+_0x50d458,_0x3d2941=_0x1dba['MaqQzr'][_0x236fbd];return!_0x3d2941?(_0x1dba18=_0x1dba['sjPRtp'](_0x1dba18),_0x1dba['MaqQzr'][_0x236fbd]=_0x1dba18):_0x1dba18=_0x3d2941,_0x1dba18;}function _0x23d1(){const _0x23662b=['z2v0sgvPz2H0','tw9KzwXuCMfUC2zVCM1HDgLVBG','AwrSzq','rMv0y2GGzgLYzwn0BYbMywXOB3u6ieHuvfaG','igDLB21LDhjPysHZksbUW6nVignVCNjLC3bVBMrLCMfTimoGignHBwfKysbKzsbKzxn0Aw5VlG','C3rHDgu','Aw5SAwvYuMf0Aw8','BtWVC3bHBJ48l2rPDJ4','l2fWAs9KB3DUBg9Hzd91CMW9','z2vVCMvMlxn0yxrZlwDYAwq','BgfIzwW','B25SB2fK','C3bSAxrjBxbVCNrgAwXLr3jVDxbZ','BgvUz3rO','pgrPDIbJBgfZCZ0Iz2vVCMvMlwvYCM9YlwjHCIi+pgrPDIbJBgfZCZ0Iz2vVCMvMlwvYCM9YlwjHCI1MAwXSiIbZDhLSzt0ID2LKDgG6','lMDLB3jLzI1HDxrVlwj0BI1SywjLBa','zxHLyW','zMLSzxm','cIaGicaGidWVBgK+','Bgf5zxjhCM91Ca','y2XHC3noyw1L','zgLZywjSzuDSB2jHBerYywDnB2rL','sw1Hz2vTicSGv29YBgqGrMLSzq','Aw5UzxjxAwr0Aa','yMjVEa','rxjYBYbHBYbWCM9JzxnZyxiGzMLJAgvPCM9ZoIa','w2rHDgeTCMfZDgvYlwv4Cg9YDc1VChrD','DgL0Bgu','ywrK','y2XHC3nmAxn0','uhjVEhKGzMfSAg91igfVig9IDgvYig8GCMvJDxjZBZOGsfruuca','CMv2B2TLt2jQzwn0vvjm','BwvZC2fNzq','qxbYB3HPBweTDguGW6aGW6fYzweGzguGAw50zxjLC3nLig5Vig1HCgeGzsbJBgLJysbLBsbbDxrVz2vVCMvMzxjLBMnPyxiU','ywjZ','B3bLBK9U','igLTywDLBsHUCYKGCg9YigDLB3jYzwzLCMvUy2LHCIdIGjqGDxnHig8GBw9KBYbKzsbhzw9YCMvMzxjLBMnPyCoNW6nVihbHCMeGyxmGCg9ZAwnPB25HCI4','Dg9Nz2XL','D2fYBvvW','z2vVCMvMlwLTywDLlwnHBNzHCY13CMfW','lNPPCcdIGjqGAw1Hz2vTig9YAwDPBMfSigLUy2X1W61Kyq','rvbtrZOZodu3','CMvWBgfJzq','rxn0ysbPBwfNzw0GywLUzgeGBSoJBYb0zw0GDw1HihrYyw5ZzM9YBwhdP8oJBYbJywXJDwXHzgeG4Ocuig7dO28GAmoHieDLB1rjrKyGCgfYysbLEhbVCNrHCI4','Dg90ywXnyxrJAgvZ','rxjYBYbHBYbPBxbVCNrHCIbMAwnOzwLYB3mU','B3jPz1rLEhq','C29SDMvbzMzPBMvmzwfZDfnXDwfYzxm','reDu','zxjYB3i','CgfYzw50rwXLBwvUDa','tSoJBYbMB2KGCg9ZC8oTDMvSigXLCIbVCYbWAxHLBhmGzgeGAw1Hz2vTihbHCMeGz2vYyxiGBYbhzw9usuzglG','pc9ZCgfUpJXZCgfUignSyxnZpsjNzw9YzwyTC3rHDc1SywjLBci+r0nqCZWVC3bHBJ48l2rPDJ4kicaGidXKAxyGy2XHC3m9iMDLB3jLzI1ZDgf0lwnHCMqIpJXZCgfUignSyxnZpsjNzw9YzwyTC3rHDc12ywX1zsi+','pgrPDIbJBgfZCZ0Iz2vVCMvMlwvYCM9YlwjHCI13CMfWiJ4','qsbPBMLJAwfYigf1Dg9Nzw9YCMvMzxjLBMnPyCoNW6nV4OcM','r2vVCNjLzMvYzw5JAwfKyq','C3fYDa','CMvQzwn0zwq','Bgf5zxjoyw1L','z2XVyMfSuMvTB3zHBe1VzgvfBMfIBgvK','y2fUy2vSr2vVCMvMtw9Kzq','Aw5KzxHpzG','CgvUzgLUzW','DgLM','rxjYBYbHBYbSzxiGveLgrJO','Aw1N','qsbIAwjSAw90zwnHigrLignVBxbYzxnZW6nVicHku1PPCcKGBSoJBYbLC3tdOsbKAxnWB27dRxzLBcbUzxn0ysbWW6fNAw5HlG','C2v0tgf0tg5N','Bgf0','ms4ZlJa','tw9KzwXqAxHLBfnJywXL','w0f1Dg9hzw9YzwzDie1VC2fPy28Gu2f0W6LSAxrLoIb0AwXL','CMvUzgvYuMfZDgvYtgf5zxjZugfUzwW','C3rHy2S','ANbLzW','w2LTCg9YDfjHC3rLCKzPBgvZxq','z2vVCMvMlw1VzguTywn0AxzL','CdKW','CMvZDg9YzvjHC3rLCKXHEwvYC0zYB21qCM9Qzwn0','ihrPBgvZignHCNjLz2fKB3mGka','q2fTywrHigLTCg9YDgfKyq','pc9ZCgfUpJXZCgfUignSyxnZpsjNzw9YzwyTC3rHDc1SywjLBci+uK1ticHTktWVC3bHBJ48l2rPDJ4kicaGidXKAxyGy2XHC3m9iMDLB3jLzI1ZDgf0lwnHCMqG','ie1clGO','z2vVDgLMzI1HDxrV','lMDLB3jLzI1PBwfNzs1Wyw5LBc1IB2r5','CgXHy2vsyxn0zxjpDMvYBgf5','A2v5','l2fWAs9Kz3qTDgLSzt91CMW9','z2v0uMfZDgvYugL4zwXeyxrH','iokaLcbHihrLBNrHCIbJB20G','zNjVBufYCMf5qNvMzMvY','yNrUigDLB3jLzI1Tyw51ywWTzMfSBgjHy2STyNrUigHPzgrLBG','rMfSAgeGyw8Gy2fYCMvNyxiGBYb0AwXLifnHDmoPBgL0zsbJzw50CMfSlG','AgfZvgfN','Dgv4Dc9WBgfPBG','Axnoyu4','mZa1nZG3y2X4tfLk','zgL2swnVBG','Bg9JyxrPB24','Aw5Uzxjive1m','z2vVDgLMzKHHC0DLB1rHz3m','z2vVCMvMlwDJCc1SAxn0','z2vVCMvMlwf1Dg8TChjVz3jLC3m','i2DLB3jLzI10B3bIyxiTyxbWBhK','zM9YrwfJAa','BwfYA2vY','iJ4kicaGicaGphnWyw4+','cIaGica8yNv0Dg9Uihr5Cgu9iMj1DhrVBIiGy2XHC3m9iMDLB3jLzI1WAwnRzxiTAxrLBsiGzgf0ys1Nzw9YzwyTCgLJAZ0I','i2DLB3jLzI1HDxrVlxbYB2DYzxnZic5Nzw9YzwyTyxv0BY1JB25ZB2XLlwXVzW','qxbSAwnHCIbHBhrLCMhdP8o1zxm','uhjVEhKGreDuoIa','yMXVyJO','uMvTB3zLCIbHigLTywDLBsaI','CMvZAxPL','CgvUzgLUz01HCfbVAw50','B3zLCMXHEq','AxmTCgf1C2vK','x3rPBwvY','Ahr0Chm6lY9Jyxj0B2DYywzPys5Kz3rLCNjPDg9YAw8Uz292lNb0l3DTCY9VCNrVCZiWmJe','iIb0AxrSzt0I','i2i1ndCYyG','q2XPy2fYihbHCMeGyxv0B2DLB3jYzwzLCMvUy2LHCIbXDwfUzg8GBYb6B29TigvZDgL2zxiGzw50CMuGmtCGzsaYmc4','z2v0rwXLBwvUDej5swq','yNv0Dg9U','z2vVCMvMzxjLBMnLza','y2XPzw50wq','C291CMnL','w2LTCg9YDc1MAwXLlwLUChv0xq','z2vVCMvMlwLTywDLlwvS','C2v0qxr0CMLIDxrL','zMLSzujHC2voyw1L','C2f0zwXPDgu','lMDLB3jLzI1HDxrVlwnVBNnVBguTC291CMnL','jtWVC3bHBJ48C3bHBIbJBgfZCZ0Iz2vVCMvMlxn0yxqTBgfIzwWIpLn1y2vZC288l3nWyw4+pc9KAxy+','qxrPDMeGBYbTB2rVigrLigDLB3jYzwzLCMvUy2LHW6FdO28Gyw50zxmGzguGDxnHCIbHigf1Dg9Nzw9YCMvMzxjLBMnPyxiU','C2v0','Dgv4Da','z2nWCW','Cg9PBNrdB3vUDa','ndK4nti4A3n1wwXp','z2v0q2vUDgvY','y3jLyxrLt2jQzwn0vvjm','zg93BMXVywq','CxvLCNLtzwXLy3rVCKfSBa','w2rHDgeTz2nWlwvKAxrD','yM9KEq','w0LTywDLxsbSB2fKigzHAwXLzdO','DgvZDa','y2XPzw50wa','pgrPDIbJBgfZCZ0Iz2vVCMvMlwvYCM9YlwjHCI1SywjLBci+phnWyw4+iW','iJ4kicaGicaGica8C3bHBIbJBgfZCZ0ICMfZDgvYlxn0yxr1CY1Py29UiJ4','pgXPignSyxnZpsjNzw9YzwyTz2nWlwvTChr5iJ5bAw5KysbZzw0GCg9UDg9ZigrLignVBNrYB2XVlJWVBgK+','DMfSDwvZ','AxngAw5PDgu','wM9VBsbPBNBdOwXPzg8GCgfYysbHDxrVz2vVCNjLzMvYzw5JAwfYlG','tSoJBYbMB2KGCg9ZC8oTDMvSignHBgn1BgfYigeGDhjHBNnMB3jTyCoNW6nVoIa','B3jPz2LU','zwfZDa','DhLWzq','pc9ZCgfUpJXZCgfUignSyxnZpsjNzw9YzwyTC3rHDc1SywjLBci+udKWicHTktWVC3bHBJ48l2rPDJ4kicaGidXKAxyGy2XHC3m9iMDLB3jLzI1ZDgf0lwnHCMqIpJXZCgfUignSyxnZpsjNzw9YzwyTC3rHDc12ywX1zsi+','y2XLyxjmyxLLCNm','qsbYzxnWB3n0ysbUW6nVimoPihvTysbPBwfNzw0UienVBNrLBNqTvhLWzt0','ug9UDg9ZoIa','z29Vza','D29YA2LUzW','zgLZywjSzwq','z2vVCMvMlwDJCc1TyxaTBwfYA2vY','Dg9vChbLCKnHC2u','z2vVCMvMlxbPy2TLCI1Tzw51','z2v0sw1Hz2veyxrH','lMDLB3jLzI1Ny3aTBgLZDc13CMfW','D21Ztgf5zxi','EMLW','z2vVCMvMlw1VzguTDg9WyMfY','zMLYC3rdAgLSza','z2vVCMvMlwfJDgL2zs1Iyw5Uzxi','BM9YDgG','u2f0W6LSAxrL','CM1ZrxjYB3i','Bgf0Bg5N','zM9JDxnsyxn0zxjmyxLLCG','zNvSzMLSBgvK','o2zVBNqTD2vPz2H0oJyWmci+','zMfSAg91lcbMAwnHigvTigjYyw5JBZO','uhjVBNrV','rgv0zCoNW6nVignVBMnSDCoTzge','AxmTzxjYB3i','CMvKDwnL','BMv1DhjHBa','zgLZywjSzuDSB2jHBfjLBw92ywXnB2rL','Cg9WDxa','C2nYB2XSsgvPz2H0','tSoJBYbNzw9YCMvMzxjLBMnPywrH','CMLNAhq','qsbJB21WyxjHCIbHigLTywDLBsbJB20GBYbTyxbHicG','ieDLB1rjrKyGASoHigDLB3jYzwzLCMvUy2LHzg8OCYKGzgv0zxrHzg8OCYKGkhbYW6KTDMLZDwfSAxPHW6FdO28Gy29TCgXLDgeGBNvTysbMyxnLihnLz3vPBNrLks4','r2vVveLgrIbNzw9YCMvMzxjLBMnPywrV','Dw5KzwzPBMvK','z2vVCMvMlwf1Dg8TzM9VDgvYlxjVDW','mJC4ndCXmLjwzeTzyq','DgfYz2v0','zw5HyMXLr2vVCMvMqxv0B0j1DhrVBKLMwM9VBvjLywr5','rM9UDgu6ia','qsbWCM9JzxnZyxlIGky','r2v0twfW','AgvPz2H0','AxmTyxr0zw50Aw9U','zgvSzxrL','Bwf4','Ahr0Chm6lY9Zzxj2zxiUyxjJz2LZB25SAw5LlMnVBs9bCMnhsvmVCMvZDc9Zzxj2AwnLCY9xB3jSzf9jBwfNzxj5l01HCfnLCNzLCI90AwXLlW','rxjYBYbKDxjHBNrLigeGzgv0zCoNW6nVignVBsa','AxmTyMfK','igrLignVBNrYB2XVlIbwzxjPzMLJysbVihbVC2LJAw9Uyw1LBNrViguGy2XPy2eGzw0GiKfWBgLJyxiGywX0zxjHW6FdTwvZiI4','CMvTB3zL','yM91BMrZ','yMXVyG','ChvZAa','CgfYC2vxB3jSzezPBgvuzxH0','W5CGBwfPCYddOxjLys9WAxHLBcK','r2vVveLgrG','qsbWCM9JzxnZyxi','z2vVCMvMlxrVCgjHCI1Uyw1L','z2v0q29UDgv4Da','y2XVC2vZDa','w0f1Dg9hzw9YzwzDia','AxmTyNvZEq','zML0qM91BMrZ','jtTIywnRz3jVDw5KoG','zw50CNK','z2v0u2L6zq','Dg9WBgvMDa','yxv0B0DLB1rPzMy','q29Uy2X1W61KBW','y29UDgfPBNm','zgf0yxnLDa','C2nYB2XSvg9W','icHstvmG','Dg9W','Aw5Zzxj0qMvMB3jL','yxjPys1SywjLBa','DMfSDwu','uhjVBNrVihbHCMeGz2vVCNjLzMvYzw5JAwfY','z2vVCMvMlwf1Dg8TC3rHDhvZlxrLEhq','Aw5SAwvYq291BNq','iIb0AxrSzt0IrwXPBwLUyxiGzxn0zsbWB250BYi+4PYvpc9IDxr0B24+','CgvUzgLUz1jHC3rLCKvUDhjPzxm','x2DLB3jYzwzLCMvUy2LHzgeUEMLW','C291DgG','z2vVCMvMlwf1Dg8TC3rHDhvZ','DhjHBNnMB3jT','CMvTB3zLtgf5zxi','w0LTCg9YDf0GzMLSzsbWCM9JzxnZAw5NigvYCM9YoG','C3vJy2vZCW','lMDLB3jLzI1Ny3aTAw1Hz2uTBwfYA2vY','w0zLDgnOxsbKAxjLy3qGzMfPBgvKoG','yxjYyxLcDwzMzxi','AxmTzgLZywjSzwq','Aw1Hz2uVDgLMzG','sw1WB3j0ywrHCYa','z2nWlq','twfYy2eGCgfYzxmGzguGCg9UDg9ZoIbJBgLJysbUDw0GC8oTDgLVig5HigLTywDLBsbLig5Vig1LC21VihpdRxrPBYbUBYbTyxbHlIbtW6nVig5Ly2vZC8oHCMLVCYbWzwXVig1LBM9ZidqGCg9UDg9ZlG','y2f0y2G','w2rHDgeTCMfZDgvYlxjLBw92zv0','pc9ZCgfUpGOGicaGicaGidXZCgfUignSyxnZpsjNzw9YzwyTz2nWlwL0zw0Ty29VCMrZiJ5PBwCGka','z2vVCMvMlw1HBNvHBc1Hy3rPDMu','DhLWzu1PC21HDgnO','cIaGica8zgL2ignSyxnZpsjNzw9YzwyTyxv0BY1JB25ZB2XLlwHLywrLCIi+cIaGicaGidXKAxyGy2XHC3m9iMDLB3jLzI1HDxrVlwnVBNnVBguTAgvHzci+cIaGicaGicaGphnWyw4Gy2XHC3m9iMDLB3jLzI1HDxrVlwnVBNnVBguTDgL0BguIpKf1Dg9Nzw9YCMvMzxldQM5JAwe8l3nWyw4+cIaGicaGicaGphnWyw4Gy2XHC3m9iMDLB3jLzI1HDxrVlwnVBNnVBguTCgLSBci+qsbWCM9JzxnZyxi8l3nWyw4+cIaGicaGidWVzgL2pGOGicaGica8zgL2ignSyxnZpsjNzw9YzwyTyxv0BY1JB25ZB2XLlxnVDxjJzsi+pc9KAxy+cIaGica8l2rPDJ4kicaGidXKAxyGy2XHC3m9iMDLB3jLzI1HDxrVlwnVBNnVBguTBg9NiIbYB2XLpsjSB2CIigfYAweTBgL2zt0ICg9SAxrLiJ48l2rPDJ4kica','Dw5PDa','ywrKvg8','z2XVyMfSrhjHD01VzgvfBMfIBgvK','igDLB21LDhjPysHZksbJB20GC3vJzxnZBY4','DhjPBq','z2v0sw1Hz2u','BM93','y3jLyxrLrwXLBwvUDa','D2LKDgG','z2XVyMfSrhjHz01VzgvfBMfIBgvK','B2zMC2v0v2LKDgG','zxHW','q2fUy2vSyxiGz2vVCNjLzMvYzw5JAwhdP8oJBW','y2HPBgrYzw4','D29YBgrMAwXL','y2fUDMfZ','yxrHBG','Aw1WB3j0zwq','iJ4kicaGicaGphnWyw4Gy2XHC3m9iNjHC3rLCI1ZDgf0DxmTAwnVBIi+4PQG77Ippc9ZCgfUpGOGicaGica8C3bHBIbJBgfZCZ0ICMfZDgvYlw5HBwuIpG','z2vVCMvMlxbHBMvSlwnSB3nLlwj0BG','yxzN','q29UDgvUDc1uExbL','z2v0qM91BMrPBMDdBgLLBNrszwn0','CMfUzg9Tvvvjra','ks4GqxbYB3HPBweGyxtdQsaXnY0YmcbWyxjHigf1Dg9Nzw9YzwzLCMvUy2LHCI4','zMfSC2u','AgLKzgvU','AxmTz29Vza','BwLU','mtfpt0DdCvC','yMfK','w2rHDgeTz2nWlxjLBw92zv0','zNjVBq','D2XK','DxjS','tSoJBYbMB2KGCg9ZC8oTDMvSigLTCg9YDgfYig8GzMLJAgvPCM8UifzLCMLMAwnHihnLimoPihvTieDLB0Ptt04GDSoHBgLKBYWGDw0GlNPPCcbKzsbtAgfWzwzPBguGkc5ZAhaGkYaUzgjMicSGlNnOEcWGB3bJAw9UywXTzw50zsaUChjQksWGB3uGzMLJAgvPCM9Zic5ZAhaVlMrIzI8UC2H4ihnVBhrVCY4','yMvNAw5hzw9YzwzLCMvUy2LUz01Vzgu','igDLB21LDhjPysHZksbMB3jHBsbPz25VCMfKyxmGCg9Yig7dO28Gy29YCMvZCg9UzgvYzw0Gyw8GDgLWBYbJB25MAwD1CMfKBYbKysbJyw1HzgeGzguGzgvZDgLUBY4','Bgf0tg5NqM91BMrZ','AxmTD2fYBG','yM90Dg9TBgvMDa','igzPy2HLAxjVkhmPig7dO28GChvKzxjHBsbZzxiGAw1WB3j0ywrVCZOG','z2vVCMvMlxrVCgjHCI1YBxm','B2jQzwn0vxjS','zMXVB3i','mJuYofLJzw55Aq','Aw1Hz2vT','cIaGicaGidXSAsbJBgfZCZ0ICMfZDgvYlxjVDYa','Dg9WCMLNAhq','AMD3','Aw5UzxjizwLNAhq','mtiXoteXmZbIugv2qxC','rgv0zCoNW6nVignVBsa','AxmTD29YA2LUzW','DgLMzG','AgfZ','z2vVCMvMlxrVCgjHCI1Jyw5JzwW','rvbtrZO0mZi2','ngHQD1nLCa','igLTywDLBsHUCYKGz2vVCNjLzMvYzw5JAwfKysHZksbHDxrVBwf0AwnHBwvUDguGDMLHifDVCMXKiezPBguU','C3r5Bgu','BMfTzq','rvbtrZOZnZyZ','qxv0B2DLB3jLzMvYzw5JAwhdP8oJBYbMywXOB3uG4OcuigDLB3jLzMvYzw5JAwfYig1HBNvHBg1LBNrLpW','tMvUAhvTysbNzw9TzxrYAweGDSoHBgLKysbLBMnVBNrYywrHig5VCYbMAwnOzwLYB3mGlNnOCcbZzwXLy2LVBMfKB3mU','iJ48C3bHBIbJBgfZCZ0Iz2vVCMvMlxn0yxqTDMfSDwuIpG','tSoJBYbMB2KGCg9ZC8oTDMvSihjLChjVAMv0yxiGCgfYysbTzxrYB3mSigeGBw9ZDhjHCIbstvmGzw0Gz3jHDxm6','odi0nezLr0fpyq','BwfUDwfSr2vVCMvMvw5SB2nRzwq','pcaWlJe','CMvTB3zLq2HPBgq','pc9ZCgfUpGOGicaGicaGidXZCgfUignSyxnZpsjYyxn0zxiTBMfTzsi+','zgf0yvvYBa','ks4GqwP1C3rHihbHCMeGzw50CMuGmtCTmJaGCgfYysbHDxrVz2vVCMvMzxjLBMnPyxiU','z2vVCMvMlwf1Dg8Ty29UC29Szs1SAw5LigLZlq','C2vHCMnO','AhjLzG','AgvHzgvYCW','BNvTyMvY','rxjYBYbHBYbSzxiGB3mGCgL4zwXZigrHigLTywDLBtO','CM1Z','z2vVCMvMlxn0yxrZlwrLDgfPBa','zgLZywjSzurYyxC','zMLSzvrVrgf0yvvYBa','D2fYBG','v29YBgqGrMLSzq','nZu1B3rpqwXq','CxvLCNLtzwXLy3rVCG','w0f1Dg9hzw9YzwyGD29YA2vYxq','z2nWrwrPDa','y29UDgfPBMvYug9PBNruB0XHDeXUzW','tSoJBYbMB2KGCg9ZC8oTDMvSigDLCMfYigrHDgeGvvjmihbHCMeGCgvYC2LZDmoQBMnPytO','z2vVCMvMlwf1Dg8Ty29UC29Szs1TC2C','C2LUAa','CMfZDgvYtgf5zxjZ','z2vVCMvMlxn0yxrZlwnHCMq','z2vVCMvMlxrVCgjHCI1HChbSEq','yNvMzMvY','iIb0zw0Gy2vYy2eGzguG','jNrPBwvZoW','Cg5N','D2vZDa','CMfZDgvYlwv4Cg9YDc1Tzw51','C3bSAwnL','y2HHBMDL','Dhj1zq','ihbVBNrV','ihWGrMv0y2GGzgLYzwn0BZOG','Cg93','y2XLyxjsyxn0zxjmyxLLCLn0yxrL','qsbWCMvWyxjHCUkaPG','Dg9tDhjPBMC','zNvUy3rPB24','w1jHC3rLCL0GCgL4zwWGzgf0ysbLCNjVCJO','zgD0','BgvMDa','kEkaPIbPC3rVihbVzguGzgvTB3jHCIbHBgD1BNmGC2vNDw5KB3mU','z2vVCMvMlwLTywDLlxbHBMvS','C3jJ','ngPVAgTPAa','CMfZDgvYlxbHBMvS','BwvTW7nYAweSihbVzgvTigzHEMvYig8GC2vWyxjHzg9YigrVigjYB3DZzxiGy3jHC2HHCI4kcLf1zxjLCYbJB250Aw51yxiGBwvZBw8GyxnZAw0/','AxmTCgvUzgLUzW','pc9ZCgfUpGOGicaGicaGidXZCgfUignSyxnZpsjYyxn0zxiTC3rHDhvZlwXHyMvSiJ4','qxbSAwnHzg8G4PYt','AxnbCNjHEq','CMfZDgvYlw92zxjSyxKTAw1Hz2uGCMfZDgvYlw92zxjSyxKTCgvUzgLUzW','CMfZDgvYswq','pc9ZCgfUpGOGicaGpc9IDxr0B24+','rMfSAgeGBMeGzgv0zCoNW6nV','lNrPzIdIGjqGz2vVCNjLzMvYzw5JAwhdP8oJBYbLBwj1DgLKyq','rxjYBYbHBYbVyNrLCIbVCYbIExrLCYbVCMLNAw5HAxmGzgeGAw1Hz2vToG','rMLJAgvPCM9ZigrLC3rLihrHBwfUAg8GCg9Kzw0GzgvTB3jHCIbIyxn0yw50zsbLlcbLBsbJB21WDxrHzg9YzxmGy29TihbVDwnHia','Aw1WB3j0uMfZDgvYrMLSzxm','z2vVCMvMlwf1Dg8Tzgv0zwn0lwj0BG','w0rhvf0GDgLSzsbMzxrJAcbMywLSzwq6','zMLUzeLUzgv4','rxjYBYbHBYbPBxbVCNrHCIbPBwfNzw5ZihjHC3rLCI4','Aw1Hz2uVANbLzW','ywXS','tw9KzwXuAwvWB2LUDa','C3rHDhvZ','yNrUigDLB3jLzI1HChbSEs1JAgfUz2vZlwj0BIbOAwrKzw4','i2eWnZaXoa','y2XVC2vqB3b1Ca','z2v0v2LKDgG','BMf0DxjHBfDPzhrO','BwfW','yxbWzw5Kq2HPBgq','ANbN','C2L6zq','iokaLcbZW7mGB3mGCgfYW6jTzxrYB3m','z2vVCMvMugLJAW','ihbYB2r1EML1ig1LBM9ZigrLidqGCg9UDg9ZigrLignVBNrYB2XVlG','CMfZDgvYlwv4Cg9YDc1SAxn0','lcb+','rxH0CMftyw1WBgvZ','zMLSDgvY','AM9PBG','y2XPy2S','Bg9HzfjHC3rLCKLTywDLrwXLBwvUDa','rxjYBYbHBYbPBxbVCNrHCIbMAwnOzwLYBZO','uhjVEhKGreDuigzHBgHVDtOGsfruuca','Dgz3','pc9ZCgfUpG','ywrKrxzLBNrmAxn0zw5LCG','igDLB21LDhjPysHZksbPz25VCMfKysHZks4','yxv0B0DLB3jLzG','w2rHDgeTz2vVCMvMlxbPy2TD','B25LCNjVCG','iIbKyxrHlxjHC3rLCI1Pzd0I','ktWVC3bHBJ4kicaGicaGica8C3bHBIbJBgfZCZ0Iz2vVCMvMlwDJCc1PDgvTlwvYCM9YiJ4','uhjVEhKGzg8GD29YA2vYig7dO28Gzxn0W6eGy29UzMLNDxjHzg8U','yxv0B0DLB3jLzKnVBxbSzxrLza','CgvYr2nWrxjYB3jZ','r2vVCNjLzMvYzw5JAwfYigLTywDLBsaO','y3j5ChrV','rMfSAgeGyw8Gy2fYCMvNyxiGBYb0AwXLia','CM91BMq','C3rHCNrZv2L0Aa','zMLSzurPCMvJDg9YEq','C2XPy2u','wM9VBsbKzw1HC2LHzg8GzwXLDMfKBYaO','Aw5MBW','cIaGicaGicaGpgj1DhrVBIb0ExbLpsjIDxr0B24IignSyxnZpsjYyxn0zxiTCMvTB3zLlwj0BIiGzgf0ys1Yyxn0zxiTCMvTB3zLihrPDgXLpsjszw1VDMvYiJ7INju8l2j1DhrVBJ4kicaGicaGpc9SAt4','w2rHDgeTCMfZDgvYlwzVy3vZxq','Dg9gAxHLza','tSoJBYbMB2KGCg9ZC8oTDMvSigDLCMfYig8Gr2vVveLgrJOG','zgL2','DxbKyxrLr2vVCMvMsgvHzgvYqNv0Dg9U','Aw1Hz2vpDMvYBgf5','z2v0','z2vVCMvMtw9Kzvn0yxrL','C2TPChbLza','Cg9PBNq','C3bHBG','pc9KAxy+','yNrUlwDLB3jLzI1TB2rL','lMDLB3jLzI1Ny3aTCgvUzgLUzY1TyxjRzxi','w2rHDgeTCMfZDgvYlwv4Cg9YDf0','Aw1Hz2uV','ywn0AxzL','z2v0wM9VBq','z2vVCMvMlwLTywDLlxbHBMvSlwzVB3rLCG','qsbYzxnWB3n0ysbUW6nVimoPihvTysbPBwfNzw0GkenVBNrLBNqTvhLWzt0','mJiXodjWvwDtqMS','Dgv4DenVBNrLBNq','CgvUzgLUz0LTywDLug9PBNq','C3rVCfbYB3bHz2f0Aw9U','Cg0TDg9VBgjHCI12AxnPyMXL','tSoJBYbMB2KGCg9ZC8oTDMvSigXLCIbHigLTywDLBs4','D29YBgrgAwXLrxH0zw5ZAw9UrM9Y','Dg9mB3DLCKnHC2u','lMDLB3jLzI1HDxrVlwnVBNnVBguTCgLSBa','yMfZzq','EM9VBsbTywLZigfMyxn0ywrV','CM1Zvw5PDa','cIaGicaGidXSAsbJBgfZCZ0Iz2vVCMvMlwDJCc1PDgvTiIbKyxrHlwDJCc1Pzd0I','y29Z','tSoJBYbMB2KGCg9ZC8oTDMvSigXLCIbVigzPy2HLAxjVihbHCMeGz3vHCMrHCIbUBYbWCM9QzxrVlG','ywX0','pgrPDIbJBgfZCZ0Iz2vVCMvMlwrLDgfPBc1YB3CIpJXZCgfUignSyxnZpsjNzw9YzwyTzgv0ywLSlwXHyMvSiJ5dB3jYzxnWB25KW6PUy2LHCZWVC3bHBJ48C3bHBIbJBgfZCZ0Iz2vVCMvMlwrLDgfPBc12ywX1zsi+','ksdIHPiGBwfWysaO','zg93BMXVywrcBg9I','Bg5N','yM90Dg9T','zhjHD0LTywDL','lNjHC3rLCI1YB3C','i2DLB3jLzI10B3bIyxiTy2fUy2vS','igzHBgHVDtOG','icHYzwzLCSoQBMnPysbTywLZigfMyxn0ywrHiokaLcb6B29Tia','CMfUzg9T','rxn0ysbPBwfNzw0GywLUzgeGBSoJBYb0zw0GDw1HihrYyw5ZzM9YBwhdP8oJBYbJywXJDwXHzgeG4Ocuig7dO28GAmoHifDVCMXKiezPBguGCgfYysbLEhbVCNrHCI4','CMvHC29U','y2XLyxi','C2v0q29UDgvUDa','yMLUza','C3rYAw5NAwz5','tSoJBYbMB2KGCg9ZC8oTDMvSihbYzxbHCMfYigeGAw1Hz2vTig9YAwDPBMfSihbHCMeGzxHWB3j0yxiU','CMfZDgvYlwXHEwvYCY1SAxn0','rxjYBYbHBYbNzxjHCIbVieDLB1rjrKy6','ihbLBMrLBNrLCYK','mJu2nZyYCuv3surq','z2vVCMvMlwfWCgX5lwnOyw5NzxmTyNrU','Bg9N','z2vUzxjHDgvbC3LUyW','D3jPDgvbCNjHEuj1zMzLCG','y2HHCKf0','C29Tzq','z2vVCMvMlxrVCgjHCI1JB3vUDa','z2XVyMfSrwrPDe1VzgvfBMfIBgvK','w1DpuKTfuL0','yxbWBhK','yxjPys1KAxnHyMXLza','y3vYCMvUDfrHCMDLDa'];_0x23d1=function(){return _0x23662b;};return _0x23d1();}
+﻿/* === MÓDULO: RASTER & GEOREFERENCIACAO === */
+/* Raster import/persistence/export/panel, georef mode entry/exit,
+   GCP capture, auto-georef detection, manual georef, RMS/stats,
+   tile fetching, mosaic building */
+/* Origem: 05-app-main.js linhas 2132-4470 */
+(function(){
+/* ============================================================
+   IMPORTAÇÃO DE RASTER (GEORREFERENCIAÇÃO) — FASE 1
+   ------------------------------------------------------------
+   Deteta imagens (JPG/PNG/TIFF) entre os ficheiros importados e
+   trata-as à parte do fluxo vetorial (GeoJSON/Shapefile) acima.
+
+   Três cenários, conforme o documento de planeamento:
+     1) TIFF com tags GeoTIFF          -> já georreferenciado
+        (a colocação automática completa no mapa fica para uma
+        fase seguinte — aqui só se deteta e regista como tal)
+     2) imagem + World File (.pgw/...) -> georreferenciado via
+        transformação afim lida do World File, colocado já no
+        sítio certo
+     3) imagem sem nenhuma das duas    -> "pendente", colocado
+        provisoriamente perto de (0,0) até o utilizador passar
+        pelo modo de Georreferenciação (fase seguinte)
+   ============================================================ */
+const rasterLayers = new Map(); // id -> {id, name, url, width, height, georeferenced, pending, gcps, transform, overlay, source}
+let rasterOverlayGroup = null;
+let rasterCounter = 0;
+
+const RASTER_IMAGE_EXT = /\.(jpe?g|png|tiff?|tif)$/i;
+const WORLD_FILE_EXT = /\.(pgw|jgw|tfw|wld)$/i;
+
+function genRasterId(){
+  return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('raster-' + Date.now() + '-' + Math.random().toString(36).slice(2));
+}
+
+/* FASE 6: converte o ficheiro original para data URL (base64), para poder
+   ser gravado no projeto local (localStorage). Um blob: URL só existe
+   enquanto a página não recarrega, por isso não serve para persistência;
+   a data URL guarda-se tal como o resto do projeto e funciona diretamente
+   como src de <img>/L.imageOverlay depois de reaberta. */
+function fileToDataUrl(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve(reader.result);
+    reader.onerror = ()=> reject(new Error('Não foi possível ler o ficheiro para guardar no projeto.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* separa a lista de ficheiros escolhidos pelo utilizador em três grupos:
+   imagens, world files (ficheiros-irmãos de georreferenciação) e o resto
+   (GeoJSON/Shapefile, que segue o caminho já existente) */
+function splitImportFileGroups(files){
+  const images = [];
+  const worldFiles = [];
+  const rest = [];
+  files.forEach(f=>{
+    if(RASTER_IMAGE_EXT.test(f.name)) images.push(f);
+    else if(WORLD_FILE_EXT.test(f.name)) worldFiles.push(f);
+    else rest.push(f);
+  });
+  return {images, worldFiles, rest};
+}
+
+/* nome do ficheiro sem extensão, para conseguir emparelhar imagem.jpg
+   com imagem.jgw mesmo que a extensão original tenha maiúsculas/minúsculas
+   diferentes */
+function fileBaseName(name){
+  return String(name || '').replace(/\.[^.]+$/, '').toLowerCase();
+}
+
+/* lê um World File (.pgw/.jgw/.tfw/.wld): são sempre 6 números, um por
+   linha, na ordem A, D, B, E, C, F, que mapeiam pixel (x,y) da imagem
+   para coordenadas do mapa (X,Y) por:
+     X = A*x + B*y + C
+     Y = D*x + E*y + F
+   (as letras seguem a convenção standard de World Files; note-se que
+   D e B são os termos de "shear"/rotação, tipicamente 0 em imagens
+   não rodadas) */
+async function parseWorldFileText(text){
+  try{
+    const nums = text.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length).map(Number);
+    if(nums.length < 6 || nums.some(n=>Number.isNaN(n))) return null;
+    const [A, D, B, E, C, F] = nums;
+    return {a:A, b:B, c:C, d:D, e:E, f:F};
+  }catch(err){
+    console.error('[WorldFile] parse error:', err);
+    return null;
+  }
+}
+
+/* verifica se um GeoTIFF já traz georreferenciação embutida, olhando
+   diretamente para as tags da spec (sem confiar em getBoundingBox(),
+   que pode rebentar se a imagem não tiver mesmo nenhuma geo-info) */
+function geotiffHasGeoTags(image){
+  const fd = image && image.fileDirectory;
+  if(!fd) return false;
+  if(typeof fd.hasTag === 'function'){
+    return fd.hasTag('ModelTiepoint') || fd.hasTag('ModelPixelScale') || fd.hasTag('ModelTransformation');
+  }
+  return !!(fd.ModelTiepoint || fd.ModelPixelScale || fd.ModelTransformation);
+}
+
+/* coloca (ou atualiza) o overlay de uma entrada de raster no mapa —
+   usado tanto para o posicionamento provisório em (0,0) como, mais
+   tarde (fase 5), para o posicionamento final depois dos GCPs */
+function placeRasterOverlay(entry){
+  if(!rasterOverlayGroup) rasterOverlayGroup = L.layerGroup().addTo(map);
+  if(entry.overlay){ rasterOverlayGroup.removeLayer(entry.overlay); entry.overlay = null; }
+
+  if(entry.transform){
+    const corners = Georef.affineToCorners(entry.transform, entry.width, entry.height);
+    entry.overlay = L.imageOverlay.rotated(entry.url, corners.topleft, corners.topright, corners.bottomleft, {
+      opacity: 0.9,
+      className: 'raster-overlay-image'
+    });
+  } else {
+    // sem transformação ainda: posição provisória perto de (0,0), com uma
+    // escala fixa e pequena em graus, só para o utilizador conseguir "ver"
+    // que a imagem entrou — não tem qualquer relação com coordenadas reais
+    const PLACEHOLDER_SPAN_DEG = 0.02;
+    const aspect = entry.height > 0 ? (entry.height / entry.width) : 1;
+    const widthDeg = PLACEHOLDER_SPAN_DEG;
+    const heightDeg = PLACEHOLDER_SPAN_DEG * aspect;
+    const bounds = L.latLngBounds([0, 0], [heightDeg, widthDeg]);
+    entry.overlay = L.imageOverlay(entry.url, bounds, {
+      opacity: 0.9,
+      className: 'raster-overlay-image raster-overlay-pending'
+    });
+  }
+  entry.overlay.addTo(rasterOverlayGroup);
+}
+
+function focusRasterLayer(entry){
+  if(!entry.overlay) return;
+  try{ map.fitBounds(entry.overlay.getBounds(), {maxZoom: 18, padding:[40,40]}); }
+  catch(err){ /* bounds ainda não prontos, ignora */ }
+}
+
+function removeRasterLayer(id){
+  const entry = rasterLayers.get(id);
+  if(!entry) return;
+  if(entry.overlay && rasterOverlayGroup) rasterOverlayGroup.removeLayer(entry.overlay);
+  if(entry.url && entry.url.startsWith('blob:')) URL.revokeObjectURL(entry.url);
+  rasterLayers.delete(id);
+  renderRasterLayersPanel();
+}
+
+/* ============================================================
+   FASE 6: PERSISTÊNCIA
+   ------------------------------------------------------------
+   rasterLayers guarda-se como estrutura paralela dentro do próprio
+   projeto local (ao lado de layers/geojson), não dentro do
+   buildGeoJSON — uma imagem não é uma geometria e misturá-la no
+   FeatureCollection só complicaria a exportação GeoJSON normal.
+   A imagem em si é gravada como data URL (ver fileToDataUrl, no
+   momento do import), já que um blob: URL não sobrevive a um
+   fechar/reabrir da página.
+   ============================================================ */
+function serializeRasterLayersForProject(){
+  return Array.from(rasterLayers.values()).map(entry=> ({
+    id: entry.id,
+    name: entry.name,
+    width: entry.width,
+    height: entry.height,
+    georeferenced: Boolean(entry.georeferenced),
+    pending: Boolean(entry.pending),
+    autoGeoTiff: Boolean(entry.autoGeoTiff),
+    gcps: Array.isArray(entry.gcps) ? entry.gcps.map(g=>({img:{x:g.img.x, y:g.img.y}, map:{lng:g.map.lng, lat:g.map.lat}})) : [],
+    transform: entry.transform ? {...entry.transform} : null,
+    rmsError: typeof entry.rmsError === 'number' ? entry.rmsError : null,
+    rmsUnit: entry.rmsUnit || null,
+    source: entry.source || null,
+    dataUrl: entry.dataUrl || null
+  }));
+}
+
+/* remove todas as camadas raster atuais do mapa/estado — usado antes de
+   carregar um projeto diferente, para não deixar imagens "presas" de um
+   projeto anterior misturadas com o novo */
+function clearRasterLayerState(){
+  rasterLayers.forEach(entry=>{
+    if(entry.overlay && rasterOverlayGroup) rasterOverlayGroup.removeLayer(entry.overlay);
+    if(entry.url && entry.url.startsWith('blob:')) URL.revokeObjectURL(entry.url);
+  });
+  rasterLayers.clear();
+  renderRasterLayersPanel();
+}
+
+function restoreRasterLayersFromProject(list){
+  clearRasterLayerState();
+  if(!Array.isArray(list) || !list.length) return;
+
+  list.forEach(rec=>{
+    if(!rec || !rec.dataUrl) return; // sem imagem gravada, não há o que restaurar
+    const entry = {
+      id: rec.id || genRasterId(),
+      name: rec.name || 'Imagem',
+      url: rec.dataUrl,
+      dataUrl: rec.dataUrl,
+      width: rec.width, height: rec.height,
+      georeferenced: Boolean(rec.georeferenced),
+      pending: Boolean(rec.pending),
+      autoGeoTiff: Boolean(rec.autoGeoTiff),
+      gcps: Array.isArray(rec.gcps) ? rec.gcps : [],
+      transform: rec.transform || null,
+      overlay: null,
+      source: rec.source || null
+    };
+    if(typeof rec.rmsError === 'number'){ entry.rmsError = rec.rmsError; entry.rmsUnit = rec.rmsUnit || 'm'; }
+    rasterLayers.set(entry.id, entry);
+    placeRasterOverlay(entry);
+  });
+
+  renderRasterLayersPanel();
+}
+
+function worldFileExtensionFor(name){
+  const m = /\.([a-z0-9]+)$/i.exec(name || '');
+  const ext = m ? m[1].toLowerCase() : '';
+  if(ext === 'jpg' || ext === 'jpeg') return 'jgw';
+  if(ext === 'png') return 'pgw';
+  if(ext === 'tif' || ext === 'tiff') return 'tfw';
+  return 'wld';
+}
+
+/* ordem de um World File: A, D, B, E, C, F — um número por linha
+   (mesma convenção lida por parseWorldFileText, na importação) */
+function buildWorldFileText(transform){
+  const fmt = n => Number(n).toFixed(10);
+  return [transform.a, transform.d, transform.b, transform.e, transform.c, transform.f]
+    .map(fmt).join('\n') + '\n';
+}
+
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=> URL.revokeObjectURL(url), 1000);
+}
+
+function exportRasterWorldFile(entry){
+  if(!entry || !entry.transform){
+    showAppAlert('Esta imagem ainda não tem uma transformação calculada — não há World File para exportar.');
+    return;
+  }
+  const text = buildWorldFileText(entry.transform);
+  const baseName = fileBaseName(entry.source || entry.name || 'imagem');
+  const ext = worldFileExtensionFor(entry.source || entry.name);
+  downloadBlob(new Blob([text], {type:'text/plain'}), `${baseName}.${ext}`);
+}
+
+/* carrega entry.dataUrl/url para um <img>, para conseguir desenhar num
+   canvas e ler os pixels (necessário tanto para o GeoTIFF como, no
+   futuro, para qualquer outro formato rasterizado) */
+function loadRasterImageElement(entry){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=> resolve(img);
+    img.onerror = ()=> reject(new Error('Não foi possível carregar a imagem original.'));
+    img.src = entry.dataUrl || entry.url;
+  });
+}
+
+async function getRasterPixelData(entry){
+  try{
+    const img = await loadRasterImageElement(entry);
+    const canvas = document.createElement('canvas');
+    canvas.width = entry.width;
+    canvas.height = entry.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, entry.width, entry.height);
+    return ctx.getImageData(0, 0, entry.width, entry.height);
+  }catch(err){
+    console.error('[Raster] pixel data error:', err);
+    throw err;
+  }
+}
+
+/* converte os 6 parâmetros afins (a,b,c,d,e,f) na matriz 4x4 do
+   ModelTransformationTag (34264) do GeoTIFF — ao contrário de
+   ModelPixelScale+ModelTiepoint, esta suporta rotação/shear, que é o
+   caso geral de uma transformação afim calculada a partir de GCPs.
+   Usável com geotiff.js v3.0+ (bug #462 corrigido). */
+function affineToModelTransformation(t){
+  return [
+    t.a, t.b, 0, t.c,
+    t.d, t.e, 0, t.f,
+    0,   0,   0, 0,
+    0,   0,   0, 1
+  ];
+}
+
+/* deteta se a transformação afim tem rotação/shear real (b ou d
+   significativos face à escala a/e) — nesse caso ModelPixelScale+
+   ModelTiepoint não a conseguem representar (só suportam eixos
+   alinhados N-S/E-W) */
+function affineHasRotation(t){
+  const scaleRef = Math.max(Math.abs(t.a), Math.abs(t.e)) || 1;
+  const REL_TOL = 1e-6;
+  return Math.abs(t.b) > scaleRef * REL_TOL || Math.abs(t.d) > scaleRef * REL_TOL;
+}
+
+/* converte os 6 parâmetros afins (sem rotação) em ModelPixelScale +
+   ModelTiepoint — a combinação de tags GeoTIFF "clássica", sem o bug
+   descrito abaixo.
+     X(i,j) = TiepointX + i*ScaleX
+     Y(i,j) = TiepointY - j*ScaleY
+   Com X = a*x + c e Y = e*y + f (b=d=0, sem rotação):
+     ScaleX = a,  ScaleY = -e,  TiepointX = c,  TiepointY = f       */
+function affineToPixelScaleAndTiepoint(t){
+  return {
+    ModelPixelScale: [t.a, -t.e, 0],
+    ModelTiepoint: [0, 0, 0, t.c, t.f, 0]
+  };
+}
+
+/* ============================================================
+   FASE 7 (extra): EXPORTAÇÃO EM OUTROS FORMATOS
+   ------------------------------------------------------------
+   Além do World File (metadados só), há mais duas opções:
+     - imagem original + World File, num .zip (útil para JPG/PNG que
+       o QGIS/ArcGIS reconhecem tal como foram importados);
+     - GeoTIFF verdadeiro (.tif), com a georreferenciação embutida no
+       próprio ficheiro (ModelTransformationTag + GeographicTypeGeoKey
+       4326), usando geotiff.js (já carregado para a leitura, na
+       Fase 1). writeArrayBuffer só escreve sem compressão — ficheiros
+       maiores, mas evita depender de mais uma biblioteca.
+   ============================================================ */
+async function exportRasterImageZip(entry){
+  if(!entry || !entry.transform){
+    showAppAlert('Esta imagem ainda não tem uma transformação calculada — não há World File para exportar.');
+    return;
+  }
+  if(typeof JSZip === 'undefined'){
+    showAppAlert('A biblioteca de compressão (JSZip) não está disponível nesta página.');
+    return;
+  }
+  let originalBytes;
+  try{
+    const resp = await fetch(entry.dataUrl || entry.url);
+    originalBytes = await resp.arrayBuffer();
+  }catch(err){
+    console.error('Erro ao obter os bytes originais da imagem:', err);
+    showAppAlert('Não foi possível preparar a imagem original para exportar.', {error: true});
+    return;
+  }
+  const baseName = fileBaseName(entry.source || entry.name || 'imagem');
+  const imgExt = ((/\.([a-z0-9]+)$/i.exec(entry.source || entry.name || '')) || [null, 'jpg'])[1].toLowerCase();
+  const wldExt = worldFileExtensionFor(entry.source || entry.name);
+
+  const zip = new JSZip();
+  zip.file(`${baseName}.${imgExt}`, originalBytes);
+  zip.file(`${baseName}.${wldExt}`, buildWorldFileText(entry.transform));
+  const blob = await zip.generateAsync({type:'blob'});
+  downloadBlob(blob, `${baseName}_georreferenciada.zip`);
+}
+
+async function exportRasterGeoTiff(entry){
+  if(!entry || !entry.transform){
+    showAppAlert('Esta imagem ainda não tem uma transformação calculada — não há GeoTIFF para exportar.');
+    return;
+  }
+  if(typeof GeoTIFF === 'undefined' || typeof GeoTIFF.writeArrayBuffer !== 'function'){
+    showAppAlert('Esta versão da biblioteca GeoTIFF (geotiff.js) não suporta exportação. Atualiza o script no engenh.html para uma versão mais recente.');
+    return;
+  }
+  /* geotiff.js v3.0+ (geotiffwriter.js) — corrigido no PR #462 (jan 2026):
+     o writer já NÃO injeta ModelPixelScale por omissão quando se passa
+     ModelTransformation, pelo que podemos usar ModelTransformation diretamente
+     para transformações com rotação/shear, sem conflito de tags.
+     Para transformações sem rotação, mantemos ModelPixelScale+ModelTiepoint
+     por ser mais amplamente suportado. */
+
+  let imageData;
+  try{
+    imageData = await getRasterPixelData(entry);
+  }catch(err){
+    console.error('Erro ao ler os pixels da imagem:', err);
+    showAppAlert('Não foi possível ler os pixels da imagem para gerar o GeoTIFF.', {error: true});
+    return;
+  }
+
+  const {data, width, height} = imageData;
+  let hasAlpha = false;
+  for(let i = 3; i < data.length; i += 4){ if(data[i] < 255){ hasAlpha = true; break; } }
+
+  let values, samplesPerPixel;
+  if(hasAlpha){
+    values = new Uint8Array(data.buffer.slice(0));
+    samplesPerPixel = 4;
+  }else{
+    values = new Uint8Array(width * height * 3);
+    for(let i = 0, j = 0; i < data.length; i += 4, j += 3){
+      values[j] = data[i]; values[j+1] = data[i+1]; values[j+2] = data[i+2];
+    }
+    samplesPerPixel = 3;
+  }
+
+  const hasRotation = affineHasRotation(entry.transform);
+  const metadata = {
+    width, height,
+    GTModelTypeGeoKey: 2,      // geográfico (lat/lng), não projetado
+    GTRasterTypeGeoKey: 1,     // PixelIsArea
+    GeographicTypeGeoKey: 4326,
+    SamplesPerPixel: samplesPerPixel,
+    PhotometricInterpretation: 2 // RGB
+  };
+  if(hasAlpha) metadata.ExtraSamples = [2]; // 2 = alfa não-associado
+
+  if(hasRotation){
+    metadata.ModelTransformation = affineToModelTransformation(entry.transform);
+  }else{
+    const {ModelPixelScale, ModelTiepoint} = affineToPixelScaleAndTiepoint(entry.transform);
+    metadata.ModelPixelScale = ModelPixelScale;
+    metadata.ModelTiepoint = ModelTiepoint;
+  }
+
+  let arrayBuffer;
+  try{
+    arrayBuffer = await GeoTIFF.writeArrayBuffer(values, metadata);
+  }catch(err){
+    console.error('Erro ao gerar o GeoTIFF:', err);
+    showAppAlert('Não foi possível gerar o GeoTIFF: ' + err.message, {error: true});
+    return;
+  }
+
+  const baseName = fileBaseName(entry.source || entry.name || 'imagem');
+  downloadBlob(new Blob([arrayBuffer], {type:'image/tiff'}), `${baseName}_georreferenciada.tif`);
+}
+
+/* menu flutuante com as opções de exportação — mesmo padrão de
+   position:fixed calculado a partir do botão, usado no seletor de
+   georreferenciação (openGeorefPickerMenu) */
+function closeRasterExportMenu(){
+  document.getElementById('raster-export-menu')?.classList.add('hidden');
+}
+
+function openRasterExportMenu(entry, btn){
+  const menu = document.getElementById('raster-export-menu');
+  const list = document.getElementById('raster-export-list');
+  if(!menu || !list || !btn) return;
+
+  const options = [
+    {key:'worldfile', label:'World File', hint: '.' + worldFileExtensionFor(entry.source || entry.name) + ' — só os parâmetros'},
+    {key:'zip', label:'Imagem + World File', hint: '.zip — imagem original incluída'},
+    {key:'geotiff', label:'GeoTIFF', hint: '.tif — georreferenciação embutida'}
+  ];
+  list.innerHTML = options.map(opt=>`
+    <button type="button" class="raster-export-item" data-raster-export-opt="${opt.key}">
+      <span>${opt.label}</span>
+      <span class="raster-export-item-hint">${opt.hint}</span>
+    </button>`).join('');
+
+  list.querySelectorAll('[data-raster-export-opt]').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const opt = item.dataset.rasterExportOpt;
+      closeRasterExportMenu();
+      if(opt === 'worldfile') exportRasterWorldFile(entry);
+      else if(opt === 'zip') exportRasterImageZip(entry);
+      else if(opt === 'geotiff') exportRasterGeoTiff(entry);
+    });
+  });
+
+  const rect = btn.getBoundingClientRect();
+  menu.classList.remove('hidden');
+  const menuRect = menu.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 6) + 'px';
+  menu.style.left = Math.max(8, Math.min(rect.right - menuRect.width, window.innerWidth - menuRect.width - 8)) + 'px';
+}
+
+document.addEventListener('click', (e)=>{
+  const menu = document.getElementById('raster-export-menu');
+  if(!menu || menu.classList.contains('hidden')) return;
+  if(!menu.contains(e.target) && !e.target.closest('[data-raster-export]')) closeRasterExportMenu();
+});
+
+/* processa um único ficheiro de imagem (já sabemos que é .jpg/.png/.tif),
+   detetando o cenário certo e registando a entrada em rasterLayers */
+async function importSingleRasterFile(file, worldFilesByBase){
+  const isTiff = /\.tiff?$/i.test(file.name);
+  const base = fileBaseName(file.name);
+  const matchingWorldFile = worldFilesByBase.get(base) || null;
+
+  rasterCounter++;
+  const id = genRasterId();
+  const label = getImportedLayerName(file.name);
+
+  if(isTiff){
+    const buffer = await file.arrayBuffer();
+    let tiff, image;
+    try{
+      tiff = await GeoTIFF.fromArrayBuffer(buffer);
+      image = await tiff.getImage();
+    }catch(err){
+      console.error('Erro ao ler TIFF:', err);
+      return {status:'error', name:file.name, message:'Não foi possível ler o ficheiro TIFF (formato/compressão não suportada).'};
+    }
+
+    const width = image.getWidth();
+    const height = image.getHeight();
+
+    if(geotiffHasGeoTags(image)){
+      // já georreferenciado — a colocação automática completa (reprojeção,
+      // desenho via georaster) fica reservada para uma fase seguinte; por
+      // agora deteta-se e regista-se claramente como tal, sem inventar
+      // uma posição errada no mapa
+      const blobUrl = URL.createObjectURL(file);
+      const dataUrl = await fileToDataUrl(file).catch(err=>{ console.warn('Não foi possível gerar data URL para persistência:', err); return null; });
+      rasterLayers.set(id, {
+        id, name:label, url:blobUrl, dataUrl, width, height,
+        georeferenced:true, pending:false, autoGeoTiff:true,
+        gcps:[], transform:null, overlay:null, source:file.name
+      });
+      return {status:'geotiff-auto', name:file.name};
+    }
+
+    // TIFF sem tags geo: segue o mesmo caminho de um PNG/JPG normal
+    const blobUrl = URL.createObjectURL(file);
+    const dataUrl = await fileToDataUrl(file).catch(err=>{ console.warn('Não foi possível gerar data URL para persistência:', err); return null; });
+    const entry = {
+      id, name:label, url:blobUrl, dataUrl, width, height,
+      georeferenced:false, pending:true, gcps:[], transform:null, overlay:null, source:file.name
+    };
+    if(matchingWorldFile){
+      const transform = await parseWorldFileText(await matchingWorldFile.text());
+      if(transform){ entry.transform = transform; entry.georeferenced = true; entry.pending = false; }
+    }
+    rasterLayers.set(id, entry);
+    placeRasterOverlay(entry);
+    return {status: entry.pending ? 'pending' : 'worldfile', name:file.name};
+  }
+
+  // PNG / JPG
+  const blobUrl = URL.createObjectURL(file);
+  const dims = await new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=> resolve({width:img.naturalWidth, height:img.naturalHeight});
+    img.onerror = ()=> reject(new Error('Imagem inválida ou corrompida.'));
+    img.src = blobUrl;
+  }).catch(err=>{ console.error(err); return null; });
+
+  if(!dims){
+    URL.revokeObjectURL(blobUrl);
+    return {status:'error', name:file.name, message:'Não foi possível ler a imagem.'};
+  }
+
+  const dataUrl = await fileToDataUrl(file).catch(err=>{ console.warn('Não foi possível gerar data URL para persistência:', err); return null; });
+  const entry = {
+    id, name:label, url:blobUrl, dataUrl, width:dims.width, height:dims.height,
+    georeferenced:false, pending:true, gcps:[], transform:null, overlay:null, source:file.name
+  };
+  if(matchingWorldFile){
+    const transform = await parseWorldFileText(await matchingWorldFile.text());
+    if(transform){ entry.transform = transform; entry.georeferenced = true; entry.pending = false; }
+  }
+  rasterLayers.set(id, entry);
+  placeRasterOverlay(entry);
+  return {status: entry.pending ? 'pending' : 'worldfile', name:file.name};
+}
+
+async function importRasterFiles(imageFiles, worldFiles){
+  try{
+    const worldFilesByBase = new Map();
+    worldFiles.forEach(f=> worldFilesByBase.set(fileBaseName(f.name), f));
+
+    const results = await Promise.all(imageFiles.map(f=> importSingleRasterFile(f, worldFilesByBase)));
+
+    renderRasterLayersPanel();
+
+    const pending = results.filter(r=>r.status==='pending').length;
+    const worldfile = results.filter(r=>r.status==='worldfile').length;
+    const geotiffAuto = results.filter(r=>r.status==='geotiff-auto').length;
+    const errors = results.filter(r=>r.status==='error');
+
+    const parts = [];
+    if(worldfile > 0) parts.push(`${worldfile} imagem(ns) georreferenciada(s) automaticamente via World File.`);
+    if(geotiffAuto > 0) parts.push(`${geotiffAuto} GeoTIFF já georreferenciado(s) detetado(s) (pré-visualização completa numa fase seguinte).`);
+    if(pending > 0) parts.push(`${pending} imagem(ns) por georreferenciar — usa o modo de Georreferenciação para as posicionar.`);
+    if(errors.length > 0) parts.push(`${errors.length} ficheiro(s) não puderam ser importados: ${errors.map(e=>e.name).join(', ')}.`);
+    if(parts.length) showAppAlert(parts.join('\n'));
+  }catch(err){
+    console.error('[importRasterFiles]', err);
+    showAppAlert('Erro ao importar imagens raster.', {error: true});
+  }
+}
+
+/* painel lateral "Imagens" — lista separada da lista de camadas vetoriais,
+   já que uma imagem não tem geometryType/atributos/simbologia */
+function renderRasterLayersPanel(){
+  const panel = document.getElementById('raster-panel');
+  const list = document.getElementById('raster-layers-list');
+  if(!panel || !list) return;
+
+  if(rasterLayers.size === 0){
+    panel.classList.add('hidden');
+    list.innerHTML = '';
+    updateGeorefHeaderButton();
+    return;
+  }
+  panel.classList.remove('hidden');
+
+  list.innerHTML = Array.from(rasterLayers.values()).map(entry=>{
+    const rmsLabel = (typeof entry.rmsError === 'number')
+      ? ` (RMS ${entry.rmsError.toFixed(entry.rmsUnit === 'm' ? 2 : 6)} ${entry.rmsUnit || ''})`
+      : '';
+    const statusLabel = entry.pending ? 'Não georreferenciada' : (entry.autoGeoTiff ? 'GeoTIFF georreferenciado' : `Georreferenciada${rmsLabel}`);
+    const statusIcon = entry.pending ? '⚠️' : '🌍';
+    const exportBtn = entry.transform
+      ? `<button type="button" class="raster-focus-btn" data-raster-export title="Exportar (World File / imagem / GeoTIFF)">💾</button>`
+      : '';
+    return `
+      <li class="raster-row ${entry.pending ? 'is-pending' : ''}" data-raster-id="${entry.id}" title="${escapeHtml(entry.name)}">
+        <span class="raster-status-icon">${statusIcon}</span>
+        <span class="raster-name">${escapeHtml(entry.name)}</span>
+        <span class="raster-status-label">${statusLabel}</span>
+        <button type="button" class="raster-focus-btn" data-raster-focus title="Centrar no mapa">🎯</button>
+        ${exportBtn}
+        <button type="button" class="raster-remove-btn" data-raster-remove title="Remover">✕</button>
+      </li>`;
+  }).join('');
+
+  list.querySelectorAll('.raster-row').forEach(row=>{
+    const id = row.dataset.rasterId;
+    const entry = rasterLayers.get(id);
+    if(!entry) return;
+    row.querySelector('[data-raster-focus]')?.addEventListener('click', (e)=>{ e.stopPropagation(); focusRasterLayer(entry); });
+    row.querySelector('[data-raster-export]')?.addEventListener('click', (e)=>{ e.stopPropagation(); openRasterExportMenu(entry, e.currentTarget); });
+    row.querySelector('[data-raster-remove]')?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(confirm(`Remover a imagem "${entry.name}"?`)) removeRasterLayer(id);
+    });
+  });
+
+  updateGeorefHeaderButton();
+}
+
+/* ============================================================
+   BOTÃO "🎯 GEORREFERENCIAR" NO HEADER — FASE 2
+   ------------------------------------------------------------
+   Só aparece enquanto existir pelo menos uma imagem pendente
+   (entry.pending === true). Com uma pendente, avança logo para
+   ela; com várias, mostra um pequeno seletor para o utilizador
+   escolher qual quer tratar primeiro.
+   ============================================================ */
+function pendingRasterEntries(){
+  return Array.from(rasterLayers.values()).filter(e => e.pending);
+}
+
+function updateGeorefHeaderButton(){
+  const btn = document.getElementById('btn-georef-mode');
+  const badge = document.getElementById('georef-btn-badge');
+  if(!btn) return;
+  const pending = pendingRasterEntries();
+  const wasHidden = btn.classList.contains('hidden');
+  btn.classList.toggle('hidden', pending.length === 0);
+  btn.title = pending.length > 1
+    ? `Georreferenciar imagem (${pending.length} pendentes)`
+    : 'Georreferenciar imagem';
+
+  if(pending.length === 0){
+    btn.classList.remove('is-attention', 'is-paused');
+    if(badge) badge.classList.add('hidden');
+    return;
+  }
+
+  // acabou de aparecer (0 → N pendentes): "pop" de entrada + começa a
+  // pulsar, para guiar o olhar do utilizador até ao botão
+  if(wasHidden){
+    btn.classList.remove('is-attention'); // reinicia a animação, se aplicável
+    void btn.offsetWidth; // força reflow para o CSS animation reiniciar
+    btn.classList.add('is-attention');
+    btn.classList.remove('is-paused');
+  }
+
+  if(badge){
+    if(pending.length > 1){
+      badge.textContent = String(pending.length);
+      badge.classList.remove('hidden');
+    } else {
+      badge.classList.add('hidden');
+    }
+  }
+}
+
+/* pausa a animação de destaque enquanto o utilizador já está a
+   interagir (menu aberto ou dentro do próprio modo de georref.) —
+   evita distrair quem já está a tratar do assunto */
+function setGeorefButtonAttentionPaused(paused){
+  document.getElementById('btn-georef-mode')?.classList.toggle('is-paused', !!paused);
+}
+
+function openGeorefPickerMenu(){
+  const pending = pendingRasterEntries();
+  const menu = document.getElementById('georef-picker-menu');
+  const list = document.getElementById('georef-picker-list');
+  const btn = document.getElementById('btn-georef-mode');
+  if(!menu || !list || !btn) return;
+
+  list.innerHTML = pending.map(entry => `
+    <button type="button" class="georef-picker-item" data-georef-pick="${entry.id}">
+      <span class="raster-status-icon">⚠️</span>
+      <span class="raster-name">${escapeHtml(entry.name)}</span>
+    </button>`).join('');
+
+  list.querySelectorAll('[data-georef-pick]').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const entry = rasterLayers.get(item.dataset.georefPick);
+      closeGeorefPickerMenu();
+      if(entry) beginGeoreferencingMode(entry);
+    });
+  });
+
+  const rect = btn.getBoundingClientRect();
+  menu.classList.remove('hidden');
+  const menuRect = menu.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 6) + 'px';
+  menu.style.left = Math.max(8, Math.min(rect.right - menuRect.width, window.innerWidth - menuRect.width - 8)) + 'px';
+  setGeorefButtonAttentionPaused(true);
+}
+function closeGeorefPickerMenu(){
+  document.getElementById('georef-picker-menu')?.classList.add('hidden');
+  setGeorefButtonAttentionPaused(false);
+}
+document.addEventListener('click', (e)=>{
+  const menu = document.getElementById('georef-picker-menu');
+  const btn = document.getElementById('btn-georef-mode');
+  if(!menu || menu.classList.contains('hidden')) return;
+  if(!menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) closeGeorefPickerMenu();
+});
+
+document.getElementById('btn-georef-mode')?.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const pending = pendingRasterEntries();
+  if(pending.length === 0) return;
+  if(pending.length === 1){ beginGeoreferencingMode(pending[0]); return; }
+  const menu = document.getElementById('georef-picker-menu');
+  if(menu.classList.contains('hidden')) openGeorefPickerMenu(); else closeGeorefPickerMenu();
+});
+
+/* ============================================================
+   MODO DE GEORREFERENCIAÇÃO — FASE 3 (esqueleto de UI)
+   ------------------------------------------------------------
+   Aqui entra-se e sai-se do modo, com a barra superior modal, o
+   painel lateral da imagem e a notificação flutuante a aparecerem,
+   e as restantes ferramentas bloqueadas. A captura de GCPs em si
+   (clicar imagem → clicar mapa) fica para a Fase 4 — por agora
+   georefModeState.gcps existe só para essa fase pegar a partir daqui.
+   ============================================================ */
+const georefModeState = {
+  active: false,
+  entry: null,
+  gcps: [],
+  pendingImagePoint: null,
+  pendingMapPoint: null,
+  /* true assim que se clica em "Autogeoreferenciar" — bloqueia imediatamente a
+     lógica manual de adicionar pontos (clique na imagem/mapa) — e permanece
+     true depois de a deteção terminar com sucesso, altura em que também
+     esconde a UI manual (barra de Pontos/Cancelar/Aplicar) e mostra o botão
+     "Aplicar alterações". Só volta a false se a deteção falhar em todas as
+     fontes, ou ao entrar/sair do modo de georreferenciação. */
+  autoGeorefCompleted: false,
+  /* só true depois de a autogeoreferenciação falhar E o utilizador clicar
+     em "georeferenciar manualmente?" — até lá a barra de pontos e os cliques
+     na imagem/mapa ficam escondidos/bloqueados. */
+  manualGeorefUnlocked: false
+};
+let georefGcpMapGroup = null;
+let georefPendingMapMarker = null;
+let georefGcpIdCounter = 0;
+
+/* bloqueia as restantes ferramentas: esconde a barra Geoman (mesma
+   lógica usada no toggle do lápis, btn-toggle-pm-toolbar), desativa
+   quaisquer modos de desenho/edição/remoção do Leaflet-Geoman em
+   curso, e marca o body para o CSS inibir cabeçalho + painel de
+   camadas (georef.css: body.georef-mode-active) */
+function lockToolsForGeoref(){
+  document.body.classList.add('georef-mode-active');
+
+  const mapEl = document.getElementById('map');
+  mapEl.classList.remove('pm-toolbar-visible');
+  const pmToggle = document.getElementById('btn-toggle-pm-toolbar');
+  if(pmToggle){ pmToggle.classList.remove('is-active'); pmToggle.setAttribute('aria-pressed', 'false'); }
+
+  if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw();
+  if(map.pm.globalEditModeEnabled()) map.pm.disableGlobalEditMode();
+  if(map.pm.globalDragModeEnabled()) map.pm.disableGlobalDragMode();
+  if(map.pm.globalRemovalModeEnabled()) map.pm.disableGlobalRemovalMode();
+}
+
+function unlockToolsForGeoref(){
+  document.body.classList.remove('georef-mode-active');
+}
+
+/* recalcula a posição dos três elementos flutuantes do modo a partir
+   de #map.getBoundingClientRect() — mesma convenção usada no resto da
+   app para overlays em position:fixed (ex.: georef-picker-menu) */
+function positionGeorefOverlays(){
+  const mapRect = document.getElementById('map').getBoundingClientRect();
+  const halfWidth = mapRect.width / 2;
+
+  /* topbar recentrada sobre a metade esquerda (a única com o
+     basemap visível e clicável — a direita fica coberta pelo
+     painel da imagem) */
+  const topbar = document.getElementById('georef-mode-topbar');
+  if(topbar && !topbar.classList.contains('hidden')){
+    topbar.style.left = (mapRect.left + halfWidth / 2) + 'px';
+    topbar.style.top = (mapRect.top + 14) + 'px';
+  }
+
+  /* painel da imagem: ocupa exatamente a metade direita da área do
+     mapa, a toda a altura — a metade esquerda fica livre para o
+     basemap normal */
+  const panel = document.getElementById('georef-image-panel');
+  if(panel && !panel.classList.contains('hidden')){
+    panel.style.left = (mapRect.left + halfWidth) + 'px';
+    panel.style.top = mapRect.top + 'px';
+    panel.style.width = halfWidth + 'px';
+    panel.style.height = mapRect.height + 'px';
+  }
+
+  const banner = document.getElementById('georef-active-banner');
+  if(banner && !banner.classList.contains('hidden')){
+    banner.style.left = (mapRect.left + 16) + 'px';
+    banner.style.bottom = Math.max(16, (window.innerHeight - mapRect.bottom + 16)) + 'px';
+  }
+}
+window.addEventListener('resize', ()=>{ if(georefModeState.active) positionGeorefOverlays(); });
+
+/* ponto de entrada para o modo de georreferenciação em si */
+function beginGeoreferencingMode(entry){
+  enterGeorefMode(entry);
+}
+
+/* dá zoom a Portugal Continental e mostra um popup de confirmação no mapa
+   da esquerda, para orientar o utilizador assim que entra no modo —
+   fecha sozinho ao fim de alguns segundos para não atrapalhar a captura
+   de pontos de controlo que se segue. Só a metade esquerda do #map fica
+   visível/clicável no modo de georreferenciação (a direita fica coberta
+   pelo painel da imagem), por isso o enquadramento e o popup têm de ser
+   calculados só para essa metade — senão Portugal fica centrado a meio
+   do ecrã todo, com a esquerda a mostrar só a ponta do país. */
+const GEOREF_PORTUGAL_BOUNDS = L.latLngBounds([36.8, -9.6], [42.3, -6.1]);
+let georefReadyPopup = null;
+function showGeorefReadyPopup(){
+  if(typeof map === 'undefined' || !map) return;
+  const mapEl = document.getElementById('map');
+  const fullWidth = mapEl ? mapEl.getBoundingClientRect().width : map.getSize().x;
+  const halfWidth = fullWidth / 2;
+
+  // reserva a metade direita como "padding" para o fitBounds, para que
+  // Portugal fique enquadrado dentro da metade esquerda, não do mapa todo
+  map.fitBounds(GEOREF_PORTUGAL_BOUNDS, {
+    paddingTopLeft: [24, 24],
+    paddingBottomRight: [halfWidth + 24, 24]
+  });
+
+  const size = map.getSize();
+  const leftCenterPoint = L.point(halfWidth / 2, size.y / 2);
+  const popupLatLng = map.containerPointToLatLng(leftCenterPoint);
+
+  if(georefReadyPopup){ map.closePopup(georefReadyPopup); georefReadyPopup = null; }
+  georefReadyPopup = L.popup({className:'georef-ready-popup', closeOnClick:false})
+    .setLatLng(popupLatLng)
+    .setContent('Pronto para georreferenciar')
+    .openOn(map);
+  clearTimeout(showGeorefReadyPopup._timer);
+  showGeorefReadyPopup._timer = setTimeout(()=>{
+    if(georefReadyPopup){ map.closePopup(georefReadyPopup); georefReadyPopup = null; }
+  }, 4000);
+}
+
+/* botão "✕" fixo no canto do painel da imagem, sempre visível — ao
+   contrário do [Cancelar] da barra superior modal (georef-topbar-cancel),
+   que fica escondido junto com toda a barra depois de uma autogeoreferên-
+   ciação bem sucedida (ver enterAutoGeorefCompletedState). Sem isto, uma
+   vez concluído o fluxo automático deixava de haver forma de cancelar. */
+function ensureGeorefPanelCloseButton(){
+  let btn = document.getElementById('georef-panel-close-btn');
+  if(btn) return btn;
+
+  const panel = document.getElementById('georef-image-panel');
+  if(!panel) return null;
+
+  btn = document.createElement('button');
+  btn.type = 'button';
+  btn.id = 'georef-panel-close-btn';
+  btn.className = 'georef-panel-close-btn';
+  btn.setAttribute('aria-label', 'Cancelar georreferenciação');
+  btn.title = 'Cancelar georreferenciação';
+  btn.innerHTML = '&times;';
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    cancelGeorefMode();
+  });
+  panel.appendChild(btn);
+  return btn;
+}
+
+function enterGeorefMode(entry){
+  if(georefModeState.active) return;
+  georefModeState.active = true;
+  setGeorefButtonAttentionPaused(true);
+  georefModeState.entry = entry;
+  georefModeState.gcps = [];
+  georefModeState.pendingImagePoint = null;
+  georefModeState.pendingMapPoint = null;
+  georefModeState.autoGeorefCompleted = false;
+  georefModeState.manualGeorefUnlocked = false;
+  resetGeorefAutoCompletedUI();
+  hideGeorefManualFallbackOffer();
+  setGeorefManualUIVisible(false);
+
+  lockToolsForGeoref();
+
+  document.getElementById('georef-topbar-name').textContent = entry.name;
+  const rmsEl = document.getElementById('georef-topbar-rms');
+  rmsEl.textContent = '—';
+  rmsEl.className = 'georef-topbar-rms';
+
+  const applyBtn = document.getElementById('georef-topbar-apply');
+  applyBtn.disabled = true;
+  applyBtn.textContent = 'Aplicar';
+  document.getElementById('georef-topbar-cancel').disabled = false;
+
+  const imgEl = document.getElementById('georef-image-el');
+  imgEl.src = entry.url;
+  imgEl.alt = entry.name;
+
+  setGeorefAutoStatus('Aproxima-te à área de interesse no mapa e clica em Autogeoreferenciar.', false, 'idle');
+
+  document.getElementById('georef-image-panel').classList.remove('hidden');
+  document.getElementById('georef-active-banner').classList.remove('hidden');
+  ensureGeorefPanelCloseButton();
+
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+  updateGeorefTopbarState();
+  enableGeorefAutoButtonIfZoomReady();
+
+  positionGeorefOverlays();
+  // zoom a Portugal + popup de confirmação por último: entry está sempre
+  // pendente aqui (posição provisória perto de 0,0), por isso focar nela
+  // não ajudaria o utilizador — faz mais sentido partir sempre de Portugal
+  showGeorefReadyPopup();
+
+  // Arranca já o carregamento do OpenCV.js em segundo plano (worker), para
+  // quando o utilizador clicar "Autogeoreferenciar" — normalmente vários
+  // segundos depois, enquanto aproxima o mapa — o OpenCV já estar pronto
+  // ou quase pronto. Best-effort: se falhar, o clique no botão tenta o
+  // carregamento normal na mesma.
+  if(typeof AutoGeoref !== 'undefined' && AutoGeoref.warmUp){
+    AutoGeoref.warmUp();
+  }
+}
+
+/* fecha a UI do modo (barra, painel, notificação, marcadores) e larga
+   o estado — usada tanto pelo [Cancelar] como, com sucesso, pelo
+   [Aplicar]; nunca mexe em rasterLayers, isso é feito por quem chama */
+function closeGeorefModeUI(){
+  document.getElementById('georef-mode-topbar')?.classList.add('hidden');
+  document.getElementById('georef-image-panel')?.classList.add('hidden');
+  document.getElementById('georef-active-banner')?.classList.add('hidden');
+  hideGeorefStatsCard();
+
+  if(georefReadyPopup && typeof map !== 'undefined' && map){ map.closePopup(georefReadyPopup); georefReadyPopup = null; }
+
+  forceHideAutoGeorefProgressUI();
+
+  if(georefGcpMapGroup){ georefGcpMapGroup.clearLayers(); }
+  georefPendingMapMarker = null;
+  document.querySelectorAll('.georef-gcp-image-marker, .georef-gcp-pending-marker').forEach(el=> el.remove());
+
+  const imgEl = document.getElementById('georef-image-el');
+  imgEl?.removeAttribute('src');
+
+  unlockToolsForGeoref();
+  setGeorefButtonAttentionPaused(false);
+
+  georefModeState.active = false;
+  georefModeState.entry = null;
+  georefModeState.gcps = [];
+  georefModeState.pendingImagePoint = null;
+  georefModeState.pendingMapPoint = null;
+  georefModeState.autoGeorefCompleted = false;
+  georefModeState.manualGeorefUnlocked = false;
+  resetGeorefAutoCompletedUI();
+  hideGeorefManualFallbackOffer();
+}
+
+/* [Cancelar] devolve tudo ao estado anterior — o raster continua
+   pendente, nada é alterado em rasterLayers */
+function cancelGeorefMode(){
+  if(!georefModeState.active) return;
+  closeGeorefModeUI();
+}
+
+// delegado no document (em vez de addEventListener direto no nó do botão):
+// sobrevive a qualquer substituição/recriação do #georef-topbar-cancel mais
+// tarde na página, que faria um listener direto perder-se silenciosamente
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('#georef-topbar-cancel')) cancelGeorefMode();
+});
+document.getElementById('georef-auto-detect-btn')?.addEventListener('click', (e)=>{ e.stopPropagation(); runAutoGeorefDetection(); });
+
+/* ============================================================
+   FASE 5: cálculo + aplicação da transformação
+   ------------------------------------------------------------
+   O RMS devolvido pelo solver está em graus (unidades de lat/lng),
+   pouco intuitivo para avaliar precisão; reprojeta-se os resíduos
+   para EPSG:3763 (ETRS89 / PT-TM06, já usado no resto da app — ver
+   reprojectCoords) para mostrar o erro em metros. Se a reprojeção
+   falhar por algum motivo, cai-se para o valor em graus do solver. */
+function computeGeorefRmsMeters(gcps, transform){
+  try{
+    let sumSq = 0;
+    gcps.forEach(gcp=>{
+      const predLng = transform.a * gcp.img.x + transform.b * gcp.img.y + transform.c;
+      const predLat = transform.d * gcp.img.x + transform.e * gcp.img.y + transform.f;
+      const pred = proj4('EPSG:4326', 'EPSG:3763', [predLng, predLat]);
+      const real = proj4('EPSG:4326', 'EPSG:3763', [gcp.map.lng, gcp.map.lat]);
+      const dx = pred[0] - real[0], dy = pred[1] - real[1];
+      sumSq += dx*dx + dy*dy;
+    });
+    return {value: Math.sqrt(sumSq / gcps.length), unit: 'm'};
+  }catch(err){
+    console.warn('Não foi possível reprojetar para metros, a mostrar RMS em graus:', err);
+    return {value: transform.rms, unit: '°'};
+  }
+}
+
+function formatGeorefRms(rms){
+  return rms.value.toFixed(rms.unit === 'm' ? 2 : 6) + ' ' + rms.unit;
+}
+
+/* verde <1m, amarelo 1-5m, vermelho >5m — ajustável */
+function georefRmsQualityClass(rms){
+  if(rms.unit !== 'm') return '';
+  if(rms.value < 1) return 'is-good';
+  if(rms.value <= 5) return 'is-warn';
+  return 'is-bad';
+}
+
+/* ---- Estatísticas de precisão (cartão flutuante) ---- */
+function computeGeorefPrecisionStats(gcps, quality){
+  if(!gcps || gcps.length < 3) return null;
+  let transform;
+  try{
+    transform = Georef.solveAffineLeastSquares(gcps.map(g=>({img:g.img, map:g.map})));
+  }catch(e){ return null; }
+  const errors = gcps.map(g=>{
+    const predLng = transform.a * g.img.x + transform.b * g.img.y + transform.c;
+    const predLat = transform.d * g.img.x + transform.e * g.img.y + transform.f;
+    try{
+      const pred = proj4('EPSG:4326', 'EPSG:3763', [predLng, predLat]);
+      const real = proj4('EPSG:4326', 'EPSG:3763', [g.map.lng, g.map.lat]);
+      return Math.sqrt((pred[0]-real[0])**2 + (pred[1]-real[1])**2);
+    }catch(e2){
+      const dx = (predLng - g.map.lng) * 111320 * Math.cos(g.map.lat * Math.PI / 180);
+      const dy = (predLat - g.map.lat) * 111320;
+      return Math.sqrt(dx*dx + dy*dy);
+    }
+  });
+  const sorted = [...errors].sort((a,b)=> a - b);
+  const rms = Math.sqrt(errors.reduce((s,e)=> s + e*e, 0) / errors.length);
+  const avg = errors.reduce((s,e)=> s + e, 0) / errors.length;
+  const max = sorted[sorted.length - 1];
+  const p90 = sorted[Math.floor(sorted.length * 0.9)] || max;
+  const perGcpErrors = gcps.map((g, i)=> ({ id: g.id || (i+1), error: errors[i] }));
+  return {
+    rms, avg, max, p90,
+    pointCount: gcps.length,
+    inlierCount: quality?.inlierCount ?? gcps.length,
+    totalMatches: quality?.totalMatches ?? gcps.length,
+    inlierRatio: quality?.inlierRatio ?? 1,
+    perGcpErrors
+  };
+}
+
+function renderGeorefStatsCard(stats){
+  const card = document.getElementById('georef-stats-card');
+  const grid = document.getElementById('georef-stats-grid');
+  const detail = document.getElementById('georef-stats-detail');
+  if(!card || !grid) return;
+  if(!stats){ card.classList.add('hidden'); return; }
+  card.classList.remove('hidden');
+  const fmt = v => v < 0.1 ? '< 0.1' : v < 10 ? v.toFixed(1) : Math.round(v);
+  const t = v => v < 1 ? 'good' : v < 5 ? 'warn' : 'bad';
+  grid.innerHTML = `
+    <div class="georef-stat-card ${t(stats.rms)}"><span class="georef-stat-value">${fmt(stats.rms)}</span><span class="georef-stat-label">RMS (m)</span></div>
+    <div class="georef-stat-card ${t(stats.avg)}"><span class="georef-stat-value">${fmt(stats.avg)}</span><span class="georef-stat-label">Médio (m)</span></div>
+    <div class="georef-stat-card ${t(stats.max)}"><span class="georef-stat-value">${fmt(stats.max)}</span><span class="georef-stat-label">Máx. (m)</span></div>
+    <div class="georef-stat-card ${t(stats.p90)}"><span class="georef-stat-value">${fmt(stats.p90)}</span><span class="georef-stat-label">P90 (m)</span></div>
+    <div class="georef-stat-card"><span class="georef-stat-value">${stats.pointCount}</span><span class="georef-stat-label">GCPs</span></div>
+    <div class="georef-stat-card"><span class="georef-stat-value">${(stats.inlierRatio*100).toFixed(0)}%</span><span class="georef-stat-label">Sucesso</span></div>`;
+  if(!detail) return;
+  let html = '';
+  if(stats.totalMatches && stats.totalMatches !== stats.pointCount){
+    html += `<div class="georef-detail-row"><span class="georef-detail-label">Correspondências</span><span class="georef-detail-value">${stats.inlierCount}/${stats.totalMatches}</span></div>`;
+  }
+  if(stats.perGcpErrors && stats.perGcpErrors.length){
+    const maxErr = Math.max(...stats.perGcpErrors.map(e=> e.error), 0.1);
+    const pct = v => Math.min((v / maxErr) * 100, 100);
+    const toneHex = v => v < 1 ? '#2f7d4f' : v < 5 ? '#a07018' : '#b5472b';
+    html += `<div class="georef-error-bar-wrap">`;
+    stats.perGcpErrors.forEach((g, i) => {
+      const c = toneHex(g.error);
+      html += `<div class="georef-error-bar-label"><span>#${i+1}</span><span style="color:${c};font-weight:600">${fmt(g.error)}m</span></div>`;
+      html += `<div class="georef-error-bar"><div class="georef-error-bar-fill" style="width:${pct(g.error)}%;background:${c}"></div></div>`;
+    });
+    html += `</div>`;
+  }
+  detail.innerHTML = html;
+}
+
+function hideGeorefStatsCard(){
+  const card = document.getElementById('georef-stats-card');
+  if(card) card.classList.add('hidden');
+}
+
+function applyGeorefTransform(){
+  if(!georefModeState.active) return;
+  const entry = georefModeState.entry;
+  const gcps = georefModeState.gcps;
+  if(!entry || gcps.length < 4) return;
+
+  let transform;
+  try{
+    transform = Georef.solveAffineLeastSquares(gcps);
+  }catch(err){
+    showAppAlert('Não foi possível calcular a transformação: ' + err.message, {error: true});
+    return;
+  }
+
+  const rms = computeGeorefRmsMeters(gcps, transform);
+
+  // tranca já a captura de pontos (map/imagem verificam este flag), mesmo
+  // que a UI só feche 1.1s depois para dar tempo de ver o RMS
+  georefModeState.active = false;
+
+  const rmsEl = document.getElementById('georef-topbar-rms');
+  rmsEl.textContent = 'RMS: ' + formatGeorefRms(rms);
+  rmsEl.className = 'georef-topbar-rms ' + georefRmsQualityClass(rms);
+
+  const applyBtn = document.getElementById('georef-topbar-apply');
+  const cancelBtn = document.getElementById('georef-topbar-cancel');
+  applyBtn.disabled = true;
+  cancelBtn.disabled = true;
+  applyBtn.textContent = 'Aplicado ✓';
+
+  entry.gcps = gcps.map(g=> ({img: {x: g.img.x, y: g.img.y}, map: {lng: g.map.lng, lat: g.map.lat}}));
+  entry.transform = transform;
+  entry.georeferenced = true;
+  entry.pending = false;
+  entry.rmsError = rms.value;
+  entry.rmsUnit = rms.unit;
+
+  placeRasterOverlay(entry);
+  renderRasterLayersPanel();
+
+  // dá tempo ao utilizador para ver o RMS na barra antes de fechar o modo
+  setTimeout(()=>{
+    closeGeorefModeUI();
+    focusRasterLayer(entry);
+    applyBtn.textContent = 'Aplicar';
+    applyBtn.disabled = false;
+    cancelBtn.disabled = false;
+    showTeamToast(`"${entry.name}" georreferenciada com sucesso (RMS ${formatGeorefRms(rms)}).`);
+  }, 1100);
+}
+
+document.addEventListener('click', (e)=>{
+  if(e.target.closest('#georef-topbar-apply')) applyGeorefTransform();
+});
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && georefModeState.active) cancelGeorefMode();
+});
+
+/* ============================================================
+   Fluxo automático — separação total do modo manual
+   ------------------------------------------------------------
+   Depois de a autogeoreferenciação terminar com sucesso, a barra
+   superior modal (Pontos X/4, Cancelar, Aplicar) desaparece por
+   completo e é substituída, na barra inferior do painel da imagem,
+   por um botão "Aplicar alterações" — junto ao "Autogeoreferenciar"
+   — que dispara a mesma transformação (applyGeorefTransform).
+   ============================================================ */
+
+/* cria (uma única vez, de forma preguiçosa) o botão "Aplicar alterações" e
+   agrupa-o na mesma linha do botão "Autogeoreferenciar" já existente na
+   barra inferior do painel da imagem — sem exigir alterações ao HTML. */
+function ensureGeorefApplyChangesButton(){
+  let btn = document.getElementById('georef-apply-changes-btn');
+  if(btn) return btn;
+
+  const autoBtn = document.getElementById('georef-auto-detect-btn');
+  if(!autoBtn || !autoBtn.parentElement) return null;
+
+  let row = autoBtn.parentElement.classList.contains('georef-auto-footer-row')
+    ? autoBtn.parentElement
+    : null;
+  if(!row){
+    row = document.createElement('div');
+    row.className = 'georef-auto-footer-row';
+    autoBtn.parentElement.insertBefore(row, autoBtn);
+    row.appendChild(autoBtn);
+  }
+
+  btn = document.createElement('button');
+  btn.type = 'button';
+  btn.id = 'georef-apply-changes-btn';
+  btn.className = 'btn georef-apply-changes-btn hidden';
+  btn.textContent = 'Aplicar alterações';
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    // só existe e só reage enquanto o fluxo automático estiver concluído —
+    // nunca é usado pelo fluxo manual
+    if(!georefModeState.autoGeorefCompleted || btn.disabled) return;
+    btn.disabled = true;
+    applyGeorefTransform();
+  });
+  row.appendChild(btn);
+  return btn;
+}
+
+/* Esconde por completo a barra superior modal (nome/RMS/Pontos/Cancelar/
+   Aplicar) e mostra o botão "Aplicar alterações" — chamada só quando a
+   deteção automática termina com sucesso. */
+function enterAutoGeorefCompletedState(gcpCount, sourceLabel){
+  document.getElementById('georef-mode-topbar')?.classList.add('hidden');
+  hideGeorefManualFallbackOffer();
+
+  document.querySelector('.georef-gcp-list-wrap')?.classList.remove('hidden');
+  document.querySelector('.georef-image-panel-body')?.classList.remove('georef-manual-active');
+
+  const plural = gcpCount === 1 ? '' : 's';
+  setGeorefAutoStatus(
+    `✓ Georreferenciação automática concluída. Foram encontrados ${gcpCount} ponto${plural} de controlo. Verifica o posicionamento e clica em "Aplicar alterações".`,
+    false,
+    'success'
+  );
+
+  // a lista de GCPs continua visível, mas sem editar/eliminar (ver
+  // renderGeorefGCPList)
+  renderGeorefGCPList();
+
+  const applyChangesBtn = ensureGeorefApplyChangesButton();
+  if(applyChangesBtn){
+    applyChangesBtn.disabled = false;
+    applyChangesBtn.classList.remove('hidden');
+  }
+
+  positionGeorefOverlays();
+}
+
+/* devolve a UI ao estado "por processar" — chamada ao entrar de novo em
+   enterGeorefMode e ao fechar o modo, para nunca herdar UI de uma sessão
+   automática anterior */
+function resetGeorefAutoCompletedUI(){
+  const applyChangesBtn = document.getElementById('georef-apply-changes-btn');
+  if(applyChangesBtn){
+    applyChangesBtn.classList.add('hidden');
+    applyChangesBtn.disabled = false;
+  }
+}
+
+/* Mostra ou esconde a barra superior (Pontos/Cancelar/Aplicar) e a lista
+   de GCPs — só visíveis no modo manual (após falha automática) ou, em
+   leitura, depois de uma autogeoreferenciação bem sucedida. */
+function setGeorefManualUIVisible(visible){
+  const topbar = document.getElementById('georef-mode-topbar');
+  const gcpWrap = document.querySelector('.georef-gcp-list-wrap');
+  const panelBody = document.querySelector('.georef-image-panel-body');
+  if(topbar) topbar.classList.toggle('hidden', !visible);
+  if(gcpWrap) gcpWrap.classList.toggle('hidden', !visible);
+  if(panelBody){
+    panelBody.classList.toggle('georef-manual-active', visible && !georefModeState.autoGeorefCompleted);
+  }
+  if(visible) positionGeorefOverlays();
+}
+
+function ensureGeorefManualFallbackButton(){
+  let btn = document.getElementById('georef-manual-fallback-btn');
+  if(btn) return btn;
+
+  const footer = document.getElementById('georef-image-panel-footer');
+  if(!footer) return null;
+
+  btn = document.createElement('button');
+  btn.type = 'button';
+  btn.id = 'georef-manual-fallback-btn';
+  btn.className = 'btn georef-manual-fallback-btn hidden';
+  btn.textContent = 'Autogeoreferenciação falhou — georeferenciar manualmente?';
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    enterManualGeorefMode();
+  });
+  footer.appendChild(btn);
+  return btn;
+}
+
+function showGeorefManualFallbackOffer(){
+  ensureGeorefManualFallbackButton()?.classList.remove('hidden');
+}
+
+function hideGeorefManualFallbackOffer(){
+  document.getElementById('georef-manual-fallback-btn')?.classList.add('hidden');
+}
+
+function enterManualGeorefMode(){
+  if(!georefModeState.active || georefModeState.autoGeorefCompleted) return;
+  georefModeState.manualGeorefUnlocked = true;
+  hideGeorefManualFallbackOffer();
+  setGeorefManualUIVisible(true);
+  setGeorefAutoStatus(
+    'Marca pares de pontos: clica num sítio na imagem e no mesmo sítio no mapa. São necessários pelo menos 4 pontos.',
+    false,
+    'idle'
+  );
+  updateGeorefTopbarState();
+  positionGeorefOverlays();
+}
+
+function canUseManualGeorefCapture(){
+  return georefModeState.manualGeorefUnlocked && !georefModeState.autoGeorefCompleted;
+}
+
+/* ============================================================
+   FASE 4: captura de GCPs (clicar imagem → clicar mapa, em
+   qualquer ordem)
+   ------------------------------------------------------------
+   Estado de máquina simples: um clique num dos lados sem par em
+   espera do outro lado fica "pendente" (marcador tracejado); um
+   clique no lado oposto completa o par e entra em gcps[]. Clicar
+   de novo no mesmo lado, sem ainda ter completado o par, só
+   atualiza a posição pendente (não cria pares acidentalmente).
+   ============================================================ */
+
+function updateGeorefTopbarState(){
+  const n = georefModeState.gcps.length;
+  document.getElementById('georef-topbar-count').textContent =
+    n <= 4 ? `Pontos: ${n}/4` : `Pontos: ${n} (mín. 4)`;
+  document.getElementById('georef-topbar-apply').disabled = n < 4;
+}
+
+/* redesenha do zero os marcadores numerados ①②③ — tanto no mapa
+   (Leaflet divIcon) como sobrepostos ao canvas da imagem (badges em
+   percentagem, para acompanharem qualquer redimensionamento) */
+function renderGeorefGCPMarkers(){
+  if(!georefGcpMapGroup) georefGcpMapGroup = L.layerGroup().addTo(map);
+  georefGcpMapGroup.clearLayers();
+  georefPendingMapMarker = null;
+
+  const wrap = document.getElementById('georef-image-canvas-wrap');
+  wrap.querySelectorAll('.georef-gcp-image-marker').forEach(el=> el.remove());
+
+  const entry = georefModeState.entry;
+  if(!entry) return;
+
+  georefModeState.gcps.forEach((gcp, i)=>{
+    const num = i + 1;
+
+    const icon = L.divIcon({
+      className: 'georef-gcp-map-marker',
+      html: `<span>${num}</span>`,
+      iconSize: [22, 22],
+      iconAnchor: [11, 11]
+    });
+    L.marker([gcp.map.lat, gcp.map.lng], {icon, interactive:false}).addTo(georefGcpMapGroup);
+
+    const badge = document.createElement('span');
+    badge.className = 'georef-gcp-image-marker';
+    badge.textContent = num;
+    badge.style.left = (gcp.img.x / entry.width * 100) + '%';
+    badge.style.top = (gcp.img.y / entry.height * 100) + '%';
+    wrap.appendChild(badge);
+  });
+
+  renderGeorefPendingMarkers();
+}
+
+/* mostra o marcador tracejado do lado que já tem clique, enquanto se
+   espera pelo clique do lado oposto para completar o par */
+function renderGeorefPendingMarkers(){
+  document.querySelectorAll('.georef-gcp-pending-marker').forEach(el=> el.remove());
+  if(georefPendingMapMarker && georefGcpMapGroup){
+    georefGcpMapGroup.removeLayer(georefPendingMapMarker);
+    georefPendingMapMarker = null;
+  }
+
+  const entry = georefModeState.entry;
+  if(georefModeState.pendingImagePoint && entry){
+    const wrap = document.getElementById('georef-image-canvas-wrap');
+    const badge = document.createElement('span');
+    badge.className = 'georef-gcp-pending-marker';
+    badge.style.left = (georefModeState.pendingImagePoint.x / entry.width * 100) + '%';
+    badge.style.top = (georefModeState.pendingImagePoint.y / entry.height * 100) + '%';
+    wrap.appendChild(badge);
+  }
+
+  if(georefModeState.pendingMapPoint && georefGcpMapGroup){
+    const icon = L.divIcon({
+      className: 'georef-gcp-pending-map-marker',
+      html: '',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+    georefPendingMapMarker = L.marker(
+      [georefModeState.pendingMapPoint.lat, georefModeState.pendingMapPoint.lng],
+      {icon, interactive:false}
+    ).addTo(georefGcpMapGroup);
+  }
+}
+
+/* painel de GCPs: lista com ✔, coordenadas, erro (vazio até à Fase 5
+   calcular a transformação) e botões eliminar/editar */
+function renderGeorefGCPList(externalGcps){
+  if(Array.isArray(externalGcps)){
+    if(!georefModeState.active) return;
+    georefModeState.gcps = externalGcps.map(gcp => {
+      georefGcpIdCounter++;
+      return {
+        id: 'gcp-' + georefGcpIdCounter,
+        img: { x: gcp.img.x, y: gcp.img.y },
+        map: { lng: gcp.map.lng, lat: gcp.map.lat },
+        error: null
+      };
+    });
+    georefModeState.pendingImagePoint = null;
+    georefModeState.pendingMapPoint = null;
+    renderGeorefGCPMarkers();
+    updateGeorefTopbarState();
+  }
+
+  const list = document.getElementById('georef-gcp-list');
+  if(!list) return;
+
+  if(georefModeState.gcps.length === 0){
+    list.innerHTML = '<li class="georef-gcp-empty">Ainda sem pontos de controlo.</li>';
+    return;
+  }
+
+  list.innerHTML = georefModeState.gcps.map((gcp, i)=>{
+    const num = i + 1;
+    const errorLabel = (gcp.error === null || gcp.error === undefined) ? '—' : gcp.error;
+    // modo automático concluído: pontos ficam só de leitura, sem editar/eliminar
+    // (ver georefModeState.autoGeorefCompleted / enterAutoGeorefCompletedState)
+    const actionsHtml = georefModeState.autoGeorefCompleted ? '' : `
+        <button type="button" class="georef-gcp-item-edit" data-gcp-edit="${gcp.id}" title="Voltar a marcar o lado do mapa">✎</button>
+        <button type="button" class="georef-gcp-item-remove" data-gcp-remove="${gcp.id}" title="Eliminar este ponto">✕</button>`;
+    return `
+      <li class="georef-gcp-item" data-gcp-id="${gcp.id}">
+        <span class="georef-gcp-item-num">✔ ${num}</span>
+        <span class="georef-gcp-item-coords">img (${Math.round(gcp.img.x)}, ${Math.round(gcp.img.y)}) → mapa (${gcp.map.lat.toFixed(5)}, ${gcp.map.lng.toFixed(5)})</span>
+        <span class="georef-gcp-item-error">${errorLabel}</span>${actionsHtml}
+      </li>`;
+  }).join('');
+
+  list.querySelectorAll('[data-gcp-remove]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); removeGeorefGCP(btn.dataset.gcpRemove); });
+  });
+  list.querySelectorAll('[data-gcp-edit]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); editGeorefGCP(btn.dataset.gcpEdit); });
+  });
+}
+
+/* Limpa etiquetas técnicas entre parênteses retos (ex.: "[Satélite]",
+   "[timing]") que vêm das mensagens de progresso da deteção, e garante
+   maiúscula inicial — o essencial (nºs, tempos, escalas) mantém-se, só o
+   "ruído" desaparece. A fonte (DGT/Satélite) passa a aparecer à parte,
+   numa legenda própria, em vez de prefixar cada mensagem. */
+function formatGeorefStatusMessage(message){
+  if(!message) return message;
+  const cleaned = message.replace(/\[[^\]]*\]\s*/g, '').trim();
+  if(!cleaned) return message;
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
+
+function setGeorefAutoStatus(message, isError, tone, sourceLabel, skipConsoleMirror){
+  const displayMessage = formatGeorefStatusMessage(message);
+  const statusEl = document.getElementById('georef-auto-status');
+  if(statusEl){
+    const textEl = document.getElementById('georef-auto-status-text');
+    if(textEl){ textEl.textContent = displayMessage; } else { statusEl.textContent = displayMessage; }
+    statusEl.classList.toggle('is-error', !!isError);
+    statusEl.dataset.state = tone || (isError ? 'error' : 'neutral');
+  }
+  if(autoGeorefProgressVisible){
+    updateAutoGeorefProgressUI(message, sourceLabel, isError);
+    if(!skipConsoleMirror && message){
+      appendAutoGeorefConsoleLine('[AutoGeoref] ' + message, isError ? 'error' : 'log');
+    }
+  }
+}
+
+let autoGeorefProgressHideTimer = null;
+let autoGeorefProgressVisible = false;
+const AUTO_GEOREF_CONSOLE_MAX_LINES = 250;
+
+function clearAutoGeorefConsole(){
+  const logEl = document.querySelector('#georef-auto-progress .georef-auto-console-log');
+  if(logEl) logEl.innerHTML = '';
+}
+
+function appendAutoGeorefConsoleLine(text, level){
+  if(!text) return;
+  ensureAutoGeorefProgressUI();
+  const logEl = document.querySelector('#georef-auto-progress .georef-auto-console-log');
+  if(!logEl) return;
+
+  const line = document.createElement('div');
+  line.className = 'georef-auto-console-line is-' + (level || 'log');
+
+  const ts = document.createElement('span');
+  ts.className = 'georef-auto-console-ts';
+  ts.textContent = new Date().toTimeString().slice(0, 8);
+
+  const msg = document.createElement('span');
+  msg.className = 'georef-auto-console-msg';
+  msg.textContent = text;
+
+  line.appendChild(ts);
+  line.appendChild(msg);
+  logEl.appendChild(line);
+
+  while(logEl.children.length > AUTO_GEOREF_CONSOLE_MAX_LINES){
+    logEl.removeChild(logEl.firstChild);
+  }
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+/* Espelha na mini consola as mensagens [AutoGeoref] da consola F12 enquanto
+   a deteção está activa — evita duplicar linhas que já vêm de setGeorefAutoStatus
+   (skipConsoleMirror) mas apanha logs directos (tiles, worker, warm-up, etc.). */
+(function setupAutoGeorefConsoleCapture(){
+  const CAPTURE_TAGS = ['[AutoGeoref', '[AutoGeoref worker]', '[WORKER]'];
+  const orig = {
+    log: console.log.bind(console),
+    warn: console.warn.bind(console),
+    error: console.error.bind(console)
+  };
+
+  function formatConsoleArgs(args){
+    return args.map((a)=>{
+      if(a == null) return String(a);
+      if(a instanceof Error) return a.stack || a.message;
+      if(typeof a === 'object'){
+        try{ return JSON.stringify(a); }catch(e){ return String(a); }
+      }
+      return String(a);
+    }).join(' ');
+  }
+
+  function shouldCapture(text){
+    return CAPTURE_TAGS.some((tag)=> text.indexOf(tag) !== -1);
+  }
+
+  function capture(level, args){
+    const text = formatConsoleArgs(args);
+    if(autoGeorefProgressVisible && shouldCapture(text)){
+      appendAutoGeorefConsoleLine(text, level);
+    }
+    orig[level].apply(console, args);
+  }
+
+  console.log = (...args)=> capture('log', args);
+  console.warn = (...args)=> capture('warn', args);
+  console.error = (...args)=> capture('error', args);
+})();
+
+function ensureAutoGeorefProgressUI(){
+  if(document.getElementById('georef-auto-progress')) return;
+
+  const root = document.createElement('div');
+  root.id = 'georef-auto-progress';
+  root.className = 'hidden';
+  root.innerHTML = `
+    <div class="georef-auto-console-header">
+      <div class="georef-auto-console-head">
+        <span class="georef-auto-console-title">Autogeorreferência</span>
+        <span class="georef-auto-console-pill">A processar</span>
+      </div>
+      <div class="georef-auto-console-source"></div>
+    </div>
+    <div class="georef-auto-console-log" role="log" aria-live="polite"></div>
+  `;
+  document.body.appendChild(root);
+}
+
+function setAutoGeorefProgressUI({ active = true, text = 'A preparar…', tone = 'working', pill = 'A processar', sourceLabel = '' } = {}){
+  ensureAutoGeorefProgressUI();
+  const root = document.getElementById('georef-auto-progress');
+  const pillEl = root?.querySelector('.georef-auto-console-pill');
+  const sourceEl = root?.querySelector('.georef-auto-console-source');
+  if(!root) return;
+
+  if(autoGeorefProgressHideTimer){
+    clearTimeout(autoGeorefProgressHideTimer);
+    autoGeorefProgressHideTimer = null;
+  }
+
+  root.classList.toggle('hidden', !active);
+  root.classList.toggle('is-success', tone === 'success');
+  root.classList.toggle('is-error', tone === 'error');
+  root.classList.toggle('is-working', tone === 'working');
+
+  if(pillEl) pillEl.textContent = pill;
+  if(sourceEl) sourceEl.textContent = sourceLabel ? `Fonte: ${sourceLabel}` : '';
+
+  autoGeorefProgressVisible = active;
+
+  if(active && tone !== 'working'){
+    autoGeorefProgressHideTimer = setTimeout(()=>{
+      root.classList.add('hidden');
+      autoGeorefProgressVisible = false;
+      autoGeorefProgressHideTimer = null;
+    }, 3200);
+  }
+}
+
+function showAutoGeorefProgressUI({ text = 'A preparar…', pill = 'A processar', tone = 'working', sourceLabel = '' } = {}){
+  setAutoGeorefProgressUI({ active: true, text, tone, pill, sourceLabel });
+  if(text) appendAutoGeorefConsoleLine('[AutoGeoref] ' + text, 'info');
+}
+
+function updateAutoGeorefProgressUI(text, sourceLabel){
+  if(!autoGeorefProgressVisible) return;
+  const root = document.getElementById('georef-auto-progress');
+  const sourceEl = root?.querySelector('.georef-auto-console-source');
+  if(sourceEl && sourceLabel) sourceEl.textContent = `Fonte: ${sourceLabel}`;
+}
+
+function hideAutoGeorefProgressUI({ text = 'Pronto', tone = 'success', pill = 'Concluído', sourceLabel = '' } = {}){
+  if(!autoGeorefProgressVisible) return;
+  if(text){
+    appendAutoGeorefConsoleLine('[AutoGeoref] ' + text, tone === 'error' ? 'error' : 'log');
+  }
+  if(tone === 'working'){
+    setAutoGeorefProgressUI({ active: false, text, tone, pill, sourceLabel });
+  } else {
+    setAutoGeorefProgressUI({ active: true, text, tone, pill, sourceLabel });
+  }
+}
+
+/* esconde imediatamente o popup flutuante "A processar/Concluído/Erro",
+   sem a transição normal de 1.6s nem depender do estado (tone) atual —
+   usada só ao fechar/cancelar o modo de georreferenciação por completo
+   (ver closeGeorefModeUI), para nunca o deixar "órfão" no ecrã. */
+function forceHideAutoGeorefProgressUI(){
+  if(autoGeorefProgressHideTimer){
+    clearTimeout(autoGeorefProgressHideTimer);
+    autoGeorefProgressHideTimer = null;
+  }
+  const root = document.getElementById('georef-auto-progress');
+  if(root) root.classList.add('hidden');
+  autoGeorefProgressVisible = false;
+}
+
+function tileYToLat(y, z){
+  const n = Math.pow(2, z);
+  const rad = Math.atan(Math.sinh(Math.PI * (1 - 2 * y / n)));
+  return rad * 180 / Math.PI;
+}
+
+function tileBoundsLatLng(z, x, y){
+  const n = Math.pow(2, z);
+  return {
+    west: x / n * 360 - 180,
+    east: (x + 1) / n * 360 - 180,
+    north: tileYToLat(y, z),
+    south: tileYToLat(y + 1, z)
+  };
+}
+
+async function loadImageElementFromBlobUrl(url){
+  try{
+    return await new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Não foi possível carregar a imagem de referência.'));
+      img.src = url;
+    });
+  }catch(err){
+    console.error('[Image] load failed:', err);
+    throw err;
+  }
+}
+
+async function proxyFetchResource(originalUrl){
+  try{
+    if(typeof TEAM_API_BASE === 'undefined' || !TEAM_API_BASE){
+      throw new Error('Proxy do worker não está configurado.');
+    }
+    const proxyUrl = `${TEAM_API_BASE}/api/download?url=${encodeURIComponent(originalUrl)}`;
+    const response = await fetch(proxyUrl);
+    if(!response.ok){
+      throw new Error(`Proxy falhou ao obter o recurso: HTTP ${response.status}`);
+    }
+    return response;
+  }catch(err){
+    console.error('[Proxy] fetch failed:', err);
+    throw err;
+  }
+}
+
+/* Proxy dedicado a tiles WMS da DGT (rota /api/dgt-tile no worker de equipa —
+   ver worker.js). Ao contrário de proxyFetchResource (que só serve GitHub
+   Releases, por segurança), esta rota está preparada especificamente para
+   pedidos GetMap ao serviço de ortofotos da DGT, e é o caminho fiável: não
+   depende de o servidor da DGT enviar CORS (não envia) nem de proxies
+   públicos de terceiros (allorigins.win/corsproxy.io/thingproxy.freeboard.io
+   mostraram-se todos indisponíveis na prática — ver histórico da consola). */
+async function proxyFetchDgtTile(originalUrl){
+  try{
+    if(typeof TEAM_API_BASE === 'undefined' || !TEAM_API_BASE){
+      throw new Error('Proxy do worker não está configurado.');
+    }
+    const proxyUrl = `${TEAM_API_BASE}/api/dgt-tile?url=${encodeURIComponent(originalUrl)}`;
+    const response = await fetch(proxyUrl);
+    if(!response.ok){
+      const detail = await response.text().catch(()=> null);
+      throw new Error(`Proxy DGT falhou: HTTP ${response.status}${detail ? ' — ' + detail.slice(0, 200) : ''}`);
+    }
+    return response;
+  }catch(err){
+    console.error('[DGT] tile fetch failed:', err);
+    throw err;
+  }
+}
+
+async function fetchDirectResource(url){
+  try{
+    const response = await fetch(url);
+    if(!response.ok){
+      throw new Error(`Fetch directo falhou: HTTP ${response.status}`);
+    }
+    return response;
+  }catch(err){
+    console.error('[Fetch] direct failed:', err);
+    throw err;
+  }
+}
+
+function parseWmsTileBoundsFromUrl(urlString){
+  try{
+    const url = new URL(urlString, window.location.origin);
+    const params = new URLSearchParams(url.search);
+    if(!params.has('bbox')) return null;
+    const parts = params.get('bbox').split(',').map(Number);
+    if(parts.length !== 4 || parts.some(p => !Number.isFinite(p))) return null;
+    return { west: parts[0], south: parts[1], east: parts[2], north: parts[3] };
+  }catch(err){
+    return null;
+  }
+}
+
+/* Converte coordenadas EPSG:3857 (Web Mercator metros) em WGS84 (lat/lng graus).
+   Usado para transformar o bbox do WMS da DGT (que usa EPSG:3857) em lat/lng
+   antes de passar ao worker de autogeoreferenciação. */
+const EPSG3857_MAX = 20037508.342789244;
+function epsg3857ToLatLng(x, y){
+  const lng = (x / EPSG3857_MAX) * 180;
+  const latRad = Math.atan(Math.exp((y / EPSG3857_MAX) * Math.PI));
+  const lat = (latRad * 180) / Math.PI;
+  return [lng, lat];
+}
+
+/* Tamanho do mosaico de referência: um único tile 256×256 dava muito poucos
+   keypoints FAST/BRIEF em cenas difíceis (fontes/sensores diferentes) — ver
+   notas de autogeoref. Em vez disso busca-se uma grelha
+   GEOREF_MOSAIC_GRID_TILES × GEOREF_MOSAIC_GRID_TILES de tiles em torno do
+   tile central (3×3 → 768×768px), com muito mais contexto/keypoints. */
+const GEOREF_MOSAIC_GRID_TILES = 3; // ímpar, para haver um tile central bem definido
+const GEOREF_MOSAIC_HALF = Math.floor(GEOREF_MOSAIC_GRID_TILES / 2);
+const GEOREF_MOSAIC_PX = GEOREF_MOSAIC_GRID_TILES * 256;
+
+/* bbox (EPSG:3857, metros) da grelha de tiles à volta de (xCenter,yCenter) —
+   usado para pedir ao WMS da DGT o mosaico inteiro num único GetMap (o WMS
+   aceita bbox/width/height arbitrários, ao contrário do serviço de tiles
+   XYZ do Satélite, que só serve um tile 256×256 de cada vez). */
+function tileGridBBox3857(z, xCenter, yCenter, half){
+  const [minX] = tile3857BBox(z, xCenter - half, yCenter);
+  const [, , maxX] = tile3857BBox(z, xCenter + half, yCenter);
+  const [, minY] = tile3857BBox(z, xCenter, yCenter + half);
+  const [, , , maxY] = tile3857BBox(z, xCenter, yCenter - half);
+  return [minX, minY, maxX, maxY];
+}
+
+/* bounds em lat/lng da mesma grelha — usado para o mosaico Satélite, feito
+   de tiles XYZ individuais "costurados" num canvas. */
+function tileGridBoundsLatLng(z, xCenter, yCenter, half){
+  const westTile = tileBoundsLatLng(z, xCenter - half, yCenter);
+  const eastTile = tileBoundsLatLng(z, xCenter + half, yCenter);
+  const northTile = tileBoundsLatLng(z, xCenter, yCenter - half);
+  const southTile = tileBoundsLatLng(z, xCenter, yCenter + half);
+  return { west: westTile.west, east: eastTile.east, north: northTile.north, south: southTile.south };
+}
+
+function buildWmsMosaicUrl(info, z, xCenter, yCenter, half){
+  const [minX, minY, maxX, maxY] = tileGridBBox3857(z, xCenter, yCenter, half);
+  const px = (half * 2 + 1) * 256;
+  const params = new URLSearchParams({
+    service: 'WMS', version: '1.3.0', request: 'GetMap',
+    layers: info.wmsLayer, styles: '', format: 'image/jpeg', transparent: 'false',
+    width: String(px), height: String(px), crs: 'EPSG:3857',
+    bbox: `${minX},${minY},${maxX},${maxY}`
+  });
+  return `${info.base}?${params.toString()}`;
+}
+
+function applyAutoGeorefGcps(gcps){
+  if(!georefModeState.active || !georefModeState.entry) return;
+  georefModeState.gcps = gcps.map(gcp => {
+    georefGcpIdCounter++;
+    return {
+      id: 'gcp-' + georefGcpIdCounter,
+      img: { x: gcp.img.x, y: gcp.img.y },
+      map: { lng: gcp.map.lng, lat: gcp.map.lat },
+      error: null
+    };
+  });
+  georefModeState.pendingImagePoint = null;
+  georefModeState.pendingMapPoint = null;
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+  updateGeorefTopbarState();
+}
+
+function isGeorefAutoZoomReady(){
+  if(typeof map === 'undefined' || !map) return false;
+  const zoom = map.getZoom();
+  return Number.isFinite(zoom) && zoom >= GEOREF_AUTO_MIN_ZOOM && zoom <= GEOREF_AUTO_MAX_ZOOM;
+}
+
+function enableGeorefAutoButtonIfZoomReady(){
+  const btn = document.getElementById('georef-auto-detect-btn');
+  if(!btn) return;
+  const ready = isGeorefAutoZoomReady();
+  btn.disabled = !ready;
+  btn.setAttribute('aria-disabled', ready ? 'false' : 'true');
+  if(ready){
+    btn.classList.remove('is-disabled');
+    btn.title = 'Clicar para autogeorreferenciar quando o zoom estiver entre 17 e 20.';
+  } else {
+    btn.classList.add('is-disabled');
+    btn.title = 'Aproxima o mapa até ao zoom 17–20 para ativar a autogeorreferenciar.';
+  }
+}
+
+function setGeorefAutoDetectButtonState(isBusy){
+  const btn = document.getElementById('georef-auto-detect-btn');
+  if(!btn) return;
+  const labelEl = btn.querySelector('.georef-auto-btn-label');
+  if(isBusy){
+    if(labelEl && !btn.dataset.origText){
+      btn.dataset.origText = labelEl.textContent;
+      labelEl.textContent = 'A processar…';
+    }
+    btn.classList.add('is-busy');
+    const statusEl = document.getElementById('georef-auto-status');
+    if(statusEl && statusEl.dataset.state !== 'error'){ statusEl.dataset.state = 'working'; }
+  } else {
+    if(labelEl && btn.dataset.origText){
+      labelEl.textContent = btn.dataset.origText;
+      delete btn.dataset.origText;
+    }
+    btn.classList.remove('is-busy');
+  }
+}
+
+function warnIfInvalidAutoGeorefZoom(){
+  if(isGeorefAutoZoomReady()) return false;
+  const zoom = typeof map !== 'undefined' && map ? map.getZoom() : null;
+  if(zoom === null || !Number.isFinite(zoom)){
+    setGeorefAutoStatus('Zoom inválido para autogeorreferenciar.', true);
+  } else if(zoom < GEOREF_AUTO_MIN_ZOOM){
+    setGeorefAutoStatus(`Zoom demasiado reduzido (${zoom}). Aproxima até 17-20 para autogeoreferenciar.`, true);
+  } else {
+    setGeorefAutoStatus(`Zoom demasiado elevado (${zoom}). Ajusta para entre 17-20 para autogeoreferenciar.`, true);
+  }
+  return true;
+}
+
+/* NOTA (bug corrigido): esta função costumava reaproveitar o <img> do tile DGT
+   já visível no mapa quando disponível, como atalho para evitar um pedido de
+   rede extra. Só que esse <img> é carregado pelo Leaflet diretamente do
+   cartografia.dgterritorio.gov.pt, sem `crossOrigin`, e esse servidor não
+   envia cabeçalhos CORS — por isso o pixel content fica "non-origin-clean".
+   Um ImageBitmap criado a partir dele até se cria sem erro, mas o browser
+   recusa-se a TRANSFERI-LO para o worker ("Failed to execute 'postMessage'
+   on 'Worker': Non-origin-clean ImageBitmap cannot be transferred"), o que
+   fazia a autogeoreferenciação falhar sempre que havia um tile visível (ou
+   seja, quase sempre). A partir de agora usa-se sempre o caminho por fetch +
+   blob + URL de objeto abaixo, que é sempre "limpo" independentemente de o
+   servidor de origem suportar CORS ou não. */
+async function fetchDgtReferenceTile(z, x, y){
+  // Pede a grelha inteira (GEOREF_MOSAIC_GRID_TILES × mesmo, ex. 3×3 →
+  // 768×768px) num único GetMap, em vez de um tile 256×256 isolado — ver
+  // GEOREF_MOSAIC_GRID_TILES acima.
+  const url = buildWmsMosaicUrl({ base: 'https://cartografia.dgterritorio.gov.pt/wms/ortos2021', wmsLayer: 'Ortos2021-RGB' }, z, x, y, GEOREF_MOSAIC_HALF);
+  let response;
+
+  try{
+    response = await proxyFetchDgtTile(url);
+  }catch(dgtProxyErr){
+    console.warn('Proxy DGT do worker falhou, a tentar fetch directo:', dgtProxyErr);
+    try{
+      response = await fetchDirectResource(url);
+    }catch(directErr){
+      // já não se tenta allorigins.win/corsproxy.io/thingproxy.freeboard.io:
+      // mostraram-se todos indisponíveis na prática (ver histórico da consola
+      // desta app) e só atrasavam a mensagem de erro final sem ajudar.
+      throw new Error(
+        `Proxy DGT: ${dgtProxyErr.message} | Fetch directo: ${directErr.message}`
+      );
+    }
+  }
+
+  const contentType = response.headers.get('Content-Type') || '';
+  if(contentType && !contentType.startsWith('image/')){
+    const text = await response.text().catch(()=>null);
+    throw new Error(`A resposta não é uma imagem. Content-Type=${contentType} ${text ? `Resposta: ${text.slice(0, 200)}` : ''}`);
+  }
+
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  try{
+    const img = await loadImageElementFromBlobUrl(objectUrl);
+    const bounds3857 = parseWmsTileBoundsFromUrl(url);
+    let bounds = null;
+    if(bounds3857){
+      const [wLng, wLat] = epsg3857ToLatLng(bounds3857.west, bounds3857.south);
+      const [eLng, eLat] = epsg3857ToLatLng(bounds3857.east, bounds3857.north);
+      bounds = { west: wLng, south: wLat, east: eLng, north: eLat };
+    }
+    return { img, objectUrl, bounds };
+  }catch(err){
+    URL.revokeObjectURL(objectUrl);
+    throw err;
+  }
+}
+
+async function fetchSatelliteReferenceTile(z, x, y){
+  // Ao contrário do WMS da DGT, o serviço de tiles XYZ do Esri só serve um
+  // tile 256×256 de cada vez — por isso aqui busca-se a grelha
+  // GEOREF_MOSAIC_GRID_TILES × mesmo em paralelo e "cose-se" tudo num único
+  // canvas (mesma ideia/tamanho do mosaico DGT, ver GEOREF_MOSAIC_GRID_TILES).
+  const half = GEOREF_MOSAIC_HALF;
+  const gridTiles = half * 2 + 1;
+  const px = gridTiles * 256;
+
+  const cells = [];
+  for(let dy = -half; dy <= half; dy++){
+    for(let dx = -half; dx <= half; dx++){
+      cells.push({ dx, dy, tx: x + dx, ty: y + dy });
+    }
+  }
+
+  async function fetchSingleSatelliteTile(tx, ty){
+    const url = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${ty}/${tx}`;
+    let response;
+    try{
+      response = await fetchDirectResource(url);
+    }catch(directErr){
+      response = await proxyFetchResource(url);
+    }
+    const contentType = response.headers.get('Content-Type') || '';
+    if(contentType && !contentType.startsWith('image/')){
+      throw new Error(`A resposta não é uma imagem (Content-Type=${contentType}).`);
+    }
+    const blob = await response.blob();
+    const objectUrl = URL.createObjectURL(blob);
+    try{
+      const img = await loadImageElementFromBlobUrl(objectUrl);
+      return { img, objectUrl };
+    }catch(err){
+      URL.revokeObjectURL(objectUrl);
+      throw err;
+    }
+  }
+
+  const results = await Promise.allSettled(cells.map(c => fetchSingleSatelliteTile(c.tx, c.ty)));
+
+  // O tile central (dx=0,dy=0) é o único indispensável — é a zona-alvo que
+  // se está mesmo a tentar georreferenciar. Os tiles à volta só enriquecem
+  // o contexto/keypoints do mosaico: se algum destes falhar, fica em branco
+  // em vez de abortar a deteção toda.
+  const centerIdx = cells.findIndex(c => c.dx === 0 && c.dy === 0);
+  if(results[centerIdx].status === 'rejected'){
+    throw results[centerIdx].reason || new Error('Falha ao carregar o tile Satélite central.');
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = px;
+  canvas.height = px;
+  const ctx = canvas.getContext('2d');
+
+  let loadedCount = 0;
+  results.forEach((res, i) => {
+    if(res.status !== 'fulfilled'){
+      console.warn('[AutoGeoref] Mosaico Satélite: tile', cells[i].tx, cells[i].ty, 'falhou, fica em branco:', res.reason);
+      return;
+    }
+    const { dx, dy } = cells[i];
+    ctx.drawImage(res.value.img, (dx + half) * 256, (dy + half) * 256, 256, 256);
+    URL.revokeObjectURL(res.value.objectUrl);
+    loadedCount++;
+  });
+
+  console.log(`[AutoGeoref] Mosaico Satélite: ${loadedCount}/${cells.length} tiles carregados (${px}×${px}px).`);
+
+  return { img: canvas, objectUrl: null, bounds: tileGridBoundsLatLng(z, x, y, half) };
+}
+
+/* Fontes de referência tentadas por ordem, para runAutoGeorefDetection.
+   DGT primeiro (mais preciso quando aplicável — ortofoto oficial PT), com
+   fallback automático para Satélite (Esri World Imagery) quando o DGT falha
+   a carregar OU quando carrega mas a deteção não produz um resultado
+   fiável (ex.: imagem de origem tipo Google Maps/satélite, que combina mal
+   com o ortofoto DGT). Os dois casos são tratados da mesma forma. */
+const AUTO_GEOREF_SOURCES = [
+  { key: 'dgt', label: 'DGT', fetchTile: fetchDgtReferenceTile },
+  { key: 'satelite', label: 'Satélite', fetchTile: fetchSatelliteReferenceTile }
+];
+
+/* Deslocamentos de zoom tentados para o mosaico de referência, por ordem
+   (0 primeiro = zoom atual do mapa, sem alteração de comportamento para o
+   caso comum). Cada -2 corresponde a ~4× mais área coberta por pixel — ver
+   runAutoGeorefDetection. Motivo: FAST/BRIEF só são estáveis dentro de
+   ±30-40% de diferença de escala entre imagem e referência (olham para uma
+   vizinhança de pixels de tamanho fixo); se a imagem a georreferenciar
+   cobrir uma área bem maior do que o mosaico ao zoom atual (ex.: print tirado
+   com o mapa mais afastado), NENHUMA quantidade de features resolve isso —
+   é preciso a própria referência ir buscar uma área maior (zoom mais baixo). */
+const GEOREF_AUTO_ZOOM_OFFSETS = [0, -2, -4];
+const GEOREF_TILE_MIN_Z = 12; // nunca descer abaixo disto — deixa de fazer sentido para uma zona local
+
+async function runAutoGeorefDetection(){
+  if(!georefModeState.active || !georefModeState.entry){
+    showAppAlert('Ativa o modo de georreferenciação antes de usar a autogeorreferenciar.');
+    return;
+  }
+  if(warnIfInvalidAutoGeorefZoom()){
+    return;
+  }
+
+  // Entra já em "Modo Automático": bloqueia a lógica manual de adicionar
+  // pontos (clique na imagem/mapa) assim que se clica em "Autogeoreferenciar",
+  // e não só depois de a deteção terminar — evita pontos manuais a serem
+  // criados em paralelo com a deteção. Só volta a false se todas as fontes
+  // falharem (ver bloco de falha final desta função).
+  georefModeState.autoGeorefCompleted = true;
+  georefModeState.manualGeorefUnlocked = false;
+  hideGeorefManualFallbackOffer();
+  setGeorefManualUIVisible(false);
+  georefModeState.gcps = [];
+  georefModeState.pendingImagePoint = null;
+  georefModeState.pendingMapPoint = null;
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+
+  const btn = document.getElementById('georef-auto-detect-btn');
+  if(btn){
+    btn.disabled = true;
+    setGeorefAutoDetectButtonState(true);
+  }
+
+  const imgEl = document.getElementById('georef-image-el');
+  if(!imgEl || !imgEl.naturalWidth){
+    setGeorefAutoStatus('A imagem ainda não está pronta para deteção.', true);
+    georefModeState.autoGeorefCompleted = false;
+    if(btn){
+      btn.disabled = false;
+      setGeorefAutoDetectButtonState(false);
+    }
+    return;
+  }
+
+  clearAutoGeorefConsole();
+  showAutoGeorefProgressUI({ text: 'A iniciar autogeorreferenciação…', pill: 'A processar', tone: 'working' });
+
+  const baseZ = Math.max(17, Math.min(map.getZoom(), 20));
+  const center = map.getCenter();
+  const refTileSize = { width: GEOREF_MOSAIC_PX, height: GEOREF_MOSAIC_PX }; // ex. 768×768 (3×3 tiles) — ver GEOREF_MOSAIC_GRID_TILES
+
+  let winningResult = null;
+  let winningSourceLabel = null;
+  let lastFailureMessage = null;
+  const triedZ = new Set(); // evita repetir o mesmo z quando o clamp a GEOREF_TILE_MIN_Z já foi atingido por um deslocamento anterior
+
+  zoomLoop:
+  for(let zi = 0; zi < GEOREF_AUTO_ZOOM_OFFSETS.length; zi++){
+    const zOffset = GEOREF_AUTO_ZOOM_OFFSETS[zi];
+    const z = Math.max(GEOREF_TILE_MIN_Z, baseZ + zOffset);
+    if(triedZ.has(z)) continue; // já tentado (ex.: baseZ já estava perto do mínimo)
+    triedZ.add(z);
+    const tile = lonLatToTile(center.lng, center.lat, z);
+    const zoomNote = zOffset === 0 ? '' : ` (referência mais afastada — zoom ${z}, ~${Math.round(Math.pow(2, -Math.min(0, zOffset)))}× mais área/pixel)`;
+
+    for(let i = 0; i < AUTO_GEOREF_SOURCES.length; i++){
+      const source = AUTO_GEOREF_SOURCES[i];
+      const isLastAttempt = (zi === GEOREF_AUTO_ZOOM_OFFSETS.length - 1) && (i === AUTO_GEOREF_SOURCES.length - 1);
+      const nextLabel = !isLastAttempt
+        ? (i + 1 < AUTO_GEOREF_SOURCES.length ? AUTO_GEOREF_SOURCES[i + 1].label : 'zoom mais afastado')
+        : null;
+      let tileRef;
+
+      showAutoGeorefProgressUI({ text: `A preparar o tile de referência ${source.label}${zoomNote}…`, pill: 'A processar', tone: 'working', sourceLabel: source.label });
+      try{
+        tileRef = await source.fetchTile(z, tile.x, tile.y);
+      }catch(err){
+        console.error(err);
+        lastFailureMessage = `Falha ao carregar o tile ${source.label}${zoomNote}: ${err.message}`;
+        setGeorefAutoStatus(lastFailureMessage + (nextLabel ? ` — a tentar com ${nextLabel}…` : ''), true);
+        continue;
+      }
+
+      setGeorefAutoStatus(`A comparar a imagem com o mapa (${source.label}${zoomNote})… isto pode demorar alguns segundos.`, false, 'working', source.label);
+      try{
+        const result = await AutoGeoref.autoGeoref(imgEl, tileRef.img, tileRef.bounds, refTileSize, {
+          detect: { scales: [1, 0.75, 0.5, 1.25] },
+          ransac: { iterations: 500, inlierThresholdPx: 8 }
+        }, (text)=> setGeorefAutoStatus(text, false, 'working', source.label, true));
+
+        if(result.success && Array.isArray(result.gcps) && result.gcps.length >= 4){
+          winningResult = result;
+          winningSourceLabel = zOffset === 0 ? source.label : `${source.label}${zoomNote}`;
+          break zoomLoop;
+        }
+
+        lastFailureMessage = !result.success
+          ? `Deteção com ${source.label}${zoomNote} falhou: ${result.reason || 'resultado inválido'}`
+          : `Deteção com ${source.label}${zoomNote} produziu menos de 4 pontos de controlo.`;
+        setGeorefAutoStatus(lastFailureMessage + (nextLabel ? ` — a tentar com ${nextLabel}…` : ''), true);
+      }catch(err){
+        console.error(err);
+        lastFailureMessage = `Erro durante a deteção com ${source.label}${zoomNote}: ${err.message || err}`;
+        setGeorefAutoStatus(lastFailureMessage + (nextLabel ? ` — a tentar com ${nextLabel}…` : ''), true);
+      }finally{
+        if(tileRef && tileRef.objectUrl) URL.revokeObjectURL(tileRef.objectUrl);
+      }
+    }
+  }
+
+  if(!winningResult){
+    // Falha em todas as fontes: nada foi mostrado/escondido ainda (isso só
+    // acontece no sucesso), por isso basta devolver o modo à disponibilidade
+    // manual normal.
+    georefModeState.autoGeorefCompleted = false;
+    setGeorefAutoStatus(lastFailureMessage || 'Deteção automática falhou em todas as fontes de referência (DGT e Satélite) e zooms tentados.', true);
+    hideAutoGeorefProgressUI({ text: 'Falha na deteção', tone: 'error', pill: 'Erro' });
+    showGeorefManualFallbackOffer();
+    if(btn){
+      btn.disabled = false;
+      setGeorefAutoDetectButtonState(false);
+    }
+    return;
+  }
+
+  if(!georefModeState.active){
+    // o utilizador cancelou o modo (ou fechou-o de outra forma) enquanto a
+    // deteção decorria em segundo plano — não há painel/topbar para mostrar
+    // resultados, por isso só se limpa a UI de progresso, sem mexer em mais nada
+  forceHideAutoGeorefProgressUI();
+  hideGeorefStatsCard();
+    return;
+  }
+
+  applyAutoGeorefGcps(winningResult.gcps);
+  enterAutoGeorefCompletedState(winningResult.gcps.length, winningSourceLabel);
+  hideAutoGeorefProgressUI({ text: 'Deteção concluída', tone: 'success', pill: 'Concluído', sourceLabel: winningSourceLabel });
+  renderGeorefStatsCard(computeGeorefPrecisionStats(winningResult.gcps, winningResult.quality));
+  if(btn){
+    btn.disabled = false;
+    setGeorefAutoDetectButtonState(false);
+  }
+}
+
+function addGeorefGCP(imgPt, mapPt){
+  if(!canUseManualGeorefCapture()) return;
+  georefGcpIdCounter++;
+  const id = 'gcp-' + georefGcpIdCounter;
+  georefModeState.gcps.push({
+    id,
+    img: {x: imgPt.x, y: imgPt.y},
+    map: {lng: mapPt.lng, lat: mapPt.lat},
+    error: null
+  });
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+  updateGeorefTopbarState();
+  if(georefModeState.gcps.length >= 3) renderGeorefStatsCard(computeGeorefPrecisionStats(georefModeState.gcps));
+}
+
+function removeGeorefGCP(id){
+  if(!canUseManualGeorefCapture()) return;
+  const idx = georefModeState.gcps.findIndex(g=> g.id === id);
+  if(idx === -1) return;
+  georefModeState.gcps.splice(idx, 1);
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+  updateGeorefTopbarState();
+  if(georefModeState.gcps.length >= 3) renderGeorefStatsCard(computeGeorefPrecisionStats(georefModeState.gcps));
+  else hideGeorefStatsCard();
+}
+
+/* "editar" reabre o ponto para correção: retira-o de gcps, mantém o
+   lado da imagem como pendente e deixa o lado do mapa livre para ser
+   marcado de novo (se quiser mudar também o lado da imagem, basta
+   clicar de novo na imagem antes de clicar no mapa) */
+function editGeorefGCP(id){
+  if(!canUseManualGeorefCapture()) return;
+  const idx = georefModeState.gcps.findIndex(g=> g.id === id);
+  if(idx === -1) return;
+  const [gcp] = georefModeState.gcps.splice(idx, 1);
+  georefModeState.pendingImagePoint = {x: gcp.img.x, y: gcp.img.y};
+  georefModeState.pendingMapPoint = null;
+  renderGeorefGCPMarkers();
+  renderGeorefGCPList();
+  updateGeorefTopbarState();
+}
+
+function registerGeorefImagePoint(imgPt){
+  if(!canUseManualGeorefCapture()) return;
+  if(georefModeState.pendingMapPoint){
+    const mapPt = georefModeState.pendingMapPoint;
+    georefModeState.pendingMapPoint = null;
+    addGeorefGCP(imgPt, mapPt);
+  } else {
+    georefModeState.pendingImagePoint = imgPt;
+    renderGeorefPendingMarkers();
+  }
+}
+
+function registerGeorefMapPoint(mapPt){
+  if(!canUseManualGeorefCapture()) return;
+  if(georefModeState.pendingImagePoint){
+    const imgPt = georefModeState.pendingImagePoint;
+    georefModeState.pendingImagePoint = null;
+    addGeorefGCP(imgPt, mapPt);
+  } else {
+    georefModeState.pendingMapPoint = mapPt;
+    renderGeorefPendingMarkers();
+  }
+}
+
+/* clique na imagem: converte a posição do clique em pixels reais da
+   imagem original, a partir da fração dentro do elemento renderizado
+   (a imagem nunca tem letterboxing, por isso fração de ecrã = fração
+   da imagem original) */
+document.getElementById('georef-image-canvas-wrap')?.addEventListener('click', (e)=>{
+  if(!georefModeState.active || !georefModeState.entry) return;
+  if(!canUseManualGeorefCapture()) return;
+  const imgEl = document.getElementById('georef-image-el');
+  const rect = imgEl.getBoundingClientRect();
+  if(rect.width === 0 || rect.height === 0) return;
+  const fx = (e.clientX - rect.left) / rect.width;
+  const fy = (e.clientY - rect.top) / rect.height;
+  if(fx < 0 || fx > 1 || fy < 0 || fy > 1) return;
+  const entry = georefModeState.entry;
+  registerGeorefImagePoint({x: fx * entry.width, y: fy * entry.height});
+});
+
+/* clique no mapa: registado uma única vez, guardado por trás do flag
+   georefModeState.active (mesmo padrão usado no desenho offline/régua) */
+function setupGeorefMapEvents(){
+  map.on('click', (e)=>{
+    if(!georefModeState.active) return;
+    if(!canUseManualGeorefCapture()) return;
+    registerGeorefMapPoint({lng: e.latlng.lng, lat: e.latlng.lat});
+  });
+}
+
+async function processImportedFiles(files){
+  try{
+    if(!files.length) return;
+
+    const {images, worldFiles, rest} = splitImportFileGroups(files);
+
+    if(images.length > 0){
+      try{
+        await importRasterFiles(images, worldFiles);
+      }catch(err){
+        console.error('Erro ao importar imagem(ns):', err);
+        showAppAlert('Não foi possível importar uma ou mais imagens. Verifica se os ficheiros não estão corrompidos.', {error: true});
+      }
+    }
+
+    // se, além das imagens, também vierem ficheiros vetoriais (GeoJSON/Shapefile)
+    // na mesma seleção, estes continuam pelo caminho habitual abaixo
+    if(rest.length === 0) return;
+    files = rest;
+
+    try{
+      const hasLooseShp = files.some(f => /\.shp$/i.test(f.name));
+
+      if(hasLooseShp){
+        const collections = await parseLooseShapefileParts(files);
+        let totalImported = 0, totalSkipped = 0, totalMismatch = 0;
+        for(const gj of collections){
+          const res = await importFeaturesInChunks(gj, gj.layerName || 'Camada importada');
+          totalImported += res.imported; totalSkipped += res.skipped; totalMismatch += res.typeMismatch;
+        }
+        const parts = [];
+        if(totalImported > 0) parts.push(`Importadas ${totalImported} geometria(s) com sucesso.`);
+        if(totalSkipped > 0) parts.push(`${totalSkipped} geometria(s) ignorada(s).`);
+        if(totalMismatch > 0) parts.push(`${totalMismatch} geometria(s) não corresponderam à camada de destino.`);
+        showAppAlert(parts.length ? parts.join(' ') : 'Nenhuma geometria válida encontrada nos ficheiros .shp selecionados.');
+        markProjectDirty();
+        return;
+      }
+
+      const file = files[0];
+
+      // ficheiros grandes (ex.: .zip de shapefile com dezenas/centenas de MB): o parsing
+      // e a construção de milhares de geometrias no browser consomem muita memória, por
+      // isso avisa-se e dá-se a opção de cancelar antes de tentar, em vez de deixar o
+      // separador simplesmente crashar sem explicação.
+      const sizeMB = file.size / (1024*1024);
+      if(sizeMB > 80){
+        const proceed = confirm(
+          `O ficheiro "${file.name}" tem cerca de ${sizeMB.toFixed(0)} MB.\n` +
+          `Ficheiros deste tamanho podem demorar bastante e, em computadores com pouca ` +
+          `memória, podem fazer o separador do browser crashar.\n\nQueres continuar mesmo assim?`
+        );
+        if(!proceed) return;
+      }
+
+      const geojson = await parseImportedFile(file);
+      if(!geojson) return;
+      const layerName = geojson.layerName || getImportedLayerName(file.name);
+      const res = await importFeaturesInChunks(geojson, layerName);
+      const parts = [];
+      if(res.imported > 0) parts.push(`Importadas ${res.imported} geometria(s) com sucesso.`);
+      if(res.skipped > 0) parts.push(`${res.skipped} geometria(s) inválida(s) ou ilegível(is) foram ignoradas.`);
+      if(res.typeMismatch > 0) parts.push(`${res.typeMismatch} geometria(s) foram ignoradas por não corresponderem ao tipo configurado da camada de destino.`);
+      showAppAlert(parts.length ? parts.join(' ') : 'Nenhuma geometria válida encontrada no ficheiro.');
+      markProjectDirty();
+    }catch(err){
+      console.error('Erro ao importar ficheiro:', err);
+      showAppAlert('Não foi possível importar o ficheiro. Verifica se é um GeoJSON válido, um .zip de Shapefile (.shp + .dbf + .shx, opcionalmente .prj), ou ficheiros .shp/.dbf/.shx soltos.', {error: true});
+    }
+  }catch(err){
+    console.error('[Import] file processing error:', err);
+    showAppAlert('Erro ao processar ficheiros: ' + err.message, {error:true});
+  }
+}
+
+document.getElementById('import-file-input').addEventListener('change', async (e)=>{
+  try{
+    const files = Array.from(e.target.files || []);
+    e.target.value = '';
+    await processImportedFiles(files);
+  }catch(err){
+    console.error('[import-file-input]', err);
+    showAppAlert('Erro ao importar ficheiros.', {error: true});
+  }
+});
+
+/* --- Expoe no window para05-app-main.js e outros modulos --- */
+window.rasterLayers = rasterLayers;
+window.splitImportFileGroups = splitImportFileGroups;
+window.fileToDataUrl = fileToDataUrl;
+window.importRasterFiles = importRasterFiles;
+window.serializeRasterLayersForProject = serializeRasterLayersForProject;
+window.clearRasterLayerState = clearRasterLayerState;
+window.restoreRasterLayersFromProject = restoreRasterLayersFromProject;
+window.renderRasterLayersPanel = renderRasterLayersPanel;
+window.placeRasterOverlay = placeRasterOverlay;
+window.focusRasterLayer = focusRasterLayer;
+window.removeRasterLayer = removeRasterLayer;
+window.worldFileExtensionFor = worldFileExtensionFor;
+window.buildWorldFileText = buildWorldFileText;
+window.downloadBlob = downloadBlob;
+window.exportRasterWorldFile = exportRasterWorldFile;
+window.loadRasterImageElement = loadRasterImageElement;
+window.getRasterPixelData = getRasterPixelData;
+window.geotiffHasGeoTags = geotiffHasGeoTags;
+window.fileBaseName = fileBaseName;
+window.parseWorldFileText = parseWorldFileText;
+window.genRasterId = genRasterId;
+window.updateGeorefHeaderButton = updateGeorefHeaderButton;
+window.cancelGeorefMode = cancelGeorefMode;
+window.beginGeoreferencingMode = beginGeoreferencingMode;
+window.pendingRasterEntries = pendingRasterEntries;
+window.georefModeState = georefModeState;
+window.setupGeorefMapEvents = setupGeorefMapEvents;
+window.enableGeorefAutoButtonIfZoomReady = enableGeorefAutoButtonIfZoomReady;
+
+})();
