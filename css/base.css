@@ -1403,7 +1403,7 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 .tool-drawer.open .tool-drawer-body{display:flex;}
 .tool-drawer-empty-slot{opacity:.65;}
 
-@media (max-width:860px){
+@media (max-width:860px) and (orientation:portrait){
   .analysis-body{flex-direction:column;}
   .analysis-sidebar{width:100%; max-height:46vh; border-right:none; border-bottom:1px solid var(--line);}
 }
@@ -1653,7 +1653,7 @@ html[data-theme="dark"] .leaflet-pm-toolbar .button-container:hover .leaflet-pm-
   50%{ opacity:1; transform:scale(1.15); }
 }
 
-@media (max-width:860px){
+@media (max-width:860px) and (orientation:portrait){
   main{flex-direction:column;}
   #sidebar{width:100%; min-width:0; max-height:42vh; order:1; border-right:none; border-top:1px solid var(--line);}
   .choice-grid{grid-template-columns:1fr;}
