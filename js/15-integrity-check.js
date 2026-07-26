@@ -27,7 +27,6 @@
       'Georef', 'AutoGeoref',
       'coordMode', 'updateCoordBar',
       'settings', 'applyTheme', 'DEFAULT_SETTINGS',
-      'adminGateRequireAuth',
       'pbCreateLayerFromFeatureCollection', 'pbLoadMunicipiosData',
       '__runtimeErrors', '__stateConsistencyCheck'
     ],
@@ -119,7 +118,7 @@
   overlay.innerHTML =
     '<div class="ivo-wrap">' +
       '<div class="ivo-header">' +
-        '<div class="ivo-h-left"><span class="ivo-logo">◈ ENGENH</span><span class="ivo-ver">verificacao de integridade</span></div>' +
+        '<div class="ivo-h-left"><span class="ivo-logo">◈ Por favor aguarde</span><span class="ivo-ver">verificacao de integridade</span></div>' +
         '<div class="ivo-h-right"><span class="ivo-dot"></span><span class="ivo-status" id="ivo-status">A iniciar...</span></div>' +
       '</div>' +
       '<div class="ivo-body" id="ivo-body"></div>' +

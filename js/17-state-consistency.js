@@ -49,7 +49,7 @@
     /* ---- 2: layerOrder vs layers ---- */
     if(Array.isArray(layerOrder) && Array.isArray(layers)){
       var allKnownIds = layers.map(function(l){ return l.id; });
-      if(isNum(activeLayerId) && activeLayerId !== 0) allKnownIds.push(activeLayerId);
+      if(isNum(activeLayerId)) allKnownIds.push(activeLayerId);
 
       var extraInOrder = layerOrder.filter(function(id){ return allKnownIds.indexOf(id) === -1; });
       if(extraInOrder.length){
@@ -64,7 +64,7 @@
         ? Array.from(layerVisible.entries()).map(function(e){ return e[0]; })
         : Object.keys(layerVisible);
       var allKnownIds2 = layers.map(function(l){ return l.id; });
-      if(isNum(activeLayerId) && activeLayerId !== 0) allKnownIds2.push(activeLayerId);
+      if(isNum(activeLayerId)) allKnownIds2.push(activeLayerId);
 
       var extraVis = visKeys.filter(function(k){ return allKnownIds2.indexOf(Number(k)) === -1 && allKnownIds2.indexOf(k) === -1; });
       if(extraVis.length){
@@ -148,7 +148,7 @@
     /* ---- 7: featuresData orphan entries (layerId nao existe) ---- */
     if(isObj(featuresData) && Array.isArray(layers)){
       var knownIds = layers.map(function(l){ return l.id; });
-      if(isNum(activeLayerId) && activeLayerId !== 0) knownIds.push(activeLayerId);
+      if(isNum(activeLayerId)) knownIds.push(activeLayerId);
       var orphanEntries = [];
       if(isFn(featuresData.forEach)){
         featuresData.forEach(function(entry, id){

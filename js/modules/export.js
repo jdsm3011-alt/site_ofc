@@ -178,11 +178,7 @@ function renderTeamCard(mode = null){
     </div>
   `;
   container.querySelector('#team-create-btn')?.addEventListener('click', ()=>{
-    if (typeof window.adminGateRequireAuth === 'function') {
-      window.adminGateRequireAuth(createTeamProject);
-    } else {
-      createTeamProject();
-    }
+    createTeamProject();
   });
   container.querySelector('#team-resume-btn')?.addEventListener('click', resumeTeamProject);
   container.querySelector('#team-delete-btn')?.addEventListener('click', ()=>{
