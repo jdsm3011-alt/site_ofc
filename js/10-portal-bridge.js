@@ -31,6 +31,9 @@
    Para atualizar o endpoint de qualquer dataset, mexe apenas em
    PB_DATASETS e em pbImportZip() / showOsmView() abaixo.
    ============================================================ */
+if(typeof normalizeAccents !== 'function'){
+  var normalizeAccents = function(s){ return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); };
+}
 
 /* ---------- criação de camada nova a partir de um FeatureCollection ----------
    Replica exatamente o padrão já usado em "Selecionar por atributos" (criação
