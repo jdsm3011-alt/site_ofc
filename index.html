@@ -3855,8 +3855,6 @@
           </div>
           <div class="map-controls" aria-label="Controlo do mapa" data-i18n-attr-aria-label="map.controlo">
             <button id="map-fit-all" title="Ajustar ao território" data-i18n-attr-title="map.ajustar">⌖</button>
-            <button id="map-zoom-in" title="Aumentar zoom" data-i18n-attr-title="map.zoomIn">+</button>
-            <button id="map-zoom-out" title="Diminuir zoom" data-i18n-attr-title="map.zoomOut">−</button>
           </div>
           <div class="osm-map-badge" id="osm-map-badge">
             <span id="osm-badge-label">—</span>
@@ -4963,9 +4961,6 @@
     }
 
     document.getElementById('map-fit-all').addEventListener('click', ajustarMapaAoTerritorio);
-    document.getElementById('map-zoom-in').addEventListener('click', () => map.zoomIn());
-    document.getElementById('map-zoom-out').addEventListener('click', () => map.zoomOut());
-
     // ── OSM META ─────────────────────────────────────────────────────────────────
     const OSM_META = {
       'gis_osm_buildings_a_free_1': { icon: '🏠', nome: 'Edifícios', meta: 'Polígonos · Shapefile' },
