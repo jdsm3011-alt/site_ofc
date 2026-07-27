@@ -943,10 +943,14 @@
       border-radius: var(--radius-lg);
       padding: 18px;
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .5);
-      transform: translateY(0);
-      animation: panelEntrance 1.15s cubic-bezier(.22, .61, .36, 1) both, floatPanel 9s ease-in-out 1.15s infinite;
+      opacity: 0;
+      transform: translateX(120%) scale(.97);
       overflow: hidden;
       will-change: transform;
+    }
+
+    .hero-panel.panel-enter {
+      animation: panelEntrance 1.15s cubic-bezier(.22, .61, .36, 1) both, floatPanel 9s ease-in-out 1.15s infinite;
     }
 
     .hero-panel-top {
@@ -1195,17 +1199,17 @@
     @keyframes panelEntrance {
       0% {
         opacity: 0;
-        transform: translateY(26px) scale(.96) rotateX(6deg);
+        transform: translateX(120%) scale(.97);
       }
 
       65% {
         opacity: 1;
-        transform: translateY(-4px) scale(1.01) rotateX(0deg);
+        transform: translateX(-2%) scale(1.01);
       }
 
       100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateX(0) scale(1);
       }
     }
 
@@ -1735,53 +1739,6 @@
 
       100% {
         width: 100%
-      }
-    }
-
-    .loading-flyover {
-      position: absolute;
-      left: 32px;
-      bottom: 32px;
-      width: 96px;
-      height: 96px;
-      opacity: 0;
-      transform: translate(0, 0) scale(.78);
-      pointer-events: none;
-      z-index: 10000;
-      animation: flyAcross 2.3s ease-in-out 0.9s forwards;
-    }
-
-    .loading-flyover img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 10px 18px rgba(26, 46, 30, .18));
-    }
-
-    @keyframes flyAcross {
-      0% {
-        opacity: 0;
-        transform: translate(0, 0) scale(.78) rotate(-8deg);
-      }
-
-      12% {
-        opacity: .25;
-        transform: translate(8px, -6px) scale(.9) rotate(-4deg);
-      }
-
-      40% {
-        opacity: .78;
-        transform: translate(42vw, -18vh) scale(1.02) rotate(6deg);
-      }
-
-      70% {
-        opacity: .95;
-        transform: translate(78vw, -8vh) scale(1.08) rotate(12deg);
-      }
-
-      100% {
-        opacity: 0;
-        transform: translate(110vw, -22vh) scale(.7) rotate(18deg);
       }
     }
 
@@ -3500,7 +3457,6 @@
       <div class="loading-bar">
         <div class="loading-bar-fill"></div>
       </div>
-      <div class="loading-flyover"><img src="aguia.png" alt="aguia"></div>
     </div>
 
     <!-- Toast -->
@@ -4912,6 +4868,10 @@
       setTimeout(() => {
         ov.classList.add('hide');
         setTimeout(() => ov.style.display = 'none', 700);
+        const heroPanel = document.querySelector('.hero-panel');
+        if (heroPanel && !heroPanel.classList.contains('panel-enter')) {
+          heroPanel.classList.add('panel-enter');
+        }
       }, 2000);
     }
 
