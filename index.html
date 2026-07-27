@@ -512,38 +512,15 @@
       }
     }
 
-    /* ── TRANSIÇÃO ANIMADA ENTRE TEMA CLARO/ESCURO ─────────── */
-    html.theme-transition,
-    html.theme-transition body,
-    html.theme-transition header,
-    html.theme-transition .hero,
-    html.theme-transition .hero-panel,
-    html.theme-transition .landing-details,
-    html.theme-transition .stats-strip,
-    html.theme-transition .workflow-section,
-    html.theme-transition .methodology-section,
-    html.theme-transition .workflow-step,
-    html.theme-transition .methodology-card,
-    html.theme-transition .detail-card,
-    html.theme-transition .panel,
-    html.theme-transition .selection-card,
-    html.theme-transition .search-box input,
-    html.theme-transition .search-results,
-    html.theme-transition .download-item-link,
-    html.theme-transition .osm-item,
-    html.theme-transition .osm-badge,
-    html.theme-transition .btn-preview,
-    html.theme-transition .theme-toggle,
-    html.theme-transition footer,
-    html.theme-transition .legal-card,
-    html.theme-transition #toast,
-    html.theme-transition #loading-overlay {
+    /* ── TRANSIÇÃO ANIMADA ENTRE TEMA CLARO/ESCURO (global) ─── */
+    html.theme-transition *,
+    html.theme-transition *::before,
+    html.theme-transition *::after {
       transition:
-        background-color 1.1s cubic-bezier(.4, 0, .2, 1),
-        background-image 1.1s cubic-bezier(.4, 0, .2, 1),
-        color .9s cubic-bezier(.4, 0, .2, 1),
-        border-color .9s cubic-bezier(.4, 0, .2, 1),
-        box-shadow .9s cubic-bezier(.4, 0, .2, 1) !important;
+        background-color .32s cubic-bezier(.4, 0, .2, 1),
+        color .32s cubic-bezier(.4, 0, .2, 1),
+        border-color .32s cubic-bezier(.4, 0, .2, 1),
+        box-shadow .32s cubic-bezier(.4, 0, .2, 1) !important;
     }
 
     body::before {
@@ -5582,7 +5559,7 @@
       clearTimeout(themeToggleBtn._transitionTimeout);
       themeToggleBtn._transitionTimeout = setTimeout(() => {
         document.documentElement.classList.remove('theme-transition');
-      }, 1200);
+      }, 400);
     });
 
     // ── MENU MOBILE (hambúrguer) ──────────────────────────────────────────────────
