@@ -374,30 +374,29 @@
       display: flex;
     }
 
-    @keyframes themeIconSpin {
-      0% {
-        transform: rotate(0deg) scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: rotate(160deg) scale(.4);
-        opacity: 0;
-      }
-
-      51% {
-        transform: rotate(160deg) scale(.4);
-        opacity: 0;
-      }
-
-      100% {
-        transform: rotate(360deg) scale(1);
-        opacity: 1;
-      }
+    @keyframes themeIconIn {
+      0% { transform: scale(0) rotate(-80deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
 
-    html.theme-transition .theme-toggle span {
-      animation: themeIconSpin .9s cubic-bezier(.4, 0, .2, 1);
+    @keyframes themeTogglePulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(0.85); }
+      100% { transform: scale(1); }
+    }
+
+    /* Light → Dark: moon entra */
+    html.theme-transition[data-theme="dark"] .theme-toggle .icon-moon {
+      animation: themeIconIn .4s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    /* Dark → Light: sol entra */
+    html.theme-transition:not([data-theme="dark"]) .theme-toggle .icon-sun {
+      animation: themeIconIn .4s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    html.theme-transition .theme-toggle {
+      animation: themeTogglePulse .4s ease;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -939,7 +938,7 @@
       padding: 18px;
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .5);
       opacity: 0;
-      transform: translateX(120%) scale(.97);
+      transform: translateY(80px) scale(.97);
       overflow: hidden;
       will-change: transform;
     }
@@ -1194,17 +1193,17 @@
     @keyframes panelEntrance {
       0% {
         opacity: 0;
-        transform: translateX(120%) scale(.97);
+        transform: translateY(80px) scale(.97);
       }
 
       65% {
         opacity: 1;
-        transform: translateX(-2%) scale(1.01);
+        transform: translateY(-2%) scale(1.01);
       }
 
       100% {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: translateY(0) scale(1);
       }
     }
 
@@ -3186,6 +3185,11 @@
       display: none;
     }
 
+    .btn-preview .icon-eye {
+      display: block;
+      pointer-events: none;
+    }
+
     .preview-map-badge {
       position: absolute;
       top: 14px;
@@ -3921,7 +3925,7 @@
                   </a>
                   <button type="button" class="btn-preview" id="preview-caop" title="Pré-visualizar no mapa"
                     data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('caop', this);">&#128065;</button>
+                    onclick="togglePreview('caop', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
 
                 <!-- COS -->
@@ -3938,7 +3942,7 @@
                   </a>
                   <button type="button" class="btn-preview" id="preview-cos" title="Pré-visualizar no mapa"
                     data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('cos', this);">&#128065;</button>
+                    onclick="togglePreview('cos', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
 
                 <!-- BGRI -->
@@ -3955,7 +3959,7 @@
                   </a>
                   <button type="button" class="btn-preview" id="preview-bgri" title="Pré-visualizar no mapa"
                     data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('bgri', this);">&#128065;</button>
+                    onclick="togglePreview('bgri', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
 
                 <!-- MDT -->
@@ -3972,7 +3976,7 @@
                   </a>
                   <button type="button" class="btn-preview" id="preview-mdt" title="Pré-visualizar no mapa"
                     data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('mdt', this);">&#128065;</button>
+                    onclick="togglePreview('mdt', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
 
                 <!-- OSM -->
@@ -5306,7 +5310,7 @@
         </div>
       </div>
       <div class="osm-actions">
-        <button type="button" class="btn-preview" data-osm-preview="${layerName}" title="Pré-visualizar no mapa" onclick="togglePreview('osm:${layerName}', this)">&#128065;</button>
+        <button type="button" class="btn-preview" data-osm-preview="${layerName}" title="Pré-visualizar no mapa" onclick="togglePreview('osm:${layerName}', this)"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
         <a class="btn-dl" href="${zipUrl}" data-download-path="${zipUrl}" download title="Descarregar ZIP">↓</a>
         <span class="download-status">Indisponível</span>
       </div>
