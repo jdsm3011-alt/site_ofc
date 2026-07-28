@@ -153,6 +153,46 @@
         conic-gradient(from 180deg, rgba(127, 184, 148, .06), rgba(224, 147, 94, .08), rgba(127, 184, 148, .05), rgba(224, 147, 94, .05), rgba(127, 184, 148, .06));
     }
 
+    html[data-theme="dark"] .hmp-card {
+      background:
+        linear-gradient(180deg, rgba(23, 26, 22, .97), rgba(16, 19, 15, .95)),
+        linear-gradient(90deg, transparent 0, transparent 19%, rgba(127, 184, 148, .07) 19%, rgba(127, 184, 148, .07) 20%, transparent 20%, transparent 39%, rgba(127, 184, 148, .07) 39%, rgba(127, 184, 148, .07) 40%, transparent 40%);
+      border-color: var(--line);
+    }
+
+    html[data-theme="dark"] .hmp-card-blob {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(127, 184, 148, .16), transparent 9%),
+        radial-gradient(circle at 82% 18%, rgba(224, 147, 94, .12), transparent 8%),
+        radial-gradient(circle at 50% 78%, rgba(127, 184, 148, .08), transparent 14%),
+        linear-gradient(180deg, rgba(127, 184, 148, .06), rgba(127, 184, 148, .02));
+      border-color: rgba(127, 184, 148, .12);
+    }
+
+    html[data-theme="dark"] .hmp-card-glow {
+      background:
+        radial-gradient(circle, rgba(127, 184, 148, .16), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(224, 147, 94, .08), transparent 34%),
+        conic-gradient(from 180deg, rgba(127, 184, 148, .06), rgba(224, 147, 94, .08), rgba(127, 184, 148, .05), rgba(224, 147, 94, .05), rgba(127, 184, 148, .06));
+    }
+
+    html[data-theme="dark"] .hmp-card-pattern {
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(127, 184, 148, .05) 28px, rgba(127, 184, 148, .05) 29px),
+        repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(127, 184, 148, .05) 28px, rgba(127, 184, 148, .05) 29px);
+    }
+
+    html[data-theme="dark"] .hmp-card-badge {
+      background: rgba(30, 34, 25, .9);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    html[data-theme="dark"] .hmp-card-muni {
+      background: rgba(0,0,0,.6);
+      color: rgba(255,255,255,.7);
+    }
+
     html[data-theme="dark"] .workflow-section,
     html[data-theme="dark"] .methodology-section {
       background: linear-gradient(180deg, var(--paper), var(--paper-deep));
@@ -1349,19 +1389,43 @@
       }
     }
 
-    @media (max-width: 640px) {
+    .hmp-wrap { display: none; }
+
+    @media (max-width: 768px) {
+      .hero {
+        min-height: calc(100vh - 96px);
+        min-height: calc(100svh - 96px);
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 20px;
+      }
+
+      .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
+        flex: 1 1 auto;
+      }
+
       .hero-content h2 {
         font-size: 3rem;
       }
 
       .hero-panel {
-        padding: 18px;
+        padding: 14px;
+        overflow: visible;
       }
 
-      .hero-preview-stats {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
+      .hero-actions {
+        margin-bottom: 16px;
+      }
+
+      .hero-preview {
+        display: none;
+      }
+
+      .hero-preview-map {
+        display: none;
       }
 
       .hero-demo-badge {
@@ -1372,6 +1436,198 @@
       .hero-demo-tag {
         font-size: 9.5px;
         padding: 5px 10px;
+      }
+
+      .hmp-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        margin-top: auto;
+        padding-top: 24px;
+        animation: hmpFadeIn .7s ease both;
+        animation-delay: .5s;
+      }
+
+      @keyframes hmpFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .hmp-carousel {
+        overflow: hidden;
+        padding: 4px 0 6px;
+        /* máscara suave nas pontas: o cartão que entra/sai funde-se em vez
+           de aparecer/desaparecer com um corte abrupto */
+        -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+        mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+      }
+
+      .hmp-track {
+        display: flex;
+        gap: 8px;
+        width: max-content;
+        will-change: transform;
+        animation: hmpTicker linear infinite;
+        animation-duration: var(--hmp-duration, 26s);
+      }
+
+      /* pausa breve ao tocar num cartão (ex.: ao ativar uma pré-visualização),
+         retomando sozinha passado uns segundos — nunca fica parada de vez */
+      .hmp-track.hmp-paused {
+        animation-play-state: paused;
+      }
+
+      @keyframes hmpTicker {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+
+      .hmp-card {
+        /* vw em vez de % — a faixa (.hmp-track) tem width:max-content para o
+           ticker, por isso uma % aqui ficaria indefinida (dependência
+           circular) e os cartões encolheriam para quase nada */
+        flex: 0 0 64vw;
+        max-width: 280px;
+        position: relative;
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform .2s, box-shadow .25s, border-color .15s;
+        background:
+          linear-gradient(180deg, rgba(247, 245, 239, .97), rgba(239, 235, 224, .95)),
+          linear-gradient(90deg, transparent 0, transparent 19%, rgba(216, 210, 194, .12) 19%, rgba(216, 210, 194, .12) 20%, transparent 20%, transparent 39%, rgba(216, 210, 194, .12) 39%, rgba(216, 210, 194, .12) 40%, transparent 40%);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        aspect-ratio: 1 / 1;
+      }
+
+      .hmp-card:active {
+        transform: scale(.97);
+      }
+
+      .hmp-card.active {
+        border-color: var(--green);
+        box-shadow: 0 0 0 1px var(--green), 0 6px 20px rgba(61, 107, 79, .22);
+        transform: scale(1.025);
+      }
+
+      .hmp-card.loading {
+        opacity: .5;
+        pointer-events: none;
+      }
+
+      .hmp-card-clone {
+        pointer-events: none;
+        cursor: default;
+      }
+
+      .hmp-card-blob {
+        position: absolute;
+        inset: 8% 6%;
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 18% 18%, rgba(61, 107, 79, .18), transparent 9%),
+          radial-gradient(circle at 82% 18%, rgba(194, 112, 61, .12), transparent 8%),
+          radial-gradient(circle at 50% 78%, rgba(61, 107, 79, .08), transparent 14%),
+          linear-gradient(180deg, rgba(61, 107, 79, .06), rgba(61, 107, 79, .02));
+        border: 1px solid rgba(61, 107, 79, .08);
+        animation: hmpBlobGlow 11s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .hmp-card-glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 70%;
+        height: 70%;
+        transform: translate(-50%, -50%);
+        background:
+          radial-gradient(circle, rgba(61, 107, 79, .18), transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(194, 112, 61, .08), transparent 34%),
+          conic-gradient(from 180deg, rgba(61, 107, 79, .06), rgba(194, 112, 61, .08), rgba(61, 107, 79, .05), rgba(194, 112, 61, .05), rgba(61, 107, 79, .06));
+        border-radius: 50%;
+        filter: blur(18px);
+        animation: hmpGlowPulse 10s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .hmp-card-map {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+        background: #eae6db;
+      }
+      .hmp-card-map .leaflet-container {
+        background: #eae6db;
+      }
+      .hmp-card-map .leaflet-control-container { display: none !important; }
+      .hmp-card-map .leaflet-pane,
+      .hmp-card-map .leaflet-tile,
+      .hmp-card-map .leaflet-marker-icon,
+      .hmp-card-map .leaflet-image-layer,
+      .hmp-card-map .leaflet-interactive {
+        filter: saturate(.7) brightness(.97) contrast(1.05);
+      }
+
+      .hmp-card-pattern {
+        position: absolute;
+        inset: 0;
+        background:
+          repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(216, 210, 194, .08) 28px, rgba(216, 210, 194, .08) 29px),
+          repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(216, 210, 194, .08) 28px, rgba(216, 210, 194, .08) 29px);
+        pointer-events: none;
+      }
+
+      .hmp-card-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(252, 250, 245, .92);
+        border: 1px solid rgba(61, 107, 79, .16);
+        box-shadow: 0 6px 18px rgba(23, 49, 36, .1);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 8.5px;
+        letter-spacing: .03em;
+        color: var(--green-deep);
+        pointer-events: none;
+      }
+
+      .hmp-card-muni {
+        position: absolute;
+        bottom: 12px;
+        left: 8px;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 7.5px;
+        letter-spacing: .08em;
+        color: #fff;
+        background: rgba(0,0,0,.5);
+        padding: 2px 7px;
+        border-radius: 4px;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      @keyframes hmpBlobGlow {
+        0%, 100% { opacity: .7; }
+        50% { opacity: 1; }
+      }
+
+      @keyframes hmpGlowPulse {
+        0%, 100% { opacity: .5; transform: translate(-50%, -50%) scale(1); }
+        50% { opacity: .8; transform: translate(-50%, -50%) scale(1.06); }
       }
     }
 
@@ -3551,6 +3807,15 @@
         <div class="hero-highlights">
 
         </div>
+        <div class="hmp-wrap">
+          <!-- painéis construídos dinamicamente em JS (carregarPreviewsCartoes):
+               um cartão permanente por cada conjunto de dados disponível para o
+               município ativo, duplicados dentro de .hmp-track para o ticker
+               em loop infinito (a 2ª metade é visualmente idêntica à 1ª) -->
+          <div class="hmp-carousel">
+            <div class="hmp-track hmp-paused"></div>
+          </div>
+        </div>
       </div>
       <div class="hero-preview">
         <div class="hero-panel">
@@ -5068,6 +5333,13 @@
       'osm:gis_osm_transport_free_1': { color: '#1F618D', weight: 1.5, fillColor: '#5DADE2', fillOpacity: 0.85 }, // azul — transportes (pontos)
     };
 
+    // Estilos mais visíveis para os mapas pequenos dos cartões (carrossel)
+    const CARD_STYLES = {
+      caop: { color: '#C2703D', weight: 4, fillOpacity: 0.50, fillColor: '#C2703D' },
+      cos: { color: '#5A8F45', weight: 3, fillOpacity: 0.65, fillColor: '#5A8F45' },
+      bgri: { color: '#4472A8', weight: 3, fillOpacity: 0.60, fillColor: '#4472A8' },
+    };
+
     function caminhoRelativoPreview(p) {
       if (!p || typeof p !== 'string') return null;
       let norm = p.replace(/\\/g, '/');
@@ -5116,8 +5388,324 @@
       atualizarPreviewBadges();
     }
 
-    function togglePreview(tipo, btnEl) {
-      if (!activeMunicipio || btnEl.classList.contains('unavailable')) return;
+    // ── PREVIEWS NOS CARTÕES (mobile, Leaflet) ──────────────────────────────────
+    // Cada cartão do carrossel é um painel PERMANENTE e independente, criado uma
+    // única vez para um conjunto de dados concreto (CAOP/COS/BGRI/MDT/OSM) do
+    // município ativo — não há troca periódica de conteúdo dentro dos painéis.
+    var cardMaps = {};
+    var tickerPauseTimer = null;
+
+    // sorteia um município aleatório (entre os que têm pelo menos uma pré-visualização
+    // disponível), usado apenas para escolher o município inicial do carrossel
+    function sortearMunicipioMobile(excluirChave) {
+      if (!Array.isArray(municipios) || !municipios.length) return null;
+      var pool = municipios.filter(function(m) { return heroPreviewsDisponiveis(m).length > 0; });
+      if (!pool.length) return null;
+      var candidatos = pool;
+      if (pool.length > 1 && excluirChave) {
+        var semRepetir = pool.filter(function(m) { return normalizarNome(m.municipio) !== excluirChave; });
+        if (semRepetir.length) candidatos = semRepetir;
+      }
+      return candidatos[Math.floor(Math.random() * candidatos.length)];
+    }
+
+    // baralho Fisher-Yates — devolve um NOVO array, não mexe no original
+    function baralhar(arr) {
+      var copia = arr.slice();
+      for (var i = copia.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = copia[i]; copia[i] = copia[j]; copia[j] = tmp;
+      }
+      return copia;
+    }
+
+    // monta um conjunto baralhado de cartões vindos de VÁRIOS concelhos
+    // diferentes (não só do município ativo) — até 2 conjuntos de dados por
+    // concelho, para dar prioridade a variedade de concelhos em vez de
+    // repetir sempre os mesmos 4-5 tipos do mesmo sítio
+    function montarItensAleatorios(maxCartoes) {
+      var pool = baralhar(municipios.filter(function(mm) { return heroPreviewsDisponiveis(mm).length > 0; }));
+      var itens = [];
+      for (var i = 0; i < pool.length && itens.length < maxCartoes; i++) {
+        var mm = pool[i];
+        var disponiveis = baralhar(heroPreviewsDisponiveis(mm));
+        var nEscolher = Math.min(disponiveis.length, 2);
+        for (var j = 0; j < nEscolher && itens.length < maxCartoes; j++) {
+          itens.push({ municipio: mm, tipo: disponiveis[j][0], label: disponiveis[j][1] });
+        }
+      }
+      return baralhar(itens);
+    }
+
+    // gera um id de DOM válido e único para o mini-mapa de um painel, a partir
+    // do identificador do conjunto de dados (ex.: 'osm:highway' → 'hmp-map-osm-highway');
+    // aceita um sufixo opcional para diferenciar a 2ª cópia usada no ticker
+    // infinito (mesmo tipo de dados, mas precisa de um id de DOM distinto)
+    function idCartaoPreview(tipo, sufixo) {
+      return 'hmp-map-' + tipo.replace(/[^a-zA-Z0-9]+/g, '-') + (sufixo ? '-' + sufixo : '');
+    }
+
+    // isClone = true → cópia "muda" usada só para preencher a 2ª metade do
+    // ticker (necessária para o loop infinito parecer contínuo); tem o seu
+    // próprio mini-mapa Leaflet real (para não perder o desenho das camadas
+    // que usam canvas), mas sem clique nem interação.
+    // municipioObj é o concelho a que ESTE cartão pertence (agora que o
+    // baralhar mistura vários concelhos, já não podemos assumir que é
+    // sempre o activeMunicipio) — é o que vai para o togglePreview no clique.
+    function construirCartaoPreview(tipo, label, municipioObj, sufixoId, isClone) {
+      var card = document.createElement('div');
+      card.className = 'hmp-card' + (isClone ? ' hmp-card-clone' : '');
+      card.dataset.preview = tipo;
+      if (isClone) card.setAttribute('aria-hidden', 'true');
+      card.innerHTML =
+        '<div class="hmp-card-blob"></div>' +
+        '<div class="hmp-card-glow"></div>' +
+        '<div class="hmp-card-map" id="' + idCartaoPreview(tipo, sufixoId) + '"></div>' +
+        '<div class="hmp-card-pattern"></div>' +
+        '<span class="hmp-card-badge"></span>' +
+        '<span class="hmp-card-muni"></span>';
+      card.querySelector('.hmp-card-badge').textContent = label;
+      card.querySelector('.hmp-card-muni').textContent = (municipioObj && municipioObj.municipio) || '—';
+      if (!isClone) {
+        card.addEventListener('click', function() { togglePreview(tipo, card, municipioObj); });
+      }
+      return card;
+    }
+
+    function destroyCardMaps() {
+      if (tickerPauseTimer) { clearTimeout(tickerPauseTimer); tickerPauseTimer = null; }
+      Object.keys(cardMaps).forEach(function(k) {
+        if (cardMaps[k] && cardMaps[k].map) { cardMaps[k].map.remove(); }
+      });
+      cardMaps = {};
+      // remove todos os painéis (originais + duplicados do ticker) antes de
+      // reconstruir o carrossel para um novo município
+      var track = document.querySelector('.hmp-track');
+      if (track) {
+        track.innerHTML = '';
+        track.style.removeProperty('--hmp-duration');
+        track.style.animationDuration = '';
+        track.classList.add('hmp-paused'); // só recomeça quando iniciarTickerAutomatico calcular a duração certa
+      }
+    }
+
+
+    // rotação automática e contínua (mobile): "ticker" com deslocação
+    // constante da direita para a esquerda, feito em puro CSS (transform +
+    // @keyframes), sem depender de scrollLeft/setInterval — que é o que
+    // estava a falhar antes. A faixa (.hmp-track) contém o conjunto real de
+    // cartões seguido de uma cópia idêntica (cartões-clone, sem clique); ao
+    // deslocar exatamente 50% da largura total a animação recomeça do zero
+    // de forma impercetível, dando a sensação de um loop infinito sem
+    // cortes — o clássico truque do "marquee" duplicado.
+    var HMP_PX_POR_SEGUNDO = 34; // velocidade do ticker; ajustar aqui se necessário
+
+    function iniciarTickerAutomatico() {
+      var track = document.querySelector('.hmp-track');
+      if (!track || !track.children.length) return;
+      // a faixa tem sempre 2 cópias lado a lado → uma cópia = metade da largura total
+      var larguraUmaCopia = track.scrollWidth / 2;
+      if (!larguraUmaCopia) return;
+      var duracao = Math.max(larguraUmaCopia / HMP_PX_POR_SEGUNDO, 6);
+      track.style.setProperty('--hmp-duration', duracao + 's');
+      track.classList.remove('hmp-paused');
+    }
+
+    // pausa breve e retoma sozinha — usado quando o utilizador toca num
+    // cartão para ativar uma pré-visualização, para não competir com o
+    // movimento enquanto está a olhar para o mapa principal
+    var _pauseTimer = null;
+    function pausarCarrossel() {
+      var track = document.querySelector('.hmp-track');
+      if (!track) return;
+      track.classList.add('hmp-paused');
+      if (_pauseTimer) clearTimeout(_pauseTimer);
+      _pauseTimer = setTimeout(function() {
+        _pauseTimer = null;
+        var track2 = document.querySelector('.hmp-track');
+        if (track2) track2.classList.remove('hmp-paused');
+      }, 2000);
+    }
+
+    var HMP_MAX_CARTOES = 10;
+
+    function carregarPreviewsCartoes(m) {
+      if (!m || window.innerWidth > 768) return;
+      destroyCardMaps();
+
+      var track = document.querySelector('.hmp-track');
+      var wrap = document.querySelector('.hmp-wrap');
+      if (!track) return;
+
+      // baralho de painéis vindos de vários concelhos (não só do ativo) —
+      // cada item já traz o SEU PRÓPRIO objeto de município
+      var itens = montarItensAleatorios(HMP_MAX_CARTOES);
+      if (!itens.length) {
+        if (wrap) wrap.style.display = 'none';
+        return;
+      }
+      if (wrap) wrap.style.display = '';
+
+      // pré-calcula, uma única vez, os bounds de todos os concelhos presentes
+      // no baralho (em vez de percorrer o geojsonLayer inteiro por cartão)
+      var chavesNecessarias = {};
+      itens.forEach(function(item) { chavesNecessarias[normalizarNome(item.municipio.municipio || '')] = true; });
+      var boundsPorConcelho = {};
+      if (typeof geojsonLayer !== 'undefined' && geojsonLayer) {
+        geojsonLayer.eachLayer(function(l) {
+          try {
+            var chave = l.feature && l.feature.properties && normalizarNome(l.feature.properties.municipio);
+            if (chave && chavesNecessarias[chave]) boundsPorConcelho[chave] = l.getBounds();
+          } catch(e) {}
+        });
+      }
+
+      var temaEscuro = document.documentElement.getAttribute('data-theme') === 'dark';
+      var tileUrl = temaEscuro ? TILE_DARK : TILE_LIGHT;
+
+      // constrói um único cartão + o seu mini-mapa Leaflet; sufixoId ('' para
+      // a cópia real, '2' para a cópia-clone que preenche a 2ª metade do
+      // ticker) garante ids de DOM únicos para cada instância do Leaflet.
+      // idxItem diferencia cartões do MESMO tipo em concelhos diferentes
+      // (ex.: dois 'caop' de municípios distintos precisam de ids distintos).
+      function construirEPreencherCartao(item, idxItem, sufixoId, isClone) {
+        var mm = item.municipio;
+        var tipo = item.tipo;
+        var label = item.label;
+        var idUnico = idxItem + (sufixoId || '');
+
+        var card = construirCartaoPreview(tipo, label, mm, idUnico, isClone);
+        track.appendChild(card);
+
+        var container = document.getElementById(idCartaoPreview(tipo, idUnico));
+        if (!container) return;
+        var badge = card.querySelector('.hmp-card-badge');
+
+        try {
+          var map = L.map(container, {
+            zoomControl: false,
+            attributionControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            tap: false,
+            touchZoom: false,
+            inertia: false,
+            preferCanvas: true,
+            fadeAnimation: true
+          });
+
+          var muniBounds = boundsPorConcelho[normalizarNome(mm.municipio || '')];
+          if (muniBounds && muniBounds.isValid()) {
+            map.fitBounds(muniBounds, { padding: [10, 10] });
+          } else {
+            map.setView([39.6, -8.2], 7);
+          }
+
+          var tileLayer = L.tileLayer(tileUrl, { maxZoom: 19 }).addTo(map);
+          cardMaps[tipo + ':' + idUnico] = { map: map, tile: tileLayer };
+
+          // dupla tentativa de invalidateSize: rAF (já com layout CSS aplicado,
+          // todos os cartões com o mesmo tamanho uniforme via aspect-ratio) +
+          // timeout (fallback, ex. depois da fonte/animação assentar)
+          var invalidate = function() { try { map.invalidateSize(); } catch(e) {} };
+          requestAnimationFrame(invalidate);
+          setTimeout(invalidate, 300);
+
+          if (tipo === 'mdt') {
+            var mdt = mm.mdt_preview;
+            var imgPath = mdt && caminhoRelativoPreview(mdt.image);
+            if (imgPath && mdt && mdt.bounds) {
+              L.imageOverlay(imgPath, mdt.bounds, { opacity: 0.85 }).addTo(map);
+              map.fitBounds(mdt.bounds, { padding: [10, 10] });
+              if (badge) badge.style.background = '#5A8F45';
+            } else {
+              if (badge) badge.style.background = '#C0392B';
+            }
+          } else if (tipo.indexOf('osm:') === 0) {
+            var layerName = tipo.slice(4);
+            var rawPathOsm = mm.osm_previews ? mm.osm_previews[layerName] : null;
+            var relPathOsm = caminhoRelativoPreview(rawPathOsm);
+            if (relPathOsm) {
+              fetch(relPathOsm).then(function(r) { if (r.ok) return r.json(); throw new Error('fetch failed: ' + relPathOsm); })
+                .then(function(g) {
+                  try {
+                    var estilo = PREVIEW_STYLES[tipo] || { color: '#6E726A', weight: 2, fillOpacity: 0.30, fillColor: '#6E726A' };
+                    var layer = L.geoJSON(g, {
+                      style: estilo,
+                      pointToLayer: function(feature, latlng) {
+                        return L.circleMarker(latlng, { radius: 4, color: estilo.color, fillColor: estilo.fillColor || estilo.color, weight: 1, fillOpacity: estilo.fillOpacity > 0 ? estilo.fillOpacity : 0.8 });
+                      }
+                    }).addTo(map);
+                    var b = layer.getBounds();
+                    if (b.isValid()) map.fitBounds(b, { padding: [10, 10] });
+                    if (badge) badge.style.background = '#5A8F45';
+                  } catch(e) { console.error('card preview geoJSON error', tipo, e); if (badge) badge.style.background = '#C0392B'; }
+                })
+                .catch(function(e) { console.error('card preview fetch error', tipo, e); if (badge) badge.style.background = '#C0392B'; });
+            } else {
+              if (badge) badge.style.background = '#C0392B';
+            }
+          } else {
+            var rawPath = mm[tipo + '_preview'];
+            var relPath = caminhoRelativoPreview(rawPath);
+            if (relPath) {
+              fetch(relPath).then(function(r) { if (r.ok) return r.json(); throw new Error('fetch failed: ' + relPath); })
+                .then(function(g) {
+                  try {
+                    var estilo = CARD_STYLES[tipo] || { color: '#6E726A', weight: 2, fillOpacity: 0.30, fillColor: '#6E726A' };
+                    var layer = L.geoJSON(g, { style: estilo }).addTo(map);
+                    var b = layer.getBounds();
+                    if (b.isValid()) map.fitBounds(b, { padding: [10, 10] });
+                    if (badge) badge.style.background = '#5A8F45';
+                  } catch(e) { console.error('card preview geoJSON error', tipo, e); if (badge) badge.style.background = '#C0392B'; }
+                })
+                .catch(function(e) { console.error('card preview fetch error', tipo, e); if (badge) badge.style.background = '#C0392B'; });
+            } else {
+              if (badge) badge.style.background = '#C0392B';
+            }
+          }
+        } catch(e) {}
+      }
+
+      // 1ª cópia: cartões reais, clicáveis
+      itens.forEach(function(item, idx) {
+        construirEPreencherCartao(item, idx, '', false);
+      });
+      // 2ª cópia: cartões-clone, mudos (sem clique), só para o ticker parecer
+      // contínuo — precisam de um mini-mapa Leaflet próprio (e não de um
+      // cloneNode do DOM) para não perder o desenho das camadas em canvas
+      itens.forEach(function(item, idx) {
+        construirEPreencherCartao(item, idx, '2', true);
+      });
+
+      // só arranca o ticker depois de a faixa estar montada e com layout
+      // aplicado (largura real disponível para calcular a duração da animação)
+      setTimeout(iniciarTickerAutomatico, 600);
+    }
+
+    function drawCardPreviews() {
+      if (activeMunicipio) carregarPreviewsCartoes(activeMunicipio);
+    }
+
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 768 && activeMunicipio) {
+        carregarPreviewsCartoes(activeMunicipio);
+      } else if (window.innerWidth > 768) {
+        destroyCardMaps();
+      }
+    });
+
+    // municipioOverride: opcional — os botões da sidebar (preview-caop, etc.)
+    // não o passam, por isso continuam a usar sempre o activeMunicipio; os
+    // cartões do ticker mobile passam o SEU PRÓPRIO município (agora que o
+    // baralho mistura vários concelhos, já não é sempre o mesmo)
+    function togglePreview(tipo, btnEl, municipioOverride) {
+      var municipioAlvo = municipioOverride || activeMunicipio;
+      if (!municipioAlvo || btnEl.classList.contains('unavailable')) return;
+      pausarCarrossel();
 
       // já está ativa → este clique desliga só esta camada (as outras ficam)
       if (activePreviews.has(tipo)) { removerPreview(tipo); return; }
@@ -5125,7 +5713,7 @@
       btnEl.classList.add('loading');
 
       if (tipo === 'mdt') {
-        const mdt = activeMunicipio.mdt_preview;
+        const mdt = municipioAlvo.mdt_preview;
         const imgPath = mdt && caminhoRelativoPreview(mdt.image);
         if (!imgPath || !mdt.bounds) {
           btnEl.classList.remove('loading');
@@ -5144,10 +5732,10 @@
       let rawPath, label;
       if (tipo.startsWith('osm:')) {
         const layerName = tipo.slice(4);
-        rawPath = activeMunicipio.osm_previews ? activeMunicipio.osm_previews[layerName] : null;
+        rawPath = municipioAlvo.osm_previews ? municipioAlvo.osm_previews[layerName] : null;
         label = osmMeta(layerName).nome;
       } else {
-        rawPath = activeMunicipio[`${tipo}_preview`];
+        rawPath = municipioAlvo[`${tipo}_preview`];
         label = PREVIEW_LABELS[tipo] || tipo.toUpperCase();
       }
 
@@ -5214,12 +5802,24 @@
           }).addTo(map);
           ajustarMapaAoTerritorio();
           hideLoading();
+
+          // ativa os cartões do carrossel mobile logo à partida, com um município
+          // aleatório (entre os que têm pré-visualizações disponíveis) — sem isto,
+          // ficavam vazios até o utilizador selecionar um concelho no mapa principal
+          if (!activeMunicipio) {
+            const mSorteado = sortearMunicipioMobile(null);
+            const mFallback = mSorteado || municipiosPorNome[normalizarNome(HERO_MUNICIPIO_FALLBACK)] || municipios[0];
+            if (mFallback) {
+              activeMunicipio = mFallback;
+              carregarPreviewsCartoes(mFallback);
+            }
+          }
         })
         .catch(err => {
           hideLoading();
           console.error(err);
           showToast('⚠ Erro ao carregar geometrias', 4000);
-        });
+      });
     }
 
     // ── SELECT MUNICÍPIO ─────────────────────────────────────────────────────────
@@ -5333,6 +5933,9 @@
 
       // scroll panel ao topo
       document.querySelector('.panel').scrollTo({ top: 0, behavior: 'smooth' });
+
+      // carregar previews nos cartões mobile
+      carregarPreviewsCartoes(activeMunicipio);
     }
 
     // ── BAIXAR TUDO ──────────────────────────────────────────────────────────────
@@ -5537,6 +6140,11 @@
       themeToggleBtn.setAttribute('aria-pressed', tema === 'dark' ? 'true' : 'false');
       baseTileLayer.setUrl(tema === 'dark' ? TILE_DARK : TILE_LIGHT);
       if (heroBaseLayer) heroBaseLayer.setUrl(tema === 'dark' ? TILE_DARK : TILE_LIGHT);
+      Object.keys(cardMaps).forEach(function(k) {
+        if (cardMaps[k] && cardMaps[k].tile) {
+          cardMaps[k].tile.setUrl(tema === 'dark' ? TILE_DARK : TILE_LIGHT);
+        }
+      });
     }
 
     function temaPreferido() {
@@ -6177,7 +6785,16 @@
         inertia: false,
         preferCanvas: true,
         fadeAnimation: true
-      }).setView([39.6, -8.2], 7);
+      });
+
+      // Se o contentor estiver hidden (ex. mobile), forçamos _size
+      // para evitar Invalid LatLng nos tiles
+      var hw = mapEl.clientWidth || mapEl.offsetWidth || 800;
+      var hh = mapEl.clientHeight || mapEl.offsetHeight || 500;
+      if (hw > 0 && hh > 0) {
+        heroMap._size = L.point(Math.round(hw), Math.round(hh));
+      }
+      heroMap.setView([39.6, -8.2], 7);
 
       const temaEscuro = document.documentElement.getAttribute('data-theme') === 'dark';
       heroBaseLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom: 19 }).addTo(heroMap);
@@ -6578,7 +7195,7 @@
       } else {
         initLangToggle();
       }
-    })();
+      })();
   </script>
 
 </body>
