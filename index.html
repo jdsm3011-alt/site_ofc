@@ -470,19 +470,39 @@
     }
 
     /* ── TRANSIÇÃO DE ENTRADA/SAÍDA ENTRE PÁGINAS ─────────── */
+    /* NOTA: a opacidade e o transform estão em animações separadas de propósito.
+       A opacidade usa `forwards` para se manter no valor final (1). O transform
+       NÃO usa `forwards`, para que, assim que a animação termina, o <body>
+       volte a transform: none. Isto é importante porque qualquer transform
+       diferente de "none" aplicado ao <body> cria um novo "containing block"
+       para todos os descendentes com `position: fixed` (como o overlay de
+       carregamento), fazendo-os posicionar-se relativamente ao <body>/documento
+       em vez de à viewport. Manter as duas animações separadas garante que o
+       `position: fixed` continua sempre relativo à viewport depois da transição
+       de entrada terminar. */
     body {
       opacity: 0;
-      animation: pageFadeIn .45s ease forwards;
+      animation:
+        pageFadeInOpacity .45s ease forwards,
+        pageFadeInMove .45s ease;
     }
 
-    @keyframes pageFadeIn {
+    @keyframes pageFadeInOpacity {
       from {
         opacity: 0;
-        transform: translateY(6px);
       }
 
       to {
         opacity: 1;
+      }
+    }
+
+    @keyframes pageFadeInMove {
+      from {
+        transform: translateY(6px);
+      }
+
+      to {
         transform: translateY(0);
       }
     }
@@ -5113,15 +5133,6 @@
 
     function hideLoading() {
       const ov = document.getElementById('loading-overlay');
-      // ensure it covers full document height
-      if (ov) {
-        ov.style.minHeight = Math.max(
-          document.documentElement.scrollHeight,
-          document.body.scrollHeight,
-          document.body.offsetHeight,
-          document.documentElement.clientHeight
-        ) + 'px';
-      }
       setTimeout(() => {
         ov.classList.add('hide');
         setTimeout(() => ov.style.display = 'none', 700);
