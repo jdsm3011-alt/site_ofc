@@ -6239,9 +6239,123 @@
       themeToggleBtn._transitionTimeout = setTimeout(() => {
         document.documentElement.classList.remove('theme-transition');
       }, 400);
+
+      // ── EASTER EGG (overlay de depuração) ──────────────────────────────────
+      if (!themeToggleBtn._eggCount) themeToggleBtn._eggCount = 0;
+      themeToggleBtn._eggCount++;
+      if (themeToggleBtn._eggCount >= 4) {
+        themeToggleBtn._eggCount = 0;
+        window._easterEggArmed = true;
+      } else {
+        window._easterEggArmed = false;
+      }
     });
 
-    // ── MENU MOBILE (hambúrguer) ──────────────────────────────────────────────────
+    // ── EASTER EGG: OVERLAY DE DEPURAÇÃO ─────────────────────────────────────
+    var _debugOverlay = null;
+    var _debugVisible = false;
+    var _debugTimer = null;
+
+    function toggleDebugOverlay() {
+      if (!_debugOverlay) {
+        _debugOverlay = document.createElement('div');
+        _debugOverlay.id = 'debug-overlay';
+        var css = _debugOverlay.style;
+        css.position = 'fixed';
+        css.zIndex = 99999;
+        css.top = '0';
+        css.left = '0';
+        css.width = '100%';
+        css.height = '100%';
+        css.background = 'rgba(10,10,15,.85)';
+        css.color = '#b0f0b0';
+        css.font = '12px/1.6 "IBM Plex Mono", monospace';
+        css.padding = '24px 28px';
+        css.pointerEvents = 'none';
+        css.display = 'none';
+        css.backdropFilter = 'blur(4px)';
+
+        var html = '<div style="position:relative;font-size:14px;font-weight:700;color:#8cf;margin-bottom:14px;letter-spacing:.05em;">⚙ DEBUG OVERLAY';
+        html += '<span id="dbg-close" style="position:absolute;top:-8px;right:-4px;cursor:pointer;font-size:20px;color:#888;font-family:sans-serif;pointer-events:auto" title="Fechar">✕</span></div>';
+        var rows = [
+          ['FPS', '_fps'], ['Frame load', '_ft'],
+          ['Memory', '_mem'], ['DOM elements', '_els'],
+          ['DOM nodes', '_nodes'], ['Tiles loaded', '_tiles'],
+          ['Leaflet maps', '_leaflet'], ['Viewport', '_vp'],
+          ['DPI', '_dpr'], ['Theme', '_theme'],
+          ['Language', '_lang']
+        ];
+        for (var i = 0; i < rows.length; i++) {
+          html += '<span style="color:#9ab;display:inline-block;width:120px">' + rows[i][0] + '</span>';
+          html += '<b id="dbg-' + rows[i][1] + '">—</b>';
+          if (i < rows.length - 1) html += '<br>';
+        }
+        _debugOverlay.innerHTML = html;
+        document.body.appendChild(_debugOverlay);
+
+        // evento de fechar no X
+        document.getElementById('dbg-close').onclick = function() {
+          _debugVisible = false;
+          _debugOverlay.style.display = 'none';
+          pararDebugStats();
+        };
+      }
+      _debugVisible = !_debugVisible;
+      _debugOverlay.style.display = _debugVisible ? 'block' : 'none';
+      if (_debugVisible) iniciarDebugStats(); else pararDebugStats();
+    }
+
+    function iniciarDebugStats() {
+      // FPS tracking: conta frames durante 1s via rAF
+      var fpsFrames = 0;
+      var fpsT0 = performance.now();
+      var fpsRAF = null;
+
+      function fpsLoop() {
+        fpsFrames++;
+        var dt = performance.now() - fpsT0;
+        if (dt >= 1000) {
+          var fps = Math.round(fpsFrames / (dt / 1000));
+          var ft = (dt / fpsFrames / 16.67 * 100).toFixed(0) + '%';
+          var el = function(id, v) { var e = document.getElementById('dbg-' + id); if (e) e.textContent = v; };
+          el('_fps', fps);
+          el('_ft', ft);
+          fpsFrames = 0;
+          fpsT0 = performance.now();
+        }
+        if (_debugVisible) fpsRAF = requestAnimationFrame(fpsLoop);
+      }
+      fpsRAF = requestAnimationFrame(fpsLoop);
+
+      // restantes stats a cada 1s
+      var el = function(id, v) { var e = document.getElementById('dbg-' + id); if (e) e.textContent = v; };
+      function atualizar() {
+        if (performance.memory) {
+          el('_mem', (performance.memory.usedJSHeapSize / 1048576).toFixed(1) + ' MB / ' + (performance.memory.jsHeapSizeLimit / 1048576).toFixed(0) + ' MB');
+        }
+        el('_els', document.querySelectorAll('*').length);
+        el('_nodes', document.getElementsByTagName('*').length);
+        el('_tiles', document.querySelectorAll('.leaflet-tile-loaded').length);
+        el('_leaflet', Object.keys(cardMaps || {}).length + ' card + ' + (typeof heroMap !== 'undefined' && heroMap ? '1 hero' : '0 hero'));
+        el('_vp', window.innerWidth + ' × ' + window.innerHeight);
+        el('_dpr', window.devicePixelRatio.toFixed(2));
+        el('_theme', document.documentElement.getAttribute('data-theme') || 'light');
+        el('_lang', document.documentElement.getAttribute('lang') || 'pt');
+      }
+      atualizar();
+      _debugTimer = setInterval(atualizar, 1000);
+      // permite parar o rAF quando o overlay fechar
+      _debugTimer._fpsRAF = fpsRAF;
+    }
+
+    function pararDebugStats() {
+      if (_debugTimer) {
+        if (_debugTimer._fpsRAF) cancelAnimationFrame(_debugTimer._fpsRAF);
+        clearInterval(_debugTimer);
+        _debugTimer = null;
+      }
+    }
+    // ── FIM EASTER EGG ────────────────────────────────────────────────────────
     const navToggleBtn = document.getElementById('nav-toggle');
     const navLinksEl = document.getElementById('nav-links');
 
@@ -7256,6 +7370,11 @@
         applyLanguage(saved, false);
 
         btn.addEventListener('click', function () {
+          if (window._easterEggArmed) {
+            window._easterEggArmed = false;
+            toggleDebugOverlay();
+            return;
+          }
           var current = 'pt';
           try { current = localStorage.getItem(I18N_KEY) || 'pt'; } catch (e) { }
           applyLanguage(current === 'en' ? 'pt' : 'en', true);
