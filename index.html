@@ -3695,6 +3695,107 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ── DEBUG OVERLAY ──────────────────────────── */
+    #debug-overlay {
+      position: fixed; inset: 0;
+      z-index: 99999;
+      background: rgba(8,8,14,.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      overflow: hidden;
+      font: 11px/1.5 'IBM Plex Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      color: #c8d6e5;
+    }
+    #debug-overlay.visible { display: flex; flex-direction: column; }
+    #debug-overlay * { box-sizing: border-box; }
+
+    .debug-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,.35);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .debug-header h1 {
+      margin: 0; font-size: 12px; font-weight: 700;
+      letter-spacing: .06em; color: #7ec8e3;
+      white-space: nowrap;
+    }
+    .debug-header h1::before { content: '\2699\00a0'; }
+    .debug-tabs {
+      display: flex; gap: 2px; flex: 1;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .debug-tabs::-webkit-scrollbar { height: 2px; }
+    .debug-tabs::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); }
+    .debug-tab {
+      padding: 3px 10px; border-radius: 4px;
+      cursor: pointer; white-space: nowrap;
+      color: rgba(255,255,255,.45);
+      font-size: 10px; letter-spacing: .03em;
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+    .debug-tab:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.05); }
+    .debug-tab.active { color: #7ec8e3; background: rgba(126,200,227,.1); }
+    .debug-close {
+      cursor: pointer; font-size: 18px; color: rgba(255,255,255,.3);
+      font-family: sans-serif; line-height: 1;
+      padding: 0 4px; transition: color .15s;
+      flex-shrink: 0;
+    }
+    .debug-close:hover { color: #e36f6f; }
+
+    .debug-body {
+      flex: 1; overflow-y: auto; padding: 12px 16px;
+      scrollbar-width: thin;
+    }
+    .debug-body::-webkit-scrollbar { width: 4px; }
+    .debug-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+
+    .debug-panel { display: none; }
+    .debug-panel.active { display: block; }
+
+    .debug-section {
+      margin-bottom: 12px;
+    }
+    .debug-section-title {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .08em; color: rgba(255,255,255,.25);
+      margin-bottom: 6px; padding-bottom: 3px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .debug-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2px 16px;
+    }
+    .debug-row {
+      display: flex; align-items: center;
+      padding: 1px 0;
+    }
+    .debug-label {
+      color: rgba(255,255,255,.4);
+      min-width: 130px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .debug-label::after { content: ':'; color: rgba(255,255,255,.15); margin-left: 2px; }
+    .debug-value {
+      color: #c8d6e5;
+      margin-left: 8px;
+      font-weight: 500;
+    }
+    .debug-value.warn { color: #f0c060; }
+    .debug-value.error { color: #e36f6f; }
+    .debug-value.good { color: #6fcf97; }
+    .debug-value.na { color: rgba(255,255,255,.2); font-style: italic; }
+    .debug-value.na::before { content: '\2014\00a0'; }
   </style>
 </head>
 
@@ -6271,114 +6372,643 @@
       }
     });
 
-    // ── EASTER EGG: OVERLAY DE DEPURAÇÃO ─────────────────────────────────────
-    var _debugOverlay = null;
-    var _debugVisible = false;
-    var _debugTimer = null;
+    // ── EASTER EGG: OVERLAY DE DEPURAÇÃO COMPLETO ────────────────────────────
+    var DebugOverlay = (function() {
+      var O = '_debug_ov';
+      var el = null, visible = false, timer = null, raf = null;
+      var fpsData = { frames: 0, t0: 0, current: 0, min: 60, max: 0, sum: 0, count: 0, drops: 0, ft: 0 };
+      var longTasks = [], userData = { clicks: 0, keys: 0, lastInteraction: 0, mouseX: 0, mouseY: 0, inactivity: 0 };
+      var fetchData = { active: 0, completed: 0, failed: 0, times: [] };
+      var perfEntries = {}, lcpValue = 0, clsValue = 0, fcpValue = 0, fpValue = 0;
+      var errors = [], rejectedPromises = [];
+      var scrollData = { x: 0, y: 0, pct: 0 };
+      var memHistory = [];
+      var jsProfile = { script: 0, render: 0, paint: 0, lastFrame: 0 };
 
-    function toggleDebugOverlay() {
-      if (!_debugOverlay) {
-        _debugOverlay = document.createElement('div');
-        _debugOverlay.id = 'debug-overlay';
-        var css = _debugOverlay.style;
-        css.position = 'absolute';
-        css.zIndex = 99999;
-        css.top = '0';
-        css.left = '0';
-        css.width = '100%';
-        css.minHeight = Math.max(
-          document.documentElement.scrollHeight,
-          document.body.scrollHeight,
-          document.documentElement.clientHeight
-        ) + 'px';
-        css.background = 'rgba(10,10,15,.85)';
-        css.pointerEvents = 'none';
-        css.display = 'none';
-        css.backdropFilter = 'blur(4px)';
+      function id(v) { return v; }
+      function na(v, fallback) { return (v === undefined || v === null || v === '') ? (fallback !== undefined ? fallback : 'Não suportado') : v; }
+      function mb(v) { return (v / 1048576).toFixed(1) + ' MB'; }
+      function pct(v) { return (v * 100).toFixed(1) + '%'; }
+      function ms(v) { return (v).toFixed(1) + ' ms'; }
+      function setText(panel, row, v, cls) {
+        var e = document.getElementById(O + panel + '_' + row);
+        if (e) { e.textContent = na(v); e.className = 'debug-value' + (cls ? ' ' + cls : ''); }
+      }
+      function setLabel(panel, row, label) {
+        var e = document.getElementById(O + panel + '_lbl_' + row);
+        if (e) e.textContent = label;
+      }
 
-        var html = '<div style="position:fixed;top:24px;left:28px;z-index:1;color:#b0f0b0;font:12px/1.6 \'IBM Plex Mono\',monospace">';
-        html += '<div style="font-size:14px;font-weight:700;color:#8cf;margin-bottom:14px;letter-spacing:.05em;position:relative">⚙ DEBUG OVERLAY';
-        html += '<span id="dbg-close" style="position:absolute;top:-8px;right:-24px;cursor:pointer;font-size:20px;color:#888;font-family:sans-serif;pointer-events:auto" title="Fechar">✕</span></div>';
-        var rows = [
-          ['FPS', '_fps'], ['Frame load', '_ft'],
-          ['Memory', '_mem'], ['DOM elements', '_els'],
-          ['DOM nodes', '_nodes'], ['Tiles loaded', '_tiles'],
-          ['Leaflet maps', '_leaflet'], ['Viewport', '_vp'],
-          ['DPI', '_dpr'], ['Theme', '_theme'],
-          ['Language', '_lang']
-        ];
-        for (var i = 0; i < rows.length; i++) {
-          html += '<span style="color:#9ab;display:inline-block;width:120px">' + rows[i][0] + '</span>';
-          html += '<b id="dbg-' + rows[i][1] + '">—</b>';
-          if (i < rows.length - 1) html += '<br>';
+      // ── TABS ─────────────────────────────────────────────────────────────────
+      var TABS = [
+        { id: 'rendering', label: 'Renderização' },
+        { id: 'memory', label: 'Memória' },
+        { id: 'cpu', label: 'CPU' },
+        { id: 'dom', label: 'DOM' },
+        { id: 'resources', label: 'Recursos' },
+        { id: 'network', label: 'Rede' },
+        { id: 'browser', label: 'Navegador' },
+        { id: 'device', label: 'Dispositivo' },
+        { id: 'perf', label: 'Performance' },
+        { id: 'js', label: 'JavaScript' },
+        { id: 'storage', label: 'Armazenamento' },
+        { id: 'gpu', label: 'Gráficos' },
+        { id: 'security', label: 'Segurança' },
+        { id: 'page', label: 'Página' },
+        { id: 'user', label: 'Utilizador' },
+        { id: 'app', label: 'Estado App' }
+      ];
+
+      // ── METRICAS POR PAINEL ──────────────────────────────────────────────────
+      var METRICS = {
+        rendering: [
+          ['fps', 'FPS atual'], ['fps_min', 'FPS mínimo'], ['fps_max', 'FPS máximo'],
+          ['fps_avg', 'FPS média'], ['ft', 'Frame time'], ['ift', 'Intervalo entre frames'],
+          ['drops', 'Frames perdidos'], ['uptime', 'Tempo desde load'], ['updates_s', 'Updates/s']
+        ],
+        memory: [
+          ['mem_used', 'Heap utilizado'], ['mem_total', 'Heap total'], ['mem_limit', 'Limite do heap'],
+          ['mem_pct', 'Percentagem'], ['mem_trend', 'Tendência'], ['mem_leak', 'Fuga memória']
+        ],
+        cpu: [
+          ['cpu_js', 'JS por frame'], ['cpu_lt', 'Long Tasks (>50ms)'], ['cpu_lt_avg', 'Média Long Tasks'],
+          ['cpu_peak', 'Pico bloqueio'], ['cpu_script', 'Scripting'], ['cpu_render', 'Rendering'],
+          ['cpu_paint', 'Painting']
+        ],
+        dom: [
+          ['dom_els', 'Elementos'], ['dom_nodes', 'Nós'], ['dom_imgs', 'Imagens'],
+          ['dom_scripts', 'Scripts'], ['dom_css', 'CSS'], ['dom_iframes', 'Iframes'],
+          ['dom_listeners', 'Listeners'], ['dom_html_size', 'Tamanho HTML']
+        ],
+        resources: [
+          ['res_total', 'Recursos carregados'], ['res_imgs', 'Imagens'], ['res_fonts', 'Fontes'],
+          ['res_scripts', 'Scripts'], ['res_css', 'CSS'], ['res_cached', 'Em cache'],
+          ['res_pending', 'Em download'], ['res_avg_time', 'Tempo médio']
+        ],
+        network: [
+          ['net_type', 'Tipo ligação'], ['net_latency', 'Latência'], ['net_downlink', 'Downlink'],
+          ['net_rtt', 'RTT'], ['net_save', 'Poupança dados'], ['net_online', 'Online/Offline']
+        ],
+        browser: [
+          ['br_name', 'Navegador'], ['br_engine', 'Motor'], ['br_platform', 'Plataforma'],
+          ['br_os', 'Sistema Operativo'], ['br_lang', 'Idioma'], ['br_tz', 'Fuso horário'],
+          ['br_cookies', 'Cookies'], ['br_ls', 'LocalStorage'], ['br_ss', 'SessionStorage']
+        ],
+        device: [
+          ['dev_res', 'Resolução ecrã'], ['dev_vp', 'Viewport'], ['dev_dpr', 'Device Pixel Ratio'],
+          ['dev_orient', 'Orientação'], ['dev_depth', 'Profundidade cor'], ['dev_refresh', 'Freq. atualização'],
+          ['dev_touch', 'Pontos toque'], ['dev_type', 'Tipo dispositivo']
+        ],
+        perf: [
+          ['perf_lcp', 'LCP'], ['perf_fcp', 'FCP'], ['perf_fp', 'First Paint'],
+          ['perf_cls', 'CLS'], ['perf_inp', 'INP'], ['perf_nav', 'Navigation Timing'],
+          ['perf_dom_ready', 'DOM Ready'], ['perf_load', 'Carregamento total'], ['perf_last_interaction', 'Última interação']
+        ],
+        js: [
+          ['js_errors', 'Erros JS'], ['js_promises', 'Promises rejeitadas'], ['js_timers', 'Timers ativos'],
+          ['js_anim', 'Animation Frames'], ['js_events_s', 'Eventos/s'], ['js_exec_time', 'Tempo execução']
+        ],
+        storage: [
+          ['st_used', 'Storage usado'], ['st_avail', 'Disponível'], ['st_ls', 'LocalStorage'],
+          ['st_ss', 'SessionStorage'], ['st_idb', 'IndexedDB'], ['st_cache', 'Cache Storage'],
+          ['st_sw', 'Service Worker']
+        ],
+        gpu: [
+          ['gpu_webgl', 'WebGL'], ['gpu_webgpu', 'WebGPU'], ['gpu_vendor', 'Fabricante GPU'],
+          ['gpu_renderer', 'Renderer GPU'], ['gpu_hw', 'Acel. hardware']
+        ],
+        security: [
+          ['sec_https', 'HTTPS'], ['sec_mixed', 'Mixed Content'], ['sec_coop', 'Cross-Origin Isolation'],
+          ['sec_ctx', 'Secure Context'], ['sec_clipboard', 'Clipboard API'], ['sec_perms', 'Permissions API']
+        ],
+        page: [
+          ['page_url', 'URL atual'], ['page_redirects', 'Redirecionamentos'], ['page_history', 'Histórico'],
+          ['page_vis', 'Visibilidade'], ['page_focus', 'Foco janela'], ['page_tabs', 'Separadores'],
+          ['page_nav_time', 'Tempo navegação']
+        ],
+        user: [
+          ['user_scroll_x', 'Scroll X'], ['user_scroll_y', 'Scroll Y'], ['user_scroll_pct', 'Scroll %'],
+          ['user_mouse_x', 'Rato X'], ['user_mouse_y', 'Rato Y'], ['user_clicks', 'Cliques'],
+          ['user_keys', 'Teclas'], ['user_inactivity', 'Inatividade'], ['user_last_interaction', 'Última interação']
+        ],
+        app: [
+          ['app_fetch_active', 'Fetch ativos'], ['app_fetch_done', 'Concluídos'], ['app_fetch_failed', 'Falhados'],
+          ['app_api_avg', 'Tempo médio APIs'], ['app_loading', 'Estado dados'], ['app_data_size', 'Dados em memória']
+        ]
+      };
+
+      // ── CONSTRUIR HTML ───────────────────────────────────────────────────────
+      function buildHTML() {
+        var h = '';
+        h += '<div class="debug-header">';
+        h += '<h1>DEBUG OVERLAY</h1>';
+        h += '<div class="debug-tabs">';
+        TABS.forEach(function(t, i) {
+          h += '<span class="debug-tab' + (i === 0 ? ' active' : '') + '" data-tab="' + t.id + '">' + t.label + '</span>';
+        });
+        h += '</div>';
+        h += '<span class="debug-close" id="' + O + '_close">✕</span>';
+        h += '</div>';
+        h += '<div class="debug-body">';
+        TABS.forEach(function(t, ti) {
+          h += '<div class="debug-panel' + (ti === 0 ? ' active' : '') + '" data-panel="' + t.id + '">';
+          h += '<div class="debug-grid">';
+          var metrics = METRICS[t.id];
+          if (metrics) {
+            metrics.forEach(function(m) {
+              h += '<div class="debug-row"><span class="debug-label" id="' + O + t.id + '_lbl_' + m[0] + '">' + m[1] + '</span><span class="debug-value" id="' + O + t.id + '_' + m[0] + '">—</span></div>';
+            });
+          }
+          h += '</div>';
+          h += '</div>';
+        });
+        h += '</div>';
+        return h;
+      }
+
+      // ── UPDATE FUNCTIONS ─────────────────────────────────────────────────────
+      function updateRendering() {
+        var fps = fpsData.current;
+        setText('rendering', 'fps', fps);
+        setText('rendering', 'fps_min', fpsData.min === Infinity ? 0 : fpsData.min);
+        setText('rendering', 'fps_max', fpsData.max);
+        setText('rendering', 'fps_avg', fpsData.count ? (fpsData.sum / fpsData.count).toFixed(1) : 0);
+        setText('rendering', 'ft', ms(fpsData.ft));
+        setText('rendering', 'ift', fpsData._lastFrameTime ? ms(performance.now() - fpsData._lastFrameTime) : '—');
+        setText('rendering', 'drops', fpsData.drops);
+        setText('rendering', 'uptime', ((performance.now() - perfEntries._navStart || performance.now()) / 1000).toFixed(1) + 's');
+        // updates/s is roughly equal to FPS for rendering
+        setText('rendering', 'updates_s', fps);
+      }
+
+      function updateMemory() {
+        try {
+          if (performance.memory) {
+            var used = performance.memory.usedJSHeapSize;
+            var total = performance.memory.totalJSHeapSize;
+            var limit = performance.memory.jsHeapSizeLimit;
+            setText('memory', 'mem_used', mb(used));
+            setText('memory', 'mem_total', mb(total));
+            setText('memory', 'mem_limit', mb(limit));
+            setText('memory', 'mem_pct', pct(used / limit));
+            memHistory.push(used);
+            if (memHistory.length > 30) memHistory.shift();
+            if (memHistory.length >= 2) {
+              var trend = ((memHistory[memHistory.length - 1] - memHistory[0]) / memHistory.length);
+              setText('memory', 'mem_trend', (trend > 0 ? '+' : '') + mb(Math.abs(trend)) + '/s', trend > 50000 ? 'warn' : 'good');
+              var leak = memHistory.length >= 10 && (memHistory[memHistory.length - 1] - memHistory[memHistory.length - 10]) > 5000000;
+              setText('memory', 'mem_leak', leak ? '⚠ Possível' : 'Normal', leak ? 'warn' : 'good');
+            }
+          } else {
+            ['mem_used','mem_total','mem_limit','mem_pct','mem_trend','mem_leak'].forEach(function(k) { setText('memory', k, null); });
+          }
+        } catch(e) {
+          ['mem_used','mem_total','mem_limit','mem_pct','mem_trend','mem_leak'].forEach(function(k) { setText('memory', k, null); });
         }
-        html += '</div>';
-        _debugOverlay.innerHTML = html;
-        document.body.appendChild(_debugOverlay);
+      }
 
-        // evento de fechar no X
-        document.getElementById('dbg-close').onclick = function() {
-          _debugVisible = false;
-          _debugOverlay.style.display = 'none';
-          pararDebugStats();
+      function updateCPU() {
+        setText('cpu', 'cpu_js', ms(jsProfile.script));
+        setText('cpu', 'cpu_lt', longTasks.length);
+        var avg = longTasks.length ? (longTasks.reduce(function(a,b){return a+b.duration;},0) / longTasks.length) : 0;
+        setText('cpu', 'cpu_lt_avg', ms(avg));
+        var peak = longTasks.length ? longTasks.reduce(function(a,b){return Math.max(a,b.duration);},0) : 0;
+        setText('cpu', 'cpu_peak', ms(peak));
+        setText('cpu', 'cpu_script', ms(jsProfile.script));
+        setText('cpu', 'cpu_render', ms(jsProfile.render));
+        setText('cpu', 'cpu_paint', ms(jsProfile.paint));
+      }
+
+      function updateDOM() {
+        try {
+          setText('dom', 'dom_els', document.querySelectorAll('*').length);
+          setText('dom', 'dom_nodes', document.getElementsByTagName('*').length);
+          setText('dom', 'dom_imgs', document.images.length);
+          setText('dom', 'dom_scripts', document.scripts.length);
+          setText('dom', 'dom_css', document.styleSheets.length);
+          setText('dom', 'dom_iframes', document.querySelectorAll('iframe').length);
+          try {
+            var all = document.querySelectorAll('*');
+            var listeners = 0;
+            all.forEach(function(n) {
+              var c = typeof getEventListeners !== 'undefined' ? getEventListeners(n) : null;
+              if (c) {
+                Object.keys(c).forEach(function(k) { listeners += c[k].length; });
+              }
+            });
+            setText('dom', 'dom_listeners', listeners > 0 ? listeners : null);
+          } catch(e) { setText('dom', 'dom_listeners', null); }
+          setText('dom', 'dom_html_size', (document.documentElement.outerHTML.length / 1024).toFixed(1) + ' KB');
+        } catch(e) { /* silent */ }
+      }
+
+      function updateResources() {
+        try {
+          var perf = performance.getEntriesByType('resource') || [];
+          var imgs = 0, fonts = 0, scripts = 0, css = 0, cached = 0, pending = 0;
+          var totalTime = 0;
+          perf.forEach(function(r) {
+            if (r.initiatorType === 'img') imgs++;
+            else if (r.initiatorType === 'css' || r.name.match(/\.css($|\?)/)) css++;
+            else if (r.initiatorType === 'script') scripts++;
+            else if (r.initiatorType === 'font') fonts++;
+            if (r.duration > 0 && r.transferSize > 0) cached++;
+            if (r.duration === 0) pending++;
+            totalTime += r.duration;
+          });
+          setText('resources', 'res_total', perf.length);
+          setText('resources', 'res_imgs', imgs);
+          setText('resources', 'res_fonts', fonts);
+          setText('resources', 'res_scripts', scripts);
+          setText('resources', 'res_css', css);
+          setText('resources', 'res_cached', cached);
+          setText('resources', 'res_pending', pending);
+          setText('resources', 'res_avg_time', perf.length ? ms(totalTime / perf.length) : '—');
+        } catch(e) { /* silent */ }
+      }
+
+      function updateNetwork() {
+        try {
+          if (navigator.connection) {
+            var c = navigator.connection;
+            var types = { 'bluetooth':'Bluetooth','cellular':'Celular','ethernet':'Ethernet','wifi':'Wi-Fi','wimax':'WiMAX','other':'Outro','unknown':'Desconhecido' };
+            setText('network', 'net_type', types[c.effectiveType] || c.effectiveType || na(null));
+            setText('network', 'net_latency', c.downlink != null ? c.downlink + ' Mbps' : null);
+            setText('network', 'net_rtt', c.rtt != null ? c.rtt + ' ms' : null);
+            setText('network', 'net_save', c.saveData ? 'Ativo' : 'Inativo');
+          } else {
+            setText('network', 'net_type', navigator.connection ? na(null) : null);
+          }
+          setText('network', 'net_online', navigator.onLine ? 'Online' : 'Offline', navigator.onLine ? 'good' : 'error');
+          try {
+            var pic = navigator.connection ? navigator.connection.downlinkMax || null : null;
+            setText('network', 'net_latency', pic ? pic + ' Mbps' : null);
+          } catch(e) { /* ignore */ }
+        } catch(e) { /* silent */ }
+      }
+
+      function updateBrowser() {
+        try {
+          var ua = navigator.userAgent;
+          var name = 'Desconhecido';
+          if (ua.indexOf('Firefox') > -1) name = 'Firefox';
+          else if (ua.indexOf('Edg') > -1) name = 'Edge';
+          else if (ua.indexOf('Chrome') > -1) name = 'Chrome';
+          else if (ua.indexOf('Safari') > -1) name = 'Safari';
+          else if (ua.indexOf('OPR') > -1 || ua.indexOf('Opera') > -1) name = 'Opera';
+          setText('browser', 'br_name', name + ' ' + (navigator.userAgent.match(/(?:Chrome|Firefox|Safari|Edg|OPR)\/(\d+)/) || [])[1] || '');
+          var engines = { 'Gecko':'Gecko','WebKit':'AppleWebKit','Blink':'Chrome' };
+          var engine = 'Desconhecido';
+          for (var e in engines) { if (ua.indexOf(engines[e]) > -1) { engine = e; break; } }
+          setText('browser', 'br_engine', engine);
+          setText('browser', 'br_platform', navigator.platform || na(null));
+          var os = 'Desconhecido';
+          if (ua.indexOf('Windows') > -1) os = 'Windows';
+          else if (ua.indexOf('Mac') > -1) os = 'macOS';
+          else if (ua.indexOf('Linux') > -1) os = 'Linux';
+          else if (ua.indexOf('Android') > -1) os = 'Android';
+          else if (ua.indexOf('iOS') > -1 || ua.indexOf('iPhone') > -1) os = 'iOS';
+          setText('browser', 'br_os', os);
+          setText('browser', 'br_lang', navigator.language || na(null));
+          setText('browser', 'br_tz', Intl.DateTimeFormat().resolvedOptions().timeZone || na(null));
+          setText('browser', 'br_cookies', navigator.cookieEnabled ? 'Ativados' : 'Desativados', navigator.cookieEnabled ? 'good' : 'warn');
+          try { localStorage.setItem('_dbg_test', '1'); localStorage.removeItem('_dbg_test');
+            setText('browser', 'br_ls', 'Disponível', 'good'); } catch(e) { setText('browser', 'br_ls', 'Indisponível', 'warn'); }
+          try { sessionStorage.setItem('_dbg_test', '1'); sessionStorage.removeItem('_dbg_test');
+            setText('browser', 'br_ss', 'Disponível', 'good'); } catch(e) { setText('browser', 'br_ss', 'Indisponível', 'warn'); }
+        } catch(e) { /* silent */ }
+      }
+
+      function updateDevice() {
+        try {
+          setText('device', 'dev_res', screen.width + ' × ' + screen.height);
+          setText('device', 'dev_vp', window.innerWidth + ' × ' + window.innerHeight);
+          setText('device', 'dev_dpr', window.devicePixelRatio.toFixed(2));
+          setText('device', 'dev_orient', screen.orientation ? screen.orientation.type : na(null));
+          setText('device', 'dev_depth', screen.colorDepth ? screen.colorDepth + ' bit' : na(null));
+          try { setText('device', 'dev_refresh', (screen.refreshRate || screen.displayRate || na(null)) + ' Hz'); } catch(e) { setText('device', 'dev_refresh', null); }
+          setText('device', 'dev_touch', navigator.maxTouchPoints || 0);
+          var type = 'Desktop';
+          if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(navigator.userAgent)) type = 'Tablet';
+          else if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(navigator.userAgent)) type = 'Mobile';
+          setText('device', 'dev_type', type);
+        } catch(e) { /* silent */ }
+      }
+
+      function updatePerf() {
+        setText('perf', 'perf_lcp', lcpValue ? ms(lcpValue) : 'Aguardando...');
+        setText('perf', 'perf_fcp', fcpValue ? ms(fcpValue) : 'Aguardando...');
+        setText('perf', 'perf_fp', fpValue ? ms(fpValue) : 'Aguardando...');
+        setText('perf', 'perf_cls', clsValue ? clsValue.toFixed(3) : 'Aguardando...');
+        setText('perf', 'perf_inp', null);
+        try {
+          var nav = performance.getEntriesByType('navigation')[0];
+          if (nav) {
+            setText('perf', 'perf_nav', ms(nav.domContentLoadedEventEnd));
+            setText('perf', 'perf_dom_ready', ms(nav.domInteractive));
+            setText('perf', 'perf_load', ms(nav.loadEventEnd));
+          }
+        } catch(e) { /* silent */ }
+        setText('perf', 'perf_last_interaction', userData.lastInteraction ? ((Date.now() - userData.lastInteraction) / 1000).toFixed(0) + 's' : '—');
+      }
+
+      function updateJS() {
+        setText('js', 'js_errors', errors.length);
+        setText('js', 'js_promises', rejectedPromises.length);
+        var timers = 0;
+        for (var i = 1; i <= 100000; i++) {
+          try { clearTimeout(i); timers++; } catch(e) { break; }
+        }
+        setText('js', 'js_timers', timers > 0 ? timers - 1 : 0);
+        setText('js', 'js_anim', fpsData._animCount || 0);
+        setText('js', 'js_events_s', fpsData._eventsPerSec || 0);
+        setText('js', 'js_exec_time', '—');
+      }
+
+      function updateStorage() {
+        try {
+          var lsSize = 0;
+          for (var k in localStorage) {
+            if (localStorage.hasOwnProperty(k)) {
+              lsSize += (localStorage[k].length || 0) * 2;
+            }
+          }
+          setText('storage', 'st_ls', mb(lsSize));
+          var ssSize = 0;
+          for (var sk in sessionStorage) {
+            if (sessionStorage.hasOwnProperty(sk)) {
+              ssSize += (sessionStorage[sk].length || 0) * 2;
+            }
+          }
+          setText('storage', 'st_ss', mb(ssSize));
+          setText('storage', 'st_used', mb(lsSize + ssSize));
+          setText('storage', 'st_avail', null);
+          setText('storage', 'st_idb', 'indexedDB' in window ? 'Disponível' : null, 'indexedDB' in window ? 'good' : 'na');
+          setText('storage', 'st_cache', 'caches' in window ? 'Disponível' : null, 'caches' in window ? 'good' : 'na');
+          setText('storage', 'st_sw', navigator.serviceWorker && navigator.serviceWorker.controller ? 'Ativo' : 'Inativo', navigator.serviceWorker && navigator.serviceWorker.controller ? 'good' : 'na');
+        } catch(e) { /* silent */ }
+      }
+
+      function updateGPU() {
+        try {
+          var canvas = document.createElement('canvas');
+          var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+          setText('gpu', 'gpu_webgl', gl ? 'Disponível' : null, gl ? 'good' : 'na');
+          setText('gpu', 'gpu_webgpu', 'gpu' in navigator ? 'Disponível' : null, 'gpu' in navigator ? 'good' : 'na');
+          if (gl) {
+            var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            if (debugInfo) {
+              setText('gpu', 'gpu_vendor', gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || na(null));
+              setText('gpu', 'gpu_renderer', gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || na(null));
+            } else {
+              setText('gpu', 'gpu_vendor', null);
+              setText('gpu', 'gpu_renderer', null);
+            }
+          } else {
+            setText('gpu', 'gpu_vendor', null);
+            setText('gpu', 'gpu_renderer', null);
+          }
+          var hwAccel = gl ? 'Ativa' : 'Indisponível';
+          setText('gpu', 'gpu_hw', hwAccel, gl ? 'good' : 'warn');
+        } catch(e) { /* silent */ }
+      }
+
+      function updateSecurity() {
+        try {
+          setText('security', 'sec_https', location.protocol === 'https:' ? 'Ativo' : 'Inativo', location.protocol === 'https:' ? 'good' : 'warn');
+          setText('security', 'sec_mixed', null);
+          setText('security', 'sec_coop', 'crossOriginIsolated' in window ? (crossOriginIsolated ? 'Sim' : 'Não') : null, crossOriginIsolated ? 'good' : 'na');
+          setText('security', 'sec_ctx', 'isSecureContext' in window ? (isSecureContext ? 'Sim' : 'Não') : null, isSecureContext ? 'good' : 'warn');
+          setText('security', 'sec_clipboard', 'clipboard' in navigator ? 'Disponível' : null, 'clipboard' in navigator ? 'good' : 'na');
+          setText('security', 'sec_perms', 'permissions' in navigator ? 'Disponível' : null, 'permissions' in navigator ? 'good' : 'na');
+        } catch(e) { /* silent */ }
+      }
+
+      function updatePage() {
+        try {
+          setText('page', 'page_url', location.href);
+          setText('page', 'page_redirects', performance.navigation ? performance.navigation.redirectCount : null);
+          setText('page', 'page_history', history.length);
+          setText('page', 'page_vis', document.visibilityState === 'visible' ? 'Visível' : 'Oculta', document.visibilityState === 'visible' ? 'good' : 'warn');
+          setText('page', 'page_focus', document.hasFocus ? (document.hasFocus() ? 'Com foco' : 'Sem foco') : null, document.hasFocus && document.hasFocus() ? 'good' : 'warn');
+          setText('page', 'page_tabs', null);
+          setText('page', 'page_nav_time', perfEntries._navStart ? ((performance.now() - perfEntries._navStart) / 1000).toFixed(1) + 's' : '—');
+        } catch(e) { /* silent */ }
+      }
+
+      function updateUser() {
+        setText('user', 'user_scroll_x', scrollData.x);
+        setText('user', 'user_scroll_y', scrollData.y);
+        setText('user', 'user_scroll_pct', scrollData.pct.toFixed(1) + '%');
+        setText('user', 'user_mouse_x', userData.mouseX + ',' + userData.mouseY);
+        setText('user', 'user_clicks', userData.clicks);
+        setText('user', 'user_keys', userData.keys);
+        setText('user', 'user_inactivity', userData.inactivity > 0 ? userData.inactivity + 's' : '—');
+        setText('user', 'user_last_interaction', userData.lastInteraction ? ((Date.now() - userData.lastInteraction) / 1000).toFixed(0) + 's' : '—');
+      }
+
+      function updateApp() {
+        setText('app', 'app_fetch_active', fetchData.active);
+        setText('app', 'app_fetch_done', fetchData.completed);
+        setText('app', 'app_fetch_failed', fetchData.failed);
+        setText('app', 'app_api_avg', fetchData.times.length ? ms(fetchData.times.reduce(function(a,b){return a+b;},0) / fetchData.times.length) : '—');
+        setText('app', 'app_loading', '—');
+        setText('app', 'app_data_size', '—');
+      }
+
+      var UPDATE_FUNCS = {
+        rendering: updateRendering, memory: updateMemory, cpu: updateCPU,
+        dom: updateDOM, resources: updateResources, network: updateNetwork,
+        browser: updateBrowser, device: updateDevice, perf: updatePerf,
+        js: updateJS, storage: updateStorage, gpu: updateGPU,
+        security: updateSecurity, page: updatePage, user: updateUser, app: updateApp
+      };
+
+      // ── FPS LOOP ──────────────────────────────────────────────────────────────
+      function fpsLoop(ts) {
+        if (!visible) return;
+        fpsData.frames++;
+        fpsData.ft = performance.now() - (fpsData._lastTs || performance.now());
+        fpsData._lastFrameTime = fpsData._lastTs;
+        fpsData._lastTs = performance.now();
+        var dt = performance.now() - fpsData.t0;
+        if (dt >= 500) {
+          fpsData.current = Math.round(fpsData.frames / (dt / 1000));
+          fpsData.min = Math.min(fpsData.min, fpsData.current);
+          fpsData.max = Math.max(fpsData.max, fpsData.current);
+          fpsData.sum += fpsData.current;
+          fpsData.count++;
+          if (fpsData.current < 20) fpsData.drops++;
+          fpsData.frames = 0;
+          fpsData.t0 = performance.now();
+        }
+        raf = requestAnimationFrame(fpsLoop);
+      }
+
+      // ── MAIN UPDATE LOOP ──────────────────────────────────────────────────────
+      function updateAll() {
+        if (!visible) return;
+        try { updateRendering(); } catch(e) {}
+        try { updateMemory(); } catch(e) {}
+        try { updateCPU(); } catch(e) {}
+        try { updateDOM(); } catch(e) {}
+        try { updateResources(); } catch(e) {}
+        try { updateNetwork(); } catch(e) {}
+        try { updateBrowser(); } catch(e) {}
+        try { updateDevice(); } catch(e) {}
+        try { updatePerf(); } catch(e) {}
+        try { updateJS(); } catch(e) {}
+        try { updateStorage(); } catch(e) {}
+        try { updateGPU(); } catch(e) {}
+        try { updateSecurity(); } catch(e) {}
+        try { updatePage(); } catch(e) {}
+        try { updateUser(); } catch(e) {}
+        try { updateApp(); } catch(e) {}
+      }
+
+      // ── INIT PERFORMANCE OBSERVERS ────────────────────────────────────────────
+      function initObservers() {
+        try {
+          var lcpObs = new PerformanceObserver(function(list) {
+            var entries = list.getEntries();
+            if (entries.length) { lcpValue = entries[entries.length - 1].startTime; }
+          });
+          lcpObs.observe({ type: 'largest-contentful-paint', buffered: true });
+        } catch(e) {}
+        try {
+          var clsObs = new PerformanceObserver(function(list) {
+            for (var entry of list.getEntries()) {
+              if (!entry.hadRecentInput) clsValue += entry.value;
+            }
+          });
+          clsObs.observe({ type: 'layout-shift', buffered: true });
+        } catch(e) {}
+        try {
+          var fcpObs = new PerformanceObserver(function(list) {
+            var entries = list.getEntries();
+            if (entries.length) { fcpValue = entries[0].startTime; }
+          });
+          fcpObs.observe({ type: 'paint', buffered: true });
+        } catch(e) {}
+        try {
+          var paintObs = new PerformanceObserver(function(list) {
+            list.getEntries().forEach(function(e) {
+              if (e.name === 'first-paint') fpValue = e.startTime;
+            });
+          });
+          paintObs.observe({ type: 'paint', buffered: true });
+        } catch(e) {}
+        // Navigation timing
+        try {
+          var navEntries = performance.getEntriesByType('navigation');
+          if (navEntries.length) perfEntries._navStart = navEntries[0].startTime;
+        } catch(e) {}
+      }
+
+      // ── ERROR / PROMISE CATCHERS ──────────────────────────────────────────────
+      function initErrorListeners() {
+        window.addEventListener('error', function(e) {
+          errors.push({ msg: e.message, file: e.filename, line: e.lineno, time: Date.now() });
+          if (errors.length > 100) errors.shift();
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+          rejectedPromises.push({ reason: (e.reason || '').toString(), time: Date.now() });
+          if (rejectedPromises.length > 100) rejectedPromises.shift();
+        });
+      }
+
+      // ── USER INTERACTION TRACKERS ─────────────────────────────────────────────
+      function initUserTrackers() {
+        document.addEventListener('mousemove', function(e) {
+          userData.mouseX = e.clientX; userData.mouseY = e.clientY;
+          userData.lastInteraction = Date.now();
+        }, { passive: true });
+        document.addEventListener('click', function() {
+          userData.clicks++; userData.lastInteraction = Date.now();
+        }, { passive: true });
+        document.addEventListener('keydown', function() {
+          userData.keys++; userData.lastInteraction = Date.now();
+        }, { passive: true });
+        window.addEventListener('scroll', function() {
+          scrollData.x = window.scrollX;
+          scrollData.y = window.scrollY;
+          var docH = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+          scrollData.pct = docH ? (scrollData.y / (docH - window.innerHeight)) * 100 : 0;
+          userData.lastInteraction = Date.now();
+        }, { passive: true });
+        // inactivity timer
+        setInterval(function() {
+          if (userData.lastInteraction) {
+            userData.inactivity = Math.round((Date.now() - userData.lastInteraction) / 1000);
+          }
+        }, 1000);
+      }
+
+      // ── FETCH MONITOR ─────────────────────────────────────────────────────────
+      function initFetchMonitor() {
+        var origFetch = window.fetch;
+        window.fetch = function() {
+          fetchData.active++;
+          var start = performance.now();
+          return origFetch.apply(this, arguments).then(function(r) {
+            fetchData.active--;
+            fetchData.completed++;
+            fetchData.times.push(performance.now() - start);
+            if (fetchData.times.length > 100) fetchData.times.shift();
+            return r;
+          }).catch(function(e) {
+            fetchData.active--;
+            fetchData.failed++;
+            throw e;
+          });
         };
       }
-      _debugVisible = !_debugVisible;
-      _debugOverlay.style.display = _debugVisible ? 'block' : 'none';
-      if (_debugVisible) iniciarDebugStats(); else pararDebugStats();
-    }
 
-    function iniciarDebugStats() {
-      // FPS tracking: conta frames durante 1s via rAF
-      var fpsFrames = 0;
-      var fpsT0 = performance.now();
-      var fpsRAF = null;
-
-      function fpsLoop() {
-        fpsFrames++;
-        var dt = performance.now() - fpsT0;
-        if (dt >= 1000) {
-          var fps = Math.round(fpsFrames / (dt / 1000));
-          var ft = (dt / fpsFrames / 16.67 * 100).toFixed(0) + '%';
-          var el = function(id, v) { var e = document.getElementById('dbg-' + id); if (e) e.textContent = v; };
-          el('_fps', fps);
-          el('_ft', ft);
-          fpsFrames = 0;
-          fpsT0 = performance.now();
+      // ── TOGGLE ────────────────────────────────────────────────────────────────
+      function show() {
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'debug-overlay';
+          el.innerHTML = buildHTML();
+          document.body.appendChild(el);
+          // Tabs
+          el.querySelectorAll('.debug-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+              el.querySelectorAll('.debug-tab').forEach(function(t) { t.classList.remove('active'); });
+              el.querySelectorAll('.debug-panel').forEach(function(p) { p.classList.remove('active'); });
+              tab.classList.add('active');
+              var panel = el.querySelector('[data-panel="' + tab.dataset.tab + '"]');
+              if (panel) panel.classList.add('active');
+            });
+          });
+          // Close
+          el.querySelector('#' + O + '_close').addEventListener('click', hide);
+          initObservers();
+          initErrorListeners();
+          initUserTrackers();
+          initFetchMonitor();
         }
-        if (_debugVisible) fpsRAF = requestAnimationFrame(fpsLoop);
+        visible = true;
+        el.classList.add('visible');
+        fpsData.t0 = performance.now();
+        fpsData._lastTs = performance.now();
+        raf = requestAnimationFrame(fpsLoop);
+        timer = setInterval(updateAll, 500);
+        updateAll();
       }
-      fpsRAF = requestAnimationFrame(fpsLoop);
 
-      // restantes stats a cada 1s
-      var el = function(id, v) { var e = document.getElementById('dbg-' + id); if (e) e.textContent = v; };
-      function atualizar() {
-        if (performance.memory) {
-          el('_mem', (performance.memory.usedJSHeapSize / 1048576).toFixed(1) + ' MB / ' + (performance.memory.jsHeapSizeLimit / 1048576).toFixed(0) + ' MB');
-        }
-        el('_els', document.querySelectorAll('*').length);
-        el('_nodes', document.getElementsByTagName('*').length);
-        el('_tiles', document.querySelectorAll('.leaflet-tile-loaded').length);
-        el('_leaflet', Object.keys(cardMaps || {}).length + ' card + ' + (typeof heroMap !== 'undefined' && heroMap ? '1 hero' : '0 hero'));
-        el('_vp', window.innerWidth + ' × ' + window.innerHeight);
-        el('_dpr', window.devicePixelRatio.toFixed(2));
-        el('_theme', document.documentElement.getAttribute('data-theme') || 'light');
-        el('_lang', document.documentElement.getAttribute('lang') || 'pt');
+      function hide() {
+        visible = false;
+        if (el) el.classList.remove('visible');
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        if (timer) { clearInterval(timer); timer = null; }
       }
-      atualizar();
-      _debugTimer = setInterval(atualizar, 1000);
-      // permite parar o rAF quando o overlay fechar
-      _debugTimer._fpsRAF = fpsRAF;
-    }
 
-    function pararDebugStats() {
-      if (_debugTimer) {
-        if (_debugTimer._fpsRAF) cancelAnimationFrame(_debugTimer._fpsRAF);
-        clearInterval(_debugTimer);
-        _debugTimer = null;
-      }
-    }
-    // ── FIM EASTER EGG ────────────────────────────────────────────────────────
+      return { show: show, hide: hide, toggle: function() { if (visible) hide(); else show(); } };
+    })();
+
+    function toggleDebugOverlay() { DebugOverlay.toggle(); }
+    // ── FIM EASTER EGG ─────────────────────────────────────────────────────────
     const navToggleBtn = document.getElementById('nav-toggle');
     const navLinksEl = document.getElementById('nav-links');
 
