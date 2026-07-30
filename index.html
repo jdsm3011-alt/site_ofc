@@ -2717,6 +2717,64 @@
       max-width: 720px;
     }
 
+    /* ── SOBRE: layout em duas colunas (desktop) ──────────────── */
+    .sobre-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .sobre-info-col {
+      padding-top: 2px;
+    }
+
+    .sobre-info-col h4 {
+      font-family: 'Spectral', serif;
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .sobre-info-col > p {
+      font-size: 13px;
+      color: var(--stone);
+      margin-bottom: 10px;
+    }
+
+    .sobre-info-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .sobre-info-list li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--stone);
+    }
+
+    .sobre-info-list .sobre-info-label {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    @media (min-width: 901px) {
+      .sobre-section {
+        grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+        gap: 40px;
+      }
+
+      .sobre-info-col {
+        border-left: 1px solid var(--line);
+        padding-left: 28px;
+        padding-top: 9px;
+      }
+    }
+
     #terms-section {
       scroll-margin-top: 96px;
     }
@@ -5043,22 +5101,31 @@
 
 
     <div class="site-footer-inner">
-      <div>
-        <h2 class="footer-sobre-title" data-i18n="footer.sobreTitle">Sobre</h2>
-        <p class="footer-sobre-text" data-i18n="footer.sobreText">Este projeto (não oficial) está a ser realizado para responder à necessidade de informação geográfica
-          organizada e estruturada, daí este website, com todas as suas componentes. Dispõe de diversas ferramentas de análise espacial que englobam uma elevada diversidade de dados
-          dentro do contexto territorial português. Destaco a ferramenta "Areal weighting" (disponível no topo do website), que permite afixar até 5 buffers (áreas de influência) em qualquer município português, com raios flexíveis.
-          Através do cálculo inerente ao mesmo, consegue ponderar a população, edifícios (entre outros dados da BGRI) que se encontram localizados dentro desses mesmos raios (preste apenas atenção ao ano dos dados em si).
-          A plataforma disponibiliza ainda um WebGIS (fGIS), que se comporta como um SIG tradicional (com bastantes limitações ainda), mas permite, de forma direta, visualizar e sobrepor informação geográfica deste website, bem como outras ferramentas inerentes aos SIG. Refiro que esta plataforma ainda está em desenvolvimento.
-          Se for professor ou aluno, este website contém um grande leque de informação geográfica pré-processada, pronta a usar. Relembro que o mesmo ainda se
-          encontra em desenvolvimento. Este projeto é desenvolvido e mantido de forma autónoma.</p>
-
-      </div>
-      <div class="site-footer-inner">
-        <div>
-          <h4 data-i18n="footer.coordTitle">Coordenadas geográficas</h4>
-          <p data-i18n="footer.coordText">Todos os dados disponibilizados neste portal estão no sistema de coordenadas ETRS89 PT-TM06.</p>
+      <div class="sobre-section">
+        <div class="sobre-text-col">
+          <h2 class="footer-sobre-title" data-i18n="footer.sobreTitle">Sobre</h2>
+          <p class="footer-sobre-text" data-i18n="footer.sobreText">Este projeto (não oficial) está a ser realizado para responder à necessidade de informação geográfica
+            organizada e estruturada, daí este website, com todas as suas componentes. Dispõe de diversas ferramentas de análise espacial que englobam uma elevada diversidade de dados
+            dentro do contexto territorial português. Destaco a ferramenta "Areal weighting" (disponível no topo do website), que permite afixar até 5 buffers (áreas de influência) em qualquer município português, com raios flexíveis.
+            Através do cálculo inerente ao mesmo, consegue ponderar a população, edifícios (entre outros dados da BGRI) que se encontram localizados dentro desses mesmos raios (preste apenas atenção ao ano dos dados em si).
+            A plataforma disponibiliza ainda um WebGIS (fGIS), que se comporta como um SIG tradicional (com bastantes limitações ainda), mas permite, de forma direta, visualizar e sobrepor informação geográfica deste website, bem como outras ferramentas inerentes aos SIG. Refiro que esta plataforma ainda está em desenvolvimento.
+            Se for professor ou aluno, este website contém um grande leque de informação geográfica pré-processada, pronta a usar. Relembro que o mesmo ainda se
+            encontra em desenvolvimento. Este projeto é desenvolvido e mantido de forma autónoma.</p>
         </div>
+
+        <aside class="sobre-info-col" aria-label="Informações técnicas">
+          <h4 data-i18n="footer.coordTitle">Coordenadas geográficas</h4>
+          <p data-i18n="footer.coordText">Todos os dados disponibilizados neste portal utilizam:</p>
+          <ul class="sobre-info-list">
+            <li><span class="sobre-info-label" data-i18n="footer.coordSystemLabel">Sistema de coordenadas</span>: ETRS89 / PT-TM06</li>
+            <li><span class="sobre-info-label">EPSG</span>: 3763</li>
+            <li><span class="sobre-info-label" data-i18n="footer.datumLabel">Datum</span>: ETRS89</li>
+            <li><span class="sobre-info-label" data-i18n="footer.projectionLabel">Projeção</span>: <span data-i18n="footer.projectionValue">Transversa de Mercator</span></li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="site-footer-inner">
 
 
 
@@ -8252,7 +8319,11 @@
           'footer.sobreTitle': 'About',
           'footer.sobreText': 'This (unofficial) project is being carried out to address the need for organised, structured geographic information, hence this website and all of its components. It provides various spatial analysis tools covering a wide range of data within the Portuguese territorial context. Notable among them is the "Areal weighting" tool, which allows up to 5 buffers (areas of influence) in any Portuguese municipality with flexible radii. Through its inherent computation, it weights population, buildings (among other BGRI data) located within those radii. The platform also features fGIS, a WebGIS that behaves like a traditional GIS (still with several limitations) but allows direct visualisation and overlay of geographic data from this website. If you are a teacher or student, this website contains a wide range of pre-processed geographic data ready to use. Please note that it is still under development. This project is developed and maintained independently.',
           'footer.coordTitle': 'Geographic coordinates',
-          'footer.coordText': 'All data provided on this portal use the ETRS89 PT-TM06 coordinate system.',
+          'footer.coordText': 'All data provided on this portal use:',
+          'footer.coordSystemLabel': 'Coordinate system',
+          'footer.datumLabel': 'Datum',
+          'footer.projectionLabel': 'Projection',
+          'footer.projectionValue': 'Transverse Mercator',
           'footer.termsTitle': 'Terms and Conditions',
 
           'legal.usoTitle': 'Data usage',
