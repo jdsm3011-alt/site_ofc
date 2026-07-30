@@ -2172,24 +2172,32 @@
         line-height: 1.5;
       }
 
-      /* ordem em mobile: hamburguer --- modo escuro / feedback / EN */
+      /* ordem em mobile: hamburguer --- feedback / modo escuro / EN */
       .nav-toggle {
         display: flex;
         order: 1;
+        width: 34px;
+        height: 34px;
+        margin: 0;
       }
-
-      .theme-toggle {
-        order: 2;
-        margin-left: auto;
+      .nav-toggle-bar {
+        width: 16px;
       }
 
       .feedback-nav-btn {
+        order: 2;
+        margin-left: auto;
+        margin-right: 0;
+      }
+
+      .theme-toggle {
         order: 3;
-        margin-left: 0;
+        margin: 0;
       }
 
       .lang-toggle {
         order: 4;
+        margin: 0;
       }
 
       /* nav-links deixa de estar em linha e passa a painel dropdown,
@@ -4088,6 +4096,19 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
       gap: 3px 14px;
+    }
+    .debug-fps-graph-wrap {
+      margin-top: 16px;
+      padding: 8px;
+      background: rgba(0,0,0,.3);
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    #debug-fps-canvas {
+      display: block;
+      width: 100%;
+      height: 80px;
+      border-radius: 4px;
     }
     .debug-row {
       display: flex; align-items: center; justify-content: space-between;
@@ -6728,7 +6749,8 @@
       var el = null, visible = false, timer = null, raf = null;
       var fpsData = {
         frames: 0, t0: 0, current: 0, min: Infinity, max: 0, sum: 0, count: 0,
-        drops: 0, ft: 0, lastTs: 0, lastFrameTime: 0, totalFrames: 0
+        drops: 0, ft: 0, lastTs: 0, lastFrameTime: 0, totalFrames: 0,
+        history: []
       };
       var longTasks = [], userData = { clicks: 0, keys: 0, moves: 0, lastInteraction: 0, mouseX: 0, mouseY: 0, inactivity: 0, _lastEventTotal: 0 };
       var fetchData = { active: 0, completed: 0, failed: 0, times: [] };
@@ -6875,6 +6897,9 @@
             });
           }
           h += '</div>';
+          if (t.id === 'rendering') {
+            h += '<div class="debug-fps-graph-wrap"><canvas id="debug-fps-canvas" width="800" height="160"></canvas></div>';
+          }
           h += '</div>';
         });
         h += '</div>';
@@ -6911,6 +6936,86 @@
         // updates/s is roughly equal to FPS for rendering
         setText('rendering', 'updates_s', fps, cls);
         updateFpsBadge(fps, cls);
+        drawFpsGraph();
+      }
+
+      function drawFpsGraph() {
+        var canvas = document.getElementById('debug-fps-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w = canvas.width, h = canvas.height;
+        var history = fpsData.history;
+        var len = history.length;
+        if (len < 2) return;
+
+        ctx.clearRect(0, 0, w, h);
+
+        var pad = 8;
+        var gW = w - pad * 2;
+        var gH = h - pad * 2;
+        var maxFps = 60;
+        var minFps = 0;
+
+        // grid lines
+        ctx.strokeStyle = 'rgba(255,255,255,.06)';
+        ctx.lineWidth = 1;
+        for (var g = 0; g <= 3; g++) {
+          var y = pad + gH - (gH * (g * 20 - minFps) / (maxFps - minFps));
+          ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(pad + gW, y); ctx.stroke();
+        }
+
+        // baseline 30fps
+        var y30 = pad + gH - (gH * (30 - minFps) / (maxFps - minFps));
+        ctx.strokeStyle = 'rgba(240,192,96,.2)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(pad, y30); ctx.lineTo(pad + gW, y30); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 60fps line
+        var y60 = pad + gH - (gH * (60 - minFps) / (maxFps - minFps));
+        ctx.strokeStyle = 'rgba(111,207,151,.2)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(pad, y60); ctx.lineTo(pad + gW, y60); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // graph area fill
+        ctx.beginPath();
+        ctx.moveTo(pad, pad + gH);
+        for (var i = 0; i < len; i++) {
+          var x = pad + (i / (120 - 1)) * gW;
+          var y = pad + gH - (gH * (Math.min(history[i], maxFps) - minFps) / (maxFps - minFps));
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(pad + gW, pad + gH);
+        ctx.closePath();
+        var grad = ctx.createLinearGradient(0, pad, 0, pad + gH);
+        grad.addColorStop(0, 'rgba(126,200,227,.25)');
+        grad.addColorStop(1, 'rgba(126,200,227,.02)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // graph line
+        ctx.beginPath();
+        for (var j = 0; j < len; j++) {
+          var x2 = pad + (j / (120 - 1)) * gW;
+          var y2 = pad + gH - (gH * (Math.min(history[j], maxFps) - minFps) / (maxFps - minFps));
+          if (j === 0) ctx.moveTo(x2, y2);
+          else ctx.lineTo(x2, y2);
+        }
+        var lastVal = history[len - 1];
+        var lineColor = lastVal >= 50 ? '#6fcf97' : (lastVal >= 30 ? '#f0c060' : '#e36f6f');
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // current value label
+        ctx.fillStyle = lineColor;
+        ctx.font = '10px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        var labelX = pad + gW;
+        var labelY = pad + gH - (gH * (Math.min(lastVal, maxFps) - minFps) / (maxFps - minFps)) - 4;
+        ctx.fillText(lastVal + ' FPS', labelX, Math.max(pad, labelY));
       }
 
       function updateMemory() {
@@ -7212,6 +7317,8 @@
         var dt = now - fpsData.t0;
         if (dt >= 500) {
           fpsData.current = Math.round((fpsData.frames * 1000) / dt);
+          fpsData.history.push(fpsData.current);
+          if (fpsData.history.length > 120) fpsData.history.shift();
           if (fpsData.current < fpsData.min) fpsData.min = fpsData.current;
           if (fpsData.current > fpsData.max) fpsData.max = fpsData.current;
           fpsData.sum += fpsData.current;
