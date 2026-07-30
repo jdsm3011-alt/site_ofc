@@ -4704,11 +4704,6 @@
                   </div>
                 </div>
 
-                <!-- ÁREAS ARDIDAS -->
-                <a href="areas_ardidas.html" class="btn-ardidas">
-                  <span class="dla-text" data-i18n="panel.areasArdidas">Histórico de Áreas Ardidas</span>
-                  <span class="dla-arrow">›</span>
-                </a>
               </div>
             </div>
           </div>
@@ -5381,6 +5376,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   <script>
     // ── MAPA BASE ────────────────────────────────────────────────────────────────
+    const PORTUGAL_BOUNDS = [[36.2, -10.3], [42.8, -5.4]];
+
     const map = L.map('map', {
       zoomControl: false,
       attributionControl: false,
@@ -5388,7 +5385,10 @@
       scrollWheelZoom: true,
       doubleClickZoom: true,
       touchZoom: true,
-      dragging: true
+      dragging: true,
+      minZoom: 7,
+      maxBounds: PORTUGAL_BOUNDS,
+      maxBoundsViscosity: 1.0
     }).setView([39.6, -8.2], 7);
 
     L.control.scale({ position: 'bottomleft', maxWidth: 120 }).addTo(map);
