@@ -4099,15 +4099,17 @@
     }
     .debug-fps-graph-wrap {
       margin-top: 16px;
-      padding: 8px;
-      background: rgba(0,0,0,.3);
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,.06);
+      padding: 10px 10px 8px;
+      background: rgba(0,0,0,.35);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.07);
+      max-width: 640px;
     }
     #debug-fps-canvas {
       display: block;
       width: 100%;
-      height: 80px;
+      height: auto;
+      aspect-ratio: 800 / 200;
       border-radius: 4px;
     }
     .debug-row {
@@ -6898,7 +6900,7 @@
           }
           h += '</div>';
           if (t.id === 'rendering') {
-            h += '<div class="debug-fps-graph-wrap"><canvas id="debug-fps-canvas" width="800" height="160"></canvas></div>';
+            h += '<div class="debug-fps-graph-wrap"><canvas id="debug-fps-canvas" width="800" height="200"></canvas></div>';
           }
           h += '</div>';
         });
@@ -6950,72 +6952,128 @@
 
         ctx.clearRect(0, 0, w, h);
 
-        var pad = 8;
-        var gW = w - pad * 2;
-        var gH = h - pad * 2;
-        var maxFps = 60;
-        var minFps = 0;
+        var padL = 36, padR = 12, padT = 12, padB = 16;
+        var gW = w - padL - padR;
+        var gH = h - padT - padB;
+        var maxFps = 60, minFps = 0;
 
-        // grid lines
-        ctx.strokeStyle = 'rgba(255,255,255,.06)';
+        function yPos(v) { return padT + gH - (gH * (Math.min(v, maxFps) - minFps) / (maxFps - minFps)); }
+        function xPos(i) { return padL + (i / (120 - 1)) * gW; }
+
+        var gridColor = 'rgba(255,255,255,.06)';
+        ctx.strokeStyle = gridColor;
         ctx.lineWidth = 1;
-        for (var g = 0; g <= 3; g++) {
-          var y = pad + gH - (gH * (g * 20 - minFps) / (maxFps - minFps));
-          ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(pad + gW, y); ctx.stroke();
+
+        // Y-axis labels + grid lines
+        var yLabels = [0, 15, 30, 45, 60];
+        ctx.font = '9px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (var g = 0; g < yLabels.length; g++) {
+          var y = yPos(yLabels[g]);
+          ctx.fillStyle = 'rgba(255,255,255,.25)';
+          ctx.fillText(yLabels[g], padL - 6, y);
+          ctx.strokeStyle = (yLabels[g] === 30 || yLabels[g] === 60) ? 'rgba(255,255,255,.08)' : gridColor;
+          ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + gW, y); ctx.stroke();
         }
 
-        // baseline 30fps
-        var y30 = pad + gH - (gH * (30 - minFps) / (maxFps - minFps));
-        ctx.strokeStyle = 'rgba(240,192,96,.2)';
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.moveTo(pad, y30); ctx.lineTo(pad + gW, y30); ctx.stroke();
-        ctx.setLineDash([]);
+        // Warning lines (30fps & 60fps) with labels on right
+        var y30 = yPos(30);
+        ctx.strokeStyle = 'rgba(240,192,96,.25)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.moveTo(padL, y30); ctx.lineTo(padL + gW, y30); ctx.stroke();
+        ctx.fillStyle = 'rgba(240,192,96,.45)';
+        ctx.font = '8px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('30 FPS', padL + gW + 4, y30 - 1);
 
-        // 60fps line
-        var y60 = pad + gH - (gH * (60 - minFps) / (maxFps - minFps));
+        var y60 = yPos(60);
         ctx.strokeStyle = 'rgba(111,207,151,.2)';
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.moveTo(pad, y60); ctx.lineTo(pad + gW, y60); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(padL, y60); ctx.lineTo(padL + gW, y60); ctx.stroke();
+        ctx.fillStyle = 'rgba(111,207,151,.45)';
+        ctx.fillText('60 FPS', padL + gW + 4, y60 - 1);
         ctx.setLineDash([]);
 
-        // graph area fill
+        // Area fill with gradient
         ctx.beginPath();
-        ctx.moveTo(pad, pad + gH);
+        ctx.moveTo(xPos(0), padT + gH);
         for (var i = 0; i < len; i++) {
-          var x = pad + (i / (120 - 1)) * gW;
-          var y = pad + gH - (gH * (Math.min(history[i], maxFps) - minFps) / (maxFps - minFps));
-          ctx.lineTo(x, y);
+          ctx.lineTo(xPos(i), yPos(history[i]));
         }
-        ctx.lineTo(pad + gW, pad + gH);
+        ctx.lineTo(xPos(len - 1), padT + gH);
         ctx.closePath();
-        var grad = ctx.createLinearGradient(0, pad, 0, pad + gH);
-        grad.addColorStop(0, 'rgba(126,200,227,.25)');
-        grad.addColorStop(1, 'rgba(126,200,227,.02)');
+        var grad = ctx.createLinearGradient(0, padT, 0, padT + gH);
+        var lastVal = history[len - 1];
+        var topColor = lastVal >= 50 ? 'rgba(111,207,151,' : (lastVal >= 30 ? 'rgba(240,192,96,' : 'rgba(227,111,111,');
+        grad.addColorStop(0, topColor + '.30)');
+        grad.addColorStop(0.4, topColor + '.10)');
+        grad.addColorStop(1, topColor + '.01)');
         ctx.fillStyle = grad;
         ctx.fill();
 
-        // graph line
+        // Graph line with smooth segments (quadratic bezier)
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        // Shadow/glow
+        ctx.shadowColor = lastVal >= 50 ? 'rgba(111,207,151,.15)' : (lastVal >= 30 ? 'rgba(240,192,96,.15)' : 'rgba(227,111,111,.15)');
+        ctx.shadowBlur = 6;
+
         ctx.beginPath();
         for (var j = 0; j < len; j++) {
-          var x2 = pad + (j / (120 - 1)) * gW;
-          var y2 = pad + gH - (gH * (Math.min(history[j], maxFps) - minFps) / (maxFps - minFps));
-          if (j === 0) ctx.moveTo(x2, y2);
-          else ctx.lineTo(x2, y2);
+          var x = xPos(j), y = yPos(history[j]);
+          if (j === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            var prevX = xPos(j - 1), prevY = yPos(history[j - 1]);
+            var cpx = (prevX + x) / 2;
+            ctx.bezierCurveTo(cpx, prevY, cpx, y, x, y);
+          }
         }
-        var lastVal = history[len - 1];
-        var lineColor = lastVal >= 50 ? '#6fcf97' : (lastVal >= 30 ? '#f0c060' : '#e36f6f');
-        ctx.strokeStyle = lineColor;
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = lastVal >= 50 ? '#6fcf97' : (lastVal >= 30 ? '#f0c060' : '#e36f6f');
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // current value label
-        ctx.fillStyle = lineColor;
+        // Highlighted dot on current value
+        var lastX = xPos(len - 1), lastY = yPos(lastVal);
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = lastVal >= 50 ? '#6fcf97' : (lastVal >= 30 ? '#f0c060' : '#e36f6f');
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#1a1a1e';
+        ctx.fill();
+
+        // Stats overlay (current / min / max / avg)
         ctx.font = '10px "IBM Plex Mono", monospace';
         ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        var minVal = fpsData.min === Infinity ? 0 : fpsData.min;
+        var avg = fpsData.count ? (fpsData.sum / fpsData.count) : 0;
+        var statsY = padT;
+        var statColor = lastVal >= 50 ? '#6fcf97' : (lastVal >= 30 ? '#f0c060' : '#e36f6f');
+        ctx.fillStyle = statColor;
+        ctx.fillText(lastVal + ' FPS', padL + gW, statsY);
+
+        // Background pill for stats
+        var statsText = 'min ' + minVal + '  avg ' + (fpsData.count ? avg.toFixed(1) : '—') + '  max ' + fpsData.max;
+        ctx.font = '8px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'right';
         ctx.textBaseline = 'bottom';
-        var labelX = pad + gW;
-        var labelY = pad + gH - (gH * (Math.min(lastVal, maxFps) - minFps) / (maxFps - minFps)) - 4;
-        ctx.fillText(lastVal + ' FPS', labelX, Math.max(pad, labelY));
+        var statsX = padL + gW;
+        var statsY2 = padT + gH + 4;
+        var textW = ctx.measureText(statsText).width;
+        ctx.fillStyle = 'rgba(0,0,0,.5)';
+        ctx.beginPath();
+        ctx.roundRect ? ctx.roundRect(statsX - textW - 6, statsY2 - 10, textW + 10, 14, 4) : ctx.rect(statsX - textW - 6, statsY2 - 10, textW + 10, 14);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.35)';
+        ctx.fillText(statsText, statsX, statsY2);
       }
 
       function updateMemory() {
