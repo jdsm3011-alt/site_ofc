@@ -502,6 +502,10 @@
       background-attachment: fixed;
       color: var(--ink);
       scroll-behavior: smooth;
+      /* Bloqueia pinch-zoom e double-tap-zoom em mobile (mantém scroll normal).
+         O mapa Leaflet (#map / .leaflet-container) fica excluído mais abaixo,
+         para o utilizador continuar a poder dar zoom ao mapa. */
+      touch-action: manipulation;
     }
 
     /* ── TRANSIÇÃO DE ENTRADA/SAÍDA ENTRE PÁGINAS ─────────── */
@@ -2252,6 +2256,7 @@
     .leaflet-container {
       background: var(--paper-deep);
       font-family: 'IBM Plex Sans', sans-serif;
+      touch-action: none; /* deixa o Leaflet gerir pinch/drag; a página em si fica bloqueada */
     }
 
     .leaflet-popup-content-wrapper {
