@@ -10,7 +10,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description"
     content="DataGis — consulta dados geográficos por município, com CAOP, COS, camadas OSM e outros.">
-  <title>DataGis</title>
+  <title>DataGis — Dados Geográficos de Portugal por Município (CAOP, COS, OSM)</title>
+
+  <link rel="canonical" href="https://datagispt.gispt.workers.dev/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="DataGis">
+  <meta property="og:title" content="DataGis — Dados Geográficos de Portugal por Município">
+  <meta property="og:description"
+    content="Consulta dados geográficos por município em Portugal: CAOP, COS, BGRI, MDT e camadas OSM, com download direto.">
+  <meta property="og:url" content="https://datagispt.gispt.workers.dev/">
+  <meta property="og:image" content="https://datagispt.gispt.workers.dev/apple-touch-icon.png">
+  <meta property="og:locale" content="pt_PT">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DataGis — Dados Geográficos de Portugal por Município">
+  <meta name="twitter:description"
+    content="Consulta dados geográficos por município em Portugal: CAOP, COS, BGRI, MDT e camadas OSM, com download direto.">
+  <meta name="twitter:image" content="https://datagispt.gispt.workers.dev/apple-touch-icon.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DataGis",
+    "url": "https://datagispt.gispt.workers.dev/",
+    "description": "Portal para consulta e download de dados geográficos de Portugal por município, incluindo CAOP, COS, BGRI, MDT e camadas OSM.",
+    "applicationCategory": "GIS/Geographic Data Tool",
+    "inLanguage": "pt-PT",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    }
+  }
+  </script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -802,7 +837,7 @@
       color: var(--green);
     }
 
-    .hero-content h2 {
+    .hero-content h1 {
       font-family: 'Spectral', serif;
       font-size: clamp(2.8rem, 4.2vw, 4rem);
       line-height: .95;
@@ -1427,7 +1462,7 @@
         flex: 1 1 auto;
       }
 
-      .hero-content h2 {
+      .hero-content h1 {
         font-size: 3rem;
       }
 
@@ -2623,6 +2658,11 @@
       margin-bottom: 8px;
       letter-spacing: .01em;
       text-align: center;
+    }
+
+    .site-footer h2.footer-sobre-title {
+      font-size: 24px;
+      text-align: left;
     }
 
     #terms-section {
@@ -3833,7 +3873,6 @@
         <a href="engenh.html" data-i18n="nav.fgis">fGIS</a>
         
 
-        <h1></h1>
       </nav>
       <button type="button" class="nav-toggle" id="nav-toggle" title="Abrir menu" aria-label="Abrir menu"
         aria-expanded="false" aria-controls="nav-links" data-i18n-attr-title="nav.abrirMenu"
@@ -3888,7 +3927,7 @@
     <section class="hero">
       <div class="hero-content">
         <div class="eyebrow" data-i18n="hero.eyebrow">Portal geográfico</div>
-        <h2 data-i18n="hero.title">Explora Portugal com informação geográfica clara.</h2>
+        <h1 data-i18n="hero.title">Explora Portugal com informação geográfica clara.</h1>
         <blockquote>
           "Geography is the subject which holds the key to our future."
         </blockquote>
@@ -4800,7 +4839,7 @@
 
     <div class="site-footer-inner">
       <div>
-        <h1 data-i18n="footer.sobreTitle">Sobre</h1>
+        <h2 class="footer-sobre-title" data-i18n="footer.sobreTitle">Sobre</h2>
         <p data-i18n="footer.sobreText">Este projeto (não oficial) está a ser realizado para responder a necessidade de informação geográfica
           organizada e estruturada, daí este website, com todas as suas componentes. Relembramos que o mesmo ainda se
           encontra em desenvolvimento.</p>
