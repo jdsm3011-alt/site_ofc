@@ -2134,6 +2134,16 @@
         overflow: visible;
       }
 
+      /* legenda — em mobile vai para o canto inferior direito */
+      .map-legend {
+        bottom: 12px !important;
+        left: auto !important;
+        right: 6px !important;
+        transform: none !important;
+        font-size: 9px;
+        padding: 3px 8px;
+      }
+
       #map {
         position: relative;
         inset: auto;
@@ -2525,15 +2535,6 @@
 
       .stats-fab-note {
         font-size: 8.5px;
-      }
-
-      /* legenda centrada — em mobile vai para baixo do counter */
-      .map-legend {
-        bottom: 42px;
-        left: 14px;
-        transform: none;
-        font-size: 9px;
-        padding: 3px 8px;
       }
 
       /* counter fica colado ao canto */
