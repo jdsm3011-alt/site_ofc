@@ -5861,8 +5861,6 @@
     var tickerRaf = null;
     var tickerLastTs = null;
     var tickerAtivo = false;
-    var tickerVisivel = true;
-    var obsCarrossel = null;
 
     // sorteia um município aleatório (entre os que têm pelo menos uma pré-visualização
     // disponível), usado apenas para escolher o município inicial do carrossel
@@ -6099,9 +6097,9 @@
     // da área visível, já lá fora da máscara), é reciclado — recebe o
     // próximo item da fila e é reposicionado a seguir ao último cartão
     function passoTicker(ts) {
-      if (!tickerAtivo || !tickerVisivel) { tickerRaf = null; tickerLastTs = null; return; }
+      if (!tickerAtivo) { tickerRaf = null; tickerLastTs = null; return; }
       if (tickerLastTs == null) tickerLastTs = ts;
-      var dt = Math.min((ts - tickerLastTs) / 1000, 0.1); // protege de saltos grandes (aba em background)
+      var dt = Math.min((ts - tickerLastTs) / 1000, 0.1);
       tickerLastTs = ts;
       var deslocamento = HMP_PX_POR_SEGUNDO * dt;
 
@@ -6111,7 +6109,7 @@
         if (c.x > maxX) maxX = c.x;
       });
       cardPool.forEach(function(c) {
-        if (c.x + c.w < -40) { // já não é visível nem através da máscara nas pontas
+        if (c.x + c.w < -40) {
           var item = proximoItem();
           if (item) preencherCartao(c, item);
           c.x = maxX + c.w + HMP_GAP;
@@ -6141,28 +6139,12 @@
       _pauseTimer = setTimeout(function() { _pauseTimer = null; iniciarTickerAutomatico(); }, 2000);
     }
 
-    // só corre o ticker enquanto o carrossel estiver dentro do viewport e a
-    // aba estiver em primeiro plano — poupa CPU/bateria durante scroll longo
-    // ou quando o utilizador muda de aplicação
-    function configurarObservadorVisibilidade() {
-      if (obsCarrossel || !('IntersectionObserver' in window)) return;
-      var wrap = document.querySelector('.hmp-wrap');
-      if (!wrap) return;
-      obsCarrossel = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          tickerVisivel = e.isIntersecting && !document.hidden;
-          if (tickerVisivel && tickerAtivo && !tickerRaf) {
-            tickerLastTs = null;
-            tickerRaf = requestAnimationFrame(passoTicker);
-          }
-        });
-      }, { threshold: 0.05 });
-      obsCarrossel.observe(wrap);
-    }
-
     document.addEventListener('visibilitychange', function() {
-      tickerVisivel = !document.hidden;
-      if (tickerVisivel && tickerAtivo && !tickerRaf) {
+      if (document.hidden && tickerRaf) {
+        cancelAnimationFrame(tickerRaf);
+        tickerRaf = null;
+      }
+      if (!document.hidden && tickerAtivo && !tickerRaf) {
         tickerLastTs = null;
         tickerRaf = requestAnimationFrame(passoTicker);
       }
@@ -6215,7 +6197,6 @@
         if (item) preencherCartao(c, item);
       });
 
-      configurarObservadorVisibilidade();
       iniciarTickerAutomatico();
     }
 
