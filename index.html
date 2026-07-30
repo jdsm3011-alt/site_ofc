@@ -3780,32 +3780,60 @@
     #debug-overlay {
       position: fixed; inset: 0;
       z-index: 99999;
-      background: rgba(8,8,14,.92);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(7,8,13,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: none;
       overflow: hidden;
       font: 11px/1.5 'IBM Plex Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
       color: #c8d6e5;
+      font-variant-numeric: tabular-nums;
     }
-    #debug-overlay.visible { display: flex; flex-direction: column; }
+    #debug-overlay.visible { display: flex; flex-direction: column; animation: debugFadeIn .18s ease-out; }
     #debug-overlay * { box-sizing: border-box; }
+    @keyframes debugFadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
     .debug-header {
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 14px;
       padding: 10px 16px;
-      background: rgba(0,0,0,.35);
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(20,22,32,.9), rgba(0,0,0,.4));
+      border-bottom: 1px solid rgba(126,200,227,.12);
+      box-shadow: 0 1px 12px rgba(0,0,0,.25);
       flex-shrink: 0;
       user-select: none;
       -webkit-user-select: none;
     }
     .debug-header h1 {
       margin: 0; font-size: 12px; font-weight: 700;
-      letter-spacing: .06em; color: #7ec8e3;
+      letter-spacing: .08em; color: #7ec8e3;
       white-space: nowrap;
     }
     .debug-header h1::before { content: '\2699\00a0'; }
+
+    /* Live FPS badge — always visible regardless of active tab */
+    .debug-fps-badge {
+      display: flex; align-items: center; gap: 6px;
+      padding: 3px 10px 3px 8px; border-radius: 20px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      flex-shrink: 0;
+      transition: background .2s, border-color .2s;
+    }
+    .debug-fps-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.3);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      transition: background .2s, box-shadow .2s;
+    }
+    .debug-fps-num { font-size: 12px; font-weight: 700; color: #c8d6e5; min-width: 22px; text-align: right; }
+    .debug-fps-unit { font-size: 9px; letter-spacing: .04em; color: rgba(255,255,255,.35); }
+    .debug-fps-badge.good .debug-fps-dot { background: #6fcf97; box-shadow: 0 0 6px rgba(111,207,151,.7); }
+    .debug-fps-badge.good .debug-fps-num { color: #6fcf97; }
+    .debug-fps-badge.warn .debug-fps-dot { background: #f0c060; box-shadow: 0 0 6px rgba(240,192,96,.7); }
+    .debug-fps-badge.warn .debug-fps-num { color: #f0c060; }
+    .debug-fps-badge.error .debug-fps-dot { background: #e36f6f; box-shadow: 0 0 6px rgba(227,111,111,.7); }
+    .debug-fps-badge.error .debug-fps-num { color: #e36f6f; }
+
     .debug-tabs {
       display: flex; gap: 2px; flex: 1;
       overflow-x: auto;
@@ -3814,32 +3842,38 @@
     .debug-tabs::-webkit-scrollbar { height: 2px; }
     .debug-tabs::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); }
     .debug-tab {
-      padding: 3px 10px; border-radius: 4px;
+      position: relative;
+      padding: 4px 10px; border-radius: 4px;
       cursor: pointer; white-space: nowrap;
       color: rgba(255,255,255,.45);
       font-size: 10px; letter-spacing: .03em;
-      transition: all .15s;
+      transition: color .15s, background .15s;
       flex-shrink: 0;
     }
-    .debug-tab:hover { color: rgba(255,255,255,.7); background: rgba(255,255,255,.05); }
-    .debug-tab.active { color: #7ec8e3; background: rgba(126,200,227,.1); }
+    .debug-tab:hover { color: rgba(255,255,255,.75); background: rgba(255,255,255,.05); }
+    .debug-tab.active { color: #7ec8e3; background: rgba(126,200,227,.12); }
+    .debug-tab.active::after {
+      content: ''; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 2px;
+      background: #7ec8e3; border-radius: 2px 2px 0 0;
+    }
     .debug-close {
-      cursor: pointer; font-size: 18px; color: rgba(255,255,255,.3);
+      cursor: pointer; font-size: 16px; color: rgba(255,255,255,.35);
       font-family: sans-serif; line-height: 1;
-      padding: 0 4px; transition: color .15s;
+      padding: 4px 6px; border-radius: 4px;
+      transition: color .15s, background .15s;
       flex-shrink: 0;
     }
-    .debug-close:hover { color: #e36f6f; }
+    .debug-close:hover { color: #e36f6f; background: rgba(227,111,111,.1); }
 
     .debug-body {
-      flex: 1; overflow-y: auto; padding: 12px 16px;
+      flex: 1; overflow-y: auto; padding: 14px 18px 20px;
       scrollbar-width: thin;
     }
     .debug-body::-webkit-scrollbar { width: 4px; }
     .debug-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
 
     .debug-panel { display: none; }
-    .debug-panel.active { display: block; }
+    .debug-panel.active { display: block; animation: debugFadeIn .15s ease-out; }
 
     .debug-section {
       margin-bottom: 12px;
@@ -3852,29 +3886,33 @@
     }
     .debug-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 2px 16px;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 3px 14px;
     }
     .debug-row {
-      display: flex; align-items: center;
-      padding: 1px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 4px 8px;
+      border-radius: 5px;
+      transition: background .15s;
     }
+    .debug-row:hover { background: rgba(255,255,255,.035); }
     .debug-label {
-      color: rgba(255,255,255,.4);
-      min-width: 130px;
+      color: rgba(255,255,255,.42);
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-      flex-shrink: 0;
+      flex-shrink: 1;
     }
     .debug-label::after { content: ':'; color: rgba(255,255,255,.15); margin-left: 2px; }
     .debug-value {
       color: #c8d6e5;
-      margin-left: 8px;
-      font-weight: 500;
+      margin-left: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .debug-value.warn { color: #f0c060; }
     .debug-value.error { color: #e36f6f; }
     .debug-value.good { color: #6fcf97; }
-    .debug-value.na { color: rgba(255,255,255,.2); font-style: italic; }
+    .debug-value.na { color: rgba(255,255,255,.2); font-style: italic; font-weight: 400; }
     .debug-value.na::before { content: '\2014\00a0'; }
   </style>
 </head>
@@ -6455,9 +6493,13 @@
     var DebugOverlay = (function() {
       var O = '_debug_ov';
       var el = null, visible = false, timer = null, raf = null;
-      var fpsData = { frames: 0, t0: 0, current: 0, min: 60, max: 0, sum: 0, count: 0, drops: 0, ft: 0 };
-      var longTasks = [], userData = { clicks: 0, keys: 0, lastInteraction: 0, mouseX: 0, mouseY: 0, inactivity: 0 };
+      var fpsData = {
+        frames: 0, t0: 0, current: 0, min: Infinity, max: 0, sum: 0, count: 0,
+        drops: 0, ft: 0, lastTs: 0, lastFrameTime: 0, totalFrames: 0
+      };
+      var longTasks = [], userData = { clicks: 0, keys: 0, moves: 0, lastInteraction: 0, mouseX: 0, mouseY: 0, inactivity: 0, _lastEventTotal: 0 };
       var fetchData = { active: 0, completed: 0, failed: 0, times: [] };
+      var timerData = { activeTimeouts: null, activeIntervals: null, patched: false };
       var perfEntries = {}, lcpValue = 0, clsValue = 0, fcpValue = 0, fpValue = 0;
       var errors = [], rejectedPromises = [];
       var scrollData = { x: 0, y: 0, pct: 0 };
@@ -6581,6 +6623,7 @@
         var h = '';
         h += '<div class="debug-header">';
         h += '<h1>DEBUG OVERLAY</h1>';
+        h += '<span class="debug-fps-badge" id="' + O + '_fpsbadge"><span class="debug-fps-dot"></span><span class="debug-fps-num">--</span><span class="debug-fps-unit">FPS</span></span>';
         h += '<div class="debug-tabs">';
         TABS.forEach(function(t, i) {
           h += '<span class="debug-tab' + (i === 0 ? ' active' : '') + '" data-tab="' + t.id + '">' + t.label + '</span>';
@@ -6606,18 +6649,35 @@
       }
 
       // ── UPDATE FUNCTIONS ─────────────────────────────────────────────────────
+      function fpsClass(v) { return v >= 50 ? 'good' : (v >= 30 ? 'warn' : 'error'); }
+
+      function updateFpsBadge(fps, cls) {
+        var badge = document.getElementById(O + '_fpsbadge');
+        if (!badge) return;
+        var num = badge.querySelector('.debug-fps-num');
+        if (num) num.textContent = fps;
+        badge.className = 'debug-fps-badge' + (cls ? ' ' + cls : '');
+      }
+
       function updateRendering() {
         var fps = fpsData.current;
-        setText('rendering', 'fps', fps);
-        setText('rendering', 'fps_min', fpsData.min === Infinity ? 0 : fpsData.min);
-        setText('rendering', 'fps_max', fpsData.max);
-        setText('rendering', 'fps_avg', fpsData.count ? (fpsData.sum / fpsData.count).toFixed(1) : 0);
-        setText('rendering', 'ft', ms(fpsData.ft));
-        setText('rendering', 'ift', fpsData._lastFrameTime ? ms(performance.now() - fpsData._lastFrameTime) : '—');
-        setText('rendering', 'drops', fpsData.drops);
+        var cls = fpsData.count ? fpsClass(fps) : '';
+        setText('rendering', 'fps', fps, cls);
+        var minVal = fpsData.min === Infinity ? fps : fpsData.min;
+        setText('rendering', 'fps_min', minVal, fpsData.count ? fpsClass(minVal) : '');
+        setText('rendering', 'fps_max', fpsData.max, fpsData.count ? fpsClass(fpsData.max) : '');
+        var avg = fpsData.count ? (fpsData.sum / fpsData.count) : 0;
+        setText('rendering', 'fps_avg', fpsData.count ? avg.toFixed(1) : 0, fpsData.count ? fpsClass(avg) : '');
+        setText('rendering', 'ft', ms(fpsData.ft), fpsData.ft > 33.3 ? 'warn' : 'good');
+        // "Intervalo entre frames": tempo real desde o último frame renderizado — sobe muito
+        // se o rendering ficar preso/travado (aba em background, thread bloqueada, etc.)
+        var stall = fpsData.lastFrameTime ? (performance.now() - fpsData.lastFrameTime) : 0;
+        setText('rendering', 'ift', fpsData.lastFrameTime ? ms(stall) : '—', stall > 200 ? 'error' : (stall > 50 ? 'warn' : 'good'));
+        setText('rendering', 'drops', fpsData.drops, fpsData.drops > 0 ? 'warn' : 'good');
         setText('rendering', 'uptime', ((performance.now() - perfEntries._navStart || performance.now()) / 1000).toFixed(1) + 's');
         // updates/s is roughly equal to FPS for rendering
-        setText('rendering', 'updates_s', fps);
+        setText('rendering', 'updates_s', fps, cls);
+        updateFpsBadge(fps, cls);
       }
 
       function updateMemory() {
@@ -6792,15 +6852,16 @@
       }
 
       function updateJS() {
-        setText('js', 'js_errors', errors.length);
-        setText('js', 'js_promises', rejectedPromises.length);
-        var timers = 0;
-        for (var i = 1; i <= 100000; i++) {
-          try { clearTimeout(i); timers++; } catch(e) { break; }
-        }
-        setText('js', 'js_timers', timers > 0 ? timers - 1 : 0);
-        setText('js', 'js_anim', fpsData._animCount || 0);
-        setText('js', 'js_events_s', fpsData._eventsPerSec || 0);
+        setText('js', 'js_errors', errors.length, errors.length ? 'error' : 'good');
+        setText('js', 'js_promises', rejectedPromises.length, rejectedPromises.length ? 'warn' : 'good');
+        var timeoutCount = timerData.activeTimeouts ? Object.keys(timerData.activeTimeouts).length : 0;
+        var intervalCount = timerData.activeIntervals ? Object.keys(timerData.activeIntervals).length : 0;
+        setText('js', 'js_timers', timeoutCount + intervalCount);
+        setText('js', 'js_anim', fpsData.totalFrames);
+        var totalEvents = userData.clicks + userData.keys + userData.moves;
+        var deltaEvents = totalEvents - userData._lastEventTotal;
+        userData._lastEventTotal = totalEvents;
+        setText('js', 'js_events_s', Math.max(0, Math.round(deltaEvents / 0.5)));
         setText('js', 'js_exec_time', '—');
       }
 
@@ -6906,20 +6967,24 @@
       // ── FPS LOOP ──────────────────────────────────────────────────────────────
       function fpsLoop(ts) {
         if (!visible) return;
+        var now = performance.now();
+        fpsData.ft = fpsData.lastTs ? (now - fpsData.lastTs) : 16.7;
+        fpsData.lastFrameTime = fpsData.lastTs || now;
+        fpsData.lastTs = now;
         fpsData.frames++;
-        fpsData.ft = performance.now() - (fpsData._lastTs || performance.now());
-        fpsData._lastFrameTime = fpsData._lastTs;
-        fpsData._lastTs = performance.now();
-        var dt = performance.now() - fpsData.t0;
+        fpsData.totalFrames++;
+        // um "frame perdido" é qualquer frame que demorou claramente mais que o
+        // orçamento de 60fps (16.7ms) — aqui usamos o dobro (~30fps) como limiar
+        if (fpsData.ft > 33.3) fpsData.drops++;
+        var dt = now - fpsData.t0;
         if (dt >= 500) {
-          fpsData.current = Math.round(fpsData.frames / (dt / 1000));
-          fpsData.min = Math.min(fpsData.min, fpsData.current);
-          fpsData.max = Math.max(fpsData.max, fpsData.current);
+          fpsData.current = Math.round((fpsData.frames * 1000) / dt);
+          if (fpsData.current < fpsData.min) fpsData.min = fpsData.current;
+          if (fpsData.current > fpsData.max) fpsData.max = fpsData.current;
           fpsData.sum += fpsData.current;
           fpsData.count++;
-          if (fpsData.current < 20) fpsData.drops++;
           fpsData.frames = 0;
-          fpsData.t0 = performance.now();
+          fpsData.t0 = now;
         }
         raf = requestAnimationFrame(fpsLoop);
       }
@@ -7000,6 +7065,7 @@
       function initUserTrackers() {
         document.addEventListener('mousemove', function(e) {
           userData.mouseX = e.clientX; userData.mouseY = e.clientY;
+          userData.moves++;
           userData.lastInteraction = Date.now();
         }, { passive: true });
         document.addEventListener('click', function() {
@@ -7043,6 +7109,45 @@
         };
       }
 
+      // ── TIMER MONITOR ─────────────────────────────────────────────────────────
+      // Substitui a antiga abordagem de "for (i=1..100000) clearTimeout(i)", que
+      // cancelava ativamente qualquer setTimeout pendente em toda a aplicação
+      // (imagens com delay, debounces, animações, etc.) de 500 em 500ms.
+      // Aqui apenas contamos, sem interferir em nada.
+      function initTimerMonitor() {
+        if (timerData.patched) return;
+        timerData.patched = true;
+        var activeTimeouts = {}, activeIntervals = {};
+        var origSetTimeout = window.setTimeout;
+        var origClearTimeout = window.clearTimeout;
+        var origSetInterval = window.setInterval;
+        var origClearInterval = window.clearInterval;
+        window.setTimeout = function(fn, delay) {
+          var extra = Array.prototype.slice.call(arguments, 2);
+          var id = origSetTimeout.call(window, function() {
+            delete activeTimeouts[id];
+            if (typeof fn === 'function') fn.apply(this, arguments);
+          }, delay);
+          activeTimeouts[id] = true;
+          return id;
+        };
+        window.clearTimeout = function(id) {
+          delete activeTimeouts[id];
+          return origClearTimeout.apply(window, arguments);
+        };
+        window.setInterval = function() {
+          var id = origSetInterval.apply(window, arguments);
+          activeIntervals[id] = true;
+          return id;
+        };
+        window.clearInterval = function(id) {
+          delete activeIntervals[id];
+          return origClearInterval.apply(window, arguments);
+        };
+        timerData.activeTimeouts = activeTimeouts;
+        timerData.activeIntervals = activeIntervals;
+      }
+
       // ── TOGGLE ────────────────────────────────────────────────────────────────
       function show() {
         if (!el) {
@@ -7066,11 +7171,22 @@
           initErrorListeners();
           initUserTrackers();
           initFetchMonitor();
+          initTimerMonitor();
         }
         visible = true;
         el.classList.add('visible');
+        // reinicia as estatísticas de FPS a cada sessão de overlay, para não
+        // arrastar min/max/média/drops de uma abertura anterior
         fpsData.t0 = performance.now();
-        fpsData._lastTs = performance.now();
+        fpsData.lastTs = performance.now();
+        fpsData.lastFrameTime = 0;
+        fpsData.frames = 0;
+        fpsData.current = 0;
+        fpsData.min = Infinity;
+        fpsData.max = 0;
+        fpsData.sum = 0;
+        fpsData.count = 0;
+        fpsData.drops = 0;
         raf = requestAnimationFrame(fpsLoop);
         timer = setInterval(updateAll, 500);
         updateAll();
