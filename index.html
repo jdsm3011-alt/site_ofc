@@ -250,13 +250,12 @@
       color: var(--ink);
     }
 
-    html[data-theme="dark"] .download-item-link.unavailable {
+    html[data-theme="dark"] .download-item.unavailable {
       border-color: #5c2a2e;
       background: #2A1416;
     }
 
-    html[data-theme="dark"] .download-item-link.unavailable:hover,
-    html[data-theme="dark"] .download-item-link.unavailable:hover::after {
+    html[data-theme="dark"] .download-item.unavailable:hover {
       border-color: #5c2a2e;
       background: #2A1416;
     }
@@ -274,6 +273,10 @@
     }
 
     html[data-theme="dark"] .osm-item:hover {
+      border-color: #3f8bc4;
+    }
+
+    html[data-theme="dark"] .download-item:hover {
       border-color: #3f8bc4;
     }
 
@@ -3185,90 +3188,81 @@
     .download-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-
-    .download-item .download-item-link {
-      display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      padding: 12px 14px;
-      flex: 1;
-      min-width: 0;
+      gap: 10px;
+      padding: 10px 12px;
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 2px;
       background: var(--paper);
-      text-decoration: none;
-      color: var(--ink);
-      transition: border-color .15s ease, background .15s ease, transform .1s ease, box-shadow .15s ease;
-      position: relative;
-      overflow: hidden;
+      transition: border-color .15s ease, background .15s ease;
     }
 
-    .download-item .download-item-link::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(194, 112, 61, .04));
-      opacity: 0;
-      transition: opacity .2s;
-    }
-
-    .download-item .download-item-link:hover {
-      border-color: var(--ochre);
+    .download-item:hover {
+      border-color: #93c5fd;
       background: var(--white);
-      box-shadow: 0 10px 18px rgba(23, 49, 36, .06);
-    }
-
-    .download-item .download-item-link:hover::after {
-      opacity: 1;
-    }
-
-    .download-item .download-item-link:active {
-      transform: scale(.995);
     }
 
     .download-item .di-left {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
-    }
-
-    .download-item .di-icon {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--paper-deep);
-      border-radius: 2px;
-      font-size: 13px;
+      flex: 1;
+      min-width: 0;
     }
 
     .download-item .di-text {
       display: flex;
       flex-direction: column;
       gap: 1px;
+      min-width: 0;
     }
 
     .download-item .di-name {
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      overflow-wrap: break-word;
     }
 
     .download-item .di-meta {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
       color: var(--stone);
+      line-height: 1.4;
     }
 
-    .download-item .di-arrow {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 16px;
-      color: var(--ochre);
+    .di-right {
+      display: flex;
+      gap: 5px;
       flex-shrink: 0;
+      align-items: center;
+      margin-left: auto;
+    }
+
+    .download-item.unavailable {
+      border-color: #f5c2c7;
+      background: #fff7f7;
+      cursor: default;
+    }
+
+    .download-item.unavailable:hover {
+      border-color: #f5c2c7;
+      background: #fff7f7;
+    }
+
+    .download-item.unavailable .btn-preview {
+      display: none;
+    }
+
+    .download-item.unavailable .btn-dl {
+      display: inline-flex;
+      opacity: .4;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .download-item.unavailable .download-status {
+      display: inline-flex;
     }
 
     .download-status {
@@ -3289,33 +3283,16 @@
       animation: downloadStatusPulse 2.2s ease-in-out infinite;
     }
 
-    .download-item-link.unavailable {
-      border-color: #f5c2c7;
-      background: #fff7f7;
-      cursor: default;
-    }
-
-    .download-item-link.unavailable:hover,
-    .download-item-link.unavailable:hover::after {
-      border-color: #f5c2c7;
-      background: #fff7f7;
-      opacity: 1;
-    }
-
-    .download-item-link.unavailable .di-arrow {
-      display: none;
-    }
-
-    .download-item-link.unavailable .download-status {
-      display: inline-flex;
-    }
-
-    .download-item-link.downloads-session-blocked,
     .btn-dl.downloads-session-blocked,
     .btn-download-all.downloads-session-blocked {
       opacity: .55;
       cursor: not-allowed;
       filter: grayscale(.25);
+    }
+
+    .btn-dl.unavailable,
+    .btn-dl.unavailable:hover {
+      display: none;
     }
 
     .terms-consent-overlay {
@@ -4618,70 +4595,70 @@
 
                 <!-- CAOP -->
                 <div class="download-item">
-                  <a class="download-item-link" id="link-caop" href="#" download>
-                    <div class="di-left">
-                      <div class="di-text">
-                        <span class="di-name" data-i18n="data.caop">Limite administrativo (CAOP)</span>
-                        <span class="di-meta" id="size-caop">Shapefile · —</span>
-                      </div>
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name" data-i18n="data.caop">Limite administrativo (CAOP)</span>
+                      <span class="di-meta" id="size-caop">Shapefile · —</span>
                     </div>
-                    <span class="di-arrow">&darr;</span>
+                  </div>
+                  <div class="di-right">
+                    <button type="button" class="btn-preview" id="preview-caop" title="Pré-visualizar no mapa"
+                      data-i18n-attr-title="panel.previsualizar"
+                      onclick="togglePreview('caop', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <a class="btn-dl" id="link-caop" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
-                  </a>
-                  <button type="button" class="btn-preview" id="preview-caop" title="Pré-visualizar no mapa"
-                    data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('caop', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
                 </div>
 
                 <!-- COS -->
                 <div class="download-item">
-                  <a class="download-item-link" id="link-cos" href="#" download>
-                    <div class="di-left">
-                      <div class="di-text">
-                        <span class="di-name" data-i18n="data.cos">Uso e Ocupação do Solo (COS, nível 4)</span>
-                        <span class="di-meta" id="size-cos">Shapefile · —</span>
-                      </div>
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name" data-i18n="data.cos">Uso e Ocupação do Solo (COS, nível 4)</span>
+                      <span class="di-meta" id="size-cos">Shapefile · —</span>
                     </div>
-                    <span class="di-arrow">&darr;</span>
+                  </div>
+                  <div class="di-right">
+                    <button type="button" class="btn-preview" id="preview-cos" title="Pré-visualizar no mapa"
+                      data-i18n-attr-title="panel.previsualizar"
+                      onclick="togglePreview('cos', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <a class="btn-dl" id="link-cos" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
-                  </a>
-                  <button type="button" class="btn-preview" id="preview-cos" title="Pré-visualizar no mapa"
-                    data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('cos', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
                 </div>
 
                 <!-- BGRI -->
                 <div class="download-item">
-                  <a class="download-item-link" id="link-bgri" href="#" download>
-                    <div class="di-left">
-                      <div class="di-text">
-                        <span class="di-name" data-i18n="data.bgri">Base Geográfica de Referenciação de Informação (BGRI, INE 2021)</span>
-                        <span class="di-meta" id="size-bgri">Shapefile · —</span>
-                      </div>
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name" data-i18n="data.bgri">Base Geográfica de Referenciação de Informação (BGRI, INE 2021)</span>
+                      <span class="di-meta" id="size-bgri">Shapefile · —</span>
                     </div>
-                    <span class="di-arrow">&darr;</span>
+                  </div>
+                  <div class="di-right">
+                    <button type="button" class="btn-preview" id="preview-bgri" title="Pré-visualizar no mapa"
+                      data-i18n-attr-title="panel.previsualizar"
+                      onclick="togglePreview('bgri', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <a class="btn-dl" id="link-bgri" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
-                  </a>
-                  <button type="button" class="btn-preview" id="preview-bgri" title="Pré-visualizar no mapa"
-                    data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('bgri', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
                 </div>
 
                 <!-- MDT -->
                 <div class="download-item">
-                  <a class="download-item-link" id="link-mdt" href="#" download>
-                    <div class="di-left">
-                      <div class="di-text">
-                        <span class="di-name" data-i18n="data.mdt">Modelo Digital de Terreno (MDT, 10 metros)</span>
-                        <span class="di-meta" id="size-mdt">Shapefile · —</span>
-                      </div>
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name" data-i18n="data.mdt">Modelo Digital de Terreno (MDT, 10 metros)</span>
+                      <span class="di-meta" id="size-mdt">Shapefile · —</span>
                     </div>
-                    <span class="di-arrow">&darr;</span>
+                  </div>
+                  <div class="di-right">
+                    <button type="button" class="btn-preview" id="preview-mdt" title="Pré-visualizar no mapa"
+                      data-i18n-attr-title="panel.previsualizar"
+                      onclick="togglePreview('mdt', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <a class="btn-dl" id="link-mdt" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
-                  </a>
-                  <button type="button" class="btn-preview" id="preview-mdt" title="Pré-visualizar no mapa"
-                    data-i18n-attr-title="panel.previsualizar"
-                    onclick="togglePreview('mdt', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
                 </div>
 
                 <!-- OSM -->
@@ -6440,8 +6417,12 @@
           linkEl.setAttribute('download', '');
           linkEl.removeAttribute('tabindex');
         }
-        const statusEl = linkEl.querySelector('.download-status');
-        if (statusEl) statusEl.style.display = indisponivel ? 'inline-flex' : 'none';
+        const parentItem = linkEl.closest('.download-item');
+        if (parentItem) {
+          parentItem.classList.toggle('unavailable', indisponivel);
+          const statusEl = parentItem.querySelector('.download-status');
+          if (statusEl) statusEl.style.display = indisponivel ? 'inline-flex' : 'none';
+        }
         document.getElementById(sizeElId).textContent = sizeTexto;
       }
 
@@ -6643,7 +6624,7 @@
 
     function atualizarEstadoDownloadsBloqueados() {
       const bloqueado = downloadsBloqueadosNestaSessao();
-      document.querySelectorAll('.download-item-link, .btn-dl').forEach(link => {
+      document.querySelectorAll('.btn-dl').forEach(link => {
         link.classList.toggle('downloads-session-blocked', bloqueado);
         if (bloqueado) link.setAttribute('aria-disabled', 'true');
         else if (!link.classList.contains('unavailable')) link.setAttribute('aria-disabled', 'false');
@@ -6652,7 +6633,7 @@
     }
 
     document.addEventListener('click', function (e) {
-      const link = e.target.closest('a[download], a.btn-dl, a.download-item-link');
+      const link = e.target.closest('a[download], a.btn-dl');
       if (!link || link.dataset.skipTermsConsent === 'true') return;
       if (link.classList.contains('unavailable') || link.getAttribute('aria-disabled') === 'true' && !downloadsBloqueadosNestaSessao()) return;
       const href = link.getAttribute('href');
