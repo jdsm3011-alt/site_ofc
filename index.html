@@ -5377,6 +5377,7 @@
   <script>
     // ── MAPA BASE ────────────────────────────────────────────────────────────────
     const PORTUGAL_BOUNDS = [[36.2, -10.3], [42.8, -5.4]];
+    var initialMinZoom = window.innerWidth <= 768 ? 6 : 7;
 
     const map = L.map('map', {
       zoomControl: false,
@@ -5386,10 +5387,11 @@
       doubleClickZoom: true,
       touchZoom: true,
       dragging: true,
-      minZoom: 7,
+      minZoom: initialMinZoom,
       maxBounds: PORTUGAL_BOUNDS,
       maxBoundsViscosity: 1.0
-    }).setView([39.6, -8.2], 7);
+    });
+    map.fitBounds([[36.95, -9.55], [42.15, -6.15]], { padding: [24, 24] });
 
     L.control.scale({ position: 'bottomleft', maxWidth: 120 }).addTo(map);
 
