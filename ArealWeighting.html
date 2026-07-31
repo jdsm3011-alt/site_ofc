@@ -1107,6 +1107,116 @@ header {
   text-align: right;
 }
 
+.otim-mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 3px;
+  margin-bottom: 14px;
+}
+.otim-mode-tab {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 7px 4px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: calc(var(--radius) - 3px);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.otim-mode-tab.active { background: var(--accent-deep); color: #fff; }
+.otim-criterios-lista { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.otim-criterio-row {
+  display: grid;
+  grid-template-columns: 1fr 52px auto auto;
+  gap: 6px;
+  align-items: center;
+}
+.otim-criterio-row select {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 7px 6px;
+  min-width: 0;
+}
+.otim-criterio-peso {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  padding: 0 6px;
+}
+.otim-criterio-peso input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 7px 0;
+  text-align: right;
+}
+.otim-criterio-peso span { font-family: var(--mono); font-size: 10px; color: var(--text-muted); }
+.otim-criterio-dir {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.otim-criterio-dir[data-dir="min"] { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); }
+.otim-criterio-dir[data-dir="max"] { color: var(--accent-deep); border-color: color-mix(in srgb, var(--accent-deep) 35%, var(--border)); }
+.otim-criterio-del {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  width: 24px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.otim-criterio-del:hover { color: var(--warn); }
+.otim-criterio-add {
+  width: 100%;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.otim-criterio-add:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+.otim-criterio-add:disabled { opacity: .45; cursor: not-allowed; }
+.otim-pesos-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: -2px 0 12px;
+}
+.otim-pesos-total .valor { font-weight: 700; }
+.otim-pesos-total.ok .valor { color: var(--accent-deep); }
+.otim-pesos-total.off .valor { color: var(--warn); }
+
 /* resultados da otimização */
 .otim-banner {
   display: flex;
@@ -1319,7 +1429,7 @@ header {
         <!-- OTIMIZAÇÃO INTELIGENTE -->
         <div class="sb-section">
           <div class="sb-label">Otimização Inteligente</div>
-          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a cobertura do campo BGRI escolhido.</p>
+          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a cobertura de um campo BGRI ou de uma combinação ponderada de vários critérios.</p>
           <button class="btn-processar btn-otimizar" id="btnOtimizar" disabled>
             <span class="btn-content">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -1391,12 +1501,29 @@ header {
       <span class="sb-label" id="otimTitle" style="margin-bottom:0">Otimização Inteligente</span>
       <button type="button" class="otim-close" data-otim-fechar aria-label="Fechar">×</button>
     </div>
-    <div class="otim-field">
-      <label for="otimCampo">Campo BGRI a otimizar</label>
-      <div class="otim-input-wrap">
-        <select id="otimCampo"></select>
+    <div class="otim-mode-tabs" role="tablist" aria-label="Modo de otimização">
+      <button type="button" class="otim-mode-tab active" data-otim-modo="unico" role="tab" aria-selected="true">Campo único</button>
+      <button type="button" class="otim-mode-tab" data-otim-modo="multi" role="tab" aria-selected="false">Multicritério</button>
+    </div>
+
+    <!-- MODO: campo único -->
+    <div id="otimSecaoUnico">
+      <div class="otim-field">
+        <label for="otimCampo">Campo BGRI a otimizar</label>
+        <div class="otim-input-wrap">
+          <select id="otimCampo"></select>
+        </div>
       </div>
     </div>
+
+    <!-- MODO: multicritério (sobreposição ponderada) -->
+    <div id="otimSecaoMulti" style="display:none">
+      <p class="otim-desc">Escolhe os critérios a combinar e o peso (%) de cada um. Os valores de cada critério são normalizados (0–1) antes de ponderados, para que campos com escalas diferentes (ex. população vs. % de idosos) pesem de forma justa.</p>
+      <div class="otim-criterios-lista" id="otimCriteriosLista"></div>
+      <button type="button" class="otim-criterio-add" id="btnOtimAddCriterio">+ Adicionar critério</button>
+      <div class="otim-pesos-total" id="otimPesosTotal"><span>Soma dos pesos</span><span class="valor"><span id="otimPesosTotalVal">0</span>%</span></div>
+    </div>
+
     <div class="otim-field">
       <label for="otimObjetivo">Objetivo de cobertura</label>
       <div class="otim-input-wrap">
@@ -2979,20 +3106,18 @@ async function prepararCandidatos(raioMetros, espacamentoM) {
   return candidatos;
 }
 
-async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campoLabel, espacamentoM) {
+// Núcleo genérico do algoritmo greedy: recebe um array `valores` (um número
+// por subsecção, na mesma ordem de subsecsCache) e o seu total, e devolve os
+// locais escolhidos. Usado tanto pelo modo "campo único" (valores = um campo
+// BGRI real) como pelo modo "multicritério" (valores = índice composto
+// sintético calculado por calcularPesosCompostos).
+async function executarGreedy(valores, valorTotal, objetivoPct, maxBuffers, raioMetros, espacamentoM) {
   const t0 = performance.now();
-  const pops = subsecsCache.map(({ feat }) => {
-    const v = parseFloat((feat.properties || {})[campo]);
-    return isNaN(v) ? 0 : v;
-  });
-  const popTotal = pops.reduce((a, b) => a + b, 0);
-  if (popTotal <= 0) return { erro: `O município não tem valores para «${campoLabel}» (tudo a zero).` };
-
   const candidatos = await prepararCandidatos(raioMetros, espacamentoM);
-  const restante = pops.slice();
+  const restante = valores.slice();
   const escolhidos = [];
   const usados = new Set();
-  const metaPop = popTotal * objetivoPct / 100;
+  const meta = valorTotal * objetivoPct / 100;
 
   while (escolhidos.length < maxBuffers) {
     let melhor = -1, melhorGanho = 0;
@@ -3014,18 +3139,35 @@ async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campo
     const covs = candidatos[melhor].coberturas;
     for (let k = 0; k < covs.length; k++) {
       const j = covs[k][0];
-      const val = pops[j] * covs[k][1];
+      const val = valores[j] * covs[k][1];
       restante[j] = val >= restante[j] ? 0 : restante[j] - val;
     }
     mostrarVencedorProvisorio(candidatos[melhor].coords, raioMetros, escolhidos.length - 1);
     await new Promise(r => requestAnimationFrame(r));
 
     let coberto = 0;
-    for (let j = 0; j < restante.length; j++) coberto += pops[j] - restante[j];
-    if (coberto >= metaPop) break;
+    for (let j = 0; j < restante.length; j++) coberto += valores[j] - restante[j];
+    if (coberto >= meta) break;
   }
 
-  return { locs: escolhidos, popTotal, tempoMs: performance.now() - t0 };
+  return { locs: escolhidos, popTotal: valorTotal, tempoMs: performance.now() - t0 };
+}
+
+async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campoLabel, espacamentoM) {
+  const pops = subsecsCache.map(({ feat }) => {
+    const v = parseFloat((feat.properties || {})[campo]);
+    return isNaN(v) ? 0 : v;
+  });
+  const popTotal = pops.reduce((a, b) => a + b, 0);
+  if (popTotal <= 0) return { erro: `O município não tem valores para «${campoLabel}» (tudo a zero).` };
+  return executarGreedy(pops, popTotal, objetivoPct, maxBuffers, raioMetros, espacamentoM);
+}
+
+async function otimizarBuffersMulticriterio(objetivoPct, maxBuffers, raioMetros, criterios, espacamentoM) {
+  const pesos = calcularPesosCompostos(criterios);
+  const total = pesos.reduce((a, b) => a + b, 0);
+  if (total <= 0) return { erro: 'Não foi possível calcular um índice composto — verifica os critérios escolhidos.' };
+  return executarGreedy(pesos, total, objetivoPct, maxBuffers, raioMetros, espacamentoM);
 }
 
 // Areal weighting de um buffer específico (para a lista de pontos da solução).
@@ -3132,7 +3274,9 @@ function mostrarResultadosOtimizacao(otim) {
   const cobertura = otim.popTotal > 0 ? (otim.popCoberta / otim.popTotal) * 100 : 0;
   const atingiu = cobertura >= otim.objetivo;
   const raioLabel = otim.raio >= 1000 ? `${(otim.raio / 1000).toFixed(1)} km` : `${otim.raio} m`;
-  const labelCoberto = otim.campo === 'N_INDIVIDUOS' ? 'População coberta' : 'Total coberto';
+  const multi = otim.modo === 'multi';
+  const labelCoberto = multi ? 'Índice coberto' : (otim.campo === 'N_INDIVIDUOS' ? 'População coberta' : 'Total coberto');
+  const valorCoberto = multi ? otim.popCoberta.toFixed(2) : otim.popCoberta.toLocaleString('pt-PT');
 
   let resumo;
   if (otim.nBuffers === 0) {
@@ -3144,6 +3288,16 @@ function mostrarResultadosOtimizacao(otim) {
   } else {
     resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} — a distribuição da variável no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
   }
+
+  const criteriosHTML = multi ? `
+    <div class="otim-resumo" style="margin-top:-2px;">
+      <b>Critérios usados</b><br>
+      ${otim.criterios.map(c => `${c.dir === 'max' ? '↑' : '↓'} ${c.label} — ${c.peso.toFixed(0)}%`).join('<br>')}
+    </div>` : '';
+
+  const metodoTexto = multi
+    ? `<b>ℹ Método</b> — cada critério é normalizado (0–1) por município e combinado num índice composto segundo os pesos definidos (critérios «menos é melhor» são invertidos antes de combinar). O algoritmo greedy sobre uma grelha de pontos candidatos (resolução: ${otim.espacamento || 150} m) coloca em cada passo o buffer que cobre mais índice ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers, assumindo distribuição uniforme por subsecção.`
+    : `<b>ℹ Método</b> — algoritmo greedy sobre uma grelha de pontos candidatos (resolução da pesquisa: ${otim.espacamento || 150} m): em cada passo coloca-se o buffer no ponto que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.`;
 
   const html = `
     <div class="otim-banner">
@@ -3157,7 +3311,7 @@ function mostrarResultadosOtimizacao(otim) {
         <div class="otim-cobertura-bar"><span style="width:${Math.min(cobertura, 100).toFixed(1)}%"></span></div>
       </div>
       <div class="otim-stat">
-        <div class="otim-stat-num">${otim.popCoberta.toLocaleString('pt-PT')}</div>
+        <div class="otim-stat-num">${valorCoberto}</div>
         <div class="otim-stat-label">${labelCoberto}</div>
       </div>
       <div class="otim-stat">
@@ -3170,9 +3324,8 @@ function mostrarResultadosOtimizacao(otim) {
       </div>
     </div>
     <div class="otim-resumo">${resumo}</div>
-    <div class="aviso" style="line-height:1.6;">
-      <b>ℹ Método</b> — algoritmo greedy sobre uma grelha de pontos candidatos (resolução da pesquisa: ${otim.espacamento || 150} m): em cada passo coloca-se o buffer no ponto que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.
-    </div>
+    ${criteriosHTML}
+    <div class="aviso" style="line-height:1.6;">${metodoTexto}</div>
     ${montarGruposHTML(otim.totais)}
   `;
   content.innerHTML = html;
@@ -3185,27 +3338,203 @@ function clampInt(val, min, max, dflt) {
   return Math.max(min, Math.min(max, n));
 }
 
+// Lista de campos BGRI presentes nos dados atualmente carregados, reutilizada
+// tanto pelo select do modo "campo único" como pelas linhas de critérios do
+// modo "multicritério".
+function obterCamposDisponiveis() {
+  const props = bgriData && bgriData.features[0] ? (bgriData.features[0].properties || {}) : {};
+  const campos = [];
+  BGRI_GRUPOS.forEach(g => {
+    g.fields.forEach(f => {
+      if (f.key in props) campos.push({ key: f.key, label: `${g.label} — ${f.label}` });
+    });
+  });
+  return campos;
+}
+
+function optionsCamposHTML(selecionado) {
+  return obterCamposDisponiveis()
+    .map(c => `<option value="${c.key}"${c.key === selecionado ? ' selected' : ''}>${c.label}</option>`)
+    .join('');
+}
+
 function preencherCamposOtimizacao() {
   const sel = document.getElementById('otimCampo');
   if (!sel) return;
   const anterior = sel.value || 'N_INDIVIDUOS';
-  const props = bgriData && bgriData.features[0] ? (bgriData.features[0].properties || {}) : {};
-  let html = '';
-  BGRI_GRUPOS.forEach(g => {
-    g.fields.forEach(f => {
-      if (!(f.key in props)) return; // só campos presentes nos dados carregados
-      html += `<option value="${f.key}">${g.label} — ${f.label}</option>`;
+  const campos = obterCamposDisponiveis();
+  sel.innerHTML = campos.map(c => `<option value="${c.key}">${c.label}</option>`).join('');
+  // Mantém a escolha anterior se ainda existir nos dados; senão volta ao padrão
+  if (campos.some(c => c.key === anterior)) sel.value = anterior;
+  else if (campos.some(c => c.key === 'N_INDIVIDUOS')) sel.value = 'N_INDIVIDUOS';
+}
+
+// ── MODO MULTICRITÉRIO (sobreposição ponderada) ──
+// criteriosMulti: [{ id, campo, peso (0-100), dir: 'max' | 'min' }]
+// dir='max' → valores maiores do campo contam mais (ex. população);
+// dir='min' → valores menores contam mais (ex. um indicador de vulnerabilidade
+// onde queremos priorizar zonas com valores baixos).
+let otimModo = 'unico';
+let criteriosMulti = [];
+let otimCriterioSeq = 0;
+
+function proximoCampoLivre() {
+  const usados = new Set(criteriosMulti.map(c => c.campo));
+  const campos = obterCamposDisponiveis();
+  const livre = campos.find(c => !usados.has(c.key));
+  return livre ? livre.key : (campos[0] ? campos[0].key : 'N_INDIVIDUOS');
+}
+
+function adicionarCriterio(campoInicial, pesoInicial) {
+  const campos = obterCamposDisponiveis();
+  if (criteriosMulti.length >= 6 || criteriosMulti.length >= campos.length) return;
+  criteriosMulti.push({
+    id: ++otimCriterioSeq,
+    campo: campoInicial || proximoCampoLivre(),
+    peso: pesoInicial != null ? pesoInicial : (criteriosMulti.length === 0 ? 100 : Math.max(5, Math.round(100 / (criteriosMulti.length + 1)))),
+    dir: 'max'
+  });
+  renderizarCriteriosMulti();
+}
+
+function atualizarPesosTotal() {
+  const total = criteriosMulti.reduce((s, c) => s + (parseFloat(c.peso) || 0), 0);
+  const val = document.getElementById('otimPesosTotalVal');
+  const box = document.getElementById('otimPesosTotal');
+  if (val) val.textContent = total.toFixed(0);
+  if (box) box.className = 'otim-pesos-total ' + (Math.abs(total - 100) < 0.6 ? 'ok' : 'off');
+}
+
+function renderizarCriteriosMulti() {
+  const cont = document.getElementById('otimCriteriosLista');
+  if (!cont) return;
+  cont.innerHTML = criteriosMulti.map(c => `
+    <div class="otim-criterio-row" data-id="${c.id}">
+      <select class="otim-crit-campo" data-id="${c.id}">${optionsCamposHTML(c.campo)}</select>
+      <div class="otim-criterio-peso"><input type="number" class="otim-crit-peso" data-id="${c.id}" min="0" max="100" step="5" value="${c.peso}"><span>%</span></div>
+      <button type="button" class="otim-criterio-dir" data-id="${c.id}" data-dir="${c.dir}" title="${c.dir === 'max' ? 'Mais é melhor — clica para inverter' : 'Menos é melhor — clica para inverter'}">${c.dir === 'max' ? '↑' : '↓'}</button>
+      <button type="button" class="otim-criterio-del" data-id="${c.id}" title="Remover critério">×</button>
+    </div>
+  `).join('');
+  atualizarPesosTotal();
+  const btnAdd = document.getElementById('btnOtimAddCriterio');
+  if (btnAdd) btnAdd.disabled = criteriosMulti.length >= 6 || criteriosMulti.length >= obterCamposDisponiveis().length;
+}
+
+function ligarEventosCriteriosMulti() {
+  const cont = document.getElementById('otimCriteriosLista');
+  if (!cont) return;
+  cont.addEventListener('input', (e) => {
+    if (!e.target.classList.contains('otim-crit-peso')) return;
+    const id = Number(e.target.dataset.id);
+    const c = criteriosMulti.find(x => x.id === id);
+    if (!c) return;
+    c.peso = clampInt(e.target.value, 0, 100, c.peso);
+    atualizarPesosTotal();
+  });
+  cont.addEventListener('change', (e) => {
+    if (!e.target.classList.contains('otim-crit-campo')) return;
+    const id = Number(e.target.dataset.id);
+    const c = criteriosMulti.find(x => x.id === id);
+    if (!c) return;
+    c.campo = e.target.value;
+  });
+  cont.addEventListener('click', (e) => {
+    const id = Number(e.target.dataset.id);
+    if (!id) return;
+    const c = criteriosMulti.find(x => x.id === id);
+    if (!c) return;
+    if (e.target.classList.contains('otim-criterio-dir')) {
+      c.dir = c.dir === 'max' ? 'min' : 'max';
+      e.target.dataset.dir = c.dir;
+      e.target.textContent = c.dir === 'max' ? '↑' : '↓';
+      e.target.title = c.dir === 'max' ? 'Mais é melhor — clica para inverter' : 'Menos é melhor — clica para inverter';
+    } else if (e.target.classList.contains('otim-criterio-del')) {
+      criteriosMulti = criteriosMulti.filter(x => x.id !== id);
+      renderizarCriteriosMulti();
+    }
+  });
+  const btnAdd = document.getElementById('btnOtimAddCriterio');
+  if (btnAdd) btnAdd.addEventListener('click', () => adicionarCriterio());
+  document.querySelectorAll('.otim-mode-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      otimModo = tab.dataset.otimModo;
+      document.querySelectorAll('.otim-mode-tab').forEach(t => {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      document.getElementById('otimSecaoUnico').style.display = otimModo === 'unico' ? '' : 'none';
+      document.getElementById('otimSecaoMulti').style.display = otimModo === 'multi' ? '' : 'none';
+      if (otimModo === 'multi' && criteriosMulti.length === 0) adicionarCriterio('N_INDIVIDUOS', 100);
     });
   });
-  sel.innerHTML = html;
-  // Mantém a escolha anterior se ainda existir nos dados; senão volta ao padrão
-  if (Array.from(sel.options).some(o => o.value === anterior)) sel.value = anterior;
-  else if (Array.from(sel.options).some(o => o.value === 'N_INDIVIDUOS')) sel.value = 'N_INDIVIDUOS';
+}
+ligarEventosCriteriosMulti();
+
+// Calcula, para cada subsecção, um índice composto (0–1) resultante da
+// normalização min-max de cada critério (invertida quando dir='min') e da
+// sua combinação linear ponderada pelos pesos (normalizados para somarem 1,
+// independentemente de somarem exatamente 100% na UI).
+function calcularPesosCompostos(criterios) {
+  const somaPesos = criterios.reduce((s, c) => s + (parseFloat(c.peso) || 0), 0) || 1;
+  const stats = criterios.map(c => {
+    let min = Infinity, max = -Infinity;
+    subsecsCache.forEach(({ feat }) => {
+      const v = parseFloat((feat.properties || {})[c.campo]);
+      if (!isNaN(v)) { if (v < min) min = v; if (v > max) max = v; }
+    });
+    if (min === Infinity) { min = 0; max = 0; }
+    return { min, max };
+  });
+  return subsecsCache.map(({ feat }) => {
+    const props = feat.properties || {};
+    let score = 0;
+    criterios.forEach((c, ci) => {
+      const { min, max } = stats[ci];
+      const raw = parseFloat(props[c.campo]);
+      let norm;
+      if (isNaN(raw)) {
+        norm = 0; // omisso tratado sempre como o pior caso, seja qual for a direção
+      } else {
+        norm = max > min ? (raw - min) / (max - min) : 0;
+        if (c.dir === 'min') norm = 1 - norm;
+      }
+      score += ((parseFloat(c.peso) || 0) / somaPesos) * norm;
+    });
+    return score;
+  });
+}
+
+// Areal weighting de um campo sintético (não presente em feat.properties,
+// como o índice composto multicritério) sobre a união geométrica dos buffers.
+function totalSinteticoNaUniao(uniao, valores) {
+  let total = 0;
+  if (!uniao || subsecsCache.length === 0) return 0;
+  const uniaoBbox = turf.bbox(uniao);
+  subsecsCache.forEach(({ feat, bbox, area: areaSubsec }, j) => {
+    if (!bboxIntersecta(bbox, uniaoBbox)) return;
+    let inter;
+    try { inter = turf.intersect(feat, uniao); } catch (e) { return; }
+    if (!inter) return;
+    if (areaSubsec <= 0) return;
+    let areaInter;
+    try { areaInter = turf.area(inter); } catch (e) { return; }
+    const fracao = Math.min(areaInter / areaSubsec, 1);
+    if (fracao <= 0) return;
+    total += valores[j] * fracao;
+  });
+  return total;
 }
 
 function abrirModalOtimizacao() {
   if (!bgriData || subsecsCache.length === 0) return;
   preencherCamposOtimizacao();
+  if (criteriosMulti.length > 0) {
+    // Revalida critérios guardados contra os campos do município atual
+    const campos = obterCamposDisponiveis();
+    criteriosMulti.forEach(c => { if (!campos.some(x => x.key === c.campo)) c.campo = proximoCampoLivre(); });
+  }
+  renderizarCriteriosMulti();
   document.getElementById('otimObjetivo').value = 80;
   document.getElementById('otimMaxBuffers').value = 5;
   document.getElementById('otimRaio').value = 1000;
@@ -3227,14 +3556,25 @@ function runOtimizacao() {
   const objetivo = clampInt(document.getElementById('otimObjetivo').value, 5, 100, 80);
   const maxBuffers = clampInt(document.getElementById('otimMaxBuffers').value, 1, 5, 5);
   const raio = clampInt(document.getElementById('otimRaio').value, 50, 20000, 1000);
-  const campoSel = document.getElementById('otimCampo');
-  const campo = campoSel.value;
-  const campoLabel = campoSel.options[campoSel.selectedIndex] ? campoSel.options[campoSel.selectedIndex].text : campo;
   const resolucaoSel = document.getElementById('otimResolucao');
   const espacamento = clampInt(resolucaoSel.value, 100, 250, 150);
-
   const msg = document.getElementById('otimMsg');
   const btn = document.getElementById('btnOtimRun');
+
+  let campo, campoLabel, criteriosValidos;
+  if (otimModo === 'multi') {
+    criteriosValidos = criteriosMulti.filter(c => (parseFloat(c.peso) || 0) > 0 && c.campo);
+    if (criteriosValidos.length === 0) {
+      msg.className = 'otim-msg error';
+      msg.textContent = 'Adiciona pelo menos um critério com peso superior a 0%.';
+      return;
+    }
+  } else {
+    const campoSel = document.getElementById('otimCampo');
+    campo = campoSel.value;
+    campoLabel = campoSel.options[campoSel.selectedIndex] ? campoSel.options[campoSel.selectedIndex].text : campo;
+  }
+
   msg.className = 'otim-msg';
   msg.innerHTML = '<span class="spinner"></span> A procurar a melhor solução… (pode demorar alguns segundos em municípios grandes)';
   btn.disabled = true;
@@ -3250,7 +3590,9 @@ function runOtimizacao() {
   setTimeout(async () => {
     let resultado;
     try {
-      resultado = await otimizarBuffers(objetivo, maxBuffers, raio, campo, campoLabel, espacamento);
+      resultado = otimModo === 'multi'
+        ? await otimizarBuffersMulticriterio(objetivo, maxBuffers, raio, criteriosValidos, espacamento)
+        : await otimizarBuffers(objetivo, maxBuffers, raio, campo, campoLabel, espacamento);
     } catch (e) {
       console.error(e);
       pararAnimacaoMapa();
@@ -3276,16 +3618,31 @@ function runOtimizacao() {
     if (progresso) progresso.style.display = 'none';
     desenharSolucaoOtimizacao(resultado.locs, raio);
     const combinado = calcularTotalCombinado();
-    resultado.popCoberta = Math.round(combinado.totaisGlobais[campo] || 0);
     resultado.totais = combinado.totaisGlobais;
-    resultado.popTotal = populacaoTotalSubsecs(campo);
-    resultado.campo = campo;
-    resultado.campoLabel = campoLabel;
     resultado.objetivo = objetivo;
     resultado.raio = raio;
     resultado.maxBuffers = maxBuffers;
     resultado.espacamento = espacamento;
     resultado.nBuffers = resultado.locs.length;
+    resultado.modo = otimModo;
+
+    if (otimModo === 'multi') {
+      const uniao = unirBuffers();
+      const pesosCompostos = calcularPesosCompostos(criteriosValidos);
+      resultado.popCoberta = totalSinteticoNaUniao(uniao, pesosCompostos);
+      resultado.popTotal = pesosCompostos.reduce((a, b) => a + b, 0);
+      const campos = obterCamposDisponiveis();
+      resultado.criterios = criteriosValidos.map(c => {
+        const f = campos.find(x => x.key === c.campo);
+        return { label: f ? f.label : c.campo, peso: parseFloat(c.peso) || 0, dir: c.dir };
+      });
+      resultado.campoLabel = `Índice composto (${resultado.criterios.length} critério${resultado.criterios.length > 1 ? 's' : ''})`;
+    } else {
+      resultado.popCoberta = Math.round(combinado.totaisGlobais[campo] || 0);
+      resultado.popTotal = populacaoTotalSubsecs(campo);
+      resultado.campo = campo;
+      resultado.campoLabel = campoLabel;
+    }
 
     fecharModalOtimizacao();
     mostrarResultadosOtimizacao(resultado);
@@ -3310,9 +3667,10 @@ function animarMapaProcessamento() {
   map.setView([c.lat, c.lng], animMapaZoomBase, { animate: false });
   animMapaAtiva = true;
 
-  // Amplitudes bem dentro do município para a órbita nunca sair dele
-  const dLat = (b.getNorth() - b.getSouth()) * 0.26;
-  const dLng = (b.getEast() - b.getWest()) * 0.30;
+  // Amplitudes discretas e bem dentro do município — a órbita nunca sai dele
+  // e o movimento é subtil (não "mexe" demasiado no mapa).
+  const dLat = (b.getNorth() - b.getSouth()) * 0.15;
+  const dLng = (b.getEast() - b.getWest()) * 0.17;
   const centro = { lat: c.lat, lng: c.lng };
 
   let inicio = null;
@@ -3320,10 +3678,10 @@ function animarMapaProcessamento() {
     if (!animMapaAtiva) return;
     if (inicio === null) inicio = t;
     const dt = (t - inicio) / 1000;
-    // Frequências ligeiramente diferentes: órbita suave mas sem repetir
+    // Frequências ligeiramente diferentes: órbita suave, lenta e sem repetir
     // exatamente o mesmo percurso a cada volta.
-    const ang = dt * 0.42;
-    const lat = centro.lat + dLat * Math.sin(ang * 0.5 + 1.3);
+    const ang = dt * 0.20;
+    const lat = centro.lat + dLat * Math.sin(ang * 0.4 + 1.3);
     const lng = centro.lng + dLng * Math.sin(ang);
     const alvo = map.project([lat, lng], animMapaZoomBase);
     const atual = map.project(map.getCenter(), animMapaZoomBase);
