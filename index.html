@@ -5934,8 +5934,12 @@
     // reabastece a fila com um novo lote quando ela esvazia — o carrossel
     // nunca "acaba", vai sempre puxando mais concelhos/datasets
     function reabastecerFila() {
-      var novos = montarItensAleatorios(30);
-      itemQueue = itemQueue.concat(novos);
+      try {
+        var novos = montarItensAleatorios(30);
+        itemQueue = itemQueue.concat(novos);
+      } catch (e) {
+        console.error('reabastecerFila: erro ao montar lote de itens', e);
+      }
     }
 
     function proximoItem() {
@@ -6028,8 +6032,12 @@
 
       garantirBoundsCache();
       var bounds = boundsPorConcelhoCache[normalizarNome(mm.municipio || '')];
-      if (bounds && bounds.isValid()) c.map.fitBounds(bounds, { padding: [10, 10] });
-      else c.map.setView([39.6, -8.2], 7);
+      try {
+        if (bounds && bounds.isValid()) c.map.fitBounds(bounds, { padding: [10, 10] });
+        else c.map.setView([39.6, -8.2], 7);
+      } catch (e) {
+        console.error('card preview fitBounds/setView error', tipo, mm && mm.municipio, e);
+      }
       requestAnimationFrame(function() { try { c.map.invalidateSize(); } catch(e) {} });
 
       function aplicarGeoJSON(g, estilo) {
@@ -6179,8 +6187,17 @@
       if (!tickerAtivo) return;
       var agora = performance.now();
 
-      var item = proximoItem();
-      if (item) preencherCartao(c, item);
+      // qualquer erro ao popular o conteúdo (fetch, geometria inválida, etc.)
+      // NUNCA pode impedir o cartão de continuar a mover-se e a ser reciclado
+      // outra vez mais tarde — sem este try/catch, uma única exceção aqui
+      // cancelava para sempre o temporizador deste cartão (ele ficava "preso"
+      // fora do ecrã e nenhum novo cartão voltava a entrar no lugar dele)
+      try {
+        var item = proximoItem();
+        if (item) preencherCartao(c, item);
+      } catch (e) {
+        console.error('reciclarCartao: erro ao preencher cartão, conteúdo anterior mantido', e);
+      }
 
       var maxX = -Infinity;
       cardPool.forEach(function(outro) {
