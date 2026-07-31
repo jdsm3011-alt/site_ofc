@@ -21,15 +21,47 @@
   var overlayGuide = null;
   var LOADED = false; // refletido a partir da mensagem 'modelsLoaded' do worker
 
-  /* Metadados da vista atualmente codificada (o embedding em si fica no
-     worker, nunca vem para aqui -- ver VIEW_CACHE em 18b-sam-segment-
-     worker.js). Serve para 1) decidir se um novo clique pode reaproveitar
-     a vista ja codificada (mesmos bounds/zoom) e 2) converter os pontos
-     que o worker devolve (em pixels do canvas) para lat/lng.
-     Campos: { previewCanvas, previewScale, w, h, bounds, zoom }. */
-  var VIEW_META = null;
+  /* Classe aplicada a QUALQUER elemento de UI que este ficheiro injete
+     dentro de #map (overlayEl, overlayGuide, o aviso "A segmentar...", a
+     mensagem transitoria de erro/vazio) -- serve so' para o html2canvas
+     saber o que IGNORAR ao capturar (ver ignoreElements em
+     ensureRawCapture). ANTES nao existia nada disto: o html2canvas
+     capturava #map tal como estava no momento do clique, e como o aviso
+     "A segmentar..." e' criado e anexado a #map ANTES de se pedir a
+     captura (ver handleClick), ficava literalmente cozinhado nos pixeis
+     enviados ao encoder -- inofensivo enquanto se codificava a vista
+     inteira (o aviso era uma fracao minuscula da imagem), mas passou a
+     ser um problema real depois do recorte por clique (SAM_ROI_SIZE).
+     Como o recorte fica centrado no clique e o aviso tambem fica centrado
+     em #map, as duas coisas coincidem quase sempre -- e pior, ficava
+     preso em RAW_CAPTURE (cacheado por vista) mesmo depois de o proprio
+     elemento ser removido do DOM, contaminando todos os cliques
+     seguintes na mesma vista. */
+  var SAM_UI_IGNORE_CLASS = 'sam-aav-ui-ignore';
+
+  /* Screenshot (html2canvas) da vista atual, em cache -- NAO inclui mais
+     o embedding (esse passou a ser calculado por CLIQUE, nao por vista,
+     ver encodeClickRegion/SAM_ROI_SIZE mais abaixo). Serve para 1) evitar
+     recapturar o DOM a cada clique na mesma vista (movimento de mapa e'
+     que invalida) e 2) converter os pontos que o worker devolve (em
+     pixels deste canvas) para lat/lng.
+     Campos: { canvas, previewCanvas, previewScale, w, h, bounds, zoom }. */
+  var RAW_CAPTURE = null;
+
+  /* ANTES: o encoder corria UMA vez por vista, sobre o mapDiv inteiro
+     reduzido para 1024x1024 -- um edificio tipico podia ficar com so'
+     dezenas de pixeis depois de espremido, o que limitava a nitidez do
+     contorno mais do que qualquer pos-processamento conseguia compensar.
+     AGORA cada clique recorta um quadrado de SAM_ROI_SIZE px (em pixels
+     do canvas capturado) a' volta do ponto clicado, e e' so' esse recorte
+     que vai para o encoder a 1024x1024 -- muito mais resolucao efetiva
+     por edificio. Custo: perde-se o reaproveitamento do embedding entre
+     cliques na mesma vista (cada clique volta a correr o encoder, agora
+     sobre um recorte diferente); o que se mantem em cache e' so' o
+     screenshot (RAW_CAPTURE), nao o embedding. */
+  var SAM_ROI_SIZE = 768;
   var processingClick = false; // evita dois cliques a processar em simultaneo
-  var mapInvalidateHandler = null; // listener movestart/zoomstart p/ invalidar VIEW_META
+  var mapInvalidateHandler = null; // listener movestart/zoomstart p/ invalidar RAW_CAPTURE
 
   /* O botão da Vetorização Assistida só existe visualmente enquanto
      #map tem a classe "pm-toolbar-visible" (ver css/pm-toolbar.css --
@@ -127,7 +159,7 @@
 
   // ========== Ativar / desativar modo SAM ==========
   /* Basemap CORS-safe exigido pela captura via html2canvas (ver
-     ensureEmbedding/isCanvasBlank) -- 'dgt' (Ortos2021,
+     ensureRawCapture/isCanvasBlank) -- 'dgt' (Ortos2021,
      cartografia.dgterritorio.gov.pt) nao envia cabecalhos CORS, pelo que
      qualquer captura feita com esse basemap ativo fica em branco. Ha
      ainda o agravante da troca automatica satelite<->dgt por zoom
@@ -172,10 +204,12 @@
     if(!mapDiv) return;
 
     overlayEl = document.createElement('div');
+    overlayEl.className = SAM_UI_IGNORE_CLASS;
     overlayEl.style.cssText = 'position:absolute;inset:0;z-index:602;cursor:crosshair;background:rgba(0,180,100,.07);';
     mapDiv.appendChild(overlayEl);
 
     overlayGuide = document.createElement('div');
+    overlayGuide.className = SAM_UI_IGNORE_CLASS;
     overlayGuide.style.cssText = 'position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:603;background:rgba(0,0,0,.7);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;font-family:sans-serif;pointer-events:none;white-space:nowrap;';
     overlayGuide.textContent = 'Clica num edifício para segmentar. Esc para cancelar.';
     mapDiv.appendChild(overlayGuide);
@@ -198,7 +232,7 @@
        vista que ja nao e' a atual. */
     if(window.map && typeof window.map.on === 'function'){
       mapInvalidateHandler = function(){
-        VIEW_META = null;
+        RAW_CAPTURE = null;
         if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
       };
       map.on('movestart zoomstart', mapInvalidateHandler);
@@ -222,7 +256,7 @@
       map.off('movestart zoomstart', mapInvalidateHandler);
       mapInvalidateHandler = null;
     }
-    VIEW_META = null; // basemap ou vista podem mudar entre sessoes -- nao arriscar cache stale
+    RAW_CAPTURE = null; // basemap ou vista podem mudar entre sessoes -- nao arriscar cache stale
     if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
     processingClick = false;
 
@@ -257,6 +291,7 @@
 
     // Mostrar "a processar"
     var status = document.createElement('div');
+    status.className = SAM_UI_IGNORE_CLASS;
     status.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:610;background:rgba(0,0,0,.8);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-family:sans-serif;pointer-events:none;';
     status.textContent = 'A segmentar...';
     mapDiv.appendChild(status);
@@ -291,6 +326,7 @@
   // resultado (mascara vazia) ou um erro pareciam "nao fazer nada".
   function showTransientMessage(mapDiv, text){
     var el = document.createElement('div');
+    el.className = SAM_UI_IGNORE_CLASS;
     el.style.cssText = 'position:absolute;bottom:50px;left:50%;transform:translateX(-50%);z-index:610;background:rgba(180,40,40,.9);color:#fff;padding:8px 16px;border-radius:6px;font-size:12px;font-family:sans-serif;pointer-events:none;max-width:80%;text-align:center;';
     el.textContent = text;
     mapDiv.appendChild(el);
@@ -396,40 +432,49 @@
     return blank;
   }
 
-  // ========== Captura + pedido de encode ao worker (CACHEADO por vista) ==========
-  /* Corre no maximo uma vez por vista do mapa: captura o mapDiv inteiro,
-     manda para o worker codificar, e guarda so' os METADADOS da vista
-     (VIEW_META) -- o embedding em si fica residente no worker. Cada
-     clique seguinte na mesma vista salta direto para o pedido de decode
-     (ver runSegmentation). Invalida-se quando o mapa se mexe (pan/zoom)
-     ou o modo SAM e' desativado (ver listeners em activate()/deactivate()). */
-  async function ensureEmbedding(mapDiv, bounds, zoom){
+  // ========== Captura do DOM (CACHEADA por vista, sem encoder) ==========
+  /* Corre no maximo uma vez por vista do mapa: captura o mapDiv inteiro e
+     guarda o canvas + METADADOS da vista (RAW_CAPTURE). Ja NAO manda nada
+     ao worker aqui -- o encoder so' corre por clique, sobre um recorte
+     desta captura (ver encodeClickRegion). Invalida-se quando o mapa se
+     mexe (pan/zoom) ou o modo SAM e' desativado (ver listeners em
+     activate()/deactivate()). */
+  async function ensureRawCapture(mapDiv, bounds, zoom){
     /* Rede de segurança final -- mesmo com o basemap fixado em activate(),
        o utilizador pode trocar de basemap à mão no menu a meio de uma
        sessão de SAM. Confirma-se aqui, mesmo antes de capturar, e
        força-se outra vez se necessário. Uma troca de basemap invalida
-       sempre a vista codificada (a imagem por baixo mudou). */
+       sempre a captura (a imagem por baixo mudou). */
     if(typeof window.__forceBasemap === 'function' && window.__activeBaseLayerKey !== SAM_REQUIRED_BASEMAP){
       if(typeof __console !== 'undefined'){
         __console.log('SAM: basemap tinha mudado para "' + window.__activeBaseLayerKey + '" a meio da sessão -- a forçar de volta para "satelite" antes de capturar.', 'warning');
       }
       window.__forceBasemap(SAM_REQUIRED_BASEMAP);
-      VIEW_META = null;
+      RAW_CAPTURE = null;
       if(samWorker) samWorker.postMessage({ type: 'invalidateView' });
       await new Promise(function(r){ setTimeout(r, 500); }); // dar tempo às tiles novas carregarem
     }
 
-    // Vista ja codificada e ainda valida (mesmos bounds+zoom)? Nao pedir outra vez ao worker.
-    if(VIEW_META && VIEW_META.zoom === zoom && VIEW_META.bounds.equals(bounds)){
-      return VIEW_META;
+    // Vista ja capturada e ainda valida (mesmos bounds+zoom)? Nao recapturar o DOM.
+    if(RAW_CAPTURE && RAW_CAPTURE.zoom === zoom && RAW_CAPTURE.bounds.equals(bounds)){
+      return RAW_CAPTURE;
     }
 
-    /* 1. Capturar viewport (DOM -- so' pode correr aqui, nao no worker).
+    /* Capturar viewport (DOM -- so' pode correr aqui, nao no worker).
        scale:1 -- captura a pixels CSS, nao ao devicePixelRatio do ecra
-       (2x+ em retina/HiDPI seria puro desperdicio, ja que o encoder reduz
-       tudo para 1024x1024 de qualquer forma). useCORS:true para o
-       html2canvas conseguir desenhar as tiles do basemap (outra origem). */
-    var canvas = await html2canvas(mapDiv, { useCORS: true, logging: false, scale: 1 });
+       (2x+ em retina/HiDPI seria puro desperdicio aqui tambem, ja que e' o
+       recorte por clique, nao esta captura inteira, que vai para o
+       encoder). useCORS:true para o html2canvas conseguir desenhar as
+       tiles do basemap (outra origem). ignoreElements exclui qualquer
+       overlay proprio do modo SAM (ver SAM_UI_IGNORE_CLASS acima) --
+       sem isto, o aviso "A segmentar...", o tint verde do crosshair e a
+       mensagem transitoria de erro ficavam cozinhados nos pixeis
+       capturados (e por tabela em RAW_CAPTURE, cacheados para todos os
+       cliques seguintes na mesma vista). */
+    var canvas = await html2canvas(mapDiv, {
+      useCORS: true, logging: false, scale: 1,
+      ignoreElements: function(el){ return el.classList && el.classList.contains(SAM_UI_IGNORE_CLASS); },
+    });
     var w = canvas.width, h = canvas.height;
 
     if(isCanvasBlank(canvas)){
@@ -443,7 +488,8 @@
       throw new Error('Imagem base nao capturada (bloqueio CORS das tiles).' + basemapNote);
     }
 
-    // 2. Miniatura para o debug preview (fica so' aqui na main thread, nunca vai ao worker).
+    // Miniatura para debug/diagnostico geral (nao e' mais o que se manda ao
+    // encoder -- isso e' o recorte feito por encodeClickRegion).
     var PREVIEW_MAX = 900;
     var previewScale = Math.min(1, PREVIEW_MAX / Math.max(w, h));
     var previewCanvas = document.createElement('canvas');
@@ -451,25 +497,55 @@
     previewCanvas.height = Math.round(h * previewScale);
     previewCanvas.getContext('2d').drawImage(canvas, 0, 0, previewCanvas.width, previewCanvas.height);
 
-    /* 3. Transferir para o worker via ImageBitmap (transferable -- zero
-       copias extra no postMessage, so' a copia unica feita pelo proprio
-       createImageBitmap). O worker fica DONO do embedding resultante;
-       aqui so' guardamos os metadados da vista, nao os pixels nem o
-       embedding. */
-    var bitmap = await createImageBitmap(canvas);
-    await callWorker({ type: 'encodeView', bitmap: bitmap, w: w, h: h, zoom: zoom }, [bitmap]);
-
-    VIEW_META = {
-      previewCanvas: previewCanvas, previewScale: previewScale,
+    RAW_CAPTURE = {
+      canvas: canvas, previewCanvas: previewCanvas, previewScale: previewScale,
       w: w, h: h, bounds: bounds, zoom: zoom,
     };
     if(typeof __console !== 'undefined'){
-      __console.log('SAM: vista enviada e codificada no worker (zoom ' + zoom + ') -- proximos cliques na mesma vista so\' pedem o decode.', 'info');
+      __console.log('SAM: vista capturada (zoom ' + zoom + ', ' + w + 'x' + h + 'px) -- cada clique vai recortar e codificar so\' a zona a volta do ponto clicado.', 'info');
     }
-    return VIEW_META;
+    return RAW_CAPTURE;
   }
 
-  // ========== Pipeline por clique (pede so' o decode ao worker) ==========
+  // ========== Recorte + encode por CLIQUE (resolução efetiva muito maior) ==========
+  /* Em vez de codificar o mapDiv inteiro (e perder resolucao ao reduzir
+     tudo para 1024x1024), recorta-se um quadrado de SAM_ROI_SIZE px do
+     RAW_CAPTURE, centrado no ponto clicado, e e' so' esse recorte que se
+     manda ao encoder. Um edificio que antes ocupava 40-80px de um canvas
+     de ~1400px espremido para 1024 passa a ocupar uma fracao muito maior
+     do recorte, ja perto ou acima de 1024px -- muito mais detalhe para o
+     decoder trabalhar. Corre sempre, em todos os cliques (nao ha cache de
+     embedding entre cliques, so' de captura -- ver RAW_CAPTURE acima). */
+  async function encodeClickRegion(raw, clickX, clickY, zoom){
+    var w = raw.w, h = raw.h;
+    var size = Math.round(Math.min(SAM_ROI_SIZE, w, h));
+    var rx = Math.round(Math.max(0, Math.min(clickX - size / 2, w - size)));
+    var ry = Math.round(Math.max(0, Math.min(clickY - size / 2, h - size)));
+
+    var cropCanvas = document.createElement('canvas');
+    cropCanvas.width = size; cropCanvas.height = size;
+    cropCanvas.getContext('2d').drawImage(raw.canvas, rx, ry, size, size, 0, 0, size, size);
+
+    /* Transferir para o worker via ImageBitmap (transferable -- zero
+       copias extra no postMessage). roiOffsetX/Y vao junto para o worker
+       poder devolver os pontos do contorno ja convertidos de volta para o
+       espaco do canvas COMPLETO (RAW_CAPTURE) -- assim o resto do
+       pipeline (conversao lat/lng em runSegmentation) nao precisa de
+       saber que o encoder viu so' um recorte. */
+    var bitmap = await createImageBitmap(cropCanvas);
+    await callWorker({
+      type: 'encodeView', bitmap: bitmap, w: size, h: size, zoom: zoom,
+      roiOffsetX: rx, roiOffsetY: ry,
+    }, [bitmap]);
+
+    if(typeof __console !== 'undefined'){
+      __console.log('SAM: recorte de ' + size + 'x' + size + 'px a\' volta do clique enviado ao encoder (captura completa era ' + w + 'x' + h + 'px, offset ' + rx + ',' + ry + ').', 'info');
+    }
+
+    return { cropCanvas: cropCanvas, rx: rx, ry: ry, size: size };
+  }
+
+  // ========== Pipeline por clique (crop + encode + decode) ==========
   async function runSegmentation(clickX, clickY, bounds, zoom, mapDiv){
     /* ANTES: clickX/clickY (pixels CSS) eram usados diretamente contra o
        canvas do html2canvas, que por omissao captura a devicePixelRatio
@@ -478,48 +554,72 @@
        pixels do CANVAS antes de qualquer calculo. */
     var mapRect = mapDiv.getBoundingClientRect();
 
-    var meta = await ensureEmbedding(mapDiv, bounds, zoom);
-    var scaleX = meta.w / mapRect.width;
-    var scaleY = meta.h / mapRect.height;
+    var raw = await ensureRawCapture(mapDiv, bounds, zoom);
+    var scaleX = raw.w / mapRect.width;
+    var scaleY = raw.h / mapRect.height;
     clickX = clickX * scaleX;
     clickY = clickY * scaleY;
     if(typeof __console !== 'undefined'){
       __console.log('SAM: escala canvas/CSS = ' + scaleX.toFixed(2) + 'x' + scaleY.toFixed(2) + ' (devicePixelRatio=' + (window.devicePixelRatio || 1) + ')', 'info');
     }
 
-    var w = meta.w, h = meta.h, metaBounds = meta.bounds; // usar sempre os da vista que gerou o embedding
+    var w = raw.w, h = raw.h; // usados so' para o recorte/logs, ja nao para a conversao final (ver abaixo)
 
-    /* DEBUG: pre-visualizacao de um recorte a volta do ponto -- so' para
-       diagnostico visual, nao afeta a inferencia (que corre no worker).
-       Fonte: a miniatura cacheada (meta.previewCanvas). */
+    // Recortar a' volta do clique e codificar so' esse recorte (ver
+    // encodeClickRegion -- e' aqui que se ganha resolucao efetiva).
+    var roi = await encodeClickRegion(raw, clickX, clickY, zoom);
+
+    /* DEBUG: mostra exatamente o recorte que foi enviado ao encoder (ja
+       nao e' preciso recortar outra vez a partir da miniatura -- roi.
+       cropCanvas JA' e' o recorte real, na resolucao em que foi enviado). */
     var SAM_DEBUG_PREVIEW = true;
     if(SAM_DEBUG_PREVIEW){
-      var pScale = meta.previewScale;
-      var pClickX = clickX * pScale, pClickY = clickY * pScale;
-      var dbgSize = Math.max(60, Math.round(400 * pScale)), dbgHalf = dbgSize / 2;
-      var dbgRx = Math.max(0, Math.min(pClickX - dbgHalf, meta.previewCanvas.width - dbgSize));
-      var dbgRy = Math.max(0, Math.min(pClickY - dbgHalf, meta.previewCanvas.height - dbgSize));
-      var dbgCanvas = document.createElement('canvas');
-      dbgCanvas.width = dbgSize; dbgCanvas.height = dbgSize;
-      dbgCanvas.getContext('2d').drawImage(meta.previewCanvas, dbgRx, dbgRy, dbgSize, dbgSize, 0, 0, dbgSize, dbgSize);
-      showDebugPreview(mapDiv, dbgCanvas, pClickX - dbgRx, pClickY - dbgRy);
+      showDebugPreview(mapDiv, roi.cropCanvas, clickX - roi.rx, clickY - roi.ry);
     }
 
-    // Pedido de decode ao worker -- so' isto bloqueia (aguarda resposta),
-    // e mesmo assim NAO trava a UI: e' so' uma await numa Promise, o
-    // trabalho pesado corre na outra thread.
-    var res = await callWorker({ type: 'decodeClick', x: clickX, y: clickY });
+    /* Pedido de decode ao worker -- coordenadas relativas ao RECORTE (o
+       encoder so' viu o recorte, nao o canvas completo), ver roiOffsetX/Y
+       guardados em encodeClickRegion para o worker devolver os pontos do
+       contorno ja' na escala do canvas completo. So' isto bloqueia
+       (aguarda resposta), e mesmo assim NAO trava a UI: e' so' uma await
+       numa Promise, o trabalho pesado corre na outra thread. */
+    var res = await callWorker({ type: 'decodeClick', x: clickX - roi.rx, y: clickY - roi.ry });
 
-    /* Converter pontos (pixels do canvas capturado, devolvidos pelo
-       worker) para lat/lng -- o worker nao sabe nada de Leaflet/bounds,
-       so' esta thread e' que tem essa informacao. */
+    /* Converter pontos (ja' em pixels do canvas COMPLETO -- o worker somou
+       o roiOffset antes de responder) para lat/lng.
+       ANTES: fazia-se interpolacao linear manual a partir de metaBounds
+       (getWest/getEast/getNorth/getSouth), assumindo que o canvas
+       capturado mapeia 1:1 e sem desvio para os bounds do Leaflet. Isso
+       parte de dois pressupostos que nem sempre sao verdade: 1) que
+       #map nao tem nenhum border/padding CSS -- se tiver, o canvas
+       capturado (html2canvas captura a caixa toda, border incluido)
+       fica maior do que a area real dos tiles, e o pixel (0,0) do canvas
+       ja' nao corresponde exatamente ao canto NW dos bounds (o proprio
+       Leaflet, ao converter um clique em coordenadas, subtrai
+       container.clientLeft/clientTop exatamente por esta razao -- ver
+       DomEvent.getMousePosition -- e a nossa formula antiga nao
+       replicava isso); 2) que a latitude e' linear em pixels, o que nao
+       e' bem verdade em Mercator (so' e' desprezavel para vistas
+       pequenas). Isto pode ter passado despercebido enquanto os
+       contornos eram mais imprecisos (o "ruido" do proprio contorno
+       escondia um desvio fixo de poucos pixeis); com o recorte por
+       clique o contorno ficou mais fiel e um desvio constante torna-se
+       visivel. AGORA usa-se map.containerPointToLatLng diretamente --
+       e' o proprio Leaflet a fazer a conversao, com a MESMA logica que
+       usa para tudo o resto (cliques, camadas, etc.), o que elimina esta
+       classe inteira de problemas em vez de tentar acertar a formula a
+       mao. gx/gy estao em pixels do canvas (== caixa CSS completa de
+       #map, incluindo border); dividir por scaleX/scaleY devolve pixels
+       CSS, e subtrair clientLeft/clientTop remove o border, chegando ao
+       "containerPoint" que o Leaflet espera. */
     var polygons = [];
     if(res.points){
       var pts = res.points.map(function(pt){
         var gx = pt[0], gy = pt[1];
-        var lng = metaBounds.getWest() + (gx / w) * (metaBounds.getEast() - metaBounds.getWest());
-        var lat = metaBounds.getNorth() - (gy / h) * (metaBounds.getNorth() - metaBounds.getSouth());
-        return [lat, lng];
+        var cssX = gx / scaleX - mapDiv.clientLeft;
+        var cssY = gy / scaleY - mapDiv.clientTop;
+        var latlng = map.containerPointToLatLng(L.point(cssX, cssY));
+        return [latlng.lat, latlng.lng];
       });
       polygons.push(pts);
     }

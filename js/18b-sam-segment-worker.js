@@ -14,16 +14,22 @@
      recebidas (self.onmessage):
        { type:'loadModels' }
          -> pre-carrega os modelos em background (fire-and-forget).
-       { type:'encodeView', reqId, bitmap, w, h, zoom }
-         -> corre o encoder sobre a vista inteira, guarda o embedding em
-            cache local (VIEW_CACHE) e devolve so' um "ok" (os embeddings
-            NUNCA saem daqui -- ficam residentes no worker, o que tambem
-            poupa memoria/copias na main thread).
+       { type:'encodeView', reqId, bitmap, w, h, zoom, roiOffsetX, roiOffsetY }
+         -> corre o encoder sobre o BITMAP recebido (que desde a versao
+            "recorte por clique" ja' nao e' a vista inteira, e' um recorte
+            de SAM_ROI_SIZE px a' volta do ponto clicado -- ver
+            encodeClickRegion em 18-sam-segment.js), guarda o embedding em
+            cache local (VIEW_CACHE) junto com roiOffsetX/Y (posicao do
+            recorte dentro do canvas completo), e devolve so' um "ok" (os
+            embeddings NUNCA saem daqui -- ficam residentes no worker, o
+            que tambem poupa memoria/copias na main thread).
        { type:'decodeClick', reqId, x, y }
-         -> corre so' o decoder sobre o VIEW_CACHE existente, devolve o
-            contorno (em pixels do espaco do CANVAS capturado, nao lat/lng
-            -- o worker nao sabe nada de Leaflet/bounds, isso fica para a
-            main thread converter).
+         -> corre so' o decoder sobre o VIEW_CACHE existente. x/y sao
+            relativos ao RECORTE (nao ao canvas completo). Devolve o
+            contorno ja' somado com roiOffsetX/Y, ou seja em pixels do
+            espaco do CANVAS COMPLETO capturado (nao lat/lng -- o worker
+            nao sabe nada de Leaflet/bounds, isso fica para a main thread
+            converter).
        { type:'invalidateView' }
          -> limpa o VIEW_CACHE (chamado pela main thread quando o mapa se
             mexe ou o modo SAM e' desativado).
@@ -125,7 +131,17 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
       var emb = encResult[MODELS.encoder.outputNames[0]];
       var posEmb = MODELS.encoder.outputNames[1] ? encResult[MODELS.encoder.outputNames[1]] : null;
 
-      VIEW_CACHE = { emb: emb, posEmb: posEmb, prep: prep, w: w, h: h };
+      /* roiOffsetX/Y (em pixels do canvas COMPLETO capturado na main
+         thread, ver encodeClickRegion em 18-sam-segment.js): a imagem que
+         chegou aqui e' so' um recorte a' volta do clique, ja' nao a vista
+         inteira -- guarda-se o offset para decodeClick poder devolver os
+         pontos do contorno na escala do canvas completo (0/0 quando nao
+         vier, para compatibilidade se algum dia se voltar a mandar a
+         vista inteira sem recorte). */
+      VIEW_CACHE = {
+        emb: emb, posEmb: posEmb, prep: prep, w: w, h: h,
+        roiOffsetX: msg.roiOffsetX || 0, roiOffsetY: msg.roiOffsetY || 0,
+      };
       log('embedding calculado no worker para esta vista (zoom ' + msg.zoom + ') -- proximos cliques na mesma vista so\' pedem o decode.', 'info');
       self.postMessage({ type: 'result', reqId: msg.reqId, kind: 'encodeView', ok: true });
     } catch(err){
@@ -183,6 +199,17 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
       var MASK_MAX_COVERAGE = 0.85; // acima disto, assume-se "mascara = vista inteira"
       var totalGridPx = maskW * maskH;
 
+      /* Ponto clicado (ecx/ecy, ja' calculado acima para o decoder) convertido
+         para a grelha da mascara -- precisa-se disto ANTES de escolher o
+         contorno (ver mBestContour/pointInPolygonGrid abaixo). Movido para
+         aqui (antes vinha calculado so' no fim, depois de ja' se ter
+         escolhido o contorno) porque a seleccao de contorno agora depende
+         de saber onde cai o clique dentro da grelha. */
+      var maskToEncX = SAM_IMAGE_SIZE / maskW;
+      var maskToEncY = SAM_IMAGE_SIZE / maskH;
+      var maskClickX = ecx / maskToEncX;
+      var maskClickY = ecy / maskToEncY;
+
       var order = [];
       for(var oi = 0; oi < numMasks; oi++) order.push(oi);
       order.sort(function(a, b){ return scores.data[b] - scores.data[a]; });
@@ -211,12 +238,25 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
         var coverage = onCount / totalGridPx;
 
         var mContours = marchingSquares(mBinary, maskW, maskH);
-        var mBestContour = null, mBestArea = -1;
+        var mBestContour = null, mBestArea = -1, mBestContains = false;
         mContours.forEach(function(contour){
           if(contour.length <= 5) return;
           var a = contourAreaPx(contour);
-          if(a > mBestArea){ mBestArea = a; mBestContour = contour; }
+          var contains = pointInPolygonGrid(maskClickX, maskClickY, contour);
+          /* Prioridade: 1) contem o ponto clicado (entre esses, o maior);
+             2) se NENHUM contorno contem o ponto (raro -- pode acontecer
+             perto de bordas/ruido), cai-se para o maior de todos, como
+             antes. Um contorno que contem o ponto NUNCA perde para um que
+             nao contem, seja qual for a area. */
+          if(contains && !mBestContains){
+            mBestContour = contour; mBestArea = a; mBestContains = true;
+          } else if(contains === mBestContains && a > mBestArea){
+            mBestContour = contour; mBestArea = a; mBestContains = contains;
+          }
         });
+        if(mBestContour && !mBestContains){
+          log('aviso -- nenhuma componente da mascara #' + idx + ' contem o ponto clicado; a usar a maior mesma assim.', 'warning');
+        }
         if(mBestContour) mBestContour = simplifyPolygon(mBestContour, 1.5);
 
         candidatesLog.push('#' + idx + ' score=' + scores.data[idx].toFixed(3) + ' cobertura=' + (coverage * 100).toFixed(0) + '%');
@@ -244,11 +284,16 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
         for(var i4 = 0; i4 < stride; i4++){ bin0Raw[i4] = mData0[i4] > thr0 ? 1 : 0; }
         var bin0 = morphClose(morphOpen(bin0Raw, maskW, maskH), maskW, maskH);
         var contours0 = marchingSquares(bin0, maskW, maskH);
-        var bc0 = null, ba0 = -1;
+        var bc0 = null, ba0 = -1, bc0Contains = false;
         contours0.forEach(function(contour){
           if(contour.length <= 5) return;
           var a = contourAreaPx(contour);
-          if(a > ba0){ ba0 = a; bc0 = contour; }
+          var contains = pointInPolygonGrid(maskClickX, maskClickY, contour);
+          if(contains && !bc0Contains){
+            bc0 = contour; ba0 = a; bc0Contains = true;
+          } else if(contains === bc0Contains && a > ba0){
+            bc0 = contour; ba0 = a; bc0Contains = contains;
+          }
         });
         if(bc0) bc0 = simplifyPolygon(bc0, 1.5);
         chosen = { idx: idx0, bestContour: bc0, bestArea: ba0, coverage: (ba0 >= 0 ? ba0 / totalGridPx : 1) };
@@ -260,19 +305,24 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
       log('mascara #' + bestIdx + ' escolhida, contorno com area ' + Math.round(chosen.bestArea) + ' px^2 (' + (chosen.coverage * 100).toFixed(0) + '%' + (usedFallback ? ', fallback sem candidata boa' : '') + ').', 'info');
 
       /* Converter grelha da mascara -> espaco do encoder (1024) -> espaco
-         do canvas capturado (desfazendo prep.scale/padX/padY). PARA AQUI
-         -- o worker nao sabe nada de lat/lng/bounds Leaflet, isso e' feito
-         na main thread (que e' quem tem o mapa), a partir destes pontos em
-         pixels do canvas. */
-      var maskToEncX = SAM_IMAGE_SIZE / maskW;
-      var maskToEncY = SAM_IMAGE_SIZE / maskH;
+         do RECORTE que foi enviado (desfazendo prep.scale/padX/padY) ->
+         espaco do canvas COMPLETO capturado na main thread (somando
+         roiOffsetX/Y, ver encodeView acima -- desde que se passou a
+         codificar so' um recorte por clique, os pontos vinham numa escala
+         diferente da que o resto do pipeline espera). PARA AQUI -- o
+         worker nao sabe nada de lat/lng/bounds Leaflet, isso e' feito na
+         main thread (que e' quem tem o mapa), a partir destes pontos em
+         pixels do canvas completo. (maskToEncX/Y ja' calculados mais acima,
+         antes da escolha de contorno -- ver maskClickX/maskClickY.) */
+      var roiOffsetX = VIEW_CACHE.roiOffsetX || 0;
+      var roiOffsetY = VIEW_CACHE.roiOffsetY || 0;
       var points = null;
       if(bestContour){
         points = bestContour.map(function(pt){
           var encX = pt[0] * maskToEncX;
           var encY = pt[1] * maskToEncY;
-          var gx = (encX - prep.padX) / prep.scale;
-          var gy = (encY - prep.padY) / prep.scale;
+          var gx = (encX - prep.padX) / prep.scale + roiOffsetX;
+          var gy = (encY - prep.padY) / prep.scale + roiOffsetY;
           return [gx, gy];
         });
       }
@@ -387,6 +437,29 @@ self.ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21
       }
     }
     return contours;
+  }
+
+  /* Ray casting: diz se (px,py) cai dentro do poligono "contour" (array de
+     [x,y] na MESMA grelha/escala que px,py -- aqui sempre grelha da mascara).
+     Ver uso em decodeClick: quando a mascara binaria tem mais do que uma
+     componente ligada (ex.: dois telhados vizinhos que a' resolucao antiga
+     apareciam fundidos numa mancha so' e agora, com o recorte por clique a
+     dar muito mais detalhe, o modelo consegue separa-los), escolher so' pelo
+     MAIOR contorno (como se fazia antes) pode escolher a componente errada
+     -- maior, mas nao e' a que contem o ponto onde a pessoa clicou. Isso
+     produzia exatamente o sintoma reportado: geometria mais fiel, mas o
+     poligono aparece "deslocado" (na realidade e' outra mancha vizinha,
+     nao um erro de conversao de coordenadas). */
+  function pointInPolygonGrid(px, py, poly){
+    var inside = false;
+    for(var i = 0, j = poly.length - 1; i < poly.length; j = i++){
+      var xi = poly[i][0], yi = poly[i][1];
+      var xj = poly[j][0], yj = poly[j][1];
+      var intersect = ((yi > py) !== (yj > py)) &&
+        (px < (xj - xi) * (py - yi) / (yj - yi) + xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
   }
 
   function contourAreaPx(contour){

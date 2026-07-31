@@ -24,9 +24,14 @@
    `Access-Control-Allow-Origin`. O .zip devolvido é parseado no browser
    com `shpjs` (window.shp), já incluído em engenh.html.
 
-   O MDT é um raster (.tif), não um vetor — não há forma de o trazer como
-   camada editável do Engenh da mesma maneira, por isso fica por implementar
-   (ver PB_DATASETS abaixo).
+   O MDT é um raster (.tif), não um vetor — não dá para o trazer como
+   camada editável de desenho, mas o Engenh já tem um sistema de imagens
+   georreferenciadas (módulo raster). Importamos a pré-visualização do MDT
+   (PNG com bounds em WGS84, incluída em municipios.json como mdt_preview)
+   como camada de imagem georreferenciada, que aparece no painel "Imagens",
+   pode ser removida e é gravada com o projeto. O .tif original está em
+   PT-TM06 (metros) e exigiria reprojeção de raster — fica para uma fase
+   seguinte (ver pbImportMdt abaixo).
 
    Para atualizar o endpoint de qualquer dataset, mexe apenas em
    PB_DATASETS e em pbImportZip() / showOsmView() abaixo.
@@ -123,9 +128,10 @@ const PB_DATASETS = [
   {
     key: 'mdt',
     label: 'MDT — Modelo digital do terreno',
-    field: null,
-    desc: 'Raster — ainda não suportado como camada no Engenh',
-    available: false
+    field: 'mdt_preview',
+    desc: 'Raster georreferenciado, como camada de imagem',
+    available: true,
+    isRaster: true
   }
 ];
 
@@ -189,6 +195,18 @@ async function pbLoadMunicipiosData(){
   }
 }
 
+/* ---------- estado do painel (loading / ok / erro) ----------
+   state: 'loading' | 'ok' | 'error' | '' */
+function pbSetStatus(statusEl, state, message){
+  if(!statusEl) return;
+  statusEl.classList.toggle('is-loading', state === 'loading');
+  statusEl.classList.toggle('is-ok', state === 'ok');
+  statusEl.classList.toggle('is-error', state === 'error');
+  const text = statusEl.querySelector('.pb-status-text');
+  if(text) text.textContent = message || '';
+  statusEl.style.display = (state === 'loading' || message) ? '' : 'none';
+}
+
 /* ---------- importar um Shapefile completo (CAOP / COS / BGRI / OSM sub-camada) ----------
    zipUrl vem de municipios.json (caop_zip/cos_zip/bgri_zip/osm_zips), e aponta
    para um GitHub Release. Como essas respostas não têm CORS, passamos sempre
@@ -196,7 +214,7 @@ async function pbLoadMunicipiosData(){
    .zip com o cabeçalho certo. O parsing do Shapefile é feito no browser com
    shpjs (window.shp), já incluído em engenh.html. */
 async function pbImportZip(zipUrl, layerName, statusEl){
-  statusEl.textContent = `A descarregar ${layerName}…`;
+  pbSetStatus(statusEl, 'loading', `A descarregar ${layerName}…`);
   try{
     const proxyUrl = `${TEAM_API_BASE}/api/download?url=${encodeURIComponent(zipUrl)}`;
     const res = await fetch(proxyUrl);
@@ -207,7 +225,7 @@ async function pbImportZip(zipUrl, layerName, statusEl){
     }
     const buffer = await res.arrayBuffer();
 
-    statusEl.textContent = `A processar "${layerName}"…`;
+    pbSetStatus(statusEl, 'loading', `A processar "${layerName}"…`);
     let parsed = await shp(buffer);
     // shpjs devolve um FeatureCollection, ou um array deles se o .zip tiver
     // mais do que um Shapefile lá dentro — juntamos tudo numa única camada.
@@ -216,10 +234,10 @@ async function pbImportZip(zipUrl, layerName, statusEl){
       : parsed;
 
     const result = pbCreateLayerFromFeatureCollection(geojson, layerName);
-    statusEl.textContent = `✓ Camada "${layerName}" criada com ${result.imported} geometria(s).`;
+    pbSetStatus(statusEl, 'ok', `✓ Camada "${layerName}" criada com ${result.imported} geometria(s).`);
   }catch(err){
     console.error('Erro ao importar do portal:', err);
-    statusEl.textContent = `⚠ Não foi possível carregar "${layerName}" (${err.message || 'erro desconhecido'}).`;
+    pbSetStatus(statusEl, 'error', `⚠ Não foi possível carregar "${layerName}" (${err.message || 'erro desconhecido'}).`);
   }
 }
 
@@ -268,26 +286,40 @@ async function pbImportZip(zipUrl, layerName, statusEl){
     showView('contents');
     document.getElementById('pb-selected-municipio').textContent = `${entry.m} · ${entry.d}`;
     const statusEl = document.getElementById('pb-content-status');
-    statusEl.textContent = 'A carregar conteúdos…';
+    pbSetStatus(statusEl, 'loading', 'A carregar conteúdos…');
     document.getElementById('pb-content-list').innerHTML = '';
 
     try{
       const byName = await pbLoadMunicipiosData();
       selectedMunData = byName[normalizeAccents(entry.m)] || null;
-      statusEl.textContent = selectedMunData ? '' : `Sem dados no portal para ${entry.m}.`;
+      pbSetStatus(statusEl, '', selectedMunData ? '' : `Sem dados no portal para ${entry.m}.`);
     }catch(err){
       console.error('Erro ao carregar municipios.json:', err);
-      statusEl.textContent = '⚠ Não foi possível ligar ao portal (municipios.json).';
+      pbSetStatus(statusEl, 'error', '⚠ Não foi possível ligar ao portal (municipios.json).');
     }
     renderContentList();
+  }
+
+  /* um dataset tem dados quando o município selecionado tem o campo
+     correspondente preenchido. O MDT (raster) precisa do mdt_preview
+     com image + bounds em WGS84. */
+  function pbDatasetHasData(ds){
+    if(!ds.available || !selectedMunData) return false;
+    if(ds.isGroup){
+      return selectedMunData[ds.field] && Object.keys(selectedMunData[ds.field]).length > 0;
+    }
+    if(ds.isRaster){
+      return !!(selectedMunData.mdt_preview
+        && selectedMunData.mdt_preview.image
+        && selectedMunData.mdt_preview.bounds);
+    }
+    return !!selectedMunData[ds.field];
   }
 
   function renderContentList(){
     const list = document.getElementById('pb-content-list');
     list.innerHTML = PB_DATASETS.map(ds => {
-      const hasData = ds.available && selectedMunData && (ds.isGroup
-        ? selectedMunData[ds.field] && Object.keys(selectedMunData[ds.field]).length > 0
-        : !!selectedMunData[ds.field]);
+      const hasData = pbDatasetHasData(ds);
       const tag = !ds.available ? 'Em breve' : (hasData ? (ds.isGroup ? 'Ver camadas' : 'Importar') : 'Sem dados');
       const disabled = !ds.available || !hasData;
       return `
@@ -307,9 +339,7 @@ async function pbImportZip(zipUrl, layerName, statusEl){
         const ds = PB_DATASETS.find(d => d.key === li.dataset.pbDataset);
         if(!ds) return;
 
-        const hasData = ds.available && selectedMunData && (ds.isGroup
-          ? selectedMunData[ds.field] && Object.keys(selectedMunData[ds.field]).length > 0
-          : !!selectedMunData[ds.field]);
+        const hasData = pbDatasetHasData(ds);
 
         if(!ds.available || !hasData){
           window.open('https://datagispt.gispt.workers.dev/', '_blank', 'noopener');
@@ -318,19 +348,100 @@ async function pbImportZip(zipUrl, layerName, statusEl){
 
         if(ds.isGroup){
           showOsmView(ds);
+        } else if(ds.isRaster){
+          li.classList.add('is-loading');
+          pbImportMdt(document.getElementById('pb-content-status'))
+            .finally(()=>{ li.classList.remove('is-loading'); });
         } else {
           const layerName = `${ds.label.split(' — ')[0]} – ${selectedEntry.m}`;
-          pbImportZip(selectedMunData[ds.field], layerName, document.getElementById('pb-content-status'));
+          li.classList.add('is-loading');
+          pbImportZip(selectedMunData[ds.field], layerName, document.getElementById('pb-content-status'))
+            .finally(()=>{ li.classList.remove('is-loading'); });
         }
       });
     });
+  }
+
+  /* ---------- importar MDT (raster) do portal ----------
+     O .tif original do portal está em PT-TM06 (metros) — colocá-lo no mapa
+     Leaflet (WGS84) exigiria reprojeção de raster, que fica para uma fase
+     seguinte. Por isso importamos a pré-visualização do MDT incluída em
+     municipios.json (mdt_preview: PNG + bounds em WGS84), e registamo-la
+     como camada de imagem georreferenciada no sistema raster do Engenh
+     (painel "Imagens", gravada com o projeto). */
+  async function pbImportMdt(statusEl){
+    const preview = selectedMunData && selectedMunData.mdt_preview;
+    const url = preview && preview.image ? MUNICIPIOS_GITHUB_RAW_BASE + preview.image : null;
+    if(!url || !preview || !preview.bounds || !preview.bounds[0] || !preview.bounds[1]){
+      pbSetStatus(statusEl, 'error', '⚠ Sem pré-visualização MDT disponível para este município.');
+      return;
+    }
+
+    pbSetStatus(statusEl, 'loading', 'A descarregar MDT…');
+    const res = await fetch(url);
+    if(!res.ok){
+      pbSetStatus(statusEl, 'error', `⚠ Não foi possível descarregar o MDT (HTTP ${res.status}).`);
+      return;
+    }
+    const blob = await res.blob();
+
+    pbSetStatus(statusEl, 'loading', 'A georreferenciar MDT…');
+    const objUrl = URL.createObjectURL(blob);
+    let dims;
+    try{
+      dims = await new Promise((resolve, reject)=>{
+        const img = new Image();
+        img.onload = ()=> resolve({width: img.naturalWidth, height: img.naturalHeight});
+        img.onerror = ()=> reject(new Error('Imagem MDT inválida.'));
+        img.src = objUrl;
+      });
+    }catch(err){
+      URL.revokeObjectURL(objUrl);
+      pbSetStatus(statusEl, 'error', '⚠ ' + err.message);
+      return;
+    }
+    URL.revokeObjectURL(objUrl);
+
+    const [[south, west],[north, east]] = preview.bounds;
+    const transform = {
+      a: (east - west) / dims.width,
+      b: 0,
+      c: west,
+      d: 0,
+      e: (south - north) / dims.height,
+      f: north
+    };
+
+    /* importa pela via padrão do sistema raster: imagem + World File.
+       Usa apenas APIs já existentes (importRasterFiles / parseWorldFileText),
+       por isso não depende de versões novas de js/modules/raster.js. */
+    try{
+      const safeName = (selectedEntry.m || 'municipio').replace(/[\\/:*?"<>|]/g, '-');
+      const imgName = `MDT – ${safeName}.png`;
+      const imageFile = new File([blob], imgName, {type:'image/png'});
+      const worldText = [transform.a, transform.d, transform.b, transform.e, transform.c, transform.f]
+        .map(n => Number(n).toFixed(10)).join('\n') + '\n';
+      const worldFile = new File([worldText], `MDT – ${safeName}.pgw`, {type:'text/plain'});
+
+      importRasterFiles([imageFile], [worldFile]);
+      if(typeof window.markProjectDirty === 'function') window.markProjectDirty();
+
+      try{
+        const corners = Georef.affineToCorners(transform, dims.width, dims.height);
+        map.fitBounds(L.latLngBounds([corners.topleft, corners.topright, corners.bottomleft]), {padding:[40,40], maxZoom:16});
+      }catch(err){ /* bounds inválidos, ignora */ }
+      pbSetStatus(statusEl, 'ok', `✓ Raster MDT – ${selectedEntry.m} adicionado — vê-o no painel Imagens.`);
+    }catch(err){
+      console.error('Erro ao importar MDT:', err);
+      pbSetStatus(statusEl, 'error', `⚠ Não foi possível adicionar o MDT (${err.message || 'erro desconhecido'}).`);
+    }
   }
 
   function showOsmView(ds){
     showView('osm');
     document.getElementById('pb-osm-title').textContent = `OSM · ${selectedEntry.m}`;
     const statusEl = document.getElementById('pb-osm-status');
-    statusEl.textContent = '';
+    pbSetStatus(statusEl, '', '');
 
     const zipUrls = selectedMunData[ds.field] || {};
     const list = document.getElementById('pb-osm-list');
@@ -338,7 +449,7 @@ async function pbImportZip(zipUrl, layerName, statusEl){
 
     if(!entries.length){
       list.innerHTML = '';
-      statusEl.textContent = `Sem camadas OSM disponíveis para ${selectedEntry.m}.`;
+      pbSetStatus(statusEl, '', `Sem camadas OSM disponíveis para ${selectedEntry.m}.`);
       return;
     }
 
@@ -358,7 +469,9 @@ async function pbImportZip(zipUrl, layerName, statusEl){
         const layerKey = li.dataset.pbOsmLayer;
         const zipUrl = zipUrls[layerKey];
         const layerName = `OSM ${pbOsmLayerName(layerKey)} – ${selectedEntry.m}`;
-        pbImportZip(zipUrl, layerName, statusEl);
+        li.classList.add('is-loading');
+        pbImportZip(zipUrl, layerName, statusEl)
+          .finally(()=>{ li.classList.remove('is-loading'); });
       });
     });
   }

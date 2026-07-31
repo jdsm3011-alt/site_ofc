@@ -145,6 +145,20 @@ function removeRasterLayer(id){
   renderRasterLayersPanel();
 }
 
+/* adiciona uma entrada raster construída fora do fluxo de importação normal
+   (ex: camada MDT vinda do portal DataGis). O entry deve já trazer
+   url/dataUrl, width/height, transform e georeferenced:true — é colocado
+   de imediato no mapa e aparece no painel "Imagens". */
+function addRasterEntry(entry){
+  if(!entry || !entry.url) return null;
+  if(!entry.id) entry.id = genRasterId();
+  rasterLayers.set(entry.id, entry);
+  placeRasterOverlay(entry);
+  renderRasterLayersPanel();
+  if(typeof window.markProjectDirty === 'function') window.markProjectDirty();
+  return entry.id;
+}
+
 /* ============================================================
    FASE 6: PERSISTÊNCIA
    ------------------------------------------------------------
@@ -2373,6 +2387,7 @@ window.renderRasterLayersPanel = renderRasterLayersPanel;
 window.placeRasterOverlay = placeRasterOverlay;
 window.focusRasterLayer = focusRasterLayer;
 window.removeRasterLayer = removeRasterLayer;
+window.addRasterEntry = addRasterEntry;
 window.worldFileExtensionFor = worldFileExtensionFor;
 window.buildWorldFileText = buildWorldFileText;
 window.downloadBlob = downloadBlob;

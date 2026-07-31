@@ -3,36 +3,55 @@
 #portal-bridge-panel{
   position: fixed;
   z-index: 2000;
-  width: 320px;
+  width: 340px;
   max-width: calc(100vw - 24px);
-  max-height: min(560px, calc(100vh - 80px));
+  max-height: min(580px, calc(100vh - 80px));
   overflow: hidden;
   display: flex;
   flex-direction: column;
   background: var(--paper-elevated);
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   box-shadow: var(--shadow);
   font-family: inherit;
 }
 #portal-bridge-panel.hidden{ display: none; }
 
+/* ---------- cabeçalho ---------- */
 #portal-bridge-panel .portal-bridge-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--paper-deep), transparent);
   flex: 0 0 auto;
+}
+#portal-bridge-panel .portal-bridge-title{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+#portal-bridge-panel .portal-bridge-dot{
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pbPulse 2.2s ease-in-out infinite;
+}
+@keyframes pbPulse{
+  0%,100%{ box-shadow: 0 0 0 2px rgba(31,92,107,.12); }
+  50%{ box-shadow: 0 0 0 5px rgba(31,92,107,.04); }
 }
 #portal-bridge-panel .portal-bridge-eyebrow{
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
-  color: var(--fg);
-  opacity: .7;
+  color: var(--ink);
 }
 #portal-bridge-panel .portal-bridge-header b{ display: none; }
 #portal-bridge-panel .portal-bridge-close{
@@ -43,71 +62,101 @@
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 14px;
-  transition: background .15s, color .15s;
+  transition: background .15s, color .15s, transform .15s;
 }
-#portal-bridge-panel .portal-bridge-close:hover{ background: var(--line); color: var(--fg); }
+#portal-bridge-panel .portal-bridge-close:hover{ background: var(--line); color: var(--ink); }
+#portal-bridge-panel .portal-bridge-close:active{ transform: scale(.92); }
 
+/* ---------- corpo ---------- */
 #portal-bridge-panel .portal-bridge-body{
-  padding: 12px;
+  padding: 14px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  scrollbar-width: thin;
 }
-
+#portal-bridge-panel .portal-bridge-body::-webkit-scrollbar{ width: 8px; }
+#portal-bridge-panel .portal-bridge-body::-webkit-scrollbar-thumb{
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
 #portal-bridge-panel .portal-bridge-section.hidden{ display: none; }
 
 #portal-bridge-panel .portal-bridge-hint{
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--stone);
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 #portal-bridge-panel .portal-bridge-back{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   border: none;
   background: transparent;
   cursor: pointer;
   color: var(--green);
   font-family: inherit;
   font-size: 12px;
-  font-weight: 500;
-  padding: 0 0 6px;
+  font-weight: 600;
+  padding: 2px 0 10px;
 }
 #portal-bridge-panel .portal-bridge-back:hover{ text-decoration: underline; }
 
 #portal-bridge-panel .portal-bridge-selected{
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  line-height: 1.35;
 }
 
+/* ---------- pesquisa ---------- */
+#portal-bridge-panel .pb-search-wrap{
+  position: relative;
+  margin-bottom: 8px;
+}
+#portal-bridge-panel .pb-search-wrap::before{
+  content: '';
+  position: absolute;
+  left: 11px; top: 50%;
+  width: 14px; height: 14px;
+  transform: translateY(-50%);
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat;
+  pointer-events: none;
+}
 #portal-bridge-panel input[type="text"]{
   width: 100%;
   box-sizing: border-box;
-  padding: 8px 10px;
+  padding: 9px 12px 9px 32px;
   border: 1px solid var(--line-strong);
-  border-radius: 8px;
+  border-radius: 10px;
   font-family: inherit;
   font-size: 13px;
   background: var(--paper);
   color: var(--ink);
-  margin-bottom: 6px;
+  transition: border-color .15s, box-shadow .15s;
 }
+#portal-bridge-panel input[type="text"]::placeholder{ color: var(--stone); }
 #portal-bridge-panel input[type="text"]:focus{
   outline: none;
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(31,92,107,.12);
+  box-shadow: 0 0 0 3px rgba(31,92,107,.14);
 }
 
+/* ---------- resultados (municípios) ---------- */
 #portal-bridge-panel .portal-bridge-results{
   list-style: none;
   margin: 0 0 4px;
   padding: 0;
-  max-height: 220px;
+  max-height: 230px;
   overflow-y: auto;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
+  scrollbar-width: thin;
 }
 #portal-bridge-panel .portal-bridge-results:empty{ display: none; border: none; }
 #portal-bridge-panel .portal-bridge-results li{
@@ -115,19 +164,24 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 10px;
+  padding: 9px 12px;
   font-size: 13px;
   cursor: pointer;
   border-bottom: 1px solid var(--line);
+  transition: background .12s, padding-left .12s;
 }
 #portal-bridge-panel .portal-bridge-results li:last-child{ border-bottom: none; }
-#portal-bridge-panel .portal-bridge-results li:hover{ background: var(--paper-deep); }
+#portal-bridge-panel .portal-bridge-results li:hover{
+  background: var(--paper-deep);
+  padding-left: 15px;
+}
 #portal-bridge-panel .portal-bridge-results li .distrito{
   font-size: 11px;
   color: var(--stone);
   white-space: nowrap;
 }
 
+/* ---------- conteúdos ---------- */
 #portal-bridge-panel .portal-bridge-content-list{
   list-style: none;
   margin: 0;
@@ -140,30 +194,48 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 10px;
+  padding: 10px 11px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   background: var(--paper);
-  transition: background .15s;
+  transition: border-color .15s, background .15s, transform .15s, box-shadow .15s;
 }
-#portal-bridge-panel .portal-bridge-content-item:hover{ background: var(--paper-deep); }
+#portal-bridge-panel .portal-bridge-content-item:hover{
+  background: var(--paper-deep);
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+}
 #portal-bridge-panel .portal-bridge-content-item.is-disabled{
   cursor: default;
-  opacity: .55;
+  opacity: .5;
+  transform: none;
+  box-shadow: none;
 }
-#portal-bridge-panel .portal-bridge-content-item.is-disabled:hover{ background: var(--paper); }
+#portal-bridge-panel .portal-bridge-content-item.is-disabled:hover{
+  background: var(--paper);
+  border-color: var(--line);
+}
+#portal-bridge-panel .portal-bridge-content-item.is-loading{
+  pointer-events: none;
+  cursor: default;
+}
 
 #portal-bridge-panel .portal-bridge-content-icon{
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--paper-deep);
+  background: linear-gradient(135deg, var(--green-soft), transparent);
   color: var(--green);
+}
+#portal-bridge-panel .portal-bridge-content-item.is-disabled .portal-bridge-content-icon{
+  background: var(--paper-deep);
+  color: var(--stone);
 }
 #portal-bridge-panel .portal-bridge-content-text{
   flex: 1 1 auto;
@@ -186,26 +258,100 @@
   font-weight: 700;
   letter-spacing: .06em;
   text-transform: uppercase;
-  padding: 3px 7px;
+  padding: 3px 8px;
   border-radius: 999px;
-  color: var(--green);
-  background: var(--paper-deep);
+  color: var(--green-deep);
+  background: var(--green-soft);
 }
 #portal-bridge-panel .portal-bridge-content-item.is-disabled .portal-bridge-content-tag{
   color: var(--stone);
   background: var(--line);
 }
 
+/* ---------- estado / progresso ---------- */
+#portal-bridge-panel .portal-bridge-status{
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--stone);
+}
+#portal-bridge-panel .portal-bridge-status.is-loading,
+#portal-bridge-panel .portal-bridge-status.is-ok,
+#portal-bridge-panel .portal-bridge-status.is-error{
+  display: flex;
+}
+#portal-bridge-panel .portal-bridge-status.is-ok{ color: var(--green); }
+#portal-bridge-panel .portal-bridge-status.is-error{ color: #b3413c; }
+#portal-bridge-panel .pb-spinner{
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--line);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: pbSpin .7s linear infinite;
+}
+#portal-bridge-panel .portal-bridge-status:not(.is-loading) .pb-spinner{ display: none; }
+#portal-bridge-panel .pb-progress{
+  flex: 1 1 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+  display: none;
+}
+#portal-bridge-panel .portal-bridge-status.is-loading .pb-progress{ display: block; }
+#portal-bridge-panel .pb-progress i{
+  display: block;
+  height: 100%;
+  width: 35%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--ochre));
+  animation: pbIndeterminate 1.1s ease-in-out infinite;
+}
+@keyframes pbSpin{ to{ transform: rotate(360deg); } }
+@keyframes pbIndeterminate{
+  0%{ transform: translateX(-105%); }
+  100%{ transform: translateX(320%); }
+}
+
+/* ---------- spinner dentro do item ---------- */
+#portal-bridge-panel .portal-bridge-content-item.is-loading .portal-bridge-content-tag{
+  color: transparent;
+  position: relative;
+}
+#portal-bridge-panel .portal-bridge-content-item.is-loading .portal-bridge-content-tag::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: pbSpin .7s linear infinite;
+}
+
+/* ---------- rodapé ---------- */
 #portal-bridge-panel .portal-bridge-footer{
-  margin-top: 2px;
-  padding-top: 8px;
+  margin-top: 4px;
+  padding-top: 10px;
   border-top: 1px solid var(--line);
   text-align: center;
 }
 #portal-bridge-panel .portal-bridge-footer a{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 12px;
   color: var(--green);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color .15s;
 }
 #portal-bridge-panel .portal-bridge-footer a:hover{ text-decoration: underline; }

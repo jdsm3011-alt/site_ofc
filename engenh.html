@@ -436,26 +436,31 @@
      ============================================================ -->
 <div aria-label="Ligar ao Portal DataGis" class="portal-bridge-panel hidden" id="portal-bridge-panel" role="dialog">
 <div class="portal-bridge-header">
-<div class="portal-bridge-eyebrow"><span data-i18n="txt.datagis_portal">DataGis Portal</span></div>
+<div class="portal-bridge-title">
+<span aria-hidden="true" class="portal-bridge-dot"></span>
+<span class="portal-bridge-eyebrow"><span data-i18n="txt.datagis_portal">DataGis Portal</span></span>
+</div>
 <button aria-label="Fechar" class="portal-bridge-close" data-i18n-title="attr.title.fechar_4" id="portal-bridge-close" title="Fechar" type="button">✕</button>
 </div>
 <div class="portal-bridge-body">
 <div class="portal-bridge-section" data-pb-view="search">
 <p class="portal-bridge-hint"><span data-i18n="txt.escolhe_um_munic_pio_para_veres_os_conte">Escolhe um município para veres os conteúdos do portal disponíveis para importar como camada no Engenh.</span></p>
+<div class="pb-search-wrap">
 <input autocomplete="off" data-i18n-placeholder="attr.placeholder.escreve_o_nome_do_munic_pio_2" id="pb-caop-search" placeholder="Escreve o nome do município…" type="text"/>
+</div>
 <ul class="portal-bridge-results" id="pb-caop-results"></ul>
 </div>
 <div class="portal-bridge-section hidden" data-pb-view="contents">
 <button class="portal-bridge-back" id="pb-back-btn" type="button"><span data-i18n="txt.trocar_de_munic_pio">‹ Trocar de município</span></button>
 <div class="portal-bridge-selected" id="pb-selected-municipio"></div>
 <ul class="portal-bridge-content-list" id="pb-content-list"></ul>
-<p class="sub" id="pb-content-status" style="min-height:14px; margin:6px 0 0;"></p>
+<div class="portal-bridge-status" id="pb-content-status" role="status"><span aria-hidden="true" class="pb-spinner"></span><span class="pb-progress" aria-hidden="true"><i></i></span><span class="pb-status-text"></span></div>
 </div>
 <div class="portal-bridge-section hidden" data-pb-view="osm">
 <button class="portal-bridge-back" id="pb-osm-back-btn" type="button"><span data-i18n="txt.voltar_aos_conte_dos">‹ Voltar aos conteúdos</span></button>
 <div class="portal-bridge-selected" id="pb-osm-title"></div>
 <ul class="portal-bridge-content-list" id="pb-osm-list"></ul>
-<p class="sub" id="pb-osm-status" style="min-height:14px; margin:6px 0 0;"></p>
+<div class="portal-bridge-status" id="pb-osm-status" role="status"><span aria-hidden="true" class="pb-spinner"></span><span class="pb-progress" aria-hidden="true"><i></i></span><span class="pb-status-text"></span></div>
 </div>
 <div class="portal-bridge-footer">
 <a href="https://datagispt.gispt.workers.dev/" rel="noopener" target="_blank"><span data-i18n="txt.abrir_o_portal_datagis">Abrir o portal DataGis ↗</span></a>
