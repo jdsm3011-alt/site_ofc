@@ -6199,14 +6199,18 @@
         console.error('reciclarCartao: erro ao preencher cartão, conteúdo anterior mantido', e);
       }
 
-      var maxX = -Infinity;
-      cardPool.forEach(function(outro) {
-        if (outro === c) return;
-        var xOutro = posicaoAtual(outro, agora);
-        if (xOutro > maxX) maxX = xOutro;
-      });
-      var novoX = (maxX === -Infinity) ? c.x : (maxX + c.w + HMP_GAP);
-      moverCartaoContinuamente(c, novoX, agora);
+      try {
+        var maxX = -Infinity;
+        cardPool.forEach(function(outro) {
+          if (outro === c) return;
+          var xOutro = posicaoAtual(outro, agora);
+          if (xOutro > maxX) maxX = xOutro;
+        });
+        var novoX = (maxX === -Infinity) ? c.x : (maxX + c.w + HMP_GAP);
+        moverCartaoContinuamente(c, novoX, agora);
+      } catch (e) {
+        console.error('reciclarCartao: erro ao reagendar movimento — o watchdog trata disto', e);
+      }
     }
 
     function iniciarTickerAutomatico() {
@@ -6218,6 +6222,28 @@
         moverCartaoContinuamente(c, xAtual, agora);
       });
     }
+
+    // rede de segurança: verifica periodicamente se o ticker devia estar ativo
+    // mas algum cartão ficou "órfão" (sem temporizador de reciclagem agendado —
+    // por exemplo, por causa de algum erro imprevisto a meio do processo). Se
+    // isso acontecer, o cartão é relançado a partir da posição atual, sem
+    // nunca precisar de um refresh manual da página para o carrossel voltar
+    // a andar.
+    setInterval(function() {
+      if (!tickerAtivo || !cardPool.length) return;
+      var agora = performance.now();
+      cardPool.forEach(function(c) {
+        if (!c.timeoutId) {
+          console.warn('carousel watchdog: cartão sem temporizador ativo, a relançar');
+          try {
+            var xAtual = posicaoAtual(c, agora);
+            moverCartaoContinuamente(c, xAtual, agora);
+          } catch (e) {
+            console.error('carousel watchdog: falhou ao relançar cartão', e);
+          }
+        }
+      });
+    }, 4000);
 
     // congela todos os cartões na posição atual (calculada por tempo) e
     // cancela os temporizadores de reciclagem, preservando sempre o
