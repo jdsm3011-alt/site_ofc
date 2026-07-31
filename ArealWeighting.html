@@ -801,7 +801,7 @@ header {
   }
   .theme-toggle { width: 38px; height: 38px; }
   .ponto-del { min-width: 28px; min-height: 28px; }
-  .muni-input, .radius-input, .coord-input, .otim-input-wrap input { font-size: 16px; }
+  .muni-input, .radius-input, .coord-input, .otim-input-wrap input, .otim-input-wrap select { font-size: 16px; }
 }
 
 /* ── TAB BAR MÓVEL (≤900px) ── */
@@ -1057,6 +1057,19 @@ header {
 .otim-input-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .otim-input-wrap input[type="number"] { -moz-appearance: textfield; }
 .otim-unit { font-family: var(--mono); font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+.otim-input-wrap select {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+.otim-input-wrap select option { background: var(--bg); color: var(--text); }
 .otim-msg {
   font-size: 11px;
   line-height: 1.5;
@@ -1278,7 +1291,7 @@ header {
         <!-- OTIMIZAÇÃO INTELIGENTE -->
         <div class="sb-section">
           <div class="sb-label">Otimização Inteligente</div>
-          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a população coberta.</p>
+          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a cobertura do campo BGRI escolhido.</p>
           <button class="btn-processar btn-otimizar" id="btnOtimizar" disabled>
             <span class="btn-content">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -1349,6 +1362,12 @@ header {
     <div class="otim-card-head">
       <span class="sb-label" id="otimTitle" style="margin-bottom:0">Otimização Inteligente</span>
       <button type="button" class="otim-close" data-otim-fechar aria-label="Fechar">×</button>
+    </div>
+    <div class="otim-field">
+      <label for="otimCampo">Campo BGRI a otimizar</label>
+      <div class="otim-input-wrap">
+        <select id="otimCampo"></select>
+      </div>
     </div>
     <div class="otim-field">
       <label for="otimObjetivo">Objetivo de cobertura</label>
@@ -2639,10 +2658,10 @@ function ligarGruposCliques(content) {
   });
 }
 
-function populacaoTotalSubsecs() {
+function populacaoTotalSubsecs(campo) {
   let total = 0;
   subsecsCache.forEach(({ feat }) => {
-    const v = parseFloat((feat.properties || {})['N_INDIVIDUOS']);
+    const v = parseFloat((feat.properties || {})[campo]);
     if (!isNaN(v)) total += v;
   });
   return total;
@@ -2690,14 +2709,14 @@ async function prepararCandidatos(raioMetros) {
   return candidatos;
 }
 
-async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros) {
+async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campoLabel) {
   const t0 = performance.now();
   const pops = subsecsCache.map(({ feat }) => {
-    const v = parseFloat((feat.properties || {})['N_INDIVIDUOS']);
+    const v = parseFloat((feat.properties || {})[campo]);
     return isNaN(v) ? 0 : v;
   });
   const popTotal = pops.reduce((a, b) => a + b, 0);
-  if (popTotal <= 0) return { erro: 'O município não tem população associada (N_INDIVIDUOS a zero).' };
+  if (popTotal <= 0) return { erro: `O município não tem valores para «${campoLabel}» (tudo a zero).` };
 
   const candidatos = await prepararCandidatos(raioMetros);
   const restante = pops.slice();
@@ -2839,22 +2858,23 @@ function mostrarResultadosOtimizacao(otim) {
   const cobertura = otim.popTotal > 0 ? (otim.popCoberta / otim.popTotal) * 100 : 0;
   const atingiu = cobertura >= otim.objetivo;
   const raioLabel = otim.raio >= 1000 ? `${(otim.raio / 1000).toFixed(1)} km` : `${otim.raio} m`;
+  const labelCoberto = otim.campo === 'N_INDIVIDUOS' ? 'População coberta' : 'Total coberto';
 
   let resumo;
   if (otim.nBuffers === 0) {
-    resumo = 'Não foi possível cobrir população com os parâmetros indicados — experimenta aumentar o raio dos buffers.';
+    resumo = 'Não foi possível cobrir valores com os parâmetros indicados — experimenta aumentar o raio dos buffers.';
   } else if (atingiu) {
     resumo = otim.nBuffers < otim.maxBuffers
       ? `Objetivo de <b>${otim.objetivo}%</b> atingido com apenas <b>${otim.nBuffers}</b> buffer${otim.nBuffers > 1 ? 'es' : ''} (máximo permitido: ${otim.maxBuffers}) — a solução encontrada é eficiente e nem precisou de usar todos.`
       : `Objetivo de <b>${otim.objetivo}%</b> atingido com o máximo de <b>${otim.nBuffers}</b> buffers de ${raioLabel}.`;
   } else {
-    resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} — a distribuição da população no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
+    resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} — a distribuição da variável no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
   }
 
   const html = `
     <div class="otim-banner">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      Otimização Inteligente
+      Otimização Inteligente <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:.7">· ${otim.campoLabel || otim.campo}</span>
     </div>
     <div class="otim-stat-grid">
       <div class="otim-stat">
@@ -2864,7 +2884,7 @@ function mostrarResultadosOtimizacao(otim) {
       </div>
       <div class="otim-stat">
         <div class="otim-stat-num">${otim.popCoberta.toLocaleString('pt-PT')}</div>
-        <div class="otim-stat-label">População coberta</div>
+        <div class="otim-stat-label">${labelCoberto}</div>
       </div>
       <div class="otim-stat">
         <div class="otim-stat-num">${otim.nBuffers}<span style="font-size:13px;color:var(--text-muted)"> / ${otim.maxBuffers}</span></div>
@@ -2877,7 +2897,7 @@ function mostrarResultadosOtimizacao(otim) {
     </div>
     <div class="otim-resumo">${resumo}</div>
     <div class="aviso" style="line-height:1.6;">
-      <b>ℹ Método</b> — algoritmo greedy: em cada passo coloca-se o buffer no centroide BGRI que cobre mais população ainda não contabilizada, até atingir o objetivo ou esgotar o máximo de buffers. A população final é calculada por <b>areal weighting</b> sobre a união geométrica dos buffers (cada habitante conta uma só vez), assumindo distribuição uniforme por subsecção.
+      <b>ℹ Método</b> — algoritmo greedy: em cada passo coloca-se o buffer no centroide BGRI que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.
     </div>
     ${montarGruposHTML(otim.totais)}
   `;
@@ -2891,8 +2911,27 @@ function clampInt(val, min, max, dflt) {
   return Math.max(min, Math.min(max, n));
 }
 
+function preencherCamposOtimizacao() {
+  const sel = document.getElementById('otimCampo');
+  if (!sel) return;
+  const anterior = sel.value || 'N_INDIVIDUOS';
+  const props = bgriData && bgriData.features[0] ? (bgriData.features[0].properties || {}) : {};
+  let html = '';
+  BGRI_GRUPOS.forEach(g => {
+    g.fields.forEach(f => {
+      if (!(f.key in props)) return; // só campos presentes nos dados carregados
+      html += `<option value="${f.key}">${g.label} — ${f.label}</option>`;
+    });
+  });
+  sel.innerHTML = html;
+  // Mantém a escolha anterior se ainda existir nos dados; senão volta ao padrão
+  if (Array.from(sel.options).some(o => o.value === anterior)) sel.value = anterior;
+  else if (Array.from(sel.options).some(o => o.value === 'N_INDIVIDUOS')) sel.value = 'N_INDIVIDUOS';
+}
+
 function abrirModalOtimizacao() {
   if (!bgriData || subsecsCache.length === 0) return;
+  preencherCamposOtimizacao();
   document.getElementById('otimObjetivo').value = 80;
   document.getElementById('otimMaxBuffers').value = 5;
   document.getElementById('otimRaio').value = 1000;
@@ -2914,6 +2953,9 @@ function runOtimizacao() {
   const objetivo = clampInt(document.getElementById('otimObjetivo').value, 5, 100, 80);
   const maxBuffers = clampInt(document.getElementById('otimMaxBuffers').value, 1, 5, 5);
   const raio = clampInt(document.getElementById('otimRaio').value, 50, 20000, 1000);
+  const campoSel = document.getElementById('otimCampo');
+  const campo = campoSel.value;
+  const campoLabel = campoSel.options[campoSel.selectedIndex] ? campoSel.options[campoSel.selectedIndex].text : campo;
 
   const msg = document.getElementById('otimMsg');
   const btn = document.getElementById('btnOtimRun');
@@ -2925,7 +2967,7 @@ function runOtimizacao() {
   setTimeout(async () => {
     let resultado;
     try {
-      resultado = await otimizarBuffers(objetivo, maxBuffers, raio);
+      resultado = await otimizarBuffers(objetivo, maxBuffers, raio, campo, campoLabel);
     } catch (e) {
       console.error(e);
       pararAnimacaoMapa();
@@ -2945,9 +2987,11 @@ function runOtimizacao() {
     pararAnimacaoMapa();
     desenharSolucaoOtimizacao(resultado.locs, raio);
     const combinado = calcularTotalCombinado();
-    resultado.popCoberta = Math.round(combinado.totaisGlobais['N_INDIVIDUOS'] || 0);
+    resultado.popCoberta = Math.round(combinado.totaisGlobais[campo] || 0);
     resultado.totais = combinado.totaisGlobais;
-    resultado.popTotal = populacaoTotalSubsecs();
+    resultado.popTotal = populacaoTotalSubsecs(campo);
+    resultado.campo = campo;
+    resultado.campoLabel = campoLabel;
     resultado.objetivo = objetivo;
     resultado.raio = raio;
     resultado.maxBuffers = maxBuffers;
