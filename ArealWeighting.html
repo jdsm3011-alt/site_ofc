@@ -801,7 +801,7 @@ header {
   }
   .theme-toggle { width: 38px; height: 38px; }
   .ponto-del { min-width: 28px; min-height: 28px; }
-  .muni-input, .radius-input, .coord-input { font-size: 16px; }
+  .muni-input, .radius-input, .coord-input, .otim-input-wrap input { font-size: 16px; }
 }
 
 /* ── TAB BAR MÓVEL (≤900px) ── */
@@ -955,6 +955,184 @@ header {
 
 /* dark mode: satélite não precisa de filter */
 [data-theme="dark"] .basemap-satelite { filter: none; }
+
+/* ── OTIMIZAÇÃO INTELIGENTE ── */
+.otim-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.btn-otimizar {
+  margin-top: 0;
+  background: var(--accent-deep);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-deep) 35%, transparent);
+}
+.btn-otimizar:hover:not(:disabled) {
+  background: var(--accent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* modal */
+.otim-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.otim-modal.visible { display: flex; }
+.otim-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+  animation: otimFade .18s ease;
+}
+@keyframes otimFade { from { opacity: 0; } }
+.otim-card {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 16px 18px;
+  animation: otimPop .22s cubic-bezier(.2,1.2,.4,1);
+}
+@keyframes otimPop {
+  from { transform: translateY(10px) scale(.97); opacity: 0; }
+}
+.otim-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.otim-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+.otim-close:hover { color: var(--text); background: var(--bg); }
+.otim-field { margin-bottom: 12px; }
+.otim-field label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  font-family: var(--sans);
+}
+.otim-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  padding: 0 9px;
+  transition: border-color .15s;
+}
+.otim-input-wrap:focus-within { border-color: var(--accent); }
+.otim-input-wrap input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 8px 0;
+}
+.otim-input-wrap input::-webkit-outer-spin-button,
+.otim-input-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.otim-input-wrap input[type="number"] { -moz-appearance: textfield; }
+.otim-unit { font-family: var(--mono); font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+.otim-msg {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  min-height: 0;
+  color: var(--text-muted);
+}
+.otim-msg.error { color: var(--warn); }
+
+/* resultados da otimização */
+.otim-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-deep);
+  margin-bottom: 12px;
+}
+.otim-banner svg { flex-shrink: 0; }
+.otim-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.otim-stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.otim-stat-num {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent-deep);
+  line-height: 1.1;
+}
+.otim-stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.otim-cobertura-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.otim-cobertura-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+  border-radius: 3px;
+  transition: width .6s ease;
+}
+.otim-resumo {
+  background: var(--accent-light);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
 </style>
 <script>
 // ── TAB BAR MÓVEL (simples, sem gestos) ──
@@ -1097,6 +1275,18 @@ header {
           <div class="coords-error" id="coordsError">Coordenadas inválidas ou fora de Portugal.</div>
         </div>
 
+        <!-- OTIMIZAÇÃO INTELIGENTE -->
+        <div class="sb-section">
+          <div class="sb-label">Otimização Inteligente</div>
+          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a população coberta.</p>
+          <button class="btn-processar btn-otimizar" id="btnOtimizar" disabled>
+            <span class="btn-content">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              Otimização Inteligente
+            </span>
+          </button>
+        </div>
+
       </div><!-- /panel-config -->
 
       <!-- PAINEL 2: Resultados -->
@@ -1149,6 +1339,45 @@ header {
       <button class="btn-limpar" id="btnLimpar" style="display:none">Limpar todos os pontos</button>
     </div>
     <div class="map-loading" id="mapLoading"><span class="spinner"></span> A carregar BGRI…</div>
+  </div>
+</div>
+
+<!-- MODAL OTIMIZAÇÃO INTELIGENTE -->
+<div class="otim-modal" id="otimModal" aria-hidden="true">
+  <div class="otim-backdrop" data-otim-fechar></div>
+  <div class="otim-card" role="dialog" aria-modal="true" aria-labelledby="otimTitle">
+    <div class="otim-card-head">
+      <span class="sb-label" id="otimTitle" style="margin-bottom:0">Otimização Inteligente</span>
+      <button type="button" class="otim-close" data-otim-fechar aria-label="Fechar">×</button>
+    </div>
+    <div class="otim-field">
+      <label for="otimObjetivo">Objetivo de cobertura</label>
+      <div class="otim-input-wrap">
+        <input type="number" id="otimObjetivo" min="5" max="100" step="5" value="80">
+        <span class="otim-unit">%</span>
+      </div>
+    </div>
+    <div class="otim-field">
+      <label for="otimMaxBuffers">Número máximo de buffers</label>
+      <div class="otim-input-wrap">
+        <input type="number" id="otimMaxBuffers" min="1" max="5" step="1" value="5">
+        <span class="otim-unit">máx</span>
+      </div>
+    </div>
+    <div class="otim-field">
+      <label for="otimRaio">Raio dos buffers</label>
+      <div class="otim-input-wrap">
+        <input type="number" id="otimRaio" min="50" max="20000" step="50" value="1000">
+        <span class="otim-unit">m</span>
+      </div>
+    </div>
+    <div class="otim-msg" id="otimMsg"></div>
+    <button class="btn-processar" id="btnOtimRun">
+      <span class="btn-content">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Encontrar Melhor Solução
+      </span>
+    </button>
   </div>
 </div>
 
@@ -1638,6 +1867,9 @@ function atualizarBotaoProcessar() {
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       Processar${badge}
     </span>`;
+
+  const btnOtim = document.getElementById('btnOtimizar');
+  if (btnOtim) btnOtim.disabled = !bgriData;
 }
 
 document.getElementById('btnProcessar').addEventListener('click', (ev) => {
@@ -1951,6 +2183,7 @@ function removerPonto(idx) {
 
 // ── LIMPAR TODOS ──
 function limparTodosPontos() {
+  pararAnimacaoMapa();
   pontos.forEach(p => {
     if (p.marker) map.removeLayer(p.marker);
     if (p.bufferLayer) map.removeLayer(p.bufferLayer);
@@ -2147,34 +2380,11 @@ function mostrarResultados() {
 `;
 
 
-  BGRI_GRUPOS.forEach((g, gi) => {
-    const colapsado = gruposColapsados.has(gi);
-    html += `<div class="group-header${colapsado ? ' collapsed' : ''}" data-grupo="${gi}">
-      <span>${g.label}</span>
-      <svg class="chev" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </div>`;
-    html += `<div class="group-body${colapsado ? ' collapsed' : ''}" data-grupo-body="${gi}">`;
-    g.fields.forEach(f => {
-      const val = Math.round(totaisGlobais[f.key] || 0);
-      html += `<div class="var-row">
-        <span class="var-name">${f.label}</span>
-        <span class="var-val">${val.toLocaleString('pt-PT')}</span>
-      </div>`;
-    });
-    html += `</div>`;
-  });
+  html += montarGruposHTML(totaisGlobais);
 
   content.innerHTML = html;
 
-  content.querySelectorAll('.group-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const gi = Number(header.dataset.grupo);
-      const body = content.querySelector(`.group-body[data-grupo-body="${gi}"]`);
-      const colapsado = header.classList.toggle('collapsed');
-      body.classList.toggle('collapsed', colapsado);
-      if (colapsado) gruposColapsados.add(gi); else gruposColapsados.delete(gi);
-    });
-  });
+  ligarGruposCliques(content);
 }
 
 function esconderResultados() {
@@ -2384,6 +2594,432 @@ const BGRI_GRUPOS = [
     { key: 'N_EDIFICIOS_CONSTR_2011_2021', label: '2011–2021' },
   ]},
 ];
+
+// ── OTIMIZAÇÃO INTELIGENTE ──
+// Encontra automaticamente os melhores locais para os buffers (maximiza a
+// população coberta, por areal weighting, até ao objetivo ou ao número máximo
+// de buffers). A otimização começa sempre do zero e ignora os pontos manuais
+// já colocados — a solução encontrada substitui-os no mapa.
+// Algoritmo greedy: em cada passo escolhe o centroide BGRI cujo buffer cobre
+// mais população ainda não contabilizada, até atingir o objetivo de cobertura
+// ou esgotar o máximo de buffers.
+const otimModal = document.getElementById('otimModal');
+
+// Helpers para o bloco de variáveis (usados também em mostrarResultados)
+function montarGruposHTML(totaisGlobais) {
+  let html = '';
+  BGRI_GRUPOS.forEach((g, gi) => {
+    const colapsado = gruposColapsados.has(gi);
+    html += `<div class="group-header${colapsado ? ' collapsed' : ''}" data-grupo="${gi}">
+      <span>${g.label}</span>
+      <svg class="chev" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </div>`;
+    html += `<div class="group-body${colapsado ? ' collapsed' : ''}" data-grupo-body="${gi}">`;
+    g.fields.forEach(f => {
+      const val = Math.round(totaisGlobais[f.key] || 0);
+      html += `<div class="var-row">
+        <span class="var-name">${f.label}</span>
+        <span class="var-val">${val.toLocaleString('pt-PT')}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  return html;
+}
+
+function ligarGruposCliques(content) {
+  content.querySelectorAll('.group-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const gi = Number(header.dataset.grupo);
+      const body = content.querySelector(`.group-body[data-grupo-body="${gi}"]`);
+      const colapsado = header.classList.toggle('collapsed');
+      body.classList.toggle('collapsed', colapsado);
+      if (colapsado) gruposColapsados.add(gi); else gruposColapsados.delete(gi);
+    });
+  });
+}
+
+function populacaoTotalSubsecs() {
+  let total = 0;
+  subsecsCache.forEach(({ feat }) => {
+    const v = parseFloat((feat.properties || {})['N_INDIVIDUOS']);
+    if (!isNaN(v)) total += v;
+  });
+  return total;
+}
+
+// Pré-cálculo: para cada centroide BGRI (candidato), o buffer do raio dado e
+// as subsecções que cobre, com a fração de área de cada uma. Feito uma única
+// vez por execução — a iteração greedy reutiliza-o, subtraindo apenas a
+// população já contabilizada por buffers anteriores.
+async function prepararCandidatos(raioMetros) {
+  const raioKm = raioMetros / 1000;
+  const n = subsecsCache.length;
+  const candidatos = new Array(n);
+  const LOTE = 8; // candidatos por lote — entre lotes espera um frame (rAF) para o browser pintar/animar o mapa
+  for (let i = 0; i < n; i++) {
+    const sub = subsecsCache[i];
+    let centro = null;
+    try {
+      const c = turf.centroid(sub.feat);
+      centro = c.geometry && c.geometry.coordinates;
+    } catch (e) { /* ignora */ }
+    if (!centro) { candidatos[i] = { coords: null, coberturas: [] }; continue; }
+
+    const buf = turf.buffer(turf.point(centro), raioKm, { units: 'kilometers', steps: 48 });
+    const bufBbox = turf.bbox(buf);
+    const coberturas = [];
+    for (let j = 0; j < n; j++) {
+      const subj = subsecsCache[j];
+      if (!bboxIntersecta(subj.bbox, bufBbox)) continue;
+      let inter;
+      try { inter = turf.intersect(subj.feat, buf); } catch (e) { continue; }
+      if (!inter) continue;
+      if (subj.area <= 0) continue;
+      let areaInter;
+      try { areaInter = turf.area(inter); } catch (e) { continue; }
+      const fracao = Math.min(areaInter / subj.area, 1);
+      if (fracao <= 0) continue;
+      coberturas.push([j, fracao]);
+    }
+    candidatos[i] = { coords: centro, coberturas };
+    if ((i + 1) % LOTE === 0) {
+      await new Promise(r => requestAnimationFrame(r));
+    }
+  }
+  return candidatos;
+}
+
+async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros) {
+  const t0 = performance.now();
+  const pops = subsecsCache.map(({ feat }) => {
+    const v = parseFloat((feat.properties || {})['N_INDIVIDUOS']);
+    return isNaN(v) ? 0 : v;
+  });
+  const popTotal = pops.reduce((a, b) => a + b, 0);
+  if (popTotal <= 0) return { erro: 'O município não tem população associada (N_INDIVIDUOS a zero).' };
+
+  const candidatos = await prepararCandidatos(raioMetros);
+  const restante = pops.slice();
+  const escolhidos = [];
+  const usados = new Set();
+  const metaPop = popTotal * objetivoPct / 100;
+
+  while (escolhidos.length < maxBuffers) {
+    let melhor = -1, melhorGanho = 0;
+    for (let ci = 0; ci < candidatos.length; ci++) {
+      if (usados.has(ci)) continue;
+      const covs = candidatos[ci].coberturas;
+      let ganho = 0;
+      for (let k = 0; k < covs.length; k++) {
+        const rj = restante[covs[k][0]];
+        if (rj > 0) ganho += covs[k][1] * rj;
+      }
+      if (ganho > melhorGanho) { melhorGanho = ganho; melhor = ci; }
+    }
+    if (melhor === -1 || melhorGanho <= 0) break;
+
+    usados.add(melhor);
+    escolhidos.push(candidatos[melhor].coords);
+    const covs = candidatos[melhor].coberturas;
+    for (let k = 0; k < covs.length; k++) {
+      const j = covs[k][0];
+      const val = pops[j] * covs[k][1];
+      restante[j] = val >= restante[j] ? 0 : restante[j] - val;
+    }
+    let coberto = 0;
+    for (let j = 0; j < restante.length; j++) coberto += pops[j] - restante[j];
+    if (coberto >= metaPop) break;
+  }
+
+  return { locs: escolhidos, popTotal, tempoMs: performance.now() - t0 };
+}
+
+// Areal weighting de um buffer específico (para a lista de pontos da solução).
+function calcularTotaisBuf(buf) {
+  const totais = {};
+  BGRI_GRUPOS.forEach(g => g.fields.forEach(f => { totais[f.key] = 0; }));
+  const bufBbox = turf.bbox(buf);
+  let nInter = 0;
+  subsecsCache.forEach(({ feat, bbox, area: areaSubsec }) => {
+    if (!bboxIntersecta(bbox, bufBbox)) return;
+    let inter;
+    try { inter = turf.intersect(feat, buf); } catch (e) { return; }
+    if (!inter) return;
+    if (areaSubsec <= 0) return;
+    let areaInter;
+    try { areaInter = turf.area(inter); } catch (e) { return; }
+    const fracao = Math.min(areaInter / areaSubsec, 1);
+    if (fracao <= 0) return;
+    nInter++;
+    const props = feat.properties || {};
+    BGRI_GRUPOS.forEach(g => g.fields.forEach(f => {
+      const v = parseFloat(props[f.key]);
+      if (!isNaN(v)) totais[f.key] += v * fracao;
+    }));
+  });
+  return { totais, nInter };
+}
+
+function desenharSolucaoOtimizacao(locs, raioMetros) {
+  limparTodosPontos();
+  const raioKm = raioMetros / 1000;
+  locs.forEach((coords, i) => {
+    const cor = CORES[i];
+    const latlng = L.latLng(coords[1], coords[0]);
+    const marker = L.circleMarker(latlng, {
+      radius: 7, fillColor: cor.cor, fillOpacity: 1, color: '#fff', weight: 2
+    }).addTo(map);
+    marker.bindTooltip(String(i + 1), {
+      permanent: true, className: 'ponto-tooltip', direction: 'top', offset: [0, -8]
+    });
+    const buf = turf.buffer(turf.point(coords), raioKm, { units: 'kilometers', steps: 64 });
+    let bufDesenho = buf;
+    if (municipioMask) {
+      try { const clip = turf.intersect(buf, municipioMask); if (clip) bufDesenho = clip; } catch (e) { /* mantém círculo */ }
+    }
+    const bufferLayer = L.geoJSON(bufDesenho, { style: estiloBuffer(cor) }).addTo(map);
+    const r = calcularTotaisBuf(buf);
+    pontos.push({
+      latlng, marker, bufferLayer, bufRaw: buf, cor, idx: i,
+      resultado: { totais: r.totais, nInter: r.nInter, nTotal: subsecsCache.length }
+    });
+  });
+  renderizarSolucaoOtimizacao();
+  atualizarBotaoProcessar();
+  if (pontos.length > 0) {
+    const grupo = L.featureGroup(pontos.map(p => p.bufferLayer));
+    map.fitBounds(grupo.getBounds(), { padding: [30, 30] });
+  }
+}
+
+function renderizarSolucaoOtimizacao() {
+  const lista = document.getElementById('pontosLista');
+  const vazio = document.getElementById('pontosVazio');
+  const btnLimpar = document.getElementById('btnLimpar');
+  const count = document.getElementById('pontosCount');
+  const popup = document.getElementById('pontosPopup');
+
+  popup.style.display = pontos.length > 0 ? 'flex' : 'none';
+  count.textContent = `(${pontos.length} / 5)`;
+
+  Array.from(lista.querySelectorAll('.ponto-row')).forEach(el => el.remove());
+
+  if (pontos.length === 0) {
+    vazio.style.display = '';
+    btnLimpar.style.display = 'none';
+    return;
+  }
+  vazio.style.display = 'none';
+  btnLimpar.style.display = '';
+
+  pontos.forEach((p, i) => {
+    const pop = Math.round((p.resultado && p.resultado.totais['N_INDIVIDUOS']) || 0);
+    const row = document.createElement('div');
+    row.className = 'ponto-row';
+    row.style.setProperty('--pc', p.cor.cor);
+    row.style.setProperty('--pc-light', p.cor.light);
+    row.innerHTML = `
+      <div class="ponto-dot" style="background:${p.cor.cor}"></div>
+      <span class="ponto-label" style="color:${p.cor.cor}">${i+1}</span>
+      <span class="ponto-coords">${p.latlng.lat.toFixed(4)}, ${p.latlng.lng.toFixed(4)}</span>
+      <span class="ponto-pop">${pop.toLocaleString('pt-PT')}</span>
+      <button class="ponto-del" title="Remover ponto">×</button>
+    `;
+    row.querySelector('.ponto-del').addEventListener('click', () => removerPonto(i));
+    lista.appendChild(row);
+  });
+}
+
+function mostrarResultadosOtimizacao(otim) {
+  document.getElementById('resultsPlaceholder').style.display = 'none';
+  const content = document.getElementById('resultsContent');
+  content.classList.add('visible');
+
+  const cobertura = otim.popTotal > 0 ? (otim.popCoberta / otim.popTotal) * 100 : 0;
+  const atingiu = cobertura >= otim.objetivo;
+  const raioLabel = otim.raio >= 1000 ? `${(otim.raio / 1000).toFixed(1)} km` : `${otim.raio} m`;
+
+  let resumo;
+  if (otim.nBuffers === 0) {
+    resumo = 'Não foi possível cobrir população com os parâmetros indicados — experimenta aumentar o raio dos buffers.';
+  } else if (atingiu) {
+    resumo = otim.nBuffers < otim.maxBuffers
+      ? `Objetivo de <b>${otim.objetivo}%</b> atingido com apenas <b>${otim.nBuffers}</b> buffer${otim.nBuffers > 1 ? 'es' : ''} (máximo permitido: ${otim.maxBuffers}) — a solução encontrada é eficiente e nem precisou de usar todos.`
+      : `Objetivo de <b>${otim.objetivo}%</b> atingido com o máximo de <b>${otim.nBuffers}</b> buffers de ${raioLabel}.`;
+  } else {
+    resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} — a distribuição da população no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
+  }
+
+  const html = `
+    <div class="otim-banner">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Otimização Inteligente
+    </div>
+    <div class="otim-stat-grid">
+      <div class="otim-stat">
+        <div class="otim-stat-num">${cobertura.toFixed(1)}%</div>
+        <div class="otim-stat-label">Cobertura obtida</div>
+        <div class="otim-cobertura-bar"><span style="width:${Math.min(cobertura, 100).toFixed(1)}%"></span></div>
+      </div>
+      <div class="otim-stat">
+        <div class="otim-stat-num">${otim.popCoberta.toLocaleString('pt-PT')}</div>
+        <div class="otim-stat-label">População coberta</div>
+      </div>
+      <div class="otim-stat">
+        <div class="otim-stat-num">${otim.nBuffers}<span style="font-size:13px;color:var(--text-muted)"> / ${otim.maxBuffers}</span></div>
+        <div class="otim-stat-label">Buffers utilizados</div>
+      </div>
+      <div class="otim-stat">
+        <div class="otim-stat-num">${otim.tempoMs.toFixed(0)}<span style="font-size:13px;color:var(--text-muted)"> ms</span></div>
+        <div class="otim-stat-label">Tempo de cálculo</div>
+      </div>
+    </div>
+    <div class="otim-resumo">${resumo}</div>
+    <div class="aviso" style="line-height:1.6;">
+      <b>ℹ Método</b> — algoritmo greedy: em cada passo coloca-se o buffer no centroide BGRI que cobre mais população ainda não contabilizada, até atingir o objetivo ou esgotar o máximo de buffers. A população final é calculada por <b>areal weighting</b> sobre a união geométrica dos buffers (cada habitante conta uma só vez), assumindo distribuição uniforme por subsecção.
+    </div>
+    ${montarGruposHTML(otim.totais)}
+  `;
+  content.innerHTML = html;
+  ligarGruposCliques(content);
+}
+
+function clampInt(val, min, max, dflt) {
+  let n = parseInt(val, 10);
+  if (isNaN(n)) return dflt;
+  return Math.max(min, Math.min(max, n));
+}
+
+function abrirModalOtimizacao() {
+  if (!bgriData || subsecsCache.length === 0) return;
+  document.getElementById('otimObjetivo').value = 80;
+  document.getElementById('otimMaxBuffers').value = 5;
+  document.getElementById('otimRaio').value = 1000;
+  const msg = document.getElementById('otimMsg');
+  msg.className = 'otim-msg';
+  msg.textContent = '';
+  document.getElementById('btnOtimRun').disabled = false;
+  otimModal.classList.add('visible');
+  setTimeout(() => document.getElementById('otimObjetivo').focus(), 60);
+}
+
+function fecharModalOtimizacao() {
+  otimModal.classList.remove('visible');
+}
+
+function runOtimizacao() {
+  if (!bgriData || subsecsCache.length === 0) return;
+
+  const objetivo = clampInt(document.getElementById('otimObjetivo').value, 5, 100, 80);
+  const maxBuffers = clampInt(document.getElementById('otimMaxBuffers').value, 1, 5, 5);
+  const raio = clampInt(document.getElementById('otimRaio').value, 50, 20000, 1000);
+
+  const msg = document.getElementById('otimMsg');
+  const btn = document.getElementById('btnOtimRun');
+  msg.className = 'otim-msg';
+  msg.innerHTML = '<span class="spinner"></span> A procurar a melhor solução… (pode demorar alguns segundos em municípios grandes)';
+  btn.disabled = true;
+  animarMapaProcessamento();
+
+  setTimeout(async () => {
+    let resultado;
+    try {
+      resultado = await otimizarBuffers(objetivo, maxBuffers, raio);
+    } catch (e) {
+      console.error(e);
+      pararAnimacaoMapa();
+      msg.className = 'otim-msg error';
+      msg.textContent = 'Erro durante o cálculo. Tenta de novo ou com um raio menor.';
+      btn.disabled = false;
+      return;
+    }
+    if (resultado.erro) {
+      pararAnimacaoMapa();
+      msg.className = 'otim-msg error';
+      msg.textContent = resultado.erro;
+      btn.disabled = false;
+      return;
+    }
+
+    pararAnimacaoMapa();
+    desenharSolucaoOtimizacao(resultado.locs, raio);
+    const combinado = calcularTotalCombinado();
+    resultado.popCoberta = Math.round(combinado.totaisGlobais['N_INDIVIDUOS'] || 0);
+    resultado.totais = combinado.totaisGlobais;
+    resultado.popTotal = populacaoTotalSubsecs();
+    resultado.objetivo = objetivo;
+    resultado.raio = raio;
+    resultado.maxBuffers = maxBuffers;
+    resultado.nBuffers = resultado.locs.length;
+
+    fecharModalOtimizacao();
+    mostrarResultadosOtimizacao(resultado);
+    abrirTabResultados();
+  }, 40);
+}
+
+// ── ANIMAÇÃO DO MAPA DURANTE O PROCESSAMENTO ──
+// Varredura orbital suave e contínua sobre o município (zoom fixo e adequado
+// ao município), como um radar a procurar a melhor localização. O centro
+// percorre uma órbita ligeiramente irregular frame-a-frame via panBy — o
+// movimento é fluido, sem saltos nem mudanças bruscas de direção.
+let animMapaAtiva = false;
+let animMapaRaf = null;
+let animMapaZoomBase = 0;
+
+function animarMapaProcessamento() {
+  if (animMapaAtiva || !bgriLayer) return;
+  const b = bgriLayer.getBounds();
+  const c = b.getCenter();
+  animMapaZoomBase = Math.max(8, map.getBoundsZoom(b, false) + 1);
+  map.setView([c.lat, c.lng], animMapaZoomBase, { animate: false });
+  animMapaAtiva = true;
+
+  // Amplitudes bem dentro do município para a órbita nunca sair dele
+  const dLat = (b.getNorth() - b.getSouth()) * 0.26;
+  const dLng = (b.getEast() - b.getWest()) * 0.30;
+  const centro = { lat: c.lat, lng: c.lng };
+
+  let inicio = null;
+  function passo(t) {
+    if (!animMapaAtiva) return;
+    if (inicio === null) inicio = t;
+    const dt = (t - inicio) / 1000;
+    // Frequências ligeiramente diferentes: órbita suave mas sem repetir
+    // exatamente o mesmo percurso a cada volta.
+    const ang = dt * 0.85;
+    const lat = centro.lat + dLat * Math.sin(ang * 0.5 + 1.3);
+    const lng = centro.lng + dLng * Math.sin(ang);
+    const alvo = map.project([lat, lng], animMapaZoomBase);
+    const atual = map.project(map.getCenter(), animMapaZoomBase);
+    const dx = alvo.x - atual.x;
+    const dy = alvo.y - atual.y;
+    if (Math.abs(dx) > 0.2 || Math.abs(dy) > 0.2) {
+      map.panBy([dx, dy], { animate: false });
+    }
+    animMapaRaf = requestAnimationFrame(passo);
+  }
+  animMapaRaf = requestAnimationFrame(passo);
+}
+
+function pararAnimacaoMapa() {
+  animMapaAtiva = false;
+  if (animMapaRaf !== null) {
+    cancelAnimationFrame(animMapaRaf);
+    animMapaRaf = null;
+  }
+}
+
+// Se o utilizador interagir com o mapa durante o processamento, pára a animação
+map.on('dragstart', pararAnimacaoMapa);
+
+document.getElementById('btnOtimizar').addEventListener('click', abrirModalOtimizacao);
+otimModal.querySelectorAll('[data-otim-fechar]').forEach(el => el.addEventListener('click', fecharModalOtimizacao));
+document.getElementById('btnOtimRun').addEventListener('click', runOtimizacao);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && otimModal.classList.contains('visible')) fecharModalOtimizacao();
+});
 </script>
 </body>
 </html>
