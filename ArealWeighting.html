@@ -982,8 +982,19 @@ header {
   align-items: center;
   justify-content: center;
   padding: 18px;
+  overflow-y: auto;
 }
 .otim-modal.visible { display: flex; }
+.otim-stack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  margin: auto;
+}
 .otim-backdrop {
   position: absolute;
   inset: 0;
@@ -1005,6 +1016,72 @@ header {
 }
 @keyframes otimPop {
   from { transform: translateY(10px) scale(.97); opacity: 0; }
+}
+
+/* ── POPUP EXPLICATIVO DA VARREDURA ── */
+.varredura-popup {
+  width: 364px;
+  max-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px 16px;
+  animation: varreduraIn .22s cubic-bezier(.2,1.2,.4,1);
+}
+@keyframes varreduraIn { from { transform: translateY(8px) scale(.98); opacity: 0; } }
+.varredura-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.varredura-title { font-weight: 600; font-size: 13px; color: var(--text); }
+.varredura-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+.varredura-close:hover { color: var(--text); }
+.varredura-desc {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.varredura-paineis { display: flex; gap: 8px; }
+.varredura-painel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 6px 4px 8px;
+}
+.varredura-painel.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.varredura-canvas {
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.varredura-nome { font-size: 10.5px; font-weight: 600; color: var(--text); text-align: center; line-height: 1.2; }
+.varredura-valor { font-size: 10px; color: var(--text-muted); }
+@media (max-width: 500px) {
+  .varredura-popup { padding: 12px; }
+  .varredura-desc { font-size: 11px; margin-bottom: 10px; }
+  .varredura-paineis { gap: 6px; }
 }
 .otim-card-head {
   display: flex;
@@ -1078,6 +1155,16 @@ header {
   color: var(--text-muted);
 }
 .otim-msg.error { color: var(--warn); }
+.otim-warn {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--warn);
+  margin-top: 6px;
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--warn) 8%, transparent);
+}
 .otim-progress {
   display: flex;
   align-items: center;
@@ -1496,6 +1583,7 @@ header {
 <!-- MODAL OTIMIZAÇÃO INTELIGENTE -->
 <div class="otim-modal" id="otimModal" aria-hidden="true">
   <div class="otim-backdrop" data-otim-fechar></div>
+  <div class="otim-stack">
   <div class="otim-card" role="dialog" aria-modal="true" aria-labelledby="otimTitle">
     <div class="otim-card-head">
       <span class="sb-label" id="otimTitle" style="margin-bottom:0">Otimização Inteligente</span>
@@ -1554,6 +1642,7 @@ header {
           <option value="100">Alta precisão (100 m)</option>
         </select>
       </div>
+      <div class="otim-warn" id="otimResolucaoWarn" style="display:none">⚠ Alta precisão gera uma grelha de pontos muito densa — o processamento pode demorar bastante em municípios grandes.</div>
     </div>
     <div class="otim-msg" id="otimMsg"></div>
     <div class="otim-progress" id="otimProgress" style="display:none">
@@ -1567,6 +1656,33 @@ header {
       </span>
     </button>
   </div>
+
+  <!-- POPUP EXPLICATIVO DA VARREDURA -->
+  <div class="varredura-popup" id="varreduraPopup" style="display:none">
+    <div class="varredura-head">
+      <span class="varredura-title">Como funciona a varredura?</span>
+      <button type="button" class="varredura-close" id="varreduraClose" aria-label="Fechar">×</button>
+    </div>
+    <p class="varredura-desc">O algoritmo percorre uma grelha de pontos candidatos e avalia cada um à vez até cobrir o objetivo. Quanto menor a distância entre pontos (resolução), mais precisa é a pesquisa — e mais demorada.</p>
+    <div class="varredura-paineis">
+      <div class="varredura-painel" data-res="250">
+        <canvas class="varredura-canvas" width="108" height="108"></canvas>
+        <span class="varredura-nome">Muito rápida</span>
+        <span class="varredura-valor">250 m</span>
+      </div>
+      <div class="varredura-painel" data-res="150">
+        <canvas class="varredura-canvas" width="108" height="108"></canvas>
+        <span class="varredura-nome">Equilibrada</span>
+        <span class="varredura-valor">150 m</span>
+      </div>
+      <div class="varredura-painel" data-res="100">
+        <canvas class="varredura-canvas" width="108" height="108"></canvas>
+        <span class="varredura-nome">Alta precisão</span>
+        <span class="varredura-valor">100 m</span>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -3319,7 +3435,7 @@ function mostrarResultadosOtimizacao(otim) {
         <div class="otim-stat-label">Buffers utilizados</div>
       </div>
       <div class="otim-stat">
-        <div class="otim-stat-num">${otim.tempoMs.toFixed(0)}<span style="font-size:13px;color:var(--text-muted)"> ms</span></div>
+        <div class="otim-stat-num">${otim.tempoMs >= 1000 ? (otim.tempoMs / 1000).toFixed(1) : otim.tempoMs.toFixed(0)}<span style="font-size:13px;color:var(--text-muted)"> ${otim.tempoMs >= 1000 ? 's' : 'ms'}</span></div>
         <div class="otim-stat-label">Tempo de cálculo</div>
       </div>
     </div>
@@ -3538,6 +3654,7 @@ function abrirModalOtimizacao() {
   document.getElementById('otimObjetivo').value = 80;
   document.getElementById('otimMaxBuffers').value = 5;
   document.getElementById('otimRaio').value = 1000;
+  atualizarAvisoResolucao();
   const msg = document.getElementById('otimMsg');
   msg.className = 'otim-msg';
   msg.textContent = '';
@@ -3548,6 +3665,7 @@ function abrirModalOtimizacao() {
 
 function fecharModalOtimizacao() {
   otimModal.classList.remove('visible');
+  ocultarVarreduraPopup();
 }
 
 function runOtimizacao() {
@@ -3705,6 +3823,114 @@ function pararAnimacaoMapa() {
 
 // Se o utilizador interagir com o mapa durante o processamento, pára a animação
 map.on('dragstart', pararAnimacaoMapa);
+
+// Aviso de desempenho quando se escolhe "Alta precisão"
+function atualizarAvisoResolucao() {
+  const sel = document.getElementById('otimResolucao');
+  const warn = document.getElementById('otimResolucaoWarn');
+  if (!sel || !warn) return;
+  warn.style.display = sel.value === '100' ? '' : 'none';
+}
+document.getElementById('otimResolucao').addEventListener('change', atualizarAvisoResolucao);
+
+// ── POPUP EXPLICATIVO DA VARREDURA ──
+const PAINEIS_VARREDURA = [
+  { res: 250, n: 5 },   // 5×5 pontos
+  { res: 150, n: 8 },   // 8×8 pontos
+  { res: 100, n: 12 }   // 12×12 pontos
+];
+let varreduraRaf = null;
+let varreduraEstado = null;
+let varreduraUltimoT = null;
+const VARREDURA_VEL = 165; // px por segundo — igual nos 3 painéis
+
+function prepararEstadoVarredura() {
+  const can = document.querySelectorAll('.varredura-canvas');
+  varreduraEstado = [];
+  varreduraUltimoT = null;
+  can.forEach((cv, idx) => {
+    const n = PAINEIS_VARREDURA[idx].n;
+    const ctx = cv.getContext('2d');
+    const W = cv.width, H = cv.height;
+    const m = 9;
+    const step = (W - m * 2) / (n - 1);
+    const pts = [];
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) pts.push({ x: m + c * step, y: m + r * step });
+    // durações iguais em px/s: grelhas mais densas demoram mais por volta completa
+    varreduraEstado.push({ ctx, pts, i: 0, t: 0, dur: step / VARREDURA_VEL, hold: 0, W, H, trail: [] });
+  });
+}
+
+function animarVarredura(t) {
+  if (!varreduraEstado) { varreduraRaf = null; return; }
+  if (varreduraUltimoT === null) varreduraUltimoT = t;
+  const dt = Math.min((t - varreduraUltimoT) / 1000, 0.05);
+  varreduraUltimoT = t;
+  for (const st of varreduraEstado) {
+    if (st.hold > 0) {
+      st.hold -= dt;
+    } else {
+      st.t += dt / st.dur;
+      if (st.t >= 1) {
+        st.t = 0;
+        if (st.i === st.pts.length - 1) { st.i = 0; st.hold = 0.45; }
+        else st.i++;
+        // transição instantânea: regista o ponto visitado para o rasto
+        st.trail.push(st.pts[st.i]);
+        if (st.trail.length > 14) st.trail.shift();
+      }
+    }
+    const cur = st.pts[st.i];
+    st.ctx.clearRect(0, 0, st.W, st.H);
+    // pontos da grelha
+    st.ctx.fillStyle = 'rgba(100,116,139,0.7)';
+    for (const p of st.pts) { st.ctx.beginPath(); st.ctx.arc(p.x, p.y, 1.6, 0, Math.PI * 2); st.ctx.fill(); }
+    // rasto (pontos já visitados)
+    st.trail.forEach((p, idx) => {
+      st.ctx.fillStyle = `rgba(241,196,15,${((idx + 1) / st.trail.length) * 0.5})`;
+      st.ctx.beginPath(); st.ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2); st.ctx.fill();
+    });
+    // halo pulsante
+    const pulse = 4.5 + 1.5 * Math.sin(t / 160);
+    const g = st.ctx.createRadialGradient(cur.x, cur.y, 0, cur.x, cur.y, pulse * 2.2);
+    g.addColorStop(0, 'rgba(241,196,15,0.85)');
+    g.addColorStop(1, 'rgba(241,196,15,0)');
+    st.ctx.fillStyle = g;
+    st.ctx.beginPath(); st.ctx.arc(cur.x, cur.y, pulse * 2.2, 0, Math.PI * 2); st.ctx.fill();
+    // núcleo
+    st.ctx.fillStyle = '#f1c40f';
+    st.ctx.beginPath(); st.ctx.arc(cur.x, cur.y, 2.6, 0, Math.PI * 2); st.ctx.fill();
+  }
+  varreduraRaf = requestAnimationFrame(animarVarredura);
+}
+
+function mostrarVarreduraPopup() {
+  const pop = document.getElementById('varreduraPopup');
+  if (!pop || pop.style.display !== 'none') return;
+  pop.style.display = 'block';
+  const sel = document.getElementById('otimResolucao');
+  const res = sel ? Number(sel.value) : 150;
+  document.querySelectorAll('.varredura-painel').forEach(p => p.classList.toggle('active', Number(p.dataset.res) === res));
+  prepararEstadoVarredura();
+  varreduraRaf = requestAnimationFrame(animarVarredura);
+}
+
+function ocultarVarreduraPopup() {
+  const pop = document.getElementById('varreduraPopup');
+  if (pop) pop.style.display = 'none';
+  if (varreduraRaf !== null) { cancelAnimationFrame(varreduraRaf); varreduraRaf = null; }
+  varreduraEstado = null;
+}
+
+const otimResSel = document.getElementById('otimResolucao');
+otimResSel.addEventListener('mousedown', mostrarVarreduraPopup);
+otimResSel.addEventListener('focus', mostrarVarreduraPopup);
+otimResSel.addEventListener('change', () => {
+  const res = Number(otimResSel.value);
+  document.querySelectorAll('.varredura-painel').forEach(p => p.classList.toggle('active', Number(p.dataset.res) === res));
+});
+otimResSel.addEventListener('blur', () => setTimeout(ocultarVarreduraPopup, 150));
+document.getElementById('varreduraClose').addEventListener('click', ocultarVarreduraPopup);
 
 document.getElementById('btnOtimizar').addEventListener('click', abrirModalOtimizacao);
 otimModal.querySelectorAll('[data-otim-fechar]').forEach(el => el.addEventListener('click', fecharModalOtimizacao));
