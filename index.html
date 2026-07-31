@@ -5886,8 +5886,6 @@
     var cardPool = [];          // { el, mapEl, map, tileLayer, dataLayer, badge, muni, x, w, tipo, municipio }
     var itemQueue = [];         // fila de itens (município+dataset) por consumir
     var boundsPorConcelhoCache = null;
-    var tickerRaf = null;
-    var tickerLastTs = null;
     var tickerAtivo = false;
 
     // sorteia um município aleatório (entre os que têm pelo menos uma pré-visualização
@@ -6112,48 +6110,104 @@
         track.style.setProperty('--hmp-card-w', dims.w + 'px');
         track.style.setProperty('--hmp-card-h', dims.h + 'px');
       }
+      var estavaAtivo = tickerAtivo;
+      if (estavaAtivo) congelarCarrossel();
       cardPool.forEach(function(c, i) {
         c.w = dims.w;
         c.x = i * (dims.w + HMP_GAP);
+        c.pausedX = c.x;
+        if (c.timeoutId) { clearTimeout(c.timeoutId); c.timeoutId = null; }
+        c.el.style.transition = 'none';
         c.el.style.transform = 'translateX(' + c.x + 'px)';
         requestAnimationFrame(function() { try { c.map.invalidateSize(); } catch(e) {} });
       });
+      if (estavaAtivo) iniciarTickerAutomatico();
     }
 
-    // laço principal do ticker: avança todos os cartões pela mesma distância
-    // a cada frame; assim que um cartão sai completamente à esquerda (fora
-    // da área visível, já lá fora da máscara), é reciclado — recebe o
-    // próximo item da fila e é reposicionado a seguir ao último cartão
-    function passoTicker(ts) {
-      if (!tickerAtivo) { tickerRaf = null; tickerLastTs = null; return; }
-      if (tickerLastTs == null) tickerLastTs = ts;
-      var dt = Math.min((ts - tickerLastTs) / 1000, 0.1);
-      tickerLastTs = ts;
-      var deslocamento = HMP_PX_POR_SEGUNDO * dt;
+    // NOTA: o movimento já NÃO é calculado passo a passo em requestAnimationFrame
+    // (esse laço partilha o thread principal com o scroll/pintura da página e, em
+    // mobile, é frequentemente atrasado/pausado durante um gesto de scroll — daí o
+    // "bloqueio"/reinício visível). Em vez disso, cada cartão recebe UMA transição
+    // CSS linear e contínua até um alvo muito distante; o próprio browser interpola
+    // o transform no compositor, imune a bloqueios do thread principal. O JS só
+    // intervém no momento discreto em que o cartão sai da área visível (calculado
+    // por tempo, via setTimeout, nunca por leitura do DOM) para trocar o conteúdo e
+    // reagendar a continuação — e mesmo que esse timer atrase um pouco durante o
+    // scroll, o cartão já está invisível fora da máscara, pelo que o atraso nunca é
+    // percetível: o movimento em si nunca pára nem reinicia.
+    var HMP_FAR_DIST = 20000; // distância "infinita" usada em cada transição contínua
+
+    // posição atual (calculada por tempo decorrido, nunca por leitura do DOM)
+    function posicaoAtual(c, agora) {
+      if (c.pausedX != null) return c.pausedX;
+      agora = (agora == null) ? performance.now() : agora;
+      return c.x0 - HMP_PX_POR_SEGUNDO * (agora - c.t0) / 1000;
+    }
+
+    // arranca (ou continua) o movimento contínuo de um cartão a partir de xAtual;
+    // agenda a reciclagem para o instante exato em que ele sairá do ecrã
+    function moverCartaoContinuamente(c, xAtual, agora) {
+      c.x0 = xAtual;
+      c.t0 = agora;
+      c.pausedX = null;
+      c.x = xAtual;
+
+      var alvoX = xAtual - HMP_FAR_DIST;
+      var duracaoS = HMP_FAR_DIST / HMP_PX_POR_SEGUNDO;
+      c.el.style.transition = 'transform ' + duracaoS + 's linear';
+      c.el.style.transform = 'translateX(' + alvoX + 'px)';
+
+      var limiarX = -40 - c.w;
+      var atrasoMs = Math.max((xAtual - limiarX) / HMP_PX_POR_SEGUNDO * 1000, 0);
+      if (c.timeoutId) clearTimeout(c.timeoutId);
+      c.timeoutId = setTimeout(function() { reciclarCartao(c); }, atrasoMs);
+    }
+
+    // chamado (por tempo, não por frame) quando um cartão já saiu da área
+    // visível: troca o conteúdo e recoloca-o a seguir ao último da fila,
+    // sem nunca interromper visualmente o movimento dos restantes cartões
+    function reciclarCartao(c) {
+      if (!tickerAtivo) return;
+      var agora = performance.now();
+
+      var item = proximoItem();
+      if (item) preencherCartao(c, item);
 
       var maxX = -Infinity;
-      cardPool.forEach(function(c) {
-        c.x -= deslocamento;
-        if (c.x > maxX) maxX = c.x;
+      cardPool.forEach(function(outro) {
+        if (outro === c) return;
+        var xOutro = posicaoAtual(outro, agora);
+        if (xOutro > maxX) maxX = xOutro;
       });
-      cardPool.forEach(function(c) {
-        if (c.x + c.w < -40) {
-          var item = proximoItem();
-          if (item) preencherCartao(c, item);
-          c.x = maxX + c.w + HMP_GAP;
-          maxX = c.x;
-        }
-        c.el.style.transform = 'translateX(' + c.x + 'px)';
-      });
-
-      tickerRaf = requestAnimationFrame(passoTicker);
+      var novoX = (maxX === -Infinity) ? c.x : (maxX + c.w + HMP_GAP);
+      moverCartaoContinuamente(c, novoX, agora);
     }
 
     function iniciarTickerAutomatico() {
       if (tickerAtivo) return;
       tickerAtivo = true;
-      tickerLastTs = null;
-      if (!tickerRaf) tickerRaf = requestAnimationFrame(passoTicker);
+      var agora = performance.now();
+      cardPool.forEach(function(c) {
+        var xAtual = (c.pausedX != null) ? c.pausedX : c.x;
+        moverCartaoContinuamente(c, xAtual, agora);
+      });
+    }
+
+    // congela todos os cartões na posição atual (calculada por tempo) e
+    // cancela os temporizadores de reciclagem, preservando sempre o
+    // estado exato da animação para retomar depois sem saltos
+    function congelarCarrossel() {
+      if (!tickerAtivo) return;
+      tickerAtivo = false;
+      var agora = performance.now();
+      cardPool.forEach(function(c) {
+        var xAtual = posicaoAtual(c, agora);
+        if (c.timeoutId) { clearTimeout(c.timeoutId); c.timeoutId = null; }
+        c.pausedX = xAtual;
+        c.x = xAtual;
+        c.el.style.transition = 'none';
+        c.el.style.transform = 'translateX(' + xAtual + 'px)';
+      });
     }
 
     // pausa breve e retoma sozinha — usado quando o utilizador toca num
@@ -6161,28 +6215,28 @@
     // movimento enquanto está a olhar para o mapa principal
     var _pauseTimer = null;
     function pausarCarrossel() {
-      tickerAtivo = false;
-      if (tickerRaf) { cancelAnimationFrame(tickerRaf); tickerRaf = null; }
+      congelarCarrossel();
       if (_pauseTimer) clearTimeout(_pauseTimer);
       _pauseTimer = setTimeout(function() { _pauseTimer = null; iniciarTickerAutomatico(); }, 2000);
     }
 
+    var _tickerAtivoAntesDeEsconder = false;
     document.addEventListener('visibilitychange', function() {
-      if (document.hidden && tickerRaf) {
-        cancelAnimationFrame(tickerRaf);
-        tickerRaf = null;
-      }
-      if (!document.hidden && tickerAtivo && !tickerRaf) {
-        tickerLastTs = null;
-        tickerRaf = requestAnimationFrame(passoTicker);
+      if (document.hidden) {
+        _tickerAtivoAntesDeEsconder = tickerAtivo;
+        congelarCarrossel();
+      } else if (_tickerAtivoAntesDeEsconder) {
+        iniciarTickerAutomatico();
       }
     });
 
     function destroyCardMaps() {
       tickerAtivo = false;
-      if (tickerRaf) { cancelAnimationFrame(tickerRaf); tickerRaf = null; }
       if (_pauseTimer) { clearTimeout(_pauseTimer); _pauseTimer = null; }
-      cardPool.forEach(function(c) { if (c.map) { try { c.map.remove(); } catch(e) {} } });
+      cardPool.forEach(function(c) {
+        if (c.timeoutId) { clearTimeout(c.timeoutId); c.timeoutId = null; }
+        if (c.map) { try { c.map.remove(); } catch(e) {} }
+      });
       cardPool = [];
       itemQueue = [];
       var track = document.querySelector('.hmp-track');
