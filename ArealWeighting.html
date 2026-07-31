@@ -1513,14 +1513,13 @@ header {
           <div class="coords-error" id="coordsError">Coordenadas inválidas ou fora de Portugal.</div>
         </div>
 
-        <!-- OTIMIZAÇÃO INTELIGENTE -->
+        <!-- OTIMIZAÇÃO AUTOMÁTICA -->
         <div class="sb-section">
-          <div class="sb-label">Otimização Inteligente</div>
+          <div class="sb-label">Modo Automático</div>
           <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a cobertura de um campo BGRI ou de uma combinação ponderada de vários critérios.</p>
           <button class="btn-processar btn-otimizar" id="btnOtimizar" disabled>
             <span class="btn-content">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              Otimização Inteligente
+              Modo Automático
             </span>
           </button>
         </div>
@@ -1580,13 +1579,13 @@ header {
   </div>
 </div>
 
-<!-- MODAL OTIMIZAÇÃO INTELIGENTE -->
+<!-- MODAL OTIMIZAÇÃO AUTOMÁTICA -->
 <div class="otim-modal" id="otimModal" aria-hidden="true">
   <div class="otim-backdrop" data-otim-fechar></div>
   <div class="otim-stack">
   <div class="otim-card" role="dialog" aria-modal="true" aria-labelledby="otimTitle">
     <div class="otim-card-head">
-      <span class="sb-label" id="otimTitle" style="margin-bottom:0">Otimização Inteligente</span>
+      <span class="sb-label" id="otimTitle" style="margin-bottom:0">Modo Automático</span>
       <button type="button" class="otim-close" data-otim-fechar aria-label="Fechar">×</button>
     </div>
     <div class="otim-mode-tabs" role="tablist" aria-label="Modo de otimização">
@@ -1651,7 +1650,6 @@ header {
     </div>
     <button class="btn-processar" id="btnOtimRun">
       <span class="btn-content">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         Encontrar Melhor Solução
       </span>
     </button>
@@ -1703,12 +1701,9 @@ themeBtn.addEventListener('click', () => {
 // ── MAPA ──
 const map = L.map('map', {
   zoomControl: false,
-  attributionControl: true
+  attributionControl: false
 }).setView([39.6, -8.0], 7);
 window.leafletMap = map;
-
-// Zoom control — canto inferior direito para não colidir com o toggle
-L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 // ── BASEMAPS ──
 const BASEMAPS = {
@@ -3417,8 +3412,7 @@ function mostrarResultadosOtimizacao(otim) {
 
   const html = `
     <div class="otim-banner">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      Otimização Inteligente <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:.7">· ${otim.campoLabel || otim.campo}</span>
+      Modo Automático <span style="font-weight:400;text-transform:none;letter-spacing:0;opacity:.7">· ${otim.campoLabel || otim.campo}</span>
     </div>
     <div class="otim-stat-grid">
       <div class="otim-stat">
