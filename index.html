@@ -6112,7 +6112,16 @@
       }
       var estavaAtivo = tickerAtivo;
       if (estavaAtivo) congelarCarrossel();
-      cardPool.forEach(function(c, i) {
+      // reordena pelos X atuais (não pelo índice fixo no array) — os cartões
+      // são reciclados ao longo do tempo, por isso cardPool[0] pode já não ser
+      // o mais à esquerda; reposicionar por índice faria "saltar" o conteúdo
+      // para a posição errada sempre que isto corre (ex.: rotação do ecrã)
+      var ordenados = cardPool.slice().sort(function(a, b) {
+        var xa = (a.pausedX != null) ? a.pausedX : a.x;
+        var xb = (b.pausedX != null) ? b.pausedX : b.x;
+        return xa - xb;
+      });
+      ordenados.forEach(function(c, i) {
         c.w = dims.w;
         c.x = i * (dims.w + HMP_GAP);
         c.pausedX = c.x;
@@ -6287,10 +6296,20 @@
     }
 
     var hmpResizeTimer = null;
+    var hmpUltimaLargura = window.innerWidth;
     window.addEventListener('resize', function() {
       clearTimeout(hmpResizeTimer);
       hmpResizeTimer = setTimeout(function() {
-        var isMobile = window.innerWidth <= 768;
+        var larguraAtual = window.innerWidth;
+        // em mobile, o scroll faz a barra de endereço colapsar/expandir, o que
+        // dispara "resize" só por causa da ALTURA (innerHeight) — sem isto, cada
+        // scroll cancelava os temporizadores de reciclagem e reiniciava os
+        // cartões nas posições de partida antes de completarem um ciclo,
+        // dando a impressão de que o carrossel "trava" depois dos 3 primeiros
+        if (larguraAtual === hmpUltimaLargura) return;
+        hmpUltimaLargura = larguraAtual;
+
+        var isMobile = larguraAtual <= 768;
         if (isMobile && activeMunicipio) {
           if (!cardPool.length) {
             carregarPreviewsCartoes(activeMunicipio);
