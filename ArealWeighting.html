@@ -1078,6 +1078,34 @@ header {
   color: var(--text-muted);
 }
 .otim-msg.error { color: var(--warn); }
+.otim-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.otim-progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.otim-progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width .12s linear;
+}
+.otim-progress-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  min-width: 28px;
+  text-align: right;
+}
 
 /* resultados da otimização */
 .otim-banner {
@@ -1390,7 +1418,21 @@ header {
         <span class="otim-unit">m</span>
       </div>
     </div>
+    <div class="otim-field">
+      <label for="otimResolucao">Resolução da pesquisa</label>
+      <div class="otim-input-wrap">
+        <select id="otimResolucao">
+          <option value="250">Muito rápida (250 m)</option>
+          <option value="150" selected>Equilibrada (150 m)</option>
+          <option value="100">Alta precisão (100 m)</option>
+        </select>
+      </div>
+    </div>
     <div class="otim-msg" id="otimMsg"></div>
+    <div class="otim-progress" id="otimProgress" style="display:none">
+      <div class="otim-progress-track"><div class="otim-progress-bar" id="otimProgressBar" style="width:0%"></div></div>
+      <span class="otim-progress-label" id="otimProgressLabel">0%</span>
+    </div>
     <button class="btn-processar" id="btnOtimRun">
       <span class="btn-content">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
@@ -1481,6 +1523,13 @@ let subsecsCache = []; // [{ feat, bbox, area }] — pré-calculado uma vez por 
 let currentRadius = 500;
 let pontos = []; // [{ latlng, marker, bufferLayer, resultado, idx }]
 let gruposColapsados = new Set([1, 2, 3]); // grupos 1,2,3 colapsados por defeito; 0 (População) aberto
+
+// ── OTIMIZAÇÃO: GRELHA DE CANDIDATOS ──
+let grelhaCache = new Map(); // espacamento (m) -> { pontos: [[lng,lat],...], espacamentoReal }
+let grelhaCandidatosLayer = null; // grelha visível (cinzento) durante o cálculo
+let candidatoAtualMarker = null;  // ponto destacado enquanto está a ser avaliado
+let otimProvisorioLayer = null;   // buffers vencedores desenhados a cada iteração
+const otimCanvasRenderer = L.canvas({ padding: 0.5 });
 
 // ── RAIO ──
 const radiusInput = document.getElementById('radiusInput');
@@ -1777,6 +1826,7 @@ async function selecionarMunicipio(municipio) {
   municipioMask = null;
   municipioMaskBbox = null;
   subsecsCache = [];
+  grelhaCache = new Map();
   esconderResultados();
 
   try {
@@ -2203,6 +2253,7 @@ function removerPonto(idx) {
 // ── LIMPAR TODOS ──
 function limparTodosPontos() {
   pararAnimacaoMapa();
+  limparVisualizacaoProcesso();
   pontos.forEach(p => {
     if (p.marker) map.removeLayer(p.marker);
     if (p.bufferLayer) map.removeLayer(p.bufferLayer);
@@ -2616,12 +2667,12 @@ const BGRI_GRUPOS = [
 
 // ── OTIMIZAÇÃO INTELIGENTE ──
 // Encontra automaticamente os melhores locais para os buffers (maximiza a
-// população coberta, por areal weighting, até ao objetivo ou ao número máximo
-// de buffers). A otimização começa sempre do zero e ignora os pontos manuais
-// já colocados — a solução encontrada substitui-os no mapa.
-// Algoritmo greedy: em cada passo escolhe o centroide BGRI cujo buffer cobre
-// mais população ainda não contabilizada, até atingir o objetivo de cobertura
-// ou esgotar o máximo de buffers.
+// cobertura do campo BGRI escolhido, por areal weighting, até ao objetivo ou
+// ao número máximo de buffers). A otimização começa sempre do zero e ignora
+// os pontos manuais já colocados — a solução encontrada substitui-os no mapa.
+// Algoritmo greedy sobre uma grelha regular de pontos candidatos: em cada
+// passo escolhe o ponto cujo buffer cobre mais valor ainda não contabilizado,
+// até atingir o objetivo de cobertura ou esgotar o máximo de buffers.
 const otimModal = document.getElementById('otimModal');
 
 // Helpers para o bloco de variáveis (usados também em mostrarResultados)
@@ -2667,49 +2718,268 @@ function populacaoTotalSubsecs(campo) {
   return total;
 }
 
-// Pré-cálculo: para cada centroide BGRI (candidato), o buffer do raio dado e
-// as subsecções que cobre, com a fração de área de cada uma. Feito uma única
-// vez por execução — a iteração greedy reutiliza-o, subtraindo apenas a
-// população já contabilizada por buffers anteriores.
-async function prepararCandidatos(raioMetros) {
-  const raioKm = raioMetros / 1000;
-  const n = subsecsCache.length;
-  const candidatos = new Array(n);
-  const LOTE = 8; // candidatos por lote — entre lotes espera um frame (rAF) para o browser pintar/animar o mapa
-  for (let i = 0; i < n; i++) {
-    const sub = subsecsCache[i];
-    let centro = null;
-    try {
-      const c = turf.centroid(sub.feat);
-      centro = c.geometry && c.geometry.coordinates;
-    } catch (e) { /* ignora */ }
-    if (!centro) { candidatos[i] = { coords: null, coberturas: [] }; continue; }
+// ── GRELHA REGULAR DE PONTOS CANDIDATOS ──
+// A pesquisa deixou de usar apenas os centroides BGRI: passa a varrer uma
+// grelha regular de pontos sobre o município (espaçamento = resolução da
+// pesquisa). Quanto menor o espaçamento, mais perto do ótimo a solução fica,
+// e maior o tempo de processamento. A grelha é gerada e cacheada por
+// município + espaçamento.
+const MAX_PONTOS_GRELHA = 20000; // limite de segurança para municípios enormes
 
-    const buf = turf.buffer(turf.point(centro), raioKm, { units: 'kilometers', steps: 48 });
-    const bufBbox = turf.bbox(buf);
-    const coberturas = [];
-    for (let j = 0; j < n; j++) {
-      const subj = subsecsCache[j];
-      if (!bboxIntersecta(subj.bbox, bufBbox)) continue;
-      let inter;
-      try { inter = turf.intersect(subj.feat, buf); } catch (e) { continue; }
-      if (!inter) continue;
-      if (subj.area <= 0) continue;
-      let areaInter;
-      try { areaInter = turf.area(inter); } catch (e) { continue; }
-      const fracao = Math.min(areaInter / subj.area, 1);
-      if (fracao <= 0) continue;
-      coberturas.push([j, fracao]);
+function bboxGrelhaBase() {
+  if (municipioMaskBbox) return municipioMaskBbox;
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  subsecsCache.forEach(({ bbox }) => {
+    if (!bbox) return;
+    if (bbox[0] < minX) minX = bbox[0];
+    if (bbox[1] < minY) minY = bbox[1];
+    if (bbox[2] > maxX) maxX = bbox[2];
+    if (bbox[3] > maxY) maxY = bbox[3];
+  });
+  return [minX, minY, maxX, maxY];
+}
+
+function obterGrelha(espacamentoM) {
+  if (grelhaCache.has(espacamentoM)) return grelhaCache.get(espacamentoM);
+
+  const [minX, minY, maxX, maxY] = bboxGrelhaBase();
+  const latC = (minY + maxY) / 2;
+  let latStep = espacamentoM / 111320;
+  let lngStep = espacamentoM / (111320 * Math.cos(latC * Math.PI / 180));
+
+  // Limite de segurança: se o número de células exceder o máximo, aumenta o
+  // espaçamento para caber (mantém a grelha útil em municípios enormes).
+  const nCel = Math.ceil((maxY - minY) / latStep) * Math.ceil((maxX - minX) / lngStep);
+  if (nCel > MAX_PONTOS_GRELHA) {
+    const f = Math.sqrt(nCel / MAX_PONTOS_GRELHA);
+    latStep *= f;
+    lngStep *= f;
+  }
+
+  const nLinhas = Math.ceil((maxY - minY) / latStep);
+  const nCols = Math.ceil((maxX - minX) / lngStep);
+
+  // Índice de contenção: para cada célula da grelha, as subsecções cujo bbox
+  // a toca. Como as subsecções cobrem o município na totalidade, um ponto está
+  // dentro do município sse estiver dentro de pelo menos uma subsecção —
+  // testa-se apenas as poucas subsecções da célula do ponto, não o contorno
+  // inteiro do município.
+  const idx = new Map();
+  const n = subsecsCache.length;
+  for (let j = 0; j < n; j++) {
+    const b = subsecsCache[j].bbox;
+    if (!b) continue;
+    const ix0 = Math.floor((b[0] - minX) / lngStep);
+    const ix1 = Math.floor((b[2] - minX) / lngStep);
+    const iy0 = Math.floor((b[1] - minY) / latStep);
+    const iy1 = Math.floor((b[3] - minY) / latStep);
+    for (let ix = ix0; ix <= ix1; ix++) {
+      for (let iy = iy0; iy <= iy1; iy++) {
+        const k = ix + '_' + iy;
+        let arr = idx.get(k);
+        if (!arr) { arr = []; idx.set(k, arr); }
+        arr.push(j);
+      }
     }
-    candidatos[i] = { coords: centro, coberturas };
+  }
+
+  const pontos = [];
+  for (let i = 0; i < nLinhas; i++) {
+    const lat = minY + i * latStep;
+    for (let jc = 0; jc < nCols; jc++) {
+      const lng = minX + jc * lngStep;
+      const arr = idx.get(jc + '_' + i);
+      if (!arr) continue;
+      let dentro = false;
+      for (let k = 0; k < arr.length && !dentro; k++) {
+        try {
+          if (turf.booleanPointInPolygon(turf.point([lng, lat]), subsecsCache[arr[k]].feat)) dentro = true;
+        } catch (e) { /* ignora */ }
+      }
+      if (dentro) pontos.push([lng, lat]);
+    }
+  }
+
+  const out = { pontos, espacamentoReal: latStep };
+  grelhaCache.set(espacamentoM, out);
+  return out;
+}
+
+// Índice espacial simples (hash em grelha) para obter rapidamente as subsecções
+// cujo bbox pode tocar num buffer, sem varrer todas. Célula ≈ raio do buffer.
+function construirIndiceProximidade(raioMetros) {
+  const [minX, minY] = bboxGrelhaBase();
+  const celGraus = raioMetros / 111320;
+  const idx = new Map();
+  subsecsCache.forEach((sub, j) => {
+    const b = sub.bbox;
+    if (!b) return;
+    const ix0 = Math.floor((b[0] - minX) / celGraus);
+    const ix1 = Math.floor((b[2] - minX) / celGraus);
+    const iy0 = Math.floor((b[1] - minY) / celGraus);
+    const iy1 = Math.floor((b[3] - minY) / celGraus);
+    for (let ix = ix0; ix <= ix1; ix++) {
+      for (let iy = iy0; iy <= iy1; iy++) {
+        const k = ix + '_' + iy;
+        let arr = idx.get(k);
+        if (!arr) { arr = []; idx.set(k, arr); }
+        arr.push(j);
+      }
+    }
+  });
+  return { idx, minX, minY, celGraus };
+}
+
+function subsecsProximas(indice, bbox) {
+  const { idx, minX, minY, celGraus } = indice;
+  const ix0 = Math.floor((bbox[0] - minX) / celGraus);
+  const ix1 = Math.floor((bbox[2] - minX) / celGraus);
+  const iy0 = Math.floor((bbox[1] - minY) / celGraus);
+  const iy1 = Math.floor((bbox[3] - minY) / celGraus);
+  const set = new Set();
+  for (let ix = ix0; ix <= ix1; ix++) {
+    for (let iy = iy0; iy <= iy1; iy++) {
+      const arr = idx.get(ix + '_' + iy);
+      if (arr) for (let k = 0; k < arr.length; k++) set.add(arr[k]);
+    }
+  }
+  return set;
+}
+
+// Círculo de referência gerado uma vez por execução e deslocado para cada
+// candidato — evita centenas de turf.buffer (o círculo tem sempre a mesma
+// forma, muda apenas o centro). Aproximação local equivalente à do turf.buffer.
+function criarCirculoReferencia(raioMetros) {
+  const [minX, minY, maxX, maxY] = bboxGrelhaBase();
+  const latRef = (minY + maxY) / 2;
+  const lngRef = (minX + maxX) / 2;
+  const kLat = 111320;
+  const kLng = 111320 * Math.cos(latRef * Math.PI / 180);
+  const r = raioMetros;
+  const PASSOS = 48;
+  const coords = [];
+  for (let a = 0; a < 2 * Math.PI; a += (2 * Math.PI) / PASSOS) {
+    coords.push([lngRef + (r * Math.sin(a)) / kLng, latRef + (r * Math.cos(a)) / kLat]);
+  }
+  coords.push(coords[0].slice());
+  return { latRef, lngRef, coords };
+}
+
+function circuloNoPonto(cRef, coords) {
+  const dLat = coords[1] - cRef.latRef;
+  const dLng = coords[0] - cRef.lngRef;
+  const pol = cRef.coords.map(v => [v[0] + dLng, v[1] + dLat]);
+  return turf.polygon([pol]);
+}
+
+function bboxDeVertices(pol) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  const pts = pol.geometry.coordinates[0];
+  for (let i = 0; i < pts.length; i++) {
+    const x = pts[i][0], y = pts[i][1];
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  return [minX, minY, maxX, maxY];
+}
+
+// ── VISUALIZAÇÃO DURANTE O CÁLCULO ──
+function reportarProgressoOtimizacao(feito, total) {
+  const bar = document.getElementById('otimProgress');
+  const fill = document.getElementById('otimProgressBar');
+  const label = document.getElementById('otimProgressLabel');
+  if (!bar) return;
+  const pct = total > 0 ? Math.min(100, Math.round((feito / total) * 100)) : 0;
+  fill.style.width = pct + '%';
+  label.textContent = pct + '%';
+}
+
+function limparVisualizacaoProcesso() {
+  if (grelhaCandidatosLayer) { map.removeLayer(grelhaCandidatosLayer); grelhaCandidatosLayer = null; }
+  if (candidatoAtualMarker) { map.removeLayer(candidatoAtualMarker); candidatoAtualMarker = null; }
+  if (otimProvisorioLayer) { map.removeLayer(otimProvisorioLayer); otimProvisorioLayer = null; }
+}
+
+function mostrarGrelhaProcesso(grelha) {
+  if (grelhaCandidatosLayer) return; // já visível
+  if (!grelha.pontos || grelha.pontos.length === 0) return;
+  const feats = grelha.pontos.map(c => turf.point(c));
+  grelhaCandidatosLayer = L.geoJSON({ type: 'FeatureCollection', features: feats }, {
+    pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+      radius: 2, fillColor: '#94a3b8', fillOpacity: 0.45, stroke: false,
+      renderer: otimCanvasRenderer
+    })
+  }).addTo(map);
+
+  candidatoAtualMarker = L.circleMarker([grelha.pontos[0][1], grelha.pontos[0][0]], {
+    radius: 4.5, fillColor: '#f1c40f', fillOpacity: 0.95, color: '#fff', weight: 1
+  }).addTo(map);
+  otimProvisorioLayer = L.layerGroup().addTo(map);
+}
+
+function mostrarVencedorProvisorio(coords, raioMetros, idx) {
+  if (!otimProvisorioLayer) return;
+  const cor = CORES[idx];
+  L.circleMarker(L.latLng(coords[1], coords[0]), {
+    radius: 7, fillColor: cor.cor, fillOpacity: 1, color: '#fff', weight: 2
+  }).addTo(otimProvisorioLayer);
+  const raioKm = raioMetros / 1000;
+  const buf = turf.buffer(turf.point(coords), raioKm, { units: 'kilometers', steps: 48 });
+  let bufDesenho = buf;
+  if (municipioMask) {
+    try { const clip = turf.intersect(buf, municipioMask); if (clip) bufDesenho = clip; } catch (e) { /* mantém círculo */ }
+  }
+  L.geoJSON(bufDesenho, { style: estiloBuffer(cor) }).addTo(otimProvisorioLayer);
+}
+
+// Pré-cálculo: para cada ponto da grelha, o buffer do raio dado e as
+// subsecções que cobre, com a fração de área de cada uma. Feito uma única
+// vez por execução — a iteração greedy reutiliza-o, subtraindo apenas o
+// valor já contabilizado por buffers anteriores.
+async function prepararCandidatos(raioMetros, espacamentoM) {
+  const grelha = obterGrelha(espacamentoM);
+  const pts = grelha.pontos;
+  const n = pts.length;
+  const indice = construirIndiceProximidade(raioMetros);
+  const cRef = criarCirculoReferencia(raioMetros);
+  const candidatos = new Array(n);
+  const LOTE = 4; // candidatos por lote — entre lotes espera um frame (rAF) para pintar o mapa e mover o cursor
+
+  mostrarGrelhaProcesso(grelha);
+
+  for (let i = 0; i < n; i++) {
+    const coords = pts[i];
+    if (candidatoAtualMarker) candidatoAtualMarker.setLatLng([coords[1], coords[0]]);
+    const buf = circuloNoPonto(cRef, coords);
+    const bboxBuf = bboxDeVertices(buf);
+    const proximas = subsecsProximas(indice, bboxBuf);
+    const coberturas = [];
+    proximas.forEach(j => {
+      const subj = subsecsCache[j];
+      if (!bboxIntersecta(subj.bbox, bboxBuf)) return;
+      if (subj.area <= 0) return;
+      let inter;
+      try { inter = turf.intersect(subj.feat, buf); } catch (e) { return; }
+      if (!inter) return;
+      let areaInter;
+      try { areaInter = turf.area(inter); } catch (e) { return; }
+      const fracao = Math.min(areaInter / subj.area, 1);
+      if (fracao <= 0) return;
+      coberturas.push([j, fracao]);
+    });
+    candidatos[i] = { coords, coberturas };
     if ((i + 1) % LOTE === 0) {
+      reportarProgressoOtimizacao(i + 1, n);
       await new Promise(r => requestAnimationFrame(r));
     }
   }
+  reportarProgressoOtimizacao(n, n);
   return candidatos;
 }
 
-async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campoLabel) {
+async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campoLabel, espacamentoM) {
   const t0 = performance.now();
   const pops = subsecsCache.map(({ feat }) => {
     const v = parseFloat((feat.properties || {})[campo]);
@@ -2718,7 +2988,7 @@ async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campo
   const popTotal = pops.reduce((a, b) => a + b, 0);
   if (popTotal <= 0) return { erro: `O município não tem valores para «${campoLabel}» (tudo a zero).` };
 
-  const candidatos = await prepararCandidatos(raioMetros);
+  const candidatos = await prepararCandidatos(raioMetros, espacamentoM);
   const restante = pops.slice();
   const escolhidos = [];
   const usados = new Set();
@@ -2729,6 +2999,7 @@ async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campo
     for (let ci = 0; ci < candidatos.length; ci++) {
       if (usados.has(ci)) continue;
       const covs = candidatos[ci].coberturas;
+      if (covs.length === 0) continue; // candidato sem qualquer interseção
       let ganho = 0;
       for (let k = 0; k < covs.length; k++) {
         const rj = restante[covs[k][0]];
@@ -2746,6 +3017,9 @@ async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campo
       const val = pops[j] * covs[k][1];
       restante[j] = val >= restante[j] ? 0 : restante[j] - val;
     }
+    mostrarVencedorProvisorio(candidatos[melhor].coords, raioMetros, escolhidos.length - 1);
+    await new Promise(r => requestAnimationFrame(r));
+
     let coberto = 0;
     for (let j = 0; j < restante.length; j++) coberto += pops[j] - restante[j];
     if (coberto >= metaPop) break;
@@ -2897,7 +3171,7 @@ function mostrarResultadosOtimizacao(otim) {
     </div>
     <div class="otim-resumo">${resumo}</div>
     <div class="aviso" style="line-height:1.6;">
-      <b>ℹ Método</b> — algoritmo greedy: em cada passo coloca-se o buffer no centroide BGRI que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.
+      <b>ℹ Método</b> — algoritmo greedy sobre uma grelha de pontos candidatos (resolução da pesquisa: ${otim.espacamento || 150} m): em cada passo coloca-se o buffer no ponto que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.
     </div>
     ${montarGruposHTML(otim.totais)}
   `;
@@ -2956,21 +3230,32 @@ function runOtimizacao() {
   const campoSel = document.getElementById('otimCampo');
   const campo = campoSel.value;
   const campoLabel = campoSel.options[campoSel.selectedIndex] ? campoSel.options[campoSel.selectedIndex].text : campo;
+  const resolucaoSel = document.getElementById('otimResolucao');
+  const espacamento = clampInt(resolucaoSel.value, 100, 250, 150);
 
   const msg = document.getElementById('otimMsg');
   const btn = document.getElementById('btnOtimRun');
   msg.className = 'otim-msg';
   msg.innerHTML = '<span class="spinner"></span> A procurar a melhor solução… (pode demorar alguns segundos em municípios grandes)';
   btn.disabled = true;
+  limparVisualizacaoProcesso();
   animarMapaProcessamento();
+  const progresso = document.getElementById('otimProgress');
+  if (progresso) {
+    progresso.style.display = '';
+    document.getElementById('otimProgressBar').style.width = '0%';
+    document.getElementById('otimProgressLabel').textContent = '0%';
+  }
 
   setTimeout(async () => {
     let resultado;
     try {
-      resultado = await otimizarBuffers(objetivo, maxBuffers, raio, campo, campoLabel);
+      resultado = await otimizarBuffers(objetivo, maxBuffers, raio, campo, campoLabel, espacamento);
     } catch (e) {
       console.error(e);
       pararAnimacaoMapa();
+      limparVisualizacaoProcesso();
+      if (progresso) progresso.style.display = 'none';
       msg.className = 'otim-msg error';
       msg.textContent = 'Erro durante o cálculo. Tenta de novo ou com um raio menor.';
       btn.disabled = false;
@@ -2978,6 +3263,8 @@ function runOtimizacao() {
     }
     if (resultado.erro) {
       pararAnimacaoMapa();
+      limparVisualizacaoProcesso();
+      if (progresso) progresso.style.display = 'none';
       msg.className = 'otim-msg error';
       msg.textContent = resultado.erro;
       btn.disabled = false;
@@ -2985,6 +3272,8 @@ function runOtimizacao() {
     }
 
     pararAnimacaoMapa();
+    limparVisualizacaoProcesso();
+    if (progresso) progresso.style.display = 'none';
     desenharSolucaoOtimizacao(resultado.locs, raio);
     const combinado = calcularTotalCombinado();
     resultado.popCoberta = Math.round(combinado.totaisGlobais[campo] || 0);
@@ -2995,6 +3284,7 @@ function runOtimizacao() {
     resultado.objetivo = objetivo;
     resultado.raio = raio;
     resultado.maxBuffers = maxBuffers;
+    resultado.espacamento = espacamento;
     resultado.nBuffers = resultado.locs.length;
 
     fecharModalOtimizacao();
@@ -3032,7 +3322,7 @@ function animarMapaProcessamento() {
     const dt = (t - inicio) / 1000;
     // Frequências ligeiramente diferentes: órbita suave mas sem repetir
     // exatamente o mesmo percurso a cada volta.
-    const ang = dt * 0.85;
+    const ang = dt * 0.42;
     const lat = centro.lat + dLat * Math.sin(ang * 0.5 + 1.3);
     const lng = centro.lng + dLng * Math.sin(ang);
     const alvo = map.project([lat, lng], animMapaZoomBase);
