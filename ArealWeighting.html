@@ -851,7 +851,7 @@ header {
     z-index: 2000;
     display: flex;
     flex-direction: column;
-    /* Escondida por defeito — desloca para fora do ecrã */
+    /* Escondida por defeito - desloca para fora do ecrã */
     transform: translateY(100%);
     transition: transform 0.22s ease;
     overflow: hidden;
@@ -1569,6 +1569,16 @@ header {
   stroke: #14532d;
   stroke-width: 2;
 }
+.proc-best-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--accent-deep);
+  stroke: var(--surface);
+  stroke-width: 3px;
+  paint-order: stroke;
+  text-anchor: middle;
+}
 .proc-dot {
   fill: #ffc61a;
   stroke: var(--surface);
@@ -1924,7 +1934,7 @@ header {
       });
 
       if (name === 'mapa') {
-        // Esconde sidebar — mapa fica visível por baixo
+        // Esconde sidebar - mapa fica visível por baixo
         sidebar.classList.remove('sidebar-visible');
       } else {
         // Mostra sidebar e activa o painel certo
@@ -1992,7 +2002,7 @@ header {
 <div class="main">
   <aside class="sidebar">
 
-    <!-- Painéis (em desktop: display:contents — todos visíveis; em mobile: tabs) -->
+    <!-- Painéis (em desktop: display:contents - todos visíveis; em mobile: tabs) -->
     <div class="drawer-panels">
 
       <!-- PAINEL 1: Configurar (município + raio + coords) -->
@@ -2044,7 +2054,7 @@ header {
         <!-- OTIMIZAÇÃO AUTOMÁTICA -->
         <div class="sb-section">
           <div class="sb-label">Modo Automático</div>
-          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, maximizando a cobertura de um campo BGRI ou de uma combinação ponderada de vários critérios.</p>
+          <p class="otim-desc">Deixa o algoritmo encontrar automaticamente os melhores locais para os buffers, de modo a maximizar a cobertura de um campo BGRI ou de uma combinação ponderada de vários critérios.</p>
           <button class="btn-processar btn-otimizar" id="btnOtimizar" disabled>
             <span class="btn-content">
               Modo Automático
@@ -2169,7 +2179,7 @@ header {
           <option value="100">Alta precisão (100 m)</option>
         </select>
       </div>
-      <div class="otim-warn" id="otimResolucaoWarn" style="display:none">⚠ Alta precisão gera uma grelha de pontos muito densa — o processamento pode demorar bastante em municípios grandes.</div>
+      <div class="otim-warn" id="otimResolucaoWarn" style="display:none">⚠ Alta precisão gera uma grelha de pontos muito densa - o processamento pode demorar bastante em municípios grandes.</div>
     </div>
     <div class="otim-msg" id="otimMsg"></div>
     <div class="otim-progress" id="otimProgress" style="display:none">
@@ -2189,7 +2199,7 @@ header {
       <span class="varredura-title">Como funciona a varredura?</span>
       <button type="button" class="varredura-close" id="varreduraClose" aria-label="Fechar">×</button>
     </div>
-    <p class="varredura-desc">O algoritmo percorre uma grelha de pontos candidatos e avalia cada um à vez até cobrir o objetivo. Quanto menor a distância entre pontos (resolução), mais precisa é a pesquisa — e mais demorada.</p>
+    <p class="varredura-desc">O algoritmo percorre uma grelha de pontos candidatos e avalia cada um à vez até cobrir o objetivo. Quanto menor a distância entre pontos (resolução), mais precisa é a pesquisa - e mais demorada.</p>
     <div class="varredura-paineis">
       <div class="varredura-painel" data-res="250">
         <canvas class="varredura-canvas" width="108" height="108"></canvas>
@@ -2220,7 +2230,7 @@ header {
       <span class="sb-label" id="awTitle" style="margin-bottom:0">O que é o Areal Weighting?</span>
       <button type="button" class="aw-close" data-aw-fechar aria-label="Fechar">×</button>
     </div>
-    <p class="aw-intro">O <b>Areal Weighting</b> — ponderação por área — estima a população num buffer contando cada subsecção apenas na proporção da área que fica dentro do buffer. Uma subsecção com metade da área dentro do buffer conta metade dos seus habitantes, em vez de contar tudo ou nada.</p>
+    <p class="aw-intro">O <b>Areal Weighting</b> - ponderação por área - estima a população num buffer ao contar cada subsecção apenas na proporção da área que fica dentro do buffer. Uma subsecção com metade da área dentro do buffer conta metade dos seus habitantes, em vez de contar tudo ou nada.</p>
 
     <div id="awScene">
     <div class="aw-canvas-wrap">
@@ -2300,7 +2310,7 @@ header {
     </div>
     </div>
 
-    <div class="aw-nota"><span><b>Porquê Areal Weighting?</b><br>Como as subsecções têm tamanhos diferentes, este método produz estimativas mais realistas do que considerar o polígono totalmente incluído ou totalmente excluído — evitando sobrestimar ou subestimar a população junto à fronteira.</span></div>
+    <div class="aw-nota"><span><b>Porquê Areal Weighting?</b><br>Como as subsecções têm tamanhos diferentes, este método produz estimativas mais realistas do que considerar o polígono totalmente incluído ou totalmente excluído - o que evita sobrestimar ou subestimar a população junto à fronteira.</span></div>
   </div>
 
   <div class="lim-card" role="dialog" aria-modal="true" aria-labelledby="limTitle">
@@ -2338,7 +2348,7 @@ header {
       </div>
     </div>
 
-    <p class="lim-explica">Em ambos os cenários, a subsecção tem exatamente <b>60 habitantes</b> — apenas a distribuição espacial muda. Como o método assume uma distribuição uniforme, quando a população está concentrada numa zona o valor estimado diverge do real.</p>
+    <p class="lim-explica">Em ambos os cenários, a subsecção tem exatamente <b>60 habitantes</b> - apenas a distribuição espacial muda. Como o método assume uma distribuição uniforme, quando a população está concentrada numa zona o valor estimado diverge do real.</p>
 
     <div class="lim-nota"><span><b>⚠ Limitação:</b> quanto mais heterogénea for a distribuição da população dentro da subsecção, maior será o erro da estimativa. O método é mais fiável em unidades espaciais pequenas e relativamente homogéneas.</span></div>
   </div>
@@ -2348,10 +2358,17 @@ header {
       <span class="sb-label" id="procTitle" style="margin-bottom:0">Como é efetuado o cálculo?</span>
       <button type="button" class="proc-close" data-aw-fechar aria-label="Fechar">×</button>
     </div>
-    <p class="proc-intro">No modo automático, o algoritmo pesquisa a melhor localização do buffer. Percorre uma grelha regular de pontos candidatos sobre o município e, em cada posição, avalia por <b>areal weighting</b> a população que um buffer desse raio cobriria — o valor fica registado nesse ponto. Quanto mais escuro o verde, maior o potencial. No fim, escolhe a localização de valor mais alto.</p>
+    <p class="proc-intro">No modo automático, o algoritmo pesquisa a melhor localização do buffer. Percorre uma grelha regular de pontos candidatos sobre o município e, em cada posição, avalia por <b>areal weighting</b> a população que um buffer desse raio cobriria - o valor fica registado nesse ponto. Quanto mais escuro o verde, maior o potencial. A opacidade de cada buffer é proporcional à fração de área do município que cobre: perto do centro cobre mais subsecções e surge mais forte; perto do limite, mais fraco. No fim, escolhe a localização de valor mais alto.</p>
 
     <div class="proc-canvas-wrap">
-      <svg id="procSvg" viewBox="0 0 400 220" role="img" aria-label="Animação: um ponto amarelo percorre uma grelha de pontos candidatos sobre o município; em cada posição é avaliado um buffer por areal weighting e o valor fica marcado no ponto, formando um mapa de calor; no fim a melhor localização é destacada.">
+      <svg id="procSvg" viewBox="0 0 400 220" role="img" aria-label="Animação: um ponto amarelo percorre uma grelha de pontos candidatos sobre o município; em cada posição é avaliado um buffer por areal weighting e o valor fica marcado no ponto; o conjunto dos valores forma um mapa de calor; no fim, a melhor localização é destacada.">
+        <defs>
+          <radialGradient id="procBufGrad" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="#2f9e5f"/>
+            <stop offset="62%" stop-color="#1e8449"/>
+            <stop offset="100%" stop-color="#0f3d24"/>
+          </radialGradient>
+        </defs>
         <polygon id="procPoly" class="proc-poly"/>
         <clipPath id="procClip"><use href="#procPoly"/></clipPath>
         <g id="procSec" clip-path="url(#procClip)"></g>
@@ -2361,6 +2378,7 @@ header {
         <circle id="procDot" class="proc-dot" visibility="hidden" r="3.4"/>
         <circle id="procBestRing" class="proc-best-ring" visibility="hidden"/>
         <circle id="procBufFinal" class="proc-buf-final" visibility="hidden"/>
+        <text id="procBestLabel" class="proc-best-label" visibility="hidden"></text>
       </svg>
     </div>
 
@@ -2368,7 +2386,7 @@ header {
 
     <div class="proc-legend">
       <span class="proc-leg-item"><i class="proc-swatch" style="background:#ffc61a;border-radius:50%;box-shadow:0 0 3px rgba(255,198,26,.85)"></i>localização a avaliar</span>
-      <span class="proc-leg-item"><i class="proc-swatch" style="background:#9fc5a8;border-radius:50%"></i><i class="proc-swatch" style="background:linear-gradient(90deg,#d5ead9,#a9d4b0,#7fb98a,#4f9c66,#1e8449);border-radius:3px;width:50px"></i>potencial — 5 níveis (claro = baixo · escuro = alto)</span>
+      <span class="proc-leg-item"><i class="proc-swatch" style="background:#9fc5a8;border-radius:50%"></i>      <i class="proc-swatch" style="background:linear-gradient(90deg,#e9f7ec,#cee0d3,#b2c8ba,#97b1a1,#7c9a88,#60836f,#456c56,#29543d,#0e3d24);border-radius:3px;width:72px"></i>potencial - 9 níveis (claro = baixo · escuro = alto)</span>
     </div>
 
     <button type="button" class="proc-replay" id="procReplayBtn">Reproduzir animação</button>
@@ -2450,7 +2468,7 @@ let bgriLayer = null;
 let bgriData = null;
 let municipioMask = null; // contorno (união) do município, só para recorte estético dos buffers
 let municipioMaskBbox = null; // bbox de municipioMask, cacheado uma vez por município
-let subsecsCache = []; // [{ feat, bbox, area }] — pré-calculado uma vez por município, evita repetir turf.bbox/turf.area em cada recálculo
+let subsecsCache = []; // [{ feat, bbox, area }] - pré-calculado uma vez por município, evita repetir turf.bbox/turf.area em cada recálculo
 let currentRadius = 500;
 let pontos = []; // [{ latlng, marker, bufferLayer, resultado, idx }]
 let gruposColapsados = new Set([1, 2, 3]); // grupos 1,2,3 colapsados por defeito; 0 (População) aberto
@@ -2532,7 +2550,7 @@ function nomeBase(caminho) { return caminho.split('/').pop().split('\\').pop(); 
 // ── CONTORNO DO MUNICÍPIO (apenas estético, para recortar os buffers) ──
 // Faz a união de todas as subsecções BGRI para obter o limite exterior do
 // município. Usado apenas para desenhar os buffers visualmente contidos
-// dentro do município — o CÁLCULO de população usa sempre o buffer
+// dentro do município - o CÁLCULO de população usa sempre o buffer
 // circular completo (calcularPonto/calcularTotalCombinado), nunca esta máscara.
 function construirContornoMunicipio(dados) {
   const feats = (dados.features || []).filter(f => f.geometry);
@@ -2540,7 +2558,7 @@ function construirContornoMunicipio(dados) {
 
   // Em municípios com muitas subsecções, a união polígono-a-polígono pode
   // ficar lenta. Acima deste limite, usa-se o invólucro convexo (convex
-  // hull) como aproximação — serve perfeitamente para o efeito puramente
+  // hull) como aproximação - serve perfeitamente para o efeito puramente
   // estético de recortar os buffers, sem afetar o cálculo de população.
   const LIMITE_UNIAO = 1500;
   if (feats.length > LIMITE_UNIAO) {
@@ -2775,7 +2793,7 @@ async function selecionarMunicipio(municipio) {
     municipioMaskBbox = municipioMask ? turf.bbox(municipioMask) : null;
     subsecsCache = construirCacheSubsecs(bgriData);
     setInstrucao('ready');
-    if (window._updateStatusChip) window._updateStatusChip(municipioAtual.nome + ' — clica no mapa para adicionar ponto');
+    if (window._updateStatusChip) window._updateStatusChip(municipioAtual.nome + ' - clica no mapa para adicionar ponto');
     // Activar botão de coordenadas se campos preenchidos
     if (coordsPreenchidas()) btnAddCoords.disabled = false;
     processamentoPendente = false;
@@ -2792,7 +2810,7 @@ async function selecionarMunicipio(municipio) {
 
 // ── VALIDAÇÃO: ponto tem de estar dentro da área do município (limite BGRI) ──
 function pontoDentroMunicipio(latlng) {
-  // Sem contorno carregado ainda — não há como validar, deixa passar
+  // Sem contorno carregado ainda - não há como validar, deixa passar
   // (acontece só antes de selecionar município, mas aí bgriData já bloqueia o clique).
   if (!municipioMask) return true;
   const pt = turf.point([latlng.lng, latlng.lat]);
@@ -2916,7 +2934,7 @@ document.getElementById('btnProcessar').addEventListener('click', (ev) => {
   }, 30);
 });
 
-// ── ADICIONAR PONTO (só visual — sem cálculo) ──
+// ── ADICIONAR PONTO (só visual - sem cálculo) ──
 function adicionarPontoVisual(latlng) {
   const idx = pontos.length;
   const cor = CORES[idx];
@@ -2964,7 +2982,7 @@ function adicionarPontoVisual(latlng) {
   else setInstrucao('max');
 }
 
-// ── ADICIONAR PONTO (com cálculo — usado em recalcularTodos e coordenadas) ──
+// ── ADICIONAR PONTO (com cálculo - usado em recalcularTodos e coordenadas) ──
 function adicionarPonto(latlng) {
   const idx = pontos.length;
   const cor = CORES[idx];
@@ -3002,7 +3020,7 @@ function calcularPonto(ponto) {
   // (o cálculo abaixo continua a usar "buf" completo, não este recorte).
   let bufDesenho = buf;
   if (municipioMask) {
-    // Se os bboxes nem se tocam, o intersect seria sempre null — poupa a
+    // Se os bboxes nem se tocam, o intersect seria sempre null - poupa a
     // chamada cara e mostra o buffer sem recorte (caso raro, ex.: ponto
     // junto à fronteira com dados de município vizinho ainda não carregados).
     if (bboxIntersecta(bufBbox, municipioMaskBbox)) {
@@ -3028,7 +3046,7 @@ function calcularPonto(ponto) {
 
   subsecsCache.forEach(({ feat, bbox, area: areaSubsec }) => {
     // Descarta sem turf.intersect (caro) as subsecções cujo bbox nem toca
-    // o bbox do buffer — evita a esmagadora maioria das chamadas caras
+    // o bbox do buffer - evita a esmagadora maioria das chamadas caras
     // em municípios grandes, sem alterar nenhum resultado.
     if (!bboxIntersecta(bbox, bufBbox)) return;
 
@@ -3077,12 +3095,12 @@ function recalcularTodos() {
 // ── UNIÃO DOS BUFFERS (para evitar dupla contagem em zonas sobrepostas) ──
 // Junta todos os buffers num único polígono (dissolve). Onde dois ou mais
 // buffers se sobrepõem, essa área passa a existir só uma vez na geometria
-// resultante — por isso, ao intersectar as subsecções com esta união em
+// resultante - por isso, ao intersectar as subsecções com esta união em
 // vez de somar os resultados individuais de cada ponto, cada habitante
 // só é contado uma única vez no total agregado.
 function unirBuffers() {
   if (pontos.length === 0) return null;
-  // Reutiliza o buffer já calculado em calcularPonto (ponto.bufRaw) — evita
+  // Reutiliza o buffer já calculado em calcularPonto (ponto.bufRaw) - evita
   // chamar turf.buffer outra vez para os mesmos pontos/raio.
   const geoms = pontos.map(p => p.bufRaw || turf.buffer(
     turf.point([p.latlng.lng, p.latlng.lat]), currentRadius / 1000, { units: 'kilometers', steps: 64 }
@@ -3114,7 +3132,7 @@ function calcularTotalCombinado() {
   let nInter = 0;
 
   // Com um único ponto, o total combinado é, por definição, idêntico ao
-  // resultado já calculado em calcularPonto — reutiliza-o em vez de repetir
+  // resultado já calculado em calcularPonto - reutiliza-o em vez de repetir
   // todo o trabalho de interseção (mesma geometria, mesmas subsecções).
   if (pontos.length === 1 && pontos[0].resultado) {
     const r = pontos[0].resultado;
@@ -3218,7 +3236,7 @@ function renderizarPontosVisual() {
   }
   if (window._updateStatusChip) {
     if (pontos.length === 0) window._updateStatusChip(municipioAtual ? 'Clica no mapa para adicionar ponto' : 'Seleciona município…');
-    else window._updateStatusChip(pontos.length + ' ponto' + (pontos.length > 1 ? 's' : '') + ' — clica Processar para calcular');
+    else window._updateStatusChip(pontos.length + ' ponto' + (pontos.length > 1 ? 's' : '') + ' - clica Processar para calcular');
   }
 
   Array.from(lista.querySelectorAll('.ponto-row')).forEach(el => el.remove());
@@ -3240,7 +3258,7 @@ function renderizarPontosVisual() {
       <div class="ponto-dot" style="background:${p.cor.cor}"></div>
       <span class="ponto-label" style="color:${p.cor.cor}">${i+1}</span>
       <span class="ponto-coords">${p.latlng.lat.toFixed(4)}, ${p.latlng.lng.toFixed(4)}</span>
-      <span class="ponto-pop" style="color:var(--text-muted);font-style:italic;font-size:10px">—</span>
+      <span class="ponto-pop" style="color:var(--text-muted);font-style:italic;font-size:10px">-</span>
       <button class="ponto-del" title="Remover ponto">×</button>
     `;
     row.querySelector('.ponto-del').addEventListener('click', () => removerPonto(i));
@@ -3259,7 +3277,7 @@ function renderizarPontos() {
   popup.style.display = pontos.length > 0 ? 'flex' : 'none';
   count.textContent = `(${pontos.length} / 5)`;
 
-  // Badge da tab Pontos (removido — badge já não existe)
+  // Badge da tab Pontos (removido - badge já não existe)
   const badge = document.getElementById('tabBadgePontos');
   if (badge) {
     if (pontos.length > 0) { badge.textContent = pontos.length; badge.style.display = ''; }
@@ -3268,7 +3286,7 @@ function renderizarPontos() {
   // Chip de estado sobre o mapa
   if (window._updateStatusChip) {
     if (pontos.length === 0) window._updateStatusChip(municipioAtual ? 'Clica no mapa para adicionar ponto' : 'Seleciona município…');
-    else window._updateStatusChip(pontos.length + ' ponto' + (pontos.length > 1 ? 's' : '') + ' — swipe para ver resultados');
+    else window._updateStatusChip(pontos.length + ' ponto' + (pontos.length > 1 ? 's' : '') + ' - swipe para ver resultados');
   }
 
   // Limpar rows existentes (manter o div vazio)
@@ -3311,7 +3329,7 @@ function mostrarResultados() {
   content.classList.add('visible');
 
   // Total agregado: calculado sobre a UNIÃO geométrica dos buffers, não
-  // pela soma dos resultados individuais — isso evita contar duas vezes
+  // pela soma dos resultados individuais - isso evita contar duas vezes
   // a população das zonas onde buffers de pontos diferentes se sobrepõem.
   const combinado = calcularTotalCombinado();
   const totaisGlobais = combinado.totaisGlobais;
@@ -3351,7 +3369,7 @@ function mostrarResultados() {
     breakdownHtml += `</div>`;
   }
 
-  // Soma simples dos pontos individuais (pode incluir sobreposição) — usada
+  // Soma simples dos pontos individuais (pode incluir sobreposição) - usada
   // apenas para detetar se há diferença em relação ao total combinado e
   // mostrar um aviso ao utilizador.
   const somaIndividuais = popsIndividuais.reduce((a, b) => a + b, 0);
@@ -3364,9 +3382,9 @@ function mostrarResultados() {
       <div class="total-meta">${totalInter} subsecções intersectadas</div>
     </div>
     ${breakdownHtml}
-    ${haSobreposicao ? `<div class="aviso" style="line-height:1.5;"><b>ℹ Buffers sobrepostos</b> — a soma dos valores individuais por ponto (${somaIndividuais.toLocaleString('pt-PT')}) é superior ao total combinado acima, porque a área comum a vários buffers só é contada uma vez no total.</div>` : ''}
+    ${haSobreposicao ? `<div class="aviso" style="line-height:1.5;"><b>ℹ Buffers sobrepostos</b> - a soma dos valores individuais por ponto (${somaIndividuais.toLocaleString('pt-PT')}) é superior ao total combinado acima, porque a área comum a vários buffers só é contada uma vez no total.</div>` : ''}
     <div class="aviso" style="line-height: 1.6;">
-      <b>⚠ Areal Weighting</b> — assume distribuição uniforme por subsecção. Menos preciso em zonas rurais com subsecções grandes. 
+      <b>⚠ Areal Weighting</b> - assume distribuição uniforme por subsecção. Menos preciso em zonas rurais com subsecções grandes. 
       <br><br>
       <b>Fórmula de cálculo:</b> 
       <div style="display: inline-flex; align-items: center; gap: 4px; margin-left: 5px; font-family: monospace, serif; font-size: 1.05em;">
@@ -3376,7 +3394,7 @@ function mostrarResultados() {
           <tr><td style="padding: 0 2px; line-height: 1.1;">A<sub>s</sub></td></tr>
         </table> )
       </div>
-      ${nPontos > 1 ? `<br><br><b>Nota sobre sobreposição:</b> quando dois ou mais buffers se cruzam, a área sobreposta é unida (dissolve) antes do cálculo, para que cada subsecção (ou parte dela) só contribua uma vez para o total acima, evitando dupla contagem de habitantes.` : ''}
+      ${nPontos > 1 ? `<br><br><b>Nota sobre sobreposição:</b> quando dois ou mais buffers se cruzam, a área sobreposta é unida (dissolve) antes do cálculo, para que cada subsecção (ou parte dela) só contribua uma vez para o total acima, o que evita a dupla contagem de habitantes.` : ''}
     </div>
 `;
 
@@ -3405,9 +3423,9 @@ function mostrarResultCard(popTotal) {
   }
 }
 function escondeResultCard() {
-  // Já não há card para esconder — no-op
+  // Já não há card para esconder - no-op
 }
-// Abre a tab Resultados — usado após processar
+// Abre a tab Resultados - usado após processar
 function abrirTabResultados() {
   if (window._ativarTab) {
     window._ativarTab('resultados');
@@ -3600,7 +3618,7 @@ const BGRI_GRUPOS = [
 // Encontra automaticamente os melhores locais para os buffers (maximiza a
 // cobertura do campo BGRI escolhido, por areal weighting, até ao objetivo ou
 // ao número máximo de buffers). A otimização começa sempre do zero e ignora
-// os pontos manuais já colocados — a solução encontrada substitui-os no mapa.
+// os pontos manuais já colocados - a solução encontrada substitui-os no mapa.
 // Algoritmo greedy sobre uma grelha regular de pontos candidatos: em cada
 // passo escolhe o ponto cujo buffer cobre mais valor ainda não contabilizado,
 // até atingir o objetivo de cobertura ou esgotar o máximo de buffers.
@@ -3692,7 +3710,7 @@ function obterGrelha(espacamentoM) {
 
   // Índice de contenção: para cada célula da grelha, as subsecções cujo bbox
   // a toca. Como as subsecções cobrem o município na totalidade, um ponto está
-  // dentro do município sse estiver dentro de pelo menos uma subsecção —
+  // dentro do município sse estiver dentro de pelo menos uma subsecção -
   // testa-se apenas as poucas subsecções da célula do ponto, não o contorno
   // inteiro do município.
   const idx = new Map();
@@ -3778,7 +3796,7 @@ function subsecsProximas(indice, bbox) {
 }
 
 // Círculo de referência gerado uma vez por execução e deslocado para cada
-// candidato — evita centenas de turf.buffer (o círculo tem sempre a mesma
+// candidato - evita centenas de turf.buffer (o círculo tem sempre a mesma
 // forma, muda apenas o centro). Aproximação local equivalente à do turf.buffer.
 function criarCirculoReferencia(raioMetros) {
   const [minX, minY, maxX, maxY] = bboxGrelhaBase();
@@ -3867,7 +3885,7 @@ function mostrarVencedorProvisorio(coords, raioMetros, idx) {
 
 // Pré-cálculo: para cada ponto da grelha, o buffer do raio dado e as
 // subsecções que cobre, com a fração de área de cada uma. Feito uma única
-// vez por execução — a iteração greedy reutiliza-o, subtraindo apenas o
+// vez por execução - a iteração greedy reutiliza-o, subtraindo apenas o
 // valor já contabilizado por buffers anteriores.
 async function prepararCandidatos(raioMetros, espacamentoM) {
   const grelha = obterGrelha(espacamentoM);
@@ -3876,7 +3894,7 @@ async function prepararCandidatos(raioMetros, espacamentoM) {
   const indice = construirIndiceProximidade(raioMetros);
   const cRef = criarCirculoReferencia(raioMetros);
   const candidatos = new Array(n);
-  const LOTE = 4; // candidatos por lote — entre lotes espera um frame (rAF) para pintar o mapa e mover o cursor
+  const LOTE = 4; // candidatos por lote - entre lotes espera um frame (rAF) para pintar o mapa e mover o cursor
 
   mostrarGrelhaProcesso(grelha);
 
@@ -3970,7 +3988,7 @@ async function otimizarBuffers(objetivoPct, maxBuffers, raioMetros, campo, campo
 async function otimizarBuffersMulticriterio(objetivoPct, maxBuffers, raioMetros, criterios, espacamentoM) {
   const pesos = calcularPesosCompostos(criterios);
   const total = pesos.reduce((a, b) => a + b, 0);
-  if (total <= 0) return { erro: 'Não foi possível calcular um índice composto — verifica os critérios escolhidos.' };
+  if (total <= 0) return { erro: 'Não foi possível calcular um índice composto - verifica os critérios escolhidos.' };
   return executarGreedy(pesos, total, objetivoPct, maxBuffers, raioMetros, espacamentoM);
 }
 
@@ -4084,24 +4102,24 @@ function mostrarResultadosOtimizacao(otim) {
 
   let resumo;
   if (otim.nBuffers === 0) {
-    resumo = 'Não foi possível cobrir valores com os parâmetros indicados — experimenta aumentar o raio dos buffers.';
+    resumo = 'Não foi possível cobrir valores com os parâmetros indicados - experimenta aumentar o raio dos buffers.';
   } else if (atingiu) {
     resumo = otim.nBuffers < otim.maxBuffers
-      ? `Objetivo de <b>${otim.objetivo}%</b> atingido com apenas <b>${otim.nBuffers}</b> buffer${otim.nBuffers > 1 ? 'es' : ''} (máximo permitido: ${otim.maxBuffers}) — a solução encontrada é eficiente e nem precisou de usar todos.`
+      ? `Objetivo de <b>${otim.objetivo}%</b> atingido com apenas <b>${otim.nBuffers}</b> buffer${otim.nBuffers > 1 ? 'es' : ''} (máximo permitido: ${otim.maxBuffers}) - a solução encontrada é eficiente e nem precisou de usar todos.`
       : `Objetivo de <b>${otim.objetivo}%</b> atingido com o máximo de <b>${otim.nBuffers}</b> buffers de ${raioLabel}.`;
   } else {
-    resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} — a distribuição da variável no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
+    resumo = `Objetivo de <b>${otim.objetivo}%</b> não atingido com ${otim.maxBuffers} buffers de ${raioLabel} - a distribuição da variável no município limita a cobertura alcançável. Experimenta aumentar o raio ou o número máximo de buffers.`;
   }
 
   const criteriosHTML = multi ? `
     <div class="otim-resumo" style="margin-top:-2px;">
       <b>Critérios usados</b><br>
-      ${otim.criterios.map(c => `${c.dir === 'max' ? '↑' : '↓'} ${c.label} — ${c.peso.toFixed(0)}%`).join('<br>')}
+      ${otim.criterios.map(c => `${c.dir === 'max' ? '↑' : '↓'} ${c.label} - ${c.peso.toFixed(0)}%`).join('<br>')}
     </div>` : '';
 
   const metodoTexto = multi
-    ? `<b>ℹ Método</b> — cada critério é normalizado (0–1) por município e combinado num índice composto segundo os pesos definidos (critérios «menos é melhor» são invertidos antes de combinar). O algoritmo greedy sobre uma grelha de pontos candidatos (resolução: ${otim.espacamento || 150} m) coloca em cada passo o buffer que cobre mais índice ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers, assumindo distribuição uniforme por subsecção.`
-    : `<b>ℹ Método</b> — algoritmo greedy sobre uma grelha de pontos candidatos (resolução da pesquisa: ${otim.espacamento || 150} m): em cada passo coloca-se o buffer no ponto que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), assumindo distribuição uniforme por subsecção.`;
+    ? `<b>ℹ Método</b> - cada critério é normalizado (0–1) por município e combinado num índice composto segundo os pesos definidos (critérios «menos é melhor» são invertidos antes de combinar). O algoritmo greedy sobre uma grelha de pontos candidatos (resolução: ${otim.espacamento || 150} m) coloca em cada passo o buffer que cobre mais índice ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers, que assume distribuição uniforme por subsecção.`
+    : `<b>ℹ Método</b> - algoritmo greedy sobre uma grelha de pontos candidatos (resolução da pesquisa: ${otim.espacamento || 150} m): em cada passo coloca-se o buffer no ponto que cobre mais valor dessa variável ainda não contabilizado, até atingir o objetivo ou esgotar o máximo de buffers. O total final é calculado por <b>areal weighting</b> sobre a união geométrica dos buffers (cada valor conta uma só vez), que assume distribuição uniforme por subsecção.`;
 
   const html = `
     <div class="otim-banner">
@@ -4149,7 +4167,7 @@ function obterCamposDisponiveis() {
   const campos = [];
   BGRI_GRUPOS.forEach(g => {
     g.fields.forEach(f => {
-      if (f.key in props) campos.push({ key: f.key, label: `${g.label} — ${f.label}` });
+      if (f.key in props) campos.push({ key: f.key, label: `${g.label} - ${f.label}` });
     });
   });
   return campos;
@@ -4215,7 +4233,7 @@ function renderizarCriteriosMulti() {
     <div class="otim-criterio-row" data-id="${c.id}">
       <select class="otim-crit-campo" data-id="${c.id}">${optionsCamposHTML(c.campo)}</select>
       <div class="otim-criterio-peso"><input type="number" class="otim-crit-peso" data-id="${c.id}" min="0" max="100" step="5" value="${c.peso}"><span>%</span></div>
-      <button type="button" class="otim-criterio-dir" data-id="${c.id}" data-dir="${c.dir}" title="${c.dir === 'max' ? 'Mais é melhor — clica para inverter' : 'Menos é melhor — clica para inverter'}">${c.dir === 'max' ? '↑' : '↓'}</button>
+      <button type="button" class="otim-criterio-dir" data-id="${c.id}" data-dir="${c.dir}" title="${c.dir === 'max' ? 'Mais é melhor - clica para inverter' : 'Menos é melhor - clica para inverter'}">${c.dir === 'max' ? '↑' : '↓'}</button>
       <button type="button" class="otim-criterio-del" data-id="${c.id}" title="Remover critério">×</button>
     </div>
   `).join('');
@@ -4251,7 +4269,7 @@ function ligarEventosCriteriosMulti() {
       c.dir = c.dir === 'max' ? 'min' : 'max';
       e.target.dataset.dir = c.dir;
       e.target.textContent = c.dir === 'max' ? '↑' : '↓';
-      e.target.title = c.dir === 'max' ? 'Mais é melhor — clica para inverter' : 'Menos é melhor — clica para inverter';
+      e.target.title = c.dir === 'max' ? 'Mais é melhor - clica para inverter' : 'Menos é melhor - clica para inverter';
     } else if (e.target.classList.contains('otim-criterio-del')) {
       criteriosMulti = criteriosMulti.filter(x => x.id !== id);
       renderizarCriteriosMulti();
@@ -4458,7 +4476,7 @@ function runOtimizacao() {
 // ── ANIMAÇÃO DO MAPA DURANTE O PROCESSAMENTO ──
 // Varredura orbital suave e contínua sobre o município (zoom fixo e adequado
 // ao município), como um radar a procurar a melhor localização. O centro
-// percorre uma órbita ligeiramente irregular frame-a-frame via panBy — o
+// percorre uma órbita ligeiramente irregular frame-a-frame via panBy - o
 // movimento é fluido, sem saltos nem mudanças bruscas de direção.
 let animMapaAtiva = false;
 let animMapaRaf = null;
@@ -4472,7 +4490,7 @@ function animarMapaProcessamento() {
   map.setView([c.lat, c.lng], animMapaZoomBase, { animate: false });
   animMapaAtiva = true;
 
-  // Amplitudes discretas e bem dentro do município — a órbita nunca sai dele
+  // Amplitudes discretas e bem dentro do município - a órbita nunca sai dele
   // e o movimento é subtil (não "mexe" demasiado no mapa).
   const dLat = (b.getNorth() - b.getSouth()) * 0.15;
   const dLng = (b.getEast() - b.getWest()) * 0.17;
@@ -4529,7 +4547,7 @@ const PAINEIS_VARREDURA = [
 let varreduraRaf = null;
 let varreduraEstado = null;
 let varreduraUltimoT = null;
-const VARREDURA_VEL = 165; // px por segundo — igual nos 3 painéis
+const VARREDURA_VEL = 165; // px por segundo - igual nos 3 painéis
 
 function prepararEstadoVarredura() {
   const can = document.querySelectorAll('.varredura-canvas');
@@ -4901,7 +4919,7 @@ const PROC_POP = 25000;
 const PROC_EVAL = 0.11;
 const PROC_FLASH = 0.28;
 const PROC_END = 3.2;
-const PROC_NIVEL = ['#d5ead9', '#a9d4b0', '#7fb98a', '#4f9c66', '#1e8449'];
+const PROC_NIVEL = ['#e9f7ec', '#cee0d3', '#b2c8ba', '#97b1a1', '#7c9a88', '#60836f', '#456c56', '#29543d', '#0e3d24'];
 const PROC_POLY = [[14,20],[88,10],[170,16],[252,26],[300,18],[372,48],[382,108],[364,166],[318,150],[292,206],[220,214],[166,196],[120,216],[58,196],[24,150],[34,96],[6,62]];
 
 let procRaf = null;
@@ -4914,6 +4932,7 @@ let procSweep = 0;
 let procBest = -1;
 let procPrev = -1;
 let procPrevT = -1;
+let procMaxCoverage = 0;
 const procReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const procLine = document.getElementById('procLine');
 const procReplayBtn = document.getElementById('procReplayBtn');
@@ -4921,6 +4940,8 @@ const procDot = document.getElementById('procDot');
 const procBuf = document.getElementById('procBuf');
 const procBufFinal = document.getElementById('procBufFinal');
 const procBestRing = document.getElementById('procBestRing');
+const procBestLabel = document.getElementById('procBestLabel');
+procBufFinal.style.fill = 'url(#procBufGrad)';
 
 function procPolyArea(pts) {
   let a = 0;
@@ -4983,6 +5004,41 @@ function procVoronoiCells(seeds) {
     return cell;
   });
 }
+function procRng(seed) {
+  let s = seed >>> 0;
+  return function () {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+function procNoiseLattice(cols, rows, seed) {
+  const rnd = procRng(seed);
+  const a = [];
+  for (let i = 0; i < cols * rows; i++) a.push(rnd());
+  return a;
+}
+function procNoiseAt(x, y, cols, rows, lat) {
+  const fx = x * (cols - 1), fy = y * (rows - 1);
+  const ix = Math.min(Math.floor(fx), cols - 2), iy = Math.min(Math.floor(fy), rows - 2);
+  const tx = fx - ix, ty = fy - iy;
+  const sx = tx * tx * (3 - 2 * tx), sy = ty * ty * (3 - 2 * ty);
+  const v00 = lat[iy * cols + ix], v10 = lat[iy * cols + ix + 1];
+  const v01 = lat[(iy + 1) * cols + ix], v11 = lat[(iy + 1) * cols + ix + 1];
+  const top = v00 + (v10 - v00) * sx;
+  const bot = v01 + (v11 - v01) * sx;
+  return top + (bot - top) * sy;
+}
+const PROC_DENS_L1 = procNoiseLattice(6, 4, 20260802);
+const PROC_DENS_L2 = procNoiseLattice(13, 8, 7);
+const PROC_DENS_L3 = procNoiseLattice(26, 14, 99);
+function procDensityAt(cx, cy) {
+  const nx = cx / 400, ny = cy / 220;
+  const n1 = procNoiseAt(nx, ny, 6, 4, PROC_DENS_L1);
+  const n2 = procNoiseAt(nx, ny, 13, 8, PROC_DENS_L2);
+  const n3 = procNoiseAt(nx, ny, 26, 14, PROC_DENS_L3);
+  const n = 0.38 * n1 + 0.38 * n2 + 0.24 * n3;
+  return 0.15 + 1.9 * n;
+}
 function procBuild() {
   const NS = 'http://www.w3.org/2000/svg';
   const poly = document.getElementById('procPoly');
@@ -5018,7 +5074,7 @@ function procBuild() {
       pt.style.opacity = '1';
       pt.classList.add('proc-pt');
       gP.appendChild(pt);
-      procCells.push({ cx, cy, rect, pt, value: 0, level: 0 });
+      procCells.push({ cx, cy, rect, pt, value: 0, score: 0, level: 0 });
     }
   }
   const vals = procCells.map(p => {
@@ -5029,21 +5085,31 @@ function procBuild() {
     }
     return cnt;
   });
-  let mn = Infinity, mx = -1;
-  procCells.forEach((p, i) => {
-    if (vals[i] < mn) mn = vals[i];
-    if (vals[i] > mx) mx = vals[i];
+  const scores = procCells.map(p => {
+    let acc = 0, cnt = 0;
+    for (const q of procCells) {
+      const dx = q.cx - p.cx, dy = q.cy - p.cy;
+      if (dx * dx + dy * dy <= PROC_RAIO * PROC_RAIO) { acc += procDensityAt(q.cx, q.cy); cnt++; }
+    }
+    return acc / cnt;
   });
-  const span = (mx - mn) || 1;
-  const order = procCells.map((p, i) => i).sort((a, b) => vals[a] - vals[b] || a - b);
+  const polyA = procPolyArea(PROC_POLY);
+  const order = procCells.map((p, i) => i).sort((a, b) => scores[a] - scores[b] || a - b);
   let bv = -1;
   order.forEach((idx, rank) => {
     const frac = order.length > 1 ? rank / (order.length - 1) : 0;
     procCells[idx].value = vals[idx];
-    procCells[idx].level = Math.min(4, Math.floor(frac * 5));
-    if (vals[idx] > bv) { bv = vals[idx]; procBest = idx; }
+    procCells[idx].score = scores[idx];
+    procCells[idx].level = Math.min(PROC_NIVEL.length - 1, Math.floor(frac * PROC_NIVEL.length));
+    procCells[idx].coverage = vals[idx] * PROC_CELL * PROC_CELL / polyA;
+    const pot = procCells[idx].score * procCells[idx].coverage;
+    if (pot > bv) { bv = pot; procBest = idx; }
   });
-  procCells[procBest].level = 4;
+  procMaxCoverage = 0;
+  procCells.forEach(p => {
+    if (p.coverage > procMaxCoverage) procMaxCoverage = p.coverage;
+  });
+  procCells[procBest].level = PROC_NIVEL.length - 1;
   procCum = [0];
   procSweep = 0;
   procCells.forEach(p => {
@@ -5063,17 +5129,18 @@ function procReset() {
   procBuf.setAttribute('visibility', 'hidden');
   procBufFinal.setAttribute('visibility', 'hidden');
   procBestRing.setAttribute('visibility', 'hidden');
+  procBestLabel.setAttribute('visibility', 'hidden');
   procDot.setAttribute('visibility', 'hidden');
   procLine.innerHTML = 'A preparar…';
 }
 function procCoveredPop(i) {
-  return Math.round(PROC_POP * (PROC_CELL * PROC_CELL) * procCells[i].value / procPolyArea(PROC_POLY));
+  return Math.round(PROC_POP * procCells[i].coverage * procCells[i].score);
 }
 function procOnEval(k, t) {
   const p = procCells[k];
   p.pt.style.fill = PROC_NIVEL[p.level];
   p.pt.style.opacity = '1';
-  procFlash.push({ x: p.cx, y: p.cy, level: p.level, born: t });
+  procFlash.push({ x: p.cx, y: p.cy, level: p.level, born: t, cov: p.coverage });
   if (procFlash.length > 5) procFlash.shift();
 }
 function procRenderBuf(t) {
@@ -5091,7 +5158,8 @@ function procRenderBuf(t) {
   procBuf.setAttribute('cy', String(f.y));
   procBuf.setAttribute('r', String(PROC_RAIO));
   const o = Math.max(0, 1 - (t - f.born) / PROC_FLASH);
-  procBuf.setAttribute('opacity', String(o));
+  const covO = procMaxCoverage > 0 ? 0.35 + 0.5 * (f.cov / procMaxCoverage) : 0.6;
+  procBuf.setAttribute('opacity', String(o * covO));
 }
 function procFrame(now) {
   if (procStart === null) procStart = now;
@@ -5111,32 +5179,40 @@ function procFrame(now) {
     procDot.setAttribute('cx', String(procCells[idx].cx));
     procDot.setAttribute('cy', String(procCells[idx].cy));
     procRenderBuf(t);
-    procLine.innerHTML = 'Pesquisa: localização <b>' + (idx + 1) + '</b> de ' + procCells.length;
+    procLine.innerHTML = 'Pesquisa: localização <b>' + (idx + 1) + '</b> de ' + procCells.length + ' - cobre <b>' + Math.round(procCells[idx].coverage * 100) + '%</b> da área do município';
   } else {
     const endAge = t - procSweep;
     procDot.setAttribute('visibility', 'hidden');
     procBuf.setAttribute('visibility', 'hidden');
     procFlash = [];
-    const f = Math.max(0, 1 - endAge / 1.3);
+    const fadePts = Math.min(1, endAge / 1.1);
     procCells.forEach(p => {
-      p.pt.style.opacity = String(f);
+      p.pt.style.opacity = String(1 - fadePts * 0.82);
     });
     const best = procCells[procBest];
-    best.pt.style.opacity = String(Math.max(0.5, f));
+    const aIn = Math.min(1, endAge / 0.5);
+    best.pt.style.opacity = String(Math.min(1, 0.35 + 0.65 * aIn));
     best.pt.classList.add('proc-best');
     const pulse = 0.5 + 0.5 * Math.sin(endAge * 7);
-    best.pt.setAttribute('r', String(4.2 + 1.6 * pulse));
+    best.pt.setAttribute('r', String(4.4 + 1.8 * pulse));
     procBestRing.setAttribute('visibility', 'visible');
     procBestRing.setAttribute('cx', String(best.cx));
     procBestRing.setAttribute('cy', String(best.cy));
-    procBestRing.setAttribute('r', String(7 + 5 * pulse));
-    procBestRing.setAttribute('opacity', String(0.6 - 0.4 * pulse));
+    procBestRing.setAttribute('r', String(8 + 6 * pulse));
+    procBestRing.setAttribute('opacity', String(0.55 - 0.35 * pulse));
+    const g = 1 - Math.pow(1 - Math.min(1, endAge / 0.9), 3);
     procBufFinal.setAttribute('visibility', 'visible');
     procBufFinal.setAttribute('cx', String(best.cx));
     procBufFinal.setAttribute('cy', String(best.cy));
-    procBufFinal.setAttribute('r', String(Math.min(PROC_RAIO, PROC_RAIO * (endAge / 0.6))));
-    procBufFinal.setAttribute('opacity', String(Math.min(1, endAge / 0.4)));
-    procLine.innerHTML = 'Localização escolhida — <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
+    procBufFinal.setAttribute('r', String(PROC_RAIO * g));
+    procBufFinal.setAttribute('opacity', String(0.4 * aIn));
+    const lIn = Math.min(1, Math.max(0, (endAge - 0.7) / 0.5));
+    procBestLabel.setAttribute('visibility', 'visible');
+    procBestLabel.setAttribute('x', String(best.cx));
+    procBestLabel.setAttribute('y', String(best.cy - PROC_RAIO - 8));
+    procBestLabel.setAttribute('opacity', String(lIn));
+    procBestLabel.textContent = procCoveredPop(procBest).toLocaleString('pt-PT') + ' pessoas';
+    procLine.innerHTML = 'Localização escolhida - <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
   }
   procRaf = requestAnimationFrame(procFrame);
 }
@@ -5157,9 +5233,14 @@ function procDesenhaFinal() {
   procBufFinal.setAttribute('cx', String(best.cx));
   procBufFinal.setAttribute('cy', String(best.cy));
   procBufFinal.setAttribute('r', String(PROC_RAIO));
-  procBufFinal.setAttribute('opacity', '1');
+  procBufFinal.setAttribute('opacity', '0.4');
+  procBestLabel.setAttribute('visibility', 'visible');
+  procBestLabel.setAttribute('x', String(best.cx));
+  procBestLabel.setAttribute('y', String(best.cy - PROC_RAIO - 8));
+  procBestLabel.setAttribute('opacity', '1');
+  procBestLabel.textContent = procCoveredPop(procBest).toLocaleString('pt-PT') + ' pessoas';
   procDot.setAttribute('visibility', 'hidden');
-  procLine.innerHTML = 'Localização escolhida — <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
+  procLine.innerHTML = 'Localização escolhida - <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
 }
 procReplayBtn.addEventListener('click', () => {
   if (procReduced) { procDesenhaFinal(); return; }
