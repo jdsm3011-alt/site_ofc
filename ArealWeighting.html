@@ -142,6 +142,22 @@ header {
 [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
 [data-theme="dark"] .theme-toggle .icon-moon { display: inline; }
 
+.help-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  transition: border-color .15s ease, transform .15s ease, background .15s ease, color .15s ease;
+  flex-shrink: 0;
+}
+.help-toggle:hover { border-color: var(--accent); color: var(--accent); transform: rotate(-8deg); }
+
 
 /* ── LAYOUT ── */
 .main { display: flex; flex: 1; min-height: 0; overflow: hidden; }
@@ -800,6 +816,7 @@ header {
     -webkit-tap-highlight-color: transparent;
   }
   .theme-toggle { width: 38px; height: 38px; }
+  .help-toggle { width: 38px; height: 38px; }
   .ponto-del { min-width: 28px; min-height: 28px; }
   .muni-input, .radius-input, .coord-input, .otim-input-wrap input, .otim-input-wrap select { font-size: 16px; }
 }
@@ -1100,6 +1117,516 @@ header {
   border-radius: var(--radius-sm);
 }
 .otim-close:hover { color: var(--text); background: var(--bg); }
+
+/* ── MODAL EXPLICATIVO: AREAL WEIGHTING ── */
+.aw-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 4500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-y: auto;
+}
+.aw-modal.visible { display: flex; }
+.aw-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(2px);
+  animation: otimFade .18s ease;
+}
+.aw-card {
+  position: relative;
+  flex: 1 1 450px;
+  max-width: 480px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 18px;
+  animation: otimPop .22s cubic-bezier(.2,1.2,.4,1);
+  display: flex;
+  flex-direction: column;
+}
+.aw-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.aw-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+.aw-close:hover { color: var(--text); background: var(--bg); }
+.aw-intro {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.aw-canvas-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  padding: 8px;
+  margin-bottom: 10px;
+}
+#awSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.aw-buffer {
+  fill: color-mix(in srgb, var(--p1) 9%, transparent);
+  stroke: var(--p1);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+.aw-buffer-core {
+  fill: none;
+  stroke: var(--p1);
+  stroke-width: 1.2;
+  animation: awPulse 1.8s ease-in-out infinite;
+}
+@keyframes awPulse {
+  0%, 100% { stroke-opacity: .25; }
+  50% { stroke-opacity: .9; }
+}
+.aw-center { fill: var(--p1); }
+.aw-poly-full {
+  fill: currentColor;
+  fill-opacity: .13;
+  stroke: currentColor;
+  stroke-opacity: .55;
+  stroke-width: 1.4;
+}
+.aw-poly-in {
+  fill: currentColor;
+  fill-opacity: .5;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+#awG-A { color: var(--p2); }
+#awG-B { color: var(--p3); }
+#awG-C { color: var(--p4); }
+.aw-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text);
+  stroke: var(--bg);
+  stroke-width: 3px;
+  paint-order: stroke;
+  pointer-events: none;
+}
+.aw-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.aw-legend-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 12px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.aw-legend-row.aw-show { opacity: 1; }
+.aw-row-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.aw-chip {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c, var(--accent));
+  flex-shrink: 0;
+}
+.aw-val { font-size: 11px; color: var(--text); white-space: nowrap; }
+.aw-val i { font-style: normal; color: var(--text-muted); font-size: 10px; }
+.aw-bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-deep);
+  overflow: hidden;
+}
+.aw-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--c, var(--accent));
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+.aw-calc {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.aw-calc b { color: var(--text); }
+.aw-total { border-top: 1px solid var(--border); padding-top: 7px; }
+.aw-chip-total { background: var(--accent-deep); width: 20px; }
+.aw-total .aw-bar { height: 9px; }
+.aw-total .aw-calc b { color: var(--accent-deep); font-size: 13px; }
+.aw-caption {
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.aw-nota {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: var(--accent-light);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.aw-nota b { color: var(--accent-deep); font-weight: 600; }
+.aw-card .aw-nota { margin-top: auto; }
+
+.aw-stack {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  max-width: 100%;
+  margin: auto;
+}
+
+/* ── PAINEL SECUNDÁRIO: LIMITAÇÕES DO AREAL WEIGHTING ── */
+.lim-card {
+  position: relative;
+  flex: 1 1 450px;
+  max-width: 480px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 18px;
+  animation: otimPop .22s cubic-bezier(.2,1.2,.4,1);
+  display: flex;
+  flex-direction: column;
+}
+.lim-card .lim-nota { margin-top: auto; }
+.lim-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.lim-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+.lim-close:hover { color: var(--text); background: var(--bg); }
+.lim-intro {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.lim-legenda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+.lim-legenda-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-deep);
+  flex: none;
+}
+.lim-paineis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+  width: 100%;
+  min-width: 0;
+}
+.lim-painel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  padding: 8px;
+  min-width: 0;
+  transition: border-color .4s ease, box-shadow .4s ease;
+}
+.lim-painel.lim-on {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--shadow-soft);
+}
+.lim-svg { width: 100%; height: auto; display: block; }
+.lim-poly {
+  fill: currentColor;
+  fill-opacity: .1;
+  stroke: currentColor;
+  stroke-opacity: .6;
+  stroke-width: 1.3;
+}
+#limSvgReal { color: var(--p2); }
+#limSvgUniform { color: var(--accent); }
+.lim-buffer {
+  fill: none;
+  stroke: var(--p1);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 4;
+}
+.lim-dots { transition: opacity .35s ease; }
+.lim-dot { fill: var(--accent-deep); }
+.lim-painel-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  margin-top: 7px;
+}
+.lim-painel-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.lim-painel.lim-on .lim-painel-label { color: var(--accent-deep); }
+.lim-count {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-muted);
+  white-space: normal;
+}
+.lim-painel.lim-on .lim-count { color: var(--accent-deep); }
+.lim-sub {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--warn);
+  flex-wrap: wrap;
+}
+.lim-sub-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--warn);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+  flex: none;
+}
+.lim-explica {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.lim-nota {
+  background: var(--warn-light);
+  border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text);
+  margin-top: 12px;
+}
+.lim-nota b { color: var(--warn); font-weight: 600; }
+
+/* ── PAINEL SECUNDÁRIO: COMO É EFETUADO O CÁLCULO ── */
+.proc-card {
+  position: relative;
+  flex: 1 1 450px;
+  max-width: 480px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px 18px;
+  animation: otimPop .22s cubic-bezier(.2,1.2,.4,1);
+  display: flex;
+  flex-direction: column;
+}
+.proc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.proc-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+.proc-close:hover { color: var(--text); background: var(--bg); }
+.proc-intro {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.proc-canvas-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  padding: 8px;
+  margin-bottom: 10px;
+}
+#procSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.proc-poly {
+  fill: var(--ochre-light);
+  stroke: var(--ochre);
+  stroke-opacity: .65;
+  stroke-width: 1.6;
+}
+.proc-cell {
+  fill: none;
+  stroke: color-mix(in srgb, var(--border-strong) 50%, transparent);
+  stroke-width: .5;
+}
+.proc-sec {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ochre) 38%, transparent);
+  stroke-width: .6;
+}
+.proc-pt {
+  fill: #9fc5a8;
+}
+.proc-pt.proc-best {
+  filter: drop-shadow(0 0 4px rgba(30, 132, 73, .9));
+}
+.proc-buf {
+  fill: #1e8449;
+  stroke: var(--surface);
+  stroke-width: 1;
+}
+.proc-buf-final {
+  fill: #14532d;
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+.proc-best-ring {
+  fill: none;
+  stroke: #14532d;
+  stroke-width: 2;
+}
+.proc-dot {
+  fill: #ffc61a;
+  stroke: var(--surface);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 3px rgba(255, 198, 26, .85));
+}
+.proc-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+  margin-bottom: 9px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.proc-line b {
+  color: var(--accent-deep);
+  font-weight: 700;
+}
+.proc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-bottom: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.proc-leg-item { display: inline-flex; align-items: center; gap: 5px; }
+.proc-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.proc-replay {
+  align-self: flex-start;
+  margin-top: auto;
+  background: var(--accent-light);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--accent-deep);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.proc-replay:hover {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border-color: var(--accent);
+}
+@media (max-width: 520px) {
+  .lim-paineis { grid-template-columns: 1fr; }
+  .lim-count { white-space: normal; }
+}
+@media (max-width: 560px) {
+  .aw-modal { padding: 10px; }
+  .aw-card, .lim-card, .proc-card { flex-basis: 100%; max-width: 100%; padding: 12px 13px 14px; }
+  .lim-sub { justify-content: flex-start; }
+}
 .otim-field { margin-bottom: 12px; }
 .otim-field label {
   display: block;
@@ -1457,6 +1984,7 @@ header {
       <span class="icon-sun">&#9728;</span>
       <span class="icon-moon">&#9789;</span>
     </button>
+    <button type="button" class="help-toggle" id="awHelpBtn" title="O que é o Areal Weighting?" aria-label="O que é o Areal Weighting?" aria-haspopup="dialog">?</button>
     <a href="index.html" class="back-link">← <span class="txt">Mapa</span></a>
   </div>
 </header>
@@ -1680,7 +2208,172 @@ header {
       </div>
     </div>
   </div>
+  </div>
 </div>
+
+<!-- MODAL EXPLICATIVO: AREAL WEIGHTING -->
+<div class="aw-modal" id="awModal" aria-hidden="true">
+  <div class="aw-backdrop" data-aw-fechar></div>
+  <div class="aw-stack">
+  <div class="aw-card" role="dialog" aria-modal="true" aria-labelledby="awTitle">
+    <div class="aw-card-head">
+      <span class="sb-label" id="awTitle" style="margin-bottom:0">O que é o Areal Weighting?</span>
+      <button type="button" class="aw-close" data-aw-fechar aria-label="Fechar">×</button>
+    </div>
+    <p class="aw-intro">O <b>Areal Weighting</b> — ponderação por área — estima a população num buffer contando cada subsecção apenas na proporção da área que fica dentro do buffer. Uma subsecção com metade da área dentro do buffer conta metade dos seus habitantes, em vez de contar tudo ou nada.</p>
+
+    <div id="awScene">
+    <div class="aw-canvas-wrap">
+      <svg id="awSvg" viewBox="0 0 400 224" role="img" aria-label="Animação: 3 subsecções adjacentes de tamanhos irregulares com 100, 300 e 500 pessoas e um buffer circular; conta-se apenas a área dentro do buffer, proporcionalmente.">
+        <defs>
+          <clipPath id="awClipCircle">
+            <circle cx="158" cy="102" r="77"/>
+          </clipPath>
+          <clipPath id="awClipGrow">
+            <circle id="awGrowCircle" cx="158" cy="102" r="0"/>
+          </clipPath>
+        </defs>
+
+        <!-- A: topo-esquerda · 100 pessoas · ~50% dentro (adjacente a B e C, sem sobrepor) -->
+        <g id="awG-A" class="aw-poly">
+          <polygon class="aw-poly-full" points="34,26 158,26 158,102 34,102"/>
+          <g clip-path="url(#awClipGrow)">
+            <g clip-path="url(#awClipCircle)">
+              <polygon class="aw-poly-in" points="34,26 158,26 158,102 34,102"/>
+            </g>
+          </g>
+          <text class="aw-tag" x="52" y="46">A</text>
+        </g>
+
+        <!-- B: baixo-esquerda (adjacente a A e C, sem sobrepor) · 300 pessoas · ~41% dentro -->
+        <g id="awG-B" class="aw-poly">
+          <polygon class="aw-poly-full" points="58,102 158,102 158,218 58,218"/>
+          <g clip-path="url(#awClipGrow)">
+            <g clip-path="url(#awClipCircle)">
+              <polygon class="aw-poly-in" points="58,102 158,102 158,218 58,218"/>
+            </g>
+          </g>
+          <text class="aw-tag" x="78" y="150">B</text>
+        </g>
+
+        <!-- C: direita (adjacente a A e B, sem sobrepor) · 500 pessoas · ~26% dentro -->
+        <g id="awG-C" class="aw-poly">
+          <polygon class="aw-poly-full" points="158,58 392,58 392,186 158,186"/>
+          <g clip-path="url(#awClipGrow)">
+            <g clip-path="url(#awClipCircle)">
+              <polygon class="aw-poly-in" points="158,58 392,58 392,186 158,186"/>
+            </g>
+          </g>
+          <text class="aw-tag" x="278" y="120">C</text>
+        </g>
+
+        <!-- Buffer circular (vermelho), centrado no ponto onde as três unidades se encontram -->
+        <circle class="aw-buffer" cx="158" cy="102" r="77"/>
+        <circle class="aw-buffer-core" cx="158" cy="102" r="77"/>
+        <circle class="aw-center" cx="158" cy="102" r="3"/>
+      </svg>
+    </div>
+
+    <p class="aw-caption">Três subsecções adjacentes e de tamanhos irregulares: <b>A</b> (topo-esquerda), <b>B</b> (baixo-esquerda) e <b>C</b> (direita), lado a lado sem se sobreporem. O buffer a vermelho atravessa as três, com o centro no ponto onde se encontram. Só a área colorida dentro do buffer é contabilizada, na proporção da sua área: 50% de A, 41% de B e 26% de C.</p>
+
+    <div class="aw-legend">
+      <div class="aw-legend-row" id="awRowA" style="--c:var(--p2)">
+        <div class="aw-row-left"><span class="aw-chip">A</span><span class="aw-val">100 <i>pessoas</i></span></div>
+        <span class="aw-calc" id="awCalcA"></span>
+        <span class="aw-bar"><span class="aw-bar-fill" id="awFillA"></span></span>
+      </div>
+      <div class="aw-legend-row" id="awRowB" style="--c:var(--p3)">
+        <div class="aw-row-left"><span class="aw-chip">B</span><span class="aw-val">300 <i>pessoas</i></span></div>
+        <span class="aw-calc" id="awCalcB"></span>
+        <span class="aw-bar"><span class="aw-bar-fill" id="awFillB"></span></span>
+      </div>
+      <div class="aw-legend-row" id="awRowC" style="--c:var(--p4)">
+        <div class="aw-row-left"><span class="aw-chip">C</span><span class="aw-val">500 <i>pessoas</i></span></div>
+        <span class="aw-calc" id="awCalcC"></span>
+        <span class="aw-bar"><span class="aw-bar-fill" id="awFillC"></span></span>
+      </div>
+      <div class="aw-legend-row aw-total" id="awRowTotal">
+        <div class="aw-row-left"><span class="aw-chip aw-chip-total">Σ</span><span class="aw-val">Total estimado</span></div>
+        <span class="aw-calc"><b id="awTotalVal">0</b>&nbsp;pessoas</span>
+        <span class="aw-bar"><span class="aw-bar-fill" id="awTotalBar" style="background:var(--accent-deep)"></span></span>
+      </div>
+    </div>
+    </div>
+
+    <div class="aw-nota"><span><b>Porquê Areal Weighting?</b><br>Como as subsecções têm tamanhos diferentes, este método produz estimativas mais realistas do que considerar o polígono totalmente incluído ou totalmente excluído — evitando sobrestimar ou subestimar a população junto à fronteira.</span></div>
+  </div>
+
+  <div class="lim-card" role="dialog" aria-modal="true" aria-labelledby="limTitle">
+    <div class="lim-card-head">
+      <span class="sb-label" id="limTitle" style="margin-bottom:0">Limitações do Areal Weighting</span>
+      <button type="button" class="lim-close" data-aw-fechar aria-label="Fechar">×</button>
+    </div>
+    <p class="lim-intro">O Areal Weighting <b>assume que a população está distribuída uniformemente</b> em toda a área de cada subsecção. Na realidade, a população tende a concentrar-se em determinadas zonas, como áreas residenciais, junto a vias de comunicação ou serviços. Esta diferença pode introduzir erros nas estimativas.</p>
+
+    <div class="lim-legenda"><span class="lim-legenda-dot"></span> cada ponto representa 1 pessoa</div>
+
+    <div class="lim-paineis">
+      <div class="lim-painel lim-on" id="limPanelReal">
+        <svg id="limSvgReal" class="lim-svg" viewBox="0 0 170 150" role="img" aria-label="Cenário real: população concentrada numa zona dentro do buffer.">
+          <polygon class="lim-poly" points="25,15 145,15 145,135 25,135"/>
+          <circle class="lim-buffer" cx="108" cy="64" r="50"/>
+          <g class="lim-dots" id="limDotsReal"></g>
+        </svg>
+        <div class="lim-painel-meta">
+          <span class="lim-painel-label">Realidade</span>
+          <span class="lim-count" id="limCountReal"></span>
+        </div>
+      </div>
+      <div class="lim-painel" id="limPanelUniform">
+        <svg id="limSvgUniform" class="lim-svg" viewBox="0 0 170 150" role="img" aria-label="Cenário Areal Weighting: população uniformemente distribuída.">
+          <polygon class="lim-poly" points="25,15 145,15 145,135 25,135"/>
+          <circle class="lim-buffer" cx="108" cy="64" r="50"/>
+          <g class="lim-dots" id="limDotsUniform"></g>
+        </svg>
+        <div class="lim-painel-meta">
+          <span class="lim-painel-label">Assunção do método</span>
+          <span class="lim-count" id="limCountUniform"></span>
+        </div>
+        <div class="lim-sub" id="limSubUniform"><span class="lim-sub-icon">↓</span> Subestimação da população</div>
+      </div>
+    </div>
+
+    <p class="lim-explica">Em ambos os cenários, a subsecção tem exatamente <b>60 habitantes</b> — apenas a distribuição espacial muda. Como o método assume uma distribuição uniforme, quando a população está concentrada numa zona o valor estimado diverge do real.</p>
+
+    <div class="lim-nota"><span><b>⚠ Limitação:</b> quanto mais heterogénea for a distribuição da população dentro da subsecção, maior será o erro da estimativa. O método é mais fiável em unidades espaciais pequenas e relativamente homogéneas.</span></div>
+  </div>
+
+  <div class="proc-card" role="dialog" aria-modal="true" aria-labelledby="procTitle">
+    <div class="proc-card-head">
+      <span class="sb-label" id="procTitle" style="margin-bottom:0">Como é efetuado o cálculo?</span>
+      <button type="button" class="proc-close" data-aw-fechar aria-label="Fechar">×</button>
+    </div>
+    <p class="proc-intro">No modo automático, o algoritmo pesquisa a melhor localização do buffer. Percorre uma grelha regular de pontos candidatos sobre o município e, em cada posição, avalia por <b>areal weighting</b> a população que um buffer desse raio cobriria — o valor fica registado nesse ponto. Quanto mais escuro o verde, maior o potencial. No fim, escolhe a localização de valor mais alto.</p>
+
+    <div class="proc-canvas-wrap">
+      <svg id="procSvg" viewBox="0 0 400 220" role="img" aria-label="Animação: um ponto amarelo percorre uma grelha de pontos candidatos sobre o município; em cada posição é avaliado um buffer por areal weighting e o valor fica marcado no ponto, formando um mapa de calor; no fim a melhor localização é destacada.">
+        <polygon id="procPoly" class="proc-poly"/>
+        <clipPath id="procClip"><use href="#procPoly"/></clipPath>
+        <g id="procSec" clip-path="url(#procClip)"></g>
+        <g id="procGridCells"></g>
+        <g id="procPts"></g>
+        <circle id="procBuf" class="proc-buf" visibility="hidden"/>
+        <circle id="procDot" class="proc-dot" visibility="hidden" r="3.4"/>
+        <circle id="procBestRing" class="proc-best-ring" visibility="hidden"/>
+        <circle id="procBufFinal" class="proc-buf-final" visibility="hidden"/>
+      </svg>
+    </div>
+
+    <div class="proc-line" id="procLine">A preparar…</div>
+
+    <div class="proc-legend">
+      <span class="proc-leg-item"><i class="proc-swatch" style="background:#ffc61a;border-radius:50%;box-shadow:0 0 3px rgba(255,198,26,.85)"></i>localização a avaliar</span>
+      <span class="proc-leg-item"><i class="proc-swatch" style="background:#9fc5a8;border-radius:50%"></i><i class="proc-swatch" style="background:linear-gradient(90deg,#d5ead9,#a9d4b0,#7fb98a,#4f9c66,#1e8449);border-radius:3px;width:50px"></i>potencial — 5 níveis (claro = baixo · escuro = alto)</span>
+    </div>
+
+    <button type="button" class="proc-replay" id="procReplayBtn">Reproduzir animação</button>
+  </div>
+  </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -3931,6 +4624,548 @@ otimModal.querySelectorAll('[data-otim-fechar]').forEach(el => el.addEventListen
 document.getElementById('btnOtimRun').addEventListener('click', runOtimizacao);
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && otimModal.classList.contains('visible')) fecharModalOtimizacao();
+});
+
+// ── MODAL EXPLICATIVO: AREAL WEIGHTING ──
+const awModal = document.getElementById('awModal');
+const AW_CYCLE = 7.6;
+const AW_DATA = [
+  { id: 'A', valor: 100, pct: 50 },
+  { id: 'B', valor: 300, pct: 41 },
+  { id: 'C', valor: 500, pct: 26 },
+];
+const AW_TOTAL = AW_DATA.reduce((s, d) => s + Math.round(d.valor * d.pct / 100), 0);
+
+let awRaf = null;
+let awStart = null;
+let awCache = null;
+const awReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function awFase(t, a, b) {
+  if (t >= b) return 1;
+  if (t <= a) return 0;
+  return (t - a) / (b - a);
+}
+function awEase(x) { return 1 - Math.pow(1 - x, 3); }
+
+function awCacheEls() {
+  awCache = {
+    grow: document.getElementById('awGrowCircle'),
+    scene: document.getElementById('awScene'),
+    rows: AW_DATA.map(d => ({
+      el: document.getElementById('awRow' + d.id),
+      fill: document.getElementById('awFill' + d.id),
+      calc: document.getElementById('awCalc' + d.id),
+    })),
+    totalVal: document.getElementById('awTotalVal'),
+    totalBar: document.getElementById('awTotalBar'),
+  };
+}
+
+function awReset() {
+  if (!awCache) awCacheEls();
+  awCache.grow.setAttribute('r', '0');
+  awCache.scene.style.opacity = '0';
+  awCache.rows.forEach(r => { r.el.classList.remove('aw-show'); r.fill.style.width = '0'; r.calc.textContent = ''; });
+  awCache.totalVal.textContent = '0';
+  awCache.totalBar.style.width = '0';
+}
+
+function awDesenha(t) {
+  const c = awCache;
+  const fi = awFase(t, 0, 1.1);
+  const fo = awFase(t, 6.2, AW_CYCLE);
+  c.scene.style.opacity = String(Math.min(1, Math.max(0, fi - fo)));
+  c.grow.setAttribute('r', String(96 * awEase(awFase(t, 1.1, 2.3))));
+  for (let i = 0; i < c.rows.length; i++) {
+    const d = AW_DATA[i], row = c.rows[i];
+    const p = awEase(awFase(t, 2.3 + i * 0.3, 2.3 + i * 0.3 + 0.6));
+    if (p > 0) {
+      row.el.classList.add('aw-show');
+      row.fill.style.width = (d.pct * p) + '%';
+      row.calc.textContent = d.pct + '% × ' + d.valor + ' = ' + Math.round(d.valor * d.pct / 100 * p);
+    }
+  }
+  const tp = awEase(awFase(t, 3.5, 4.3));
+  c.totalVal.textContent = String(Math.round(AW_TOTAL * tp));
+  c.totalBar.style.width = (100 * tp) + '%';
+}
+
+function awDesenhaFinal() {
+  const c = awCache;
+  c.scene.style.opacity = '1';
+  c.grow.setAttribute('r', '96');
+  c.rows.forEach((row, i) => {
+    const d = AW_DATA[i];
+    row.el.classList.add('aw-show');
+    row.fill.style.width = d.pct + '%';
+    row.calc.textContent = d.pct + '% × ' + d.valor + ' = ' + Math.round(d.valor * d.pct / 100);
+  });
+  c.totalVal.textContent = String(AW_TOTAL);
+  c.totalBar.style.width = '100%';
+}
+
+function awFrame(now) {
+  if (awStart === null) awStart = now;
+  let t = (now - awStart) / 1000;
+  if (t >= AW_CYCLE) t %= AW_CYCLE;
+  awDesenha(t);
+  awRaf = requestAnimationFrame(awFrame);
+}
+
+function abrirAwModal() {
+  if (awModal.classList.contains('visible')) return;
+  awModal.classList.add('visible');
+  awReset();
+  if (!limBuilt) { limBuild(); limBuilt = true; }
+  if (!procBuilt) { procBuild(); procBuilt = true; }
+  if (awReduced || limReduced || procReduced) {
+    awDesenhaFinal();
+    limPanelReal.classList.add('lim-on');
+    limPanelUniform.classList.add('lim-on');
+    limGroupReal.style.opacity = '.85';
+    limGroupUniform.style.opacity = '.85';
+    procDesenhaFinal();
+  } else {
+    awStart = null;
+    awRaf = requestAnimationFrame(awFrame);
+    limStart = null;
+    limRaf = requestAnimationFrame(limFrame);
+    procReset();
+    procStart = null;
+    procRaf = requestAnimationFrame(procFrame);
+  }
+}
+
+function fecharAwModal() {
+  awModal.classList.remove('visible');
+  if (awRaf !== null) { cancelAnimationFrame(awRaf); awRaf = null; }
+  awStart = null;
+  if (limRaf !== null) { cancelAnimationFrame(limRaf); limRaf = null; }
+  limStart = null;
+  if (procRaf !== null) { cancelAnimationFrame(procRaf); procRaf = null; }
+  procStart = null;
+}
+
+document.getElementById('awHelpBtn').addEventListener('click', abrirAwModal);
+awModal.querySelectorAll('[data-aw-fechar]').forEach(el => el.addEventListener('click', fecharAwModal));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && awModal.classList.contains('visible')) fecharAwModal();
+});
+
+// ── PAINEL SECUNDÁRIO: LIMITAÇÕES DO AREAL WEIGHTING (abre junto com o principal) ──
+const LIM_CYCLE = 6.0;
+const LIM_POLY = [[25,15],[145,15],[145,135],[25,135]];
+const LIM_BUF = { x: 108, y: 64, r: 50 };
+const LIM_N = 60;
+const LIM_SEED = 42;
+
+let limRaf = null;
+let limStart = null;
+let limBuilt = false;
+const limReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function limSs(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
+
+function mulberry32(a) {
+  return function () {
+    var t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+function limNorm(rand) {
+  const u = rand() || 1e-9;
+  const v = rand();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+function limPtIn(x, y) {
+  let inside = false;
+  for (let i = 0, j = LIM_POLY.length - 1; i < LIM_POLY.length; j = i++) {
+    const xi = LIM_POLY[i][0], yi = LIM_POLY[i][1];
+    const xj = LIM_POLY[j][0], yj = LIM_POLY[j][1];
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+  }
+  return inside;
+}
+function limDotsReal(rand) {
+  const dots = [];
+  let guard = 0;
+  while (dots.length < LIM_N && guard < 30000) {
+    guard++;
+    let x, y;
+    if (rand() < 0.72) {
+      x = 108 + limNorm(rand) * 10;
+      y = 60 + limNorm(rand) * 10;
+    } else {
+      x = 14 + rand() * (152 - 14);
+      y = 18 + rand() * (136 - 18);
+    }
+    if (limPtIn(x, y)) dots.push([x, y]);
+  }
+  return dots;
+}
+function limPolyArea() {
+  let a = 0;
+  for (let i = 0, j = LIM_POLY.length - 1; i < LIM_POLY.length; j = i++) {
+    a += (LIM_POLY[j][0] + LIM_POLY[i][0]) * (LIM_POLY[j][1] - LIM_POLY[i][1]);
+  }
+  return Math.abs(a / 2);
+}
+function limGridBounds() {
+  let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+  LIM_POLY.forEach(p => {
+    x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]);
+    y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]);
+  });
+  return { x0, x1, y0, y1 };
+}
+function limGridAt(s) {
+  const b = limGridBounds();
+  const pts = [];
+  for (let y = b.y0 + s / 2; y <= b.y1; y += s) {
+    for (let x = b.x0 + s / 2; x <= b.x1; x += s) {
+      if (limPtIn(x, y)) pts.push([x, y]);
+    }
+  }
+  return pts;
+}
+function limDotsUniform() {
+  const area = limPolyArea();
+  let s = Math.sqrt(area / LIM_N);
+  let n = limGridAt(s).length;
+  for (let it = 0; it < 50 && n !== LIM_N; it++) {
+    s *= Math.sqrt(n / LIM_N);
+    n = limGridAt(s).length;
+  }
+  return limGridAt(s);
+}
+function limCountIn(dots) {
+  const r2 = LIM_BUF.r * LIM_BUF.r;
+  return dots.filter(d => {
+    const dx = d[0] - LIM_BUF.x, dy = d[1] - LIM_BUF.y;
+    return dx * dx + dy * dy <= r2;
+  }).length;
+}
+function limAppend(group, dots) {
+  const NS = 'http://www.w3.org/2000/svg';
+  dots.forEach(d => {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('cx', String(d[0]));
+    c.setAttribute('cy', String(d[1]));
+    c.setAttribute('r', '2.4');
+    c.classList.add('lim-dot');
+    group.appendChild(c);
+  });
+}
+
+const limPanelReal = document.getElementById('limPanelReal');
+const limPanelUniform = document.getElementById('limPanelUniform');
+const limGroupReal = document.getElementById('limDotsReal');
+const limGroupUniform = document.getElementById('limDotsUniform');
+const limCountReal = document.getElementById('limCountReal');
+const limCountUniform = document.getElementById('limCountUniform');
+
+function limBuild() {
+  const rand = mulberry32(LIM_SEED);
+  const realDots = limDotsReal(rand);
+  const uniDots = limDotsUniform();
+  limAppend(limGroupReal, realDots);
+  limAppend(limGroupUniform, uniDots);
+  limCountReal.textContent = limCountIn(realDots) + ' de ' + realDots.length + ' pessoas no buffer';
+  limCountUniform.textContent = limCountIn(uniDots) + ' de ' + uniDots.length + ' pessoas no buffer';
+}
+
+function limFrame(now) {
+  if (limStart === null) limStart = now;
+  let t = (now - limStart) / 1000;
+  if (t >= LIM_CYCLE) t %= LIM_CYCLE;
+  const x = t / LIM_CYCLE;
+  const Lf = 1 - limSs((x - 0.42) / 0.16);
+  const Rf = limSs((x - 0.42) / 0.16);
+  limPanelReal.classList.toggle('lim-on', Lf > Rf);
+  limPanelUniform.classList.toggle('lim-on', Rf >= Lf);
+  const pulse = 0.5 + 0.5 * Math.sin(x * Math.PI * 2);
+  limGroupReal.style.opacity = String(0.45 + 0.5 * (Lf > Rf ? pulse : 0));
+  limGroupUniform.style.opacity = String(0.45 + 0.5 * (Rf >= Lf ? pulse : 0));
+  limRaf = requestAnimationFrame(limFrame);
+}
+
+// ── PAINEL SECUNDÁRIO: PESQUISA AUTOMÁTICA DO MELHOR BUFFER ──
+const PROC_GRID_COLS = 20;
+const PROC_GRID_ROWS = 11;
+const PROC_CELL = 20;
+const PROC_RAIO = 48;
+const PROC_POP = 25000;
+const PROC_EVAL = 0.11;
+const PROC_FLASH = 0.28;
+const PROC_END = 3.2;
+const PROC_NIVEL = ['#d5ead9', '#a9d4b0', '#7fb98a', '#4f9c66', '#1e8449'];
+const PROC_POLY = [[14,20],[88,10],[170,16],[252,26],[300,18],[372,48],[382,108],[364,166],[318,150],[292,206],[220,214],[166,196],[120,216],[58,196],[24,150],[34,96],[6,62]];
+
+let procRaf = null;
+let procStart = null;
+let procBuilt = false;
+let procCells = [];
+let procFlash = [];
+let procCum = [];
+let procSweep = 0;
+let procBest = -1;
+let procPrev = -1;
+let procPrevT = -1;
+const procReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const procLine = document.getElementById('procLine');
+const procReplayBtn = document.getElementById('procReplayBtn');
+const procDot = document.getElementById('procDot');
+const procBuf = document.getElementById('procBuf');
+const procBufFinal = document.getElementById('procBufFinal');
+const procBestRing = document.getElementById('procBestRing');
+
+function procPolyArea(pts) {
+  let a = 0;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    a += (pts[j][0] + pts[i][0]) * (pts[j][1] - pts[i][1]);
+  }
+  return Math.abs(a / 2);
+}
+function procPtIn(pts, x, y) {
+  let inside = false;
+  for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+    const xi = pts[i][0], yi = pts[i][1];
+    const xj = pts[j][0], yj = pts[j][1];
+    if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+  }
+  return inside;
+}
+function procVoronoiSeeds() {
+  const seeds = [];
+  let guard = 0;
+  while (seeds.length < 55 && guard < 5000) {
+    guard++;
+    const x = 4 + Math.random() * 392;
+    const y = 4 + Math.random() * 212;
+    if (!procPtIn(PROC_POLY, x, y)) continue;
+    let ok = true;
+    for (const s of seeds) {
+      const dx = s.x - x, dy = s.y - y;
+      if (dx * dx + dy * dy < 676) { ok = false; break; }
+    }
+    if (ok) seeds.push({ x, y });
+  }
+  return seeds;
+}
+function procClipHalfPlane(poly, mx, my, dx, dy) {
+  const out = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i], b = poly[(i + 1) % poly.length];
+    const fa = (a[0] - mx) * dx + (a[1] - my) * dy;
+    const fb = (b[0] - mx) * dx + (b[1] - my) * dy;
+    if (fa <= 0) out.push(a);
+    if ((fa > 0) !== (fb > 0)) {
+      const t = fa / (fa - fb);
+      out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+    }
+  }
+  return out;
+}
+function procVoronoiCells(seeds) {
+  const W = 400, H = 220;
+  return seeds.map(s => {
+    let cell = [[0, 0], [W, 0], [W, H], [0, H]];
+    for (const t of seeds) {
+      if (t === s) continue;
+      const mx = (s.x + t.x) / 2, my = (s.y + t.y) / 2;
+      const dx = t.x - s.x, dy = t.y - s.y;
+      cell = procClipHalfPlane(cell, mx, my, dx, dy);
+      if (cell.length < 3) break;
+    }
+    return cell;
+  });
+}
+function procBuild() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const poly = document.getElementById('procPoly');
+  poly.setAttribute('points', PROC_POLY.map(p => p[0] + ',' + p[1]).join(' '));
+  const gS = document.getElementById('procSec');
+  procVoronoiCells(procVoronoiSeeds()).forEach(cell => {
+    if (cell.length < 3) return;
+    const pg = document.createElementNS(NS, 'polygon');
+    pg.setAttribute('points', cell.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
+    pg.classList.add('proc-sec');
+    gS.appendChild(pg);
+  });
+  const gC = document.getElementById('procGridCells');
+  const gP = document.getElementById('procPts');
+  procCells = [];
+  for (let r = 0; r < PROC_GRID_ROWS; r++) {
+    for (let c = 0; c < PROC_GRID_COLS; c++) {
+      const cx = c * PROC_CELL + PROC_CELL / 2;
+      const cy = r * PROC_CELL + PROC_CELL / 2;
+      const rect = document.createElementNS(NS, 'rect');
+      rect.setAttribute('x', String(c * PROC_CELL));
+      rect.setAttribute('y', String(r * PROC_CELL));
+      rect.setAttribute('width', String(PROC_CELL));
+      rect.setAttribute('height', String(PROC_CELL));
+      rect.classList.add('proc-cell');
+      gC.appendChild(rect);
+      if (!procPtIn(PROC_POLY, cx, cy)) continue;
+      const pt = document.createElementNS(NS, 'circle');
+      pt.setAttribute('cx', String(cx));
+      pt.setAttribute('cy', String(cy));
+      pt.setAttribute('r', '3.2');
+      pt.style.fill = '#9fc5a8';
+      pt.style.opacity = '1';
+      pt.classList.add('proc-pt');
+      gP.appendChild(pt);
+      procCells.push({ cx, cy, rect, pt, value: 0, level: 0 });
+    }
+  }
+  const vals = procCells.map(p => {
+    let cnt = 0;
+    for (const q of procCells) {
+      const dx = q.cx - p.cx, dy = q.cy - p.cy;
+      if (dx * dx + dy * dy <= PROC_RAIO * PROC_RAIO) cnt++;
+    }
+    return cnt;
+  });
+  let mn = Infinity, mx = -1;
+  procCells.forEach((p, i) => {
+    if (vals[i] < mn) mn = vals[i];
+    if (vals[i] > mx) mx = vals[i];
+  });
+  const span = (mx - mn) || 1;
+  const order = procCells.map((p, i) => i).sort((a, b) => vals[a] - vals[b] || a - b);
+  let bv = -1;
+  order.forEach((idx, rank) => {
+    const frac = order.length > 1 ? rank / (order.length - 1) : 0;
+    procCells[idx].value = vals[idx];
+    procCells[idx].level = Math.min(4, Math.floor(frac * 5));
+    if (vals[idx] > bv) { bv = vals[idx]; procBest = idx; }
+  });
+  procCells[procBest].level = 4;
+  procCum = [0];
+  procSweep = 0;
+  procCells.forEach(p => {
+    procSweep += PROC_EVAL;
+    procCum.push(procSweep);
+  });
+}
+function procReset() {
+  procCells.forEach(p => {
+    p.pt.style.fill = '#9fc5a8';
+    p.pt.style.opacity = '1';
+    p.pt.setAttribute('r', '3.2');
+    p.pt.classList.remove('proc-best');
+  });
+  procFlash = [];
+  procPrev = -1;
+  procBuf.setAttribute('visibility', 'hidden');
+  procBufFinal.setAttribute('visibility', 'hidden');
+  procBestRing.setAttribute('visibility', 'hidden');
+  procDot.setAttribute('visibility', 'hidden');
+  procLine.innerHTML = 'A preparar…';
+}
+function procCoveredPop(i) {
+  return Math.round(PROC_POP * (PROC_CELL * PROC_CELL) * procCells[i].value / procPolyArea(PROC_POLY));
+}
+function procOnEval(k, t) {
+  const p = procCells[k];
+  p.pt.style.fill = PROC_NIVEL[p.level];
+  p.pt.style.opacity = '1';
+  procFlash.push({ x: p.cx, y: p.cy, level: p.level, born: t });
+  if (procFlash.length > 5) procFlash.shift();
+}
+function procRenderBuf(t) {
+  for (let i = procFlash.length - 1; i >= 0; i--) {
+    if (t - procFlash[i].born > PROC_FLASH) procFlash.splice(i, 1);
+  }
+  if (procFlash.length === 0) {
+    procBuf.setAttribute('visibility', 'hidden');
+    return;
+  }
+  procBuf.setAttribute('visibility', 'visible');
+  const f = procFlash[procFlash.length - 1];
+  procBuf.style.fill = PROC_NIVEL[f.level];
+  procBuf.setAttribute('cx', String(f.x));
+  procBuf.setAttribute('cy', String(f.y));
+  procBuf.setAttribute('r', String(PROC_RAIO));
+  const o = Math.max(0, 1 - (t - f.born) / PROC_FLASH);
+  procBuf.setAttribute('opacity', String(o));
+}
+function procFrame(now) {
+  if (procStart === null) procStart = now;
+  const total = procSweep + PROC_END;
+  let t = (now - procStart) / 1000;
+  if (t >= total) t %= total;
+  if (t < procPrevT) procReset();
+  procPrevT = t;
+  if (t < procSweep) {
+    let idx = 0;
+    while (idx < procCells.length - 1 && t >= procCum[idx + 1]) idx++;
+    while (procPrev < idx && procPrev + 1 < procCells.length) {
+      procPrev++;
+      procOnEval(procPrev, t);
+    }
+    procDot.setAttribute('visibility', 'visible');
+    procDot.setAttribute('cx', String(procCells[idx].cx));
+    procDot.setAttribute('cy', String(procCells[idx].cy));
+    procRenderBuf(t);
+    procLine.innerHTML = 'Pesquisa: localização <b>' + (idx + 1) + '</b> de ' + procCells.length;
+  } else {
+    const endAge = t - procSweep;
+    procDot.setAttribute('visibility', 'hidden');
+    procBuf.setAttribute('visibility', 'hidden');
+    procFlash = [];
+    const f = Math.max(0, 1 - endAge / 1.3);
+    procCells.forEach(p => {
+      p.pt.style.opacity = String(f);
+    });
+    const best = procCells[procBest];
+    best.pt.style.opacity = String(Math.max(0.5, f));
+    best.pt.classList.add('proc-best');
+    const pulse = 0.5 + 0.5 * Math.sin(endAge * 7);
+    best.pt.setAttribute('r', String(4.2 + 1.6 * pulse));
+    procBestRing.setAttribute('visibility', 'visible');
+    procBestRing.setAttribute('cx', String(best.cx));
+    procBestRing.setAttribute('cy', String(best.cy));
+    procBestRing.setAttribute('r', String(7 + 5 * pulse));
+    procBestRing.setAttribute('opacity', String(0.6 - 0.4 * pulse));
+    procBufFinal.setAttribute('visibility', 'visible');
+    procBufFinal.setAttribute('cx', String(best.cx));
+    procBufFinal.setAttribute('cy', String(best.cy));
+    procBufFinal.setAttribute('r', String(Math.min(PROC_RAIO, PROC_RAIO * (endAge / 0.6))));
+    procBufFinal.setAttribute('opacity', String(Math.min(1, endAge / 0.4)));
+    procLine.innerHTML = 'Localização escolhida — <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
+  }
+  procRaf = requestAnimationFrame(procFrame);
+}
+function procDesenhaFinal() {
+  procCells.forEach(p => {
+    p.pt.style.fill = PROC_NIVEL[p.level];
+    p.pt.style.opacity = '1';
+  });
+  const best = procCells[procBest];
+  best.pt.classList.add('proc-best');
+  best.pt.setAttribute('r', '5.5');
+  procBestRing.setAttribute('visibility', 'visible');
+  procBestRing.setAttribute('cx', String(best.cx));
+  procBestRing.setAttribute('cy', String(best.cy));
+  procBestRing.setAttribute('r', '12');
+  procBestRing.setAttribute('opacity', '0.35');
+  procBufFinal.setAttribute('visibility', 'visible');
+  procBufFinal.setAttribute('cx', String(best.cx));
+  procBufFinal.setAttribute('cy', String(best.cy));
+  procBufFinal.setAttribute('r', String(PROC_RAIO));
+  procBufFinal.setAttribute('opacity', '1');
+  procDot.setAttribute('visibility', 'hidden');
+  procLine.innerHTML = 'Localização escolhida — <b>' + procCoveredPop(procBest).toLocaleString('pt-PT') + '</b> pessoas cobertas (areal weighting)';
+}
+procReplayBtn.addEventListener('click', () => {
+  if (procReduced) { procDesenhaFinal(); return; }
+  procReset();
+  procStart = null;
+  if (procRaf === null) procRaf = requestAnimationFrame(procFrame);
 });
 </script>
 </body>
