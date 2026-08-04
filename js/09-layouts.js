@@ -106,6 +106,12 @@
           layers:'Ortos2021-RGB', format:'image/jpeg', transparent:false, version:'1.3.0',
           maxZoom:24, maxNativeZoom:20, minZoom:6, attribution:''
         });
+      case 'sentinel':
+        return L.tileLayer.wms('https://tiles.maps.eox.at/wms', {
+          layers:(typeof window.__sentinelLayerName !== 'undefined' ? window.__sentinelLayerName : 's2cloudless-2025_3857'),
+          format:'image/jpeg', transparent:false, version:'1.1.1',
+          maxZoom:16, attribution:''
+        });
       case 'satelite':
       default:
         return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

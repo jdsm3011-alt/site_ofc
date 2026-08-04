@@ -435,6 +435,9 @@ const BASE_LAYERS_INFO = {
   ],
   osm: [
     {key:'osm', tpl:'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'}
+  ],
+  sentinel: [
+    {key:'sentinel', wms:true, base:'https://tiles.maps.eox.at/wms', wmsLayer:'s2cloudless-2025_3857'}
   ]
 };
 
@@ -505,12 +508,21 @@ const GEOREF_AUTO_MAX_ZOOM = 20;
 function initMap(){
   map = L.map('map', {zoomControl:false, attributionControl:false, maxZoom: 24}).setView([20, 0], 2);
 
+  // Controlo de atribuição: os basemaps declaram a sua attribution (ex.: o
+  // Sentinel-2 cloudless da EOX exige crédito) e o Leaflet mostra-a quando a
+  // layer está ativa. Sem prefixo "Leaflet" para manter a UI limpa.
+  L.control.attribution({ prefix: false }).addTo(map);
+
   const satellite = new OfflineTileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 24, maxNativeZoom: 19,
     attribution: 'Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics',
     offlineKey: 'satellite'
   });
   const satelliteGroup = L.layerGroup([satellite]).addTo(map);
+  // referência direta à layer satélite Esri (o módulo do seletor de anos
+  // "Escala temporal" usa-a para trocar entre a World Imagery atual e as
+  // versões históricas do World Imagery Wayback)
+  window.__esriSatelliteLayer = satellite;
 
   const claro = new OfflineTileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 24, maxNativeZoom: 19,
@@ -555,6 +567,7 @@ function initMap(){
       Object.values(basemaps).forEach(l=>{ if(map.hasLayer(l)) map.removeLayer(l); });
       activeBaseLayerKey = 'none';
       window.__activeBaseLayerKey = 'none';
+      document.dispatchEvent(new CustomEvent('basemap:changed', { detail: { key: 'none' } }));
       renderBasemapMenu();
       closeBasemapMenu();
       return;
@@ -565,6 +578,7 @@ function initMap(){
     if(!map.hasLayer(next)) next.addTo(map);
     activeBaseLayerKey = key;
     window.__activeBaseLayerKey = key;
+    document.dispatchEvent(new CustomEvent('basemap:changed', { detail: { key: key } }));
     renderBasemapMenu();
     closeBasemapMenu();
     if(key === 'dgt' && !opts.auto){
@@ -952,7 +966,7 @@ function genFid(){
 }
 
 function onFeatureCreated(layer){
-  if(offlineDrawing || rulerDrawing || window.vaDrawingActive) return; // retângulo offline / linha da régua / vetorização assistida não são geometrias do utilizador
+  if(offlineDrawing || rulerDrawing || window.vaDrawingActive || ndviDrawing) return; // retângulo offline / linha da régua / vetorização assistida / análise NDVI não são geometrias do utilizador
   if(layerVisible.get(activeLayerId) === undefined){
     layerVisible.set(activeLayerId, true);
   }

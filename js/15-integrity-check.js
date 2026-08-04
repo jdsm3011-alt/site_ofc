@@ -158,8 +158,9 @@
     '.ivo-body::-webkit-scrollbar-thumb{background:#333;border-radius:2px;}',
     '.ivo-footer{',
       'border-top:1px solid #222;padding-top:12px;margin-top:10px;',
-      'display:flex;justify-content:space-between;align-items:center;',
+      'display:flex;flex-direction:column;align-items:stretch;gap:8px;',
     '}',
+    '.ivo-status-text{color:#555;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
     '.ivo-group-label{color:#ccc;font-weight:500;font-size:11px;letter-spacing:1.5px;margin-top:12px;border-bottom:1px solid #181818;padding-bottom:2px;}',
     '.ivo-group-label:first-child{margin-top:0;}',
     '.ivo-line{color:#8f8f8f;padding-left:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
@@ -177,10 +178,15 @@
     '.ivo-summary .ivo-st{font-weight:700;}',
     '.ivo-summary .ivo-st.ok{color:#4ecb71;}',
     '.ivo-summary .ivo-st.fail{color:#e85d4a;}',
-    '.ivo-progress{height:2px;background:#222;border-radius:1px;margin-top:8px;overflow:hidden;}',
-    '.ivo-progress-fill{height:100%;width:0%;background:#4a9eff;transition:width .2s ease;}',
-    '.ivo-progress-fill.ok{background:#2d7d4f;}',
-    '.ivo-progress-fill.fail{background:#b5472b;}',
+    '.ivo-loadbar{',
+      'display:flex;gap:2px;padding:4px;background:#0f0f0f;',
+      'border:1px solid #222;border-radius:3px;box-sizing:border-box;width:100%;min-height:16px;',
+    '}',
+    '.ivo-sq{flex:1;height:8px;background:#1c1c1c;border-radius:1px;',
+      'transition:background .15s ease;}',
+    '.ivo-sq.on{background:#2fbf5f;}',
+    '.ivo-loadbar.ok .ivo-sq.on{background:#2d7d4f;}',
+    '.ivo-loadbar.fail .ivo-sq.on{background:#b5472b;}',
   ].join('');
   document.head.appendChild(style);
   document.body.appendChild(overlay);
@@ -244,25 +250,45 @@
 
   function addProgress(){
     var wrap = document.createElement('div');
-    wrap.className = 'ivo-progress';
-    wrap.innerHTML = '<div class="ivo-progress-fill" id="ivo-progress-fill"></div>';
+    wrap.className = 'ivo-loadbar';
+    for(var i = 0; i < 64; i++){
+      var sq = document.createElement('span');
+      sq.className = 'ivo-sq';
+      wrap.appendChild(sq);
+    }
     footer.appendChild(wrap);
-    progressFill = document.getElementById('ivo-progress-fill');
+    progressFill = wrap;
   }
 
   function setProgress(pct, ok, fail){
     if(!progressFill) return;
-    progressFill.style.width = Math.min(pct, 100) + '%';
+    var total = progressFill.children.length;
+    var lit = Math.round((Math.min(pct, 100) / 100) * total);
     progressFill.classList.remove('ok', 'fail');
     if(ok) progressFill.classList.add('ok');
     if(fail) progressFill.classList.add('fail');
+    for(var i = 0; i < total; i++){
+      var sq = progressFill.children[i];
+      if(i < lit){
+        if(!sq.classList.contains('on')) sq.classList.add('on');
+      } else {
+        if(sq.classList.contains('on')) sq.classList.remove('on');
+      }
+    }
   }
 
   function setFooterText(html){
-    footer.innerHTML = '<span style="color:#555;font-size:11px;">' + html + '</span>';
-    if(footer.querySelector('.ivo-progress') === null){
-      addProgress();
+    var textEl = footer.querySelector('.ivo-status-text');
+    if(!textEl){
+      footer.innerHTML = '';
+      textEl = document.createElement('div');
+      textEl.className = 'ivo-status-text';
+      footer.appendChild(textEl);
+      if(footer.querySelector('.ivo-loadbar') === null){
+        addProgress();
+      }
     }
+    textEl.innerHTML = html;
   }
 
   function trimLines(){
@@ -278,6 +304,27 @@
 
   /* ---------- check ---------- */
   var GROUPS = ['critical', 'module', 'cdn', 'cdnOptional', 'layoutHooks'];
+  var FILE_LABEL = 'FICHEIROS';
+
+  function collectLocalScripts(){
+    var out = [];
+    var scripts = document.getElementsByTagName('script');
+    for(var i = 0; i < scripts.length; i++){
+      var src = scripts[i].getAttribute('src') || '';
+      if(/^(?:\.\/)?js\/.+\.js$/i.test(src)) out.push(src);
+    }
+    return out;
+  }
+
+  function checkFile(src){
+    return fetch(src, {method: 'HEAD'}).then(function(r){
+      return r.ok;
+    }).catch(function(){
+      return fetch(src, {method: 'GET'}).then(function(r){
+        return r.ok;
+      }).catch(function(){ return false; });
+    });
+  }
 
   function runCheck(){
     showOverlay();
@@ -285,14 +332,15 @@
     setFooterText('A verificar sistema...');
 
     var step = 0;
-    var totalSteps = GROUPS.length;
+    var totalSteps = GROUPS.length + 1;
     var allMissing = [];
     var criticalMissing = [];
     var cdnMissing = [];
+    var missingFiles = [];
 
     function doGroup(idx){
-      if(idx >= totalSteps){
-        finish();
+      if(idx >= GROUPS.length){
+        runFileCheck();
         return;
       }
       var key = GROUPS[idx];
@@ -345,6 +393,46 @@
       }, 180);
     }
 
+    function runFileCheck(){
+      var files = collectLocalScripts();
+      addGroupLabel(FILE_LABEL + ' (' + files.length + ' declarados)');
+      if(files.length === 0){
+        addLine('<span class="warn">nenhum ficheiro local declarado</span>');
+        finish();
+        return;
+      }
+
+      setFooterText('A verificar ficheiros...');
+      var idx = 0;
+      var checked = 0;
+      var filesStart = GROUPS.length / totalSteps;
+      var filesSpan = 1 / totalSteps;
+
+      function next(){
+        if(idx >= files.length){
+          finish();
+          return;
+        }
+        var src = files[idx];
+        checkFile(src).then(function(ok){
+          checked++;
+          if(ok){
+            addLine('<span class="ok">OK</span> <b>' + src + '</b>');
+          } else {
+            missingFiles.push(src);
+            addLine('<span class="fail">FALHA</span> <b>' + src + '</b> — <span class="fail">em falta ou inacessivel</span>');
+          }
+          setProgress((filesStart + filesSpan * (checked / files.length)) * 100);
+          setFooterText('Etapa ' + (GROUPS.length + idx + 1) + '/' + totalSteps + ' — ' + FILE_LABEL);
+          var statusEl = document.getElementById('ivo-status');
+          if(statusEl) statusEl.textContent = FILE_LABEL;
+          idx++;
+          next();
+        });
+      }
+      next();
+    }
+
     function finish(){
       var totalFound = 0;
       var totalAll = 0;
@@ -356,34 +444,46 @@
         }
       }
 
+      var hasFileFail = missingFiles.length > 0;
       addSep('—'.repeat(50));
-      setFooterText('Verificacao concluida — ' + totalFound + '/' + totalAll + ' globals');
+      setFooterText('Verificacao concluida — ' + totalFound + '/' + totalAll + ' globals, ' +
+        (collectLocalScripts().length - missingFiles.length) + '/' + collectLocalScripts().length + ' ficheiros');
       var statusText = 'OK';
-      if(criticalMissing.length > 0) statusText = 'Erro';
+      if(criticalMissing.length > 0 || hasFileFail) statusText = 'Erro';
       else if(cdnMissing.length > 0) statusText = 'OK (avisos)';
 
       var statusEl = document.getElementById('ivo-status');
       if(statusEl) statusEl.textContent = statusText;
-      if(criticalMissing.length === 0 && cdnMissing.length === 0){
+      if(criticalMissing.length === 0 && cdnMissing.length === 0 && !hasFileFail){
         setProgress(100, true, false);
         addSummary(true,
           '<span class="ivo-st ok">TUDO OK</span><br>' +
           'Todos os <b>' + totalFound + '</b> globals verificados com sucesso.<br>' +
+          'Todos os <b>' + collectLocalScripts().length + '</b> ficheiros locais carregados.<br>' +
           'Nenhum modulo critico ou recurso externo em falta.'
         );
-      } else if(criticalMissing.length > 0){
+      } else if(criticalMissing.length > 0 || hasFileFail){
         setProgress(100, false, true);
+        var failParts = [];
+        if(criticalMissing.length > 0){
+          failParts.push(criticalMissing.length + ' global(is) critico(s) em falta:<br>' +
+            criticalMissing.map(function(n){ return '&nbsp;&nbsp;— ' + n; }).join('<br>'));
+        }
+        if(hasFileFail){
+          failParts.push(missingFiles.length + ' ficheiro(s) local(is) em falta:<br>' +
+            missingFiles.map(function(n){ return '&nbsp;&nbsp;— ' + n; }).join('<br>'));
+        }
         addSummary(false,
           '<span class="ivo-st fail">ERRO</span><br>' +
-          criticalMissing.length + ' global(is) critico(s) em falta:<br>' +
-          criticalMissing.map(function(n){ return '&nbsp;&nbsp;— ' + n; }).join('<br>') +
+          failParts.join('<br><br>') +
           '<br><br>Ficheiro(s) pode(m) ter falhado ao carregar.'
         );
         if(typeof showAppAlert === 'function'){
           showAppAlert(
-            'Verificacao de integridade detetou ' + criticalMissing.length +
-            ' global(is) critico(s) em falta:\n\n' +
-            criticalMissing.map(function(n){ return '  - ' + n; }).join('\n'),
+            'Verificacao de integridade detetou ' +
+            (criticalMissing.length + missingFiles.length) +
+            ' item(ns) em falta:\n\n' +
+            criticalMissing.concat(missingFiles).map(function(n){ return '  - ' + n; }).join('\n'),
             {error: true}
           );
         }
@@ -395,9 +495,9 @@
         );
       }
 
-      window.__integrityResult = { criticalMissing: criticalMissing, cdnMissing: cdnMissing };
+      window.__integrityResult = { criticalMissing: criticalMissing, cdnMissing: cdnMissing, missingFiles: missingFiles };
 
-      if(criticalMissing.length === 0){
+      if(criticalMissing.length === 0 && !hasFileFail){
         setTimeout(hideOverlay, 1800);
       }
     }
