@@ -143,6 +143,10 @@ function removeRasterLayer(id){
   if(entry.url && entry.url.startsWith('blob:')) URL.revokeObjectURL(entry.url);
   rasterLayers.delete(id);
   renderRasterLayersPanel();
+  if(typeof window.comparisonMode === 'object') {
+    window.comparisonMode.updateButtonVisibility();
+    if(window.comparisonMode.isActive() && rasterLayers.size < 2) window.comparisonMode.exit();
+  }
 }
 
 /* adiciona uma entrada raster construída fora do fluxo de importação normal
@@ -155,6 +159,23 @@ function addRasterEntry(entry){
   rasterLayers.set(entry.id, entry);
   placeRasterOverlay(entry);
   renderRasterLayersPanel();
+  if(typeof window.comparisonMode === 'object' && window.comparisonMode.updateButtonVisibility) window.comparisonMode.updateButtonVisibility();
+  if(typeof window.markProjectDirty === 'function') window.markProjectDirty();
+  return entry.id;
+}
+
+/* Regista um overlay já criado (ex: NDVI) como camada raster no painel.
+   Diferente de addRasterEntry: NÃO chama placeRasterOverlay — assume que
+   entry.overlay já existe e está no mapa. Apenas o move para o
+   rasterOverlayGroup e regista no painel. */
+function addRasterEntryWithOverlay(entry){
+  if(!entry || !entry.url) return null;
+  if(!entry.id) entry.id = genRasterId();
+  if(!rasterOverlayGroup) rasterOverlayGroup = L.layerGroup().addTo(map);
+  if(entry.overlay) entry.overlay.addTo(rasterOverlayGroup);
+  rasterLayers.set(entry.id, entry);
+  renderRasterLayersPanel();
+  if(typeof window.comparisonMode === 'object' && window.comparisonMode.updateButtonVisibility) window.comparisonMode.updateButtonVisibility();
   if(typeof window.markProjectDirty === 'function') window.markProjectDirty();
   return entry.id;
 }
@@ -198,6 +219,10 @@ function clearRasterLayerState(){
   });
   rasterLayers.clear();
   renderRasterLayersPanel();
+  if(typeof window.comparisonMode === 'object') {
+    if(window.comparisonMode.isActive()) window.comparisonMode.exit();
+    window.comparisonMode.updateButtonVisibility();
+  }
 }
 
 function restoreRasterLayersFromProject(list){
@@ -2388,6 +2413,7 @@ window.placeRasterOverlay = placeRasterOverlay;
 window.focusRasterLayer = focusRasterLayer;
 window.removeRasterLayer = removeRasterLayer;
 window.addRasterEntry = addRasterEntry;
+window.addRasterEntryWithOverlay = addRasterEntryWithOverlay;
 window.worldFileExtensionFor = worldFileExtensionFor;
 window.buildWorldFileText = buildWorldFileText;
 window.downloadBlob = downloadBlob;

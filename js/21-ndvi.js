@@ -160,9 +160,14 @@ var ndviDrawing = false;
 
   var ndviProcessing = false;
   var ndviActiveIndex = 'ndvi';
-  var ndviOverlayLayer = null;
+  var ndviOverlayLayers = [];
   var currentDataUrl = null;
   var currentResultKey = 'ndvi';
+  var ndviRasterIds = [];
+  var ndviPendingBounds = null;
+  var ndviPendingMask = null;
+  var ndviPendingYear = null;
+  var ndviPendingDef = null;
 
   // --- Helpers ------------------------------------------------------------
 
@@ -209,6 +214,43 @@ var ndviDrawing = false;
     }
     var banner = document.getElementById('ndvi-banner');
     if (banner) banner.style.display = 'flex';
+  }
+
+  function showMenuProcessarBtn() {
+    var btn = document.getElementById('sm-processar');
+    if (btn) btn.classList.remove('hidden');
+    // Reabrir o menu satélite e voltar à vista município
+    var menu = document.getElementById('satellite-menu-dropdown');
+    var menuBtn = document.getElementById('btn-satellite');
+    if (menu && menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+      if (menuBtn) {
+        menuBtn.classList.add('is-open');
+        menuBtn.setAttribute('aria-expanded', 'true');
+      }
+      // Reposicionar o menu abaixo do botão
+      try {
+        var rect = menuBtn.getBoundingClientRect();
+        menu.style.top = (rect.bottom + 6) + 'px';
+        menu.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - menu.offsetWidth - 8)) + 'px';
+      } catch (e) {}
+    }
+    // Mostrar a vista município (onde está o botão Processar)
+    if (menu) {
+      var mainView = menu.querySelector('[data-sm-view="main"]');
+      var municipioView = menu.querySelector('[data-sm-view="municipio"]');
+      if (mainView) mainView.classList.add('hidden');
+      if (municipioView) municipioView.classList.remove('hidden');
+    }
+  }
+
+  function hideMenuProcessarBtn() {
+    var btn = document.getElementById('sm-processar');
+    if (btn) btn.classList.add('hidden');
+    ndviPendingBounds = null;
+    ndviPendingMask = null;
+    ndviPendingYear = null;
+    ndviPendingDef = null;
   }
 
   // Definição proj4 para zonas UTM (fallback caso a proj4.js não traga a EPSG
@@ -721,12 +763,16 @@ var ndviDrawing = false;
     }
     currentDataUrl = canvas.toDataURL('image/png');
 
-    ndviOverlayLayer = L.imageOverlay(currentDataUrl, overlayBoundsFor(bounds), {
+    var overlay = L.imageOverlay(currentDataUrl, overlayBoundsFor(bounds), {
       opacity: 0.9,
       pane: 'overlayPane',
       zIndex: 250,
       interactive: false
     }).addTo(getMap());
+    ndviOverlayLayers.push(overlay);
+
+    // Registar como camada raster no painel de camadas
+    registerNdviAsRasterLayer(currentDataUrl, bounds, def, result);
 
     showNdviPanel(result, bounds);
     var m = getMap();
@@ -794,21 +840,75 @@ var ndviDrawing = false;
     panel.classList.remove('hidden');
   }
 
+  // --- Registo como camada raster -------------------------------------------
+
+  function registerNdviAsRasterLayer(dataUrl, bounds, def, result) {
+    var id = (window.genRasterId ? window.genRasterId() : ('ndvi-' + Date.now()));
+    var dateStr = '';
+    try { dateStr = new Date(result.scene.properties.datetime).toISOString().slice(0, 10); } catch (e) {}
+
+    // Computar transformação afim a partir dos bounds lat/lng
+    // Convenção: X = a*x + c, Y = e*y + f  (b=d=0, sem rotação)
+    var west = bounds.getWest(), east = bounds.getEast();
+    var north = bounds.getNorth(), south = bounds.getSouth();
+    var transform = {
+      a: (east - west) / result.width,
+      b: 0,
+      c: west,
+      d: 0,
+      e: -(north - south) / result.height,
+      f: north
+    };
+
+    var entry = {
+      id: id,
+      name: def.label + (dateStr ? ' — ' + dateStr : ''),
+      url: dataUrl,
+      dataUrl: dataUrl,
+      width: result.width,
+      height: result.height,
+      georeferenced: true,
+      pending: false,
+      source: 'ndvi-index',
+      overlay: ndviOverlayLayers[ndviOverlayLayers.length - 1] || null,
+      indexKey: def.key,
+      bounds: bounds,
+      transform: transform
+    };
+
+    if (window.addRasterEntryWithOverlay) {
+      var rasterId = window.addRasterEntryWithOverlay(entry);
+      ndviRasterIds.push(rasterId);
+    }
+  }
+
+  function removeCurrentNdviRaster() {
+    // Remover todas as camadas NDVI
+    var m = getMap();
+    ndviOverlayLayers.forEach(function (layer) {
+      if (m && m.removeLayer && layer) m.removeLayer(layer);
+    });
+    ndviOverlayLayers = [];
+    ndviRasterIds.forEach(function (id) {
+      if (window.removeRasterLayer) window.removeRasterLayer(id);
+    });
+    ndviRasterIds = [];
+    currentDataUrl = null;
+  }
+
   // --- Limpar ----------------------------------------------------------------
 
   function clearNdviOverlay() {
-    if (ndviOverlayLayer) {
-      var m = getMap();
-      if (m && m.removeLayer) m.removeLayer(ndviOverlayLayer);
-      ndviOverlayLayer = null;
-    }
-    currentDataUrl = null;
+    // Apenas esconde o painel de estatísticas — os overlays ficam no mapa
     var panel = document.getElementById('ndvi-panel');
     if (panel) panel.classList.add('hidden');
   }
 
   function clearNdvi() {
-    clearNdviOverlay();
+    removeCurrentNdviRaster();
+    currentDataUrl = null;
+    var panel = document.getElementById('ndvi-panel');
+    if (panel) panel.classList.add('hidden');
     cancelNdviDrawing();
   }
 
@@ -862,8 +962,6 @@ var ndviDrawing = false;
     ndviDrawing = false;
     var m = getMap();
     if (m && m.pm && m.pm.globalDrawModeEnabled && m.pm.globalDrawModeEnabled()) m.pm.disableDraw();
-    var banner = document.getElementById('ndvi-banner');
-    if (banner) banner.style.display = 'none';
     var btn = document.getElementById('btn-satellite');
     if (btn) btn.classList.remove('is-active');
 
@@ -871,16 +969,25 @@ var ndviDrawing = false;
     if (!layer || !layer.getBounds) return;
     var bounds = layer.getBounds();
     try { layer.remove(); } catch (err) { if (m) m.removeLayer(layer); }
-    runIndexAnalysis(bounds, INDEXES[ndviActiveIndex]);
+
+    // Guardar bounds e mostrar botão Processar no menu
+    ndviPendingBounds = bounds;
+    ndviPendingMask = null;
+    ndviPendingYear = null;
+    var def = INDEXES[ndviActiveIndex] || INDEXES.ndvi;
+    ndviPendingDef = def;
+    setBannerStatus(_t('txt.área_selecionada_clique_em_processar', 'Área selecionada. Clique em Processar no menu.'));
+    showMenuProcessarBtn();
   }
 
   async function runIndexAnalysis(bounds, def, mask, year) {
-    if (ndviProcessing) return;
+    if (ndviProcessing) return false;
     ndviProcessing = true;
     var btn = document.getElementById('btn-satellite');
     if (btn) btn.classList.add('is-processing');
     setBannerProcessing(true);
     clearNdviOverlay();
+    var succeeded = false;
     try {
       setBannerStatus(_t('txt.a_procurar_imagem_sentinel_2', 'A procurar imagem Sentinel-2 recente…'));
       var scene = await searchSentinelScene(bounds, year);
@@ -888,15 +995,16 @@ var ndviDrawing = false;
         if (window.showAppAlert) {
           window.showAppAlert(_t('txt.sem_cena_sentinel_2_dispon_vel', 'Não foi encontrada nenhuma cena Sentinel-2 recente nesta área.'), { error: true });
         }
-        return;
+        throw new Error('no scene');
       }
       setBannerStatus(_t('txt.a_descarregar_bandas_sentinel_2', 'A descarregar bandas Sentinel-2…'));
       var result = await fetchAndComputeIndex(bounds, scene, def, mask);
       setBannerStatus(_t('txt.a_calcular_ndice', 'A calcular índice…'));
       renderNdvi(result, bounds);
+      succeeded = true;
     } catch (err) {
       console.error('[ndvi]', err);
-      if (window.showAppAlert) {
+      if (err.message !== 'no scene' && window.showAppAlert) {
         var msg = err && err.message === 'geotiff'
           ? _t('txt.sem_geotiff_dispon_vel', 'A biblioteca geotiff.js não está disponível.')
           : _t('txt.erro_ndice_processamento', 'Não foi possível calcular o índice. Verifica a ligação à internet e tenta novamente.');
@@ -909,6 +1017,7 @@ var ndviDrawing = false;
       if (btn) btn.classList.remove('is-processing');
       ndviProcessing = false;
     }
+    return succeeded;
   }
 
   // --- Processar por município ----------------------------------------------
@@ -921,8 +1030,9 @@ var ndviDrawing = false;
     var def = INDEXES[indexKey] || INDEXES[ndviActiveIndex] || INDEXES.ndvi;
     if (INDEXES[indexKey]) ndviActiveIndex = indexKey;
     if (ndviDrawing) cancelNdviDrawing();
-    setBannerProcessing(true);
     setBannerStatus(_t('txt.a_carregar_limite_do_munic_pio', 'A carregar limite do município…'));
+    var banner = document.getElementById('ndvi-banner');
+    if (banner) banner.style.display = 'flex';
     try {
       if (!entry || !entry.p) throw new Error('sem limite do município');
       var res = await fetch(MUNICIPIOS_GITHUB_RAW_BASE + entry.p);
@@ -930,10 +1040,19 @@ var ndviDrawing = false;
       var gj = await res.json();
       var bounds = L.geoJSON(gj).getBounds();
       if (!bounds || !bounds.isValid || !bounds.isValid()) throw new Error('limite do município inválido');
-      await runIndexAnalysis(bounds, def, geometryFromGeoJSON(gj), year);
+
+      var mask = geometryFromGeoJSON(gj);
+      if (!mask) throw new Error('geometria do município inválida');
+
+      // Guardar dados e mostrar botão Processar no menu
+      ndviPendingBounds = bounds;
+      ndviPendingMask = mask;
+      ndviPendingYear = year;
+      ndviPendingDef = def;
+      setBannerStatus(_t('txt.município_carregado_clique_em_processar', 'Município carregado. Clique em Processar no menu.'));
+      showMenuProcessarBtn();
     } catch (err) {
       console.error('[ndvi] município:', err);
-      var banner = document.getElementById('ndvi-banner');
       if (banner) banner.style.display = 'none';
       setBannerProcessing(false);
       if (window.showAppAlert) {
@@ -971,6 +1090,34 @@ var ndviDrawing = false;
       cancel.addEventListener('click', function () {
         if (ndviProcessing) return;
         cancelNdviDrawing();
+        hideMenuProcessarBtn();
+      });
+    }
+    var menuProcBtn = document.getElementById('sm-processar');
+    if (menuProcBtn && !menuProcBtn.dataset.ndviWired) {
+      menuProcBtn.dataset.ndviWired = '1';
+      menuProcBtn.addEventListener('click', async function () {
+        if (ndviProcessing || !ndviPendingBounds) return;
+        menuProcBtn.classList.add('hidden');
+        var def = ndviPendingDef || INDEXES[ndviActiveIndex] || INDEXES.ndvi;
+        // Ler o ano/índice diretamente dos chips ativos do menu
+        var activeYear = null;
+        var activeChip = document.querySelector('.sm-year-chip.is-active');
+        if (activeChip) activeYear = activeChip.dataset.smYear;
+        if (activeYear === 'auto') activeYear = null;
+        var activeIdx = null;
+        var activeIdxChip = document.querySelector('.sm-idx-chip.is-active');
+        if (activeIdxChip) activeIdx = activeIdxChip.dataset.smIdx;
+        if (activeIdx && INDEXES[activeIdx]) {
+          def = INDEXES[activeIdx];
+          ndviActiveIndex = activeIdx;
+        }
+        var ok = await runIndexAnalysis(ndviPendingBounds, def, ndviPendingMask, activeYear);
+        if (ok) {
+          menuProcBtn.classList.remove('hidden');
+        } else {
+          menuProcBtn.classList.remove('hidden');
+        }
       });
     }
     var clearBtn = document.getElementById('ndvi-clear');
@@ -981,7 +1128,11 @@ var ndviDrawing = false;
     var closeBtn = document.getElementById('ndvi-panel-close');
     if (closeBtn && !closeBtn.dataset.ndviWired) {
       closeBtn.dataset.ndviWired = '1';
-      closeBtn.addEventListener('click', function () { clearNdviOverlay(); });
+      closeBtn.addEventListener('click', function () {
+        // Apenas esconde o painel — o overlay fica no mapa
+        var panel = document.getElementById('ndvi-panel');
+        if (panel) panel.classList.add('hidden');
+      });
     }
     var exportBtn = document.getElementById('ndvi-export-png');
     if (exportBtn && !exportBtn.dataset.ndviWired) {

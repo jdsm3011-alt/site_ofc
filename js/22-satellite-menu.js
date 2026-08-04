@@ -79,9 +79,9 @@
     if (menu.classList.contains('hidden')) openMenu(); else closeMenu();
   });
 
-  /* fecha ao escolher uma opção do menu (exceto "Processar por município") */
+  /* fecha ao escolher uma opção do menu (exceto "Processar por município" e "Processar") */
   Array.prototype.slice.call(menu.querySelectorAll('.satellite-menu-item')).forEach(function (item) {
-    if (item.id === 'sm-municipio-trigger') return;
+    if (item.id === 'sm-municipio-trigger' || item.id === 'sm-processar') return;
     item.addEventListener('click', function () { closeMenu(); });
   });
 
@@ -151,7 +151,6 @@
       li.appendChild(name);
       li.appendChild(dist);
       li.addEventListener('click', function () {
-        closeMenu();
         if (window.ndviTool && typeof window.ndviTool.processMunicipio === 'function') {
           window.ndviTool.processMunicipio(it, selectedIndex, selectedYear);
         }
@@ -191,6 +190,9 @@
     backBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       showView('main');
+      // Esconder botão Processar ao voltar
+      var procBtn = document.getElementById('sm-processar');
+      if (procBtn) procBtn.classList.add('hidden');
     });
   }
 
