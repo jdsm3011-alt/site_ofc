@@ -1,0 +1,68 @@
+/* comparison.css — Modo Comparação Sincronizada */
+
+#comparison-container {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+  background: var(--line, #333);
+  min-height: 0;
+  position: relative;
+}
+#comparison-container.hidden { display: none; }
+
+.comparison-panel {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  min-height: 0;
+}
+.comparison-panel .comparison-map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.comparison-panel-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 500;
+  background: rgba(0, 0, 0, .72);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: calc(100% - 16px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comparison-panel-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 501;
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .6);
+  color: #fff;
+  font-size: 13px;
+  line-height: 22px;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+}
+.comparison-panel-close:hover { background: rgba(220, 50, 50, .85); }
+
+/* Botão header */
+#btn-comparison-mode.is-active {
+  background: var(--green, #1f6b50);
+  color: #fff;
+  border-color: var(--green, #1f6b50);
+}

@@ -1,3 +1,11 @@
+/* ============================================================
+   MOBILE — otimização do layout em landscape (telemóvel)
+   O app continua a exigir orientação paisagem: portrait fica
+   bloqueado pelo #mobile-block. Estes estilos aplicam-se
+   quando o ecrã é estreito mas o dispositivo está horizontal.
+   ============================================================ */
+
+/* ---------- bloqueio portrait (mantido) ---------- */
 #mobile-block{
   position:fixed; inset:0; z-index:9999;
   background:var(--paper, #F7F5EF);
@@ -22,9 +30,349 @@
 .mobile-block-card p{
   font-size:14px; line-height:1.5; color:var(--stone, #6E726A); margin:0;
 }
+
+/* portrait bloqueado */
 @media (max-width: 1100px) and (orientation: portrait){
   #mobile-block{ display:flex !important; }
 }
 @media (orientation: landscape){
   #mobile-block{ display:none !important; }
+}
+
+/* ============================================================
+   RESPONSIVE — landscape mobile / tablet estreito
+   Breakpoint principal: ≤900px (landscape)
+   Breakpoint secundário: ≤600px (telemóvel pequeno)
+   ============================================================ */
+
+/* ---------- HEADER ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  header{
+    padding:8px 12px;
+    gap:8px;
+  }
+  .header-logo-title{ font-size:13px; }
+  .header-left{ gap:8px; flex:1 1 200px; }
+  .header-left-actions{
+    padding-left:10px; gap:5px; margin-top:0;
+  }
+  .header-actions{ gap:6px; flex:1 1 200px; }
+
+  /* botões mais compactos */
+  .feedback-nav-btn{
+    width:30px; height:30px; min-width:30px; min-height:30px;
+  }
+  .feedback-nav-btn svg{ width:14px; height:14px; }
+
+  /* esconder botões menos críticos em mobile */
+  #btn-lang-toggle,
+  #open-wizard-btn,
+  .back-link,
+  #automation-menu-wrap,
+  .layout-add-content-wrap{
+    display:none !important;
+  }
+
+  /* botão guardar com texto menor */
+  #btn-save-project{ padding:0 8px !important; gap:4px !important; }
+  #btn-save-project span:not(.autosave-indicator){ font-size:11px; }
+}
+
+@media (max-width: 600px) and (orientation: landscape){
+  header{ padding:6px 8px; gap:6px; }
+  .header-logo-title{ font-size:12px; }
+  .header-left-actions{ padding-left:6px; gap:4px; }
+  .header-actions{ gap:4px; }
+
+  .feedback-nav-btn{
+    width:28px; height:28px; min-width:28px; min-height:28px;
+    border-radius:8px;
+  }
+  .feedback-nav-btn svg{ width:13px; height:13px; }
+
+  /* esconder mais botões em ecrãs muito estreitos */
+  #btn-sync-online,
+  #btn-offline-define,
+  #feedback-nav-btn,
+  #btn-topology-warn-toggle{
+    display:none !important;
+  }
+}
+
+/* ---------- SIDEBAR ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #sidebar{
+    width:260px; min-width:260px;
+    padding:12px;
+  }
+  #sidebar h2{ font-size:14px; margin-bottom:4px; }
+}
+
+@media (max-width: 600px) and (orientation: landscape){
+  #sidebar{
+    width:220px; min-width:220px;
+    padding:10px;
+  }
+  #sidebar h2{ font-size:13px; }
+  .sidebar-dev-badge{ font-size:9px; padding:8px 10px 6px; }
+}
+
+/* ---------- MAPA — garantir máximo espaço ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #map{ flex:1 1 0; min-width:0; }
+  main{ min-height:0; }
+}
+
+/* ---------- WORKSPACE TABS ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #workspace-tabs{
+    top:8px; right:8px; gap:5px;
+  }
+  .workspace-tab{
+    padding:5px 8px; min-width:70px; font-size:11px;
+    border-radius:10px;
+  }
+  .workspace-tab-close{ width:16px; height:16px; font-size:11px; }
+}
+
+/* ---------- COORD BAR ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .coord-bar{
+    font-size:9.5px; padding:2px 8px; gap:4px;
+    bottom:4px;
+  }
+  .coord-bar .crs-switch{ font-size:8.5px; padding:1px 5px; }
+  .coord-bar .coord-xy-btn{ font-size:8.5px; padding:1px 4px; }
+}
+
+/* ---------- CONSOLE PANEL (side panel) ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .side-panel{
+    min-width:220px !important;
+    max-width:320px !important;
+  }
+}
+
+/* ---------- WIZARD / MODALS ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .wizard-card{
+    width:min(95vw, 520px);
+    padding:22px 24px;
+    max-height:85vh;
+  }
+  .intro-card{ width:min(95vw, 560px); }
+  .wizard-card h2{ font-size:17px; }
+  .intro-card h2{ font-size:20px; }
+
+  /* choice grids */
+  .choice-grid{ gap:1px; margin:14px 0; }
+  .choice-card{ padding:14px 10px; }
+  .geom-grid .choice-card{ padding:14px 8px; }
+
+  /* attr table */
+  #attr-table-card{
+    width:min(95vw, 800px);
+    min-height:200px;
+  }
+}
+
+@media (max-width: 600px) and (orientation: landscape){
+  .wizard-card{ width:95vw; padding:18px 16px; }
+  .intro-card{ width:95vw; }
+  .wizard-card h2{ font-size:15px; }
+  .intro-card h2{ font-size:17px; }
+}
+
+/* ---------- OFFLINE / CONNECTIVITY / EXPORT OVERLAYS ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #offline-overlay, #offline-progress-overlay, #offline-prompt-overlay{
+    padding:12px;
+  }
+  .offline-card{ width:min(380px, 95vw); padding:20px 22px; }
+
+  #connectivity-overlay{ padding:12px; }
+  .connectivity-card{ width:min(320px, 95vw); padding:18px 20px; }
+
+  #export-menu-overlay{ padding:12px; }
+  #start-project-overlay, #local-projects-overlay{ padding:12px; }
+  #exit-confirm-overlay, #autosave-suggest-overlay{ padding:12px; }
+}
+
+/* ---------- NDVI PANEL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #ndvi-panel{
+    top:60px; right:10px;
+    width:min(300px, calc(100vw - 20px));
+  }
+}
+
+/* ---------- SYMBOLOGY PANEL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #shape-color-attr-row{
+    width:min(260px, calc(100vw - 20px));
+    bottom:10px; right:10px;
+  }
+}
+
+/* ---------- SETTINGS / TEAM SYNC FLOATING MENUS ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #team-sync-floating-menu, #settings-floating-menu{
+    width:min(320px, calc(100vw - 24px));
+    top:12px; left:12px;
+    max-height:min(70vh, 500px);
+  }
+}
+
+/* ---------- BANNERS (offline-rect, ruler, ndvi) ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .offline-rect-banner{
+    top:60px; padding:8px 14px; font-size:12px;
+    max-width:min(480px, calc(100vw - 20px));
+  }
+}
+
+/* ---------- LANDING BANNER ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .landing-banner-card{
+    max-width:360px; padding:22px 24px;
+  }
+  .landing-banner-card h2{ font-size:19px; }
+  .landing-banner-card p{ font-size:12.5px; }
+}
+
+/* ---------- GEAR COACHMARK ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #gear-coachmark{ max-width:180px; }
+}
+
+/* ---------- TEAM SYNC TOAST / WELCOME TOAST ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #connectivity-restored-toast,
+  #team-sync-toast,
+  #welcome-toast,
+  #autosave-toast{
+    font-size:10.5px; padding:5px 12px 5px 8px;
+    top:16px;
+  }
+}
+
+/* ---------- BASEMAP MENU ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #basemap-menu{ min-width:150px; }
+  #basemap-menu button{ font-size:12px; padding:7px 8px; }
+}
+
+/* ---------- LAYER CONTEXT MENU ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #layer-context-menu{ min-width:180px; }
+  #layer-context-menu button{ font-size:12px; padding:7px 8px; }
+}
+
+/* ---------- FEATURE CONTEXT MENU ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #feature-context-menu{ min-width:150px; }
+}
+
+/* ---------- SELECT BY ATTR MENU ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .select-by-attr-head{ font-size:12px; }
+}
+
+/* ---------- MUNICIPIOS PANEL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .municipios-panel{
+    width:min(280px, calc(100vw - 20px));
+    top:54px; right:16px;
+  }
+}
+
+/* ---------- PORTAL BRIDGE PANEL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .portal-bridge-panel{
+    width:min(340px, calc(100vw - 20px));
+  }
+}
+
+/* ---------- SMART SYNC / CAD IMPORT PAGES ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .ss-nav{ gap:2px; }
+  .ss-nav-btn{ padding:6px 8px; font-size:11px; }
+  .ss-nav-num{ font-size:10px; }
+}
+
+/* ---------- VA PAGE (Vetorização Assistida) ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .va-body{ flex-direction:column; }
+  .va-nav{ gap:2px; padding:6px 8px; flex-wrap:nowrap; overflow-x:auto; }
+  .va-nav-btn{ padding:5px 8px; font-size:11px; white-space:nowrap; }
+  .va-content{ padding:16px; }
+  .va-class-grid{ grid-template-columns:1fr 1fr; gap:6px; }
+}
+
+/* ---------- ANALYSIS OVERLAY ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .analysis-header{ padding:10px 16px; }
+  .analysis-title{ font-size:14px; }
+  .analysis-sidebar{ width:260px; padding:12px; }
+}
+
+@media (max-width: 600px) and (orientation: landscape){
+  .analysis-sidebar{ width:220px; padding:10px; }
+  .analysis-header{ padding:8px 12px; }
+}
+
+/* ---------- ATTR FORM OVERLAY ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .attr-form-card{ width:min(340px, 92vw); padding:18px; }
+}
+
+/* ---------- COORD XY MODAL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .coord-xy-modal{ width:min(280px, 90vw); padding:16px 18px; }
+}
+
+/* ---------- FEEDBACK TOAST ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .feedback-toast{
+    width:min(340px, calc(100vw - 24px));
+  }
+}
+
+/* ---------- APP ALERT ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .app-alert-card{
+    width:min(320px, 90vw);
+  }
+}
+
+/* ---------- LEAFLET CONTROLS ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .leaflet-pm-toolbar .button-container a.leaflet-buttons-control-button{
+    width:32px !important; height:32px !important;
+  }
+  .leaflet-pm-toolbar .control-icon{ width:16px !important; height:16px !important; }
+  .leaflet-pm-toolbar .button-container{ margin-bottom:5px !important; }
+}
+
+/* ---------- GEOREF MODE TOPBAR ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #georef-mode-topbar{
+    padding:6px 10px; gap:8px;
+  }
+  .georef-topbar-title{ font-size:12px; }
+  .georef-topbar-stats{ font-size:11px; }
+}
+
+/* ---------- GEOREF IMAGE PANEL ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  #georef-image-panel{
+    width:min(260px, calc(100vw - 20px));
+  }
+}
+
+/* ---------- GEOREF STATS CARD ---------- */
+@media (max-width: 900px) and (orientation: landscape){
+  .georef-stats-card{
+    width:min(240px, calc(100vw - 20px));
+  }
 }
