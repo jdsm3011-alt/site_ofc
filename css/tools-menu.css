@@ -127,3 +127,207 @@
 @media (max-width: 560px){
   .automation-menu-btn-label{ display:none; }
 }
+
+/* ============================================================
+   BOTÃO "SATÉLITE" NO CABEÇALHO — só ícone, como os restantes
+   botões do header (feedback-nav-btn). Abre um menu com todas as
+   opções de satélite/Sentinel-2: basemap cloudless + seletor de
+   ano + NDVI. Mesmo padrão de dropdown do menu de automatização
+   acima (posicionado via JS, position:fixed — ver js/22-satellite-menu.js).
+   ============================================================ */
+.satellite-menu-btn.is-open{
+  border-color:var(--green) !important;
+  background:rgba(31,92,107,.12) !important;
+  color:var(--green-deep) !important;
+}
+
+.satellite-menu-dropdown{
+  position:fixed;
+  z-index:2000;
+  width:320px;
+  max-width:calc(100vw - 24px);
+  background:var(--paper-elevated);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:8px;
+  display:flex; flex-direction:column; gap:4px;
+}
+.satellite-menu-dropdown.hidden{ display:none; }
+
+.satellite-menu-item{
+  position:relative;
+  display:flex; align-items:center; gap:12px;
+  width:100%;
+  text-align:left;
+  border:1px solid transparent;
+  border-radius:var(--radius-sm);
+  background:transparent;
+  padding:10px 12px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .15s ease, border-color .15s ease;
+}
+.satellite-menu-item:hover{
+  background:var(--paper-deep);
+}
+.satellite-menu-item-basemap:hover{
+  border-color:rgba(31,107,80,.35);
+  background:rgba(31,107,80,.08);
+}
+
+.satellite-menu-item-icon{
+  flex-shrink:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:34px; height:34px;
+  border-radius:9px;
+}
+.satellite-menu-item-basemap .satellite-menu-item-icon{
+  color:var(--green-deep);
+  background:rgba(31,107,80,.12);
+}
+
+.satellite-menu-item-text{
+  flex:1; min-width:0;
+  display:flex; flex-direction:column; gap:2px;
+}
+.satellite-menu-item-text b{
+  font-size:13px; font-weight:700; color:var(--ink);
+}
+.satellite-menu-item-text span{
+  font-size:11.5px; color:var(--stone);
+  line-height:1.3;
+}
+
+.satellite-menu-item-check{
+  flex-shrink:0;
+  display:none;
+  width:18px; height:18px; border-radius:50%;
+  align-items:center; justify-content:center;
+  background:var(--green);
+  color:#fff;
+  font-size:11px; font-weight:700;
+}
+.satellite-menu-item.is-checked .satellite-menu-item-check{ display:inline-flex; }
+.satellite-menu-item-arrow{ flex-shrink:0; color:var(--stone); font-size:16px; }
+
+.satellite-menu-divider{ height:1px; background:var(--line); margin:4px; }
+
+.satellite-menu-section-label{
+  padding:6px 10px 2px;
+  font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--stone);
+}
+.satellite-menu-item.satellite-index-item:hover{
+  border-color:rgba(31,107,80,.35);
+  background:rgba(31,107,80,.08);
+}
+
+.satellite-year-wrap{
+  display:flex; flex-direction:column; gap:4px;
+  padding:4px 10px 8px;
+}
+.satellite-year-label{
+  font-family:'IBM Plex Mono', monospace; font-size:10.5px; font-weight:600;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--stone);
+}
+#satellite-menu-dropdown .basemap-year-options{ display:flex; flex-wrap:wrap; gap:4px; }
+#satellite-menu-dropdown .basemap-year-options button{
+  flex:1 1 auto; justify-content:center; min-width:46px; padding:5px 8px; font-size:12px;
+  font-family:inherit; color:var(--text); background:var(--paper-deep);
+  border:1px solid var(--line); border-radius:var(--radius-sm); cursor:pointer;
+}
+#satellite-menu-dropdown .basemap-year-options button:hover{
+  border-color:var(--green); color:var(--green-deep);
+}
+#satellite-menu-dropdown .basemap-year-options button.is-active{
+  color:var(--green); font-weight:700; border-color:var(--green);
+}
+#satellite-menu-dropdown .basemap-year-options button.is-active::after{ content:''; }
+
+.satellite-menu-note{
+  margin:2px 6px 2px;
+  font-size:11px; color:var(--stone); line-height:1.4;
+}
+
+/* ---------- vista "Processar por município" ---------- */
+.satellite-menu-view{
+  min-width:260px;
+  max-height:min(420px, calc(100vh - 120px));
+  overflow-y:auto;
+}
+.satellite-menu-search-head{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 10px 6px;
+}
+.satellite-menu-back{
+  flex-shrink:0;
+  width:26px; height:26px; border-radius:6px;
+  border:1px solid var(--line); background:var(--paper-deep);
+  color:var(--ink); font-size:14px; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.satellite-menu-back:hover{ border-color:var(--green); color:var(--green-deep); }
+.satellite-menu-search-label{
+  font-size:12.5px; font-weight:700; color:var(--ink);
+}
+.satellite-menu-search-indexes{
+  display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+  padding:2px 10px 8px;
+}
+.satellite-menu-search-index-label{
+  font-size:11px; color:var(--stone); margin-right:2px;
+}
+.sm-idx-chip{
+  border:1px solid var(--line); background:var(--paper-deep);
+  color:var(--text); font-family:inherit; font-size:11.5px; font-weight:600;
+  padding:4px 9px; border-radius:999px; cursor:pointer;
+}
+.sm-idx-chip:hover{ border-color:var(--green); color:var(--green-deep); }
+.sm-idx-chip.is-active{
+  border-color:var(--green); color:var(--green-deep);
+  background:rgba(31,107,80,.12);
+}
+.sm-year-chips{
+  display:flex; flex-wrap:wrap; gap:4px;
+}
+.sm-year-chip{
+  border:1px solid var(--line); background:var(--paper-deep);
+  color:var(--text); font-family:inherit; font-size:11px; font-weight:600;
+  padding:3px 8px; border-radius:999px; cursor:pointer;
+}
+.sm-year-chip:hover{ border-color:var(--green); color:var(--green-deep); }
+.sm-year-chip.is-active{
+  border-color:var(--green); color:var(--green-deep);
+  background:rgba(31,107,80,.12);
+}
+.satellite-menu-search-input{
+  width:100%; box-sizing:border-box;
+  border:1px solid var(--line); border-radius:8px;
+  background:var(--paper-deep); color:var(--ink);
+  font-family:inherit; font-size:13px; padding:8px 10px;
+}
+.satellite-menu-search-input:focus{
+  outline:none; border-color:var(--green);
+}
+.satellite-menu-search-results{
+  list-style:none; margin:6px 0 0; padding:0;
+  max-height:200px; overflow-y:auto;
+}
+.satellite-menu-search-results li{
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:8px 10px; border-radius:8px; cursor:pointer;
+  font-size:12.5px; color:var(--ink);
+}
+.satellite-menu-search-results li:hover{
+  background:rgba(31,107,80,.08);
+}
+.satellite-menu-search-results li .distrito{
+  font-size:10.5px; color:var(--stone); text-transform:uppercase; letter-spacing:.5px;
+}
+.satellite-menu-search-status{
+  font-size:11px; color:var(--stone);
+  padding:6px 10px;
+}
+.satellite-menu-search-status.is-error{ color:#c0392b; }
+.satellite-menu-search-status.is-loading{ color:var(--green-deep); }
