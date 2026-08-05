@@ -6,7 +6,8 @@
 function checkAllTopology(){
   if(typeof turf === 'undefined') return;
 
-  const polyEntries = [];
+  // 1. Agrupar polígonos por camada para evitar comparações cross-layer
+  const byLayer = new Map(); // layerId → [{entry, gj, bbox}]
   featuresData.forEach(entry=>{
     if(!entry.layer.toGeoJSON) return;
     const gj = entry.layer.toGeoJSON();
@@ -15,39 +16,47 @@ function checkAllTopology(){
     entry.overlapsWith = [];
     let bbox = null;
     try{ bbox = turf.bbox(gj); }catch(err){ bbox = null; }
-    polyEntries.push({ entry, gj, bbox });
+    const rec = { entry, gj, bbox };
+    let arr = byLayer.get(entry.layerId);
+    if(!arr){ arr = []; byLayer.set(entry.layerId, arr); }
+    arr.push(rec);
   });
 
-  for(let i=0; i<polyEntries.length; i++){
-    const a = polyEntries[i];
-    for(let j=i+1; j<polyEntries.length; j++){
-      const b = polyEntries[j];
-      if(a.entry.layerId !== b.entry.layerId) continue;
+  // 2. Só comparar pares dentro da mesma camada (O(n²) reduzido por camada)
+  byLayer.forEach(arr=>{
+    if(arr.length < 2) return; // layer com 1 polígono: sem sobreposições possíveis
+    for(let i=0; i<arr.length; i++){
+      const a = arr[i];
+      for(let j=i+1; j<arr.length; j++){
+        const b = arr[j];
 
-      if(a.bbox && b.bbox){
-        const noOverlap = a.bbox[2] < b.bbox[0] || b.bbox[2] < a.bbox[0] ||
-                           a.bbox[3] < b.bbox[1] || b.bbox[3] < a.bbox[1];
-        if(noOverlap) continue;
-      }
+        if(a.bbox && b.bbox){
+          const noOverlap = a.bbox[2] < b.bbox[0] || b.bbox[2] < a.bbox[0] ||
+                             a.bbox[3] < b.bbox[1] || b.bbox[3] < a.bbox[1];
+          if(noOverlap) continue;
+        }
 
-      let overlaps = false;
-      try{
-        overlaps = turf.booleanOverlap(a.gj, b.gj) ||
-                   turf.booleanContains(a.gj, b.gj) ||
-                   turf.booleanContains(b.gj, a.gj);
-      }catch(err){
-        overlaps = false;
-      }
-      if(overlaps){
-        a.entry.hasOverlap = true; a.entry.overlapsWith.push(b.entry.label);
-        b.entry.hasOverlap = true; b.entry.overlapsWith.push(a.entry.label);
+        let overlaps = false;
+        try{
+          overlaps = turf.booleanOverlap(a.gj, b.gj) ||
+                     turf.booleanContains(a.gj, b.gj) ||
+                     turf.booleanContains(b.gj, a.gj);
+        }catch(err){
+          overlaps = false;
+        }
+        if(overlaps){
+          a.entry.hasOverlap = true; a.entry.overlapsWith.push(b.entry.label);
+          b.entry.hasOverlap = true; b.entry.overlapsWith.push(a.entry.label);
+        }
       }
     }
-  }
+  });
 
-  polyEntries.forEach(({entry})=>{
-    applyTopologyVisual(entry);
-    refreshStatsIfOpen(entry);
+  featuresData.forEach(entry=>{
+    if(entry.hasOverlap){
+      applyTopologyVisual(entry);
+      refreshStatsIfOpen(entry);
+    }
   });
 
   refreshFeatList();
@@ -75,7 +84,9 @@ function updateTopologyWarnButton(){
   const btn = document.getElementById('btn-topology-warn-toggle');
   if(!btn) return;
   let hasAnyOverlap = false;
-  featuresData.forEach(e => { if(e.hasOverlap) hasAnyOverlap = true; });
+  for(const e of featuresData.values()){
+    if(e.hasOverlap){ hasAnyOverlap = true; break; }
+  }
   btn.classList.toggle('hidden', !hasAnyOverlap);
   btn.classList.toggle('has-overlap-warn', hasAnyOverlap && topologyWarningsEnabled);
   btn.classList.toggle('is-active', hasAnyOverlap && !topologyWarningsEnabled);
@@ -116,5 +127,9 @@ window.applyTopologyVisual = applyTopologyVisual;
 window.toggleTopologyWarnings = toggleTopologyWarnings;
 window.updateTopologyWarnButton = updateTopologyWarnButton;
 window.dataGisMarkerIcon = dataGisMarkerIcon;
+Object.defineProperty(window, 'topologyWarningsEnabled', {
+  get: function(){ return topologyWarningsEnabled; },
+  set: function(v){ topologyWarningsEnabled = v; }
+});
 
 })();

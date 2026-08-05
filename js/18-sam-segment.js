@@ -732,6 +732,8 @@
       hasOverlap: false, overlapsWith: [], showMeasures: false, measureTooltips: []
     };
     if(typeof featuresData !== 'undefined') featuresData.set(id, entry);
+    if(typeof addToLayerIndex === 'function') addToLayerIndex(entry);
+    if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
     if(typeof markProjectDirty === 'function') markProjectDirty();
     if(typeof styleLayerDefault === 'function') styleLayerDefault(polygon, layerId);
     if(typeof bindFeatureContextMenu === 'function') bindFeatureContextMenu(entry);

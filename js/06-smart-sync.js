@@ -540,6 +540,8 @@
           };
           entry.props[S.keySigField] = r.keyStr;
           featuresData.set(id, entry);
+          if(typeof addToLayerIndex === 'function') addToLayerIndex(entry);
+          if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
           styleLayerDefault(marker, S.layerId);
           created++;
           hashesToStore[r.keyStr] = r.hash;

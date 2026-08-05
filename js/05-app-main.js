@@ -20,11 +20,11 @@ let layerCounter = 0;
 let activeLayerId = 0;
 let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
 let layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
-let layerVisible = new Map([[0, true]]);
+let layerVisible = new Map();
 
 /* Ordem de empilhamento das camadas no mapa (índice 0 = topo/mais à frente,
    último índice = fundo/mais atrás). Controlada ao arrastar as linhas no painel. */
-let layerOrder = [0];
+let layerOrder = [];
 let layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
 
 let featureCounter = 0;
@@ -61,8 +61,8 @@ function createWorkspaceState(id, name){
     activeLayerId: 0,
     symbologyLayerId: null,
     layers: [],
-    layerVisible: new Map([[0, true]]),
-    layerOrder: [0],
+    layerVisible: new Map(),
+    layerOrder: [],
     layerPanes: new Map(),
     featureCounter: 0,
     featuresData: new Map(),
@@ -96,7 +96,18 @@ function cloneConfig(source){
   };
 }
 
+/* ---------- debounce para persistCurrentWorkspaceState ----------
+   markProjectDirty() é chamado ~40 vezes durante operações rápidas (criar feature,
+   editar atributos, etc.). Clonar config+layers+maps a cada chamada é desnecessário.
+   Debounce: espera 150ms after the last call before actually persisting. */
+let _persistTimer = null;
 function persistCurrentWorkspaceState(){
+  if(!currentWorkspace) return;
+  if(_persistTimer){ clearTimeout(_persistTimer); }
+  _persistTimer = setTimeout(_doPersistNow, 150);
+}
+function _doPersistNow(){
+  _persistTimer = null;
   if(!currentWorkspace) return;
   currentWorkspace.config = cloneConfig(config);
   currentWorkspace.layers = layers.map(layer=>({
@@ -123,8 +134,6 @@ function persistCurrentWorkspaceState(){
   };
   currentWorkspace.activeBaseLayerKey = activeBaseLayerKey;
 
-  // GANCHO Layouts: se o módulo js/09-layouts.js estiver carregado, avisa-o
-  // para resincronizar os frames que estejam a mostrar este workspace.
   if(typeof window.notifyLayoutsWorkspaceChanged === 'function'){
     window.notifyLayoutsWorkspaceChanged(currentWorkspace);
   }
@@ -171,8 +180,8 @@ function applyWorkspaceState(workspace){
   layerCounter = Number.isFinite(workspace.layerCounter) ? workspace.layerCounter : 0;
   activeLayerId = Number.isFinite(workspace.activeLayerId) ? workspace.activeLayerId : 0;
   symbologyLayerId = workspace.symbologyLayerId || null;
-  layerVisible = workspace.layerVisible instanceof Map ? new Map(workspace.layerVisible) : new Map([[0, true]]);
-  layerOrder = Array.isArray(workspace.layerOrder) ? workspace.layerOrder.slice() : [0];
+  layerVisible = workspace.layerVisible instanceof Map ? new Map(workspace.layerVisible) : new Map();
+  layerOrder = Array.isArray(workspace.layerOrder) ? workspace.layerOrder.slice() : [];
   layerPanes = workspace.layerPanes instanceof Map ? new Map(workspace.layerPanes) : new Map();
   featureCounter = Number.isFinite(workspace.featureCounter) ? workspace.featureCounter : 0;
   featuresData = workspace.featuresData instanceof Map ? workspace.featuresData : new Map();
@@ -858,6 +867,8 @@ function bindFeatureEditTracking(entry){
    estado da app — usado ao refazer uma criação ou desfazer uma remoção */
 function historyAddFeature(layer, entry){
   featuresData.set(entry.id, entry);
+  if(typeof addToLayerIndex === 'function') addToLayerIndex(entry);
+  if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
   if(!drawnGroup.hasLayer(layer)) drawnGroup.addLayer(layer);
   if(entry.fid) teamState.deletedFids.delete(entry.fid);
   markProjectDirty();
@@ -871,6 +882,8 @@ function historyRemoveFeature(layer, entry){
   clearPolygonMeasures(entry);
   if(entry.fid) teamState.deletedFids.set(entry.fid, Date.now());
   featuresData.delete(entry.id);
+  if(typeof removeFromLayerIndex === 'function') removeFromLayerIndex(entry);
+  if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
   drawnGroup.removeLayer(layer);
   markProjectDirty();
   refreshFeatList();
@@ -978,6 +991,8 @@ function onFeatureCreated(layer){
 
   const entry = {layer, props:{}, id, fid: genFid(), updatedAt: Date.now(), label:'Geometria '+featureCounter, geomType: config.geometryType, layerId: activeLayerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
   featuresData.set(id, entry);
+  if(typeof addToLayerIndex === 'function') addToLayerIndex(entry);
+  if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
   markProjectDirty();
 
   styleLayerDefault(layer, activeLayerId);
@@ -1004,8 +1019,10 @@ function onFeatureRemoved(layer){
   if(entry){
     if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
     clearPolygonMeasures(entry);
+    if(typeof removeFromLayerIndex === 'function') removeFromLayerIndex(entry);
   }
   featuresData.delete(id);
+  if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
   markProjectDirty();
   refreshFeatList();
   checkAllTopology(); // remover uma geometria pode resolver sobreposições de outras

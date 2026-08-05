@@ -13,6 +13,8 @@ let bufferLayerGroup = null;
 let analysisSelection = new Set();   // ids (L.Util.stamp) das geometrias incluídas no buffer
 window.lastBufferFeatures = window.lastBufferFeatures || [];  // resultado do último buffer gerado, para exportação
 let bufferDebounceTimer = null;
+let _analysisFeatureCache = null;   // cache de buildAnalysisFeatureList (invalidado a cada build)
+let _analysisFeatureCacheVersion = 0;
 
 // ---------- overlay: intersect / union / difference ----------
 let intersectLayerGroup = null, unionLayerGroup = null, differenceLayerGroup = null;
@@ -25,13 +27,19 @@ window.lastUnionFeatures = window.lastUnionFeatures || [];
 window.lastDifferenceFeatures = window.lastDifferenceFeatures || [];
 
 function buildAnalysisFeatureList(){
+  if(_analysisFeatureCache) return _analysisFeatureCache;
   const arr = [];
   featuresData.forEach(entry=>{
     const gj = entry.layer.toGeoJSON();
     gj.properties = {...entry.props, _origem: entry.label};
     arr.push({id: entry.id, label: entry.label, geojson: gj, layerId: entry.layerId});
   });
+  _analysisFeatureCache = arr;
   return arr;
+}
+
+function invalidateAnalysisCache(){
+  _analysisFeatureCache = null;
 }
 
 /* ============================================================
@@ -77,7 +85,25 @@ function renderAnalysisGroupedList(list, items, options){
     list.appendChild(empty);
     return;
   }
+
+  if(!list._delegated){
+    list._delegated = true;
+    list.addEventListener('change', (e)=>{
+      const input = e.target.closest('input[data-id]');
+      if(!input) return;
+      const id = Number(input.dataset.id);
+      const opts = list._analysisOptions;
+      const currentItems = list._analysisItems;
+      if(!opts || !currentItems) return;
+      const item = currentItems.find(it=>it.id === id);
+      if(item) opts.onChange(item, input.checked);
+    });
+  }
+  list._analysisOptions = options;
+  list._analysisItems = items;
+
   const groups = groupAnalysisItemsByLayer(items);
+  const frag = document.createDocumentFragment();
   groups.forEach(group=>{
     const groupLi = document.createElement('li');
     groupLi.className = 'analysis-geom-group';
@@ -112,12 +138,12 @@ function renderAnalysisGroupedList(list, items, options){
       span.textContent = it.label;
       label.append(input, span);
       li.appendChild(label);
-      input.addEventListener('change', e=>{ options.onChange(it, e.target.checked); });
       innerUl.appendChild(li);
     });
     groupLi.appendChild(innerUl);
-    list.appendChild(groupLi);
+    frag.appendChild(groupLi);
   });
+  list.appendChild(frag);
 }
 
 // aplica a classe visual (sucesso/aviso) às mensagens de estado das 4
@@ -142,6 +168,7 @@ function openAnalysisPanel(){
     showAppAlert('Ainda não desenhaste nenhuma geometria para analisar. Desenha pelo menos uma antes de abrir a análise espacial.');
     return;
   }
+  _analysisFeatureCache = null; // invalida cache antes de usar
   document.getElementById('analysis-overlay').classList.add('open');
   if(!analysisMap){
     initAnalysisMap();
@@ -201,15 +228,19 @@ document.addEventListener('keydown', e=>{
   if(e.key === 'Escape') closeMunicipiosPanel();
 });
 
+let _municipioSearchTimer = null;
 document.getElementById('municipios-search').addEventListener('input', e=>{
-  const q = normalizeAccents(e.target.value.trim());
-  const resultsEl = document.getElementById('municipios-results');
-  resultsEl.innerHTML = '';
-  if(q.length === 0) return;
+  clearTimeout(_municipioSearchTimer);
+  const val = e.target.value;
+  _municipioSearchTimer = setTimeout(()=>{
+    const q = normalizeAccents(val.trim());
+    const resultsEl = document.getElementById('municipios-results');
+    resultsEl.innerHTML = '';
+    if(q.length === 0) return;
 
-  const matches = MUNICIPIOS_INDEX
-    .filter(it => normalizeAccents(it.m).includes(q))
-    .slice(0, 8);
+    const matches = MUNICIPIOS_INDEX
+      .filter(it => normalizeAccents(it.m).includes(q))
+      .slice(0, 8);
 
   if(matches.length === 0){
     const li = document.createElement('li');
@@ -225,6 +256,7 @@ document.getElementById('municipios-search').addEventListener('input', e=>{
     li.addEventListener('click', ()=> loadMunicipioBoundary(it));
     resultsEl.appendChild(li);
   });
+  }, 180);
 });
 
 async function loadMunicipioBoundary(entry){
@@ -446,8 +478,8 @@ function initAnalysisMap(){
 function syncAnalysisSourceLayer(){
   analysisSourceLayer.clearLayers();
   const items = buildAnalysisFeatureList();
-  items.forEach(it => analysisSourceLayer.addData(it.geojson));
   if(items.length){
+    analysisSourceLayer.addData({type:'FeatureCollection', features: items.map(it=>it.geojson)});
     try{ analysisMap.fitBounds(analysisSourceLayer.getBounds(), {padding:[30,30], maxZoom:17}); }
     catch(err){ /* uma única geometria muito pequena pode não ter bounds válidos */ }
   }
@@ -456,11 +488,12 @@ function syncAnalysisSourceLayer(){
 function renderAnalysisGeomList(){
   const list = document.getElementById('analysis-geom-list');
   const items = buildAnalysisFeatureList();
+  const itemIds = new Set(items.map(it=>it.id));
 
   // por defeito, qualquer geometria nova entra selecionada; remove as que já não existem
   items.forEach(it => analysisSelection.add(it.id));
   [...analysisSelection].forEach(id=>{
-    if(!items.find(it=>it.id===id)) analysisSelection.delete(id);
+    if(!itemIds.has(id)) analysisSelection.delete(id);
   });
 
   renderAnalysisGroupedList(list, items, {
@@ -479,10 +512,11 @@ function renderCheckboxGeomList(listId, selectionSet){
   const list = document.getElementById(listId);
   if(!list) return;
   const items = buildAnalysisFeatureList();
+  const itemIds = new Set(items.map(it=>it.id));
 
   items.forEach(it => selectionSet.add(it.id));
   [...selectionSet].forEach(id=>{
-    if(!items.find(it=>it.id===id)) selectionSet.delete(id);
+    if(!itemIds.has(id)) selectionSet.delete(id);
   });
 
   renderAnalysisGroupedList(list, items, {
@@ -498,12 +532,13 @@ function renderCheckboxGeomList(listId, selectionSet){
 // listas da ferramenta difference: uma geometria base (radio) + várias a subtrair (checkboxes)
 function renderDiffLists(){
   const items = buildAnalysisFeatureList();
+  const itemIds = new Set(items.map(it=>it.id));
 
-  if(!diffBaseId || !items.find(it=>it.id === diffBaseId)){
+  if(!diffBaseId || !itemIds.has(diffBaseId)){
     diffBaseId = items.length ? items[0].id : null;
   }
   [...diffSubtractSelection].forEach(id=>{
-    if(!items.find(it=>it.id===id) || id===diffBaseId) diffSubtractSelection.delete(id);
+    if(!itemIds.has(id) || id===diffBaseId) diffSubtractSelection.delete(id);
   });
 
   const baseList = document.getElementById('analysis-geom-list-diff-base');
@@ -691,6 +726,7 @@ function applyBuffer(){
 }
 
 /* --- exposição global --- */
+window.invalidateAnalysisCache = invalidateAnalysisCache;
 window.buildAnalysisFeatureList = buildAnalysisFeatureList;
 window.groupAnalysisItemsByLayer = groupAnalysisItemsByLayer;
 window.renderAnalysisGroupedList = renderAnalysisGroupedList;

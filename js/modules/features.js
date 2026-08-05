@@ -4,6 +4,29 @@ window.attrTableLayerId = null; // qual camada a tabela de atributos está a mos
 window.formIsNewFeature = false;
 const GEOM_TYPE_LABELS = {Point:'Ponto', LineString:'Linha', Polygon:'Polígono'};
 
+/* ---------- Índice layerId→Set<featureId> ----------
+   Permite consultas O(1) por featureId de uma camada, eliminando
+   scans lineares repetidos do featuresData. */
+const _layerFeatureIndex = new Map(); // layerId → Set<id>
+
+function addToLayerIndex(entry){
+  if(entry == null) return;
+  let s = _layerFeatureIndex.get(entry.layerId);
+  if(!s){ s = new Set(); _layerFeatureIndex.set(entry.layerId, s); }
+  s.add(entry.id);
+}
+
+function removeFromLayerIndex(entry){
+  if(entry == null) return;
+  const s = _layerFeatureIndex.get(entry.layerId);
+  if(s) s.delete(entry.id);
+}
+
+function getFeatureIdsForLayer(layerId){
+  return _layerFeatureIndex.get(layerId) || _emptySet;
+}
+const _emptySet = new Set();
+
 function openAttrForm(entry, isNew){
   formEntryRef = entry;
   formIsNewFeature = !!isNew;
@@ -60,8 +83,13 @@ document.getElementById('feat-form-save').addEventListener('click', ()=>{
 /* ============================================================
    LISTA DE GEOMETRIAS (sidebar)
    ============================================================ */
+let _refreshFeatListTimer = null;
 function refreshFeatList(){
-  updateFeatSummary();
+  if(_refreshFeatListTimer) return;
+  _refreshFeatListTimer = requestAnimationFrame(()=>{
+    _refreshFeatListTimer = null;
+    updateFeatSummary();
+  });
 }
 
 function updateFeatSummary(){
@@ -97,9 +125,8 @@ function getLayerSchema(layerId){
 }
 
 function countLayerFeatures(layerId){
-  let n = 0;
-  featuresData.forEach(entry=>{ if(entry.layerId === layerId) n++; });
-  return n;
+  const s = _layerFeatureIndex.get(layerId);
+  return s ? s.size : 0;
 }
 
 /* ---------- empilhamento (z-order) das camadas no mapa ----------
@@ -200,17 +227,18 @@ function renderLayersPanel(){
   const list = document.getElementById('layers-list');
   const allIds = layers.map(l=>l.id).concat(config.geometryType ? [activeLayerId] : []);
 
-  // mantém a ordem já definida pelo utilizador (layerOrder) e acrescenta, no topo,
-  // quaisquer camadas novas que ainda não lá estejam.
   allIds.forEach(id=>{ if(!layerOrder.includes(id)) layerOrder.unshift(id); });
   layerOrder = layerOrder.filter(id=>allIds.includes(id));
+
+  const _counts = new Map();
+  featuresData.forEach(e=>{ _counts.set(e.layerId, (_counts.get(e.layerId)||0)+1); });
 
   list.innerHTML = layerOrder.map(id=>{
     const schema = getLayerSchema(id);
     if(!schema) return '';
     const visible = layerVisible.get(id) !== false;
     const isActive = id === activeLayerId;
-    const count = countLayerFeatures(id);
+    const count = _counts.get(id) || 0;
     const rowHTML = `
       <li class="layer-row ${isActive ? 'is-active' : ''} ${visible ? '' : 'is-hidden-layer'}" data-layer-id="${id}" draggable="true" title="Arrasta para reordenar · clica para tornar ativa (editável) · botão direito para mais opções">
         <span class="layer-drag-handle" title="Arrastar para reordenar">⠿</span>
@@ -218,7 +246,6 @@ function renderLayersPanel(){
         ${isActive ? '<span class="layer-active-tag">ativa</span>' : ''}
       </li>`;
     if(!isActive) return rowHTML;
-    // camada ativa: mostra por baixo uma mini-legenda com as cores atuais; clicar nela abre a Simbologia
     const allSwatches = layerSwatchColors(schema);
     const hasLabels = allSwatches.some(s => s.label != null);
     const LEGEND_LIMIT = 25;
@@ -244,37 +271,42 @@ function renderLayersPanel(){
     return rowHTML + legendHTML;
   }).join('') || '';
 
-  list.querySelectorAll('.layer-legend-row').forEach(row=>{
-    row.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      symbologyLayerId = Number(row.dataset.legendFor);
-      renderSymbologyPanel();
+  if(!list._delegated){
+    list._delegated = true;
+    list.addEventListener('click', (e)=>{
+      const legendRow = e.target.closest('.layer-legend-row');
+      if(legendRow){
+        e.stopPropagation();
+        symbologyLayerId = Number(legendRow.dataset.legendFor);
+        renderSymbologyPanel();
+        return;
+      }
+      const row = e.target.closest('.layer-row');
+      if(row) switchActiveLayer(Number(row.dataset.layerId));
     });
-  });
-
-  list.querySelectorAll('.layer-row').forEach(row=>{
-    const id = Number(row.dataset.layerId);
-    const isActive = id === activeLayerId;
-    row.addEventListener('click', ()=>{
-      switchActiveLayer(id);
-    });
-    row.addEventListener('contextmenu', (e)=>{
+    list.addEventListener('contextmenu', (e)=>{
+      const row = e.target.closest('.layer-row');
+      if(!row) return;
       e.preventDefault();
-      openLayerContextMenu(e.clientX, e.clientY, id);
+      openLayerContextMenu(e.clientX, e.clientY, Number(row.dataset.layerId));
     });
-
-    row.addEventListener('dragstart', (e)=>{
-      draggedLayerRowId = id;
+    list.addEventListener('dragstart', (e)=>{
+      const row = e.target.closest('.layer-row');
+      if(!row) return;
+      draggedLayerRowId = Number(row.dataset.layerId);
       row.classList.add('is-dragging');
       e.dataTransfer.effectAllowed = 'move';
-      try{ e.dataTransfer.setData('text/plain', String(id)); }catch(err){ /* alguns browsers exigem isto mesmo sem uso */ }
+      try{ e.dataTransfer.setData('text/plain', row.dataset.layerId); }catch(err){}
     });
-    row.addEventListener('dragend', ()=>{
+    list.addEventListener('dragend', ()=>{
       draggedLayerRowId = null;
       list.querySelectorAll('.layer-row').forEach(r=>r.classList.remove('is-dragging','drag-over-top','drag-over-bottom'));
     });
-    row.addEventListener('dragover', (e)=>{
-      if(draggedLayerRowId === null || draggedLayerRowId === id) return;
+    list.addEventListener('dragover', (e)=>{
+      const row = e.target.closest('.layer-row');
+      if(!row || draggedLayerRowId === null) return;
+      const targetId = Number(row.dataset.layerId);
+      if(draggedLayerRowId === targetId) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
       const rect = row.getBoundingClientRect();
@@ -282,19 +314,22 @@ function renderLayersPanel(){
       row.classList.toggle('drag-over-top', before);
       row.classList.toggle('drag-over-bottom', !before);
     });
-    row.addEventListener('dragleave', ()=>{
-      row.classList.remove('drag-over-top','drag-over-bottom');
+    list.addEventListener('dragleave', (e)=>{
+      const row = e.target.closest('.layer-row');
+      if(row) row.classList.remove('drag-over-top','drag-over-bottom');
     });
-    row.addEventListener('drop', (e)=>{
+    list.addEventListener('drop', (e)=>{
+      const row = e.target.closest('.layer-row');
+      if(!row) return;
       e.preventDefault();
-      const targetId = id;
+      const targetId = Number(row.dataset.layerId);
       row.classList.remove('drag-over-top','drag-over-bottom');
       if(draggedLayerRowId === null || draggedLayerRowId === targetId) return;
       const rect = row.getBoundingClientRect();
       const before = (e.clientY - rect.top) < rect.height / 2;
       reorderLayer(draggedLayerRowId, targetId, before);
     });
-  });
+  }
 
   renderSymbologyPanel();
 }
@@ -360,9 +395,21 @@ function switchActiveLayer(id){
 /* bloqueia no Geoman (pmIgnore) todas as geometrias que não pertençam à camada
    ativa, para que criar/editar/apagar só funcione na camada selecionada. */
 function refreshLayerEditability(){
-  featuresData.forEach(entry=>{
-    if(entry.layer.options) entry.layer.options.pmIgnore = (entry.layerId !== activeLayerId);
-  });
+  if(typeof getFeatureIdsForLayer === 'function'){
+    // Bloqueia tudo de uma vez, depois desbloqueia só a camada ativa
+    featuresData.forEach(entry=>{
+      if(entry.layer.options) entry.layer.options.pmIgnore = true;
+    });
+    const activeIds = getFeatureIdsForLayer(activeLayerId);
+    activeIds.forEach(id=>{
+      const entry = featuresData.get(id);
+      if(entry && entry.layer.options) entry.layer.options.pmIgnore = false;
+    });
+  } else {
+    featuresData.forEach(entry=>{
+      if(entry.layer.options) entry.layer.options.pmIgnore = (entry.layerId !== activeLayerId);
+    });
+  }
   if(!map || !map.pm) return;
   // força o Geoman a reavaliar quais as geometrias elegíveis para cada modo,
   // respeitando o pmIgnore que acabámos de definir
@@ -374,8 +421,10 @@ function refreshLayerEditability(){
 function toggleLayerVisibility(layerId){
   const nextVisible = !(layerVisible.get(layerId) !== false);
   layerVisible.set(layerId, nextVisible);
-  featuresData.forEach(entry=>{
-    if(entry.layerId !== layerId) return;
+  const ids = getFeatureIdsForLayer(layerId);
+  ids.forEach(id=>{
+    const entry = featuresData.get(id);
+    if(!entry) return;
     if(nextVisible){
       drawnGroup.addLayer(entry.layer);
       if(entry.showMeasures) renderPolygonMeasures(entry);
@@ -392,13 +441,16 @@ function removeLayerEntirely(layerId){
   const label = schema ? (schema.name || 'Shape sem nome') : 'esta camada';
   if(!requestConfirmation(`Remover a camada "${label}" e todas as suas geometrias? Esta ação não pode ser desfeita.`)) return;
 
-  featuresData.forEach((entry, key)=>{
-    if(entry.layerId !== layerId) return;
+  const ids = getFeatureIdsForLayer(layerId);
+  ids.forEach(id=>{
+    const entry = featuresData.get(id);
+    if(!entry) return;
     if(entry.fid){ teamState.deletedFids.set(entry.fid, Date.now()); }
     clearPolygonMeasures(entry);
     drawnGroup.removeLayer(entry.layer);
-    featuresData.delete(key);
+    featuresData.delete(id);
   });
+  _layerFeatureIndex.delete(layerId);
 
   const idx = layers.findIndex(l=>l.id === layerId);
   if(idx !== -1) layers.splice(idx, 1);
@@ -562,8 +614,10 @@ function togglePolygonMeasures(entry){
 /* dá zoom/enquadra o mapa em todas as geometrias de uma camada */
 function zoomToLayer(layerId){
   const group = L.featureGroup();
-  featuresData.forEach(entry=>{
-    if(entry.layerId === layerId) group.addLayer(entry.layer);
+  const ids = getFeatureIdsForLayer(layerId);
+  ids.forEach(id=>{
+    const entry = featuresData.get(id);
+    if(entry) group.addLayer(entry.layer);
   });
   if(group.getLayers().length === 0){
     showAppAlert('Esta camada ainda não tem geometrias para dar zoom.');
@@ -762,6 +816,8 @@ function fmtBreakNumber(n){
    na mini-legenda por baixo da camada ativa no painel). Suporta 3 modos: cor única, valores
    únicos (uma cor por cada valor distinto de qualquer atributo) e graduado (classes numéricas
    com 4 métodos: manual, quantis, intervalos iguais, natural breaks/Jenks). */
+let _lastSymbRenderId = null;
+let _lastSymbRenderSig = '';
 function renderSymbologyPanel(){
   const row = document.getElementById('shape-color-attr-row');
   const nameLabel = document.getElementById('symbology-layer-name');
@@ -769,15 +825,22 @@ function renderSymbologyPanel(){
 
   if(symbologyLayerId === null){
     row.classList.add('hidden');
+    _lastSymbRenderId = null;
     return;
   }
 
   const schema = getLayerSchema(symbologyLayerId);
-  if(!schema){ // a camada foi entretanto removida
+  if(!schema){
     symbologyLayerId = null;
     row.classList.add('hidden');
+    _lastSymbRenderId = null;
     return;
   }
+
+  const sig = symbologyLayerId + '|' + (schema.symbology && schema.symbology.mode) + '|' + (schema.symbology && schema.symbology.attr) + '|' + (schema.symbology && schema.symbology.classCount) + '|' + (schema.opacity||0) + '|' + (schema.symbology && JSON.stringify(schema.symbology.uniqueValues && schema.symbology.uniqueValues.length)) + '|' + (schema.symbology && JSON.stringify(schema.symbology.breaks && schema.symbology.breaks.length));
+  if(symbologyLayerId === _lastSymbRenderId && sig === _lastSymbRenderSig) return;
+  _lastSymbRenderId = symbologyLayerId;
+  _lastSymbRenderSig = sig;
 
   row.classList.remove('hidden');
   nameLabel.textContent = `Simbologia — ${schema.name || 'Shape sem nome'}`;
@@ -786,7 +849,6 @@ function renderSymbologyPanel(){
   const allAttrs = schema.mode === 'atributos' ? (schema.attributes || []) : [];
   const numericAttrs = allAttrs.filter(a=>a.type === 'numero');
   const canGraduate = numericAttrs.length > 0;
-  // se o modo guardado deixou de ser possível (ex: já não há atributos numéricos), recua para "unicos"/"simples"
   if(sym.mode === 'graduado' && !canGraduate) sym.mode = allAttrs.length ? 'unicos' : 'simples';
   if(sym.mode === 'unicos' && allAttrs.length === 0) sym.mode = 'simples';
 
@@ -866,58 +928,47 @@ function renderSymbologyPanel(){
 
   body.innerHTML = tabsHTML + modeBodyHTML + opacityHTML;
 
-  document.getElementById('symbology-mode-tabs').querySelectorAll('[data-sym-mode]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      if(btn.disabled) return;
-      setLayerSymbologyMode(symbologyLayerId, btn.dataset.symMode);
-      renderSymbologyPanel();
-    });
-  });
-
-  document.getElementById('shape-opacity-input').addEventListener('input', (e)=>{
-    document.getElementById('shape-opacity-value').textContent = e.target.value + '%';
-    setLayerOpacity(symbologyLayerId, e.target.value);
-  });
-
-  if(sym.mode === 'simples'){
-    document.getElementById('shape-base-color-input').addEventListener('input', (e)=>{
-      setLayerBaseColor(symbologyLayerId, e.target.value);
-    });
-  } else if(sym.mode === 'unicos'){
-    document.getElementById('symbology-attr-select').addEventListener('change', (e)=>{
-      setLayerSymbologyUniqueAttr(symbologyLayerId, e.target.value);
-      renderSymbologyPanel();
-    });
-    document.querySelectorAll('[data-unique-idx]').forEach(inp=>{
-      inp.addEventListener('input', (e)=>{
-        const item = sym.uniqueValues[Number(inp.dataset.uniqueIdx)];
-        setUniqueValueColor(symbologyLayerId, item.value, e.target.value);
-      });
-    });
-  } else if(sym.mode === 'graduado'){
-    document.getElementById('symbology-attr-select').addEventListener('change', (e)=>{
-      setLayerSymbologyGraduatedAttr(symbologyLayerId, e.target.value);
-      renderSymbologyPanel();
-    });
-    document.getElementById('symbology-method-select').addEventListener('change', (e)=>{
-      setLayerSymbologyMethod(symbologyLayerId, e.target.value);
-      renderSymbologyPanel();
-    });
-    document.getElementById('symbology-classcount-input').addEventListener('change', (e)=>{
-      const n = Math.max(2, Math.min(12, parseInt(e.target.value, 10) || sym.classCount));
-      setLayerSymbologyClassCount(symbologyLayerId, n);
-      renderSymbologyPanel();
-    });
-    document.querySelectorAll('[data-break-color-idx]').forEach(inp=>{
-      inp.addEventListener('input', (e)=>{
-        setGraduatedBreakColor(symbologyLayerId, Number(inp.dataset.breakColorIdx), e.target.value);
-      });
-    });
-    document.querySelectorAll('[data-break-bound-idx]').forEach(inp=>{
-      inp.addEventListener('change', (e)=>{
-        setGraduatedBreakBound(symbologyLayerId, Number(inp.dataset.breakBoundIdx), e.target.value);
+  if(!body._delegated){
+    body._delegated = true;
+    body.addEventListener('click', (e)=>{
+      const tab = e.target.closest('[data-sym-mode]');
+      if(tab && !tab.disabled){
+        setLayerSymbologyMode(symbologyLayerId, tab.dataset.symMode);
         renderSymbologyPanel();
-      });
+      }
+    });
+    body.addEventListener('input', (e)=>{
+      if(e.target.id === 'shape-opacity-input'){
+        const valEl = document.getElementById('shape-opacity-value');
+        if(valEl) valEl.textContent = e.target.value + '%';
+        setLayerOpacity(symbologyLayerId, e.target.value);
+      } else if(e.target.id === 'shape-base-color-input'){
+        setLayerBaseColor(symbologyLayerId, e.target.value);
+      } else if(e.target.dataset.uniqueIdx != null){
+        const curSym = ensureSymbology(getLayerSchema(symbologyLayerId));
+        const item = curSym.uniqueValues[Number(e.target.dataset.uniqueIdx)];
+        if(item) setUniqueValueColor(symbologyLayerId, item.value, e.target.value);
+      } else if(e.target.dataset.breakColorIdx != null){
+        setGraduatedBreakColor(symbologyLayerId, Number(e.target.dataset.breakColorIdx), e.target.value);
+      }
+    });
+    body.addEventListener('change', (e)=>{
+      if(e.target.id === 'symbology-attr-select'){
+        const curSym = ensureSymbology(getLayerSchema(symbologyLayerId));
+        if(curSym.mode === 'unicos') setLayerSymbologyUniqueAttr(symbologyLayerId, e.target.value);
+        else setLayerSymbologyGraduatedAttr(symbologyLayerId, e.target.value);
+        renderSymbologyPanel();
+      } else if(e.target.id === 'symbology-method-select'){
+        setLayerSymbologyMethod(symbologyLayerId, e.target.value);
+        renderSymbologyPanel();
+      } else if(e.target.id === 'symbology-classcount-input'){
+        const n = Math.max(2, Math.min(12, parseInt(e.target.value, 10) || 5));
+        setLayerSymbologyClassCount(symbologyLayerId, n);
+        renderSymbologyPanel();
+      } else if(e.target.dataset.breakBoundIdx != null){
+        setGraduatedBreakBound(symbologyLayerId, Number(e.target.dataset.breakBoundIdx), e.target.value);
+        renderSymbologyPanel();
+      }
     });
   }
 }
@@ -956,11 +1007,76 @@ function formatAttrCellHtml(attr, rawValue){
   return { attrs: `data-type="texto"`, html: `<span title="${text}">${text}</span>` };
 }
 
+const ATTR_TABLE_PAGE_SIZE = 200;
+let _attrTableEntries = [];
+let _attrTablePage = 0;
+let _attrTableSchema = null;
+
+function _buildAttrRow(entry, i, attrCols, schema, isActiveLayer){
+  const attrCells = attrCols.map(a=>{
+    const { attrs, html } = formatAttrCellHtml(a, entry.props[a.name]);
+    return `<td ${attrs}>${html}</td>`;
+  }).join('');
+  const showOverlap = entry.hasOverlap && window.topologyWarningsEnabled;
+  const overlapBadge = showOverlap
+    ? `<span class="overlap-badge" title="Esta geometria sobrepõe-se a outra">${ATTR_ACTION_ICONS.overlap}</span>`
+    : '';
+  return `<tr data-row-id="${entry.id}" class="${showOverlap ? 'has-overlap' : ''}">` +
+    `<td class="id-cell"><span class="id-cell-inner"><span class="id-badge">${i}</span>${overlapBadge}</span></td>` +
+    attrCells +
+    `<td class="actions-cell">` +
+      `<button data-highlight title="Realçar e mostrar popup">${ATTR_ACTION_ICONS.highlight}</button>` +
+      `<button data-focus title="Centrar no mapa">${ATTR_ACTION_ICONS.focus}</button>` +
+      `${(schema.mode === 'atributos' && isActiveLayer) ? `<button data-edit title="Editar atributos">${ATTR_ACTION_ICONS.edit}</button>` : ''}` +
+      `<button data-delete class="danger" title="Apagar">${ATTR_ACTION_ICONS.delete}</button>` +
+    `</td></tr>`;
+}
+
+function _renderAttrPage(page){
+  const body = document.getElementById('attr-table-body');
+  if(!body) return;
+  const schema = _attrTableSchema || {mode:null, attributes:[]};
+  const isActiveLayer = attrTableLayerId === activeLayerId;
+  const attrCols = schema.mode === 'atributos' ? schema.attributes : [];
+  const start = page * ATTR_TABLE_PAGE_SIZE;
+  const end = Math.min(start + ATTR_TABLE_PAGE_SIZE, _attrTableEntries.length);
+
+  if(page === 0){
+    body.innerHTML = '';
+  }
+
+  const frag = document.createDocumentFragment();
+  const wrapper = document.createElement('tbody');
+  let rows = '';
+  for(let idx = start; idx < end; idx++){
+    rows += _buildAttrRow(_attrTableEntries[idx], idx + 1, attrCols, schema, isActiveLayer);
+  }
+  wrapper.innerHTML = rows;
+  while(wrapper.firstChild) frag.appendChild(wrapper.firstChild);
+
+  const loadMore = body.querySelector('.attr-load-more-row');
+  if(loadMore) loadMore.remove();
+  body.appendChild(frag);
+
+  _attrTablePage = page;
+
+  if(end < _attrTableEntries.length){
+    const remaining = _attrTableEntries.length - end;
+    const loadMoreTr = document.createElement('tr');
+    loadMoreTr.className = 'attr-load-more-row';
+    loadMoreTr.innerHTML = `<td colspan="${attrCols.length + 2}" style="text-align:center; padding:10px;">` +
+      `<button class="attr-load-more-btn" style="padding:6px 18px; border:1px solid var(--border); border-radius:6px; background:var(--paper); cursor:pointer; font-size:13px; color:var(--text);">` +
+      `Mostrar mais (${remaining} restantes)</button></td>`;
+    body.appendChild(loadMoreTr);
+  }
+}
+
 function renderAttrTable(layerId){
   if(layerId === undefined || layerId === null) layerId = activeLayerId;
   attrTableLayerId = layerId;
 
   const schema = getLayerSchema(layerId) || {name:null, mode:null, attributes:[]};
+  _attrTableSchema = schema;
   const isActiveLayer = layerId === activeLayerId;
   const typeLabel = GEOM_TYPE_LABELS[schema.geometryType] || '—';
   const nameTag = document.getElementById('attr-table-layer-name');
@@ -975,18 +1091,22 @@ function renderAttrTable(layerId){
     attrCols.map(a=>`<th data-type="${a.type}">${escapeHtml(a.name)}</th>`).join('') +
     '<th class="col-actions">Ações</th>';
 
-  const entries = [];
-  featuresData.forEach(entry=>{ if(entry.layerId === layerId) entries.push(entry); });
+  const entries = getFeatureIdsForLayer(layerId);
+  _attrTableEntries = [];
+  entries.forEach(id=>{ const e = featuresData.get(id); if(e) _attrTableEntries.push(e); });
 
-  if(entries.length === 0){
+  if(_attrTableEntries.length === 0){
     body.innerHTML = `<tr><td colspan="${attrCols.length + 2}" id="attr-table-empty">Ainda não desenhaste nenhuma geometria nesta camada.</td></tr>`;
     if(countPill){ countPill.textContent = ''; countPill.classList.remove('has-overlap-warn'); }
     return;
   }
 
-  const overlapCount = entries.filter(e=>e.hasOverlap && topologyWarningsEnabled).length;
+  let overlapCount = 0;
+  if(window.topologyWarningsEnabled){
+    _attrTableEntries.forEach(e=>{ if(e.hasOverlap) overlapCount++; });
+  }
   if(countPill){
-    countPill.textContent = entries.length === 1 ? '1 geometria' : `${entries.length} geometrias`;
+    countPill.textContent = _attrTableEntries.length === 1 ? '1 geometria' : `${_attrTableEntries.length} geometrias`;
     if(overlapCount > 0){
       countPill.textContent += ` · ${overlapCount} com sobreposição`;
       countPill.classList.add('has-overlap-warn');
@@ -995,55 +1115,45 @@ function renderAttrTable(layerId){
     }
   }
 
-  let i = 0;
-  const rows = [];
-  entries.forEach(entry=>{
-    i++;
-    const attrCells = attrCols.map(a=>{
-      const { attrs, html } = formatAttrCellHtml(a, entry.props[a.name]);
-      return `<td ${attrs}>${html}</td>`;
-    }).join('');
-    const showOverlap = entry.hasOverlap && topologyWarningsEnabled;
-    const overlapBadge = showOverlap
-      ? `<span class="overlap-badge" title="Esta geometria sobrepõe-se a outra">${ATTR_ACTION_ICONS.overlap}</span>`
-      : '';
-    rows.push(`
-      <tr data-row-id="${entry.id}" class="${showOverlap ? 'has-overlap' : ''}">
-        <td class="id-cell"><span class="id-cell-inner"><span class="id-badge">${i}</span>${overlapBadge}</span></td>
-        ${attrCells}
-        <td class="actions-cell">
-          <button data-highlight title="Realçar e mostrar popup">${ATTR_ACTION_ICONS.highlight}</button>
-          <button data-focus title="Centrar no mapa">${ATTR_ACTION_ICONS.focus}</button>
-          ${(schema.mode === 'atributos' && isActiveLayer) ? `<button data-edit title="Editar atributos">${ATTR_ACTION_ICONS.edit}</button>` : ''}
-          <button data-delete class="danger" title="Apagar">${ATTR_ACTION_ICONS.delete}</button>
-        </td>
-      </tr>`);
-  });
-  body.innerHTML = rows.join('');
+  _renderAttrPage(0);
 
-  body.querySelectorAll('tr[data-row-id]').forEach(tr=>{
-    const entry = featuresData.get(Number(tr.dataset.rowId));
-    if(!entry) return;
-    tr.querySelector('[data-focus]')?.addEventListener('click', ()=>{
-      if(entry.layer.getBounds) map.fitBounds(entry.layer.getBounds(), {maxZoom:16});
-      else if(entry.layer.getLatLng) map.setView(entry.layer.getLatLng(), 16);
+  if(!body._delegated){
+    body._delegated = true;
+    body.addEventListener('click', (e)=>{
+      const loadMoreBtn = e.target.closest('.attr-load-more-btn');
+      if(loadMoreBtn){
+        _renderAttrPage(_attrTablePage + 1);
+        return;
+      }
+      const tr = e.target.closest('tr[data-row-id]');
+      if(!tr) return;
+      const entry = featuresData.get(Number(tr.dataset.rowId));
+      if(!entry) return;
+      const btn = e.target.closest('button[data-action], button[data-highlight], button[data-focus], button[data-edit], button[data-delete]');
+      if(!btn) return;
+      if(btn.dataset.focus){
+        if(entry.layer.getBounds) map.fitBounds(entry.layer.getBounds(), {maxZoom:16});
+        else if(entry.layer.getLatLng) map.setView(entry.layer.getLatLng(), 16);
+      } else if(btn.dataset.highlight){
+        showStatsPopup(entry);
+        flashHighlight(entry);
+      } else if(btn.dataset.edit){
+        openAttrForm(entry);
+      } else if(btn.dataset.delete){
+        historyRemoveFeature(entry.layer, entry);
+        pushHistoryAction({type:'remove', layer: entry.layer, entry});
+      }
     });
-    tr.querySelector('[data-highlight]')?.addEventListener('click', ()=>{
-      showStatsPopup(entry);
-      flashHighlight(entry);
-    });
-    tr.querySelector('[data-edit]')?.addEventListener('click', ()=> openAttrForm(entry));
-    tr.querySelector('[data-delete]')?.addEventListener('click', ()=>{
-      historyRemoveFeature(entry.layer, entry);
-      pushHistoryAction({type:'remove', layer: entry.layer, entry});
-    });
-  });
+  }
 }
 
 document.getElementById('attr-table-close').addEventListener('click', ()=>{
   document.getElementById('attr-table-overlay').classList.add('hidden');
 });
 
+window.addToLayerIndex = addToLayerIndex;
+window.removeFromLayerIndex = removeFromLayerIndex;
+window.getFeatureIdsForLayer = getFeatureIdsForLayer;
 window.formEntryRef = formEntryRef;
 window.attrTableLayerId = attrTableLayerId;
 window.formIsNewFeature = formIsNewFeature;

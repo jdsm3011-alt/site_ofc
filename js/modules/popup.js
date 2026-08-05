@@ -25,7 +25,7 @@ function geometryStatsHTML(entry){
   }
 
   let warnHtml = '';
-  if(entry.hasOverlap && topologyWarningsEnabled){
+  if(entry.hasOverlap && window.topologyWarningsEnabled){
     warnHtml = `<div class="stats-popup-warn">⚠ Sobreposto a: ${entry.overlapsWith.join(', ')}</div>`;
   }
 

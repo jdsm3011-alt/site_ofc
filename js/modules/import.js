@@ -160,6 +160,8 @@ function importGeoJSONFeatures(geojson, layerIdResolver, silent, options = {}){
     const geomType = baseGeomType(f.geometry.type);
     const entry = {layer, props, id, fid, updatedAt, label, geomType, layerId, hasOverlap:false, overlapsWith:[], showMeasures:false, measureTooltips:[]};
     featuresData.set(id, entry);
+    if(typeof addToLayerIndex === 'function') addToLayerIndex(entry);
+    if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
 
     styleLayerByClass(entry);
     if(!getLayerSchema(layerId) || getLayerSchema(layerId).mode !== 'atributos'){ styleLayerDefault(layer, layerId); }

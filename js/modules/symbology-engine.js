@@ -6,6 +6,12 @@
 (function(){
 
 function getLayerFeatureEntries(layerId){
+  if(typeof getFeatureIdsForLayer === 'function'){
+    const ids = getFeatureIdsForLayer(layerId);
+    const out = [];
+    ids.forEach(id=>{ const e = featuresData.get(id); if(e) out.push(e); });
+    return out;
+  }
   const out = [];
   featuresData.forEach(entry=>{ if(entry.layerId === layerId) out.push(entry); });
   return out;

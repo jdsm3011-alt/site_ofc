@@ -204,10 +204,15 @@
   });
 
   if (searchInput) {
-    searchInput.addEventListener('input', function () { doSearch(searchInput.value); });
+    var searchTimer = null;
+    searchInput.addEventListener('input', function(){
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function(){ doSearch(searchInput.value); }, 180);
+    });
     searchInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && searchInput.value.trim()) {
         e.preventDefault();
+        clearTimeout(searchTimer);
         doSearch(searchInput.value);
       }
     });
