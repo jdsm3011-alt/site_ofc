@@ -209,9 +209,10 @@
 /* ---------- SYMBOLOGY PANEL ---------- */
 @media (max-width: 900px) and (orientation: landscape){
   #shape-color-attr-row{
-    width:min(260px, calc(100vw - 20px));
-    bottom:10px; right:10px;
+    max-height:160px; padding:8px 10px;
   }
+  .symbology-mode-tabs{gap:1px; padding:1px;}
+  .symbology-mode-tab{padding:3px 6px; font-size:10px;}
 }
 
 /* ---------- SETTINGS / TEAM SYNC FLOATING MENUS ---------- */

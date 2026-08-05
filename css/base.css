@@ -205,6 +205,7 @@ html[data-theme="dark"] .theme-toggle .icon-moon{display:inline;}
 
 /* ---------- layout ---------- */
 main{flex:1; display:flex; position:relative; min-height:0;}
+#map-area{flex:1; display:flex; flex-direction:column; min-height:0; position:relative;}
 #map{flex:1; min-height:0; position:relative;}
 .leaflet-top, .leaflet-bottom{ z-index:400 !important; }
 #workspace-tabs{
@@ -1211,65 +1212,69 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #offline-areas-menu > #offline-areas-new:hover{background:var(--paper-deep);}
 #shape-color-attr-row{
-  position:absolute; bottom:14px; right:14px; z-index:460; width:280px; max-width:calc(100% - 28px);
-  border:1px solid var(--line); border-radius:var(--radius-sm); padding:12px; background:var(--paper-elevated);
-  box-shadow:0 8px 24px rgba(0,0,0,.18); max-height:calc(100vh - 100px); overflow-y:auto;
+  flex-shrink:0;
+  border-top:1px solid var(--line); padding:10px 14px; background:var(--paper-elevated);
+  box-shadow:0 -2px 8px rgba(0,0,0,.08);
+  max-height:220px; overflow-y:auto;
 }
 #shape-color-attr-row.hidden{display:none;}
-.symbology-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.symbology-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
 .symbology-header span{font-size:12.5px; font-weight:700; color:var(--ink);}
 #symbology-close-btn{
   flex:none; width:22px; height:22px; border-radius:6px; border:1px solid var(--line-strong);
   background:var(--paper); color:var(--stone); cursor:pointer; font-size:12px; line-height:1;
 }
 #symbology-close-btn:hover{border-color:var(--warn); color:var(--warn);}
-#shape-color-attr-row label{display:block; font-size:12px; color:var(--stone); margin-bottom:6px;}
-#shape-color-attr-select{
-  width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px;
-  font-family:inherit; font-size:13px; background:var(--paper); color:var(--ink);
+#shape-color-attr-row label{display:inline-block; font-size:12px; color:var(--stone); margin-bottom:0; margin-right:6px;}
+#symbology-body{display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+#symbology-body > label{flex-shrink:0;}
+#symbology-body > select{flex-shrink:0; max-width:200px;}
+#shape-color-attr-row select{
+  padding:6px 10px; border:1px solid var(--line-strong); border-radius:8px;
+  font-family:inherit; font-size:12px; background:var(--paper); color:var(--ink);
 }
-.shape-color-legend{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:5px;}
-.shape-color-legend li{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink);}
+.shape-color-legend{list-style:none; margin:0; padding:0; display:flex; flex-direction:row; gap:8px; flex:1; min-width:0; overflow-x:auto; align-items:center;}
+.shape-color-legend li{display:flex; align-items:center; gap:4px; font-size:11.5px; color:var(--ink); white-space:nowrap; flex-shrink:0;}
 .shape-color-legend .swatch{
   flex:none; width:12px; height:12px; border-radius:3px; border:1px solid var(--line-strong);
 }
 .shape-color-legend .swatch-input{
-  flex:none; width:22px; height:22px; padding:0; border:1px solid var(--line-strong); border-radius:6px;
+  flex:none; width:20px; height:20px; padding:0; border:1px solid var(--line-strong); border-radius:6px;
   background:none; cursor:pointer;
 }
-.symbology-color-row{display:flex; align-items:center; gap:10px;}
-.symbology-color-row .hint{font-size:11.5px; color:var(--stone);}
+.symbology-color-row{display:flex; align-items:center; gap:8px;}
+.symbology-color-row .hint{font-size:11px; color:var(--stone);}
 #shape-base-color-input{
-  flex:none; width:36px; height:36px; padding:0; border:1px solid var(--line-strong); border-radius:8px;
+  flex:none; width:28px; height:28px; padding:0; border:1px solid var(--line-strong); border-radius:6px;
   background:none; cursor:pointer;
 }
 
 /* ---------- simbologia: separadores de modo (cor única / valores únicos / graduado) ---------- */
-.symbology-mode-tabs{display:flex; gap:4px; margin-bottom:10px; background:var(--paper-deep); border-radius:8px; padding:3px;}
+.symbology-mode-tabs{display:inline-flex; gap:2px; background:var(--paper-deep); border-radius:6px; padding:2px; flex-shrink:0;}
 .symbology-mode-tab{
-  flex:1; border:none; background:none; cursor:pointer; font-family:inherit; font-size:11.5px; font-weight:600;
-  color:var(--stone); padding:6px 4px; border-radius:6px; text-align:center; line-height:1.2;
+  border:none; background:none; cursor:pointer; font-family:inherit; font-size:11px; font-weight:600;
+  color:var(--stone); padding:4px 10px; border-radius:5px; text-align:center; line-height:1.2; white-space:nowrap;
 }
 .symbology-mode-tab:hover:not(:disabled){color:var(--ink);}
 .symbology-mode-tab.is-active{background:var(--paper-elevated); color:var(--green-deep); box-shadow:0 1px 3px rgba(0,0,0,.12);}
 .symbology-mode-tab:disabled{opacity:.4; cursor:not-allowed;}
 #symbology-attr-select, #symbology-method-select{
-  width:100%; padding:8px 10px; border:1px solid var(--line-strong); border-radius:8px;
-  font-family:inherit; font-size:13px; background:var(--paper); color:var(--ink); margin-bottom:8px;
+  padding:5px 8px; border:1px solid var(--line-strong); border-radius:6px;
+  font-family:inherit; font-size:12px; background:var(--paper); color:var(--ink);
 }
-.symbology-grad-controls{display:flex; gap:8px; margin-bottom:8px;}
-.symbology-grad-controls > div{flex:1;}
-.symbology-grad-controls label{display:block; font-size:11px; color:var(--stone); margin-bottom:4px;}
+.symbology-grad-controls{display:inline-flex; gap:6px; align-items:center;}
+.symbology-grad-controls > div{display:inline-flex; align-items:center; gap:4px;}
+.symbology-grad-controls label{display:inline; font-size:11px; color:var(--stone); margin:0;}
 .symbology-grad-controls select, .symbology-grad-controls input{
-  width:100%; padding:7px 8px; border:1px solid var(--line-strong); border-radius:7px;
-  font-family:inherit; font-size:12.5px; background:var(--paper); color:var(--ink);
-}
-.shape-color-legend-graduated{max-height:220px; overflow-y:auto;}
-.graduated-row{display:flex; align-items:center; gap:6px;}
-.graduated-range{font-size:11.5px; color:var(--ink); white-space:nowrap;}
-.graduated-bound-input{
-  width:64px; padding:4px 6px; border:1px solid var(--line-strong); border-radius:6px;
+  padding:4px 6px; border:1px solid var(--line-strong); border-radius:5px;
   font-family:inherit; font-size:11.5px; background:var(--paper); color:var(--ink);
+}
+.shape-color-legend-graduated{max-height:none;}
+.graduated-row{display:inline-flex; align-items:center; gap:4px; flex-shrink:0;}
+.graduated-range{font-size:11px; color:var(--ink); white-space:nowrap;}
+.graduated-bound-input{
+  width:52px; padding:3px 5px; border:1px solid var(--line-strong); border-radius:5px;
+  font-family:inherit; font-size:11px; background:var(--paper); color:var(--ink);
 }
 
 /* ---------- mini-legenda por baixo da camada ativa no painel de camadas ---------- */
@@ -1999,6 +2004,7 @@ html[data-theme="dark"] .app-alert-card{
 
 /* Layout do main — needed for proper positioning */
 main{flex:1; display:flex; position:relative; min-height:0;}
+#map-area{flex:1; display:flex; flex-direction:column; min-height:0; position:relative;}
 #map{flex:1; min-height:0; position:relative;}
 
 /* ---------- SAM: botao ativo ---------- */
