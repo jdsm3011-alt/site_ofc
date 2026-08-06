@@ -209,10 +209,28 @@
 /* ---------- SYMBOLOGY PANEL ---------- */
 @media (max-width: 900px) and (orientation: landscape){
   #shape-color-attr-row{
-    max-height:160px; padding:8px 10px;
+    width:280px; max-height:260px; padding:8px 10px;
+    bottom:8px; right:8px; border-radius:var(--radius);
   }
   .symbology-mode-tabs{gap:1px; padding:1px;}
   .symbology-mode-tab{padding:3px 6px; font-size:10px;}
+  .symb-apply-btn{height:20px; padding:0 7px; font-size:10px;}
+  .symb-auto-toggle{width:28px; height:16px;}
+  .symb-auto-toggle::after{width:12px; height:12px; top:2px; left:2px;}
+  .symb-auto-toggle.is-on::after{transform:translateX(12px);}
+  .symb-section{padding:4px 0;}
+  .symb-section-label{font-size:9px; margin-bottom:3px;}
+  .symb-field-row > label{font-size:10.5px; min-width:50px;}
+  .symb-field-row > select{font-size:11px;}
+  .symb-slider-val{font-size:10px; min-width:26px;}
+  .symb-inline-group{gap:6px;}
+  .symb-inline-group input[type="color"]{width:20px; height:20px;}
+  .symb-hint{font-size:9.5px;}
+  .symb-legend{max-height:120px; gap:2px;}
+  .symb-legend-item{padding:2px 3px; gap:4px;}
+  .symb-legend-label{font-size:10.5px;}
+  .symb-legend-width-input{width:30px; font-size:9px; padding:1px 2px;}
+  .symb-legend-width-unit{font-size:8px;}
 }
 
 /* ---------- SETTINGS / TEAM SYNC FLOATING MENUS ---------- */
@@ -246,15 +264,11 @@
   #gear-coachmark{ max-width:180px; }
 }
 
-/* ---------- TEAM SYNC TOAST / WELCOME TOAST ---------- */
+/* ---------- NOTIFICAÇÕES UNIFICADAS (mobile) ---------- */
 @media (max-width: 900px) and (orientation: landscape){
-  #connectivity-restored-toast,
-  #team-sync-toast,
-  #welcome-toast,
-  #autosave-toast{
-    font-size:10.5px; padding:5px 12px 5px 8px;
-    top:16px;
-  }
+  #notif-container{top:8px; left:8px; max-width:min(300px, calc(100vw - 16px));}
+  .notif-item{font-size:11px; padding:6px 8px;}
+  .notif-icon{width:18px; height:18px; font-size:10px;}
 }
 
 /* ---------- BASEMAP MENU ---------- */
@@ -336,13 +350,6 @@
 @media (max-width: 900px) and (orientation: landscape){
   .feedback-toast{
     width:min(340px, calc(100vw - 24px));
-  }
-}
-
-/* ---------- APP ALERT ---------- */
-@media (max-width: 900px) and (orientation: landscape){
-  .app-alert-card{
-    width:min(320px, 90vw);
   }
 }
 
