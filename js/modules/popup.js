@@ -109,7 +109,8 @@ function flashHighlight(entry){
         applyTopologyVisual(entry);
       } else {
         const schema = getLayerSchema(entry.layerId);
-        if(schema && schema.mode === 'atributos'){
+        const hasClassifiedSymbology = schema && schema.symbology && (schema.symbology.mode === 'unicos' || schema.symbology.mode === 'graduado');
+        if(hasClassifiedSymbology || (schema && schema.mode === 'atributos')){
           styleLayerByClass(entry);
         } else {
           styleLayerDefault(entry.layer, entry.layerId);

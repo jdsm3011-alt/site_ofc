@@ -132,7 +132,7 @@
       return {
         name: cfg.shapeName, geometryType: cfg.geometryType, mode: cfg.mode,
         attributes: cfg.attributes, colorAttr: cfg.colorAttr, baseColor: cfg.baseColor,
-        opacity: cfg.opacity, symbology: cfg.symbology
+        opacity: cfg.opacity, strokeColor: cfg.strokeColor, strokeWidth: cfg.strokeWidth, pointSize: cfg.pointSize, symbology: cfg.symbology
       };
     }
     const rec = Array.isArray(workspace.layers) ? workspace.layers.find(l=>l.id===layerId) : null;
@@ -157,6 +157,9 @@
       if(!schema) return;
       const opacityBase = (typeof DEFAULT_OPACITY !== 'undefined') ? DEFAULT_OPACITY : 35;
       const fillOpacity = ((schema.opacity != null) ? schema.opacity : opacityBase) / 100;
+      const strokeColor = schema.strokeColor || color;
+      const strokeWidth = (schema.strokeWidth != null) ? schema.strokeWidth : 2;
+      const pointSize = (schema.pointSize != null) ? schema.pointSize : 18;
 
       workspace.featuresData.forEach(entry=>{
         if(entry.layerId !== layerId) return;
@@ -169,10 +172,10 @@
           const geomLayer = L.geoJSON(gj, {
             interactive:false,
             pointToLayer:(feature, latlng)=>{
-              const icon = (typeof dataGisMarkerIcon === 'function') ? dataGisMarkerIcon(color) : undefined;
+              const icon = (typeof dataGisMarkerIcon === 'function') ? dataGisMarkerIcon(color, pointSize) : undefined;
               return icon ? L.marker(latlng, {icon, interactive:false}) : L.circleMarker(latlng, {radius:6, color, fillColor:color, fillOpacity:1, interactive:false});
             },
-            style:()=>({ color, fillColor:color, fillOpacity, weight:2, interactive:false })
+            style:()=>({ color: strokeColor, fillColor:color, fillOpacity, weight: strokeWidth, interactive:false })
           });
           group.addLayer(geomLayer);
         }catch(err){ /* geometria inválida — ignora silenciosamente */ }

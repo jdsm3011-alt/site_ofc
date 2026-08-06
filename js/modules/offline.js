@@ -16,6 +16,11 @@ document.getElementById('offline-areas-new').addEventListener('click', (e)=>{
   e.stopPropagation();
   startOfflineAreaDrawing();
 });
+document.getElementById('offline-rect-cancel').addEventListener('click', ()=>{
+  if(map.pm.globalDrawModeEnabled()) map.pm.disableDraw();
+  offlineDrawing = false;
+  document.getElementById('offline-rect-banner').style.display = 'none';
+});
 
 
 function setupOfflineMapEvents(){

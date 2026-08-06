@@ -693,7 +693,7 @@
       var newLayerId = ++layerCounter;
       layers.push({
         id: newLayerId, name: g.targetName, geometryType: g.geomType, mode: 'atributos',
-        attributes: [], colorAttr: null, baseColor: null, opacity: 100, symbology: defaultSymbology()
+        attributes: [], colorAttr: null, baseColor: null, opacity: 100, strokeColor: null, strokeWidth: null, pointSize: null, symbology: defaultSymbology()
       });
       var res = importGeoJSONFeatures({type:'FeatureCollection', features: g.features}, function(){ return newLayerId; }, true);
       createdLayers.push({name: g.targetName, geomType: g.geomType, layerId: newLayerId, imported: res.imported, skipped: res.skipped});

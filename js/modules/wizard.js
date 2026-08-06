@@ -112,6 +112,9 @@ function archiveActiveLayerIfNeeded(){
     colorAttr: config.colorAttr,
     baseColor: config.baseColor,
     opacity: config.opacity,
+    strokeColor: config.strokeColor,
+    strokeWidth: config.strokeWidth,
+    pointSize: config.pointSize,
     symbology: cloneSymbology(config.symbology)
   });
   activeLayerId = ++layerCounter;
@@ -123,6 +126,9 @@ function archiveActiveLayerIfNeeded(){
   config.colorAttr = null;
   config.baseColor = null;
   config.opacity = null;
+  config.strokeColor = null;
+  config.strokeWidth = null;
+  config.pointSize = null;
   config.symbology = defaultSymbology();
   refreshLayerEditability();
 }

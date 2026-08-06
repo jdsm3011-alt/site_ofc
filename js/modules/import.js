@@ -30,6 +30,9 @@ function ensureImportedLayerSchema(layerName, geometryType){
     config.colorAttr = null;
     config.baseColor = null;
     config.opacity = null;
+    config.strokeColor = null;
+    config.strokeWidth = null;
+    config.pointSize = null;
     config.symbology = defaultSymbology();
     if(!layerVisible.has(activeLayerId)) layerVisible.set(activeLayerId, true);
     if(!layerOrder.includes(activeLayerId)) layerOrder.unshift(activeLayerId);
@@ -164,7 +167,9 @@ function importGeoJSONFeatures(geojson, layerIdResolver, silent, options = {}){
     if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
 
     styleLayerByClass(entry);
-    if(!getLayerSchema(layerId) || getLayerSchema(layerId).mode !== 'atributos'){ styleLayerDefault(layer, layerId); }
+    const schema = getLayerSchema(layerId);
+    const hasClassifiedSymbology = schema && schema.symbology && (schema.symbology.mode === 'unicos' || schema.symbology.mode === 'graduado');
+    if(!hasClassifiedSymbology && !(schema && schema.mode === 'atributos')){ styleLayerDefault(layer, layerId); }
     bindFeatureContextMenu(entry);
     bindFeatureEditTracking(entry);
 

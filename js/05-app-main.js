@@ -9,6 +9,9 @@ let config = {
   colorAttr: null,      // nome do atributo categórico atualmente usado para colorir a shape (legado)
   baseColor: null,      // cor única da camada, usada quando não há (ou não se está a usar) simbologia
   opacity: null,         // transparência do preenchimento (0-100); null = usa o valor por omissão
+  strokeColor: null,    // cor do contorno (linhas/polígonos); null = usa baseColor
+  strokeWidth: null,    // espessura do contorno (1-10); null = 3px por omissão
+  pointSize: null,      // tamanho dos pontos (8-40); null = 18px por omissão
   symbology: null        // {mode:'simples'|'unicos'|'graduado', attr, method, classCount, breaks, uniqueValues} — ver defaultSymbology()
 };
 
@@ -55,6 +58,9 @@ function createWorkspaceState(id, name){
       colorAttr: null,
       baseColor: null,
       opacity: null,
+      strokeColor: null,
+      strokeWidth: null,
+      pointSize: null,
       symbology: defaultSymbology()
     },
     layerCounter: 0,
@@ -92,6 +98,9 @@ function cloneConfig(source){
     colorAttr: source && source.colorAttr ? source.colorAttr : null,
     baseColor: source && source.baseColor ? source.baseColor : null,
     opacity: source && source.opacity != null ? source.opacity : null,
+    strokeColor: source && source.strokeColor || null,
+    strokeWidth: source && source.strokeWidth != null ? source.strokeWidth : null,
+    pointSize: source && source.pointSize != null ? source.pointSize : null,
     symbology: cloneSymbology(source && source.symbology)
   };
 }
@@ -470,32 +479,14 @@ let wasOffline = !navigator.onLine; // estado anterior, para detetar a transiç�
    ============================================================ */
 /* mostra uma mensagem na pill do canto superior esquerdo do mapa; se autoHideMs for passado,
    a mensagem desaparece sozinha (com fade) passado esse tempo */
-let toolbarHintHideTimer = null;
 function showToolbarHint(text, autoHideMs){
   if(!settings.showInterfaceHints) return;
-  const el = document.getElementById('toolbar-hint');
-  const textEl = document.getElementById('toolbar-hint-text');
-  if(!el || !textEl) return;
-  textEl.textContent = text;
-  el.classList.remove('hint-hidden');
-  clearTimeout(toolbarHintHideTimer);
-  toolbarHintHideTimer = setTimeout(()=>{
-    el.classList.add('hint-hidden');
-  }, autoHideMs || 2600);
+  showNotification(text, {type:'info', timeout: autoHideMs || 2600});
 }
 
 /* toast flutuante e discreto, usado para avisar de trocas automáticas (ex.: mudança de basemap) */
-let basemapToastHideTimer = null;
 function showBasemapToast(text, autoHideMs){
-  const toast = document.getElementById('basemap-toast');
-  const textEl = document.getElementById('basemap-toast-text');
-  if(!toast || !textEl) return;
-  textEl.textContent = text;
-  toast.classList.add('is-visible');
-  clearTimeout(basemapToastHideTimer);
-  basemapToastHideTimer = setTimeout(()=>{
-    toast.classList.remove('is-visible');
-  }, autoHideMs || 3500);
+  showNotification(text, {type:'info', timeout: autoHideMs || 3500});
 }
 
 let mapGridLayer = null;

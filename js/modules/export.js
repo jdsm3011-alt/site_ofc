@@ -68,17 +68,7 @@ function clearTeamProject(){
 }
 
 function showTeamToast(message){
-  const toast = document.getElementById('team-sync-toast');
-  if(!toast) return;
-  toast.querySelector('.message').textContent = message;
-  toast.classList.remove('is-leaving');
-  void toast.offsetWidth;
-  toast.classList.add('is-visible');
-  clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(()=>{
-    toast.classList.remove('is-visible');
-    toast.classList.add('is-leaving');
-  }, 3200);
+  showNotification(message, {type:'success', timeout: 3200});
 }
 
 const TEAM_API_BASE = 'https://datagis-equipa.gispt.workers.dev';

@@ -73,23 +73,29 @@
 
   // --- Sincronização ---------------------------------------------------
 
+  var _syncRaf = null;
+
   function syncMap(sourceMap) {
     if (syncing) return;
-    syncing = true;
-    var center = sourceMap.getCenter();
-    var zoom = sourceMap.getZoom();
-    var m = getMap();
-    // Sincronizar mapa principal se estiver visível
-    if (m && !document.getElementById('map').classList.contains('hidden')) {
-      m.setView(center, zoom, { animate: false });
-    }
-    // Sincronizar todos os mini-mapas
-    comparisonMaps.forEach(function (item) {
-      if (item.map !== sourceMap) {
-        try { item.map.setView(center, zoom, { animate: false }); } catch (e) {}
+    if (_syncRaf) return; // já agendado — descarta chamadas intermédias
+    _syncRaf = requestAnimationFrame(function () {
+      _syncRaf = null;
+      syncing = true;
+      var center = sourceMap.getCenter();
+      var zoom = sourceMap.getZoom();
+      var m = getMap();
+      // Sincronizar mapa principal se estiver visível
+      if (m && !document.getElementById('map').classList.contains('hidden')) {
+        m.setView(center, zoom, { animate: false, noMoveStart: true });
       }
+      // Sincronizar todos os mini-mapas
+      comparisonMaps.forEach(function (item) {
+        if (item.map !== sourceMap) {
+          try { item.map.setView(center, zoom, { animate: false, noMoveStart: true }); } catch (e) {}
+        }
+      });
+      syncing = false;
     });
-    syncing = false;
   }
 
   // --- Construção da grelha --------------------------------------------
@@ -169,8 +175,8 @@
         name: entry.name
       });
 
-      // Sincronizar quando este mapa se move
-      miniMap.on('moveend zoomend', function () {
+      // Sincronizar quando este mapa se move (tempo real)
+      miniMap.on('move zoom', function () {
         syncMap(miniMap);
       });
     });
@@ -234,6 +240,7 @@
     if (!comparisonMode) return;
     comparisonMode = false;
 
+    if (_syncRaf) { cancelAnimationFrame(_syncRaf); _syncRaf = null; }
     destroyComparisonMaps();
 
     var mapEl = document.getElementById('map');

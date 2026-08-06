@@ -17,31 +17,55 @@ window.SYMBOLOGY_PALETTE = [
   '#EF6C00', '#283593', '#00695C', '#D84315', '#5D4037'
 ];
 
-/* ---- App Alert: popup centralizado no topo (substitui alert() nativo) ---- */
-let _appAlertTimer = null;
-window.showAppAlert = function(msg, opts){
-  const overlay = document.getElementById('app-alert-overlay');
-  const icon = document.getElementById('app-alert-icon');
-  const text = document.getElementById('app-alert-text');
-  const closeBtn = document.getElementById('app-alert-close');
-  if(!overlay || !icon || !text || !closeBtn) return;
-  clearTimeout(_appAlertTimer);
-  const isError = opts && opts.error;
-  const card = overlay.querySelector('.app-alert-card');
-  card.classList.toggle('is-error', !!isError);
-  icon.textContent = isError ? '!' : 'i';
-  text.textContent = msg;
-  overlay.classList.remove('hidden');
-  card.classList.remove('is-leaving');
-  void card.offsetWidth;
+/* ---- Notificação unificada ---- */
+/* Types: 'info' | 'success' | 'error'
+   Todas as notificações surgem no canto superior esquerdo do mapa,
+   com a mesma estética, animações e comportamento. */
+let _notifId = 0;
+window.showNotification = function(msg, opts){
+  opts = opts || {};
+  const container = document.getElementById('notif-container');
+  if(!container) return;
+  const type = opts.error ? 'error' : (opts.type || 'info');
+  const timeout = opts.timeout != null ? opts.timeout : 4000;
+  const id = ++_notifId;
+
+  const el = document.createElement('div');
+  el.className = 'notif-item notif-' + type;
+  el.dataset.notifId = id;
+
+  const iconMap = {info: 'i', success: '✓', error: '!'};
+  el.innerHTML =
+    '<span class="notif-icon">' + (iconMap[type] || 'i') + '</span>' +
+    '<span class="notif-text">' + msg + '</span>' +
+    '<button class="notif-close" aria-label="Fechar" type="button">✕</button>';
+
+  container.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add('is-visible');
+
   const dismiss = ()=>{
-    card.classList.add('is-leaving');
-    setTimeout(()=> overlay.classList.add('hidden'), 220);
-    clearTimeout(_appAlertTimer);
+    if(!el.parentNode) return;
+    el.classList.remove('is-visible');
+    el.classList.add('is-leaving');
+    setTimeout(()=>{ if(el.parentNode) el.remove(); }, 300);
   };
-  closeBtn.onclick = dismiss;
-  overlay.onclick = e=>{ if(e.target === overlay) dismiss(); };
-  _appAlertTimer = setTimeout(dismiss, opts && opts.timeout ? opts.timeout : 5000);
+
+  el.querySelector('.notif-close').onclick = dismiss;
+  if(timeout > 0){
+    el._hideTimer = setTimeout(dismiss, timeout);
+  }
+  el.onmouseenter = ()=>{ clearTimeout(el._hideTimer); };
+  el.onmouseleave = ()=>{
+    if(timeout > 0) el._hideTimer = setTimeout(dismiss, 1200);
+  };
+
+  return {dismiss, el};
+};
+
+/* backward compat: showAppAlert agora usa showNotification */
+window.showAppAlert = function(msg, opts){
+  showNotification(msg, opts);
 };
 
 window.paletteColor = function(i){ return SYMBOLOGY_PALETTE[i % SYMBOLOGY_PALETTE.length]; };
@@ -52,8 +76,8 @@ window.defaultSymbology = function(){
     attr: null,
     method: 'iguais',   // 'manual' | 'quantis' | 'iguais' | 'jenks'
     classCount: 5,
-    breaks: [],          // [{min, max, color}] (modo graduado)
-    uniqueValues: []      // [{value, color}] (modo valores únicos)
+    breaks: [],          // [{min, max, color, strokeWidth}] (modo graduado)
+    uniqueValues: []      // [{value, color, strokeWidth}] (modo valores únicos)
   };
 };
 
@@ -65,8 +89,8 @@ window.cloneSymbology = function(sym){
     attr: sym.attr || null,
     method: ['manual','quantis','iguais','jenks'].includes(sym.method) ? sym.method : 'iguais',
     classCount: Number.isFinite(sym.classCount) ? sym.classCount : 5,
-    breaks: Array.isArray(sym.breaks) ? sym.breaks.map(b=>({min:b.min, max:b.max, color:b.color})) : [],
-    uniqueValues: Array.isArray(sym.uniqueValues) ? sym.uniqueValues.map(u=>({value:u.value, color:u.color})) : []
+    breaks: Array.isArray(sym.breaks) ? sym.breaks.map(b=>({min:b.min, max:b.max, color:b.color, strokeWidth: b.strokeWidth != null ? b.strokeWidth : 3})) : [],
+    uniqueValues: Array.isArray(sym.uniqueValues) ? sym.uniqueValues.map(u=>({value:u.value, color:u.color, strokeWidth: u.strokeWidth != null ? u.strokeWidth : 3})) : []
   };
 };
 

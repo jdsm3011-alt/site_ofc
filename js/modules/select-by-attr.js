@@ -132,6 +132,9 @@
       colorAttr: sourceSchema.colorAttr || null,
       baseColor: sourceSchema.baseColor || null,
       opacity: sourceSchema.opacity,
+      strokeColor: sourceSchema.strokeColor || null,
+      strokeWidth: sourceSchema.strokeWidth != null ? sourceSchema.strokeWidth : null,
+      pointSize: sourceSchema.pointSize != null ? sourceSchema.pointSize : null,
       symbology: defaultSymbology()
     });
 

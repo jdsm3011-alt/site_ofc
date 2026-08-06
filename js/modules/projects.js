@@ -108,6 +108,9 @@ function serializeLayerSchemasForGeoJSON(){
       colorAttr: schema.colorAttr || null,
       baseColor: schema.baseColor || null,
       opacity: schema.opacity,
+      strokeColor: schema.strokeColor || null,
+      strokeWidth: schema.strokeWidth != null ? schema.strokeWidth : null,
+      pointSize: schema.pointSize != null ? schema.pointSize : null,
       symbology: cloneSymbology(schema.symbology),
       visible: layerVisible.get(id) !== false
     };
@@ -137,6 +140,9 @@ function restoreLayerSchemasFromGeoJSON(geojson){
       colorAttr: meta.colorAttr || null,
       baseColor: meta.baseColor || null,
       opacity: meta.opacity,
+      strokeColor: meta.strokeColor || null,
+      strokeWidth: meta.strokeWidth != null ? meta.strokeWidth : null,
+      pointSize: meta.pointSize != null ? meta.pointSize : null,
       symbology: cloneSymbology(meta.symbology)
     });
     layerVisible.set(id, meta.visible !== false);
@@ -157,6 +163,9 @@ function restoreLayerSchemasFromGeoJSON(geojson){
   config.colorAttr = activeMeta && activeMeta.colorAttr ? activeMeta.colorAttr : null;
   config.baseColor = activeMeta && activeMeta.baseColor ? activeMeta.baseColor : null;
   config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+  config.strokeColor = activeMeta && activeMeta.strokeColor || null;
+  config.strokeWidth = activeMeta && activeMeta.strokeWidth != null ? activeMeta.strokeWidth : null;
+  config.pointSize = activeMeta && activeMeta.pointSize != null ? activeMeta.pointSize : null;
   config.symbology = cloneSymbology(activeMeta && activeMeta.symbology);
 
   return true;
@@ -197,6 +206,9 @@ function ensureActiveLayerForImportedProject(){
   config.colorAttr = null;
   config.baseColor = null;
   config.opacity = null;
+  config.strokeColor = null;
+  config.strokeWidth = null;
+  config.pointSize = null;
   config.symbology = defaultSymbology();
 }
 
@@ -337,6 +349,9 @@ function saveCurrentProject(opts){
       colorAttr: schema.colorAttr,
       baseColor: schema.baseColor,
       opacity: schema.opacity,
+      strokeColor: schema.strokeColor,
+      strokeWidth: schema.strokeWidth,
+      pointSize: schema.pointSize,
       symbology: cloneSymbology(schema.symbology),
       visible: layerVisible.get(id) !== false
     };
@@ -375,17 +390,7 @@ let autoSaveInterval = null;
 let saveHoldTimer = null;
 
 function showAutosaveToast(message){
-  const toast = document.getElementById('autosave-toast');
-  if(!toast) return;
-  toast.querySelector('.message').textContent = message;
-  toast.classList.remove('is-leaving');
-  void toast.offsetWidth;
-  toast.classList.add('is-visible');
-  clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(()=>{
-    toast.classList.remove('is-visible');
-    toast.classList.add('is-leaving');
-  }, 3200);
+  showNotification(message, {type:'info', timeout: 3200});
 }
 
 function pulseSaveIcon(){
@@ -537,7 +542,7 @@ function openLocalProject(name, options = {}){
       p.layers.forEach(l=>{
         layerVisible.set(l.id, l.visible !== false);
         if(l.id !== activeLayerId){
-          layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null, baseColor:l.baseColor || null, opacity: (l.opacity != null ? l.opacity : null), symbology: cloneSymbology(l.symbology)});
+          layers.push({id:l.id, name:l.name, geometryType:l.geometryType, mode:l.mode, attributes:l.attributes || [], colorAttr:l.colorAttr || null, baseColor:l.baseColor || null, opacity: (l.opacity != null ? l.opacity : null), strokeColor: l.strokeColor || null, strokeWidth: l.strokeWidth != null ? l.strokeWidth : null, pointSize: l.pointSize != null ? l.pointSize : null, symbology: cloneSymbology(l.symbology)});
         }
       });
 
@@ -549,6 +554,9 @@ function openLocalProject(name, options = {}){
       config.colorAttr = activeMeta ? (activeMeta.colorAttr || null) : null;
       config.baseColor = activeMeta ? (activeMeta.baseColor || null) : null;
       config.opacity = activeMeta && activeMeta.opacity != null ? activeMeta.opacity : null;
+      config.strokeColor = activeMeta && activeMeta.strokeColor || null;
+      config.strokeWidth = activeMeta && activeMeta.strokeWidth != null ? activeMeta.strokeWidth : null;
+      config.pointSize = activeMeta && activeMeta.pointSize != null ? activeMeta.pointSize : null;
       config.symbology = cloneSymbology(activeMeta && activeMeta.symbology);
 
       // ordem de empilhamento no mapa: usa a guardada no projeto (se existir e continuar
@@ -587,6 +595,9 @@ function openLocalProject(name, options = {}){
         config.colorAttr = p.config.colorAttr || null;
         config.baseColor = p.config.baseColor || null;
         config.opacity = p.config.opacity != null ? p.config.opacity : null;
+        config.strokeColor = p.config.strokeColor || null;
+        config.strokeWidth = p.config.strokeWidth != null ? p.config.strokeWidth : null;
+        config.pointSize = p.config.pointSize != null ? p.config.pointSize : null;
         config.symbology = cloneSymbology(p.config.symbology);
       }
 
@@ -608,8 +619,11 @@ function openLocalProject(name, options = {}){
     config.shapeName = null;
     config.colorAttr = null;
     config.baseColor = null;
-    config.opacity = null;
-    config.symbology = defaultSymbology();
+  config.opacity = null;
+  config.strokeColor = null;
+  config.strokeWidth = null;
+  config.pointSize = null;
+  config.symbology = defaultSymbology();
     if(!suppressAlert){
       showAppAlert('Não foi possível restaurar este projeto corretamente. O estado foi limpo e ficou pronto para começar de novo.', {error: true});
     }

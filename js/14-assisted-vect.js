@@ -1671,6 +1671,9 @@ function floodFillMask(pixelData, mosaicW, mosaicH, seedX, seedY, tolerance, win
         colorAttr: null,
         baseColor: null,
         opacity: null,
+        strokeColor: null,
+        strokeWidth: null,
+        pointSize: null,
         symbology: typeof defaultSymbology === 'function' ? defaultSymbology() : {}
       });
       layerVisible.set(newLayerId, true);

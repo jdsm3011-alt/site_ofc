@@ -2,6 +2,21 @@
 window.formEntryRef = null;
 window.attrTableLayerId = null; // qual camada a tabela de atributos está a mostrar de momento
 window.formIsNewFeature = false;
+
+/* ---------- symbology auto-apply ---------- */
+let symbologyAutoApply = true;
+let _symbPendingApply = false;
+
+function maybeRestyle(layerId){
+  if(symbologyAutoApply){ restyleLayerId(layerId); }
+  else { _symbPendingApply = true; _updateApplyBtn(); }
+}
+function _updateApplyBtn(){
+  const btn = document.getElementById('symbology-apply-btn');
+  if(!btn) return;
+  if(_symbPendingApply){ btn.classList.add('has-pending'); btn.disabled = false; }
+  else { btn.classList.remove('has-pending'); btn.disabled = true; }
+}
 const GEOM_TYPE_LABELS = {Point:'Ponto', LineString:'Linha', Polygon:'Polígono'};
 
 /* ---------- Índice layerId→Set<featureId> ----------
@@ -116,7 +131,7 @@ function updateFeatSummary(){
 function getLayerSchema(layerId){
   if(layerId === activeLayerId){
     if(!config.symbology) config.symbology = defaultSymbology();
-    return {name: config.shapeName, geometryType: config.geometryType, mode: config.mode, attributes: config.attributes, colorAttr: config.colorAttr, baseColor: config.baseColor, opacity: config.opacity, symbology: config.symbology};
+    return {name: config.shapeName, geometryType: config.geometryType, mode: config.mode, attributes: config.attributes, colorAttr: config.colorAttr, baseColor: config.baseColor, opacity: config.opacity, strokeColor: config.strokeColor, strokeWidth: config.strokeWidth, pointSize: config.pointSize, symbology: config.symbology};
   }
   const rec = layers.find(l=>l.id === layerId) || null;
   // defensivo: camadas arquivadas antes de existir "symbology" (projetos antigos) podem não a ter
@@ -388,6 +403,11 @@ function switchActiveLayer(id){
 
     applyGeometryConfig();
     renderLayersPanel();
+    if(symbologyLayerId !== null){
+      symbologyLayerId = rec.id;
+      _lastSymbRenderId = null;
+      renderSymbologyPanel();
+    }
   }
   refreshLayerEditability();
 }
@@ -469,6 +489,9 @@ function removeLayerEntirely(layerId){
       config.colorAttr = fallback ? fallback.colorAttr : null;
       config.baseColor = fallback ? fallback.baseColor : null;
       config.opacity = fallback && fallback.opacity != null ? fallback.opacity : null;
+      config.strokeColor = fallback && fallback.strokeColor || null;
+      config.strokeWidth = fallback && fallback.strokeWidth != null ? fallback.strokeWidth : null;
+      config.pointSize = fallback && fallback.pointSize != null ? fallback.pointSize : null;
       config.symbology = cloneSymbology(fallback && fallback.symbology);
     } else {
       config.shapeName = null;
@@ -478,6 +501,9 @@ function removeLayerEntirely(layerId){
       config.colorAttr = null;
       config.baseColor = null;
       config.opacity = null;
+      config.strokeColor = null;
+      config.strokeWidth = null;
+      config.pointSize = null;
       config.symbology = defaultSymbology();
     }
   }
@@ -659,6 +685,23 @@ document.getElementById('symbology-close-btn').addEventListener('click', ()=>{
   symbologyLayerId = null;
   renderSymbologyPanel();
 });
+document.getElementById('symbology-apply-btn').addEventListener('click', ()=>{
+  if(!_symbPendingApply || symbologyLayerId === null) return;
+  restyleLayerId(symbologyLayerId);
+  _symbPendingApply = false;
+  _updateApplyBtn();
+});
+document.getElementById('symbology-auto-apply-toggle').addEventListener('click', ()=>{
+  symbologyAutoApply = !symbologyAutoApply;
+  const toggle = document.getElementById('symbology-auto-apply-toggle');
+  toggle.classList.toggle('is-on', symbologyAutoApply);
+  toggle.setAttribute('aria-label', symbologyAutoApply ? 'Auto-aplicar ligado' : 'Auto-aplicar desligado');
+  if(symbologyAutoApply && _symbPendingApply && symbologyLayerId !== null){
+    restyleLayerId(symbologyLayerId);
+    _symbPendingApply = false;
+  }
+  _updateApplyBtn();
+});
 
 /* define a cor única de uma camada (usada quando não há simbologia categórica/graduada ativa) */
 function setLayerBaseColor(layerId, color){
@@ -668,7 +711,7 @@ function setLayerBaseColor(layerId, color){
     const rec = layers.find(l=>l.id === layerId);
     if(rec) rec.baseColor = color;
   }
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -681,7 +724,42 @@ function setLayerOpacity(layerId, opacityPct){
     const rec = layers.find(l=>l.id === layerId);
     if(rec) rec.opacity = clamped;
   }
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
+  markProjectDirty();
+}
+
+function setLayerStrokeColor(layerId, color){
+  if(layerId === activeLayerId){
+    config.strokeColor = color;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.strokeColor = color;
+  }
+  maybeRestyle(layerId);
+  markProjectDirty();
+}
+
+function setLayerStrokeWidth(layerId, widthPct){
+  const clamped = Math.max(1, Math.min(10, Number(widthPct)));
+  if(layerId === activeLayerId){
+    config.strokeWidth = clamped;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.strokeWidth = clamped;
+  }
+  maybeRestyle(layerId);
+  markProjectDirty();
+}
+
+function setLayerPointSize(layerId, sizePct){
+  const clamped = Math.max(8, Math.min(40, Number(sizePct)));
+  if(layerId === activeLayerId){
+    config.pointSize = clamped;
+  } else {
+    const rec = layers.find(l=>l.id === layerId);
+    if(rec) rec.pointSize = clamped;
+  }
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -718,12 +796,12 @@ function generateUniqueValueClasses(layerId, attrName){
   const legacyAttr = (schema.attributes || []).find(a=>a.name === attrName && a.type === 'categorico');
   const legacyColors = new Map((legacyAttr && legacyAttr.classes || []).map(c=>[String(c.name), c.color]));
   const values = getUniqueValuesForAttr(layerId, attrName);
-  sym.uniqueValues = values.map((v, i)=>({value: v, color: legacyColors.get(v) || paletteColor(i)}));
+  sym.uniqueValues = values.map((v, i)=>({value: v, color: legacyColors.get(v) || paletteColor(i), strokeWidth: 3}));
 }
 
 function setLayerSymbologyUniqueAttr(layerId, attrName){
   generateUniqueValueClasses(layerId, attrName);
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -733,7 +811,17 @@ function setUniqueValueColor(layerId, value, color){
   const item = schema.symbology.uniqueValues.find(u=>u.value === value);
   if(!item) return;
   item.color = color;
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
+  markProjectDirty();
+}
+
+function setUniqueValueStrokeWidth(layerId, value, width){
+  const schema = getLayerSchema(layerId);
+  if(!schema || !schema.symbology) return;
+  const item = schema.symbology.uniqueValues.find(u=>u.value === value);
+  if(!item) return;
+  item.strokeWidth = Math.max(1, Math.min(10, Number(width) || 3));
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -754,7 +842,7 @@ function setLayerSymbologyGraduatedAttr(layerId, attrName){
   if(!schema) return;
   const sym = ensureSymbology(schema);
   generateGraduatedClasses(layerId, attrName, sym.method, sym.classCount);
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -763,7 +851,7 @@ function setLayerSymbologyMethod(layerId, method){
   if(!schema) return;
   const sym = ensureSymbology(schema);
   generateGraduatedClasses(layerId, sym.attr, method, sym.classCount);
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -772,7 +860,7 @@ function setLayerSymbologyClassCount(layerId, classCount){
   if(!schema) return;
   const sym = ensureSymbology(schema);
   generateGraduatedClasses(layerId, sym.attr, sym.method, classCount);
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -780,7 +868,15 @@ function setGraduatedBreakColor(layerId, index, color){
   const schema = getLayerSchema(layerId);
   if(!schema || !schema.symbology || !schema.symbology.breaks[index]) return;
   schema.symbology.breaks[index].color = color;
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
+  markProjectDirty();
+}
+
+function setGraduatedBreakStrokeWidth(layerId, index, width){
+  const schema = getLayerSchema(layerId);
+  if(!schema || !schema.symbology || !schema.symbology.breaks[index]) return;
+  schema.symbology.breaks[index].strokeWidth = Math.max(1, Math.min(10, Number(width) || 3));
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -795,7 +891,7 @@ function setGraduatedBreakBound(layerId, index, value){
   breaks[index].max = num;
   if(breaks[index+1]) breaks[index+1].min = num;
   schema.symbology.method = 'manual';
-  restyleLayerId(layerId);
+  maybeRestyle(layerId);
   markProjectDirty();
 }
 
@@ -837,7 +933,7 @@ function renderSymbologyPanel(){
     return;
   }
 
-  const sig = symbologyLayerId + '|' + (schema.symbology && schema.symbology.mode) + '|' + (schema.symbology && schema.symbology.attr) + '|' + (schema.symbology && schema.symbology.classCount) + '|' + (schema.opacity||0) + '|' + (schema.symbology && JSON.stringify(schema.symbology.uniqueValues && schema.symbology.uniqueValues.length)) + '|' + (schema.symbology && JSON.stringify(schema.symbology.breaks && schema.symbology.breaks.length));
+  const sig = symbologyLayerId + '|' + (schema.symbology && schema.symbology.mode) + '|' + (schema.symbology && schema.symbology.attr) + '|' + (schema.symbology && schema.symbology.classCount) + '|' + (schema.opacity||0) + '|' + (schema.symbology && JSON.stringify(schema.symbology.uniqueValues && schema.symbology.uniqueValues.map(u=>u.color+'|'+u.strokeWidth))) + '|' + (schema.symbology && JSON.stringify(schema.symbology.breaks && schema.symbology.breaks.map(b=>b.color+'|'+b.strokeWidth+'|'+b.max))) + '|' + symbologyAutoApply;
   if(symbologyLayerId === _lastSymbRenderId && sig === _lastSymbRenderSig) return;
   _lastSymbRenderId = symbologyLayerId;
   _lastSymbRenderSig = sig;
@@ -853,80 +949,147 @@ function renderSymbologyPanel(){
   if(sym.mode === 'unicos' && allAttrs.length === 0) sym.mode = 'simples';
 
   const currentOpacity = schema.opacity != null ? schema.opacity : DEFAULT_OPACITY;
+  const currentStrokeColor = schema.strokeColor || schema.baseColor || DEFAULT_COLOR;
+  const currentStrokeWidth = schema.strokeWidth != null ? schema.strokeWidth : 3;
+  const currentPointSize = schema.pointSize != null ? schema.pointSize : 18;
+  const isPoint = schema.geometryType === 'Point';
 
+  /* -- mode tabs -- */
   const tabsHTML = `
-    <div class="symbology-mode-tabs" id="symbology-mode-tabs">
-      <button type="button" class="symbology-mode-tab ${sym.mode==='simples'?'is-active':''}" data-sym-mode="simples">Cor única</button>
-      <button type="button" class="symbology-mode-tab ${sym.mode==='unicos'?'is-active':''}" data-sym-mode="unicos" ${allAttrs.length?'':'disabled'}>Valores únicos</button>
-      <button type="button" class="symbology-mode-tab ${sym.mode==='graduado'?'is-active':''}" data-sym-mode="graduado" ${canGraduate?'':'disabled'}>Graduado</button>
+    <div class="symb-section">
+      <div class="symb-section-label">Modo de classificação</div>
+      <div class="symbology-mode-tabs" id="symbology-mode-tabs">
+        <button type="button" class="symbology-mode-tab ${sym.mode==='simples'?'is-active':''}" data-sym-mode="simples">Cor única</button>
+        <button type="button" class="symbology-mode-tab ${sym.mode==='unicos'?'is-active':''}" data-sym-mode="unicos" ${allAttrs.length?'':'disabled'}>Valores únicos</button>
+        <button type="button" class="symbology-mode-tab ${sym.mode==='graduado'?'is-active':''}" data-sym-mode="graduado" ${canGraduate?'':'disabled'}>Graduado</button>
+      </div>
     </div>`;
 
-  const opacityHTML = `
-    <label for="shape-opacity-input" style="margin-top:10px;">Transparência do preenchimento</label>
-    <div class="symbology-color-row">
-      <input type="range" id="shape-opacity-input" min="0" max="100" step="1" value="${currentOpacity}" style="flex:1;">
-      <span class="hint" id="shape-opacity-value" style="margin:0; min-width:36px; text-align:right;">${currentOpacity}%</span>
-    </div>`;
-
-  let modeBodyHTML = '';
-
+  /* -- mode body -- */
+  let modeHTML = '';
   if(sym.mode === 'unicos'){
     if(!sym.attr || !allAttrs.some(a=>a.name === sym.attr)){
       generateUniqueValueClasses(symbologyLayerId, allAttrs[0] ? allAttrs[0].name : null);
     }
-    modeBodyHTML = `
-      <label for="symbology-attr-select" style="margin-top:10px;">Classificar por valores únicos de</label>
-      <select id="symbology-attr-select">
-        ${allAttrs.map(a=>`<option value="${escapeHtml(a.name)}" ${a.name===sym.attr?'selected':''}>${escapeHtml(a.name)}</option>`).join('')}
-      </select>
-      <ul class="shape-color-legend" id="shape-color-legend">
-        ${sym.uniqueValues.length ? sym.uniqueValues.map((u, i)=>`
-          <li><input type="color" class="swatch-input" value="${escapeHtml(u.color)}" data-unique-idx="${i}">${escapeHtml(u.value)}</li>
-        `).join('') : '<li class="hint" style="padding:4px 0;">Esta camada ainda não tem geometrias com valores neste atributo.</li>'}
-      </ul>`;
+    modeHTML = `
+      <div class="symb-section">
+        <div class="symb-section-label">Classificação por valores únicos</div>
+        <div class="symb-field-row">
+          <label for="symbology-attr-select">Atributo</label>
+          <select id="symbology-attr-select">
+            ${allAttrs.map(a=>`<option value="${escapeHtml(a.name)}" ${a.name===sym.attr?'selected':''}>${escapeHtml(a.name)}</option>`).join('')}
+          </select>
+        </div>
+        <ul class="shape-color-legend symb-legend" id="shape-color-legend">
+          ${sym.uniqueValues.length ? sym.uniqueValues.map((u, i)=>`
+            <li class="symb-legend-item">
+              <input type="color" class="swatch-input" value="${escapeHtml(u.color)}" data-unique-idx="${i}">
+              <span class="symb-legend-label">${escapeHtml(u.value)}</span>
+              <label class="symb-legend-width-label" title="Espessura do contorno">
+                <input type="number" class="symb-legend-width-input" min="1" max="10" step="0.5" value="${u.strokeWidth != null ? u.strokeWidth : 3}" data-unique-width-idx="${i}">
+                <span class="symb-legend-width-unit">px</span>
+              </label>
+            </li>
+          `).join('') : '<li class="hint" style="padding:4px 0;">Sem geometrias com valores neste atributo.</li>'}
+        </ul>
+      </div>`;
   } else if(sym.mode === 'graduado'){
     if(!sym.attr || !numericAttrs.some(a=>a.name === sym.attr)){
       generateGraduatedClasses(symbologyLayerId, numericAttrs[0] ? numericAttrs[0].name : null, sym.method, sym.classCount);
     }
-    modeBodyHTML = `
-      <label for="symbology-attr-select" style="margin-top:10px;">Atributo numérico</label>
-      <select id="symbology-attr-select">
-        ${numericAttrs.map(a=>`<option value="${escapeHtml(a.name)}" ${a.name===sym.attr?'selected':''}>${escapeHtml(a.name)}</option>`).join('')}
-      </select>
-      <div class="symbology-grad-controls">
-        <div>
-          <label for="symbology-method-select">Método</label>
-          <select id="symbology-method-select">
-            ${Object.keys(SYMBOLOGY_METHOD_LABELS).filter(m=>m!=='manual').map(m=>`<option value="${m}" ${m===sym.method?'selected':''}>${SYMBOLOGY_METHOD_LABELS[m]}</option>`).join('')}
+    modeHTML = `
+      <div class="symb-section">
+        <div class="symb-section-label">Classificação graduada</div>
+        <div class="symb-field-row">
+          <label for="symbology-attr-select">Atributo</label>
+          <select id="symbology-attr-select">
+            ${numericAttrs.map(a=>`<option value="${escapeHtml(a.name)}" ${a.name===sym.attr?'selected':''}>${escapeHtml(a.name)}</option>`).join('')}
           </select>
         </div>
-        <div>
-          <label for="symbology-classcount-input">Nº de classes</label>
-          <input type="number" id="symbology-classcount-input" min="2" max="12" step="1" value="${sym.classCount}">
+        <div class="symb-field-row symb-grad-controls">
+          <div class="symb-field-inline">
+            <label for="symbology-method-select">Método</label>
+            <select id="symbology-method-select">
+              ${Object.keys(SYMBOLOGY_METHOD_LABELS).filter(m=>m!=='manual').map(m=>`<option value="${m}" ${m===sym.method?'selected':''}>${SYMBOLOGY_METHOD_LABELS[m]}</option>`).join('')}
+            </select>
+          </div>
+          <div class="symb-field-inline">
+            <label for="symbology-classcount-input">Classes</label>
+            <input type="number" id="symbology-classcount-input" min="2" max="12" step="1" value="${sym.classCount}">
+          </div>
         </div>
-      </div>
-      ${sym.method === 'manual' ? '<span class="hint">Método: manual (ajustaste os limites à mão). Escolhe outro método acima para recalcular.</span>' : ''}
-      <ul class="shape-color-legend shape-color-legend-graduated" id="shape-color-legend">
-        ${sym.breaks.length ? sym.breaks.map((b, i)=>`
-          <li class="graduated-row" data-break-idx="${i}">
-            <input type="color" class="swatch-input" value="${escapeHtml(b.color)}" data-break-color-idx="${i}">
-            <span class="graduated-range">${fmtBreakNumber(b.min)} –</span>
-            ${i < sym.breaks.length - 1
-              ? `<input type="number" class="graduated-bound-input" data-break-bound-idx="${i}" value="${fmtBreakNumber(b.max)}">`
-              : `<span class="graduated-range">${fmtBreakNumber(b.max)}</span>`}
-          </li>
-        `).join('') : '<li class="hint" style="padding:4px 0;">Sem valores numéricos válidos neste atributo.</li>'}
-      </ul>`;
+        ${sym.method === 'manual' ? '<div class="symb-hint">Manual — limites ajustados à mão. Escolhe outro método para recalcular.</div>' : ''}
+        <ul class="shape-color-legend shape-color-legend-graduated symb-legend" id="shape-color-legend">
+          ${sym.breaks.length ? sym.breaks.map((b, i)=>`
+            <li class="graduated-row symb-legend-item" data-break-idx="${i}">
+              <input type="color" class="swatch-input" value="${escapeHtml(b.color)}" data-break-color-idx="${i}">
+              <span class="graduated-range">${fmtBreakNumber(b.min)} –</span>
+              ${i < sym.breaks.length - 1
+                ? `<input type="number" class="graduated-bound-input" data-break-bound-idx="${i}" value="${fmtBreakNumber(b.max)}">`
+                : `<span class="graduated-range">${fmtBreakNumber(b.max)}</span>`}
+              <label class="symb-legend-width-label" title="Espessura do contorno">
+                <input type="number" class="symb-legend-width-input" min="1" max="10" step="0.5" value="${b.strokeWidth != null ? b.strokeWidth : 3}" data-break-width-idx="${i}">
+                <span class="symb-legend-width-unit">px</span>
+              </label>
+            </li>
+          `).join('') : '<li class="hint" style="padding:4px 0;">Sem valores numéricos válidos.</li>'}
+        </ul>
+      </div>`;
   } else {
-    modeBodyHTML = `
-      <label for="shape-base-color-input" style="margin-top:10px;">Cor da camada</label>
-      <div class="symbology-color-row">
-        <input type="color" id="shape-base-color-input" value="${escapeHtml(schema.baseColor || DEFAULT_COLOR)}">
-        <span class="hint" style="margin:0;">Aplicada a todas as geometrias desta camada.</span>
+    modeHTML = `
+      <div class="symb-section">
+        <div class="symb-section-label">Cor da camada</div>
+        <div class="symb-field-row">
+          <label for="shape-base-color-input">Preenchimento</label>
+          <input type="color" id="shape-base-color-input" value="${escapeHtml(schema.baseColor || DEFAULT_COLOR)}">
+          <span class="symb-hint">Aplicada a todas as geometrias.</span>
+        </div>
       </div>`;
   }
 
-  body.innerHTML = tabsHTML + modeBodyHTML + opacityHTML;
+  /* -- visual section -- */
+  const visualHTML = `
+    <div class="symb-section symb-section-visual">
+      <div class="symb-section-label">Aparência</div>
+      <div class="symb-field-row">
+        <label for="shape-opacity-input">Opacidade</label>
+        <div class="symb-slider-group">
+          <input type="range" id="shape-opacity-input" min="0" max="100" step="1" value="${currentOpacity}">
+          <span class="symb-slider-val" id="shape-opacity-value">${currentOpacity}%</span>
+        </div>
+      </div>
+      <div class="symb-field-row">
+        <label>Contorno</label>
+        <div class="symb-inline-group">
+          <div class="symb-field-inline">
+            <label for="shape-stroke-color-input" class="symb-label-xs">Cor</label>
+            <input type="color" id="shape-stroke-color-input" value="${escapeHtml(currentStrokeColor)}">
+          </div>
+          ${!isPoint ? `
+          <div class="symb-field-inline symb-slider-group">
+            <label for="shape-stroke-width-input" class="symb-label-xs">Espessura</label>
+            <input type="range" id="shape-stroke-width-input" min="1" max="10" step="0.5" value="${currentStrokeWidth}">
+            <span class="symb-slider-val" id="shape-stroke-width-value">${currentStrokeWidth}px</span>
+          </div>` : ''}
+          ${isPoint ? `
+          <div class="symb-field-inline symb-slider-group">
+            <label for="shape-point-size-input" class="symb-label-xs">Tamanho</label>
+            <input type="range" id="shape-point-size-input" min="8" max="40" step="1" value="${currentPointSize}">
+            <span class="symb-slider-val" id="shape-point-size-value">${currentPointSize}px</span>
+          </div>` : ''}
+        </div>
+      </div>
+    </div>`;
+
+  body.innerHTML = tabsHTML + modeHTML + visualHTML;
+
+  /* -- update header buttons -- */
+  _updateApplyBtn();
+  const autoToggle = document.getElementById('symbology-auto-apply-toggle');
+  if(autoToggle){
+    autoToggle.classList.toggle('is-on', symbologyAutoApply);
+    autoToggle.setAttribute('aria-label', symbologyAutoApply ? 'Auto-aplicar ligado' : 'Auto-aplicar desligado');
+  }
 
   if(!body._delegated){
     body._delegated = true;
@@ -944,12 +1107,28 @@ function renderSymbologyPanel(){
         setLayerOpacity(symbologyLayerId, e.target.value);
       } else if(e.target.id === 'shape-base-color-input'){
         setLayerBaseColor(symbologyLayerId, e.target.value);
+      } else if(e.target.id === 'shape-stroke-color-input'){
+        setLayerStrokeColor(symbologyLayerId, e.target.value);
+      } else if(e.target.id === 'shape-stroke-width-input'){
+        const valEl = document.getElementById('shape-stroke-width-value');
+        if(valEl) valEl.textContent = e.target.value + 'px';
+        setLayerStrokeWidth(symbologyLayerId, e.target.value);
+      } else if(e.target.id === 'shape-point-size-input'){
+        const valEl = document.getElementById('shape-point-size-value');
+        if(valEl) valEl.textContent = e.target.value + 'px';
+        setLayerPointSize(symbologyLayerId, e.target.value);
       } else if(e.target.dataset.uniqueIdx != null){
         const curSym = ensureSymbology(getLayerSchema(symbologyLayerId));
         const item = curSym.uniqueValues[Number(e.target.dataset.uniqueIdx)];
         if(item) setUniqueValueColor(symbologyLayerId, item.value, e.target.value);
+      } else if(e.target.dataset.uniqueWidthIdx != null){
+        const curSym = ensureSymbology(getLayerSchema(symbologyLayerId));
+        const item = curSym.uniqueValues[Number(e.target.dataset.uniqueWidthIdx)];
+        if(item) setUniqueValueStrokeWidth(symbologyLayerId, item.value, e.target.value);
       } else if(e.target.dataset.breakColorIdx != null){
         setGraduatedBreakColor(symbologyLayerId, Number(e.target.dataset.breakColorIdx), e.target.value);
+      } else if(e.target.dataset.breakWidthIdx != null){
+        setGraduatedBreakStrokeWidth(symbologyLayerId, Number(e.target.dataset.breakWidthIdx), e.target.value);
       }
     });
     body.addEventListener('change', (e)=>{

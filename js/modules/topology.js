@@ -105,20 +105,24 @@ function applyTopologyVisual(entry){
   } else {
     const schema = getLayerSchema(entry.layerId);
     styleLayerByClass(entry);
-    if(!schema || schema.mode !== 'atributos'){ styleLayerDefault(entry.layer, entry.layerId); }
+    const hasClassifiedSymbology = schema && schema.symbology && (schema.symbology.mode === 'unicos' || schema.symbology.mode === 'graduado');
+    if(!hasClassifiedSymbology && !(schema && schema.mode === 'atributos')){ styleLayerDefault(entry.layer, entry.layerId); }
   }
 }
 
-function dataGisMarkerIcon(color){
+function dataGisMarkerIcon(color, size){
   color = color || DEFAULT_COLOR;
+  size = Number(size) || 18;
+  const half = size / 2;
+  const border = Math.max(2, Math.round(size * 0.17));
   return L.divIcon({
     className:'datagis-point-marker',
     html:`<span style="
-      display:block; width:18px; height:18px; border-radius:50%;
-      background:${color}; border:3px solid var(--paper-elevated, #fff);
+      display:block; width:${size}px; height:${size}px; border-radius:50%;
+      background:${color}; border:${border}px solid var(--paper-elevated, #fff);
       box-shadow:0 1px 3px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.12);
     "></span>`,
-    iconSize:[18,18], iconAnchor:[9,9]
+    iconSize:[size,size], iconAnchor:[half,half]
   });
 }
 

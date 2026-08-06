@@ -68,6 +68,9 @@ function pbCreateLayerFromFeatureCollection(geojson, layerName){
     colorAttr: null,
     baseColor: null,
     opacity: null,
+    strokeColor: null,
+    strokeWidth: null,
+    pointSize: null,
     symbology: defaultSymbology()
   });
 

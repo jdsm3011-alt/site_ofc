@@ -685,6 +685,9 @@
       config.colorAttr = null;
       config.baseColor = null;
       config.opacity = null;
+      config.strokeColor = null;
+      config.strokeWidth = null;
+      config.pointSize = null;
       config.symbology = (typeof defaultSymbology === 'function') ? defaultSymbology() : undefined;
       if(typeof applyGeometryConfig === 'function') applyGeometryConfig();
       if(typeof refreshLayerEditability === 'function') refreshLayerEditability();
@@ -702,6 +705,9 @@
       colorAttr: null,
       baseColor: null,
       opacity: null,
+      strokeColor: null,
+      strokeWidth: null,
+      pointSize: null,
       symbology: (typeof defaultSymbology === 'function') ? defaultSymbology() : undefined
     });
     layerVisible.set(newId, true);

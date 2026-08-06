@@ -133,17 +133,20 @@ function computeGraduatedBreaks(layerId, attrName, method, classCount){
   if(method === 'quantis') ranges = classifyQuantile(values, n);
   else if(method === 'jenks') ranges = classifyJenks(values, n);
   else ranges = classifyEqualInterval(values, n);
-  return ranges.map((r, i)=>({min:r.min, max:r.max, color: paletteColor(i)}));
+  return ranges.map((r, i)=>({min:r.min, max:r.max, color: paletteColor(i), strokeWidth: 3}));
 }
 
 function styleLayerDefault(layer, layerId){
   const schema = layerId != null ? getLayerSchema(layerId) : null;
   const color = (schema && schema.baseColor) || DEFAULT_COLOR;
   const fillOpacity = ((schema && schema.opacity != null) ? schema.opacity : DEFAULT_OPACITY) / 100;
+  const strokeColor = (schema && schema.strokeColor) || color;
+  const strokeWidth = (schema && schema.strokeWidth != null) ? schema.strokeWidth : 3;
   if(layer.setIcon){
-    layer.setIcon(dataGisMarkerIcon(color));
+    const size = (schema && schema.pointSize != null) ? schema.pointSize : 18;
+    layer.setIcon(dataGisMarkerIcon(color, size));
   } else if(layer.setStyle){
-    layer.setStyle({color, weight:3, fillColor: color, fillOpacity});
+    layer.setStyle({color: strokeColor, weight: strokeWidth, fillColor: color, fillOpacity});
   }
 }
 
@@ -177,6 +180,28 @@ function resolveFeatureColor(schema, props){
   return schema.baseColor || DEFAULT_COLOR;
 }
 
+function resolveFeatureStrokeWidth(schema, props){
+  const sym = schema.symbology;
+  const fallback = (schema.strokeWidth != null) ? schema.strokeWidth : 3;
+  if(sym && sym.mode === 'unicos' && sym.attr){
+    const raw = props ? props[sym.attr] : undefined;
+    const key = (raw === undefined || raw === null) ? '' : String(raw);
+    const match = sym.uniqueValues.find(u=>String(u.value) === key);
+    if(match && match.strokeWidth != null) return match.strokeWidth;
+    return fallback;
+  }
+  if(sym && sym.mode === 'graduado' && sym.attr){
+    const num = parseFloat(props ? props[sym.attr] : undefined);
+    if(Number.isFinite(num)){
+      const cls = sym.breaks.find(b=>num >= b.min && num <= b.max)
+        || (sym.breaks.length ? sym.breaks[sym.breaks.length-1] : null);
+      if(cls && cls.strokeWidth != null) return cls.strokeWidth;
+    }
+    return fallback;
+  }
+  return fallback;
+}
+
 function styleLayerByClass(entry){
   const schema = getLayerSchema(entry.layerId);
   if(!schema) return;
@@ -184,10 +209,13 @@ function styleLayerByClass(entry){
   if(!hasActiveSymbology && schema.mode !== 'atributos'){ styleLayerDefault(entry.layer, entry.layerId); return; }
   const color = resolveFeatureColor(schema, entry.props);
   const fillOpacity = ((schema && schema.opacity != null) ? schema.opacity : DEFAULT_OPACITY) / 100;
+  const strokeColor = (schema && schema.strokeColor) || color;
+  const strokeWidth = resolveFeatureStrokeWidth(schema, entry.props);
   if(entry.layer.setIcon){
-    entry.layer.setIcon(dataGisMarkerIcon(color));
+    const size = (schema && schema.pointSize != null) ? schema.pointSize : 18;
+    entry.layer.setIcon(dataGisMarkerIcon(color, size));
   } else if(entry.layer.setStyle){
-    entry.layer.setStyle({color, fillColor:color, fillOpacity, weight:3});
+    entry.layer.setStyle({color: strokeColor, fillColor:color, fillOpacity, weight: strokeWidth});
   }
 }
 
@@ -217,6 +245,7 @@ window.classifyJenks = classifyJenks;
 window.computeGraduatedBreaks = computeGraduatedBreaks;
 window.styleLayerDefault = styleLayerDefault;
 window.resolveFeatureColor = resolveFeatureColor;
+window.resolveFeatureStrokeWidth = resolveFeatureStrokeWidth;
 window.styleLayerByClass = styleLayerByClass;
 window.restyleLayerId = restyleLayerId;
 

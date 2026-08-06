@@ -6,16 +6,7 @@
 
 /* ---------- online/offline toast ---------- */
 function showReconnectedToast(){
-  const toast = document.getElementById('connectivity-restored-toast');
-  if(!toast) return;
-  clearTimeout(toast._hideTimer);
-  toast.classList.remove('is-leaving');
-  void toast.offsetWidth;
-  toast.classList.add('is-visible');
-  toast._hideTimer = setTimeout(()=>{
-    toast.classList.remove('is-visible');
-    toast.classList.add('is-leaving');
-  }, 3200);
+  showNotification('Ligação à internet restabelecida', {type:'success', timeout: 3200});
 }
 
 function setBackLinkDisabled(disabled){

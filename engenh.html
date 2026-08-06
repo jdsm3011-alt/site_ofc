@@ -477,28 +477,9 @@
 </div>
 </div>
 </div>
-<div aria-live="polite" id="connectivity-restored-toast" role="status">
-<span class="check">
-<svg fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
-</span>
-  <span data-i18n="txt.liga_o_internet_restabelecida">Ligação à internet restabelecida</span>
-</div>
-<div aria-live="polite" id="welcome-toast" role="status">
-  
-  <span data-i18n="txt.seja_bem_vindo_de_volta_administrador_jo">Seja bem-vindo de volta, administrador José, MEU TRAVEQUINHO!</span>
-</div>
-<div aria-live="polite" id="team-sync-toast" role="status">
-<span class="check">
-<svg fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
-</span>
-<span class="message"><span data-i18n="txt.sincroniza_o_conclu_da_com_sucesso">Sincronização concluída com sucesso</span></span>
-</div>
-<div aria-live="polite" id="autosave-toast" role="status">
-<span class="dot"></span>
-<span class="message"><span data-i18n="txt.a_guardar_automaticamente">A guardar automaticamente…</span></span>
-</div>
 <main>
 <div id="map-area">
+<div id="notif-container" aria-live="polite" role="status"></div>
 <div id="map">
 <div aria-label="Mapas" id="workspace-tabs"></div>
 <div class="georef-stats-card hidden" id="georef-stats-card">
@@ -540,8 +521,6 @@
 </div>
 <div class="cloud-menu-body" id="team-sync-floating-body"></div>
 </div>
-<div class="toolbar-hint" id="toolbar-hint"><span class="dot"></span> <span id="toolbar-hint-text"></span></div>
-<div class="basemap-toast" id="basemap-toast"><span class="basemap-toast-icon">◎</span><span id="basemap-toast-text"></span></div>
 <div class="side-panel collapsed" id="console-panel">
 <div class="side-panel-header">
 <span class="side-panel-title"><span data-i18n="txt.consola">Consola</span></span>
@@ -575,7 +554,11 @@
 <div class="hidden" id="shape-color-attr-row">
 <div class="symbology-header">
 <span id="symbology-layer-name"><span data-i18n="txt.simbologia">Simbologia</span></span>
-<button data-i18n-title="attr.title.fechar_6" id="symbology-close-btn" title="Fechar" type="button">✕</button>
+<div class="symbology-header-actions">
+  <button type="button" class="symb-auto-toggle" id="symbology-auto-apply-toggle" title="Auto-aplicar alterações" aria-label="Auto-aplicar alterações"></button>
+  <button type="button" class="symb-apply-btn" id="symbology-apply-btn" disabled title="Aplicar alterações pendentes">Aplicar</button>
+  <button data-i18n-title="attr.title.fechar_6" id="symbology-close-btn" title="Fechar" type="button">✕</button>
+</div>
 </div>
 <div id="symbology-body"></div>
 </div>
@@ -1507,16 +1490,9 @@
 </div>
 </div>
 <script src="js/04-feedback-toast.js"></script>
-<!-- ===== Popup de alerta customizado (substitui alert() nativo) ===== -->
-<div class="app-alert-overlay hidden" id="app-alert-overlay">
-<div aria-live="assertive" class="app-alert-card" role="alert">
-<div class="app-alert-icon" id="app-alert-icon"></div>
-<div class="app-alert-text" id="app-alert-text"></div>
-<button aria-label="Fechar" class="app-alert-close" id="app-alert-close" type="button">✕</button>
-</div>
-</div>
-<script src="js/05-app-main.js"></script>
+<!-- ===== Notificações são agora geridas por showNotification() ===== -->
 <script src="js/modules/utils.js"></script>
+<script src="js/05-app-main.js"></script>
 <script src="js/modules/idb.js"></script>
 <script src="js/modules/offline.js"></script>
 <script src="js/modules/connectivity.js"></script>
