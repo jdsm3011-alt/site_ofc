@@ -985,8 +985,17 @@ header {
 
 /* ── TAB BAR MÓVEL (≤900px) ── */
 @media (max-width: 900px) {
-  /* Header compacto */
-  header { padding: 8px 12px; gap: 8px; }
+  /* Header fixo no topo, sempre acessível */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5000;
+    padding: 8px 12px;
+    gap: 8px;
+    touch-action: manipulation;
+  }
   .page-title { display: none; }
   .back-link .txt { display: none; }
   .back-link { padding: 7px 10px; }
@@ -1008,7 +1017,7 @@ header {
     height: 14px;
   }
 
-  /* Layout: mapa ocupa tudo, sidebar sobrepõe quando activa */
+  /* Layout: mapa ocupa tudo, header fixo por cima */
   .main { flex-direction: row; position: relative; overflow: hidden; }
   .map-wrap { position: absolute; inset: 0; min-height: 0; }
   #map { position: absolute; inset: 0; }
