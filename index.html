@@ -3585,6 +3585,21 @@
       display: none;
     }
 
+    .btn-preview-freg-disabled {
+      opacity: 0.4;
+      color: #C0392B;
+      border-color: #C0392B;
+      cursor: not-allowed;
+      pointer-events: auto;
+    }
+    .btn-preview-freg-disabled:hover {
+      opacity: 0.6;
+    }
+    html[data-theme="dark"] .btn-preview-freg-disabled {
+      color: #E74C3C;
+      border-color: #E74C3C;
+    }
+
     .btn-preview .icon-eye {
       display: block;
       pointer-events: none;
@@ -4681,6 +4696,21 @@
                       data-i18n-attr-title="panel.previsualizar"
                       onclick="togglePreview('mdt', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                     <a class="btn-dl" id="link-mdt" href="#" download title="Descarregar">↓</a>
+                    <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
+                  </div>
+                </div>
+
+                <!-- Freguesias -->
+                <div class="download-item">
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name">Freguesias (CAOP)</span>
+                      <span class="di-meta" id="size-freg">Shapefile · —</span>
+                    </div>
+                  </div>
+                  <div class="di-right">
+                    <button type="button" class="btn-preview btn-preview-freg-disabled" title="Temporariamente indisponível" disabled aria-disabled="true"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <a class="btn-dl" id="link-freg" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
                   </div>
                 </div>
@@ -6557,6 +6587,14 @@
       aplicarLink(linkBgri, bgriZip, 'size-bgri', 'Shapefile (.zip) · —');
       aplicarLink(linkMdt, mdtZip, 'size-mdt', 'Shapefile (.zip) · —');
 
+      // Freguesias: URL derivada de caop_zip (tag freguesias_up + sufixo _freg)
+      const linkFreg = document.getElementById('link-freg');
+      let fregZip = '#';
+      if (metadataOk && caopZip && caopZip !== '#') {
+        fregZip = caopZip.replace(/\/([^/]+)$/, '/freguesias_up/$1').replace(/\.zip$/i, '_freg.zip');
+      }
+      aplicarLink(linkFreg, fregZip, 'size-freg', 'Shapefile (.zip) · —');
+
       // OSM layers
       const osmList = document.getElementById('osm-list');
       osmList.innerHTML = '';
@@ -6621,6 +6659,12 @@
         { nome: 'BGRI', url: activeMunicipio.bgri_zip },
         { nome: 'MDT', url: activeMunicipio.mdt_zip },
       ];
+
+      // Freguesias: derivada de caop_zip
+      if (activeMunicipio.caop_zip && activeMunicipio.caop_zip !== '#') {
+        const fregUrl = activeMunicipio.caop_zip.replace(/\/([^/]+)$/, '/freguesias_up/$1').replace(/\.zip$/i, '_freg.zip');
+        candidatos.push({ nome: 'Freguesias', url: fregUrl });
+      }
 
       const osmZips = activeMunicipio.osm_zips || {};
       Object.keys(osmZips).forEach(layerName => {
