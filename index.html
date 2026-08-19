@@ -6587,11 +6587,15 @@
       aplicarLink(linkBgri, bgriZip, 'size-bgri', 'Shapefile (.zip) · —');
       aplicarLink(linkMdt, mdtZip, 'size-mdt', 'Shapefile (.zip) · —');
 
-      // Freguesias: URL derivada de caop_zip (tag freguesias_up + sufixo _freg)
+      // Freguesias: URL construída a partir do nome normalizado do município
       const linkFreg = document.getElementById('link-freg');
       let fregZip = '#';
-      if (metadataOk && caopZip && caopZip !== '#') {
-        fregZip = caopZip.replace(/\/([^/]+)$/, '/freguesias_up/$1').replace(/\.zip$/i, '_freg.zip');
+      if (metadataOk && municipio && municipio !== 'Município') {
+        const nomeFreg = municipio.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
+          .replace(/\s+/g, '_')
+          .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
+        fregZip = `https://github.com/jdsm3011-alt/site_ofc/releases/download/freguesias_up/CAOP_${nomeFreg}_freg.zip`;
       }
       aplicarLink(linkFreg, fregZip, 'size-freg', 'Shapefile (.zip) · —');
 
@@ -6660,10 +6664,13 @@
         { nome: 'MDT', url: activeMunicipio.mdt_zip },
       ];
 
-      // Freguesias: derivada de caop_zip
-      if (activeMunicipio.caop_zip && activeMunicipio.caop_zip !== '#') {
-        const fregUrl = activeMunicipio.caop_zip.replace(/\/([^/]+)$/, '/freguesias_up/$1').replace(/\.zip$/i, '_freg.zip');
-        candidatos.push({ nome: 'Freguesias', url: fregUrl });
+      // Freguesias: URL construída a partir do nome normalizado do município
+      if (activeMunicipio.municipio) {
+        const nomeFreg = activeMunicipio.municipio.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
+          .replace(/\s+/g, '_')
+          .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
+        candidatos.push({ nome: 'Freguesias', url: `https://github.com/jdsm3011-alt/site_ofc/releases/download/freguesias_up/CAOP_${nomeFreg}_freg.zip` });
       }
 
       const osmZips = activeMunicipio.osm_zips || {};
