@@ -6414,10 +6414,14 @@
         return;
       }
 
-      // Freguesias: URL usa nome exacto do município (acentos, espaços)
+      // Freguesias: URL usa nome normalizado (sem acentos, preposições com pontos)
       if (tipo === 'freg') {
         const nomeMuni = municipioAlvo.municipio || '';
-        const fregUrl = `https://github.com/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${encodeURIComponent(nomeMuni)}_freg.geojson`;
+        const nomeFreg = nomeMuni.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
+          .replace(/\s+/g, '_')
+          .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
+        const fregUrl = `https://github.com/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${encodeURIComponent(nomeFreg)}_freg.geojson`;
         console.log('Preview freg URL:', fregUrl, '| nomeMuni:', nomeMuni);
         fetch(fregUrl)
           .then(r => { if (!r.ok) throw new Error('preview não encontrada'); return r.json(); })
