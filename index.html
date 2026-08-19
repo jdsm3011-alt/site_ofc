@@ -6414,7 +6414,7 @@
         return;
       }
 
-      // Freguesias: URL usa nome normalizado (sem acentos, preposições com pontos)
+      // Freguesias: constrói URL do GitHub directamente
       if (tipo === 'freg') {
         const nomeMuni = municipioAlvo.municipio || '';
         const nomeFreg = nomeMuni.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -6422,9 +6422,13 @@
           .replace(/\s+/g, '_')
           .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
         const fregUrl = `https://github.com/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${encodeURIComponent(nomeFreg)}_freg.geojson`;
-        console.log('Preview freg URL:', fregUrl, '| nomeMuni:', nomeMuni);
-        fetch(fregUrl)
-          .then(r => { if (!r.ok) throw new Error('preview não encontrada'); return r.json(); })
+        console.log('[FREG] URL:', fregUrl, '| nomeMuni:', nomeMuni, '| nomeFreg:', nomeFreg);
+        fetch(fregUrl, { mode: 'cors', redirect: 'follow' })
+          .then(r => {
+            console.log('[FREG] Response:', r.status, r.statusText, 'type:', r.type, 'url:', r.url);
+            if (!r.ok) throw new Error('HTTP ' + r.status + ' ' + r.statusText);
+            return r.json();
+          })
           .then(geojson => {
             const estilo = PREVIEW_STYLES.freg;
             const layer = L.geoJSON(geojson, { style: estilo }).addTo(map);
@@ -6435,13 +6439,12 @@
             atualizarPreviewBadges();
           })
           .catch(err => {
-            console.error(err);
-            showToast('⚠ Pré-visualização indisponível', 2500);
+            console.error('[FREG] ERRO:', err.message, '| URL tentada:', fregUrl);
+            showToast('⚠ Pré-visualização indisponível (' + err.message + ')', 3500);
           })
           .finally(() => btnEl.classList.remove('loading'));
         return;
       }
-
       let rawPath, label;
       if (tipo.startsWith('osm:')) {
         const layerName = tipo.slice(4);
