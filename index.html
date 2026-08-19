@@ -3585,21 +3585,6 @@
       display: none;
     }
 
-    .btn-preview-freg-disabled {
-      opacity: 0.4;
-      color: #C0392B;
-      border-color: #C0392B;
-      cursor: not-allowed;
-      pointer-events: auto;
-    }
-    .btn-preview-freg-disabled:hover {
-      opacity: 0.6;
-    }
-    html[data-theme="dark"] .btn-preview-freg-disabled {
-      color: #E74C3C;
-      border-color: #E74C3C;
-    }
-
     .btn-preview .icon-eye {
       display: block;
       pointer-events: none;
@@ -4709,7 +4694,7 @@
                     </div>
                   </div>
                   <div class="di-right">
-                    <button type="button" class="btn-preview btn-preview-freg-disabled" title="Temporariamente indisponível" disabled aria-disabled="true"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    <button type="button" class="btn-preview" id="preview-freg" title="Pré-visualizar no mapa" onclick="togglePreview('freg', this);"><svg class="icon-eye" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                     <a class="btn-dl" id="link-freg" href="#" download title="Descarregar">↓</a>
                     <span class="download-status" data-i18n="panel.indisponivel">Indisponível</span>
                   </div>
@@ -5798,13 +5783,14 @@
     // o que permite ter, por exemplo, CAOP + COS + BGRI sobrepostos ao mesmo tempo.
     const activePreviews = new Map(); // tipo -> { layer, btnEl, label }
 
-    const PREVIEW_LABELS = { caop: 'CAOP', cos: 'COS', bgri: 'BGRI', mdt: 'MDT' };
+    const PREVIEW_LABELS = { caop: 'CAOP', cos: 'COS', bgri: 'BGRI', mdt: 'MDT', freg: 'Freguesias' };
     const PREVIEW_STYLES = {
       // ── Camadas principais ────────────────────────────────────────────────────
       caop: { color: '#C2703D', weight: 2, fillOpacity: 0.05 }, // laranja-ocre — limites administrativos
       cos: { color: '#5A8F45', weight: 1, fillOpacity: 0.22 }, // verde — uso do solo (COS)
       bgri: { color: '#4472A8', weight: 1, fillOpacity: 0.16 }, // azul-ardósia — censos/BGRI
       mdt: { color: '#8B6914', weight: 1.2, fillOpacity: 0.20 }, // amarelo-siena — modelo de terreno
+      freg: { color: '#8E44AD', weight: 1.5, fillOpacity: 0.15 }, // roxo — freguesias
 
       // ── OSM: Água ─────────────────────────────────────────────────────────────
       'osm:gis_osm_water_a_free_1': { color: '#2E86C1', weight: 1, fillColor: '#AED6F1', fillOpacity: 0.55 }, // azul — massas de água
@@ -6425,6 +6411,33 @@
         btnEl.classList.remove('loading');
         activePreviews.set(tipo, { layer, btnEl, label: 'MDT' });
         atualizarPreviewBadges();
+        return;
+      }
+
+      // Freguesias: URL construída a partir do nome normalizado do município
+      if (tipo === 'freg') {
+        const nomeMuni = municipioAlvo.municipio || '';
+        const nomeFreg = nomeMuni.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
+          .replace(/\s+/g, '_')
+          .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
+        const fregUrl = `https://github.com/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${nomeFreg}_freg.geojson`;
+        fetch(fregUrl)
+          .then(r => { if (!r.ok) throw new Error('preview não encontrada'); return r.json(); })
+          .then(geojson => {
+            const estilo = PREVIEW_STYLES.freg;
+            const layer = L.geoJSON(geojson, { style: estilo }).addTo(map);
+            const b = layer.getBounds();
+            if (b.isValid()) map.fitBounds(b, { padding: [40, 40] });
+            btnEl.classList.add('active');
+            activePreviews.set(tipo, { layer, btnEl, label: 'Freguesias' });
+            atualizarPreviewBadges();
+          })
+          .catch(err => {
+            console.error(err);
+            showToast('⚠ Pré-visualização indisponível', 2500);
+          })
+          .finally(() => btnEl.classList.remove('loading'));
         return;
       }
 
