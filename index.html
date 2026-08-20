@@ -6421,7 +6421,7 @@
           .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
           .replace(/\s+/g, '_')
           .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
-        const fregUrl = `https://github.com/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${encodeURIComponent(nomeFreg)}_freg.geojson`;
+        const fregUrl = `/github/jdsm3011-alt/site_ofc/releases/download/prev_fregs/CAOP_${encodeURIComponent(nomeFreg)}_freg.geojson`;
         console.log('[FREG] URL:', fregUrl, '| nomeMuni:', nomeMuni, '| nomeFreg:', nomeFreg);
         fetch(fregUrl, { mode: 'cors', redirect: 'follow' })
           .then(r => {
