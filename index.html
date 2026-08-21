@@ -6482,12 +6482,8 @@
       // Freguesias: constrói URL do GitHub directamente
       if (tipo === 'freg') {
         const nomeMuni = municipioAlvo.municipio || '';
-        const nomeFreg = nomeMuni.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-          .replace(/\b(da|de|do|dos|das)\b/gi, '.$1.')
-          .replace(/\s+/g, '_')
-          .replace(/\.{2,}/g, '.').replace(/_{2,}/g, '_').replace(/^[._]+|[._]+$/g, '');
-        const fregUrl = `https://raw.githubusercontent.com/jdsm3011-alt/site_ofc/main/preview_fregs/CAOP_${encodeURIComponent(nomeFreg)}_freg.geojson`;
-        console.log('[FREG] URL:', fregUrl, '| nomeMuni:', nomeMuni, '| nomeFreg:', nomeFreg);
+        const fregUrl = `https://raw.githubusercontent.com/jdsm3011-alt/site_ofc/main/preview_fregs/CAOP_${encodeURIComponent(nomeMuni)}_freg.geojson`;
+        console.log('[FREG] URL:', fregUrl, '| nomeMuni:', nomeMuni);
         fetch(fregUrl, { mode: 'cors', redirect: 'follow' })
           .then(r => {
             console.log('[FREG] Response:', r.status, r.statusText, 'type:', r.type, 'url:', r.url);
