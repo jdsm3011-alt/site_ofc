@@ -1974,6 +1974,70 @@
       100% { transform: translateY(-100%); }
     }
 
+    /* ── OFFLINE / ONLINE OVERLAY ─────────────── */
+    .connectivity-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .4s ease;
+    }
+
+    .connectivity-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .connectivity-overlay.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .connectivity-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 20px;
+    }
+
+    .connectivity-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .connectivity-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      text-align: center;
+    }
+
+    .connectivity-subtext {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 12px;
+      color: var(--stone);
+      margin-top: 8px;
+      opacity: .7;
+    }
+
+    @keyframes wifiPulse {
+      0%, 100% { opacity: .4; transform: scale(.95); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes checkPop {
+      0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+      60% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
     .loading-logo {
       width: 72px;
       opacity: .78;
@@ -4162,6 +4226,33 @@
         <div class="loading-bar-fill"></div>
       </div>
       </div>
+    </div>
+
+    <!-- Offline overlay -->
+    <div id="offline-overlay" class="connectivity-overlay">
+      <div class="connectivity-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M32 48a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#C2703D"/>
+          <path d="M20.5 36.5a16 16 0 0 1 23 0" stroke="#6E726A" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+          <path d="M14 30a24 24 0 0 1 36 0" stroke="#6E726A" stroke-width="2.5" stroke-linecap="round" opacity=".35"/>
+          <path d="M8 23.5a32 32 0 0 1 48 0" stroke="#6E726A" stroke-width="2.5" stroke-linecap="round" opacity=".2"/>
+          <line x1="8" y1="8" x2="56" y2="56" stroke="#C2703D" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="connectivity-text">Sem acesso à internet</div>
+      <div class="connectivity-subtext">A aguardar ligação...</div>
+    </div>
+
+    <!-- Online restored overlay -->
+    <div id="online-overlay" class="connectivity-overlay">
+      <div class="connectivity-icon">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: checkPop .5s cubic-bezier(.34,1.56,.64,1) both;">
+          <circle cx="32" cy="32" r="28" stroke="#3D6B4F" stroke-width="2.5" fill="rgba(61,107,79,.08)"/>
+          <path d="M20 33l8 8 16-16" stroke="#3D6B4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="connectivity-text" style="color: var(--green);">Acesso reposto</div>
+      <div class="connectivity-subtext">A recarregar dados...</div>
     </div>
 
   <div class="page-shell">
@@ -8778,6 +8869,41 @@
         initLangToggle();
       }
       })();
+
+    // ── CONNECTIVITY DETECTION ─────────────────────────────────────
+    (function() {
+      const offlineOverlay = document.getElementById('offline-overlay');
+      const onlineOverlay = document.getElementById('online-overlay');
+      let wasOffline = false;
+
+      function showOffline() {
+        wasOffline = true;
+        offlineOverlay.classList.add('show');
+        offlineOverlay.classList.remove('hide');
+      }
+
+      function showOnline() {
+        offlineOverlay.classList.remove('show');
+        offlineOverlay.classList.add('hide');
+
+        if (wasOffline) {
+          wasOffline = false;
+          onlineOverlay.classList.add('show');
+          setTimeout(() => {
+            onlineOverlay.classList.remove('show');
+            onlineOverlay.classList.add('hide');
+            setTimeout(() => { onlineOverlay.style.display = 'none'; }, 400);
+          }, 2000);
+        }
+      }
+
+      window.addEventListener('offline', showOffline);
+      window.addEventListener('online', showOnline);
+
+      if (!navigator.onLine) {
+        showOffline();
+      }
+    })();
   </script>
 
 </body>
