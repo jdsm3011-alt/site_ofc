@@ -6455,6 +6455,12 @@
     function togglePreview(tipo, btnEl, municipioOverride) {
       var municipioAlvo = municipioOverride || activeMunicipio;
       if (!municipioAlvo || btnEl.classList.contains('unavailable')) return;
+
+      // pedido anterior ainda em curso → ignora cliques repetidos (evita a
+      // race condition em que 2 fetch() em paralelo resolvem fora de ordem
+      // e a camada "perdedora" fica órfã no mapa, sem botão que a controle)
+      if (btnEl.classList.contains('loading')) return;
+
       pausarCarrossel();
 
       // já está ativa → este clique desliga só esta camada (as outras ficam)
