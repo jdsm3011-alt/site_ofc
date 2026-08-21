@@ -1965,6 +1965,15 @@
       pointer-events: none;
     }
 
+    #loading-overlay.opening {
+      animation: overlaySlideUp .6s cubic-bezier(.65, 0, .35, 1) forwards;
+    }
+
+    @keyframes overlaySlideUp {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100%); }
+    }
+
     .loading-logo {
       width: 72px;
       opacity: .78;
@@ -5629,12 +5638,12 @@
     function hideLoading() {
       const ov = document.getElementById('loading-overlay');
       setTimeout(() => {
-        ov.classList.add('hide');
-        setTimeout(() => ov.style.display = 'none', 700);
+        ov.classList.add('opening');
         const heroPanel = document.querySelector('.hero-panel');
         if (heroPanel && !heroPanel.classList.contains('panel-enter')) {
           heroPanel.classList.add('panel-enter');
         }
+        setTimeout(() => { ov.style.display = 'none'; }, 650);
       }, 2000);
     }
 
