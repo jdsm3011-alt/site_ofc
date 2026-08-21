@@ -2123,9 +2123,78 @@
       opacity: .65;
     }
 
-    /* esconde o jogo em ecrãs pequenos ou com input tátil — é só um
-       easter-egg de secretária, não vale a pena complicar para touch */
-    @media (max-width: 900px), (hover: none) and (pointer: coarse) {
+    /* ── controlos táteis (WASD + espaço) — só em mobile/touch ──────── */
+    .offline-game-touch-controls {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      margin-top: 2px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .ogtc-row {
+      display: flex;
+      gap: 7px;
+    }
+
+    .ogtc-btn {
+      appearance: none;
+      -webkit-appearance: none;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 11px;
+      background: var(--paper-elevated);
+      color: var(--ink);
+      box-shadow: 0 6px 14px rgba(23, 49, 36, .10);
+      touch-action: none;
+      transition: transform .1s ease, background .12s ease, color .12s ease, box-shadow .1s ease;
+    }
+
+    .ogtc-btn.is-active {
+      transform: translateY(2px) scale(.94);
+      background: var(--green);
+      border-color: var(--green-deep);
+      color: var(--white);
+      box-shadow: 0 2px 6px rgba(23, 49, 36, .18);
+    }
+
+    .ogtc-btn-space {
+      width: 64px;
+      font-size: 9.5px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      border-color: var(--ochre-soft);
+    }
+
+    .ogtc-btn-space.is-active {
+      background: var(--ochre);
+      border-color: var(--ochre);
+      color: var(--white);
+    }
+
+    html[data-theme="dark"] .ogtc-btn {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--stone);
+    }
+
+    @media (hover: none) and (pointer: coarse), (max-width: 900px) {
+      .offline-game-touch-controls { display: flex; }
+      .offline-game-hint { display: none; }
+    }
+
+    /* em ecrãs muito estreitos o canvas (640px) já não cabe de forma legível */
+    @media (max-width: 360px) {
       .offline-game { display: none; }
     }
 
@@ -4376,7 +4445,20 @@
         </div>
         <div class="offline-game-play" id="offline-game-play">
           <canvas id="offline-game-canvas" width="640" height="300"></canvas>
-          <div class="offline-game-hint" id="offline-game-hint">↑ / ↓ ou W / S para voar &nbsp;·&nbsp; ESPAÇO para recomeçar</div>
+          <div class="offline-game-hint" id="offline-game-hint">⬅️➡️ throttle &nbsp;·&nbsp; ⬆️⬇️ pitch &nbsp;·&nbsp; ganha velocidade e descola &nbsp;·&nbsp; ESPAÇO para recomeçar</div>
+          <div class="offline-game-touch-controls" id="offline-game-touch-controls">
+            <div class="ogtc-row">
+              <button type="button" class="ogtc-btn" data-key="KeyW" aria-label="Subir o nariz">W</button>
+            </div>
+            <div class="ogtc-row">
+              <button type="button" class="ogtc-btn" data-key="KeyA" aria-label="Reduzir throttle">A</button>
+              <button type="button" class="ogtc-btn ogtc-btn-space" data-key="Space" aria-label="Começar / recomeçar">⎵</button>
+              <button type="button" class="ogtc-btn" data-key="KeyD" aria-label="Aumentar throttle">D</button>
+            </div>
+            <div class="ogtc-row">
+              <button type="button" class="ogtc-btn" data-key="KeyS" aria-label="Baixar o nariz">S</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -9048,18 +9130,60 @@
       }
       })();
 
-    // ── MINI-JOGO OFFLINE: avião vs esquadrilha (só desktop) ─────────
+    // ── MINI-JOGO OFFLINE: voo livre com física simplificada (só desktop) ──
     const AvionGame = (function() {
       const canvas = document.getElementById('offline-game-canvas');
       if (!canvas) return { init(){}, startRun(){}, stop(){} };
       const ctx = canvas.getContext('2d');
       const W = canvas.width, H = canvas.height;
-      const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-      const PLANE_X = 78, PLANE_R = 9;
-      const ACCEL = 0.42, MAX_V = 3.2, FRICTION = 0.9;
-      const GAP_H = 100, COL_W = 42;
+      const PLANE_X = 116, PLANE_R = 9;
       const BEST_KEY = 'offlineGameBest';
+      const BEST_DIST_KEY = 'offlineGameBestDist';
+
+      // ── constantes de física (modelo vetorial: o nariz [pitch] e a trajetória
+      // real de voo [flightAngle] são coisas distintas, tal como num simulador
+      // arcade tipo TU-95 — a trajetória só "persegue" o nariz consoante a
+      // velocidade, e a gravidade puxa-a sempre para baixo) ──
+      const MAX_SPEED = 8.6;          // velocidade de cruzeiro máxima
+      const TAKEOFF_SPEED = 3.0;      // velocidade mínima para conseguir descolar
+      const STALL_SPEED = 3.7;        // abaixo disto, ângulo de ataque elevado = stall
+      const STALL_AOA = 0.5;          // ângulo de ataque crítico (rad) acima do qual perde sustentação
+      const GROUND_PITCH_MAX = 0.45;  // rotação máxima do nariz ainda em pista (antes de levantar)
+
+      const PITCH_MAX_UP = 0.85;
+      const PITCH_MAX_DOWN = 0.95;
+      const PITCH_ACCEL_BASE = 0.0016;  // inércia base do manche
+      const PITCH_AUTHORITY_MIN = 0.35; // eficácia dos comandos parado/a baixa velocidade ("moles")
+      const PITCH_AUTHORITY_MAX = 1.35; // eficácia a alta velocidade (comandos mais "vivos")
+      const PITCH_DAMPING = 0.91;       // amortecimento do movimento do nariz
+
+      const THROTTLE_STEP = 0.012;
+      const ENGINE_SPOOL_UP = 0.026;    // a turbina demora mais a "subir de giros"...
+      const ENGINE_SPOOL_DOWN = 0.05;   // ...do que a cortar potência (assimetria realista)
+      const IDLE_THRUST = 0.05;         // impulso residual ao ralenti — o motor nunca pára de empurrar
+      const THRUST_K = 0.185;
+      const DRAG_BASE = 0.0105;
+      const INDUCED_DRAG_K = 0.075;   // resistência extra por ângulo de ataque elevado
+
+      const TURN_K = 0.09;            // taxa-base a que a trajetória persegue o nariz
+      const GRAVITY_K = 0.09;         // efeito da gravidade sobre a trajetória (maior a baixa vel.)
+      const VY_SCALE = 3.4;
+      const GROUND_DRAG = 0.992;
+      const WORLD_SPEED_K = 0.62;     // quão rápido o mundo desliza em função da velocidade
+      const WORLD_SPEED_BASE = 0.6;   // deslize ambiente mínimo — só em voo (ver getWorldSpeed)
+
+      // ── zonas / progressão (por distância percorrida, em km) ──
+      const ZONE_AIRPORT = { key: 'airport', label: 'Aeroporto', end: 0.35 };
+      const ZONE_CITY = { key: 'city', label: 'Cidade', end: 1.5 };
+      const ZONE_MOUNTAINS = { key: 'mountains', label: 'Montanhas', end: 3.2 };
+      const ZONE_SKY = { key: 'sky', label: 'Céu aberto', end: Infinity };
+      function getZone(distKm) {
+        if (distKm < ZONE_AIRPORT.end) return ZONE_AIRPORT;
+        if (distKm < ZONE_CITY.end) return ZONE_CITY;
+        if (distKm < ZONE_MOUNTAINS.end) return ZONE_MOUNTAINS;
+        return ZONE_SKY;
+      }
 
       // pequena nuvem em pixel-art (grelha 8×5), reutilizada a várias escalas
       const CLOUD_PATTERN = [
@@ -9082,14 +9206,16 @@
         };
       }
 
-      let plane, obstacles, clouds, score, best, spawnTimer, speed, running, over, rafId;
-      let dirUp = false, dirDown = false, started = false;
+      let plane, obstacles, clouds, fogBands, mountains, bgSun, ground, runwayX, airportBuildings;
+      let score, best, bestDist, distanceKm, spawnTimer, running, over, rafId;
+      let dirUp = false, dirDown = false, dirLeft = false, dirRight = false, started = false;
+      let stats, zoneCur, message, messageTimer;
 
       function makeCloud(randomX) {
         const scale = 1 + Math.random() * 1.4;
         return {
           x: randomX ? Math.random() * W : W + 40 * scale,
-          y: 16 + Math.random() * (H * 0.6),
+          y: 16 + Math.random() * (H * 0.55),
           scale,
           speed: 0.12 * scale,
           alpha: 0.14 + 0.10 * ((scale - 1) / 1.4)
@@ -9099,13 +9225,20 @@
       function initClouds() {
         clouds = [];
         for (let i = 0; i < 6; i++) clouds.push(makeCloud(true));
+        fogBands = [];
       }
 
       function updateClouds() {
+        const worldSpeed = running ? getWorldSpeed() : 0.12;
         clouds.forEach(c => {
           c.x -= c.speed;
           if (c.x < -40 * c.scale) Object.assign(c, makeCloud(false));
         });
+        for (let i = fogBands.length - 1; i >= 0; i--) {
+          const f = fogBands[i];
+          f.x -= worldSpeed;
+          if (f.x + f.w < -20) fogBands.splice(i, 1);
+        }
       }
 
       function drawClouds() {
@@ -9124,60 +9257,470 @@
         ctx.globalAlpha = 1;
       }
 
+      function drawFogBands() {
+        if (!fogBands || !fogBands.length) return;
+        fogBands.forEach(f => {
+          ctx.fillStyle = colors.paper;
+          ctx.globalAlpha = 0.5;
+          ctx.fillRect(f.x, 0, f.w, H);
+          ctx.globalAlpha = 1;
+        });
+      }
+
+      function inFog(x) {
+        if (!fogBands) return false;
+        return fogBands.some(f => x > f.x && x < f.x + f.w);
+      }
+
+      // ── BACKGROUND: sol, montanhas/prédios, chão ──────────────────────
+      function initBackground() {
+        bgSun = { x: W - 60, y: 42, r: 16 };
+        mountains = [];
+        let mx = -20;
+        while (mx < W + 40) {
+          const h = 28 + Math.random() * 45;
+          const w = 55 + Math.random() * 75;
+          mountains.push({ x: mx, w, h, shade: Math.random(), kind: 'mountain' });
+          mx += w * 0.6;
+        }
+        ground = { y: H - 10 };
+        runwayX = 0;
+      }
+
+      function drawSun() {
+        if (!bgSun) return;
+        ctx.save();
+        ctx.translate(bgSun.x, bgSun.y);
+        const rayAlpha = 0.08 + 0.04 * Math.sin(Date.now() * 0.001);
+        ctx.globalAlpha = rayAlpha;
+        ctx.fillStyle = colors.ochre;
+        for (let i = 0; i < 8; i++) {
+          ctx.rotate(Math.PI / 4);
+          ctx.beginPath();
+          ctx.moveTo(-2.5, -bgSun.r - 2);
+          ctx.lineTo(2.5, -bgSun.r - 2);
+          ctx.lineTo(1, -bgSun.r - 12);
+          ctx.lineTo(-1, -bgSun.r - 12);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.globalAlpha = 0.15;
+        ctx.beginPath();
+        ctx.arc(0, 0, bgSun.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.arc(0, 0, bgSun.r * 0.55, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      // desenha montanhas (zona montanhas/aeroporto) ou silhuetas de prédios (zona cidade)
+      function drawMountains() {
+        if (!mountains || !mountains.length) return;
+        const gy = ground ? ground.y : H - 10;
+        const zoneKey = zoneCur ? zoneCur.key : 'airport';
+        mountains.forEach(m => {
+          if (zoneKey === 'city') {
+            ctx.fillStyle = colors.ink;
+            ctx.globalAlpha = 0.05 + m.shade * 0.05;
+            ctx.fillRect(m.x, gy - m.h, m.w * 0.55, m.h);
+          } else {
+            ctx.fillStyle = zoneKey === 'mountains' ? colors.stone : colors.green;
+            ctx.globalAlpha = 0.06 + m.shade * (zoneKey === 'mountains' ? 0.08 : 0.04);
+            ctx.beginPath();
+            ctx.moveTo(m.x, gy);
+            ctx.lineTo(m.x + m.w / 2, gy - m.h);
+            ctx.lineTo(m.x + m.w, gy);
+            ctx.closePath();
+            ctx.fill();
+          }
+        });
+        ctx.globalAlpha = 1;
+      }
+
+      function drawGround() {
+        if (!ground) return;
+        const gy = ground.y;
+        ctx.fillStyle = colors.green;
+        ctx.globalAlpha = 0.08;
+        ctx.fillRect(0, gy, W, H - gy);
+        ctx.globalAlpha = 0.16;
+        const offset = (Date.now() * 0.025) % 10;
+        for (let x = -offset; x < W; x += 10) {
+          ctx.fillRect(x, gy, 1.5, 3 + ((x * 7) % 3));
+          ctx.fillRect(x + 4, gy + 1, 1.5, 2);
+        }
+        ctx.globalAlpha = 1;
+
+        // pista, visível só na fase de descolagem
+        if (plane && plane.phase === 'ground') {
+          const runwayTop = gy + 1, runwayBottom = gy + 11;
+
+          // asfalto
+          ctx.fillStyle = colors.ink;
+          ctx.globalAlpha = 0.14;
+          ctx.fillRect(0, runwayTop, W, runwayBottom - runwayTop);
+          ctx.globalAlpha = 1;
+
+          // bordas brancas
+          ctx.strokeStyle = colors.paper;
+          ctx.globalAlpha = 0.55;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(0, runwayTop); ctx.lineTo(W, runwayTop);
+          ctx.moveTo(0, runwayBottom); ctx.lineTo(W, runwayBottom);
+          ctx.stroke();
+
+          // eixo central tracejado
+          ctx.strokeStyle = colors.paper;
+          ctx.globalAlpha = 0.65;
+          ctx.lineWidth = 1.6;
+          ctx.setLineDash([14, 10]);
+          ctx.lineDashOffset = -runwayX;
+          ctx.beginPath();
+          ctx.moveTo(0, (runwayTop + runwayBottom) / 2);
+          ctx.lineTo(W, (runwayTop + runwayBottom) / 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.globalAlpha = 1;
+
+          // luzes de bordadura — pares âmbar/branco a "correr" ao longo das
+          // bordas, como as luzes reais de uma pista
+          const spacing = 32;
+          const lightOffset = runwayX % spacing;
+          const pulse = 0.6 + 0.4 * Math.sin(Date.now() * 0.01);
+          for (let x = -lightOffset; x < W + spacing; x += spacing) {
+            const litIndex = Math.round((x + runwayX) / spacing);
+            ctx.fillStyle = litIndex % 3 === 0 ? colors.ochre : colors.paper;
+            ctx.globalAlpha = 0.55 + 0.35 * pulse;
+            ctx.beginPath(); ctx.arc(x, runwayTop - 2, 1.4, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(x, runwayBottom + 2, 1.4, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+
+          // limiar da pista ("piano keys"), visível perto do início da descolagem
+          const thresholdX = -runwayX + 6;
+          if (thresholdX > -20 && thresholdX < W) {
+            ctx.fillStyle = colors.paper;
+            ctx.globalAlpha = 0.5;
+            for (let i = 0; i < 5; i++) {
+              ctx.fillRect(thresholdX + i * 4, runwayTop + 1, 2, runwayBottom - runwayTop - 2);
+            }
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+
+      function updateBackground(worldSpeed) {
+        const grounded = plane && plane.phase === 'ground';
+        // em pista, o aeroporto e o fundo ficam completamente parados — só as
+        // marcas da pista "correm" para dar sensação de velocidade ao taxiar;
+        // o cenário só começa a deslizar a sério depois da descolagem
+        if (!grounded && mountains) {
+          mountains.forEach(m => {
+            m.x -= 0.10 + worldSpeed * 0.06;
+            if (m.x + m.w < -20) {
+              m.x = W + 20 + Math.random() * 40;
+              m.h = 28 + Math.random() * 45;
+              m.w = 55 + Math.random() * 75;
+              m.shade = Math.random();
+            }
+          });
+        }
+        runwayX += (plane ? plane.speed : 0) * 0.6;
+
+        if (!grounded && airportBuildings && airportBuildings.length) {
+          for (let i = airportBuildings.length - 1; i >= 0; i--) {
+            const b = airportBuildings[i];
+            b.x -= worldSpeed;
+            if (b.x + b.w < -30) airportBuildings.splice(i, 1);
+          }
+        }
+      }
+
+      // ── estado / distância / zonas ─────────────────────────────────
+      function getWorldSpeed() {
+        // em pista, o cenário só desliza com o movimento real do avião — o
+        // aeroporto fica fixo no lugar enquanto está parado/a acelerar devagar;
+        // no ar mantém-se um deslize ambiente mínimo para não parecer "congelado"
+        if (plane.phase === 'ground') return plane.speed * WORLD_SPEED_K;
+        return WORLD_SPEED_BASE + plane.speed * WORLD_SPEED_K;
+      }
+
+      function initAirport() {
+        const gy = ground ? ground.y : H - 10;
+        airportBuildings = [
+          { type: 'fence', x: 210, w: 560, h: 13, groundY: gy },
+          { type: 'terminal', x: 240, w: 118, h: 40, groundY: gy },
+          { type: 'windsock', x: 340, w: 4, h: 34, groundY: gy },
+          { type: 'tower', x: 410, w: 24, h: 76, groundY: gy },
+          { type: 'hangar', x: 480, w: 96, h: 46, groundY: gy },
+          { type: 'hangar', x: 660, w: 78, h: 40, groundY: gy }
+        ];
+      }
+
       function reset() {
-        plane = { y: H / 2, vy: 0 };
+        plane = {
+          y: (ground ? ground.y : H - 10) - PLANE_R,
+          vy: 0,
+          speed: 0,
+          throttle: 0,
+          pitch: 0,
+          pitchVel: 0,
+          flightAngle: 0,
+          aoa: 0,
+          thrust: 0,
+          phase: 'ground',
+          stalling: false
+        };
         obstacles = [];
         score = 0;
-        speed = 1.6;
-        spawnTimer = 0;
+        distanceKm = 0;
+        spawnTimer = 70;
         running = false;
         over = false;
         started = false;
+        message = ''; messageTimer = 0;
+        zoneCur = ZONE_AIRPORT;
+        stats = { planesEvaded: 0, flocksEvaded: 0, stallsRecovered: 0, idealSpeedTicks: 0, idealSpeedBonus: 0, perfectTakeoff: false, riskZonesPassed: 0, newRecord: false, idealBandFrames: 0 };
+        initAirport();
       }
 
+      function setMessage(text) { message = text; messageTimer = 130; }
+
+      // ── física de voo (modelo vetorial com inércia) ────────────────
+      // plane.pitch      = para onde o nariz aponta (o jogador controla isto)
+      // plane.flightAngle = para onde o avião REALMENTE se desloca (persegue o
+      //                      pitch, mas com atraso — depende da velocidade)
+      // plane.aoa         = ângulo de ataque = pitch - flightAngle
+      function updatePhysics() {
+        // throttle: o jogador move a alavanca; o motor (thrust) responde com atraso —
+        // mais lento a subir de giros do que a cortar potência, como uma turbina real
+        if (dirRight) plane.throttle = Math.min(1, plane.throttle + THROTTLE_STEP);
+        if (dirLeft) plane.throttle = Math.max(0, plane.throttle - THROTTLE_STEP);
+        const spoolRate = plane.throttle > plane.thrust ? ENGINE_SPOOL_UP : ENGINE_SPOOL_DOWN;
+        plane.thrust += (plane.throttle - plane.thrust) * spoolRate;
+        // impulso residual ao ralenti — o motor nunca deixa de empurrar por completo
+        const effectiveThrust = IDLE_THRUST + plane.thrust * (1 - IDLE_THRUST);
+
+        // manche com inércia própria — acelera e trava a rodar o nariz, não salta
+        // instantaneamente para o ângulo alvo; a eficácia dos comandos depende da
+        // velocidade (a baixa velocidade estão "moles", a alta respondem com mais
+        // vivacidade, tal como num avião real)
+        const authority = PITCH_AUTHORITY_MIN + (PITCH_AUTHORITY_MAX - PITCH_AUTHORITY_MIN) *
+          Math.max(0, Math.min(1, plane.speed / (TAKEOFF_SPEED * 1.6)));
+        const pitchInput = dirUp ? 1 : (dirDown ? -1 : 0);
+        plane.pitchVel += pitchInput * PITCH_ACCEL_BASE * authority;
+        plane.pitchVel *= PITCH_DAMPING;
+        plane.pitch += plane.pitchVel;
+        plane.pitch = Math.max(-PITCH_MAX_DOWN, Math.min(PITCH_MAX_UP, plane.pitch));
+
+        if (plane.phase === 'ground') {
+          const accel = effectiveThrust * THRUST_K - DRAG_BASE * plane.speed * plane.speed;
+          plane.speed = Math.max(0, Math.min(MAX_SPEED, plane.speed + accel));
+          plane.speed *= GROUND_DRAG; // atrito de pista
+
+          // em pista o nariz só pode rodar até um ângulo de rotação limitado
+          // (como um avião real que "rotaciona" perto da velocidade de descolagem);
+          // sem velocidade nenhuma o nariz tende sempre a assentar
+          const groundPitchCap = plane.speed >= TAKEOFF_SPEED * 0.55 ? GROUND_PITCH_MAX : GROUND_PITCH_MAX * 0.25;
+          plane.pitch = Math.max(-PITCH_MAX_DOWN, Math.min(groundPitchCap, plane.pitch));
+          if (!dirUp) { plane.pitch *= 0.85; plane.pitchVel *= 0.6; }
+
+          if (plane.speed >= TAKEOFF_SPEED && plane.pitch > 0.05) {
+            plane.phase = 'air';
+            // garante sempre um ângulo de subida mínimo — evita "descolar" com o
+            // nariz raso e cair logo de volta ao chão
+            plane.flightAngle = Math.max(0.14, Math.min(plane.pitch, 0.32));
+            stats.perfectTakeoff = plane.speed < TAKEOFF_SPEED * 1.3 && plane.pitch < PITCH_MAX_UP * 0.55;
+            setMessage(stats.perfectTakeoff ? '🛫 Descolagem perfeita!' : '🛫 No ar!');
+          }
+          plane.y = (ground ? ground.y : H - 10) - PLANE_R;
+          return;
+        }
+
+        // ── em voo ──
+        plane.aoa = plane.pitch - plane.flightAngle;
+
+        // eficácia da sustentação: cai a pique quando o ângulo de ataque é
+        // demasiado alto (isto É o stall — o nariz aponta para cima mas a
+        // trajetória não consegue seguir)
+        const speedFactor = Math.max(0, Math.min(1.25, plane.speed / STALL_SPEED));
+        const aoaExcess = Math.max(0, Math.abs(plane.aoa) - STALL_AOA);
+        const liftEfficiency = speedFactor / (1 + aoaExcess * aoaExcess * 14);
+
+        const wasStalling = plane.stalling;
+        plane.stalling = liftEfficiency < 0.42 && plane.speed < STALL_SPEED * 1.05 && plane.pitch > 0.12;
+        if (plane.stalling && !wasStalling) setMessage('⚠️ STALL');
+        if (!plane.stalling && wasStalling) { stats.stallsRecovered++; setMessage('🔄 Recuperado!'); }
+
+        // a trajetória persegue o nariz — mais depressa com boa sustentação
+        plane.flightAngle += (plane.pitch - plane.flightAngle) * TURN_K * liftEfficiency;
+        // a gravidade puxa sempre a trajetória para baixo; pesa mais quanto
+        // menor for a velocidade (menos energia para se opor a ela)
+        plane.flightAngle -= GRAVITY_K / Math.max(0.9, plane.speed);
+        if (plane.stalling) plane.flightAngle += Math.sin(Date.now() * 0.025) * 0.03; // vibração
+        plane.flightAngle = Math.max(-1.15, Math.min(1.15, plane.flightAngle));
+
+        // impulso do motor, menos a resistência (base + induzida pelo ângulo de ataque)
+        const thrustAccel = effectiveThrust * THRUST_K;
+        const drag = DRAG_BASE * plane.speed * plane.speed + INDUCED_DRAG_K * plane.aoa * plane.aoa * plane.speed;
+        plane.speed += thrustAccel - drag;
+        plane.speed = Math.max(0, Math.min(MAX_SPEED * 1.1, plane.speed));
+
+        plane.vy = -plane.speed * Math.sin(plane.flightAngle) * (VY_SCALE / MAX_SPEED) * 3.1;
+        plane.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, plane.vy));
+        plane.y += plane.vy * 0.34;
+
+        const topLimit = 18;
+        const bottomLimit = (ground ? ground.y : H - 10) - PLANE_R;
+        if (plane.y < topLimit) { plane.y = topLimit; plane.flightAngle = Math.min(plane.flightAngle, 0); }
+        if (plane.y > bottomLimit) {
+          crash('🌍 Colidiste com o terreno!');
+        }
+
+        // velocidade ideal (bónus de consistência)
+        const idealLo = MAX_SPEED * 0.5, idealHi = MAX_SPEED * 0.82;
+        if (!plane.stalling && plane.speed > idealLo && plane.speed < idealHi) {
+          stats.idealBandFrames++;
+          if (stats.idealBandFrames % 200 === 0) {
+            stats.idealSpeedBonus++;
+            score += 25;
+            setMessage('⚡ Velocidade ideal!');
+          }
+        }
+      }
+
+      function crash(msg) {
+        if (over) return;
+        over = true;
+        running = false;
+        best = Math.max(best, score);
+        stats.newRecord = distanceKm > bestDist;
+        if (stats.newRecord) bestDist = distanceKm;
+        try {
+          localStorage.setItem(BEST_KEY, String(best));
+          localStorage.setItem(BEST_DIST_KEY, String(bestDist));
+        } catch (e) {}
+        setMessage(msg);
+      }
+
+      // ── obstáculos ──────────────────────────────────────────────
       function spawnObstacle() {
-        const margin = 30;
-        const gapTop = margin + Math.random() * (H - margin * 2 - GAP_H);
-        obstacles.push({ x: W + COL_W, gapTop, scored: false, jitter: Math.random() });
+        const gy = ground ? ground.y : H - 10;
+        const zone = zoneCur.key;
+        const roll = Math.random();
+
+        // pesos por zona: aeroporto tem mais estruturas/poucos aviões; céu aberto tem muitos aviões/pássaros
+        let kind;
+        if (zone === 'airport') {
+          kind = roll < 0.55 ? 'structure' : (roll < 0.85 ? 'plane' : 'birds');
+        } else if (zone === 'city') {
+          kind = roll < 0.5 ? 'structure' : (roll < 0.85 ? 'plane' : 'birds');
+        } else if (zone === 'mountains') {
+          kind = roll < 0.28 ? 'structure' : (roll < 0.78 ? 'plane' : 'birds');
+        } else {
+          kind = roll < 0.62 ? 'plane' : 'birds';
+        }
+
+        const foggy = inFog(W + 30) || Math.random() < (zone === 'sky' ? 0.18 : 0.08);
+
+        if (kind === 'structure') {
+          const types = ['tower', 'building', 'crane'];
+          const type = types[Math.floor(Math.random() * types.length)];
+          const height = 60 + Math.random() * 95;
+          const width = 26 + Math.random() * 18;
+          obstacles.push({ kind: 'structure', type, x: W + 20, y: gy - height, w: width, h: height, groundY: gy, scored: false, foggy: false });
+        } else if (kind === 'plane') {
+          const pattern = Math.random();
+          const altBand = 30 + Math.random() * (gy - 60);
+          if (pattern < 0.55) {
+            // aproximação direta, à sua altitude aproximada
+            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 90, vx: -(1.4 + Math.random() * 1.3), vy: 0, r: 8, scored: false, foggy });
+          } else if (pattern < 0.82) {
+            // atravessa a trajetória na diagonal
+            const fromTop = Math.random() < 0.5;
+            obstacles.push({ kind: 'plane', x: W + 30, y: fromTop ? 22 : gy - 22, vx: -1.6, vy: fromTop ? 1.1 : -1.1, r: 8, scored: false, foggy });
+          } else {
+            // voa "à mesma altitude" numa banda fixa
+            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -1.7, vy: 0, r: 8, scored: false, foggy });
+          }
+        } else {
+          const count = 2 + Math.floor(Math.random() * 3);
+          const baseY = 26 + Math.random() * (gy - 60);
+          const flockId = Math.random();
+          for (let i = 0; i < count; i++) {
+            obstacles.push({
+              kind: 'bird', x: W + 30 + Math.random() * 46, y: baseY + (Math.random() - 0.5) * 40,
+              vx: -(1.1 + Math.random() * 0.9), phase: Math.random() * Math.PI * 2, flockId, r: 3.4, scored: false, foggy
+            });
+          }
+        }
+
+        // banda de nevoeiro ocasional, sobretudo no céu aberto
+        if (Math.random() < (zone === 'sky' ? 0.05 : 0.02)) {
+          fogBands.push({ x: W + 60, w: 90 + Math.random() * 60 });
+        }
       }
 
-      function update() {
-        if (dirUp) plane.vy -= ACCEL;
-        if (dirDown) plane.vy += ACCEL;
-        if (!dirUp && !dirDown) plane.vy *= FRICTION;
-        plane.vy = Math.max(-MAX_V, Math.min(MAX_V, plane.vy));
-        plane.y += plane.vy;
-        plane.y = Math.max(PLANE_R, Math.min(H - PLANE_R, plane.y));
-
-        speed = Math.min(4.2, 1.6 + score * 0.02);
+      function updateObstacles(worldSpeed) {
         spawnTimer--;
         if (spawnTimer <= 0) {
           spawnObstacle();
-          spawnTimer = Math.max(95, 140 - score * 1.2);
+          const zone = zoneCur.key;
+          const base = zone === 'sky' ? 92 : zone === 'mountains' ? 102 : zone === 'city' ? 112 : 130;
+          spawnTimer = Math.max(55, base - distanceKm * 2.2);
         }
 
+        const flocksSeen = {};
         for (let i = obstacles.length - 1; i >= 0; i--) {
           const o = obstacles[i];
-          o.x -= speed;
-
-          const hitsX = PLANE_X + PLANE_R > o.x && PLANE_X - PLANE_R < o.x + COL_W;
-          if (hitsX && (plane.y - PLANE_R < o.gapTop || plane.y + PLANE_R > o.gapTop + GAP_H)) {
-            over = true;
-            running = false;
-            best = Math.max(best, score);
-            try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
+          if (o.kind === 'structure') {
+            o.x -= worldSpeed;
+          } else if (o.kind === 'bird') {
+            o.x -= (worldSpeed * 0.5 + Math.abs(o.vx));
+            o.y += Math.sin(Date.now() * 0.006 + o.phase) * 0.6;
+          } else {
+            o.x -= (worldSpeed * 0.5 + Math.abs(o.vx));
+            o.y += o.vy;
           }
-          if (!o.scored && o.x + COL_W < PLANE_X) { o.scored = true; score++; }
-          if (o.x + COL_W < -10) obstacles.splice(i, 1);
+
+          // colisão
+          if (!over) {
+            if (o.kind === 'structure') {
+              const hitsX = PLANE_X + PLANE_R > o.x && PLANE_X - PLANE_R < o.x + o.w;
+              const hitsY = plane.y + PLANE_R > o.y;
+              if (hitsX && hitsY) crash('🏗️ Colidiste com uma estrutura!');
+            } else {
+              const dx = PLANE_X - o.x, dy = plane.y - o.y;
+              const rr = PLANE_R + o.r;
+              if (dx * dx + dy * dy < rr * rr) crash(o.kind === 'bird' ? '🐦 Colidiste com um bando!' : '✈️ Colidiste com outro avião!');
+            }
+          }
+
+          // pontuação ao ultrapassar
+          const passX = o.kind === 'structure' ? o.x + o.w : o.x;
+          if (!o.scored && passX < PLANE_X - 6) {
+            o.scored = true;
+            if (o.kind === 'plane') { stats.planesEvaded++; score += 15; }
+            else if (o.kind === 'bird') {
+              if (!flocksSeen[o.flockId]) { flocksSeen[o.flockId] = true; stats.flocksEvaded++; score += 10; }
+            } else if (o.kind === 'structure') { score += 12; }
+          }
+
+          const offX = o.kind === 'structure' ? o.x + o.w : o.x;
+          if (offX < -30) obstacles.splice(i, 1);
         }
       }
 
-      // avião-obstáculo: fuselagem simples virada para a esquerda (vem ao encontro do jogador)
-      function drawEnemyPlane(cx, cy, s, color) {
+      // ── desenho de obstáculos ───────────────────────────────────
+      function drawEnemyPlane(cx, cy, s, color, alpha) {
         ctx.save();
         ctx.translate(cx, cy);
         ctx.fillStyle = color;
-        ctx.globalAlpha = 0.92;
+        ctx.globalAlpha = alpha;
         ctx.beginPath();
         ctx.moveTo(-12 * s, 0);
         ctx.lineTo(8 * s, -5 * s);
@@ -9185,7 +9728,6 @@
         ctx.lineTo(8 * s, 5 * s);
         ctx.closePath();
         ctx.fill();
-        // barbatana de cauda
         ctx.beginPath();
         ctx.moveTo(-12 * s, 0);
         ctx.lineTo(-6 * s, -4.5 * s);
@@ -9196,147 +9738,605 @@
         ctx.restore();
       }
 
-      // preenche uma coluna (do topo até gapTop, ou de gapTop+GAP_H até ao fundo)
-      // com uma pequena esquadrilha de aviões — o obstáculo em si
-      function drawObstacleColumn(x, y0, y1, jitter) {
-        const h = y1 - y0;
-        if (h <= 6) return;
-        const spacing = 30;
-        const count = Math.max(1, Math.round(h / spacing));
-        const step = h / count;
-        // faixa subtil por trás da esquadrilha, para ler bem o limite de colisão
-        ctx.fillStyle = colors.green;
-        ctx.globalAlpha = 0.06;
-        ctx.fillRect(x, y0, COL_W, h);
+      function drawBird(cx, cy, s, alpha, phase) {
+        const flap = Math.sin(Date.now() * 0.012 + phase) * 3.2;
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.strokeStyle = colors.ink;
+        ctx.globalAlpha = alpha * 0.8;
+        ctx.lineWidth = 1.3 * s;
+        ctx.beginPath();
+        ctx.moveTo(-4 * s, flap * 0.3);
+        ctx.lineTo(0, -flap * 0.3);
+        ctx.lineTo(4 * s, flap * 0.3);
+        ctx.stroke();
         ctx.globalAlpha = 1;
-        for (let i = 0; i < count; i++) {
-          const cy = y0 + step * (i + 0.5);
-          const cx = x + COL_W / 2 + (i % 2 === 0 ? -3 : 3) * jitter;
-          drawEnemyPlane(cx, cy, 0.85, colors.green);
-        }
+        ctx.restore();
       }
 
-      // fuselagem elegante do avião do jogador
+      function drawStructure(o, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        if (o.type === 'building') {
+          ctx.fillStyle = colors.ink;
+          ctx.globalAlpha = alpha * 0.5;
+          ctx.fillRect(o.x, o.y, o.w, o.h);
+          ctx.fillStyle = colors.paper;
+          ctx.globalAlpha = alpha * 0.4;
+          for (let wy = o.y + 6; wy < o.groundY - 5; wy += 9) {
+            for (let wx = o.x + 4; wx < o.x + o.w - 4; wx += 8) ctx.fillRect(wx, wy, 3, 4);
+          }
+        } else if (o.type === 'tower') {
+          const cx = o.x + o.w / 2;
+          ctx.strokeStyle = colors.stone;
+          ctx.globalAlpha = alpha * 0.7;
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.moveTo(cx - o.w * 0.28, o.groundY);
+          ctx.lineTo(cx, o.y);
+          ctx.lineTo(cx + o.w * 0.28, o.groundY);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(cx - o.w * 0.14, o.groundY - o.h * 0.4);
+          ctx.lineTo(cx + o.w * 0.14, o.groundY - o.h * 0.4);
+          ctx.stroke();
+          ctx.fillStyle = colors.ochre;
+          ctx.globalAlpha = alpha * (0.5 + 0.5 * Math.sin(Date.now() * 0.006));
+          ctx.beginPath();
+          ctx.arc(cx, o.y - 1, 2, 0, Math.PI * 2);
+          ctx.fill();
+        } else { // crane
+          const baseX = o.x + o.w * 0.3;
+          ctx.strokeStyle = colors.stone;
+          ctx.globalAlpha = alpha * 0.75;
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.moveTo(baseX, o.groundY);
+          ctx.lineTo(baseX, o.y);
+          ctx.lineTo(baseX + o.w * 0.65, o.y + 4);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(baseX, o.y + 10);
+          ctx.lineTo(baseX - 6, o.y + 10);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      function fogAlpha(o) {
+        if (!o.foggy) return 1;
+        const d = o.x - PLANE_X;
+        return Math.max(0.16, Math.min(1, 1 - (d - 90) / 170));
+      }
+
+      function drawObstacles() {
+        obstacles.forEach(o => {
+          const alpha = fogAlpha(o);
+          if (o.kind === 'structure') drawStructure(o, alpha);
+          else if (o.kind === 'bird') drawBird(o.x, o.y, 1, alpha, o.phase);
+          else drawEnemyPlane(o.x, o.y, 0.9, colors.green, alpha * 0.92);
+        });
+      }
+
+      // ── avião do jogador (perfil lateral, visto de lado) ───────────
       function drawPlane() {
         ctx.save();
         ctx.translate(PLANE_X, plane.y);
-        ctx.rotate(Math.max(-0.5, Math.min(0.5, plane.vy * 0.09)));
+        const wobble = plane.stalling ? Math.sin(Date.now() * 0.03) * 0.05 : 0;
+        ctx.rotate(Math.max(-0.62, Math.min(0.5, -plane.pitch * 0.9 + plane.vy * 0.025 + wobble)));
 
-        // barbatana de cauda
+        // nariz aponta para +x (direita), cauda para -x; visto de lado, não de cima —
+        // a asa "de trás" (mais escura, parcialmente tapada pela fuselagem) e a asa
+        // "da frente" (mais clara, sobreposta) é que vendem a profundidade lateral
+
+        // ── asa de trás (mais alta/afastada — só uma fatia espreita por cima da fuselagem) ──
         ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.85;
+        ctx.globalAlpha = 0.32;
         ctx.beginPath();
-        ctx.moveTo(-9, -2.5);
-        ctx.lineTo(-15, -8);
-        ctx.lineTo(-6, -1.5);
+        ctx.moveTo(4, -1.6);
+        ctx.lineTo(-9, -7.5);
+        ctx.lineTo(-6, -7.8);
+        ctx.lineTo(2.5, -2.4);
         ctx.closePath();
         ctx.fill();
         ctx.globalAlpha = 1;
 
-        // corpo / fuselagem
+        // ── estabilizador horizontal (cauda) ──
+        ctx.fillStyle = colors.stone;
+        ctx.globalAlpha = 0.55;
+        ctx.beginPath();
+        ctx.moveTo(-11, 0.5);
+        ctx.lineTo(-17, 3.4);
+        ctx.lineTo(-15.5, 3.6);
+        ctx.lineTo(-10.5, 1.4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // ── deriva (barbatana vertical) ──
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.68;
+        ctx.beginPath();
+        ctx.moveTo(-10.5, 0.5);
+        ctx.lineTo(-15, -8.5);
+        ctx.lineTo(-11.5, -8.2);
+        ctx.lineTo(-8.5, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.9;
         ctx.fillStyle = colors.ochre;
         ctx.beginPath();
-        ctx.moveTo(14, 0);
-        ctx.quadraticCurveTo(6, -4.2, -10, -3);
-        ctx.quadraticCurveTo(-13.5, 0, -10, 3);
-        ctx.quadraticCurveTo(6, 4.2, 14, 0);
+        ctx.moveTo(-14, -8.4);
+        ctx.lineTo(-12.6, -6.4);
+        ctx.lineTo(-11.5, -8.1);
         ctx.closePath();
         ctx.fill();
+        ctx.globalAlpha = 1;
 
-        // asa
+        // ── fuselagem (perfil lateral, afunilada ao nariz e à cauda) ──
+        const fuselagePath = () => {
+          ctx.moveTo(18, -0.6);
+          ctx.quadraticCurveTo(19.5, -1, 19.5, 0.2);
+          ctx.quadraticCurveTo(19, 1.6, 15, 2.6);
+          ctx.lineTo(-9, 2.4);
+          ctx.quadraticCurveTo(-13, 1.3, -13.2, -0.2);
+          ctx.quadraticCurveTo(-13, -1.8, -9, -2.4);
+          ctx.lineTo(9, -3.1);
+          ctx.quadraticCurveTo(15, -3, 18, -0.6);
+        };
+
+        const bodyGrad = ctx.createLinearGradient(0, -3.2, 0, 2.8);
+        bodyGrad.addColorStop(0, '#ffffff');
+        bodyGrad.addColorStop(0.4, colors.paper);
+        bodyGrad.addColorStop(1, colors.stone);
+        ctx.fillStyle = bodyGrad;
+        ctx.globalAlpha = 0.96;
+        ctx.beginPath();
+        fuselagePath();
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        ctx.strokeStyle = colors.ink;
+        ctx.globalAlpha = 0.32;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        fuselagePath();
+        ctx.closePath();
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // friso de velocidade (cheatline) ao longo da fuselagem
+        ctx.fillStyle = colors.ochre;
+        ctx.globalAlpha = 0.78;
+        ctx.beginPath();
+        ctx.moveTo(-9, -0.3);
+        ctx.lineTo(15, -0.9);
+        ctx.lineTo(15, 0.4);
+        ctx.lineTo(-9, 1.1);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // cockpit/canópia — bolha clara perto do nariz
         ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.ellipse(7, -2.6, 3.6, 1.5, -0.12, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#eaf4ee';
+        ctx.globalAlpha = 0.55;
+        ctx.beginPath();
+        ctx.ellipse(7.3, -2.9, 2.6, 1, -0.12, Math.PI, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // rebites/painéis — uma única fiada, lida como fuselagem vista de lado
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.22;
+        for (let wx = -7; wx < 14; wx += 3.2) {
+          ctx.beginPath();
+          ctx.arc(wx, 2, 0.55, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // ── asa da frente (mais próxima — sobrepõe a fuselagem, com espessura visível) ──
+        const wingRoot = { x: 6, y: 2 };
+        const wingTip = { x: -11, y: 9.5 };
+        const wingTE = { x: -3.5, y: 9 };
+        const wingTEroot = { x: 8, y: 3.4 };
+
+        // sombra/face inferior da asa — desenhada primeiro, sobra só uma orla escura
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.55;
+        ctx.beginPath();
+        ctx.moveTo(wingRoot.x, wingRoot.y + 0.6);
+        ctx.lineTo(wingTip.x, wingTip.y + 1.6);
+        ctx.lineTo(wingTE.x, wingTE.y + 1.9);
+        ctx.lineTo(wingTEroot.x, wingTEroot.y + 1.1);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // face superior — a superfície iluminada da asa, por cima
+        const wingGrad = ctx.createLinearGradient(wingRoot.x, wingRoot.y, wingTip.x, wingTip.y);
+        wingGrad.addColorStop(0, '#ffffff');
+        wingGrad.addColorStop(0.25, colors.green);
+        wingGrad.addColorStop(1, colors.ink);
+        ctx.fillStyle = wingGrad;
+        ctx.globalAlpha = 0.94;
+        ctx.beginPath();
+        ctx.moveTo(wingRoot.x, wingRoot.y);
+        ctx.lineTo(wingTip.x, wingTip.y);
+        ctx.lineTo(wingTE.x, wingTE.y);
+        ctx.lineTo(wingTEroot.x, wingTEroot.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = colors.ink;
+        ctx.globalAlpha = 0.4;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // friso de luz junto ao bordo de ataque — reforça a curvatura do perfil
+        ctx.strokeStyle = '#ffffff';
+        ctx.globalAlpha = 0.4;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(wingRoot.x - 0.6, wingRoot.y + 0.5);
+        ctx.lineTo(wingTip.x + 1.2, wingTip.y - 0.6);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        // motor/nacelle sob a asa, com hélice e pluma de escape
+        const nx = 0, ny = 6.4;
+        ctx.fillStyle = colors.stone;
         ctx.globalAlpha = 0.85;
         ctx.beginPath();
-        ctx.moveTo(-1, -2);
-        ctx.lineTo(-4, -9);
-        ctx.lineTo(3, -1.5);
-        ctx.closePath();
+        ctx.ellipse(nx, ny, 3.2, 1.6, 0, 0, Math.PI * 2);
         ctx.fill();
+        ctx.strokeStyle = colors.ink;
+        ctx.globalAlpha = 0.35;
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
         ctx.globalAlpha = 1;
 
-        // janela da cabine
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.45;
+        // disco da hélice — gira mais depressa e fica mais opaco com throttle alto
+        const propSpin = Date.now() * (0.02 + plane.throttle * 0.05);
+        ctx.strokeStyle = colors.ink;
+        ctx.globalAlpha = 0.25 + plane.throttle * 0.35;
+        ctx.lineWidth = 0.6;
         ctx.beginPath();
-        ctx.arc(4.5, -0.5, 1.7, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.ellipse(nx + 3.4, ny, Math.abs(Math.sin(propSpin)) * 2.6 + 0.3, 2.6, 0, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.globalAlpha = 1;
+
+        if (plane.throttle > 0.15) {
+          ctx.fillStyle = colors.ochre;
+          ctx.globalAlpha = Math.min(0.55, plane.throttle * 0.55);
+          ctx.beginPath();
+          ctx.ellipse(nx - 2.6, ny, 1.1 + plane.throttle * 2.4, 1, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        // trem de aterragem — só visível no chão
+        if (plane.phase === 'ground') {
+          ctx.strokeStyle = colors.ink;
+          ctx.globalAlpha = 0.45;
+          ctx.lineWidth = 0.9;
+          ctx.beginPath();
+          ctx.moveTo(6, 2.6); ctx.lineTo(5, 7.2);
+          ctx.moveTo(-8, 2.4); ctx.lineTo(-8.6, 6.6);
+          ctx.stroke();
+          ctx.fillStyle = colors.ink;
+          ctx.globalAlpha = 0.5;
+          ctx.beginPath(); ctx.ellipse(5, 7.6, 1.6, 1, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(-8.6, 7, 1.4, 0.9, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.globalAlpha = 1;
+        }
 
         ctx.restore();
       }
 
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        drawClouds();
-
-        obstacles.forEach(o => {
-          drawObstacleColumn(o.x, 0, o.gapTop, o.jitter);
-          drawObstacleColumn(o.x, o.gapTop + GAP_H, H, o.jitter);
-        });
-
-        drawPlane();
-
-        ctx.font = '600 13px "IBM Plex Mono", monospace';
+      // ── HUD ─────────────────────────────────────────────────────
+      function drawHUD() {
+        ctx.font = '600 12px "IBM Plex Mono", monospace';
         ctx.fillStyle = colors.ink;
         ctx.globalAlpha = 0.85;
-        ctx.fillText('Pontos: ' + score, 14, 22);
+        ctx.textAlign = 'left';
+        ctx.fillText('Pontos: ' + score, 12, 20);
+        ctx.fillText('Distância: ' + distanceKm.toFixed(2) + ' km', 12, 36);
         ctx.textAlign = 'right';
-        ctx.fillText('Recorde: ' + best, W - 14, 22);
+        ctx.fillText('Recorde: ' + best, W - 12, 20);
+        ctx.fillText(zoneCur.label, W - 12, 36);
         ctx.textAlign = 'left';
         ctx.globalAlpha = 1;
 
-        if (over) {
-          centerText('Colidiste! Pontos: ' + score + '  ·  ESPAÇO para tentar de novo', colors.ochre);
+        // barra de throttle
+        const bx = 12, by = H - 20, bw = 70, bh = 7;
+        ctx.strokeStyle = colors.ink; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+        ctx.strokeRect(bx, by, bw, bh);
+        ctx.fillStyle = colors.ochre; ctx.globalAlpha = 0.75;
+        ctx.fillRect(bx, by, bw * plane.throttle, bh);
+        ctx.globalAlpha = 0.7; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
+        ctx.fillStyle = colors.ink;
+        ctx.fillText('THROTTLE', bx, by - 4);
+        ctx.globalAlpha = 1;
+
+        // velocidade
+        ctx.textAlign = 'right';
+        ctx.font = '600 9.5px "IBM Plex Mono", monospace';
+        ctx.globalAlpha = 0.7;
+        ctx.fillText('VEL ' + plane.speed.toFixed(1), W - 12, H - 24);
+        ctx.fillText('PITCH ' + (plane.pitch >= 0 ? '+' : '') + (plane.pitch * 57).toFixed(0) + '°', W - 12, H - 12);
+        ctx.textAlign = 'left';
+        ctx.globalAlpha = 1;
+
+        if (plane.stalling) {
+          ctx.font = '700 14px "IBM Plex Mono", monospace';
+          ctx.fillStyle = colors.ochre;
+          ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
+          ctx.textAlign = 'center';
+          ctx.fillText('⚠️ STALL', PLANE_X, plane.y - 22);
+          ctx.textAlign = 'left';
+          ctx.globalAlpha = 1;
+        } else if (message && messageTimer > 0) {
+          ctx.font = '600 11px "IBM Plex Mono", monospace';
+          ctx.fillStyle = colors.green;
+          ctx.globalAlpha = Math.min(1, messageTimer / 40);
+          ctx.textAlign = 'center';
+          ctx.fillText(message, W / 2, 52);
+          ctx.textAlign = 'left';
+          ctx.globalAlpha = 1;
+          messageTimer--;
+        }
+
+        if (plane.phase === 'ground' && !over && started) {
+          ctx.font = '600 11px "IBM Plex Mono", monospace';
+          ctx.fillStyle = colors.ink;
+          ctx.globalAlpha = 0.6;
+          ctx.textAlign = 'center';
+          const txt = plane.speed < TAKEOFF_SPEED
+            ? '➡️ Aumenta o throttle para ganhar velocidade'
+            : '⬆️ Velocidade suficiente — levanta o nariz!';
+          ctx.fillText(txt, W / 2, H - 34);
+          ctx.textAlign = 'left';
+          ctx.globalAlpha = 1;
         }
       }
 
-      function centerText(text, color) {
-        ctx.font = '600 13px "IBM Plex Mono", monospace';
+      function centerLines(lines, color) {
+        ctx.font = '600 12.5px "IBM Plex Mono", monospace';
         ctx.fillStyle = color;
         ctx.textAlign = 'center';
-        ctx.fillText(text, W / 2, H / 2 + 40);
+        const startY = H / 2 - (lines.length - 1) * 9;
+        lines.forEach((l, i) => ctx.fillText(l, W / 2, startY + i * 17));
         ctx.textAlign = 'left';
       }
 
+      function drawAirportScenery() {
+        if (!airportBuildings || !airportBuildings.length) return;
+        const gy = ground ? ground.y : H - 10;
+        airportBuildings.forEach(b => {
+          if (b.x + b.w < -20 || b.x > W + 20) return;
+
+          if (b.type === 'fence') {
+            ctx.strokeStyle = colors.stone;
+            ctx.globalAlpha = 0.3;
+            ctx.lineWidth = 1;
+            const y1 = gy - b.h;
+            ctx.beginPath();
+            ctx.moveTo(Math.max(0, b.x), y1);
+            ctx.lineTo(Math.min(W, b.x + b.w), y1);
+            ctx.stroke();
+            for (let px = b.x; px < b.x + b.w; px += 26) {
+              if (px < -5 || px > W + 5) continue;
+              ctx.beginPath();
+              ctx.moveTo(px, gy);
+              ctx.lineTo(px, y1);
+              ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            return;
+          }
+
+          if (b.type === 'terminal') {
+            ctx.fillStyle = colors.ink;
+            ctx.globalAlpha = 0.4;
+            ctx.fillRect(b.x, gy - b.h, b.w, b.h);
+            ctx.beginPath();
+            ctx.moveTo(b.x - 4, gy - b.h);
+            ctx.lineTo(b.x + b.w / 2, gy - b.h - 9);
+            ctx.lineTo(b.x + b.w + 4, gy - b.h);
+            ctx.closePath();
+            ctx.globalAlpha = 0.48;
+            ctx.fill();
+            ctx.fillStyle = colors.paper;
+            ctx.globalAlpha = 0.5;
+            for (let wx = b.x + 7; wx < b.x + b.w - 7; wx += 11) {
+              ctx.fillRect(wx, gy - b.h * 0.55, 5, b.h * 0.28);
+            }
+            ctx.globalAlpha = 1;
+            return;
+          }
+
+          if (b.type === 'hangar') {
+            ctx.fillStyle = colors.stone;
+            ctx.globalAlpha = 0.38;
+            ctx.beginPath();
+            ctx.moveTo(b.x, gy);
+            ctx.lineTo(b.x, gy - b.h * 0.55);
+            ctx.quadraticCurveTo(b.x + b.w / 2, gy - b.h * 1.15, b.x + b.w, gy - b.h * 0.55);
+            ctx.lineTo(b.x + b.w, gy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = colors.ink;
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(b.x + b.w * 0.32, gy - b.h * 0.5, b.w * 0.36, b.h * 0.5);
+            ctx.globalAlpha = 1;
+            return;
+          }
+
+          if (b.type === 'tower') {
+            const cx = b.x + b.w / 2;
+            ctx.strokeStyle = colors.stone;
+            ctx.globalAlpha = 0.48;
+            ctx.lineWidth = b.w * 0.5;
+            ctx.beginPath();
+            ctx.moveTo(cx, gy);
+            ctx.lineTo(cx, gy - b.h * 0.72);
+            ctx.stroke();
+            ctx.fillStyle = colors.stone;
+            ctx.globalAlpha = 0.55;
+            ctx.fillRect(cx - b.w * 0.65, gy - b.h, b.w * 1.3, b.h * 0.28);
+            ctx.fillStyle = colors.ochre;
+            ctx.globalAlpha = 0.35 + 0.5 * Math.max(0, Math.sin(Date.now() * 0.004));
+            ctx.beginPath();
+            ctx.arc(cx, gy - b.h - 2, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            return;
+          }
+
+          if (b.type === 'windsock') {
+            const poleTop = gy - b.h;
+            ctx.strokeStyle = colors.stone;
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 1.2;
+            ctx.beginPath();
+            ctx.moveTo(b.x, gy);
+            ctx.lineTo(b.x, poleTop);
+            ctx.stroke();
+            const flutter = Math.sin(Date.now() * 0.01 + b.x) * 3;
+            ctx.fillStyle = colors.ochre;
+            ctx.globalAlpha = 0.55;
+            ctx.beginPath();
+            ctx.moveTo(b.x, poleTop);
+            ctx.lineTo(b.x + 14 + flutter, poleTop + 3);
+            ctx.lineTo(b.x + 10 + flutter * 0.6, poleTop + 7);
+            ctx.closePath();
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            return;
+          }
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        drawSun();
+        drawMountains();
+        drawGround();
+        drawAirportScenery();
+        drawFogBands();
+        drawClouds();
+        drawObstacles();
+        drawPlane();
+        drawHUD();
+
+        if (over) {
+          const lines = [
+            (plane.stalling ? '' : '') + (message || 'Colidiste!'),
+            'Pontos: ' + score + '   ·   Distância: ' + distanceKm.toFixed(2) + ' km',
+            '✈️ ' + stats.planesEvaded + ' aviões  ·  🐦 ' + stats.flocksEvaded + ' bandos  ·  🔄 ' + stats.stallsRecovered + ' stalls recuperados',
+            (stats.newRecord ? '🏅 Novo recorde de distância!  ·  ' : '') + 'ESPAÇO para tentar de novo'
+          ];
+          ctx.fillStyle = colors.paper;
+          ctx.globalAlpha = 0.82;
+          ctx.fillRect(0, H / 2 - 46, W, 92);
+          ctx.globalAlpha = 1;
+          centerLines(lines, colors.ochre);
+        }
+      }
+
       function loop() {
+        const worldSpeed = running ? getWorldSpeed() : 0.12;
         updateClouds();
-        if (running) update();
+        updateBackground(worldSpeed);
+        if (running) {
+          updatePhysics();
+          if (plane.phase === 'air' && !over) {
+            distanceKm += plane.speed * 0.0009;
+            zoneCur = getZone(distanceKm);
+            updateObstacles(worldSpeed);
+            score = Math.max(score, Math.floor(distanceKm * 480) + stats.planesEvaded * 15 + stats.flocksEvaded * 10 + stats.stallsRecovered * 20 + stats.idealSpeedBonus * 25 + (stats.perfectTakeoff ? 50 : 0));
+          }
+        }
         draw();
         rafId = requestAnimationFrame(loop);
       }
 
-      function onKeyDown(e) {
-        if (e.code === 'ArrowUp' || e.code === 'KeyW') { dirUp = true; e.preventDefault(); }
-        if (e.code === 'ArrowDown' || e.code === 'KeyS') { dirDown = true; e.preventDefault(); }
-        if (e.code === 'Space') {
-          e.preventDefault();
+      function setKeyState(code, isDown) {
+        if (code === 'KeyW') dirUp = isDown;
+        else if (code === 'KeyS') dirDown = isDown;
+        else if (code === 'KeyA') dirLeft = isDown;
+        else if (code === 'KeyD') dirRight = isDown;
+        else if (code === 'Space' && isDown) {
           if (!started || over) { reset(); started = true; running = true; }
         }
       }
+
+      function onKeyDown(e) {
+        if (e.code === 'ArrowUp' || e.code === 'KeyW') { setKeyState('KeyW', true); e.preventDefault(); }
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') { setKeyState('KeyS', true); e.preventDefault(); }
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') { setKeyState('KeyA', true); e.preventDefault(); }
+        if (e.code === 'ArrowRight' || e.code === 'KeyD') { setKeyState('KeyD', true); e.preventDefault(); }
+        if (e.code === 'Space') { e.preventDefault(); setKeyState('Space', true); }
+      }
       function onKeyUp(e) {
-        if (e.code === 'ArrowUp' || e.code === 'KeyW') dirUp = false;
-        if (e.code === 'ArrowDown' || e.code === 'KeyS') dirDown = false;
+        if (e.code === 'ArrowUp' || e.code === 'KeyW') setKeyState('KeyW', false);
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') setKeyState('KeyS', false);
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') setKeyState('KeyA', false);
+        if (e.code === 'ArrowRight' || e.code === 'KeyD') setKeyState('KeyD', false);
+      }
+
+      // ── controlos táteis (WASD + espaço) — mesmo estado que o teclado ──
+      let touchControlsBound = false;
+      function bindTouchControls() {
+        if (touchControlsBound) return;
+        const btns = document.querySelectorAll('#offline-game-touch-controls .ogtc-btn');
+        if (!btns.length) return;
+        btns.forEach(btn => {
+          const code = btn.getAttribute('data-key');
+          const press = (e) => {
+            e.preventDefault();
+            btn.classList.add('is-active');
+            setKeyState(code, true);
+          };
+          const release = (e) => {
+            if (e) e.preventDefault();
+            btn.classList.remove('is-active');
+            if (code !== 'Space') setKeyState(code, false);
+          };
+          btn.addEventListener('pointerdown', press);
+          btn.addEventListener('pointerup', release);
+          btn.addEventListener('pointercancel', release);
+          btn.addEventListener('pointerleave', release);
+        });
+        touchControlsBound = true;
       }
 
       let listenersOn = false;
 
-      // prepara o motor (canvas, cores, listeners, ciclo de desenho) sem
-      // ainda começar a voar — usado para desenhar o fundo/nuvens em idle
       function init() {
-        if (!isDesktop || listenersOn) return;
+        if (listenersOn) return;
         readColors();
         try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) { best = 0; }
+        try { bestDist = parseFloat(localStorage.getItem(BEST_DIST_KEY) || '0') || 0; } catch (e) { bestDist = 0; }
+        initBackground();
         reset();
         initClouds();
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('keyup', onKeyUp);
+        bindTouchControls();
         listenersOn = true;
         loop();
       }
 
-      // arranca mesmo o voo (chamado ao clicar em "Iniciar")
       function startRun() {
-        if (!isDesktop) return;
         if (!listenersOn) init();
         reset();
         started = true;
@@ -9349,7 +10349,7 @@
         rafId = null;
         window.removeEventListener('keydown', onKeyDown);
         window.removeEventListener('keyup', onKeyUp);
-        dirUp = false; dirDown = false;
+        dirUp = false; dirDown = false; dirLeft = false; dirRight = false;
         listenersOn = false;
       }
 
