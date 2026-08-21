@@ -2027,6 +2027,108 @@
       opacity: .7;
     }
 
+    /* ── MINI-JOGO OFFLINE (avião vs obstáculos) — só em desktop ──── */
+    .offline-game {
+      margin-top: 30px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .offline-game.show-prompt,
+    .offline-game.show-play {
+      display: flex;
+    }
+
+    @keyframes fadeInGame {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ecrã de convite "Vai um jogo?" */
+    .offline-game-prompt {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      animation: fadeInGame .5s ease both;
+    }
+
+    .offline-game.show-prompt .offline-game-prompt {
+      display: flex;
+    }
+
+    .offline-game-prompt-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .04em;
+      color: var(--ink);
+      opacity: .8;
+    }
+
+    .offline-game-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: linear-gradient(90deg, var(--green) 0%, var(--green-deep) 100%);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(61, 107, 79, .24);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .offline-game-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(61, 107, 79, .3);
+    }
+
+    .offline-game-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 6px 14px rgba(61, 107, 79, .22);
+    }
+
+    /* ecrã de jogo */
+    .offline-game-play {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: fadeInGame .4s ease both;
+    }
+
+    .offline-game.show-play .offline-game-play {
+      display: flex;
+    }
+
+    #offline-game-canvas {
+      border: 1px solid color-mix(in srgb, var(--stone) 35%, transparent);
+      border-radius: 10px;
+      background: var(--paper);
+      max-width: 90vw;
+      box-shadow: 0 8px 28px rgba(0,0,0,.10);
+    }
+
+    .offline-game-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--stone);
+      opacity: .65;
+    }
+
+    /* esconde o jogo em ecrãs pequenos ou com input tátil — é só um
+       easter-egg de secretária, não vale a pena complicar para touch */
+    @media (max-width: 900px), (hover: none) and (pointer: coarse) {
+      .offline-game { display: none; }
+    }
+
     @keyframes wifiPulse {
       0%, 100% { opacity: .4; transform: scale(.95); }
       50% { opacity: 1; transform: scale(1); }
@@ -3847,6 +3949,23 @@
     .footer-buglink-label {
       color: var(--stone);
     }
+    .footer-download-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 0;
+      font-size: 12.5px;
+      color: var(--stone);
+      opacity: 0.85;
+    }
+    .footer-download-counter svg {
+      flex-shrink: 0;
+      opacity: 0.8;
+    }
+    #footer-download-count-num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
     /* Reutiliza o botão de feedback do header, mas neutraliza as regras
        pensadas para a barra de navegação (margin-left:auto, order) */
     .footer-meta .feedback-nav-btn {
@@ -4249,6 +4368,17 @@
       </div>
       <div class="connectivity-text">Sem acesso à internet</div>
       <div class="connectivity-subtext">A aguardar ligação...</div>
+
+      <div class="offline-game" id="offline-game">
+        <div class="offline-game-prompt" id="offline-game-prompt">
+          <div class="offline-game-prompt-text">Vai um jogo?</div>
+          <button type="button" class="offline-game-btn" id="offline-game-start-btn">Iniciar ✈</button>
+        </div>
+        <div class="offline-game-play" id="offline-game-play">
+          <canvas id="offline-game-canvas" width="640" height="300"></canvas>
+          <div class="offline-game-hint" id="offline-game-hint">↑ / ↓ ou W / S para voar &nbsp;·&nbsp; ESPAÇO para recomeçar</div>
+        </div>
+      </div>
     </div>
 
     <!-- Online restored overlay -->
@@ -5473,6 +5603,10 @@
                   <span class="footer-contactos-popup" id="footer-contactos-popup">✉ jdsm3011@gmail.com</span>
                 </span>
               </p>
+              <p class="footer-download-counter" id="footer-download-counter" aria-live="polite">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span id="footer-download-count-num">—</span> downloads totais
+              </p>
             </div>
           </div>
   </footer>
@@ -5486,6 +5620,40 @@
         e.stopPropagation();
         popup.classList.toggle('is-open');
       }
+      // ── Contador de downloads (soma dos assets no GitHub Releases) ──────
+      // Cacheado em sessionStorage por 10 min para não bater no Worker
+      // (e por sua vez na API do GitHub) a cada carregamento de página.
+      (function initDownloadCounter(){
+        var numEl = document.getElementById('footer-download-count-num');
+        if (!numEl) return;
+        var CACHE_KEY = 'downloadCountCache';
+        var CACHE_MS = 10 * 60 * 1000;
+
+        function formatar(n) {
+          return n.toLocaleString('pt-PT');
+        }
+
+        try {
+          var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+          if (cached && (Date.now() - cached.ts) < CACHE_MS) {
+            numEl.textContent = formatar(cached.total);
+            return;
+          }
+        } catch (e) { /* ignora cache corrompido */ }
+
+        fetch('https://datagispt.gispt.workers.dev/api/download-count')
+          .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+          .then(function(data){
+            var total = data && typeof data.total === 'number' ? data.total : null;
+            if (total === null) return;
+            numEl.textContent = formatar(total);
+            try {
+              sessionStorage.setItem(CACHE_KEY, JSON.stringify({ total: total, ts: Date.now() }));
+            } catch (e) { /* sessionStorage indisponível — ignora */ }
+          })
+          .catch(function(){ /* mantém o placeholder "—" em silêncio */ });
+      })();
+
       link.addEventListener('click', toggle);
       link.addEventListener('keydown', function(e){
         if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(e); }
@@ -8880,21 +9048,350 @@
       }
       })();
 
+    // ── MINI-JOGO OFFLINE: avião vs esquadrilha (só desktop) ─────────
+    const AvionGame = (function() {
+      const canvas = document.getElementById('offline-game-canvas');
+      if (!canvas) return { init(){}, startRun(){}, stop(){} };
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      const PLANE_X = 78, PLANE_R = 9;
+      const ACCEL = 0.42, MAX_V = 3.2, FRICTION = 0.9;
+      const GAP_H = 100, COL_W = 42;
+      const BEST_KEY = 'offlineGameBest';
+
+      // pequena nuvem em pixel-art (grelha 8×5), reutilizada a várias escalas
+      const CLOUD_PATTERN = [
+        '00111100',
+        '01111110',
+        '11111111',
+        '01111110',
+        '00111100'
+      ];
+
+      let colors = {};
+      function readColors() {
+        const cs = getComputedStyle(document.documentElement);
+        colors = {
+          ink: cs.getPropertyValue('--ink').trim() || '#173124',
+          ochre: cs.getPropertyValue('--ochre').trim() || '#C2703D',
+          green: cs.getPropertyValue('--green').trim() || '#3D6B4F',
+          stone: cs.getPropertyValue('--stone').trim() || '#6E726A',
+          paper: cs.getPropertyValue('--paper').trim() || '#F6F1E7',
+        };
+      }
+
+      let plane, obstacles, clouds, score, best, spawnTimer, speed, running, over, rafId;
+      let dirUp = false, dirDown = false, started = false;
+
+      function makeCloud(randomX) {
+        const scale = 1 + Math.random() * 1.4;
+        return {
+          x: randomX ? Math.random() * W : W + 40 * scale,
+          y: 16 + Math.random() * (H * 0.6),
+          scale,
+          speed: 0.12 * scale,
+          alpha: 0.14 + 0.10 * ((scale - 1) / 1.4)
+        };
+      }
+
+      function initClouds() {
+        clouds = [];
+        for (let i = 0; i < 6; i++) clouds.push(makeCloud(true));
+      }
+
+      function updateClouds() {
+        clouds.forEach(c => {
+          c.x -= c.speed;
+          if (c.x < -40 * c.scale) Object.assign(c, makeCloud(false));
+        });
+      }
+
+      function drawClouds() {
+        const px = 3;
+        ctx.fillStyle = colors.stone;
+        clouds.forEach(c => {
+          ctx.globalAlpha = c.alpha;
+          CLOUD_PATTERN.forEach((row, ri) => {
+            for (let ci = 0; ci < row.length; ci++) {
+              if (row[ci] === '1') {
+                ctx.fillRect(c.x + ci * px * c.scale, c.y + ri * px * c.scale, px * c.scale, px * c.scale);
+              }
+            }
+          });
+        });
+        ctx.globalAlpha = 1;
+      }
+
+      function reset() {
+        plane = { y: H / 2, vy: 0 };
+        obstacles = [];
+        score = 0;
+        speed = 1.6;
+        spawnTimer = 0;
+        running = false;
+        over = false;
+        started = false;
+      }
+
+      function spawnObstacle() {
+        const margin = 30;
+        const gapTop = margin + Math.random() * (H - margin * 2 - GAP_H);
+        obstacles.push({ x: W + COL_W, gapTop, scored: false, jitter: Math.random() });
+      }
+
+      function update() {
+        if (dirUp) plane.vy -= ACCEL;
+        if (dirDown) plane.vy += ACCEL;
+        if (!dirUp && !dirDown) plane.vy *= FRICTION;
+        plane.vy = Math.max(-MAX_V, Math.min(MAX_V, plane.vy));
+        plane.y += plane.vy;
+        plane.y = Math.max(PLANE_R, Math.min(H - PLANE_R, plane.y));
+
+        speed = Math.min(4.2, 1.6 + score * 0.02);
+        spawnTimer--;
+        if (spawnTimer <= 0) {
+          spawnObstacle();
+          spawnTimer = Math.max(95, 140 - score * 1.2);
+        }
+
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          const o = obstacles[i];
+          o.x -= speed;
+
+          const hitsX = PLANE_X + PLANE_R > o.x && PLANE_X - PLANE_R < o.x + COL_W;
+          if (hitsX && (plane.y - PLANE_R < o.gapTop || plane.y + PLANE_R > o.gapTop + GAP_H)) {
+            over = true;
+            running = false;
+            best = Math.max(best, score);
+            try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) {}
+          }
+          if (!o.scored && o.x + COL_W < PLANE_X) { o.scored = true; score++; }
+          if (o.x + COL_W < -10) obstacles.splice(i, 1);
+        }
+      }
+
+      // avião-obstáculo: fuselagem simples virada para a esquerda (vem ao encontro do jogador)
+      function drawEnemyPlane(cx, cy, s, color) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.92;
+        ctx.beginPath();
+        ctx.moveTo(-12 * s, 0);
+        ctx.lineTo(8 * s, -5 * s);
+        ctx.lineTo(3.5 * s, 0);
+        ctx.lineTo(8 * s, 5 * s);
+        ctx.closePath();
+        ctx.fill();
+        // barbatana de cauda
+        ctx.beginPath();
+        ctx.moveTo(-12 * s, 0);
+        ctx.lineTo(-6 * s, -4.5 * s);
+        ctx.lineTo(-6 * s, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      // preenche uma coluna (do topo até gapTop, ou de gapTop+GAP_H até ao fundo)
+      // com uma pequena esquadrilha de aviões — o obstáculo em si
+      function drawObstacleColumn(x, y0, y1, jitter) {
+        const h = y1 - y0;
+        if (h <= 6) return;
+        const spacing = 30;
+        const count = Math.max(1, Math.round(h / spacing));
+        const step = h / count;
+        // faixa subtil por trás da esquadrilha, para ler bem o limite de colisão
+        ctx.fillStyle = colors.green;
+        ctx.globalAlpha = 0.06;
+        ctx.fillRect(x, y0, COL_W, h);
+        ctx.globalAlpha = 1;
+        for (let i = 0; i < count; i++) {
+          const cy = y0 + step * (i + 0.5);
+          const cx = x + COL_W / 2 + (i % 2 === 0 ? -3 : 3) * jitter;
+          drawEnemyPlane(cx, cy, 0.85, colors.green);
+        }
+      }
+
+      // fuselagem elegante do avião do jogador
+      function drawPlane() {
+        ctx.save();
+        ctx.translate(PLANE_X, plane.y);
+        ctx.rotate(Math.max(-0.5, Math.min(0.5, plane.vy * 0.09)));
+
+        // barbatana de cauda
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.85;
+        ctx.beginPath();
+        ctx.moveTo(-9, -2.5);
+        ctx.lineTo(-15, -8);
+        ctx.lineTo(-6, -1.5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // corpo / fuselagem
+        ctx.fillStyle = colors.ochre;
+        ctx.beginPath();
+        ctx.moveTo(14, 0);
+        ctx.quadraticCurveTo(6, -4.2, -10, -3);
+        ctx.quadraticCurveTo(-13.5, 0, -10, 3);
+        ctx.quadraticCurveTo(6, 4.2, 14, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // asa
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.85;
+        ctx.beginPath();
+        ctx.moveTo(-1, -2);
+        ctx.lineTo(-4, -9);
+        ctx.lineTo(3, -1.5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // janela da cabine
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.45;
+        ctx.beginPath();
+        ctx.arc(4.5, -0.5, 1.7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        ctx.restore();
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        drawClouds();
+
+        obstacles.forEach(o => {
+          drawObstacleColumn(o.x, 0, o.gapTop, o.jitter);
+          drawObstacleColumn(o.x, o.gapTop + GAP_H, H, o.jitter);
+        });
+
+        drawPlane();
+
+        ctx.font = '600 13px "IBM Plex Mono", monospace';
+        ctx.fillStyle = colors.ink;
+        ctx.globalAlpha = 0.85;
+        ctx.fillText('Pontos: ' + score, 14, 22);
+        ctx.textAlign = 'right';
+        ctx.fillText('Recorde: ' + best, W - 14, 22);
+        ctx.textAlign = 'left';
+        ctx.globalAlpha = 1;
+
+        if (over) {
+          centerText('Colidiste! Pontos: ' + score + '  ·  ESPAÇO para tentar de novo', colors.ochre);
+        }
+      }
+
+      function centerText(text, color) {
+        ctx.font = '600 13px "IBM Plex Mono", monospace';
+        ctx.fillStyle = color;
+        ctx.textAlign = 'center';
+        ctx.fillText(text, W / 2, H / 2 + 40);
+        ctx.textAlign = 'left';
+      }
+
+      function loop() {
+        updateClouds();
+        if (running) update();
+        draw();
+        rafId = requestAnimationFrame(loop);
+      }
+
+      function onKeyDown(e) {
+        if (e.code === 'ArrowUp' || e.code === 'KeyW') { dirUp = true; e.preventDefault(); }
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') { dirDown = true; e.preventDefault(); }
+        if (e.code === 'Space') {
+          e.preventDefault();
+          if (!started || over) { reset(); started = true; running = true; }
+        }
+      }
+      function onKeyUp(e) {
+        if (e.code === 'ArrowUp' || e.code === 'KeyW') dirUp = false;
+        if (e.code === 'ArrowDown' || e.code === 'KeyS') dirDown = false;
+      }
+
+      let listenersOn = false;
+
+      // prepara o motor (canvas, cores, listeners, ciclo de desenho) sem
+      // ainda começar a voar — usado para desenhar o fundo/nuvens em idle
+      function init() {
+        if (!isDesktop || listenersOn) return;
+        readColors();
+        try { best = parseInt(localStorage.getItem(BEST_KEY) || '0', 10) || 0; } catch (e) { best = 0; }
+        reset();
+        initClouds();
+        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('keyup', onKeyUp);
+        listenersOn = true;
+        loop();
+      }
+
+      // arranca mesmo o voo (chamado ao clicar em "Iniciar")
+      function startRun() {
+        if (!isDesktop) return;
+        if (!listenersOn) init();
+        reset();
+        started = true;
+        running = true;
+      }
+
+      function stop() {
+        if (!listenersOn) return;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        window.removeEventListener('keydown', onKeyDown);
+        window.removeEventListener('keyup', onKeyUp);
+        dirUp = false; dirDown = false;
+        listenersOn = false;
+      }
+
+      return { init, startRun, stop };
+    })();
+
     // ── CONNECTIVITY DETECTION ─────────────────────────────────────
     (function() {
       const offlineOverlay = document.getElementById('offline-overlay');
       const onlineOverlay = document.getElementById('online-overlay');
+      const gameEl = document.getElementById('offline-game');
+      const startBtn = document.getElementById('offline-game-start-btn');
       let wasOffline = false;
+      let promptTimer = null;
+
+      const PROMPT_DELAY_MS = 2600;
+
+      function resetGameUI() {
+        if (promptTimer) { clearTimeout(promptTimer); promptTimer = null; }
+        if (gameEl) gameEl.classList.remove('show-prompt', 'show-play');
+        AvionGame.stop();
+      }
 
       function showOffline() {
         wasOffline = true;
         offlineOverlay.classList.add('show');
         offlineOverlay.classList.remove('hide');
+
+        // 1) mostra primeiro só o aviso "Sem acesso à Internet" (já visível
+        //    por defeito no overlay); alguns segundos depois surge o convite
+        if (gameEl) {
+          gameEl.classList.remove('show-prompt', 'show-play');
+          promptTimer = setTimeout(() => {
+            gameEl.classList.add('show-prompt');
+          }, PROMPT_DELAY_MS);
+        }
       }
 
       function showOnline() {
         offlineOverlay.classList.remove('show');
         offlineOverlay.classList.add('hide');
+        resetGameUI();
 
         if (wasOffline) {
           wasOffline = false;
@@ -8905,6 +9402,16 @@
             setTimeout(() => { onlineOverlay.style.display = 'none'; }, 400);
           }, 2000);
         }
+      }
+
+      if (startBtn) {
+        startBtn.addEventListener('click', () => {
+          if (gameEl) {
+            gameEl.classList.remove('show-prompt');
+            gameEl.classList.add('show-play');
+          }
+          AvionGame.startRun();
+        });
       }
 
       window.addEventListener('offline', showOffline);
