@@ -308,6 +308,38 @@
       color: var(--green);
     }
 
+    .game-nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper-elevated);
+      color: var(--ink);
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease, color .15s ease;
+      flex-shrink: 0;
+      order: 1;
+    }
+
+    .game-nav-btn:hover {
+      border-color: var(--ochre);
+      color: var(--ochre);
+    }
+
+    .game-nav-btn-icon {
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    html[data-theme="dark"] .game-nav-btn {
+      background: var(--ink);
+      color: var(--paper);
+      border-color: var(--stone);
+    }
+
     .engenh-nav-btn {
       display: flex;
       align-items: center;
@@ -4513,6 +4545,9 @@
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
+      </button>
+      <button type="button" class="game-nav-btn" id="game-nav-btn" title="Iniciar mini-jogo" aria-label="Iniciar mini-jogo">
+        <span class="game-nav-btn-icon">✈</span>
       </button>
       <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro"
         aria-label="Alternar tema claro/escuro" data-i18n-attr-title="nav.alternarTema"
@@ -9138,6 +9173,15 @@
       const W = canvas.width, H = canvas.height;
 
       const PLANE_X = 116, PLANE_R = 9;
+      // altitude total que se pode subir acima do repouso em pista, em unidades
+      // de mundo — muito maior do que o retângulo do canvas (H=300px): a câmara
+      // segue o avião depois de um certo ponto, para o "mundo" poder ser bem
+      // maior do que a janela visível
+      const CLIMB_RANGE = 2600;
+      // quanto as nuvens "descem" no ecrã por cada unidade que o avião sobe —
+      // mais lento que o mundo em si (que segue 1:1 com a câmara), dá sensação
+      // de camada distante mas ainda assim comunica claramente que se está a subir
+      const CLOUD_PARALLAX = 0.3;
       const BEST_KEY = 'offlineGameBest';
       const BEST_DIST_KEY = 'offlineGameBestDist';
 
@@ -9145,33 +9189,37 @@
       // real de voo [flightAngle] são coisas distintas, tal como num simulador
       // arcade tipo TU-95 — a trajetória só "persegue" o nariz consoante a
       // velocidade, e a gravidade puxa-a sempre para baixo) ──
-      const MAX_SPEED = 8.6;          // velocidade de cruzeiro máxima
-      const TAKEOFF_SPEED = 3.0;      // velocidade mínima para conseguir descolar
-      const STALL_SPEED = 3.7;        // abaixo disto, ângulo de ataque elevado = stall
+      const MAX_SPEED = 5.4;          // velocidade de cruzeiro máxima (reduzida para ritmo mais realista)
+      const TAKEOFF_SPEED = 3.2;      // velocidade mínima para conseguir descolar (aumentada)
+      const STALL_SPEED = 3.0;        // abaixo disto, ângulo de ataque elevado = stall
       const STALL_AOA = 0.5;          // ângulo de ataque crítico (rad) acima do qual perde sustentação
-      const GROUND_PITCH_MAX = 0.45;  // rotação máxima do nariz ainda em pista (antes de levantar)
+      const GROUND_PITCH_MAX = 0.55;  // rotação máxima do nariz ainda em pista (antes de levantar)
 
-      const PITCH_MAX_UP = 0.85;
+      const PITCH_MAX_UP = 0.72;        // menos "straight up"; mais controlo em voo
       const PITCH_MAX_DOWN = 0.95;
-      const PITCH_ACCEL_BASE = 0.0016;  // inércia base do manche
-      const PITCH_AUTHORITY_MIN = 0.35; // eficácia dos comandos parado/a baixa velocidade ("moles")
-      const PITCH_AUTHORITY_MAX = 1.35; // eficácia a alta velocidade (comandos mais "vivos")
-      const PITCH_DAMPING = 0.91;       // amortecimento do movimento do nariz
+      const PITCH_ACCEL_BASE = 0.0015;  // mais pesado e lento, como um grande bombardeiro
+      const PITCH_AUTHORITY_MIN = 0.64; // resposta mais lenta a baixa velocidade
+      const PITCH_AUTHORITY_MAX = 0.82; // mais firme, mas sem parecer "snap"
+      const PITCH_DAMPING = 0.985;      // inércia alta: o nariz não muda de direção como um caça
 
-      const THROTTLE_STEP = 0.012;
-      const ENGINE_SPOOL_UP = 0.026;    // a turbina demora mais a "subir de giros"...
-      const ENGINE_SPOOL_DOWN = 0.05;   // ...do que a cortar potência (assimetria realista)
+      const THROTTLE_STEP = 0.010;       // passo mais pequeno => alavanca reage mais devagar
+      const ENGINE_SPOOL_UP = 0.018;     // subida ainda mais lenta dos giros (maior delay)
+      const ENGINE_SPOOL_DOWN = 0.06;    // cortar potência permanece mais rápido
       const IDLE_THRUST = 0.05;         // impulso residual ao ralenti — o motor nunca pára de empurrar
-      const THRUST_K = 0.185;
-      const DRAG_BASE = 0.0105;
-      const INDUCED_DRAG_K = 0.075;   // resistência extra por ângulo de ataque elevado
+      const THRUST_K = 0.12;
+      const DRAG_BASE = 0.013;
+      const GROUND_THRUST_BOOST = 1.45; // multiplicador de empuxo durante taxi para auxiliar aceleração na pista
+      const INDUCED_DRAG_K = 0.085;   // resistência extra por ângulo de ataque elevado
 
-      const TURN_K = 0.09;            // taxa-base a que a trajetória persegue o nariz
-      const GRAVITY_K = 0.09;         // efeito da gravidade sobre a trajetória (maior a baixa vel.)
-      const VY_SCALE = 3.4;
-      const GROUND_DRAG = 0.992;
-      const WORLD_SPEED_K = 0.62;     // quão rápido o mundo desliza em função da velocidade
-      const WORLD_SPEED_BASE = 0.6;   // deslize ambiente mínimo — só em voo (ver getWorldSpeed)
+      const TURN_K = 0.09;            // trajetória segue o nariz mais devagar, como uma máquina pesada
+      const GRAVITY_K = 0.065;         // gravidade mais evidente; o avião “pesa” mais na curva
+      const VY_SCALE = 3.2;
+      const GROUND_DRAG = 0.990;
+      const WORLD_SPEED_K = 0.30;     // quão rápido o mundo desliza em função da velocidade (reduzido)
+      const WORLD_SPEED_BASE = 0.4;   // deslize ambiente mínimo — só em voo (ver getWorldSpeed)
+      const NPC_SPEED_K = 0.52;       // base lenta para começar, depois cresce com a distância
+      const NPC_SPEED_GROWTH = 0.09;  // ganho de velocidade por km percorrido
+      const AMBIENT_BIRD_K = 0.70;   // reduz velocidade das aves ambientais
 
       // ── zonas / progressão (por distância percorrida, em km) ──
       const ZONE_AIRPORT = { key: 'airport', label: 'Aeroporto', end: 0.35 };
@@ -9195,6 +9243,42 @@
       ];
 
       let colors = {};
+      function hexToRgba(hex, alpha) {
+        const h = (hex || '#000000').replace('#', '').trim();
+        const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+        const n = parseInt(full, 16) || 0;
+        return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+      }
+      function hexToRgb(hex) {
+        if (typeof hex === 'string' && hex.startsWith('rgb')) {
+          const m = hex.match(/[\d.]+/g) || [0, 0, 0];
+          return { r: +m[0] || 0, g: +m[1] || 0, b: +m[2] || 0 };
+        }
+        const h = (hex || '#000000').replace('#', '').trim();
+        const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+        const n = parseInt(full, 16) || 0;
+        return {
+          r: (n >> 16) & 255,
+          g: (n >> 8) & 255,
+          b: n & 255
+        };
+      }
+      function mixHex(hexA, hexB, t) {
+        const a = hexToRgb(hexA);
+        const b = hexToRgb(hexB);
+        const mix = Math.max(0, Math.min(1, t));
+        const r = Math.round(a.r + (b.r - a.r) * mix);
+        const g = Math.round(a.g + (b.g - a.g) * mix);
+        const b2 = Math.round(a.b + (b.b - a.b) * mix);
+        return `rgb(${r}, ${g}, ${b2})`;
+      }
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+      function smoothstep(a, b, value) {
+        const x = clamp((value - a) / (b - a || 1), 0, 1);
+        return x * x * (3 - 2 * x);
+      }
       function readColors() {
         const cs = getComputedStyle(document.documentElement);
         colors = {
@@ -9206,46 +9290,306 @@
         };
       }
 
-      let plane, obstacles, clouds, fogBands, mountains, bgSun, ground, runwayX, airportBuildings;
-      let score, best, bestDist, distanceKm, spawnTimer, running, over, rafId;
+      let plane, obstacles, clouds, fogBands, mountains, bgSun, ground, runwayX, airportBuildings, ambientBirds, stars, comets, satellites, ambientCars;
+      let score, best, bestDist, distanceKm, spawnTimer, running, over, rafId, elapsedTime;
       let dirUp = false, dirDown = false, dirLeft = false, dirRight = false, started = false;
       let stats, zoneCur, message, messageTimer;
+      let camera = 0; // deslocamento vertical do "mundo" em relação ao ecrã — sobe
+                       // (fica mais negativo) quando o avião passa a âncora no ecrã
 
-      function makeCloud(randomX) {
-        const scale = 1 + Math.random() * 1.4;
+      function getAltitudeProfile() {
+        const baseY = (ground ? ground.y : H - 10) - PLANE_R; // altitude de repouso em pista
+        const climb = clamp((baseY - plane.y) / CLIMB_RANGE, 0, 1);
+        // limiares comprimidos: já se vê nuvens a meio da subida e espaço bem
+        // antes do teto, para os 3 níveis serem óbvios em jogo normal, não só
+        // muito perto do limite físico do avião
+        const level1 = 1 - smoothstep(0.10, 0.32, climb);
+        const level2 = clamp((climb - 0.10) / 0.32, 0, 1);
+        const level3 = clamp((climb - 0.55) / 0.32, 0, 1);
+        const spaceFade = clamp((climb - 0.58) / 0.3, 0, 1);
+        const level = climb < 0.28 ? 1 : (climb < 0.62 ? 2 : 3);
+        const levelLabel = level === 1 ? '☀ Baixa altitude' : (level === 2 ? '☁ Nuvens' : '✨ Espaço');
+        return {
+          climb,
+          level,
+          levelLabel,
+          level1,
+          level2,
+          level3,
+          spaceFade,
+          cloudFade: clamp(1 - level2 * 0.9 - level3 * 0.7, 0, 1),
+          sunFade: clamp(1 - level2 * 0.6 - level3 * 0.96, 0, 1)
+        };
+      }
+
+      function getSkyBlend() {
+        const cityStart = ZONE_CITY.end * 0.7;
+        const cityEnd = ZONE_MOUNTAINS.end * 0.55;
+        const blend = clamp((distanceKm - cityStart) / (cityEnd - cityStart || 1), 0, 1);
+        return blend;
+      }
+
+      function makeCloud(randomX, altitudeBoost = 0) {
+        const scale = (1 + Math.random() * 1.4) + altitudeBoost * 1.2;
+        const baseY = 16 + Math.random() * (H * 0.35) + altitudeBoost * 28;
         return {
           x: randomX ? Math.random() * W : W + 40 * scale,
-          y: 16 + Math.random() * (H * 0.55),
+          y: Math.min(H * 0.72, baseY),
           scale,
-          speed: 0.12 * scale,
-          alpha: 0.14 + 0.10 * ((scale - 1) / 1.4)
+          speed: (0.12 + altitudeBoost * 0.14) * scale,
+          alpha: 0.16 + 0.12 * ((scale - 1) / 1.4) + altitudeBoost * 0.28
         };
       }
 
       function initClouds() {
         clouds = [];
-        for (let i = 0; i < 6; i++) clouds.push(makeCloud(true));
+        for (let i = 0; i < 12; i++) clouds.push(makeCloud(true, 0));
         fogBands = [];
+        initAmbientBirds();
+        initStars();
+      }
+
+      function initStars() {
+        stars = [];
+        comets = [];
+        satellites = [];
+        for (let i = 0; i < 160; i++) {
+          stars.push({
+            x: Math.random() * W,
+            y: Math.random() * (H * 0.8),
+            r: 0.8 + Math.random() * 2.1,
+            alpha: 0.22 + Math.random() * 0.78,
+            twinkle: Math.random() * Math.PI * 2
+          });
+        }
+        for (let i = 0; i < 5; i++) {
+          comets.push({
+            x: -80 - Math.random() * W,
+            y: 20 + Math.random() * (H * 0.4),
+            dx: 1.7 + Math.random() * 2.6,
+            dy: 0.5 + Math.random() * 1.6,
+            length: 24 + Math.random() * 62,
+            alpha: 0.35 + Math.random() * 0.55
+          });
+        }
+        for (let i = 0; i < 4; i++) {
+          satellites.push({
+            x: Math.random() * W,
+            y: 24 + Math.random() * (H * 0.38),
+            r: 1.8 + Math.random() * 2.8,
+            alpha: 0.18 + Math.random() * 0.34,
+            phase: Math.random() * Math.PI * 2,
+            speed: 0.14 + Math.random() * 0.22
+          });
+        }
+      }
+
+      function updateStars() {
+        if (!stars) return;
+        stars.forEach(star => {
+          star.twinkle += 0.03;
+        });
+        if (!comets) return;
+        comets.forEach(c => {
+          c.x += c.dx * 1.6;
+          c.y += c.dy * 1.6;
+          if (c.x > W + 100 || c.y > H + 80) {
+            c.x = -90 - Math.random() * W;
+            c.y = 12 + Math.random() * (H * 0.38);
+            c.dx = 1.8 + Math.random() * 2.8;
+            c.dy = 0.6 + Math.random() * 1.5;
+            c.length = 26 + Math.random() * 65;
+          }
+        });
+        if (!satellites) return;
+        satellites.forEach(s => {
+          s.x -= s.speed;
+          s.phase += 0.011;
+          if (s.x < -28) {
+            s.x = W + 20 + Math.random() * 40;
+            s.y = 18 + Math.random() * (H * 0.32);
+            s.r = 1.6 + Math.random() * 2.8;
+            s.alpha = 0.2 + Math.random() * 0.3;
+            s.speed = 0.14 + Math.random() * 0.2;
+          }
+        });
+      }
+
+      function drawStars() {
+        const profile = getAltitudeProfile();
+        const alphaBoost = profile.level3;
+        if (alphaBoost <= 0.02) return;
+        if (stars.length < 220) {
+          for (let i = stars.length; i < 220; i++) {
+            stars.push({
+              x: Math.random() * W,
+              y: Math.random() * (H * 0.8),
+              r: 0.8 + Math.random() * 2.2,
+              alpha: 0.25 + Math.random() * 0.75,
+              twinkle: Math.random() * Math.PI * 2
+            });
+          }
+        }
+        if (comets.length < 8 && profile.level3 > 0.15) {
+          for (let i = comets.length; i < 8; i++) {
+            comets.push({
+              x: -100 - Math.random() * W,
+              y: 15 + Math.random() * (H * 0.4),
+              dx: 1.8 + Math.random() * 3.2,
+              dy: 0.8 + Math.random() * 1.8,
+              length: 28 + Math.random() * 70,
+              alpha: 0.3 + Math.random() * 0.55
+            });
+          }
+        }
+
+        const atmosphereFade = smoothstep(0.12, 0.92, profile.level2 + profile.level3 * 0.25);
+        ctx.save();
+        ctx.globalAlpha = 0.18 + atmosphereFade * 0.32 + alphaBoost * 0.55;
+        const haze = ctx.createRadialGradient(W * 0.5, H * 0.28, 20, W * 0.5, H * 0.28, W * 0.7);
+        haze.addColorStop(0, 'rgba(125, 160, 255, 0.18)');
+        haze.addColorStop(0.35, 'rgba(85, 106, 180, 0.12)');
+        haze.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = haze;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = alphaBoost * 0.95;
+        stars.forEach(star => {
+          const pulse = 0.4 + 0.6 * (0.5 + Math.sin(star.twinkle) * 0.5);
+          ctx.fillStyle = `rgba(255,255,255,${star.alpha * pulse})`;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        if (satellites && satellites.length) {
+          satellites.forEach(s => {
+            ctx.save();
+            ctx.translate(s.x, s.y);
+            ctx.rotate(s.phase);
+            ctx.globalAlpha = s.alpha;
+            ctx.strokeStyle = 'rgba(210, 230, 255, 0.8)';
+            ctx.lineWidth = 0.9;
+            ctx.beginPath();
+            ctx.moveTo(-8, 0);
+            ctx.lineTo(8, 0);
+            ctx.moveTo(0, -4);
+            ctx.lineTo(0, 4);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(230, 235, 255, 0.7)';
+            ctx.beginPath();
+            ctx.arc(0, 0, s.r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          });
+        }
+        ctx.strokeStyle = `rgba(170, 210, 255, ${0.3 + alphaBoost * 0.5})`;
+        ctx.lineWidth = 1;
+        comets.forEach(c => {
+          ctx.beginPath();
+          ctx.moveTo(c.x, c.y);
+          ctx.lineTo(c.x - c.length, c.y - c.length * 0.28);
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      // aves decorativas de fundo — puramente ambiente, não colidem nem contam
+      // como obstáculo; dão vida ao céu sem interferir na jogabilidade
+      function makeAmbientBird(randomX) {
+        return {
+          x: randomX ? Math.random() * W : W + 20,
+          y: 18 + Math.random() * (H * 0.32),
+          speed: (0.045 + Math.random() * 0.05) * AMBIENT_BIRD_K,
+          scale: 0.6 + Math.random() * 0.5,
+          alpha: 0.10 + Math.random() * 0.09,
+          wingPhase: Math.random() * Math.PI * 2
+        };
+      }
+
+      function initAmbientBirds() {
+        ambientBirds = [];
+        for (let i = 0; i < 3; i++) ambientBirds.push(makeAmbientBird(true));
+      }
+
+      function updateAmbientBirds() {
+        if (!ambientBirds) return;
+        ambientBirds.forEach(b => {
+          b.x -= b.speed;
+          b.wingPhase += 0.08;
+          if (b.x < -20) Object.assign(b, makeAmbientBird(false));
+        });
+      }
+
+      function drawAmbientBirds() {
+        if (!ambientBirds) return;
+        ctx.strokeStyle = colors.ink;
+        ctx.lineWidth = 1;
+        ambientBirds.forEach(b => {
+          const flap = Math.sin(b.wingPhase) * 2.4 * b.scale;
+          ctx.globalAlpha = b.alpha;
+          ctx.beginPath();
+          ctx.moveTo(b.x - 4 * b.scale, b.y + flap);
+          ctx.lineTo(b.x, b.y - 1.4 * b.scale);
+          ctx.lineTo(b.x + 4 * b.scale, b.y + flap);
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
       }
 
       function updateClouds() {
-        const worldSpeed = running ? getWorldSpeed() : 0.12;
+        // worldSpeed is zero on ground when plane isn't moving; this ensures
+        // background elements (clouds/fog) don't slide while the aircraft is
+        // stationary on the runway.
+        const worldSpeed = getWorldSpeed();
+        // normalize into 0..1 for cloud pixel movement
+        const worldMax = WORLD_SPEED_BASE + MAX_SPEED * WORLD_SPEED_K;
+        const worldFactor = Math.max(0, Math.min(1, worldSpeed / worldMax));
+        const profile = getAltitudeProfile();
+        const targetClouds = 12 + Math.floor(profile.level2 * 9) + Math.floor(profile.level3 * 14);
+
+        while (clouds.length < targetClouds) {
+          clouds.push(makeCloud(false, profile.level2 + profile.level3));
+        }
+
         clouds.forEach(c => {
-          c.x -= c.speed;
-          if (c.x < -40 * c.scale) Object.assign(c, makeCloud(false));
+          c.x -= c.speed * worldFactor * (0.35 + (1 - profile.level3) * 0.85);
+          if (c.x < -40 * c.scale) {
+            Object.assign(c, makeCloud(false, profile.level2 + profile.level3));
+          }
         });
+
+        // parallax vertical: as nuvens descem no ecrã enquanto se sobe (e sobem
+        // enquanto se desce), a uma fração da velocidade do avião — reforça a
+        // perceção de ganho/perda de altitude mesmo antes de a câmara do mundo
+        // começar a deslocar-se
+        if (plane && plane.phase === 'air') {
+          const cloudShift = -plane.vy * 0.34 * CLOUD_PARALLAX;
+          clouds.forEach(c => {
+            c.y += cloudShift;
+            if (c.y > H + 40 * c.scale || c.y < -60 * c.scale) {
+              Object.assign(c, makeCloud(false, profile.level2 + profile.level3));
+            }
+          });
+        }
+        updateAmbientBirds();
+        updateStars();
         for (let i = fogBands.length - 1; i >= 0; i--) {
           const f = fogBands[i];
-          f.x -= worldSpeed;
+          f.x -= worldSpeed * (0.7 + (1 - profile.level3) * 0.6);
           if (f.x + f.w < -20) fogBands.splice(i, 1);
         }
       }
 
       function drawClouds() {
+        const profile = getAltitudeProfile();
         const px = 3;
         ctx.fillStyle = colors.stone;
         clouds.forEach(c => {
-          ctx.globalAlpha = c.alpha;
+          const cloudAlpha = c.alpha * profile.cloudFade;
+          if (cloudAlpha <= 0.02) return;
+          ctx.globalAlpha = cloudAlpha;
           CLOUD_PATTERN.forEach((row, ri) => {
             for (let ci = 0; ci < row.length; ci++) {
               if (row[ci] === '1') {
@@ -9260,10 +9604,12 @@
       function drawFogBands() {
         if (!fogBands || !fogBands.length) return;
         fogBands.forEach(f => {
-          ctx.fillStyle = colors.paper;
-          ctx.globalAlpha = 0.5;
+          const grad = ctx.createLinearGradient(f.x, 0, f.x + f.w, 0);
+          grad.addColorStop(0, hexToRgba(colors.paper, 0));
+          grad.addColorStop(0.5, hexToRgba(colors.paper, 0.55));
+          grad.addColorStop(1, hexToRgba(colors.paper, 0));
+          ctx.fillStyle = grad;
           ctx.fillRect(f.x, 0, f.w, H);
-          ctx.globalAlpha = 1;
         });
       }
 
@@ -9287,11 +9633,54 @@
         runwayX = 0;
       }
 
+      // gradiente de céu subtil (mais fresco no topo, toque quente no horizonte,
+      // com tonalidade própria por zona) + halo dourado à volta do sol
+      function drawSky() {
+        const gy = ground ? ground.y : H - 10;
+        const zoneKey = zoneCur ? zoneCur.key : 'airport';
+        const profile = getAltitudeProfile();
+        const altitudeDarken = smoothstep(0.16, 0.9, profile.level2 + profile.level3 * 0.8);
+        // mais dramático no nível 2 → 3: o céu escurece de forma contínua e a
+        // luz do sol vai sendo engolida pela atmosfera sem uma mudança abrupta
+        const skyTop = mixHex('#CFE7E3', '#040A16', altitudeDarken * 0.85 + profile.level3 * 0.35);
+        const skyMid = mixHex('#ECF6F0', '#122746', altitudeDarken * 0.9 + profile.level3 * 0.45);
+        const horizonTint = zoneKey === 'mountains' ? colors.stone : zoneKey === 'city' ? colors.ink : colors.ochre;
+        const horizonBase = mixHex('#ECF6F0', horizonTint, 0.28 + altitudeDarken * 0.25);
+
+        const sky = ctx.createLinearGradient(0, 0, 0, gy);
+        sky.addColorStop(0, skyTop);
+        sky.addColorStop(0.4, skyMid);
+        sky.addColorStop(1, mixHex(horizonBase, '#0A1228', profile.level3 * 0.85 + altitudeDarken * 0.3));
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, W, gy);
+
+        if (bgSun) {
+          const haloAlpha = clamp(0.18 - profile.level3 * 0.13 - profile.level2 * 0.06, 0.02, 0.18);
+          const halo = ctx.createRadialGradient(bgSun.x, bgSun.y, 2, bgSun.x, bgSun.y, 130);
+          halo.addColorStop(0, hexToRgba(colors.ochre, haloAlpha));
+          halo.addColorStop(1, hexToRgba(colors.ochre, 0));
+          ctx.fillStyle = halo;
+          ctx.fillRect(0, 0, W, gy);
+        }
+      }
+
       function drawSun() {
         if (!bgSun) return;
+        const profile = getAltitudeProfile();
+        if (profile.level3 > 0.06) {
+          ctx.save();
+          ctx.globalAlpha = 0.12 + (1 - profile.level3) * 0.32;
+          ctx.fillStyle = 'rgba(255,255,255,0.35)';
+          ctx.beginPath();
+          ctx.arc(bgSun.x, bgSun.y, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          return;
+        }
+
         ctx.save();
         ctx.translate(bgSun.x, bgSun.y);
-        const rayAlpha = 0.08 + 0.04 * Math.sin(Date.now() * 0.001);
+        const rayAlpha = (0.08 + 0.04 * Math.sin(Date.now() * 0.001)) * profile.sunFade;
         ctx.globalAlpha = rayAlpha;
         ctx.fillStyle = colors.ochre;
         for (let i = 0; i < 8; i++) {
@@ -9304,11 +9693,11 @@
           ctx.closePath();
           ctx.fill();
         }
-        ctx.globalAlpha = 0.15;
+        ctx.globalAlpha = 0.15 * profile.sunFade;
         ctx.beginPath();
         ctx.arc(0, 0, bgSun.r, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 0.3;
+        ctx.globalAlpha = 0.3 * profile.sunFade;
         ctx.beginPath();
         ctx.arc(0, 0, bgSun.r * 0.55, 0, Math.PI * 2);
         ctx.fill();
@@ -9320,15 +9709,15 @@
       function drawMountains() {
         if (!mountains || !mountains.length) return;
         const gy = ground ? ground.y : H - 10;
-        const zoneKey = zoneCur ? zoneCur.key : 'airport';
+        const profile = getAltitudeProfile();
+        const cityBlend = getSkyBlend();
+        const mountainAlphaBase = 1 - cityBlend;
+
         mountains.forEach(m => {
-          if (zoneKey === 'city') {
-            ctx.fillStyle = colors.ink;
-            ctx.globalAlpha = 0.05 + m.shade * 0.05;
-            ctx.fillRect(m.x, gy - m.h, m.w * 0.55, m.h);
-          } else {
-            ctx.fillStyle = zoneKey === 'mountains' ? colors.stone : colors.green;
-            ctx.globalAlpha = 0.06 + m.shade * (zoneKey === 'mountains' ? 0.08 : 0.04);
+          const mountainAlpha = clamp((1 - profile.level3 * 1.2 - profile.level2 * 0.5) * mountainAlphaBase, 0, 1);
+          if (mountainAlpha > 0.02) {
+            ctx.fillStyle = colors.stone;
+            ctx.globalAlpha = (0.08 + m.shade * 0.09) * mountainAlpha;
             ctx.beginPath();
             ctx.moveTo(m.x, gy);
             ctx.lineTo(m.x + m.w / 2, gy - m.h);
@@ -9336,6 +9725,32 @@
             ctx.closePath();
             ctx.fill();
           }
+
+          const cityAlpha = clamp((0.08 + m.shade * 0.05) * cityBlend * (1 - profile.level3 * 0.8), 0, 1);
+          if (cityAlpha > 0.02) {
+            ctx.fillStyle = colors.ink;
+            ctx.globalAlpha = cityAlpha;
+            ctx.fillRect(m.x, gy - m.h * 0.75, m.w * 0.62, m.h * 0.75);
+          }
+        });
+
+        ctx.globalAlpha = 1;
+      }
+
+      // sombras suaves das nuvens maiores projetadas no chão — reforça a
+      // sensação de profundidade/paralaxe entre o céu e o solo
+      function drawCloudShadows() {
+        if (!clouds || !ground) return;
+        const profile = getAltitudeProfile();
+        if (profile.level3 > 0.5) return;
+        const gy = ground.y;
+        ctx.fillStyle = colors.ink;
+        clouds.forEach(c => {
+          if (c.scale < 1.3) return;
+          ctx.globalAlpha = c.alpha * 0.35 * (1 - profile.level3 * 0.9);
+          ctx.beginPath();
+          ctx.ellipse(c.x + 14 * c.scale, gy + 3, 16 * c.scale, 3, 0, 0, Math.PI * 2);
+          ctx.fill();
         });
         ctx.globalAlpha = 1;
       }
@@ -9343,16 +9758,34 @@
       function drawGround() {
         if (!ground) return;
         const gy = ground.y;
-        ctx.fillStyle = colors.green;
-        ctx.globalAlpha = 0.08;
+
+        // base tonal da cidade / zona de aterragem
+        const pavementGrad = ctx.createLinearGradient(0, gy, 0, H);
+        pavementGrad.addColorStop(0, 'rgba(53, 60, 58, 0.10)');
+        pavementGrad.addColorStop(1, 'rgba(26, 29, 30, 0.24)');
+        ctx.fillStyle = pavementGrad;
         ctx.fillRect(0, gy, W, H - gy);
-        ctx.globalAlpha = 0.16;
-        const offset = (Date.now() * 0.025) % 10;
+
+        // estrada / pista com textura e detalhes de asfalto
+        ctx.fillStyle = 'rgba(24, 27, 29, 0.8)';
+        ctx.fillRect(0, gy - 6, W, 10);
+        ctx.globalAlpha = 0.15;
+        const offset = runwayX % 10;
         for (let x = -offset; x < W; x += 10) {
-          ctx.fillRect(x, gy, 1.5, 3 + ((x * 7) % 3));
-          ctx.fillRect(x + 4, gy + 1, 1.5, 2);
+          ctx.fillRect(x, gy - 5, 1.5, 3 + ((x * 7) % 3));
+          ctx.fillRect(x + 4, gy - 4, 1.5, 2);
         }
         ctx.globalAlpha = 1;
+
+        // pequenos blocos e linhas de marginal para ambientar a cidade
+        ctx.strokeStyle = 'rgba(244, 233, 201, 0.15)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 56) {
+          ctx.beginPath();
+          ctx.moveTo(x, gy - 4);
+          ctx.lineTo(x + 18, gy - 4);
+          ctx.stroke();
+        }
 
         // pista, visível só na fase de descolagem
         if (plane && plane.phase === 'ground') {
@@ -9411,6 +9844,24 @@
             ctx.globalAlpha = 1;
           }
         }
+
+        if (ambientCars && ambientCars.length) {
+          ambientCars.forEach(car => {
+            const y = car.y + (car.lane ? 0 : 4);
+            ctx.save();
+            ctx.translate(car.x, y);
+            ctx.fillStyle = car.tint;
+            ctx.fillRect(0, 0, car.w, car.h);
+            ctx.fillStyle = 'rgba(18, 20, 22, 0.8)';
+            ctx.fillRect(1.5, 1.2, car.w - 3, 1.2);
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(car.w * 0.16, 0.7, car.w * 0.2, 1.1);
+            ctx.fillStyle = '#1a1b1d';
+            ctx.fillRect(1, 0.8, 1.4, 1.8);
+            ctx.fillRect(car.w - 2.4, 0.8, 1.4, 1.8);
+            ctx.restore();
+          });
+        }
       }
 
       function updateBackground(worldSpeed) {
@@ -9429,13 +9880,30 @@
             }
           });
         }
-        runwayX += (plane ? plane.speed : 0) * 0.6;
+        runwayX += (!grounded || plane.speed > 0.9) ? (plane ? plane.speed : 0) * 0.6 : 0;
 
-        if (!grounded && airportBuildings && airportBuildings.length) {
-          for (let i = airportBuildings.length - 1; i >= 0; i--) {
-            const b = airportBuildings[i];
-            b.x -= worldSpeed;
-            if (b.x + b.w < -30) airportBuildings.splice(i, 1);
+        if (ambientCars && ambientCars.length) {
+          ambientCars.forEach(car => {
+            car.x -= (grounded ? 0.65 : 1.1) * (worldSpeed * 0.45 + car.speed);
+            if (car.x < -30) {
+              car.x = W + 18 + Math.random() * 80;
+              car.y = ground.y - 11 - (car.lane ? 0 : 6);
+              car.w = 10 + Math.random() * 8;
+              car.h = 5 + Math.random() * 4;
+            }
+          });
+        }
+
+        if (airportBuildings && airportBuildings.length) {
+          // move airport buildings while the runway visually advances:
+          // either airborne (normal parallax) or taxiing fast enough
+          if (!grounded || plane.speed > 0.9) {
+            const gbSpeed = getWorldSpeed();
+            for (let i = airportBuildings.length - 1; i >= 0; i--) {
+              const b = airportBuildings[i];
+              b.x -= gbSpeed;
+              if (b.x + b.w < -30) airportBuildings.splice(i, 1);
+            }
           }
         }
       }
@@ -9449,16 +9917,66 @@
         return WORLD_SPEED_BASE + plane.speed * WORLD_SPEED_K;
       }
 
+      function getDifficultyScale() {
+        return Math.min(1.8, distanceKm / 6);
+      }
+
+      function getThreatIntensity() {
+        const profile = getAltitudeProfile();
+        const timeFactor = Math.min(1.8, elapsedTime / 42);
+        const distanceFactor = Math.min(1.8, distanceKm / 12);
+        const lateCurve = Math.pow(Math.max(0, timeFactor * 0.72 + distanceFactor * 0.88), 1.35);
+        const spaceFactor = profile.level3 > 0.08 ? 1.15 : 1;
+        return clamp(lateCurve * 0.72 * spaceFactor, 0, 1.8);
+      }
+
+      function getSpawnInterval() {
+        const profile = getAltitudeProfile();
+        const threat = getThreatIntensity();
+        if (profile.level3 > 0.08) {
+          return Math.max(150, 360 - threat * 125);
+        }
+        const zoneBase = zoneCur.key === 'airport' ? 420 : zoneCur.key === 'city' ? 360 : zoneCur.key === 'mountains' ? 320 : 280;
+        return Math.max(170, zoneBase - threat * 95);
+      }
+
       function initAirport() {
         const gy = ground ? ground.y : H - 10;
-        airportBuildings = [
+        airportBuildings = [];
+        for (let i = 0; i < 12; i++) {
+          const w = 24 + Math.random() * 32;
+          const h = 28 + Math.random() * 52;
+          airportBuildings.push({
+            type: 'cityBlock',
+            x: 40 + i * 62 + Math.random() * 12,
+            w,
+            h,
+            groundY: gy,
+            roof: Math.random() > 0.5 ? 'flat' : 'angled',
+            tint: Math.random() * 0.3
+          });
+        }
+        airportBuildings.push(
           { type: 'fence', x: 210, w: 560, h: 13, groundY: gy },
           { type: 'terminal', x: 240, w: 118, h: 40, groundY: gy },
           { type: 'windsock', x: 340, w: 4, h: 34, groundY: gy },
           { type: 'tower', x: 410, w: 24, h: 76, groundY: gy },
           { type: 'hangar', x: 480, w: 96, h: 46, groundY: gy },
           { type: 'hangar', x: 660, w: 78, h: 40, groundY: gy }
-        ];
+        );
+
+        ambientCars = [];
+        for (let i = 0; i < 14; i++) {
+          ambientCars.push({
+            x: Math.random() * (W + 80),
+            y: gy - 11 - (Math.random() < 0.5 ? 0 : 6),
+            w: 10 + Math.random() * 8,
+            h: 5 + Math.random() * 4,
+            speed: 0.35 + Math.random() * 0.55,
+            tint: ['#C9D5D3', '#D2B474', '#B9704F', '#7AA3C7', '#A77D6D'][Math.floor(Math.random() * 5)],
+            lane: Math.random() < 0.5 ? 0 : 1
+          });
+        }
       }
 
       function reset() {
@@ -9478,7 +9996,8 @@
         obstacles = [];
         score = 0;
         distanceKm = 0;
-        spawnTimer = 70;
+        elapsedTime = 0;
+        spawnTimer = 180;
         running = false;
         over = false;
         started = false;
@@ -9502,30 +10021,45 @@
         if (dirLeft) plane.throttle = Math.max(0, plane.throttle - THROTTLE_STEP);
         const spoolRate = plane.throttle > plane.thrust ? ENGINE_SPOOL_UP : ENGINE_SPOOL_DOWN;
         plane.thrust += (plane.throttle - plane.thrust) * spoolRate;
-        // impulso residual ao ralenti — o motor nunca deixa de empurrar por completo
-        const effectiveThrust = IDLE_THRUST + plane.thrust * (1 - IDLE_THRUST);
+        // impulso residual ao ralenti — mas só em voo; no chão o motor fica parado
+        // até o utilizador dar throttle (evita arrastar sozinho na pista)
+        const onGround = plane.phase === 'ground';
+        const effectiveThrust = onGround ? plane.thrust : (IDLE_THRUST + plane.thrust * (1 - IDLE_THRUST));
 
         // manche com inércia própria — acelera e trava a rodar o nariz, não salta
-        // instantaneamente para o ângulo alvo; a eficácia dos comandos depende da
-        // velocidade (a baixa velocidade estão "moles", a alta respondem com mais
-        // vivacidade, tal como num avião real)
-        const authority = PITCH_AUTHORITY_MIN + (PITCH_AUTHORITY_MAX - PITCH_AUTHORITY_MIN) *
-          Math.max(0, Math.min(1, plane.speed / (TAKEOFF_SPEED * 1.6)));
+        // instantaneamente para o ângulo alvo. A resposta depende da velocidade: a
+        // baixa velocidade o avião responde mais pesado e lento; a alta velocidade
+        // ganha mais viveza, como num jato real.
+        const speedWindow = Math.max(0, Math.min(1, (plane.speed - STALL_SPEED) / (MAX_SPEED - STALL_SPEED)));
+        const authority = PITCH_AUTHORITY_MIN + (PITCH_AUTHORITY_MAX - PITCH_AUTHORITY_MIN) * speedWindow;
+        const pitchAccel = PITCH_ACCEL_BASE * (0.75 + speedWindow * 1.3);
+        const pitchDamping = PITCH_DAMPING + (1 - PITCH_DAMPING) * (1 - speedWindow * 0.32);
         const pitchInput = dirUp ? 1 : (dirDown ? -1 : 0);
-        plane.pitchVel += pitchInput * PITCH_ACCEL_BASE * authority;
-        plane.pitchVel *= PITCH_DAMPING;
+        const previousDir = Math.sign(plane.pitchVel || pitchInput || 1);
+        const reversing = pitchInput !== 0 && Math.sign(pitchInput) !== previousDir;
+        const reverseBoost = reversing ? 1.18 : 1;
+
+        if (pitchInput !== 0) {
+          plane.pitchVel += pitchInput * pitchAccel * authority * reverseBoost;
+        } else {
+          plane.pitchVel *= 0.96;
+        }
+
+        plane.pitchVel *= pitchDamping;
+        plane.pitchVel = clamp(plane.pitchVel, -0.065, 0.065);
         plane.pitch += plane.pitchVel;
         plane.pitch = Math.max(-PITCH_MAX_DOWN, Math.min(PITCH_MAX_UP, plane.pitch));
 
         if (plane.phase === 'ground') {
-          const accel = effectiveThrust * THRUST_K - DRAG_BASE * plane.speed * plane.speed;
+          const accel = effectiveThrust * THRUST_K * GROUND_THRUST_BOOST - DRAG_BASE * plane.speed * plane.speed;
           plane.speed = Math.max(0, Math.min(MAX_SPEED, plane.speed + accel));
           plane.speed *= GROUND_DRAG; // atrito de pista
 
           // em pista o nariz só pode rodar até um ângulo de rotação limitado
           // (como um avião real que "rotaciona" perto da velocidade de descolagem);
           // sem velocidade nenhuma o nariz tende sempre a assentar
-          const groundPitchCap = plane.speed >= TAKEOFF_SPEED * 0.55 ? GROUND_PITCH_MAX : GROUND_PITCH_MAX * 0.25;
+          // relax ground pitch cap slightly so pilot can rotate earlier during taxi
+          const groundPitchCap = plane.speed >= TAKEOFF_SPEED * 0.45 ? GROUND_PITCH_MAX : GROUND_PITCH_MAX * 0.50;
           plane.pitch = Math.max(-PITCH_MAX_DOWN, Math.min(groundPitchCap, plane.pitch));
           if (!dirUp) { plane.pitch *= 0.85; plane.pitchVel *= 0.6; }
 
@@ -9533,7 +10067,7 @@
             plane.phase = 'air';
             // garante sempre um ângulo de subida mínimo — evita "descolar" com o
             // nariz raso e cair logo de volta ao chão
-            plane.flightAngle = Math.max(0.14, Math.min(plane.pitch, 0.32));
+            plane.flightAngle = Math.max(0.18, Math.min(plane.pitch, 0.38));
             stats.perfectTakeoff = plane.speed < TAKEOFF_SPEED * 1.3 && plane.pitch < PITCH_MAX_UP * 0.55;
             setMessage(stats.perfectTakeoff ? '🛫 Descolagem perfeita!' : '🛫 No ar!');
           }
@@ -9556,11 +10090,12 @@
         if (plane.stalling && !wasStalling) setMessage('⚠️ STALL');
         if (!plane.stalling && wasStalling) { stats.stallsRecovered++; setMessage('🔄 Recuperado!'); }
 
-        // a trajetória persegue o nariz — mais depressa com boa sustentação
-        plane.flightAngle += (plane.pitch - plane.flightAngle) * TURN_K * liftEfficiency;
-        // a gravidade puxa sempre a trajetória para baixo; pesa mais quanto
-        // menor for a velocidade (menos energia para se opor a ela)
-        plane.flightAngle -= GRAVITY_K / Math.max(0.9, plane.speed);
+        // a trajetória persegue o nariz mais tarde e mais devagar, como um grande
+        // pesado: reage à mudança de atitude, mas sem virar instantaneamente
+        plane.flightAngle += (plane.pitch - plane.flightAngle) * TURN_K * (0.7 + liftEfficiency * 0.45);
+        // a gravidade puxa sempre a trajetória para baixo; o efeito é mais forte
+        // nesta física tipo TU-95, porque o avião “pesa” mais e reage mais devagar
+        plane.flightAngle -= GRAVITY_K / Math.max(1.0, plane.speed * 0.92);
         if (plane.stalling) plane.flightAngle += Math.sin(Date.now() * 0.025) * 0.03; // vibração
         plane.flightAngle = Math.max(-1.15, Math.min(1.15, plane.flightAngle));
 
@@ -9574,9 +10109,21 @@
         plane.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, plane.vy));
         plane.y += plane.vy * 0.34;
 
-        const topLimit = 18;
+        const worldCeilingY = ((ground ? ground.y : H - 10) - PLANE_R) - CLIMB_RANGE;
+        const softCeilingY = worldCeilingY + 70; // zona de amortecimento perto do teto absoluto
         const bottomLimit = (ground ? ground.y : H - 10) - PLANE_R;
-        if (plane.y < topLimit) { plane.y = topLimit; plane.flightAngle = Math.min(plane.flightAngle, 0); }
+
+        if (plane.y < worldCeilingY) {
+          plane.y = worldCeilingY;
+          plane.flightAngle = Math.min(plane.flightAngle, 0.05);
+          if (plane.pitch > 0.08) plane.pitch *= 0.97;
+          plane.stalling = true;
+        } else if (plane.y < softCeilingY) {
+          plane.flightAngle = Math.min(plane.flightAngle, 0.1);
+        } else {
+          plane.stalling = plane.stalling && plane.y < worldCeilingY + 200;
+        }
+
         if (plane.y > bottomLimit) {
           crash('🌍 Colidiste com o terreno!');
         }
@@ -9611,21 +10158,45 @@
       function spawnObstacle() {
         const gy = ground ? ground.y : H - 10;
         const zone = zoneCur.key;
-        const roll = Math.random();
+        const difficulty = getDifficultyScale();
+        const npcSpeed = NPC_SPEED_K + difficulty * NPC_SPEED_GROWTH * 7.2;
+        const profile = getAltitudeProfile();
+        const inSpace = profile.level3 > 0.08;
 
-        // pesos por zona: aeroporto tem mais estruturas/poucos aviões; céu aberto tem muitos aviões/pássaros
-        let kind;
-        if (zone === 'airport') {
-          kind = roll < 0.55 ? 'structure' : (roll < 0.85 ? 'plane' : 'birds');
-        } else if (zone === 'city') {
-          kind = roll < 0.5 ? 'structure' : (roll < 0.85 ? 'plane' : 'birds');
-        } else if (zone === 'mountains') {
-          kind = roll < 0.28 ? 'structure' : (roll < 0.78 ? 'plane' : 'birds');
-        } else {
-          kind = roll < 0.62 ? 'plane' : 'birds';
+        if (inSpace) {
+          const threat = getThreatIntensity();
+          const cometY = plane.y + (Math.random() - 0.5) * 170;
+          obstacles.push({
+            kind: 'comet',
+            x: W + 30,
+            y: cometY,
+            vx: -(1.5 + Math.random() * 0.9 + difficulty * 0.28 + threat * 0.9) * npcSpeed,
+            vy: (Math.random() - 0.5) * 1.25 * npcSpeed,
+            r: 6.8 + Math.random() * 3.8,
+            scored: false,
+            foggy: false,
+            tail: 24 + Math.random() * 30
+          });
+          return;
         }
 
-        const foggy = inFog(W + 30) || Math.random() < (zone === 'sky' ? 0.18 : 0.08);
+        const roll = Math.random();
+        let kind;
+        if (zone === 'airport') {
+          kind = roll < 0.7 ? 'structure' : (roll < 0.86 ? 'birds' : 'plane');
+        } else if (zone === 'city') {
+          kind = roll < 0.6 ? 'structure' : (roll < 0.78 ? 'birds' : 'plane');
+        } else if (zone === 'mountains') {
+          kind = roll < 0.4 ? 'structure' : (roll < 0.72 ? 'birds' : 'plane');
+        } else {
+          kind = roll < 0.28 ? 'structure' : (roll < 0.7 ? 'birds' : 'plane');
+        }
+
+        const foggy = inFog(W + 30) || Math.random() < (zone === 'sky' ? 0.12 : 0.06);
+        const highAltitude = profile.climb > 0.4;
+        if (kind === 'structure' && highAltitude) {
+          kind = Math.random() < 0.75 ? 'birds' : 'plane';
+        }
 
         if (kind === 'structure') {
           const types = ['tower', 'building', 'crane'];
@@ -9635,32 +10206,30 @@
           obstacles.push({ kind: 'structure', type, x: W + 20, y: gy - height, w: width, h: height, groundY: gy, scored: false, foggy: false });
         } else if (kind === 'plane') {
           const pattern = Math.random();
-          const altBand = 30 + Math.random() * (gy - 60);
-          if (pattern < 0.55) {
-            // aproximação direta, à sua altitude aproximada
-            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 90, vx: -(1.4 + Math.random() * 1.3), vy: 0, r: 8, scored: false, foggy });
+          const altBand = plane.y + (Math.random() - 0.5) * 200;
+          const missileChance = Math.min(0.62, 0.14 + getThreatIntensity() * 0.28);
+          if (pattern < missileChance) {
+            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 85, vx: -(0.62 + Math.random() * 0.38 + difficulty * 0.18) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
           } else if (pattern < 0.82) {
-            // atravessa a trajetória na diagonal
-            const fromTop = Math.random() < 0.5;
-            obstacles.push({ kind: 'plane', x: W + 30, y: fromTop ? 22 : gy - 22, vx: -1.6, vy: fromTop ? 1.1 : -1.1, r: 8, scored: false, foggy });
+            const fromAbove = Math.random() < 0.5;
+            const crossY = plane.y + (fromAbove ? -1 : 1) * (80 + Math.random() * 52);
+            obstacles.push({ kind: 'plane', x: W + 30, y: crossY, vx: -(0.78 + difficulty * 0.22) * npcSpeed, vy: (fromAbove ? 1 : -1) * 0.62 * npcSpeed, r: 8, scored: false, foggy });
           } else {
-            // voa "à mesma altitude" numa banda fixa
-            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -1.7, vy: 0, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -(0.9 + difficulty * 0.2) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
           }
         } else {
-          const count = 2 + Math.floor(Math.random() * 3);
-          const baseY = 26 + Math.random() * (gy - 60);
+          const count = 1 + Math.floor(Math.random() * 2);
+          const baseY = plane.y + (Math.random() - 0.5) * 200;
           const flockId = Math.random();
           for (let i = 0; i < count; i++) {
             obstacles.push({
               kind: 'bird', x: W + 30 + Math.random() * 46, y: baseY + (Math.random() - 0.5) * 40,
-              vx: -(1.1 + Math.random() * 0.9), phase: Math.random() * Math.PI * 2, flockId, r: 3.4, scored: false, foggy
+              vx: -(0.46 + Math.random() * 0.18 + difficulty * 0.1) * npcSpeed, phase: Math.random() * Math.PI * 2, flockId, r: 3.4, scored: false, foggy
             });
           }
         }
 
-        // banda de nevoeiro ocasional, sobretudo no céu aberto
-        if (Math.random() < (zone === 'sky' ? 0.05 : 0.02)) {
+        if (Math.random() < (zone === 'sky' ? 0.04 : 0.02)) {
           fogBands.push({ x: W + 60, w: 90 + Math.random() * 60 });
         }
       }
@@ -9669,9 +10238,7 @@
         spawnTimer--;
         if (spawnTimer <= 0) {
           spawnObstacle();
-          const zone = zoneCur.key;
-          const base = zone === 'sky' ? 92 : zone === 'mountains' ? 102 : zone === 'city' ? 112 : 130;
-          spawnTimer = Math.max(55, base - distanceKm * 2.2);
+          spawnTimer = getSpawnInterval();
         }
 
         const flocksSeen = {};
@@ -9682,6 +10249,10 @@
           } else if (o.kind === 'bird') {
             o.x -= (worldSpeed * 0.5 + Math.abs(o.vx));
             o.y += Math.sin(Date.now() * 0.006 + o.phase) * 0.6;
+          } else if (o.kind === 'comet') {
+            const cometBoost = 1.2 + Math.min(0.9, getThreatIntensity() * 0.45);
+            o.x += o.vx * cometBoost;
+            o.y += o.vy * (1.05 + getThreatIntensity() * 0.25);
           } else {
             o.x -= (worldSpeed * 0.5 + Math.abs(o.vx));
             o.y += o.vy;
@@ -9696,7 +10267,11 @@
             } else {
               const dx = PLANE_X - o.x, dy = plane.y - o.y;
               const rr = PLANE_R + o.r;
-              if (dx * dx + dy * dy < rr * rr) crash(o.kind === 'bird' ? '🐦 Colidiste com um bando!' : '✈️ Colidiste com outro avião!');
+              if (dx * dx + dy * dy < rr * rr) {
+                if (o.kind === 'comet') crash('☄️ Colidiste com um cometa!');
+                else if (o.kind === 'bird') crash('🐦 Colidiste com um bando!');
+                else crash('✈️ Colidiste com outro avião!');
+              }
             }
           }
 
@@ -9707,33 +10282,131 @@
             if (o.kind === 'plane') { stats.planesEvaded++; score += 15; }
             else if (o.kind === 'bird') {
               if (!flocksSeen[o.flockId]) { flocksSeen[o.flockId] = true; stats.flocksEvaded++; score += 10; }
-            } else if (o.kind === 'structure') { score += 12; }
+            } else if (o.kind === 'comet') { score += 18; }
+            else if (o.kind === 'structure') { score += 12; }
           }
 
           const offX = o.kind === 'structure' ? o.x + o.w : o.x;
-          if (offX < -30) obstacles.splice(i, 1);
+          if (offX < -30 || o.x > W + 200 || o.y > H + 200 || o.y < -200) obstacles.splice(i, 1);
         }
       }
 
       // ── desenho de obstáculos ───────────────────────────────────
-      function drawEnemyPlane(cx, cy, s, color, alpha) {
+      function drawEnemyPlane(cx, cy, s, color, alpha, heading = 0) {
         ctx.save();
         ctx.translate(cx, cy);
-        ctx.fillStyle = color;
+        const drift = Math.sin(Date.now() * 0.02 + cx * 0.08) * 0.5;
+        ctx.rotate(heading + drift);
+
+        // chama realista atrás do míssil — muito curta, muito quente
+        const flamePulse = 1 + Math.sin(Date.now() * 0.04 + cx * 0.1) * 0.25;
         ctx.globalAlpha = alpha;
+        ctx.fillStyle = 'rgba(255, 210, 120, 0.9)';
         ctx.beginPath();
-        ctx.moveTo(-12 * s, 0);
-        ctx.lineTo(8 * s, -5 * s);
-        ctx.lineTo(3.5 * s, 0);
-        ctx.lineTo(8 * s, 5 * s);
+        ctx.moveTo(-17 * s, 0);
+        ctx.lineTo(-22 * s * flamePulse, -2.8 * s);
+        ctx.lineTo(-21.5 * s, 0);
+        ctx.lineTo(-22 * s * flamePulse, 2.8 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(255, 122, 45, 0.9)';
+        ctx.beginPath();
+        ctx.moveTo(-15 * s, 0);
+        ctx.lineTo(-20 * s * flamePulse, -1.8 * s);
+        ctx.lineTo(-19.6 * s, 0);
+        ctx.lineTo(-20 * s * flamePulse, 1.8 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+        ctx.beginPath();
+        ctx.moveTo(-14.6 * s, 0);
+        ctx.lineTo(-17.6 * s, -0.9 * s);
+        ctx.lineTo(-17.6 * s, 0.9 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // aletas traseiras (motor/cauda)
+        ctx.fillStyle = 'rgba(255, 160, 70, 0.8)';
+        ctx.beginPath();
+        ctx.moveTo(-14 * s, 0);
+        ctx.lineTo(-19 * s, -2.8 * s);
+        ctx.lineTo(-18 * s, -0.8 * s);
+        ctx.lineTo(-14 * s, 0);
         ctx.closePath();
         ctx.fill();
         ctx.beginPath();
-        ctx.moveTo(-12 * s, 0);
-        ctx.lineTo(-6 * s, -4.5 * s);
-        ctx.lineTo(-6 * s, 0);
+        ctx.moveTo(-14 * s, 0);
+        ctx.lineTo(-19 * s, 2.8 * s);
+        ctx.lineTo(-18 * s, 0.8 * s);
+        ctx.lineTo(-14 * s, 0);
         ctx.closePath();
         ctx.fill();
+
+        // corpo principal do míssil
+        ctx.fillStyle = '#1a1e22';
+        ctx.beginPath();
+        ctx.moveTo(-12 * s, 0);
+        ctx.lineTo(8 * s, -4.2 * s);
+        ctx.lineTo(11.8 * s, -2.1 * s);
+        ctx.lineTo(15.8 * s, 0);
+        ctx.lineTo(11.8 * s, 2.1 * s);
+        ctx.lineTo(8 * s, 4.2 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // ponta quente / nariz
+        ctx.fillStyle = '#ff8a3d';
+        ctx.beginPath();
+        ctx.moveTo(15.8 * s, 0);
+        ctx.lineTo(20.4 * s, -2.8 * s);
+        ctx.lineTo(20.4 * s, 2.8 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // aletas traseiras
+        ctx.fillStyle = '#2c3438';
+        ctx.beginPath();
+        ctx.moveTo(-11 * s, 0);
+        ctx.lineTo(-15 * s, -5.5 * s);
+        ctx.lineTo(-9.4 * s, -2.8 * s);
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-11 * s, 0);
+        ctx.lineTo(-15 * s, 5.5 * s);
+        ctx.lineTo(-9.4 * s, 2.8 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // faixa lateral metálica
+        ctx.fillStyle = 'rgba(255,255,255,0.16)';
+        ctx.beginPath();
+        ctx.moveTo(-8 * s, 0);
+        ctx.lineTo(7 * s, -2.2 * s);
+        ctx.lineTo(7 * s, 2.2 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // detalhe do canhão / núcleo
+        ctx.fillStyle = '#6f7b7e';
+        ctx.beginPath();
+        ctx.moveTo(-3 * s, 0);
+        ctx.lineTo(4 * s, -1.6 * s);
+        ctx.lineTo(4 * s, 1.6 * s);
+        ctx.closePath();
+        ctx.fill();
+
+        // pequeno reflexo do nariz
+        ctx.fillStyle = 'rgba(255,255,255,0.22)';
+        ctx.beginPath();
+        ctx.moveTo(10.4 * s, 0);
+        ctx.lineTo(13.2 * s, -1.1 * s);
+        ctx.lineTo(13.2 * s, 1.1 * s);
+        ctx.closePath();
+        ctx.fill();
+
         ctx.globalAlpha = 1;
         ctx.restore();
       }
@@ -9815,227 +10488,303 @@
           const alpha = fogAlpha(o);
           if (o.kind === 'structure') drawStructure(o, alpha);
           else if (o.kind === 'bird') drawBird(o.x, o.y, 1, alpha, o.phase);
-          else drawEnemyPlane(o.x, o.y, 0.9, colors.green, alpha * 0.92);
+          else if (o.kind === 'comet') {
+            ctx.save();
+            ctx.translate(o.x, o.y);
+            const heading = Math.atan2(o.vy || 0, o.vx || -1);
+            ctx.rotate(heading);
+            ctx.globalAlpha = alpha * 0.96;
+            ctx.fillStyle = 'rgba(255, 212, 135, 0.95)';
+            ctx.beginPath();
+            ctx.moveTo(-o.r * 2.2, 0);
+            ctx.lineTo(o.r * 1.9, -o.r * 0.75);
+            ctx.lineTo(o.r * 2.7, 0);
+            ctx.lineTo(o.r * 1.9, o.r * 0.75);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255, 120, 45, 0.8)';
+            ctx.beginPath();
+            ctx.moveTo(-o.r * 2.2, 0);
+            ctx.lineTo(-o.r * 3.6, -o.r * 0.55);
+            ctx.lineTo(-o.r * 3.6, o.r * 0.55);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(-o.r * 3.6, 0);
+            ctx.lineTo(-o.r * (4.2 + (o.tail || 18) / 12), -o.r * 0.6);
+            ctx.lineTo(-o.r * 4.7, 0);
+            ctx.lineTo(-o.r * (4.2 + (o.tail || 18) / 12), o.r * 0.6);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(255, 196, 92, 0.8)';
+            ctx.fill();
+            ctx.restore();
+          } else {
+            const heading = Math.atan2(o.vy || 0, o.vx || -1);
+            drawEnemyPlane(o.x, o.y, 0.9, colors.green, alpha * 0.92, heading);
+          }
         });
       }
 
-      // ── avião do jogador (perfil lateral, visto de lado) ───────────
+      // ── avião do jogador (pixel-art premium de avião comercial) ───────────
       function drawPlane() {
         ctx.save();
         ctx.translate(PLANE_X, plane.y);
         const wobble = plane.stalling ? Math.sin(Date.now() * 0.03) * 0.05 : 0;
         ctx.rotate(Math.max(-0.62, Math.min(0.5, -plane.pitch * 0.9 + plane.vy * 0.025 + wobble)));
 
-        // nariz aponta para +x (direita), cauda para -x; visto de lado, não de cima —
-        // a asa "de trás" (mais escura, parcialmente tapada pela fuselagem) e a asa
-        // "da frente" (mais clara, sobreposta) é que vendem a profundidade lateral
+        const time = Date.now();
+        const bodyBob = Math.sin(time * 0.008) * 0.15 * (plane.speed / MAX_SPEED);
+        const wingSway = Math.sin(time * 0.006) * 0.06;
 
-        // ── asa de trás (mais alta/afastada — só uma fatia espreita por cima da fuselagem) ──
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.32;
-        ctx.beginPath();
-        ctx.moveTo(4, -1.6);
-        ctx.lineTo(-9, -7.5);
-        ctx.lineTo(-6, -7.8);
-        ctx.lineTo(2.5, -2.4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // ── estabilizador horizontal (cauda) ──
-        ctx.fillStyle = colors.stone;
-        ctx.globalAlpha = 0.55;
-        ctx.beginPath();
-        ctx.moveTo(-11, 0.5);
-        ctx.lineTo(-17, 3.4);
-        ctx.lineTo(-15.5, 3.6);
-        ctx.lineTo(-10.5, 1.4);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // ── deriva (barbatana vertical) ──
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.68;
-        ctx.beginPath();
-        ctx.moveTo(-10.5, 0.5);
-        ctx.lineTo(-15, -8.5);
-        ctx.lineTo(-11.5, -8.2);
-        ctx.lineTo(-8.5, 0);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 0.9;
-        ctx.fillStyle = colors.ochre;
-        ctx.beginPath();
-        ctx.moveTo(-14, -8.4);
-        ctx.lineTo(-12.6, -6.4);
-        ctx.lineTo(-11.5, -8.1);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // ── fuselagem (perfil lateral, afunilada ao nariz e à cauda) ──
-        const fuselagePath = () => {
-          ctx.moveTo(18, -0.6);
-          ctx.quadraticCurveTo(19.5, -1, 19.5, 0.2);
-          ctx.quadraticCurveTo(19, 1.6, 15, 2.6);
-          ctx.lineTo(-9, 2.4);
-          ctx.quadraticCurveTo(-13, 1.3, -13.2, -0.2);
-          ctx.quadraticCurveTo(-13, -1.8, -9, -2.4);
-          ctx.lineTo(9, -3.1);
-          ctx.quadraticCurveTo(15, -3, 18, -0.6);
-        };
-
-        const bodyGrad = ctx.createLinearGradient(0, -3.2, 0, 2.8);
-        bodyGrad.addColorStop(0, '#ffffff');
-        bodyGrad.addColorStop(0.4, colors.paper);
-        bodyGrad.addColorStop(1, colors.stone);
-        ctx.fillStyle = bodyGrad;
-        ctx.globalAlpha = 0.96;
-        ctx.beginPath();
-        fuselagePath();
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        ctx.strokeStyle = colors.ink;
-        ctx.globalAlpha = 0.32;
-        ctx.lineWidth = 0.6;
-        ctx.beginPath();
-        fuselagePath();
-        ctx.closePath();
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // friso de velocidade (cheatline) ao longo da fuselagem
-        ctx.fillStyle = colors.ochre;
-        ctx.globalAlpha = 0.78;
-        ctx.beginPath();
-        ctx.moveTo(-9, -0.3);
-        ctx.lineTo(15, -0.9);
-        ctx.lineTo(15, 0.4);
-        ctx.lineTo(-9, 1.1);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // cockpit/canópia — bolha clara perto do nariz
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.5;
-        ctx.beginPath();
-        ctx.ellipse(7, -2.6, 3.6, 1.5, -0.12, Math.PI, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#eaf4ee';
-        ctx.globalAlpha = 0.55;
-        ctx.beginPath();
-        ctx.ellipse(7.3, -2.9, 2.6, 1, -0.12, Math.PI, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-
-        // rebites/painéis — uma única fiada, lida como fuselagem vista de lado
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.22;
-        for (let wx = -7; wx < 14; wx += 3.2) {
+        if (plane.phase === 'ground') {
+          ctx.fillStyle = 'rgba(20, 22, 24, 0.16)';
           ctx.beginPath();
-          ctx.arc(wx, 2, 0.55, 0, Math.PI * 2);
+          ctx.ellipse(0, 7.6, 16.5, 2.4, 0, 0, Math.PI * 2);
           ctx.fill();
         }
-        ctx.globalAlpha = 1;
 
-        // ── asa da frente (mais próxima — sobrepõe a fuselagem, com espessura visível) ──
-        const wingRoot = { x: 6, y: 2 };
-        const wingTip = { x: -11, y: 9.5 };
-        const wingTE = { x: -3.5, y: 9 };
-        const wingTEroot = { x: 8, y: 3.4 };
+        // ══════════════ BARBATANA VERTICAL (cauda) ══════════════
+        // triângulo único, bem proporcionado, atrás do topo da fuselagem
+        const finGrad = ctx.createLinearGradient(-10, -7.4, -16.5, -1.6);
+        finGrad.addColorStop(0, '#8B948F');
+        finGrad.addColorStop(0.55, '#57615D');
+        finGrad.addColorStop(1, '#333B39');
 
-        // sombra/face inferior da asa — desenhada primeiro, sobra só uma orla escura
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = 'rgba(18, 22, 22, 0.14)';
         ctx.beginPath();
-        ctx.moveTo(wingRoot.x, wingRoot.y + 0.6);
-        ctx.lineTo(wingTip.x, wingTip.y + 1.6);
-        ctx.lineTo(wingTE.x, wingTE.y + 1.9);
-        ctx.lineTo(wingTEroot.x, wingTEroot.y + 1.1);
+        ctx.moveTo(-6.6, -2.05);
+        ctx.lineTo(-16.6, -7.6);
+        ctx.lineTo(-8.7, -1.6);
         ctx.closePath();
         ctx.fill();
-        ctx.globalAlpha = 1;
 
-        // face superior — a superfície iluminada da asa, por cima
-        const wingGrad = ctx.createLinearGradient(wingRoot.x, wingRoot.y, wingTip.x, wingTip.y);
-        wingGrad.addColorStop(0, '#ffffff');
-        wingGrad.addColorStop(0.25, colors.green);
-        wingGrad.addColorStop(1, colors.ink);
-        ctx.fillStyle = wingGrad;
-        ctx.globalAlpha = 0.94;
+        // barbatana como triângulo delta simples, arestas retas: base larga ao
+        // longo da fuselagem, vértice único bem definido para trás e para cima
         ctx.beginPath();
-        ctx.moveTo(wingRoot.x, wingRoot.y);
-        ctx.lineTo(wingTip.x, wingTip.y);
-        ctx.lineTo(wingTE.x, wingTE.y);
-        ctx.lineTo(wingTEroot.x, wingTEroot.y);
+        ctx.moveTo(-6.9, -2.15);
+        ctx.lineTo(-16.9, -7.75);
+        ctx.lineTo(-9.0, -1.7);
         ctx.closePath();
+        ctx.fillStyle = finGrad;
         ctx.fill();
-        ctx.strokeStyle = colors.ink;
-        ctx.globalAlpha = 0.4;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // friso de luz junto ao bordo de ataque — reforça a curvatura do perfil
-        ctx.strokeStyle = '#ffffff';
-        ctx.globalAlpha = 0.4;
-        ctx.lineWidth = 0.6;
-        ctx.beginPath();
-        ctx.moveTo(wingRoot.x - 0.6, wingRoot.y + 0.5);
-        ctx.lineTo(wingTip.x + 1.2, wingTip.y - 0.6);
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-
-        // motor/nacelle sob a asa, com hélice e pluma de escape
-        const nx = 0, ny = 6.4;
-        ctx.fillStyle = colors.stone;
-        ctx.globalAlpha = 0.85;
-        ctx.beginPath();
-        ctx.ellipse(nx, ny, 3.2, 1.6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = colors.ink;
-        ctx.globalAlpha = 0.35;
+        ctx.strokeStyle = 'rgba(22, 26, 25, 0.4)';
         ctx.lineWidth = 0.4;
         ctx.stroke();
+
+        // logótipo discreto na cauda
+        ctx.fillStyle = '#E7B061';
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.ellipse(-11.4, -4.0, 0.85, 0.42, -0.75, 0, Math.PI * 2);
+        ctx.fill();
         ctx.globalAlpha = 1;
 
-        // disco da hélice — gira mais depressa e fica mais opaco com throttle alto
-        const propSpin = Date.now() * (0.02 + plane.throttle * 0.05);
-        ctx.strokeStyle = colors.ink;
-        ctx.globalAlpha = 0.25 + plane.throttle * 0.35;
-        ctx.lineWidth = 0.6;
+        // ══════════════ FUSELAGEM ══════════════
+        // silhueta esguia, tipo "charuto", nariz afilado e cauda a afunilar
+        const fuselagePath = () => {
+          ctx.moveTo(18.6, 0.1);
+          ctx.quadraticCurveTo(16.4, -1.7, 12.6, -2.35);
+          ctx.quadraticCurveTo(4.0, -2.7, -6.5, -2.5);
+          ctx.quadraticCurveTo(-11.4, -2.35, -13.6, -1.5);
+          ctx.quadraticCurveTo(-16.6, -0.35, -18.3, 0.15);
+          ctx.quadraticCurveTo(-16.6, 0.7, -13.6, 1.7);
+          ctx.quadraticCurveTo(-11.4, 2.5, -6.5, 2.65);
+          ctx.quadraticCurveTo(4.0, 2.85, 12.4, 2.5);
+          ctx.quadraticCurveTo(16.2, 2.15, 18.6, 0.1);
+        };
+
+        const bodyGrad = ctx.createLinearGradient(0, -2.6, 0, 2.85);
+        bodyGrad.addColorStop(0, '#F2F2EB');
+        bodyGrad.addColorStop(0.22, '#E7E9E2');
+        bodyGrad.addColorStop(0.52, '#C7C9C2');
+        bodyGrad.addColorStop(0.8, '#93998F');
+        bodyGrad.addColorStop(1, '#575F5A');
+
+        ctx.save();
+        ctx.beginPath(); fuselagePath(); ctx.closePath();
+        ctx.fillStyle = bodyGrad;
+        ctx.fill();
+
+        // sombra inferior para dar volume ao tubo
+        ctx.beginPath(); fuselagePath(); ctx.closePath();
+        ctx.clip();
+        const shadeGrad = ctx.createLinearGradient(0, 0.4, 0, 2.85);
+        shadeGrad.addColorStop(0, 'rgba(40,46,44,0)');
+        shadeGrad.addColorStop(1, 'rgba(40,46,44,0.28)');
+        ctx.fillStyle = shadeGrad;
+        ctx.fillRect(-19, -3, 40, 6.2);
+
+        const specGrad = ctx.createLinearGradient(0, -2.6, 0, 0);
+        specGrad.addColorStop(0, 'rgba(255,255,255,0.32)');
+        specGrad.addColorStop(1, 'rgba(255,255,255,0.0)');
+        ctx.fillStyle = specGrad;
+        ctx.fillRect(-19, -2.6, 40, 1.6);
+        ctx.restore();
+
+        ctx.strokeStyle = 'rgba(36, 40, 39, 0.4)';
+        ctx.lineWidth = 0.55;
+        ctx.beginPath(); fuselagePath(); ctx.closePath(); ctx.stroke();
+
+        // cockpit — janela única e curva, encostada ao contorno do nariz
+        ctx.fillStyle = '#182527';
         ctx.beginPath();
-        ctx.ellipse(nx + 3.4, ny, Math.abs(Math.sin(propSpin)) * 2.6 + 0.3, 2.6, 0, 0, Math.PI * 2);
+        ctx.moveTo(9.4, -1.85);
+        ctx.quadraticCurveTo(11.6, -2.1, 13.6, -1.75);
+        ctx.quadraticCurveTo(12.2, -1.05, 9.9, -1.05);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.14)';
+        ctx.beginPath();
+        ctx.ellipse(11.6, -1.55, 0.9, 0.28, -0.12, 0, Math.PI * 2);
+        ctx.fill();
+
+        // janelas dos passageiros — fila fina ao longo do corpo
+        ctx.fillStyle = 'rgba(24, 28, 29, 0.62)';
+        for (let x = -10.5; x <= 7.5; x += 1.65) {
+          ctx.fillRect(x, -0.55, 0.68, 0.7);
+        }
+
+        // cheatline — friso fino da livery, discreto, ao longo da fuselagem
+        ctx.strokeStyle = '#D07A2A';
+        ctx.lineWidth = 0.6;
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(-13.3, 1.55);
+        ctx.quadraticCurveTo(-2.0, 2.05, 15.8, 1.55);
+        ctx.stroke();
+        ctx.strokeStyle = '#E7B061';
+        ctx.lineWidth = 0.32;
+        ctx.beginPath();
+        ctx.moveTo(-13.1, 1.05);
+        ctx.quadraticCurveTo(-2.0, 1.5, 15.4, 1.05);
         ctx.stroke();
         ctx.globalAlpha = 1;
 
-        if (plane.throttle > 0.15) {
-          ctx.fillStyle = colors.ochre;
-          ctx.globalAlpha = Math.min(0.55, plane.throttle * 0.55);
-          ctx.beginPath();
-          ctx.ellipse(nx - 2.6, ny, 1.1 + plane.throttle * 2.4, 1, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
+        // ══════════════ ASA ══════════════
+        // trapézio afunilado: bordo de ataque e de fuga andam quase paralelos até à ponta
+        const wingRootLE = { x: 4.2, y: 1.55 + bodyBob * 0.18 };
+        const wingTipLE = { x: -7.8, y: 6.2 + wingSway };
+        const wingTipTE = { x: -6.5, y: 6.7 + wingSway * 0.9 };
+        const wingRootTE = { x: 5.9, y: 2.5 + bodyBob * 0.1 };
 
-        // trem de aterragem — só visível no chão
-        if (plane.phase === 'ground') {
-          ctx.strokeStyle = colors.ink;
-          ctx.globalAlpha = 0.45;
-          ctx.lineWidth = 0.9;
+        // sombra da asa na fuselagem
+        ctx.fillStyle = 'rgba(25, 30, 31, 0.3)';
+        ctx.beginPath();
+        ctx.moveTo(wingRootLE.x, wingRootLE.y + 0.5);
+        ctx.lineTo(wingTipLE.x, wingTipLE.y + 0.9);
+        ctx.lineTo(wingTipTE.x, wingTipTE.y + 0.8);
+        ctx.lineTo(wingRootTE.x, wingRootTE.y + 0.55);
+        ctx.closePath();
+        ctx.fill();
+
+        const wingGrad = ctx.createLinearGradient(wingRootLE.x, wingRootLE.y, wingTipLE.x, wingTipLE.y);
+        wingGrad.addColorStop(0, '#EFF0E9');
+        wingGrad.addColorStop(0.3, '#D6DCD6');
+        wingGrad.addColorStop(0.75, '#828F89');
+        wingGrad.addColorStop(1, '#333B39');
+
+        ctx.fillStyle = wingGrad;
+        ctx.beginPath();
+        ctx.moveTo(wingRootLE.x, wingRootLE.y);
+        ctx.lineTo(wingTipLE.x, wingTipLE.y);
+        ctx.lineTo(wingTipTE.x, wingTipTE.y);
+        ctx.lineTo(wingRootTE.x, wingRootTE.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(39, 46, 45, 0.36)';
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+        ctx.lineWidth = 0.35;
+        ctx.beginPath();
+        ctx.moveTo(wingRootLE.x - 0.2, wingRootLE.y + 0.35);
+        ctx.lineTo(wingTipLE.x + 0.6, wingTipLE.y - 0.1);
+        ctx.stroke();
+
+        // winglet — pequeno e discreto, continua o ângulo da ponta da asa
+        const wingletBase = { x: (wingTipLE.x + wingTipTE.x) / 2, y: (wingTipLE.y + wingTipTE.y) / 2 };
+        ctx.fillStyle = wingGrad;
+        ctx.beginPath();
+        ctx.moveTo(wingTipLE.x, wingTipLE.y);
+        ctx.lineTo(wingletBase.x + 0.55, wingletBase.y - 1.6);
+        ctx.lineTo(wingTipTE.x, wingTipTE.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(30, 36, 35, 0.4)';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+
+        // ══════════════ MOTOR TURBOFAN (um só, visível no perfil) ══════════════
+        const m = { x: -1.0, y: 4.6, s: 1.55 };
+
+        // pilone
+        ctx.fillStyle = 'rgba(30, 35, 34, 0.5)';
+        ctx.beginPath();
+        ctx.moveTo(m.x - 0.4, m.y - m.s * 0.5);
+        ctx.lineTo(m.x + 0.6, m.y - m.s * 0.85);
+        ctx.lineTo(m.x + 0.85, m.y - m.s * 0.5);
+        ctx.lineTo(m.x - 0.1, m.y - m.s * 0.28);
+        ctx.closePath();
+        ctx.fill();
+
+        // sombra da nacelle na asa
+        ctx.fillStyle = 'rgba(20, 24, 24, 0.2)';
+        ctx.beginPath();
+        ctx.ellipse(m.x + 0.2, m.y + m.s * 0.6, m.s * 0.95, m.s * 0.26, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // nacelle (corpo do motor)
+        const nacelleGrad = ctx.createLinearGradient(m.x, m.y - m.s * 0.55, m.x, m.y + m.s * 0.55);
+        nacelleGrad.addColorStop(0, '#EEEFE9');
+        nacelleGrad.addColorStop(0.45, '#C4C8C1');
+        nacelleGrad.addColorStop(1, '#565E5A');
+        ctx.fillStyle = nacelleGrad;
+        ctx.beginPath();
+        ctx.ellipse(m.x, m.y, m.s, m.s * 0.55, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(28, 33, 32, 0.38)';
+        ctx.lineWidth = 0.3;
+        ctx.stroke();
+
+        // entrada de ar (fan)
+        ctx.fillStyle = '#161a1b';
+        ctx.beginPath();
+        ctx.ellipse(m.x - m.s * 0.68, m.y, m.s * 0.34, m.s * 0.48, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        const fanSpin = time * (0.01 + plane.throttle * 0.05);
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(m.x - m.s * 0.68, m.y, m.s * 0.34, m.s * 0.48, 0, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.strokeStyle = plane.throttle > 0.3 ? 'rgba(150,158,155,0.2)' : 'rgba(180,188,185,0.5)';
+        ctx.lineWidth = 0.25;
+        for (let b = 0; b < 6; b++) {
+          const a = fanSpin + b * (Math.PI / 3);
           ctx.beginPath();
-          ctx.moveTo(6, 2.6); ctx.lineTo(5, 7.2);
-          ctx.moveTo(-8, 2.4); ctx.lineTo(-8.6, 6.6);
+          ctx.moveTo(m.x - m.s * 0.68, m.y);
+          ctx.lineTo(m.x - m.s * 0.68 + Math.cos(a) * m.s * 0.42, m.y + Math.sin(a) * m.s * 0.6);
           ctx.stroke();
-          ctx.fillStyle = colors.ink;
-          ctx.globalAlpha = 0.5;
-          ctx.beginPath(); ctx.ellipse(5, 7.6, 1.6, 1, 0, 0, Math.PI * 2); ctx.fill();
-          ctx.beginPath(); ctx.ellipse(-8.6, 7, 1.4, 0.9, 0, 0, Math.PI * 2); ctx.fill();
-          ctx.globalAlpha = 1;
+        }
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(255,255,255,0.16)';
+        ctx.beginPath();
+        ctx.ellipse(m.x - m.s * 0.1, m.y - m.s * 0.28, m.s * 0.26, m.s * 0.13, -0.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (plane.phase === 'ground') {
+          ctx.strokeStyle = 'rgba(34, 38, 39, 0.5)';
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(4.4, 2.5); ctx.lineTo(3.8, 6.0);
+          ctx.moveTo(-7.6, 2.3); ctx.lineTo(-8.0, 5.6);
+          ctx.stroke();
+
+          ctx.fillStyle = 'rgba(34, 38, 39, 0.6)';
+          ctx.beginPath(); ctx.ellipse(3.8, 6.35, 1.15, 0.68, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(-8.0, 5.95, 1.05, 0.62, 0, 0, Math.PI * 2); ctx.fill();
         }
 
         ctx.restore();
@@ -10055,6 +10804,22 @@
         ctx.textAlign = 'left';
         ctx.globalAlpha = 1;
 
+        // indicador de altitude — nível atual (sol / nuvens / espaço) + barra
+        const altProfile = getAltitudeProfile();
+        const abx = W - 82, aby = H - 20, abw = 70, abh = 7;
+        ctx.textAlign = 'right';
+        ctx.font = '600 9.5px "IBM Plex Mono", monospace';
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.ink;
+        ctx.fillText(altProfile.levelLabel, abx + abw, aby - 4);
+        ctx.globalAlpha = 1;
+        ctx.textAlign = 'left';
+        ctx.strokeStyle = colors.ink; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+        ctx.strokeRect(abx, aby, abw, abh);
+        ctx.fillStyle = colors.ochre; ctx.globalAlpha = 0.75;
+        ctx.fillRect(abx, aby, abw * altProfile.climb, abh);
+        ctx.globalAlpha = 1;
+
         // barra de throttle
         const bx = 12, by = H - 20, bw = 70, bh = 7;
         ctx.strokeStyle = colors.ink; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
@@ -10070,8 +10835,8 @@
         ctx.textAlign = 'right';
         ctx.font = '600 9.5px "IBM Plex Mono", monospace';
         ctx.globalAlpha = 0.7;
-        ctx.fillText('VEL ' + plane.speed.toFixed(1), W - 12, H - 24);
-        ctx.fillText('PITCH ' + (plane.pitch >= 0 ? '+' : '') + (plane.pitch * 57).toFixed(0) + '°', W - 12, H - 12);
+        ctx.fillText('VEL ' + plane.speed.toFixed(1), W - 12, H - 44);
+        ctx.fillText('PITCH ' + (plane.pitch >= 0 ? '+' : '') + (plane.pitch * 57).toFixed(0) + '°', W - 12, H - 32);
         ctx.textAlign = 'left';
         ctx.globalAlpha = 1;
 
@@ -10080,7 +10845,7 @@
           ctx.fillStyle = colors.ochre;
           ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
           ctx.textAlign = 'center';
-          ctx.fillText('⚠️ STALL', PLANE_X, plane.y - 22);
+          ctx.fillText('⚠️ STALL', PLANE_X, plane.y - camera - 22);
           ctx.textAlign = 'left';
           ctx.globalAlpha = 1;
         } else if (message && messageTimer > 0) {
@@ -10108,6 +10873,15 @@
         }
       }
 
+      // vinheta suave nas bordas — dá um toque cinematográfico ao enquadramento
+      function drawVignette() {
+        const g = ctx.createRadialGradient(W / 2, H * 0.55, H * 0.25, W / 2, H * 0.55, W * 0.62);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(1, hexToRgba(colors.ink, 0.14));
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+      }
+
       function centerLines(lines, color) {
         ctx.font = '600 12.5px "IBM Plex Mono", monospace';
         ctx.fillStyle = color;
@@ -10122,6 +10896,32 @@
         const gy = ground ? ground.y : H - 10;
         airportBuildings.forEach(b => {
           if (b.x + b.w < -20 || b.x > W + 20) return;
+
+          if (b.type === 'cityBlock') {
+            const roofH = b.roof === 'angled' ? 6 : 4;
+            const baseGray = mixHex('#4C5258', '#8A8C8F', clamp(0.2 + b.tint, 0, 1));
+            ctx.fillStyle = baseGray;
+            ctx.globalAlpha = 0.8;
+            ctx.fillRect(b.x, gy - b.h, b.w, b.h);
+            ctx.globalAlpha = 0.7;
+            ctx.fillStyle = '#252A2D';
+            ctx.fillRect(b.x + 3, gy - b.h + 3, b.w - 6, b.h - 6);
+            for (let wx = b.x + 5; wx < b.x + b.w - 5; wx += 6) {
+              for (let wy = gy - b.h + 6; wy < gy - 7; wy += 8) {
+                ctx.fillStyle = `rgba(215, 224, 203, ${0.16 + b.tint})`;
+                ctx.fillRect(wx, wy, 2.4, 4.2);
+              }
+            }
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#1D2327';
+            ctx.beginPath();
+            ctx.moveTo(b.x, gy - b.h);
+            ctx.lineTo(b.x + b.w * 0.5, gy - b.h - roofH);
+            ctx.lineTo(b.x + b.w, gy - b.h);
+            ctx.closePath();
+            ctx.fill();
+            return;
+          }
 
           if (b.type === 'fence') {
             ctx.strokeStyle = colors.stone;
@@ -10227,14 +11027,31 @@
 
       function draw() {
         ctx.clearRect(0, 0, W, H);
+
+        // âncora: enquanto o avião não sobe além deste ponto no ecrã, a câmara
+        // fica parada (comportamento igual ao de antes); a partir daí a câmara
+        // "sobe" com o avião, e o solo/montanhas/aeroporto deslizam para baixo
+        // e saem do ecrã — dá a sensação real de mundo muito maior que o
+        // retângulo do canvas, em vez de só mudar a cor do fundo
+        const cameraAnchorY = 86;
+        camera = Math.min(0, plane.y - cameraAnchorY);
+
+        drawSky();
         drawSun();
+        drawStars();
+        ctx.save();
+        ctx.translate(0, -camera);
+        drawAmbientBirds();
         drawMountains();
         drawGround();
+        drawCloudShadows();
         drawAirportScenery();
-        drawFogBands();
-        drawClouds();
         drawObstacles();
         drawPlane();
+        ctx.restore();
+        drawFogBands();
+        drawClouds();
+        drawVignette();
         drawHUD();
 
         if (over) {
@@ -10254,6 +11071,7 @@
 
       function loop() {
         const worldSpeed = running ? getWorldSpeed() : 0.12;
+        if (running) elapsedTime += 1 / 60;
         updateClouds();
         updateBackground(worldSpeed);
         if (running) {
@@ -10419,6 +11237,20 @@
 
       if (!navigator.onLine) {
         showOffline();
+      }
+
+      // botão no header para ativar o jogo manualmente (sem precisar de estar offline)
+      const gameNavBtn = document.getElementById('game-nav-btn');
+      if (gameNavBtn) {
+        gameNavBtn.addEventListener('click', () => {
+          offlineOverlay.classList.remove('hide');
+          offlineOverlay.classList.add('show');
+          if (gameEl) {
+            gameEl.classList.remove('show-prompt');
+            gameEl.classList.add('show-play');
+          }
+          AvionGame.startRun();
+        });
       }
     })();
   </script>
