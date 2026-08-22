@@ -4546,9 +4546,6 @@
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
       </button>
-      <button type="button" class="game-nav-btn" id="game-nav-btn" title="Iniciar mini-jogo" aria-label="Iniciar mini-jogo">
-        <span class="game-nav-btn-icon">✈</span>
-      </button>
       <button type="button" class="theme-toggle" id="theme-toggle" title="Alternar tema claro/escuro"
         aria-label="Alternar tema claro/escuro" data-i18n-attr-title="nav.alternarTema"
         data-i18n-attr-aria-label="nav.alternarTema">
@@ -9290,7 +9287,7 @@
         };
       }
 
-      let plane, obstacles, clouds, fogBands, mountains, bgSun, ground, runwayX, airportBuildings, ambientBirds, stars, comets, satellites, ambientCars;
+      let plane, obstacles, clouds, fogBands, terrainFar, terrainNear, bgSun, ground, runwayX, airportBuildings, ambientBirds, stars, comets, satellites;
       let score, best, bestDist, distanceKm, spawnTimer, running, over, rafId, elapsedTime;
       let dirUp = false, dirDown = false, dirLeft = false, dirRight = false, started = false;
       let stats, zoneCur, message, messageTimer;
@@ -9322,11 +9319,43 @@
         };
       }
 
-      function getSkyBlend() {
-        const cityStart = ZONE_CITY.end * 0.7;
-        const cityEnd = ZONE_MOUNTAINS.end * 0.55;
-        const blend = clamp((distanceKm - cityStart) / (cityEnd - cityStart || 1), 0, 1);
-        return blend;
+      // pesos de zona contínuos — em vez de zoneCur.key "saltar" de uma zona para
+      // a outra no exato km de fronteira, cada zona tem um peso 0→1 que sobe/desce
+      // suavemente numa janela à volta da fronteira. A qualquer distância, no
+      // máximo duas zonas vizinhas têm peso > 0 (soma sempre 1), o que permite às
+      // funções de desenho fazerem cross-fade real entre paletas/geometrias em vez
+      // de trocar de repente.
+      function getZoneWeights(distKm) {
+        const zones = ['airport', 'city', 'mountains', 'sky'];
+        const b1 = ZONE_AIRPORT.end;    // 0.35
+        const b2 = ZONE_CITY.end;       // 1.5
+        const b3 = ZONE_MOUNTAINS.end;  // 3.2
+        const t1 = 0.14; // meia-largura da transição aeroporto → cidade
+        const t2 = 0.45; // cidade → montanhas
+        const t3 = 0.55; // montanhas → campo
+        const s1 = smoothstep(b1 - t1, b1 + t1, distKm);
+        const s2 = smoothstep(b2 - t2, b2 + t2, distKm);
+        const s3 = smoothstep(b3 - t3, b3 + t3, distKm);
+        const zoneIndex = s1 + s2 + s3; // 0..3, contínuo e monótono
+        const idx0 = clamp(Math.floor(zoneIndex), 0, 3);
+        const idx1 = clamp(idx0 + 1, 0, 3);
+        const frac = zoneIndex - idx0;
+        const weights = { airport: 0, city: 0, mountains: 0, sky: 0 };
+        weights[zones[idx0]] += 1 - frac;
+        weights[zones[idx1]] += frac;
+        return weights;
+      }
+
+      // combina várias cores por peso (0..1, idealmente a somar ~1) numa única cor
+      function mixHexWeighted(pairs) {
+        let r = 0, g = 0, b = 0, total = 0;
+        pairs.forEach(([hex, w]) => {
+          if (!w) return;
+          const c = hexToRgb(hex);
+          r += c.r * w; g += c.g * w; b += c.b * w; total += w;
+        });
+        if (total <= 0) return pairs[0] ? pairs[0][0] : '#000000';
+        return `rgb(${Math.round(r / total)}, ${Math.round(g / total)}, ${Math.round(b / total)})`;
       }
 
       function makeCloud(randomX, altitudeBoost = 0) {
@@ -9618,17 +9647,44 @@
         return fogBands.some(f => x > f.x && x < f.x + f.w);
       }
 
-      // ── BACKGROUND: sol, montanhas/prédios, chão ──────────────────────
-      function initBackground() {
-        bgSun = { x: W - 60, y: 42, r: 16 };
-        mountains = [];
+      // estilo de terreno "atual" — usado para gerar o troço de paisagem que
+      // entra pela direita, para que o horizonte mude de cara gradualmente à
+      // medida que o avião avança, em vez de trocar tudo de repente
+      function getZoneStyle(distKm) {
+        const z = getZone(distKm).key;
+        if (z === 'city') return 'city';
+        if (z === 'mountains') return 'mountains';
+        return 'field'; // aeroporto e campo aberto partilham o mesmo visual verde
+      }
+
+      function makeTerrainSegment(x, style, far) {
+        const w = far ? (46 + Math.random() * 58) : (55 + Math.random() * 75);
+        if (style === 'city') {
+          return { x, w: far ? w * 0.7 : w * 0.55, h: far ? (14 + Math.random() * 22) : (22 + Math.random() * 46), style, shade: Math.random() };
+        }
+        if (style === 'mountains') {
+          return { x, w, h: far ? (18 + Math.random() * 28) : (28 + Math.random() * 45), style, shade: Math.random() };
+        }
+        return { x, w: far ? w * 1.1 : w, h: far ? (10 + Math.random() * 14) : (14 + Math.random() * 22), style, shade: Math.random() };
+      }
+
+      function fillTerrainLayer(far) {
+        const layer = [];
+        const style = getZoneStyle(distanceKm);
         let mx = -20;
         while (mx < W + 40) {
-          const h = 28 + Math.random() * 45;
-          const w = 55 + Math.random() * 75;
-          mountains.push({ x: mx, w, h, shade: Math.random(), kind: 'mountain' });
-          mx += w * 0.6;
+          const seg = makeTerrainSegment(mx, style, far);
+          layer.push(seg);
+          mx += seg.w * 0.62;
         }
+        return layer;
+      }
+
+      // ── BACKGROUND: sol, terreno (cidade/montanhas/campo), chão ───────
+      function initBackground() {
+        bgSun = { x: W - 60, y: 42, r: 16 };
+        terrainFar = fillTerrainLayer(true);
+        terrainNear = fillTerrainLayer(false);
         ground = { y: H - 10 };
         runwayX = 0;
       }
@@ -9637,14 +9693,18 @@
       // com tonalidade própria por zona) + halo dourado à volta do sol
       function drawSky() {
         const gy = ground ? ground.y : H - 10;
-        const zoneKey = zoneCur ? zoneCur.key : 'airport';
+        const zw = getZoneWeights(distanceKm);
         const profile = getAltitudeProfile();
         const altitudeDarken = smoothstep(0.16, 0.9, profile.level2 + profile.level3 * 0.8);
         // mais dramático no nível 2 → 3: o céu escurece de forma contínua e a
         // luz do sol vai sendo engolida pela atmosfera sem uma mudança abrupta
         const skyTop = mixHex('#CFE7E3', '#040A16', altitudeDarken * 0.85 + profile.level3 * 0.35);
         const skyMid = mixHex('#ECF6F0', '#122746', altitudeDarken * 0.9 + profile.level3 * 0.45);
-        const horizonTint = zoneKey === 'mountains' ? colors.stone : zoneKey === 'city' ? colors.ink : colors.ochre;
+        const horizonTint = mixHexWeighted([
+          [colors.ochre, zw.airport + zw.sky],
+          [colors.ink, zw.city],
+          [colors.stone, zw.mountains]
+        ]);
         const horizonBase = mixHex('#ECF6F0', horizonTint, 0.28 + altitudeDarken * 0.25);
 
         const sky = ctx.createLinearGradient(0, 0, 0, gy);
@@ -9705,35 +9765,79 @@
         ctx.restore();
       }
 
-      // desenha montanhas (zona montanhas/aeroporto) ou silhuetas de prédios (zona cidade)
-      function drawMountains() {
-        if (!mountains || !mountains.length) return;
-        const gy = ground ? ground.y : H - 10;
-        const profile = getAltitudeProfile();
-        const cityBlend = getSkyBlend();
-        const mountainAlphaBase = 1 - cityBlend;
+      // desenha o horizonte (cidade/montanhas/campo) em duas camadas de
+      // paralaxe — cada segmento tem UM estilo só (definido quando nasceu),
+      // por isso nunca há duas geometrias desenhadas por cima uma da outra;
+      // a transição entre zonas acontece porque os segmentos vão sendo
+      // substituídos por outros com o estilo novo à medida que saem de cena
+      // peso da zona que corresponde ao estilo de UM segmento — é este peso,
+      // multiplicado no alpha, que faz o cross-fade real entre estilos. Sem
+      // isto, um segmento "cidade" nascido antes da fronteira continua a ser
+      // desenhado a 100% de opacidade muito depois de já estarmos nas
+      // montanhas, sobrepondo-se aos triângulos novos — era essa a causa do
+      // "prédios e montanhas sobrepostos".
+      function styleWeight(style, zw) {
+        if (style === 'city') return zw.city;
+        if (style === 'mountains') return zw.mountains;
+        return zw.airport + zw.sky; // campo/aeroporto partilham o visual "field"
+      }
 
-        mountains.forEach(m => {
-          const mountainAlpha = clamp((1 - profile.level3 * 1.2 - profile.level2 * 0.5) * mountainAlphaBase, 0, 1);
-          if (mountainAlpha > 0.02) {
-            ctx.fillStyle = colors.stone;
-            ctx.globalAlpha = (0.08 + m.shade * 0.09) * mountainAlpha;
+      function drawTerrainLayer(layer, gy, alphaMul, zw) {
+        layer.forEach(m => {
+          const fade = styleWeight(m.style, zw);
+          if (fade < 0.03) return; // fora de zona: não desenha (evita sobreposição fantasma)
+          if (m.style === 'city') {
+            const alpha = clamp((0.16 + m.shade * 0.14) * alphaMul * fade, 0, 1);
+            if (alpha < 0.02) return;
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#3d4048';
+            ctx.fillRect(m.x, gy - m.h, m.w, m.h);
+            ctx.fillStyle = '#2a2d31';
+            ctx.globalAlpha = alpha * 0.9;
+            const roofH = m.h * 0.08; // topo sempre plano — mais realista e sem "pop" ao nascer
+            ctx.beginPath();
+            ctx.moveTo(m.x, gy - m.h);
+            ctx.lineTo(m.x + m.w * 0.5, gy - m.h - roofH);
+            ctx.lineTo(m.x + m.w, gy - m.h);
+            ctx.closePath();
+            ctx.fill();
+            return;
+          }
+          if (m.style === 'mountains') {
+            const alpha = clamp((0.32 + m.shade * 0.22) * alphaMul * fade, 0, 1);
+            if (alpha < 0.02) return;
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#52595a';
             ctx.beginPath();
             ctx.moveTo(m.x, gy);
-            ctx.lineTo(m.x + m.w / 2, gy - m.h);
+            ctx.lineTo(m.x + m.w * 0.5, gy - m.h);
             ctx.lineTo(m.x + m.w, gy);
             ctx.closePath();
             ctx.fill();
+            return;
           }
-
-          const cityAlpha = clamp((0.08 + m.shade * 0.05) * cityBlend * (1 - profile.level3 * 0.8), 0, 1);
-          if (cityAlpha > 0.02) {
-            ctx.fillStyle = colors.ink;
-            ctx.globalAlpha = cityAlpha;
-            ctx.fillRect(m.x, gy - m.h * 0.75, m.w * 0.62, m.h * 0.75);
-          }
+          // campo: colina suave — a variação de tom entre segmentos dá a
+          // sensação de campos em profundidade, sem precisar de mais nada
+          const alpha = clamp((0.2 + m.shade * 0.16) * alphaMul * fade, 0, 1);
+          if (alpha < 0.02) return;
+          ctx.globalAlpha = alpha;
+          ctx.fillStyle = mixHex('#6a7d68', '#86976f', m.shade);
+          ctx.beginPath();
+          ctx.moveTo(m.x, gy);
+          ctx.quadraticCurveTo(m.x + m.w * 0.5, gy - m.h * 1.15, m.x + m.w, gy);
+          ctx.closePath();
+          ctx.fill();
         });
+      }
 
+      function drawMountains() {
+        if (!terrainFar || !terrainNear) return;
+        const gy = ground ? ground.y : H - 10;
+        const profile = getAltitudeProfile();
+        const altitudeFade = clamp(1 - profile.level3 * 1.2 - profile.level2 * 0.5, 0, 1);
+        const zw = getZoneWeights(distanceKm);
+        drawTerrainLayer(terrainFar, gy, altitudeFade * 0.62, zw);
+        drawTerrainLayer(terrainNear, gy, altitudeFade * 0.92, zw);
         ctx.globalAlpha = 1;
       }
 
@@ -9758,33 +9862,42 @@
       function drawGround() {
         if (!ground) return;
         const gy = ground.y;
+        const zw = getZoneWeights(distanceKm);
+        const fieldW = zw.airport + zw.sky;
 
-        // base tonal da cidade / zona de aterragem
-        const pavementGrad = ctx.createLinearGradient(0, gy, 0, H);
-        pavementGrad.addColorStop(0, 'rgba(53, 60, 58, 0.10)');
-        pavementGrad.addColorStop(1, 'rgba(26, 29, 30, 0.24)');
-        ctx.fillStyle = pavementGrad;
+        // base tonal — uma única cor/alpha, misturada por peso de zona, em vez
+        // de 3 gradientes empilhados (evita o aspeto "sujo" na transição)
+        const topColor = mixHexWeighted([['#505658', zw.city], ['#757c58', zw.mountains], ['#769260', fieldW]]);
+        const bottomColor = mixHexWeighted([['#222628', zw.city], ['#414734', zw.mountains], ['#3e4a2e', fieldW]]);
+        const topAlpha = 0.20 * zw.city + 0.28 * zw.mountains + 0.20 * fieldW;
+        const bottomAlpha = 0.40 * zw.city + 0.46 * zw.mountains + 0.42 * fieldW;
+        const grad = ctx.createLinearGradient(0, gy, 0, H);
+        grad.addColorStop(0, hexToRgba(topColor, topAlpha));
+        grad.addColorStop(1, hexToRgba(bottomColor, bottomAlpha));
+        ctx.fillStyle = grad;
         ctx.fillRect(0, gy, W, H - gy);
 
-        // estrada / pista com textura e detalhes de asfalto
-        ctx.fillStyle = 'rgba(24, 27, 29, 0.8)';
-        ctx.fillRect(0, gy - 6, W, 10);
-        ctx.globalAlpha = 0.15;
-        const offset = runwayX % 10;
-        for (let x = -offset; x < W; x += 10) {
-          ctx.fillRect(x, gy - 5, 1.5, 3 + ((x * 7) % 3));
-          ctx.fillRect(x + 4, gy - 4, 1.5, 2);
-        }
-        ctx.globalAlpha = 1;
-
-        // pequenos blocos e linhas de marginal para ambientar a cidade
-        ctx.strokeStyle = 'rgba(244, 233, 201, 0.15)';
-        ctx.lineWidth = 1;
-        for (let x = 0; x < W; x += 56) {
-          ctx.beginPath();
-          ctx.moveTo(x, gy - 4);
-          ctx.lineTo(x + 18, gy - 4);
-          ctx.stroke();
+        // zona urbana: asfalto + linhas de estrada (desvanece com o peso da cidade)
+        if (zw.city > 0.06) {
+          ctx.globalAlpha = zw.city;
+          ctx.fillStyle = 'rgba(24, 27, 29, 0.85)';
+          ctx.fillRect(0, gy - 6, W, 10);
+          ctx.globalAlpha = 0.15 * zw.city;
+          const offset = runwayX % 10;
+          for (let x = -offset; x < W; x += 10) {
+            ctx.fillRect(x, gy - 5, 1.5, 3 + ((x * 7) % 3));
+            ctx.fillRect(x + 4, gy - 4, 1.5, 2);
+          }
+          ctx.globalAlpha = zw.city;
+          ctx.strokeStyle = 'rgba(244, 233, 201, 0.15)';
+          ctx.lineWidth = 1;
+          for (let x = 0; x < W; x += 56) {
+            ctx.beginPath();
+            ctx.moveTo(x, gy - 4);
+            ctx.lineTo(x + 18, gy - 4);
+            ctx.stroke();
+          }
+          ctx.globalAlpha = 1;
         }
 
         // pista, visível só na fase de descolagem
@@ -9844,55 +9957,34 @@
             ctx.globalAlpha = 1;
           }
         }
-
-        if (ambientCars && ambientCars.length) {
-          ambientCars.forEach(car => {
-            const y = car.y + (car.lane ? 0 : 4);
-            ctx.save();
-            ctx.translate(car.x, y);
-            ctx.fillStyle = car.tint;
-            ctx.fillRect(0, 0, car.w, car.h);
-            ctx.fillStyle = 'rgba(18, 20, 22, 0.8)';
-            ctx.fillRect(1.5, 1.2, car.w - 3, 1.2);
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
-            ctx.fillRect(car.w * 0.16, 0.7, car.w * 0.2, 1.1);
-            ctx.fillStyle = '#1a1b1d';
-            ctx.fillRect(1, 0.8, 1.4, 1.8);
-            ctx.fillRect(car.w - 2.4, 0.8, 1.4, 1.8);
-            ctx.restore();
-          });
-        }
       }
 
       function updateBackground(worldSpeed) {
         const grounded = plane && plane.phase === 'ground';
         // em pista, o aeroporto e o fundo ficam completamente parados — só as
         // marcas da pista "correm" para dar sensação de velocidade ao taxiar;
-        // o cenário só começa a deslizar a sério depois da descolagem
-        if (!grounded && mountains) {
-          mountains.forEach(m => {
-            m.x -= 0.10 + worldSpeed * 0.06;
-            if (m.x + m.w < -20) {
-              m.x = W + 20 + Math.random() * 40;
-              m.h = 28 + Math.random() * 45;
-              m.w = 55 + Math.random() * 75;
-              m.shade = Math.random();
-            }
-          });
+        // o cenário só começa a deslizar a sério depois da descolagem.
+        // Cada segmento que sai à esquerda nasce de novo à direita com o
+        // ESTILO DA ZONA ATUAL — é assim que o horizonte muda de cara aos
+        // poucos: os segmentos antigos (estilo anterior) vão saindo enquanto
+        // os novos (estilo novo) vão entrando, um scroll simples e contínuo,
+        // sem nenhuma zona a "ligar/desligar" de repente.
+        if (!grounded) {
+          const style = getZoneStyle(distanceKm);
+          if (terrainFar) {
+            terrainFar.forEach(m => {
+              m.x -= 0.5 + worldSpeed * 0.22;
+              if (m.x + m.w < -20) Object.assign(m, makeTerrainSegment(W + 20 + Math.random() * 30, style, true));
+            });
+          }
+          if (terrainNear) {
+            terrainNear.forEach(m => {
+              m.x -= 1.1 + worldSpeed * 0.5;
+              if (m.x + m.w < -20) Object.assign(m, makeTerrainSegment(W + 20 + Math.random() * 30, style, false));
+            });
+          }
         }
         runwayX += (!grounded || plane.speed > 0.9) ? (plane ? plane.speed : 0) * 0.6 : 0;
-
-        if (ambientCars && ambientCars.length) {
-          ambientCars.forEach(car => {
-            car.x -= (grounded ? 0.65 : 1.1) * (worldSpeed * 0.45 + car.speed);
-            if (car.x < -30) {
-              car.x = W + 18 + Math.random() * 80;
-              car.y = ground.y - 11 - (car.lane ? 0 : 6);
-              car.w = 10 + Math.random() * 8;
-              car.h = 5 + Math.random() * 4;
-            }
-          });
-        }
 
         if (airportBuildings && airportBuildings.length) {
           // move airport buildings while the runway visually advances:
@@ -9942,41 +10034,14 @@
 
       function initAirport() {
         const gy = ground ? ground.y : H - 10;
-        airportBuildings = [];
-        for (let i = 0; i < 12; i++) {
-          const w = 24 + Math.random() * 32;
-          const h = 28 + Math.random() * 52;
-          airportBuildings.push({
-            type: 'cityBlock',
-            x: 40 + i * 62 + Math.random() * 12,
-            w,
-            h,
-            groundY: gy,
-            roof: Math.random() > 0.5 ? 'flat' : 'angled',
-            tint: Math.random() * 0.3
-          });
-        }
-        airportBuildings.push(
+        airportBuildings = [
           { type: 'fence', x: 210, w: 560, h: 13, groundY: gy },
           { type: 'terminal', x: 240, w: 118, h: 40, groundY: gy },
           { type: 'windsock', x: 340, w: 4, h: 34, groundY: gy },
           { type: 'tower', x: 410, w: 24, h: 76, groundY: gy },
           { type: 'hangar', x: 480, w: 96, h: 46, groundY: gy },
           { type: 'hangar', x: 660, w: 78, h: 40, groundY: gy }
-        );
-
-        ambientCars = [];
-        for (let i = 0; i < 14; i++) {
-          ambientCars.push({
-            x: Math.random() * (W + 80),
-            y: gy - 11 - (Math.random() < 0.5 ? 0 : 6),
-            w: 10 + Math.random() * 8,
-            h: 5 + Math.random() * 4,
-            speed: 0.35 + Math.random() * 0.55,
-            tint: ['#C9D5D3', '#D2B474', '#B9704F', '#7AA3C7', '#A77D6D'][Math.floor(Math.random() * 5)],
-            lane: Math.random() < 0.5 ? 0 : 1
-          });
-        }
+        ];
       }
 
       function reset() {
@@ -10892,36 +10957,11 @@
       }
 
       function drawAirportScenery() {
-        if (!airportBuildings || !airportBuildings.length) return;
         const gy = ground ? ground.y : H - 10;
+
+        if (!airportBuildings || !airportBuildings.length) return;
         airportBuildings.forEach(b => {
           if (b.x + b.w < -20 || b.x > W + 20) return;
-
-          if (b.type === 'cityBlock') {
-            const roofH = b.roof === 'angled' ? 6 : 4;
-            const baseGray = mixHex('#4C5258', '#8A8C8F', clamp(0.2 + b.tint, 0, 1));
-            ctx.fillStyle = baseGray;
-            ctx.globalAlpha = 0.8;
-            ctx.fillRect(b.x, gy - b.h, b.w, b.h);
-            ctx.globalAlpha = 0.7;
-            ctx.fillStyle = '#252A2D';
-            ctx.fillRect(b.x + 3, gy - b.h + 3, b.w - 6, b.h - 6);
-            for (let wx = b.x + 5; wx < b.x + b.w - 5; wx += 6) {
-              for (let wy = gy - b.h + 6; wy < gy - 7; wy += 8) {
-                ctx.fillStyle = `rgba(215, 224, 203, ${0.16 + b.tint})`;
-                ctx.fillRect(wx, wy, 2.4, 4.2);
-              }
-            }
-            ctx.globalAlpha = 1;
-            ctx.fillStyle = '#1D2327';
-            ctx.beginPath();
-            ctx.moveTo(b.x, gy - b.h);
-            ctx.lineTo(b.x + b.w * 0.5, gy - b.h - roofH);
-            ctx.lineTo(b.x + b.w, gy - b.h);
-            ctx.closePath();
-            ctx.fill();
-            return;
-          }
 
           if (b.type === 'fence') {
             ctx.strokeStyle = colors.stone;
@@ -11043,9 +11083,9 @@
         ctx.translate(0, -camera);
         drawAmbientBirds();
         drawMountains();
+        drawAirportScenery();
         drawGround();
         drawCloudShadows();
-        drawAirportScenery();
         drawObstacles();
         drawPlane();
         ctx.restore();
@@ -11239,19 +11279,6 @@
         showOffline();
       }
 
-      // botão no header para ativar o jogo manualmente (sem precisar de estar offline)
-      const gameNavBtn = document.getElementById('game-nav-btn');
-      if (gameNavBtn) {
-        gameNavBtn.addEventListener('click', () => {
-          offlineOverlay.classList.remove('hide');
-          offlineOverlay.classList.add('show');
-          if (gameEl) {
-            gameEl.classList.remove('show-prompt');
-            gameEl.classList.add('show-play');
-          }
-          AvionGame.startRun();
-        });
-      }
     })();
   </script>
 
