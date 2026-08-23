@@ -9602,12 +9602,17 @@
       function drawClouds() {
         const profile = getAltitudeProfile();
         const px = 3;
-        ctx.fillStyle = colors.stone;
+        const rowCount = CLOUD_PATTERN.length;
         clouds.forEach(c => {
           const cloudAlpha = c.alpha * profile.cloudFade;
           if (cloudAlpha <= 0.02) return;
-          ctx.globalAlpha = cloudAlpha;
           CLOUD_PATTERN.forEach((row, ri) => {
+            // sombreado bicolor simples (mais claro em cima, mais escuro por
+            // baixo) — dá sensação de volume aos blocos de pixel-art sem sair
+            // do estilo em blocos, só trocando a cor/alpha por linha
+            const isTop = ri < rowCount * 0.45;
+            ctx.fillStyle = isTop ? colors.paper : colors.stone;
+            ctx.globalAlpha = cloudAlpha * (isTop ? 0.55 : 1);
             for (let ci = 0; ci < row.length; ci++) {
               if (row[ci] === '1') {
                 ctx.fillRect(c.x + ci * px * c.scale, c.y + ri * px * c.scale, px * c.scale, px * c.scale);
@@ -10610,23 +10615,50 @@
             for (let wx = o.x + 4; wx < o.x + o.w - 4; wx += 8) ctx.fillRect(wx, wy, 3, 4);
           }
         } else if (o.type === 'tower') {
+          // poste/antena de comunicações: treliça em vez de duas linhas soltas,
+          // tirantes laterais e luz de aviso com halo — mais leitura de "objeto"
+          // sem sair do traço simples/arcade do resto do jogo
           const cx = o.x + o.w / 2;
+          const baseSpread = o.w * 0.28;
           ctx.strokeStyle = colors.stone;
           ctx.globalAlpha = alpha * 0.7;
-          ctx.lineWidth = 2.2;
+          ctx.lineWidth = 1.8;
           ctx.beginPath();
-          ctx.moveTo(cx - o.w * 0.28, o.groundY);
+          ctx.moveTo(cx - baseSpread, o.groundY);
           ctx.lineTo(cx, o.y);
-          ctx.lineTo(cx + o.w * 0.28, o.groundY);
+          ctx.lineTo(cx + baseSpread, o.groundY);
           ctx.stroke();
+          // treliça: pequenos travessões em "X" ao longo do mastro
+          ctx.lineWidth = 1;
+          ctx.globalAlpha = alpha * 0.5;
+          const rungs = 4;
+          for (let i = 1; i <= rungs; i++) {
+            const t = i / (rungs + 1);
+            const ry = o.groundY - o.h * t;
+            const rw = baseSpread * (1 - t) * 0.92;
+            ctx.beginPath();
+            ctx.moveTo(cx - rw, ry);
+            ctx.lineTo(cx + rw, ry);
+            ctx.stroke();
+          }
+          // duas antenas curtas perto do topo, como um poste real de telecomunicações
+          ctx.globalAlpha = alpha * 0.65;
           ctx.beginPath();
-          ctx.moveTo(cx - o.w * 0.14, o.groundY - o.h * 0.4);
-          ctx.lineTo(cx + o.w * 0.14, o.groundY - o.h * 0.4);
+          ctx.moveTo(cx - 3.5, o.y + o.h * 0.16);
+          ctx.lineTo(cx - 0.6, o.y + o.h * 0.16);
+          ctx.moveTo(cx + 0.6, o.y + o.h * 0.24);
+          ctx.lineTo(cx + 3.2, o.y + o.h * 0.24);
           ctx.stroke();
+          // luz de aviso a piscar, com halo suave — lê-se bem mesmo pequena
+          const blink = 0.5 + 0.5 * Math.sin(Date.now() * 0.006);
           ctx.fillStyle = colors.ochre;
-          ctx.globalAlpha = alpha * (0.5 + 0.5 * Math.sin(Date.now() * 0.006));
+          ctx.globalAlpha = alpha * 0.18 * blink;
           ctx.beginPath();
-          ctx.arc(cx, o.y - 1, 2, 0, Math.PI * 2);
+          ctx.arc(cx, o.y - 1, 4.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = alpha * blink;
+          ctx.beginPath();
+          ctx.arc(cx, o.y - 1, 1.7, 0, Math.PI * 2);
           ctx.fill();
         } else { // crane
           const baseX = o.x + o.w * 0.3;
@@ -10701,6 +10733,10 @@
         ctx.translate(PLANE_X, plane.y);
         const wobble = plane.stalling ? Math.sin(Date.now() * 0.03) * 0.05 : 0;
         ctx.rotate(Math.max(-0.62, Math.min(0.5, -plane.pitch * 0.9 + plane.vy * 0.025 + wobble)));
+        // fuselagem mais esguia/comprida (só visual — o raio de colisão PLANE_R
+        // mantém-se igual, por isso a jogabilidade não muda), com um leve
+        // afinamento vertical para compensar e não parecer "espremido"
+        ctx.scale(1.28, 0.94);
 
         const time = Date.now();
         const bodyBob = Math.sin(time * 0.008) * 0.15 * (plane.speed / MAX_SPEED);
