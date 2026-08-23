@@ -308,38 +308,6 @@
       color: var(--green);
     }
 
-    .game-nav-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 34px;
-      height: 34px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--paper-elevated);
-      color: var(--ink);
-      cursor: pointer;
-      transition: border-color .15s ease, background .15s ease, color .15s ease;
-      flex-shrink: 0;
-      order: 1;
-    }
-
-    .game-nav-btn:hover {
-      border-color: var(--ochre);
-      color: var(--ochre);
-    }
-
-    .game-nav-btn-icon {
-      font-size: 15px;
-      line-height: 1;
-    }
-
-    html[data-theme="dark"] .game-nav-btn {
-      background: var(--ink);
-      color: var(--paper);
-      border-color: var(--stone);
-    }
-
     .engenh-nav-btn {
       display: flex;
       align-items: center;
@@ -4050,23 +4018,6 @@
     .footer-buglink-label {
       color: var(--stone);
     }
-    .footer-download-counter {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 4px 0 0;
-      font-size: 12.5px;
-      color: var(--stone);
-      opacity: 0.85;
-    }
-    .footer-download-counter svg {
-      flex-shrink: 0;
-      opacity: 0.8;
-    }
-    #footer-download-count-num {
-      font-variant-numeric: tabular-nums;
-      font-weight: 600;
-    }
     /* Reutiliza o botão de feedback do header, mas neutraliza as regras
        pensadas para a barra de navegação (margin-left:auto, order) */
     .footer-meta .feedback-nav-btn {
@@ -4535,9 +4486,6 @@
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-
-     
-
 
       <button type="button" class="feedback-nav-btn" id="feedback-nav-btn" title="Dar feedback"
         aria-label="Dar feedback" data-i18n-attr-title="nav.darFeedback" data-i18n-attr-aria-label="nav.darFeedback">
@@ -5717,10 +5665,6 @@
                   <span class="footer-contactos-popup" id="footer-contactos-popup">✉ jdsm3011@gmail.com</span>
                 </span>
               </p>
-              <p class="footer-download-counter" id="footer-download-counter" aria-live="polite">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span id="footer-download-count-num">—</span> downloads totais
-              </p>
             </div>
           </div>
   </footer>
@@ -5734,40 +5678,6 @@
         e.stopPropagation();
         popup.classList.toggle('is-open');
       }
-      // ── Contador de downloads (soma dos assets no GitHub Releases) ──────
-      // Cacheado em sessionStorage por 10 min para não bater no Worker
-      // (e por sua vez na API do GitHub) a cada carregamento de página.
-      (function initDownloadCounter(){
-        var numEl = document.getElementById('footer-download-count-num');
-        if (!numEl) return;
-        var CACHE_KEY = 'downloadCountCache';
-        var CACHE_MS = 10 * 60 * 1000;
-
-        function formatar(n) {
-          return n.toLocaleString('pt-PT');
-        }
-
-        try {
-          var cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
-          if (cached && (Date.now() - cached.ts) < CACHE_MS) {
-            numEl.textContent = formatar(cached.total);
-            return;
-          }
-        } catch (e) { /* ignora cache corrompido */ }
-
-        fetch('https://datagispt.gispt.workers.dev/api/download-count')
-          .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-          .then(function(data){
-            var total = data && typeof data.total === 'number' ? data.total : null;
-            if (total === null) return;
-            numEl.textContent = formatar(total);
-            try {
-              sessionStorage.setItem(CACHE_KEY, JSON.stringify({ total: total, ts: Date.now() }));
-            } catch (e) { /* sessionStorage indisponível — ignora */ }
-          })
-          .catch(function(){ /* mantém o placeholder "—" em silêncio */ });
-      })();
-
       link.addEventListener('click', toggle);
       link.addEventListener('keydown', function(e){
         if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(e); }
@@ -9207,6 +9117,8 @@
       const DRAG_BASE = 0.013;
       const GROUND_THRUST_BOOST = 1.45; // multiplicador de empuxo durante taxi para auxiliar aceleração na pista
       const INDUCED_DRAG_K = 0.085;   // resistência extra por ângulo de ataque elevado
+      const MIN_AIR_SPEED = 0.55;     // velocidade mínima em voo — sem isto, sem motor a velocidade
+                                       // cai a 0 e o avião "congela" no ar (vy depende da velocidade)
 
       const TURN_K = 0.09;            // trajetória segue o nariz mais devagar, como uma máquina pesada
       const GRAVITY_K = 0.065;         // gravidade mais evidente; o avião “pesa” mais na curva
@@ -9217,6 +9129,18 @@
       const NPC_SPEED_K = 0.52;       // base lenta para começar, depois cresce com a distância
       const NPC_SPEED_GROWTH = 0.09;  // ganho de velocidade por km percorrido
       const AMBIENT_BIRD_K = 0.70;   // reduz velocidade das aves ambientais
+
+      // ── combustível / aeroportos de reabastecimento ──
+      const FUEL_MAX = 2;
+      const FUEL_BURN_BASE = 0.00004;      // consumo residual, mesmo ao ralenti
+      const FUEL_BURN_THRUST_K = 0.00026;  // consumo extra proporcional ao impulso
+      const FUEL_LOW_THRESHOLD = FUEL_MAX * 0.22;
+      const FUEL_LANDING_CALL_THRESHOLD = FUEL_MAX * 0.30;
+      // aeroportos aparecem a distâncias crescentes: 2km, 6km, 12km, 20km...
+      // (cada intervalo cresce 2km) — cria mais tempo de voo entre aterragens
+      function airportKmForIndex(i) { return i * (i + 1); }
+      const AIRPORT_APPROACH_KM = 1.2; // pista/aeroporto ficam visíveis com mais antecedência
+      const AIRPORT_GRACE_KM = 0.45;   // ainda dá para aterrar um pouco depois da marca
 
       // ── zonas / progressão (por distância percorrida, em km) ──
       const ZONE_AIRPORT = { key: 'airport', label: 'Aeroporto', end: 0.35 };
@@ -9276,6 +9200,11 @@
         const x = clamp((value - a) / (b - a || 1), 0, 1);
         return x * x * (3 - 2 * x);
       }
+      // ── par fixo, independente do tema da página, usado só para o texto
+      // adaptativo do HUD. Nunca ler de --ink/--paper aqui: essas variáveis
+      // invertem de valor no tema escuro do site, o que faria o HUD escolher
+      // sempre a cor errada contra o céu do jogo (que tem paleta própria,
+      // independente do tema da página)
       function readColors() {
         const cs = getComputedStyle(document.documentElement);
         colors = {
@@ -9287,10 +9216,80 @@
         };
       }
 
+      // ── cor de texto adaptativa: amostra a cor do céu à altura pedida (0=topo,
+      // 1=fundo do canvas) e escolhe ink (escuro) ou paper (claro) consoante o
+      // contraste — assim o texto do HUD nunca fica ilegível sobre um fundo da
+      // mesma tonalidade (ex.: céu noturno escuro ou horizonte da cidade escuro)
+      function getSkyColorStops() {
+        const zwRaw = getZoneWeights(distanceKm);
+        const zw = nearAirport
+          ? { airport: zwRaw.airport * 0.25 + 0.75, city: zwRaw.city * 0.25, mountains: zwRaw.mountains * 0.25, sky: zwRaw.sky * 0.25 }
+          : zwRaw;
+        const profile = getAltitudeProfile();
+        const skyTop = mixHex('#CFE7E3', '#07111F', profile.spaceFade);
+        const skyMid = mixHex('#ECF6F0', '#10233D', profile.spaceFade);
+        const horizonTint = mixHexWeighted([
+          [colors.ochre, zw.airport + zw.sky],
+          [colors.ink, zw.city],
+          [colors.stone, zw.mountains]
+        ]);
+        const horizonBase = mixHex(mixHex('#ECF6F0', horizonTint, 0.28), '#0B182B', profile.spaceFade);
+        return { top: skyTop, mid: skyMid, horizon: horizonBase };
+      }
+      function sampleSkyColor(yFrac) {
+        const stops = getSkyColorStops();
+        if (yFrac <= 0.4) return mixHex(stops.top, stops.mid, yFrac / 0.4);
+        return mixHex(stops.mid, stops.horizon, (yFrac - 0.4) / 0.6);
+      }
+      function luminanceOf(hex) {
+        const c = hexToRgb(hex);
+        return (0.299 * c.r + 0.587 * c.g + 0.114 * c.b) / 255;
+      }
+      // ── HUD por "chips": em vez de tentar adivinhar a cor certa consoante o
+      // céu (frágil, e falha em gradientes/zonas de transição), desenha-se
+      // sempre um painel escuro translúcido por trás do texto, com o texto
+      // sempre na mesma cor clara fixa por cima. Garante contraste em
+      // qualquer altitude/zona, sem depender de amostragem de cor.
+      const HUD_TEXT = '#F8F2E4';
+      const HUD_WARN = '#FFC087';
+      const HUD_CHIP = 'rgba(10, 14, 11, 0.6)';
+      // texto "solto", sem o chip de fundo escuro — usado nas mensagens centrais
+      // (stall, sem combustível, toasts tipo "Velocidade ideal!")
+      function hudPlainText(text, x, y, color) {
+        ctx.fillStyle = color;
+        ctx.fillText(text, x, y);
+      }
+
+      function hudChipText(text, x, y, color, fontPx, padX, padY) {
+        padX = padX == null ? 6 : padX;
+        padY = padY == null ? 3 : padY;
+        const w = ctx.measureText(text).width;
+        const align = ctx.textAlign;
+        let rx;
+        if (align === 'right') rx = x - w - padX;
+        else if (align === 'center') rx = x - w / 2 - padX;
+        else rx = x - padX;
+        const ascent = fontPx * 0.78, descent = fontPx * 0.26;
+        const ry = y - ascent - padY;
+        const rw = w + padX * 2;
+        const rh = ascent + descent + padY * 2;
+        const prevAlpha = ctx.globalAlpha;
+        ctx.fillStyle = HUD_CHIP;
+        ctx.globalAlpha = prevAlpha * 0.82;
+        if (ctx.roundRect) { ctx.beginPath(); ctx.roundRect(rx, ry, rw, rh, 4); ctx.fill(); }
+        else ctx.fillRect(rx, ry, rw, rh);
+        ctx.globalAlpha = prevAlpha;
+        ctx.fillStyle = color;
+        ctx.fillText(text, x, y);
+      }
+
+
       let plane, obstacles, clouds, fogBands, terrainFar, terrainNear, bgSun, ground, runwayX, airportBuildings, ambientBirds, stars, comets, satellites;
+      let explosion;
       let score, best, bestDist, distanceKm, spawnTimer, running, over, rafId, elapsedTime;
       let dirUp = false, dirDown = false, dirLeft = false, dirRight = false, started = false;
       let stats, zoneCur, message, messageTimer;
+      let airportIndex = 1, nextAirportKm = 1, nearAirport = false;
       let camera = 0; // deslocamento vertical do "mundo" em relação ao ecrã — sobe
                        // (fica mais negativo) quando o avião passa a âncora no ecrã
 
@@ -9471,17 +9470,6 @@
             });
           }
         }
-
-        const atmosphereFade = smoothstep(0.12, 0.92, profile.level2 + profile.level3 * 0.25);
-        ctx.save();
-        ctx.globalAlpha = 0.18 + atmosphereFade * 0.32 + alphaBoost * 0.55;
-        const haze = ctx.createRadialGradient(W * 0.5, H * 0.28, 20, W * 0.5, H * 0.28, W * 0.7);
-        haze.addColorStop(0, 'rgba(125, 160, 255, 0.18)');
-        haze.addColorStop(0.35, 'rgba(85, 106, 180, 0.12)');
-        haze.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = haze;
-        ctx.fillRect(0, 0, W, H);
-        ctx.restore();
 
         ctx.save();
         ctx.globalAlpha = alphaBoost * 0.95;
@@ -9693,26 +9681,15 @@
       // com tonalidade própria por zona) + halo dourado à volta do sol
       function drawSky() {
         const gy = ground ? ground.y : H - 10;
-        const zw = getZoneWeights(distanceKm);
         const profile = getAltitudeProfile();
-        const altitudeDarken = smoothstep(0.16, 0.9, profile.level2 + profile.level3 * 0.8);
-        // mais dramático no nível 2 → 3: o céu escurece de forma contínua e a
-        // luz do sol vai sendo engolida pela atmosfera sem uma mudança abrupta
-        const skyTop = mixHex('#CFE7E3', '#040A16', altitudeDarken * 0.85 + profile.level3 * 0.35);
-        const skyMid = mixHex('#ECF6F0', '#122746', altitudeDarken * 0.9 + profile.level3 * 0.45);
-        const horizonTint = mixHexWeighted([
-          [colors.ochre, zw.airport + zw.sky],
-          [colors.ink, zw.city],
-          [colors.stone, zw.mountains]
-        ]);
-        const horizonBase = mixHex('#ECF6F0', horizonTint, 0.28 + altitudeDarken * 0.25);
+        const stops = getSkyColorStops();
 
-        const sky = ctx.createLinearGradient(0, 0, 0, gy);
-        sky.addColorStop(0, skyTop);
-        sky.addColorStop(0.4, skyMid);
-        sky.addColorStop(1, mixHex(horizonBase, '#0A1228', profile.level3 * 0.85 + altitudeDarken * 0.3));
+        const sky = ctx.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0, stops.top);
+        sky.addColorStop(0.4, stops.mid);
+        sky.addColorStop(1, stops.horizon);
         ctx.fillStyle = sky;
-        ctx.fillRect(0, 0, W, gy);
+        ctx.fillRect(0, 0, W, H);
 
         if (bgSun) {
           const haloAlpha = clamp(0.18 - profile.level3 * 0.13 - profile.level2 * 0.06, 0.02, 0.18);
@@ -9720,7 +9697,7 @@
           halo.addColorStop(0, hexToRgba(colors.ochre, haloAlpha));
           halo.addColorStop(1, hexToRgba(colors.ochre, 0));
           ctx.fillStyle = halo;
-          ctx.fillRect(0, 0, W, gy);
+          ctx.fillRect(0, 0, W, H);
         }
       }
 
@@ -9729,10 +9706,15 @@
         const profile = getAltitudeProfile();
         if (profile.level3 > 0.06) {
           ctx.save();
-          ctx.globalAlpha = 0.12 + (1 - profile.level3) * 0.32;
-          ctx.fillStyle = 'rgba(255,255,255,0.35)';
+          ctx.globalAlpha = 0.82;
+          ctx.fillStyle = '#F4E8C1';
           ctx.beginPath();
-          ctx.arc(bgSun.x, bgSun.y, 4, 0, Math.PI * 2);
+          ctx.arc(bgSun.x, bgSun.y, 13, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 0.78;
+          ctx.fillStyle = '#8190A5';
+          ctx.beginPath();
+          ctx.arc(bgSun.x + 6, bgSun.y - 5, 13, 0, Math.PI * 2);
           ctx.fill();
           ctx.restore();
           return;
@@ -9862,7 +9844,13 @@
       function drawGround() {
         if (!ground) return;
         const gy = ground.y;
-        const zw = getZoneWeights(distanceKm);
+        const zwRaw = getZoneWeights(distanceKm);
+        // perto de um aeroporto de reabastecimento, o terreno "abre" para um
+        // campo/pista reconhecível, mesmo que a zona de fundo seja cidade ou
+        // montanha — assim o aeroporto é sempre claramente visível ao chegar
+        const zw = nearAirport
+          ? { airport: zwRaw.airport * 0.25 + 0.75, city: zwRaw.city * 0.25, mountains: zwRaw.mountains * 0.25, sky: zwRaw.sky * 0.25 }
+          : zwRaw;
         const fieldW = zw.airport + zw.sky;
 
         // base tonal — uma única cor/alpha, misturada por peso de zona, em vez
@@ -9900,8 +9888,8 @@
           ctx.globalAlpha = 1;
         }
 
-        // pista, visível só na fase de descolagem
-        if (plane && plane.phase === 'ground') {
+        // pista, visível na descolagem e também na aproximação a um aeroporto
+        if (plane && (plane.phase === 'ground' || nearAirport)) {
           const runwayTop = gy + 1, runwayBottom = gy + 11;
 
           // asfalto
@@ -10010,14 +9998,18 @@
       }
 
       function getDifficultyScale() {
-        return Math.min(1.8, distanceKm / 6);
+        // progressão mais gradual — a dificuldade ainda sobe com a distância,
+        // mas leva mais tempo a atingir o teto, para um ritmo mais calmo
+        return Math.min(1.8, distanceKm / 8);
       }
 
       function getThreatIntensity() {
         const profile = getAltitudeProfile();
-        const timeFactor = Math.min(1.8, elapsedTime / 42);
-        const distanceFactor = Math.min(1.8, distanceKm / 12);
-        const lateCurve = Math.pow(Math.max(0, timeFactor * 0.72 + distanceFactor * 0.88), 1.35);
+        // curva de escalada mais suave — a ameaça ainda cresce com o tempo/distância,
+        // mas demora mais a atingir o máximo, dando uma progressão mais calma
+        const timeFactor = Math.min(1.8, elapsedTime / 58);
+        const distanceFactor = Math.min(1.8, distanceKm / 16);
+        const lateCurve = Math.pow(Math.max(0, timeFactor * 0.72 + distanceFactor * 0.88), 1.18);
         const spaceFactor = profile.level3 > 0.08 ? 1.15 : 1;
         return clamp(lateCurve * 0.72 * spaceFactor, 0, 1.8);
       }
@@ -10026,10 +10018,10 @@
         const profile = getAltitudeProfile();
         const threat = getThreatIntensity();
         if (profile.level3 > 0.08) {
-          return Math.max(150, 360 - threat * 125);
+          return Math.max(180, 360 - threat * 100);
         }
         const zoneBase = zoneCur.key === 'airport' ? 420 : zoneCur.key === 'city' ? 360 : zoneCur.key === 'mountains' ? 320 : 280;
-        return Math.max(170, zoneBase - threat * 95);
+        return Math.max(190, zoneBase - threat * 78);
       }
 
       function initAirport() {
@@ -10056,9 +10048,11 @@
           aoa: 0,
           thrust: 0,
           phase: 'ground',
-          stalling: false
+          stalling: false,
+          fuel: FUEL_MAX
         };
         obstacles = [];
+        explosion = null;
         score = 0;
         distanceKm = 0;
         elapsedTime = 0;
@@ -10068,11 +10062,75 @@
         started = false;
         message = ''; messageTimer = 0;
         zoneCur = ZONE_AIRPORT;
-        stats = { planesEvaded: 0, flocksEvaded: 0, stallsRecovered: 0, idealSpeedTicks: 0, idealSpeedBonus: 0, perfectTakeoff: false, riskZonesPassed: 0, newRecord: false, idealBandFrames: 0 };
+        airportIndex = 1;
+        nextAirportKm = airportKmForIndex(airportIndex);
+        nearAirport = false;
+        stats = { planesEvaded: 0, flocksEvaded: 0, stallsRecovered: 0, idealSpeedTicks: 0, idealSpeedBonus: 0, perfectTakeoff: false, riskZonesPassed: 0, newRecord: false, idealBandFrames: 0, landings: 0 };
         initAirport();
       }
 
       function setMessage(text) { message = text; messageTimer = 130; }
+
+      function startExplosion() {
+        const palette = ['#FFF2B2', '#FFD166', '#F28C28', '#E4572E', '#7A2E1B'];
+        explosion = {
+          age: 0,
+          duration: 52,
+          particles: Array.from({ length: 34 }, () => {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 0.8 + Math.random() * 2.8;
+            return {
+              x: PLANE_X,
+              y: plane.y,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed - 0.45,
+              size: 1.8 + Math.random() * 3.8,
+              life: 24 + Math.random() * 28,
+              color: palette[Math.floor(Math.random() * palette.length)]
+            };
+          })
+        };
+      }
+
+      function updateExplosion() {
+        if (!explosion) return;
+        explosion.age++;
+        explosion.particles.forEach((particle) => {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          particle.vy += 0.075;
+          particle.vx *= 0.985;
+          particle.life--;
+        });
+        if (explosion.age >= explosion.duration) explosion = null;
+      }
+
+      function drawExplosion() {
+        if (!explosion) return;
+        const progress = explosion.age / explosion.duration;
+        const shockwaveLife = Math.max(0, 1 - progress * 1.35);
+        if (shockwaveLife > 0) {
+          ctx.save();
+          ctx.globalAlpha = shockwaveLife * 0.8;
+          ctx.strokeStyle = '#FFD166';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.arc(PLANE_X, plane.y, 8 + progress * 34, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        explosion.particles.forEach((particle) => {
+          if (particle.life <= 0) return;
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, particle.life / 12);
+          ctx.fillStyle = particle.color;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size * (0.7 + particle.life / 34), 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
 
       // ── física de voo (modelo vetorial com inércia) ────────────────
       // plane.pitch      = para onde o nariz aponta (o jogador controla isto)
@@ -10080,16 +10138,31 @@
       //                      pitch, mas com atraso — depende da velocidade)
       // plane.aoa         = ângulo de ataque = pitch - flightAngle
       function updatePhysics() {
+        // combustível: sem ele, a alavanca do throttle deixa de responder e o
+        // motor apaga-se por completo (glide puro até aterrar ou cair)
+        const outOfFuel = plane.fuel <= 0;
         // throttle: o jogador move a alavanca; o motor (thrust) responde com atraso —
         // mais lento a subir de giros do que a cortar potência, como uma turbina real
-        if (dirRight) plane.throttle = Math.min(1, plane.throttle + THROTTLE_STEP);
-        if (dirLeft) plane.throttle = Math.max(0, plane.throttle - THROTTLE_STEP);
+        if (!outOfFuel) {
+          if (dirRight) plane.throttle = Math.min(1, plane.throttle + THROTTLE_STEP);
+          if (dirLeft) plane.throttle = Math.max(0, plane.throttle - THROTTLE_STEP);
+        } else {
+          // motor apagado: a alavanca "cai" sozinha para zero, ignora o input
+          plane.throttle = Math.max(0, plane.throttle - THROTTLE_STEP * 1.6);
+        }
         const spoolRate = plane.throttle > plane.thrust ? ENGINE_SPOOL_UP : ENGINE_SPOOL_DOWN;
         plane.thrust += (plane.throttle - plane.thrust) * spoolRate;
         // impulso residual ao ralenti — mas só em voo; no chão o motor fica parado
         // até o utilizador dar throttle (evita arrastar sozinho na pista)
         const onGround = plane.phase === 'ground';
-        const effectiveThrust = onGround ? plane.thrust : (IDLE_THRUST + plane.thrust * (1 - IDLE_THRUST));
+        const effectiveThrust = outOfFuel ? 0 : (onGround ? plane.thrust : (IDLE_THRUST + plane.thrust * (1 - IDLE_THRUST)));
+
+        // consumo de combustível — proporcional ao impulso, com um custo residual
+        if (!outOfFuel && (plane.throttle > 0.01 || plane.thrust > 0.01)) {
+          const wasAboveZero = plane.fuel > 0;
+          plane.fuel = Math.max(0, plane.fuel - (FUEL_BURN_BASE + effectiveThrust * FUEL_BURN_THRUST_K));
+          if (wasAboveZero && plane.fuel <= 0) setMessage('⛽ Sem combustível!');
+        }
 
         // manche com inércia própria — acelera e trava a rodar o nariz, não salta
         // instantaneamente para o ângulo alvo. A resposta depende da velocidade: a
@@ -10168,7 +10241,7 @@
         const thrustAccel = effectiveThrust * THRUST_K;
         const drag = DRAG_BASE * plane.speed * plane.speed + INDUCED_DRAG_K * plane.aoa * plane.aoa * plane.speed;
         plane.speed += thrustAccel - drag;
-        plane.speed = Math.max(0, Math.min(MAX_SPEED * 1.1, plane.speed));
+        plane.speed = Math.max(MIN_AIR_SPEED, Math.min(MAX_SPEED * 1.1, plane.speed));
 
         plane.vy = -plane.speed * Math.sin(plane.flightAngle) * (VY_SCALE / MAX_SPEED) * 3.1;
         plane.vy = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, plane.vy));
@@ -10190,7 +10263,11 @@
         }
 
         if (plane.y > bottomLimit) {
-          crash('🌍 Colidiste com o terreno!');
+          if (nearAirport) {
+            land();
+          } else {
+            crash('🌍 Colidiste com o terreno!');
+          }
         }
 
         // velocidade ideal (bónus de consistência)
@@ -10205,10 +10282,29 @@
         }
       }
 
+      function land() {
+        if (over) return;
+        const groundY = (ground ? ground.y : H - 10) - PLANE_R;
+        plane.phase = 'ground';
+        plane.y = groundY;
+        plane.vy = 0;
+        plane.flightAngle = 0;
+        plane.pitch = clamp(plane.pitch, -0.1, 0.15);
+        plane.stalling = false;
+        plane.fuel = FUEL_MAX;
+        score += 150;
+        stats.landings = (stats.landings || 0) + 1;
+        airportIndex++;
+        nextAirportKm = airportKmForIndex(airportIndex);
+        nearAirport = false;
+        setMessage('🛬 Aterraste! Reabastecido ⛽');
+      }
+
       function crash(msg) {
         if (over) return;
         over = true;
         running = false;
+        startExplosion();
         best = Math.max(best, score);
         stats.newRecord = distanceKm > bestDist;
         if (stats.newRecord) bestDist = distanceKm;
@@ -10272,15 +10368,18 @@
         } else if (kind === 'plane') {
           const pattern = Math.random();
           const altBand = plane.y + (Math.random() - 0.5) * 200;
-          const missileChance = Math.min(0.62, 0.14 + getThreatIntensity() * 0.28);
+          // "missileChance": fração de aviões que já nascem alinhados à tua altitude
+          // atual. Reduzido e com teto mais baixo — menos sensação de míssil
+          // teleguiado, mais aviões que cruzam o céu em vez de te perseguirem
+          const missileChance = Math.min(0.34, 0.08 + getThreatIntensity() * 0.14);
           if (pattern < missileChance) {
-            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 85, vx: -(0.62 + Math.random() * 0.38 + difficulty * 0.18) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 130, vx: -(0.5 + Math.random() * 0.3 + difficulty * 0.14) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
           } else if (pattern < 0.82) {
             const fromAbove = Math.random() < 0.5;
             const crossY = plane.y + (fromAbove ? -1 : 1) * (80 + Math.random() * 52);
-            obstacles.push({ kind: 'plane', x: W + 30, y: crossY, vx: -(0.78 + difficulty * 0.22) * npcSpeed, vy: (fromAbove ? 1 : -1) * 0.62 * npcSpeed, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: crossY, vx: -(0.7 + difficulty * 0.18) * npcSpeed, vy: (fromAbove ? 1 : -1) * 0.5 * npcSpeed, r: 8, scored: false, foggy });
           } else {
-            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -(0.9 + difficulty * 0.2) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -(0.8 + difficulty * 0.16) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
           }
         } else {
           const count = 1 + Math.floor(Math.random() * 2);
@@ -10294,9 +10393,6 @@
           }
         }
 
-        if (Math.random() < (zone === 'sky' ? 0.04 : 0.02)) {
-          fogBands.push({ x: W + 60, w: 90 + Math.random() * 60 });
-        }
       }
 
       function updateObstacles(worldSpeed) {
@@ -10363,24 +10459,25 @@
         const drift = Math.sin(Date.now() * 0.02 + cx * 0.08) * 0.5;
         ctx.rotate(heading + drift);
 
-        // chama realista atrás do míssil — muito curta, muito quente
-        const flamePulse = 1 + Math.sin(Date.now() * 0.04 + cx * 0.1) * 0.25;
+        // rasto do motor — mais contido do que antes, para parecer motor de
+        // avião rival em vez de chama de míssil
+        const flamePulse = 1 + Math.sin(Date.now() * 0.04 + cx * 0.1) * 0.2;
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = 'rgba(255, 210, 120, 0.9)';
+        ctx.fillStyle = 'rgba(255, 210, 120, 0.8)';
         ctx.beginPath();
-        ctx.moveTo(-17 * s, 0);
-        ctx.lineTo(-22 * s * flamePulse, -2.8 * s);
-        ctx.lineTo(-21.5 * s, 0);
-        ctx.lineTo(-22 * s * flamePulse, 2.8 * s);
+        ctx.moveTo(-15 * s, 0);
+        ctx.lineTo(-18.5 * s * flamePulse, -2.2 * s);
+        ctx.lineTo(-18 * s, 0);
+        ctx.lineTo(-18.5 * s * flamePulse, 2.2 * s);
         ctx.closePath();
         ctx.fill();
 
-        ctx.fillStyle = 'rgba(255, 122, 45, 0.9)';
+        ctx.fillStyle = 'rgba(255, 122, 45, 0.75)';
         ctx.beginPath();
-        ctx.moveTo(-15 * s, 0);
-        ctx.lineTo(-20 * s * flamePulse, -1.8 * s);
-        ctx.lineTo(-19.6 * s, 0);
-        ctx.lineTo(-20 * s * flamePulse, 1.8 * s);
+        ctx.moveTo(-14.6 * s, 0);
+        ctx.lineTo(-17 * s * flamePulse, -1.4 * s);
+        ctx.lineTo(-16.7 * s, 0);
+        ctx.lineTo(-17 * s * flamePulse, 1.4 * s);
         ctx.closePath();
         ctx.fill();
 
@@ -10856,16 +10953,76 @@
       }
 
       // ── HUD ─────────────────────────────────────────────────────
-      function drawHUD() {
-        ctx.font = '600 12px "IBM Plex Mono", monospace';
-        ctx.fillStyle = colors.ink;
-        ctx.globalAlpha = 0.85;
+      // ── indicador de aeroporto: ícone fixo à direita do ecrã com uma seta
+      // "a respirar" a apontar sempre na direção de voo (para a frente) — quando
+      // o aeroporto já está ao alcance para aterrar, a seta vira para baixo,
+      // dizendo ao jogador para descer agora ──
+      function drawAirportCompass() {
+        if (plane.fuel > FUEL_LANDING_CALL_THRESHOLD) return;
+        const cx = W - 27, cy = H * 0.42;
+        const kmToAirport = Math.max(0, nextAirportKm - distanceKm);
+        const urgent = plane.fuel < FUEL_LOW_THRESHOLD || kmToAirport < 0.6;
+        const pulse = 0.55 + 0.45 * Math.sin(Date.now() * 0.006);
+        const accent = nearAirport || urgent ? HUD_WARN : HUD_TEXT;
+
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = HUD_CHIP;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 17, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        ctx.font = '15px "IBM Plex Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.globalAlpha = 0.92;
+        ctx.fillText('🛬', cx, cy - 4);
+        ctx.globalAlpha = 1;
+
+        // seta: para a frente por defeito ("»»"), para baixo quando é hora de aterrar
+        ctx.strokeStyle = accent;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.globalAlpha = nearAirport ? (0.6 + 0.4 * pulse) : 0.85;
+        ctx.save();
+        ctx.translate(cx, cy + 13);
+        if (nearAirport) ctx.rotate(Math.PI / 2);
+        const breathe = nearAirport ? 0 : 2.2 * pulse;
+        [0, 6].forEach((dx) => {
+          ctx.beginPath();
+          ctx.moveTo(-4 + dx + breathe, -5);
+          ctx.lineTo(4 + dx + breathe, 0);
+          ctx.lineTo(-4 + dx + breathe, 5);
+          ctx.stroke();
+        });
+        ctx.restore();
+        ctx.globalAlpha = 1;
+
+        // legenda curta por baixo: distância, ou aviso a pulsar quando é para aterrar
+        ctx.font = '600 9px "IBM Plex Mono", monospace';
+        ctx.globalAlpha = nearAirport ? (0.6 + 0.4 * pulse) : 0.85;
+        hudChipText(nearAirport ? 'ATERRAR' : kmToAirport.toFixed(1) + 'km', cx, cy + 27, accent, 9);
+        ctx.globalAlpha = 1;
+
+        ctx.textBaseline = 'alphabetic';
         ctx.textAlign = 'left';
-        ctx.fillText('Pontos: ' + score, 12, 20);
-        ctx.fillText('Distância: ' + distanceKm.toFixed(2) + ' km', 12, 36);
+        ctx.restore();
+      }
+
+      function drawHUD() {
+        const outOfFuel = plane.fuel <= 0;
+        const fuelLow = plane.fuel < FUEL_LOW_THRESHOLD;
+
+        ctx.font = '600 12px "IBM Plex Mono", monospace';
+        ctx.globalAlpha = 0.92;
+        ctx.textAlign = 'left';
+        hudChipText('Pontos: ' + score, 12, 20, HUD_TEXT, 12);
+        hudChipText('Distância: ' + distanceKm.toFixed(2) + ' km', 12, 36, HUD_TEXT, 12);
         ctx.textAlign = 'right';
-        ctx.fillText('Recorde: ' + best, W - 12, 20);
-        ctx.fillText(zoneCur.label, W - 12, 36);
+        hudChipText('Recorde: ' + best, W - 12, 20, HUD_TEXT, 12);
+        hudChipText(zoneCur.label, W - 12, 36, HUD_TEXT, 12);
         ctx.textAlign = 'left';
         ctx.globalAlpha = 1;
 
@@ -10874,51 +11031,67 @@
         const abx = W - 82, aby = H - 20, abw = 70, abh = 7;
         ctx.textAlign = 'right';
         ctx.font = '600 9.5px "IBM Plex Mono", monospace';
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = colors.ink;
-        ctx.fillText(altProfile.levelLabel, abx + abw, aby - 4);
+        ctx.globalAlpha = 0.95;
+        hudChipText(altProfile.levelLabel, abx + abw, aby - 6, HUD_TEXT, 9.5, 5, 2);
         ctx.globalAlpha = 1;
         ctx.textAlign = 'left';
-        ctx.strokeStyle = colors.ink; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+        ctx.strokeStyle = HUD_TEXT; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
         ctx.strokeRect(abx, aby, abw, abh);
-        ctx.fillStyle = colors.ochre; ctx.globalAlpha = 0.75;
+        ctx.fillStyle = colors.green; ctx.globalAlpha = 0.75;
         ctx.fillRect(abx, aby, abw * altProfile.climb, abh);
+        ctx.globalAlpha = 1;
+
+        // barra de combustível (por cima da de throttle)
+        const fx = 12, fy = H - 40, fw = 70, fh = 7;
+        const fuelPulse = 0.55 + 0.4 * Math.sin(Date.now() * 0.015);
+        ctx.strokeStyle = HUD_TEXT; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+        ctx.strokeRect(fx, fy, fw, fh);
+        ctx.fillStyle = outOfFuel ? colors.ochre : (fuelLow ? colors.ochre : colors.green);
+        ctx.globalAlpha = outOfFuel ? fuelPulse : (fuelLow ? 0.55 + 0.35 * fuelPulse : 0.75);
+        ctx.fillRect(fx, fy, fw * (plane.fuel / FUEL_MAX), fh);
+        ctx.globalAlpha = 0.85; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
+        hudChipText('⛽ FUEL', fx, fy - 6, (outOfFuel || fuelLow) ? HUD_WARN : HUD_TEXT, 9.5, 5, 2);
         ctx.globalAlpha = 1;
 
         // barra de throttle
         const bx = 12, by = H - 20, bw = 70, bh = 7;
-        ctx.strokeStyle = colors.ink; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
+        ctx.strokeStyle = HUD_TEXT; ctx.globalAlpha = 0.4; ctx.lineWidth = 1;
         ctx.strokeRect(bx, by, bw, bh);
-        ctx.fillStyle = colors.ochre; ctx.globalAlpha = 0.75;
+        ctx.fillStyle = outOfFuel ? colors.stone : colors.ochre; ctx.globalAlpha = 0.75;
         ctx.fillRect(bx, by, bw * plane.throttle, bh);
-        ctx.globalAlpha = 0.7; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
-        ctx.fillStyle = colors.ink;
-        ctx.fillText('THROTTLE', bx, by - 4);
+        ctx.globalAlpha = 0.85; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
+        hudChipText('THROTTLE', bx, by - 6, HUD_TEXT, 9.5, 5, 2);
         ctx.globalAlpha = 1;
 
-        // velocidade
+        // velocidade e pitch — acima do indicador de altitude, com espaçamento
+        // suficiente entre chips para não sobrepor texto (cada chip tem ~14px de altura)
         ctx.textAlign = 'right';
         ctx.font = '600 9.5px "IBM Plex Mono", monospace';
-        ctx.globalAlpha = 0.7;
-        ctx.fillText('VEL ' + plane.speed.toFixed(1), W - 12, H - 44);
-        ctx.fillText('PITCH ' + (plane.pitch >= 0 ? '+' : '') + (plane.pitch * 57).toFixed(0) + '°', W - 12, H - 32);
+        ctx.globalAlpha = 0.85;
+        hudChipText('VEL ' + plane.speed.toFixed(1), W - 12, H - 60, HUD_TEXT, 9.5, 5, 2);
+        hudChipText('PITCH ' + (plane.pitch >= 0 ? '+' : '') + (plane.pitch * 57).toFixed(0) + '°', W - 12, H - 44, HUD_TEXT, 9.5, 5, 2);
         ctx.textAlign = 'left';
         ctx.globalAlpha = 1;
 
         if (plane.stalling) {
           ctx.font = '700 14px "IBM Plex Mono", monospace';
-          ctx.fillStyle = colors.ochre;
-          ctx.globalAlpha = 0.5 + 0.5 * Math.sin(Date.now() * 0.02);
+          ctx.globalAlpha = 0.6 + 0.4 * Math.sin(Date.now() * 0.02);
           ctx.textAlign = 'center';
-          ctx.fillText('⚠️ STALL', PLANE_X, plane.y - camera - 22);
+          hudPlainText('⚠️ STALL', PLANE_X, plane.y - camera - 22, HUD_WARN);
+          ctx.textAlign = 'left';
+          ctx.globalAlpha = 1;
+        } else if (outOfFuel && plane.phase !== 'ground' && !over) {
+          ctx.font = '700 12px "IBM Plex Mono", monospace';
+          ctx.globalAlpha = 0.65 + 0.35 * Math.sin(Date.now() * 0.012);
+          ctx.textAlign = 'center';
+          hudPlainText('⛽ SEM COMBUSTÍVEL — aterra para reabastecer!', W / 2, 70, HUD_WARN);
           ctx.textAlign = 'left';
           ctx.globalAlpha = 1;
         } else if (message && messageTimer > 0) {
           ctx.font = '600 11px "IBM Plex Mono", monospace';
-          ctx.fillStyle = colors.green;
           ctx.globalAlpha = Math.min(1, messageTimer / 40);
           ctx.textAlign = 'center';
-          ctx.fillText(message, W / 2, 52);
+          hudPlainText(message, W / 2, 70, '#B9EAC7');
           ctx.textAlign = 'left';
           ctx.globalAlpha = 1;
           messageTimer--;
@@ -10926,13 +11099,14 @@
 
         if (plane.phase === 'ground' && !over && started) {
           ctx.font = '600 11px "IBM Plex Mono", monospace';
-          ctx.fillStyle = colors.ink;
-          ctx.globalAlpha = 0.6;
+          ctx.globalAlpha = 0.75;
           ctx.textAlign = 'center';
-          const txt = plane.speed < TAKEOFF_SPEED
-            ? '➡️ Aumenta o throttle para ganhar velocidade'
-            : '⬆️ Velocidade suficiente — levanta o nariz!';
-          ctx.fillText(txt, W / 2, H - 34);
+          const txt = outOfFuel
+            ? '⛽ Sem combustível — aguarda o reabastecimento'
+            : (plane.speed < TAKEOFF_SPEED
+              ? '➡️ Aumenta o throttle para ganhar velocidade'
+              : '⬆️ Velocidade suficiente — levanta o nariz!');
+          hudChipText(txt, W / 2, H - 34, HUD_TEXT, 11, 8, 4);
           ctx.textAlign = 'left';
           ctx.globalAlpha = 1;
         }
@@ -11088,17 +11262,19 @@
         drawCloudShadows();
         drawObstacles();
         drawPlane();
+        drawExplosion();
         ctx.restore();
         drawFogBands();
         drawClouds();
         drawVignette();
         drawHUD();
+        drawAirportCompass();
 
         if (over) {
           const lines = [
             (plane.stalling ? '' : '') + (message || 'Colidiste!'),
             'Pontos: ' + score + '   ·   Distância: ' + distanceKm.toFixed(2) + ' km',
-            '✈️ ' + stats.planesEvaded + ' aviões  ·  🐦 ' + stats.flocksEvaded + ' bandos  ·  🔄 ' + stats.stallsRecovered + ' stalls recuperados',
+            '✈️ ' + stats.planesEvaded + ' aviões  ·  🐦 ' + stats.flocksEvaded + ' bandos  ·  🔄 ' + stats.stallsRecovered + ' stalls  ·  🛬 ' + (stats.landings || 0) + ' reabastecimentos',
             (stats.newRecord ? '🏅 Novo recorde de distância!  ·  ' : '') + 'ESPAÇO para tentar de novo'
           ];
           ctx.fillStyle = colors.paper;
@@ -11119,10 +11295,25 @@
           if (plane.phase === 'air' && !over) {
             distanceKm += plane.speed * 0.0009;
             zoneCur = getZone(distanceKm);
+
+            // Se o avião passou por um aeroporto sem aterrar, esse alvo deixa
+            // de ser válido e o indicador deve apontar para o próximo.
+            while (distanceKm > nextAirportKm + AIRPORT_GRACE_KM) {
+              airportIndex++;
+              nextAirportKm = airportKmForIndex(airportIndex);
+            }
+
+            const inApproach = distanceKm >= nextAirportKm - AIRPORT_APPROACH_KM && distanceKm <= nextAirportKm + AIRPORT_GRACE_KM;
+            if (inApproach && !nearAirport) {
+              initAirport(); // faz surgir de novo a pista e os edifícios à frente do avião
+              setMessage('🛬 Aeroporto à vista!');
+            }
+            nearAirport = inApproach;
             updateObstacles(worldSpeed);
-            score = Math.max(score, Math.floor(distanceKm * 480) + stats.planesEvaded * 15 + stats.flocksEvaded * 10 + stats.stallsRecovered * 20 + stats.idealSpeedBonus * 25 + (stats.perfectTakeoff ? 50 : 0));
+            score = Math.max(score, Math.floor(distanceKm * 480) + stats.planesEvaded * 15 + stats.flocksEvaded * 10 + stats.stallsRecovered * 20 + stats.idealSpeedBonus * 25 + (stats.perfectTakeoff ? 50 : 0) + stats.landings * 150);
           }
         }
+        updateExplosion();
         draw();
         rafId = requestAnimationFrame(loop);
       }
