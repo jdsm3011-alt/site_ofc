@@ -9076,8 +9076,59 @@
     const AvionGame = (function() {
       const canvas = document.getElementById('offline-game-canvas');
       if (!canvas) return { init(){}, startRun(){}, stop(){} };
-      const ctx = canvas.getContext('2d');
+      // { alpha: false } — o fundo (drawSky) pinta sempre o canvas inteiro
+      // antes de mais nada, por isso o canal alfa nunca é preciso; sem ele o
+      // browser pode compor o canvas como opaco, o que é bastante mais leve
+      // em mobile (menos comum em desktop, mas ajuda sobretudo lá)
+      const ctx = canvas.getContext('2d', { alpha: false });
       const W = canvas.width, H = canvas.height;
+
+      // ── gradientes 100% estáticos do avião, pré-computados uma única vez ──
+      // no drawPlane() original estes eram recriados a cada frame (a 60fps)
+      // apesar de terem sempre as mesmas coordenadas/cores — criar um
+      // CanvasGradient tem um custo não-trivial em CPUs móveis mais fracas,
+      // por isso vale a pena computá-los só uma vez e reutilizar a mesma
+      // instância em todos os frames. Visualmente é exatamente o mesmo
+      // resultado, só muda o "quando" são construídos.
+      const PLANE_FIN_GRAD = (() => {
+        const g = ctx.createLinearGradient(-10, -7.4, -16.5, -1.6);
+        g.addColorStop(0, '#8B948F');
+        g.addColorStop(0.55, '#57615D');
+        g.addColorStop(1, '#333B39');
+        return g;
+      })();
+      const PLANE_BODY_GRAD = (() => {
+        const g = ctx.createLinearGradient(0, -2.6, 0, 2.85);
+        g.addColorStop(0, '#F2F2EB');
+        g.addColorStop(0.22, '#E7E9E2');
+        g.addColorStop(0.52, '#C7C9C2');
+        g.addColorStop(0.8, '#93998F');
+        g.addColorStop(1, '#575F5A');
+        return g;
+      })();
+      const PLANE_SHADE_GRAD = (() => {
+        const g = ctx.createLinearGradient(0, 0.4, 0, 2.85);
+        g.addColorStop(0, 'rgba(40,46,44,0)');
+        g.addColorStop(1, 'rgba(40,46,44,0.28)');
+        return g;
+      })();
+      const PLANE_SPEC_GRAD = (() => {
+        const g = ctx.createLinearGradient(0, -2.6, 0, 0);
+        g.addColorStop(0, 'rgba(255,255,255,0.32)');
+        g.addColorStop(1, 'rgba(255,255,255,0.0)');
+        return g;
+      })();
+      const PLANE_NACELLE_GRAD = (() => {
+        // m = { x: -1.0, y: 4.6, s: 1.55 } — constantes usadas no drawPlane original
+        const g = ctx.createLinearGradient(-1.0, 4.6 - 1.55 * 0.55, -1.0, 4.6 + 1.55 * 0.55);
+        g.addColorStop(0, '#EEEFE9');
+        g.addColorStop(0.45, '#C4C8C1');
+        g.addColorStop(1, '#565E5A');
+        return g;
+      })();
+      // vinheta é cacheada num canvas offscreen dentro de init() (só aí temos
+      // as cores finais lidas via readColors())
+      let vignetteCanvas = null;
 
       const PLANE_X = 116, PLANE_R = 9;
       // altitude total que se pode subir acima do repouso em pista, em unidades
@@ -10828,10 +10879,7 @@
 
         // ══════════════ BARBATANA VERTICAL (cauda) ══════════════
         // triângulo único, bem proporcionado, atrás do topo da fuselagem
-        const finGrad = ctx.createLinearGradient(-10, -7.4, -16.5, -1.6);
-        finGrad.addColorStop(0, '#8B948F');
-        finGrad.addColorStop(0.55, '#57615D');
-        finGrad.addColorStop(1, '#333B39');
+        const finGrad = PLANE_FIN_GRAD;
 
         ctx.fillStyle = 'rgba(18, 22, 22, 0.14)';
         ctx.beginPath();
@@ -10876,12 +10924,7 @@
           ctx.quadraticCurveTo(16.2, 2.15, 18.6, 0.1);
         };
 
-        const bodyGrad = ctx.createLinearGradient(0, -2.6, 0, 2.85);
-        bodyGrad.addColorStop(0, '#F2F2EB');
-        bodyGrad.addColorStop(0.22, '#E7E9E2');
-        bodyGrad.addColorStop(0.52, '#C7C9C2');
-        bodyGrad.addColorStop(0.8, '#93998F');
-        bodyGrad.addColorStop(1, '#575F5A');
+        const bodyGrad = PLANE_BODY_GRAD;
 
         ctx.save();
         ctx.beginPath(); fuselagePath(); ctx.closePath();
@@ -10891,15 +10934,11 @@
         // sombra inferior para dar volume ao tubo
         ctx.beginPath(); fuselagePath(); ctx.closePath();
         ctx.clip();
-        const shadeGrad = ctx.createLinearGradient(0, 0.4, 0, 2.85);
-        shadeGrad.addColorStop(0, 'rgba(40,46,44,0)');
-        shadeGrad.addColorStop(1, 'rgba(40,46,44,0.28)');
+        const shadeGrad = PLANE_SHADE_GRAD;
         ctx.fillStyle = shadeGrad;
         ctx.fillRect(-19, -3, 40, 6.2);
 
-        const specGrad = ctx.createLinearGradient(0, -2.6, 0, 0);
-        specGrad.addColorStop(0, 'rgba(255,255,255,0.32)');
-        specGrad.addColorStop(1, 'rgba(255,255,255,0.0)');
+        const specGrad = PLANE_SPEC_GRAD;
         ctx.fillStyle = specGrad;
         ctx.fillRect(-19, -2.6, 40, 1.6);
         ctx.restore();
@@ -11018,10 +11057,7 @@
         ctx.fill();
 
         // nacelle (corpo do motor)
-        const nacelleGrad = ctx.createLinearGradient(m.x, m.y - m.s * 0.55, m.x, m.y + m.s * 0.55);
-        nacelleGrad.addColorStop(0, '#EEEFE9');
-        nacelleGrad.addColorStop(0.45, '#C4C8C1');
-        nacelleGrad.addColorStop(1, '#565E5A');
+        const nacelleGrad = PLANE_NACELLE_GRAD;
         ctx.fillStyle = nacelleGrad;
         ctx.beginPath();
         ctx.ellipse(m.x, m.y, m.s, m.s * 0.55, 0, 0, Math.PI * 2);
@@ -11233,13 +11269,26 @@
         }
       }
 
-      // vinheta suave nas bordas — dá um toque cinematográfico ao enquadramento
-      function drawVignette() {
-        const g = ctx.createRadialGradient(W / 2, H * 0.55, H * 0.25, W / 2, H * 0.55, W * 0.62);
+      // vinheta suave nas bordas — dá um toque cinematográfico ao enquadramento.
+      // É sempre exatamente igual (só depende de W/H/colors.ink, fixos durante
+      // o jogo), por isso é pré-renderizada uma vez para um canvas offscreen
+      // em init() e aqui só se faz drawImage — poupa recriar um radial
+      // gradient + fillRect do ecrã inteiro em todos os frames.
+      function buildVignetteCanvas() {
+        const off = document.createElement('canvas');
+        off.width = W; off.height = H;
+        const octx = off.getContext('2d');
+        const g = octx.createRadialGradient(W / 2, H * 0.55, H * 0.25, W / 2, H * 0.55, W * 0.62);
         g.addColorStop(0, 'rgba(0,0,0,0)');
         g.addColorStop(1, hexToRgba(colors.ink, 0.14));
-        ctx.fillStyle = g;
-        ctx.fillRect(0, 0, W, H);
+        octx.fillStyle = g;
+        octx.fillRect(0, 0, W, H);
+        return off;
+      }
+
+      function drawVignette() {
+        if (!vignetteCanvas) vignetteCanvas = buildVignetteCanvas();
+        ctx.drawImage(vignetteCanvas, 0, 0);
       }
 
       function centerLines(lines, color) {
