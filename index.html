@@ -10373,13 +10373,13 @@
           // teleguiado, mais aviões que cruzam o céu em vez de te perseguirem
           const missileChance = Math.min(0.34, 0.08 + getThreatIntensity() * 0.14);
           if (pattern < missileChance) {
-            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 130, vx: -(0.5 + Math.random() * 0.3 + difficulty * 0.14) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: plane.y + (Math.random() - 0.5) * 130, vx: -(0.5 + Math.random() * 0.3 + difficulty * 0.14) * npcSpeed, vy: 0, r: 8, scored: false, foggy, phase: Math.random() * Math.PI * 2 });
           } else if (pattern < 0.82) {
             const fromAbove = Math.random() < 0.5;
             const crossY = plane.y + (fromAbove ? -1 : 1) * (80 + Math.random() * 52);
-            obstacles.push({ kind: 'plane', x: W + 30, y: crossY, vx: -(0.7 + difficulty * 0.18) * npcSpeed, vy: (fromAbove ? 1 : -1) * 0.5 * npcSpeed, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: crossY, vx: -(0.7 + difficulty * 0.18) * npcSpeed, vy: (fromAbove ? 1 : -1) * 0.5 * npcSpeed, r: 8, scored: false, foggy, phase: Math.random() * Math.PI * 2 });
           } else {
-            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -(0.8 + difficulty * 0.16) * npcSpeed, vy: 0, r: 8, scored: false, foggy });
+            obstacles.push({ kind: 'plane', x: W + 30, y: altBand, vx: -(0.8 + difficulty * 0.16) * npcSpeed, vy: 0, r: 8, scored: false, foggy, phase: Math.random() * Math.PI * 2 });
           }
         } else {
           const count = 1 + Math.floor(Math.random() * 2);
@@ -10415,8 +10415,16 @@
             o.x += o.vx * cometBoost;
             o.y += o.vy * (1.05 + getThreatIntensity() * 0.25);
           } else {
+            // avião NPC: leve ondulação senoidal em vez de reta perfeita — e um
+            // pequeno desvio de "evasão" quando passa muito perto do jogador,
+            // como se o piloto tivesse reagido, sem chegar a ser perseguição
             o.x -= (worldSpeed * 0.5 + Math.abs(o.vx));
-            o.y += o.vy;
+            o.y += o.vy + Math.sin(Date.now() * 0.0022 + (o.phase || 0)) * 0.22;
+            const closeX = Math.abs(o.x - PLANE_X) < 55;
+            const dyToPlane = o.y - plane.y;
+            if (closeX && Math.abs(dyToPlane) < 34 && Math.abs(dyToPlane) > PLANE_R + o.r) {
+              o.y += Math.sign(dyToPlane) * 0.35;
+            }
           }
 
           // colisão
@@ -11050,7 +11058,7 @@
         ctx.globalAlpha = outOfFuel ? fuelPulse : (fuelLow ? 0.55 + 0.35 * fuelPulse : 0.75);
         ctx.fillRect(fx, fy, fw * (plane.fuel / FUEL_MAX), fh);
         ctx.globalAlpha = 0.85; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
-        hudChipText('⛽ FUEL', fx, fy - 6, (outOfFuel || fuelLow) ? HUD_WARN : HUD_TEXT, 9.5, 5, 2);
+        hudPlainText('⛽ FUEL', fx, fy - 6, (outOfFuel || fuelLow) ? HUD_WARN : HUD_TEXT);
         ctx.globalAlpha = 1;
 
         // barra de throttle
@@ -11060,7 +11068,7 @@
         ctx.fillStyle = outOfFuel ? colors.stone : colors.ochre; ctx.globalAlpha = 0.75;
         ctx.fillRect(bx, by, bw * plane.throttle, bh);
         ctx.globalAlpha = 0.85; ctx.font = '600 9.5px "IBM Plex Mono", monospace';
-        hudChipText('THROTTLE', bx, by - 6, HUD_TEXT, 9.5, 5, 2);
+        hudPlainText('THROTTLE', bx, by - 6, HUD_TEXT);
         ctx.globalAlpha = 1;
 
         // velocidade e pitch — acima do indicador de altitude, com espaçamento
@@ -11285,7 +11293,7 @@
         }
       }
 
-      function loop() {
+      function stepGame() {
         const worldSpeed = running ? getWorldSpeed() : 0.12;
         if (running) elapsedTime += 1 / 60;
         updateClouds();
@@ -11314,6 +11322,18 @@
           }
         }
         updateExplosion();
+      }
+
+      // ── loop principal: um passo de física por frame de rAF, tal como
+      // antes — testámos desacoplar a física do refresh rate do ecrã com um
+      // acumulador de tempo fixo, mas pequenas variações no timing do
+      // requestAnimationFrame faziam o acumulador ficar sistematicamente
+      // atrás do relógio real, dando sensação de jogo mais lento. Mais vale
+      // manter o comportamento simples e direto que já estava afinado.
+      let lastFrameTime = 0;
+
+      function loop() {
+        stepGame();
         draw();
         rafId = requestAnimationFrame(loop);
       }
@@ -11396,6 +11416,7 @@
         if (!listenersOn) return;
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
+        lastFrameTime = 0;
         window.removeEventListener('keydown', onKeyDown);
         window.removeEventListener('keyup', onKeyUp);
         dirUp = false; dirDown = false; dirLeft = false; dirRight = false;
