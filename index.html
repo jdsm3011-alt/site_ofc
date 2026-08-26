@@ -5710,12 +5710,13 @@
 
     L.control.scale({ position: 'bottomleft', maxWidth: 120 }).addTo(map);
 
-    const TILE_LIGHT = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
-    const TILE_DARK = 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png';
+    const TILE_LIGHT = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}';
+    const TILE_DARK = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}';
 
     const baseTileLayer = L.tileLayer(TILE_LIGHT, {
-      attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; OpenStreetMap',
-      maxZoom: 20
+      attribution: '&copy; <a href="https://www.esri.com/" target="_blank">Esri</a>, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS user community',
+      maxZoom: 19,
+      maxNativeZoom: 16
     }).addTo(map);
 
     // Garante que o Leaflet recalcula o tamanho do container após o layout assentar
@@ -6338,7 +6339,7 @@
           fadeAnimation: false
         });
         var temaEscuro = document.documentElement.getAttribute('data-theme') === 'dark';
-        c.tileLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom: 19 }).addTo(c.map);
+        c.tileLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom: 19, maxNativeZoom: 16 }).addTo(c.map);
       } catch(e) {}
 
       return c;
@@ -8663,7 +8664,7 @@
       heroMap.setView([39.6, -8.2], 7);
 
       const temaEscuro = document.documentElement.getAttribute('data-theme') === 'dark';
-      heroBaseLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom: 19 }).addTo(heroMap);
+      heroBaseLayer = L.tileLayer(temaEscuro ? TILE_DARK : TILE_LIGHT, { maxZoom: 19, maxNativeZoom: 16 }).addTo(heroMap);
 
       try {
         const [resMunicipios, resGeojson] = await Promise.all([
