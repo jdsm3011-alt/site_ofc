@@ -1757,16 +1757,17 @@
       transform: translateX(4px);
     }
 
-    /* Transição ao clicar "Abrir fGIS": um círculo escuro expande-se a
-       partir do botão até cobrir todo o ecrã (efeito "íris"), com uma
-       pequena etiqueta a confirmar a ação, antes de navegar. */
+    /* Transição ao clicar "Abrir fGIS": um círculo em tom de papel
+       escurecido expande-se a partir do botão até cobrir todo o ecrã
+       (efeito "íris"), com uma pequena etiqueta a confirmar a ação,
+       antes de navegar. */
     .fgis-iris-overlay {
       position: fixed;
       inset: 0;
       z-index: 2147483647;
       pointer-events: auto;
       background:
-        radial-gradient(circle at 50% 50%, #1c2b1f 0%, #101710 55%, #0a0d09 100%);
+        radial-gradient(circle at 50% 50%, #E4D9BE 0%, #D2C4A0 55%, #B8A67C 100%);
       clip-path: circle(0% at var(--fgis-iris-x, 50%) var(--fgis-iris-y, 50%));
       transition: clip-path .9s cubic-bezier(.65, 0, .35, 1);
     }
@@ -1796,8 +1797,8 @@
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      border: 2px solid rgba(234, 231, 220, .22);
-      border-top-color: rgba(234, 231, 220, .85);
+      border: 2px solid rgba(23, 49, 36, .18);
+      border-top-color: rgba(23, 49, 36, .78);
       animation: fgisIrisSpin .9s linear infinite;
     }
 
@@ -1805,8 +1806,8 @@
       font-family: 'Spectral', serif;
       font-size: 15px;
       letter-spacing: .03em;
-      color: #EAE7DC;
-      opacity: .92;
+      color: #173124;
+      opacity: .85;
     }
 
     @keyframes fgisIrisSpin {
