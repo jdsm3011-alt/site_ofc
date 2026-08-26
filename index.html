@@ -1677,6 +1677,124 @@
       }
     }
 
+    /* ── FGIS SPOTLIGHT ──────────────────────── */
+    .fgis-spotlight {
+      position: relative;
+      z-index: 1;
+      padding: 56px 32px;
+      background: linear-gradient(180deg, var(--paper-elevated), var(--paper));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .fgis-spotlight-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: .78fr 1.32fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .fgis-spotlight-content h2 {
+      font-family: 'Spectral', serif;
+      font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+      color: var(--ink);
+      margin: 8px 0 14px;
+      line-height: 1.25;
+    }
+
+    .fgis-spotlight-content > p {
+      color: var(--stone);
+      line-height: 1.7;
+      font-size: 14.5px;
+      max-width: 40ch;
+      margin-bottom: 18px;
+    }
+
+    .fgis-spotlight-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 26px;
+      padding: 0;
+    }
+
+    .fgis-spotlight-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .fgis-check {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(61, 107, 79, .1);
+      color: var(--green);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .fgis-spotlight-cta {
+      gap: 8px;
+    }
+
+    .fgis-spotlight-cta span:last-child {
+      display: inline-block;
+      transition: transform .3s ease;
+    }
+
+    .fgis-spotlight-cta:hover span:last-child {
+      transform: translateX(4px);
+    }
+
+    /* Screenshot real do fGIS */
+    .fgis-spotlight-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .fgis-spotlight-visual img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1400 / 660;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      display: block;
+      transition: transform .35s ease, box-shadow .35s ease;
+      will-change: transform;
+    }
+
+    .fgis-spotlight-visual img:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 900px) {
+      .fgis-spotlight {
+        padding: 44px 16px;
+      }
+      .fgis-spotlight-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .fgis-spotlight-content > p {
+        max-width: none;
+      }
+      .fgis-spotlight-visual {
+        order: -1;
+      }
+    }
+
     /* ── LANDING DETAILS ─────────────────────── */
     .landing-details {
       position: relative;
@@ -1736,7 +1854,7 @@
     .methodology-section {
       position: relative;
       z-index: 1;
-      padding: 56px 48px 12px;
+      padding: 56px 48px 72px;
       background: linear-gradient(180deg, #f8f5ec, #f5efe0);
     }
 
@@ -1865,9 +1983,12 @@
         border-bottom: none;
       }
 
-      .workflow-section,
-      .methodology-section {
+      .workflow-section {
         padding: 44px 16px 10px;
+      }
+
+      .methodology-section {
+        padding: 44px 16px 48px;
       }
     }
 
@@ -2952,7 +3073,7 @@
         linear-gradient(180deg, #f7f5ef, #efe9d9),
         radial-gradient(circle at top, rgba(61, 107, 79, .04), transparent 18%);
       border-top: 1px solid var(--line);
-      padding: 20px 32px 48px;
+      padding: 64px 32px 48px;
     }
 
     .site-footer-inner {
@@ -3097,7 +3218,7 @@
 
     @media (max-width: 900px) {
       .site-footer {
-        padding: 14px 20px 32px;
+        padding: 44px 20px 32px;
       }
 
       .legal-grid {
@@ -4578,7 +4699,7 @@
 
         <p class="lead"></p>
         <div class="hero-actions">
-          <a class="btn-primary" href="#map">
+          <a class="btn-primary" href="#map" id="explorar-mapa-btn">
             <span class="btn-primary-label" data-i18n="hero.explorar">Explorar o mapa</span>
             <span class="btn-primary-arrow" aria-hidden="true">→</span>
           </a>
@@ -5485,6 +5606,28 @@
       }
     })();
   </script>
+
+  <section class="fgis-spotlight">
+    <div class="fgis-spotlight-inner">
+      <div class="fgis-spotlight-content">
+        <div class="eyebrow">Ferramenta em destaque</div>
+        <h2>Um SIG, direto no browser</h2>
+        <p>Sobrepõe camadas geográficas deste portal (ou de outras origens), vetoriza e edita geometrias, e faz recurso de ferramentas de geoprossesamento como georreferenciação de imagens e rasters e muito mais. Tudo isto sem instalar software.</p>
+        <ul class="fgis-spotlight-features">
+          <li><span class="fgis-check">✓</span> Sobreposição de camadas e edição de geometrias</li>
+          <li><span class="fgis-check">✓</span> cria e guarda projetos (tenha apenas em conta que ficam hospedados no seu browser)</li>
+          <li><span class="fgis-check">✓</span> Georreferenciação de imagens e rasters</li>
+        </ul>
+        <a class="btn-secondary fgis-spotlight-cta" href="engenh.html">
+          <span>Abrir fGIS</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="fgis-spotlight-visual">
+        <img src="assets/fgis-preview.jpg" alt="Interface do fGIS a mostrar camadas de edifícios e edição de geometrias sobre ortofoto" loading="lazy" width="1400" height="660">
+      </div>
+    </div>
+  </section>
 
   <footer class="site-footer" id="site-footer">
 
@@ -11709,6 +11852,21 @@
         showOffline();
       }
 
+    })();
+  </script>
+
+  <script>
+    // ── Botão "Explorar o mapa": centra o mapa no ecrã em vez de o
+    // colocar apenas no topo (comportamento padrão do anchor #map) ──
+    (function () {
+      const btn = document.getElementById('explorar-mapa-btn');
+      const mapEl = document.getElementById('map');
+      if (!btn || !mapEl) return;
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
     })();
   </script>
 
