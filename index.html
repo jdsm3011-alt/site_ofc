@@ -1744,6 +1744,8 @@
 
     .fgis-spotlight-cta {
       gap: 8px;
+      border-radius: 6px !important;
+      padding: 12px 22px;
     }
 
     .fgis-spotlight-cta span:last-child {
@@ -1753,6 +1755,74 @@
 
     .fgis-spotlight-cta:hover span:last-child {
       transform: translateX(4px);
+    }
+
+    /* Transição ao clicar "Abrir fGIS": um círculo escuro expande-se a
+       partir do botão até cobrir todo o ecrã (efeito "íris"), com uma
+       pequena etiqueta a confirmar a ação, antes de navegar. */
+    .fgis-iris-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      pointer-events: auto;
+      background:
+        radial-gradient(circle at 50% 50%, #1c2b1f 0%, #101710 55%, #0a0d09 100%);
+      clip-path: circle(0% at var(--fgis-iris-x, 50%) var(--fgis-iris-y, 50%));
+      transition: clip-path .9s cubic-bezier(.65, 0, .35, 1);
+    }
+
+    .fgis-iris-overlay.is-active {
+      clip-path: circle(140% at var(--fgis-iris-x, 50%) var(--fgis-iris-y, 50%));
+    }
+
+    .fgis-iris-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+
+    .fgis-iris-label.is-visible {
+      opacity: 1;
+    }
+
+    .fgis-iris-ring {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid rgba(234, 231, 220, .22);
+      border-top-color: rgba(234, 231, 220, .85);
+      animation: fgisIrisSpin .9s linear infinite;
+    }
+
+    .fgis-iris-text {
+      font-family: 'Spectral', serif;
+      font-size: 15px;
+      letter-spacing: .03em;
+      color: #EAE7DC;
+      opacity: .92;
+    }
+
+    @keyframes fgisIrisSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fgis-iris-overlay {
+        transition: none !important;
+      }
+
+      .fgis-iris-ring {
+        animation: none !important;
+      }
     }
 
     /* Screenshot real do fGIS */
@@ -5610,16 +5680,14 @@
   <section class="fgis-spotlight">
     <div class="fgis-spotlight-inner">
       <div class="fgis-spotlight-content">
-        <div class="eyebrow">Ferramenta em destaque</div>
-        <h2>Um SIG, direto no browser</h2>
-        <p>Sobrepõe camadas geográficas deste portal (ou de outras origens), vetoriza e edita geometrias, e faz recurso de ferramentas de geoprossesamento como georreferenciação de imagens e rasters e muito mais. Tudo isto sem instalar software.</p>
+        <div class="eyebrow" data-i18n="fgis.eyebrow">Ferramenta em destaque</div>
+        <h2 data-i18n="fgis.title">Um SIG, direto no browser</h2>
+        <p data-i18n="fgis.text">Sobrepõe camadas geográficas deste portal (ou de outras origens), vetoriza e edita geometrias, e faz recurso de ferramentas de geoprossesamento como georreferenciação de imagens e rasters e muito mais. Tudo isto sem instalar software.</p>
         <ul class="fgis-spotlight-features">
-          <li><span class="fgis-check">✓</span> Sobreposição de camadas e edição de geometrias</li>
-          <li><span class="fgis-check">✓</span> cria e guarda projetos (tenha apenas em conta que ficam hospedados no seu browser)</li>
-          <li><span class="fgis-check">✓</span> Georreferenciação de imagens e rasters</li>
+          
         </ul>
         <a class="btn-secondary fgis-spotlight-cta" href="engenh.html">
-          <span>Abrir fGIS</span>
+          <span data-i18n="fgis.cta">Abrir fGIS</span>
           <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -9152,7 +9220,12 @@
           'legal.legislacaoList': '<li>Open Data policies and licences of the Directorate-General for Territory (DGT).</li><li>Licence <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 International (CC BY 4.0)</a>, applicable to DGT\'s LiDAR data and the derived products made available by FCUP.</li><li>Licence <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Open Database License (ODbL) 1.0</a>, applicable to OpenStreetMap data.</li><li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj" target="_blank" rel="noopener">Regulation (EU) 2016/679</a> (General Data Protection Regulation – GDPR), whenever personal data or identifiable elements are processed.</li><li><a href="https://diariodarepublica.pt/dr/detalhe/lei/58-2019-123815982" target="_blank" rel="noopener">Law no. 58/2019</a>, of 8 August, which implements the GDPR under Portuguese law.</li><li><a href="https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32007L0002" target="_blank" rel="noopener">Directive 2007/2/EC (INSPIRE)</a>, on establishing an Infrastructure for Spatial Information in the European Community.</li><li><a href="https://diariodarepublica.pt/dr/detalhe/decreto-lei/83-2018-116132760" target="_blank" rel="noopener">Decree-Law no. 83/2018</a>, which establishes Portugal\'s National Geographic Information Infrastructure (SNIG) and transposes the INSPIRE Directive into national law.</li><li><a href="https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32019L1024" target="_blank" rel="noopener">Directive (EU) 2019/1024</a>, on open data and the re-use of public sector information, transposed into Portuguese law by <a href="https://diariodarepublica.pt/dr/detalhe/lei/68-2021-169723842" target="_blank" rel="noopener">Law no. 68/2021</a>.</li><li><a href="https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1985-34475475" target="_blank" rel="noopener">Portuguese Copyright and Related Rights Code</a>, applicable to the use, reproduction and distribution of the content made available.</li>',
 
           'legal.isencaoTitle': 'Disclaimer',
-          'legal.isencaoList': '<li>The portal and its authors do not guarantee the absence of errors, immediate updates or full data integrity.</li><li>The user assumes full responsibility for the use made of the data consulted or downloaded.</li><li>Any decision based on this data should be confirmed with the producing entities or through appropriate official sources.</li><li>The geographic clips, analyses, visualisations and derived products made available on this portal are the sole responsibility of their authors and do not represent official positions of DGT, FCUP, INE, ICNF or OpenStreetMap.</li><li>In case of discrepancies between the portal and the original sources, the official information published by the producing entities prevails.</li>'
+          'legal.isencaoList': '<li>The portal and its authors do not guarantee the absence of errors, immediate updates or full data integrity.</li><li>The user assumes full responsibility for the use made of the data consulted or downloaded.</li><li>Any decision based on this data should be confirmed with the producing entities or through appropriate official sources.</li><li>The geographic clips, analyses, visualisations and derived products made available on this portal are the sole responsibility of their authors and do not represent official positions of DGT, FCUP, INE, ICNF or OpenStreetMap.</li><li>In case of discrepancies between the portal and the original sources, the official information published by the producing entities prevails.</li>',
+
+          'fgis.eyebrow': 'Featured tool',
+          'fgis.title': 'A GIS, right in your browser.',
+          'fgis.text': 'Overlay geographic layers from this portal (or other sources), vectorize and edit geometries, and use geoprocessing tools such as image and raster georeferencing, and much more — all without installing any software.',
+          'fgis.cta': 'Open fGIS'
         }
       };
 
@@ -9270,6 +9343,91 @@
         initLangToggle();
       }
       })();
+
+    // ── FGIS SPOTLIGHT: transição "íris" ao clicar "Abrir fGIS" ──
+    // Um círculo escuro expande-se a partir do botão até cobrir o ecrã;
+    // assim que fecha por completo, mostra uma pequena etiqueta "A abrir
+    // fGIS…" (para o utilizador perceber que algo está a acontecer, mesmo
+    // que a página seguinte demore um pouco a carregar), e só então navega.
+    (function () {
+      var cta = document.querySelector('.fgis-spotlight-cta');
+      if (!cta) return;
+
+      var IRIS_DURATION = 900;
+      var LABEL_DELAY = 250;
+      var NAV_DELAY = 700;
+      var navigating = false;
+
+      // pré-carrega o engenh.html assim que o utilizador mostra intenção
+      // (hover/focus no botão), para o site já estar em cache do browser
+      // quando a animação terminar e a navegação real for quase instantânea
+      var prefetched = false;
+      function prefetchFgis() {
+        if (prefetched) return;
+        prefetched = true;
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = cta.getAttribute('href');
+        document.head.appendChild(link);
+      }
+      cta.addEventListener('mouseenter', prefetchFgis);
+      cta.addEventListener('focus', prefetchFgis);
+      cta.addEventListener('touchstart', prefetchFgis, { passive: true });
+
+      cta.addEventListener('click', function (e) {
+        // deixa o browser tratar normalmente cliques com modificadores
+        // (abrir em nova aba, etc.) ou que outro handler já tenha travado
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        if (navigating) { e.preventDefault(); return; }
+
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) return; // navegação normal, sem animação
+
+        e.preventDefault();
+        navigating = true;
+        prefetchFgis();
+
+        var href = cta.href;
+
+        // o círculo nasce no centro do próprio botão — sente-se como se a
+        // ação partisse dali, em vez de um efeito genérico no ecrã
+        var btnRect = cta.getBoundingClientRect();
+        var originX = btnRect.left + btnRect.width / 2;
+        var originY = btnRect.top + btnRect.height / 2;
+
+        var overlay = document.createElement('div');
+        overlay.className = 'fgis-iris-overlay';
+        overlay.style.setProperty('--fgis-iris-x', originX + 'px');
+        overlay.style.setProperty('--fgis-iris-y', originY + 'px');
+
+        var label = document.createElement('div');
+        label.className = 'fgis-iris-label';
+        label.innerHTML = '<span class="fgis-iris-ring" aria-hidden="true"></span>' +
+          '<span class="fgis-iris-text">A abrir fGIS…</span>';
+        overlay.appendChild(label);
+
+        document.body.appendChild(overlay);
+        void overlay.offsetWidth; // força reflow antes de mudar para o estado final
+
+        // duplo rAF: garante que o browser pinta o estado inicial (círculo
+        // fechado) antes de aplicarmos o estado final — com um só rAF
+        // alguns browsers colapsam os dois estados e o clip-path não
+        // chega a ser animado
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            overlay.classList.add('is-active');
+          });
+        });
+
+        setTimeout(function () {
+          label.classList.add('is-visible');
+        }, IRIS_DURATION + LABEL_DELAY);
+
+        setTimeout(function () {
+          window.location.href = href;
+        }, IRIS_DURATION + NAV_DELAY);
+      });
+    })();
 
     // ── MINI-JOGO OFFLINE: voo livre com física simplificada (só desktop) ──
     const AvionGame = (function() {
