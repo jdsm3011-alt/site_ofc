@@ -1,7 +1,11 @@
 ﻿/* ============================================================
    ESTADO GLOBAL
    ============================================================ */
-let config = {
+/* NOTA: variáveis usadas no MANIFEST de integridade (critical)
+   são declaradas com var para ficarem acessíveis em window.xxx.
+   let/const ao nível superior de scripts clássicos NÃO cria
+   propriedades em window, pelo que o pre-boot gate não as deteta. */
+var config = {
   shapeName: null,      // nome dado à "shape"/camada (ex: "Estradas") — mostrado no painel
   mode: null,          // 'simples' | 'atributos'
   attributes: [],       // [{name, type:'texto'|'numero'|'categorico', classes:[{name,color}]}]
@@ -19,29 +23,29 @@ let config = {
    - "layers" guarda as camadas já fechadas (criadas antes da atual)
    - "activeLayerId" identifica a camada em que se está a desenhar agora (representada por "config")
    - "layerVisible" controla se cada camada (incl. a ativa) está visível no mapa */
-let layerCounter = 0;
-let activeLayerId = 0;
-let symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
-let layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
-let layerVisible = new Map();
+var layerCounter = 0;
+var activeLayerId = 0;
+var symbologyLayerId = null;  // camada cujo painel de simbologia está aberto (null = fechado)
+var layers = []; // [{id, name, geometryType, mode, attributes, colorAttr}]
+var layerVisible = new Map();
 
 /* Ordem de empilhamento das camadas no mapa (índice 0 = topo/mais à frente,
    último índice = fundo/mais atrás). Controlada ao arrastar as linhas no painel. */
-let layerOrder = [];
-let layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
+var layerOrder = [];
+var layerPanes = new Map(); // layerId -> nome do pane Leaflet dedicado a essa camada
 
-let featureCounter = 0;
-let featuresData = new Map(); // leafletLayerId -> {layer, props}
-let drawnGroup;
-let measuresGroup; // etiquetas com as medidas dos lados (modo "Medidas" por geometria)
-let rulerGroup; // linha e etiquetas da ferramenta de régua (medição livre, não é uma geometria do projeto)
-let map;
-let activeBaseLayerKey = 'satelite';
-let basemapLayers = null;
+var featureCounter = 0;
+var featuresData = new Map(); // leafletLayerId -> {layer, props}
+var drawnGroup;
+var measuresGroup; // etiquetas com as medidas dos lados (modo "Medidas" por geometria)
+var rulerGroup; // linha e etiquetas da ferramenta de régua (medição livre, não é uma geometria do projeto)
+var map;
+var activeBaseLayerKey = 'satelite';
+var basemapLayers = null;
 
-let workspaces = [];
-let currentWorkspaceId = null;
-let currentWorkspace = null;
+var workspaces = [];
+var currentWorkspaceId = null;
+var currentWorkspace = null;
 
 let suppressProjectRestoreErrorAlert = false;
 let pendingExitAction = null;
@@ -115,6 +119,14 @@ function persistCurrentWorkspaceState(){
   if(_persistTimer){ clearTimeout(_persistTimer); }
   _persistTimer = setTimeout(_doPersistNow, 150);
 }
+function flushPersistCurrentWorkspaceState(){
+  if(_persistTimer){
+    clearTimeout(_persistTimer);
+    _persistTimer = null;
+  }
+  _doPersistNow();
+}
+window.flushPersistCurrentWorkspaceState = flushPersistCurrentWorkspaceState;
 function _doPersistNow(){
   _persistTimer = null;
   if(!currentWorkspace) return;
@@ -177,7 +189,7 @@ function applyWorkspaceState(workspace){
   // GANCHO Layouts: se estivermos a ver uma página de Layout, fecha-a e volta
   // à vista normal de Workspace (no-op seguro se js/09-layouts.js não existir).
   if(typeof window.leaveLayoutView === 'function') window.leaveLayoutView();
-  persistCurrentWorkspaceState();
+  flushPersistCurrentWorkspaceState();
   currentWorkspace = workspace;
   currentWorkspaceId = workspace.id;
   config = cloneConfig(workspace.config || {});
@@ -194,6 +206,7 @@ function applyWorkspaceState(workspace){
   layerPanes = workspace.layerPanes instanceof Map ? new Map(workspace.layerPanes) : new Map();
   featureCounter = Number.isFinite(workspace.featureCounter) ? workspace.featureCounter : 0;
   featuresData = workspace.featuresData instanceof Map ? workspace.featuresData : new Map();
+  if(typeof invalidateAnalysisCache === 'function') invalidateAnalysisCache();
   projectDirty = Boolean(workspace.projectDirty);
   localProjectState = workspace.localProjectState ? { ...workspace.localProjectState } : { name:null, active:false };
   activeBaseLayerKey = workspace.activeBaseLayerKey || 'satelite';
@@ -224,6 +237,7 @@ function applyWorkspaceState(workspace){
   refreshFeatList();
   renderLayersPanel();
   updateProjectStatusUI();
+  document.dispatchEvent(new CustomEvent('workspace-state-applied'));
 }
 
 function renderWorkspaceTabs(){
@@ -345,6 +359,7 @@ function closeWorkspace(id){
   workspaces.splice(closingIndex, 1);
 
   if(isCurrent){
+    flushPersistCurrentWorkspaceState();
     // impede que applyWorkspaceState tente persistir estado no workspace descartado
     currentWorkspace = null;
     currentWorkspaceId = null;

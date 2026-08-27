@@ -8,7 +8,7 @@
   var MANIFEST = {
     critical: [
       'map', 'drawnGroup', 'featuresData', 'activeLayerId', 'config',
-      'showAppAlert', 'importGeoJSONFeatures', 'refreshFeatList',
+      'showAppAlert', 'showNotification', 'importGeoJSONFeatures', 'refreshFeatList',
       'markProjectDirty', 'genFid', 'baseGeomType', 'getLayerSchema',
       'assignLayerPane', 'layerVisible', 'layerOrder', 'featureCounter',
       'escapeHtml', 'styleLayerDefault', 'pushHistoryAction',
@@ -16,7 +16,8 @@
       'zoomToLayer', 'renderLayersPanel', 'checkAllTopology',
       'ensureLayerPane', 'applyLayerZOrder', 'restyleAllLayers',
       'countLayerFeatures', 'getLayerFeatureEntries',
-      'resolveFeatureColor', 'dataGisMarkerIcon',
+      'resolveFeatureColor', 'resolveFeatureStrokeWidth', 'dataGisMarkerIcon',
+      'topologyWarningsEnabled', 'comparisonMode', 'showTeamToast',
       'initMap', 'loadSettings', 'saveSettings',
       'initializeWorkspaces', 'workspaces', 'currentWorkspace',
       'persistCurrentWorkspaceState', 'applyWorkspaceState',
@@ -24,10 +25,13 @@
       'proceedToMap', 'renderSettingsMenu'
     ],
     module: [
-      'Georef', 'AutoGeoref',
+      'Georef', 'AutoGeoref', 'LiveFlights', 'LiveLayers',
       'coordMode', 'updateCoordBar',
       'settings', 'applyTheme', 'DEFAULT_SETTINGS',
       'pbCreateLayerFromFeatureCollection', 'pbLoadMunicipiosData',
+      'invalidateAnalysisCache',
+      'openAnalysisPanel', 'closeAnalysisPanel', 'applyBuffer',
+      'runIntersect', 'runUnion', 'runDifference',
       '__runtimeErrors', '__stateConsistencyCheck'
     ],
     cdn: [
@@ -128,16 +132,16 @@
   var style = document.createElement('style');
   style.textContent = [
     '#integrity-overlay{',
-      'position:fixed;inset:0;z-index:99999;background:#0a0a0a;',
+      'position:fixed;right:16px;bottom:16px;width:min(560px,calc(100vw - 32px));height:min(460px,calc(100vh - 32px));z-index:99999;background:#0a0a0a;',
       'display:none;font-family:"IBM Plex Mono","Cascadia Code","Fira Code",monospace;',
-      'color:#8f8f8f;overflow:hidden;',
+      'color:#8f8f8f;overflow:hidden;border:1px solid #292929;border-radius:6px;box-shadow:0 12px 36px rgba(0,0,0,.45);',
     '}',
     '#integrity-overlay.ivo-visible{display:block;animation:ivoFadeIn .3s ease forwards;}',
     '#integrity-overlay.ivo-hide{animation:ivoFadeOut .4s ease forwards;}',
     '@keyframes ivoFadeIn{from{opacity:0}to{opacity:1}}',
     '@keyframes ivoFadeOut{from{opacity:1}to{opacity:0}}',
     '.ivo-wrap{',
-      'display:flex;flex-direction:column;height:100%;padding:20px 28px;',
+      'display:flex;flex-direction:column;height:100%;padding:16px 20px;',
       'box-sizing:border-box;',
     '}',
     '.ivo-header{',
@@ -478,15 +482,12 @@
           failParts.join('<br><br>') +
           '<br><br>Ficheiro(s) pode(m) ter falhado ao carregar.'
         );
-        if(typeof showAppAlert === 'function'){
-          showAppAlert(
-            'Verificacao de integridade detetou ' +
-            (criticalMissing.length + missingFiles.length) +
-            ' item(ns) em falta:\n\n' +
-            criticalMissing.concat(missingFiles).map(function(n){ return '  - ' + n; }).join('\n'),
-            {error: true}
-          );
-        }
+        alert(
+          'Verificacao de integridade detetou ' +
+          (criticalMissing.length + missingFiles.length) +
+          ' item(ns) em falta:\n\n' +
+          criticalMissing.concat(missingFiles).map(function(n){ return '  - ' + n; }).join('\n')
+        );
       } else {
         setProgress(100, true, false);
         addSummary(true,

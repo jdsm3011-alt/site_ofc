@@ -155,14 +155,15 @@
 
   /* ---------- smoke test: verifica funcoes criticas no arranque ---------- */
   var CRITICAL_FUNCS = [
-    'showAppAlert', 'importGeoJSONFeatures', 'refreshFeatList',
+    'showAppAlert', 'showNotification', 'importGeoJSONFeatures', 'refreshFeatList',
     'markProjectDirty', 'genFid', 'baseGeomType', 'getLayerSchema',
     'assignLayerPane', 'styleLayerDefault', 'pushHistoryAction',
     'onFeatureCreated', 'onFeatureRemoved', 'defaultSymbology',
     'zoomToLayer', 'renderLayersPanel', 'checkAllTopology',
     'ensureLayerPane', 'applyLayerZOrder', 'restyleAllLayers',
     'countLayerFeatures', 'getLayerFeatureEntries',
-    'resolveFeatureColor', 'dataGisMarkerIcon',
+    'resolveFeatureColor', 'resolveFeatureStrokeWidth', 'dataGisMarkerIcon',
+    'topologyWarningsEnabled', 'comparisonMode',
     'initMap', 'loadSettings', 'saveSettings',
     'initializeWorkspaces', 'proceedToMap', 'renderSettingsMenu',
     'enableGeorefAutoButtonIfZoomReady', 'setupGeorefMapEvents',
@@ -172,16 +173,16 @@
     'setupRulerMapEvents', 'renderOfflineAreasMenu',
     'updateConnectivityUI', 'applySettingsToEditing',
     'updateCoordBar', 'updateMapGridVisibility',
-    'renderLayersPanel', 'renderSymbologyPanel'
+    'renderSymbologyPanel', 'showTeamToast',
+    'LiveFlights', 'LiveLayers'
   ];
 
   function runSmokeTest(){
     var missing = [];
-    var failed  = [];
     for(var i = 0; i < CRITICAL_FUNCS.length; i++){
       var name = CRITICAL_FUNCS[i];
       try {
-        var fn = new Function('return typeof window["' + name + '"] === "function"');
+        var fn = new Function('var v=window["' + name + '"]; return v !== undefined && v !== null');
         if(!fn()) missing.push(name);
       } catch(e){
         missing.push(name);
@@ -190,12 +191,6 @@
     if(missing.length > 0){
       push('smoke-test',
         'Funcoes criticas em falta (' + missing.length + '): ' + missing.join(', '),
-        '16-runtime-errors.js', 0, 0, '', null
-      );
-    }
-    if(failed.length > 0){
-      push('smoke-test',
-        'Funcoes criticas que falharam ao invocar (' + failed.length + '): ' + failed.join(', '),
         '16-runtime-errors.js', 0, 0, '', null
       );
     }

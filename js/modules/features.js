@@ -17,6 +17,14 @@ function _updateApplyBtn(){
   if(_symbPendingApply){ btn.classList.add('has-pending'); btn.disabled = false; }
   else { btn.classList.remove('has-pending'); btn.disabled = true; }
 }
+function scheduleStateConsistencyCheck(){
+  document.dispatchEvent(new CustomEvent('workspace-state-changed'));
+}
+
+document.addEventListener('workspace-state-applied', ()=>{
+  rebuildLayerFeatureIndex();
+  scheduleStateConsistencyCheck();
+});
 const GEOM_TYPE_LABELS = {Point:'Ponto', LineString:'Linha', Polygon:'Polígono'};
 
 /* ---------- Índice layerId→Set<featureId> ----------
@@ -41,6 +49,13 @@ function getFeatureIdsForLayer(layerId){
   return _layerFeatureIndex.get(layerId) || _emptySet;
 }
 const _emptySet = new Set();
+
+function rebuildLayerFeatureIndex(){
+  _layerFeatureIndex.clear();
+  if(!featuresData || typeof featuresData.forEach !== 'function') return;
+  featuresData.forEach(entry=>addToLayerIndex(entry));
+}
+window.rebuildLayerFeatureIndex = rebuildLayerFeatureIndex;
 
 function openAttrForm(entry, isNew){
   formEntryRef = entry;
@@ -364,6 +379,7 @@ function reorderLayer(draggedId, targetId, insertBefore){
   applyLayerZOrder();
   renderLayersPanel();
   markProjectDirty();
+  scheduleStateConsistencyCheck();
 }
 
 /* torna a camada clicada a única editável: podes criar geometrias novas nela e
@@ -454,6 +470,7 @@ function toggleLayerVisibility(layerId){
     }
   });
   renderLayersPanel();
+  scheduleStateConsistencyCheck();
 }
 
 function removeLayerEntirely(layerId){
@@ -521,6 +538,7 @@ function removeLayerEntirely(layerId){
   refreshFeatList();
   checkAllTopology();
   refreshLayerEditability();
+  scheduleStateConsistencyCheck();
 }
 
 /* ---------- menu de contexto (botão direito) numa linha de camada ---------- */

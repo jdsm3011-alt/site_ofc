@@ -1,5 +1,5 @@
-const SETTINGS_STORAGE_KEY = 'engenh-settings';
-const DEFAULT_SETTINGS = {
+var SETTINGS_STORAGE_KEY = 'engenh-settings';
+var DEFAULT_SETTINGS = {
   autoSaveEnabled: false,
   autoSaveIntervalMs: 20000,
   showMapGrid: false,
@@ -13,7 +13,7 @@ const DEFAULT_SETTINGS = {
   themeMode: 'light',
   iconSize: 'normal'
 };
-let settings = {...DEFAULT_SETTINGS};
+var settings = {...DEFAULT_SETTINGS};
 
 /* ============================================================
    TEMA CLARO/ESCURO

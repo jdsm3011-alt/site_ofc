@@ -15,6 +15,7 @@ window.lastBufferFeatures = window.lastBufferFeatures || [];  // resultado do ú
 let bufferDebounceTimer = null;
 let _analysisFeatureCache = null;   // cache de buildAnalysisFeatureList (invalidado a cada build)
 let _analysisFeatureCacheVersion = 0;
+let activeAnalysisTool = null;
 
 // ---------- overlay: intersect / union / difference ----------
 let intersectLayerGroup = null, unionLayerGroup = null, differenceLayerGroup = null;
@@ -40,6 +41,97 @@ function buildAnalysisFeatureList(){
 
 function invalidateAnalysisCache(){
   _analysisFeatureCache = null;
+}
+
+function getAnalysisLayerRecords(){
+  const records = [];
+  const seen = new Set();
+  const add = (id, schema)=>{
+    if(id == null || seen.has(id) || !schema || !countLayerFeatures(id)) return;
+    seen.add(id);
+    records.push({id, name: schema.name || 'Camada sem nome', schema});
+  };
+  (layerOrder || []).forEach(id => add(id, getLayerSchema(id)));
+  (layers || []).forEach(rec => add(rec.id, rec));
+  if(typeof config !== 'undefined' && config.geometryType){
+    add(activeLayerId, getLayerSchema(activeLayerId));
+  }
+  return records;
+}
+
+function setAnalysisLayerOptions(select, records, placeholder){
+  if(!select) return;
+  const previous = select.value;
+  select.innerHTML = '';
+  const first = document.createElement('option');
+  first.value = '';
+  first.textContent = placeholder;
+  select.appendChild(first);
+  records.forEach(rec=>{
+    const option = document.createElement('option');
+    option.value = rec.id;
+    option.textContent = rec.name;
+    select.appendChild(option);
+  });
+  if(records.some(rec => String(rec.id) === previous)) select.value = previous;
+}
+
+function renderAnalysisLayerControls(){
+  const records = getAnalysisLayerRecords();
+  const bufferSelect = document.getElementById('buffer-layer-select');
+  const previousBuffer = bufferSelect && bufferSelect.value;
+  setAnalysisLayerOptions(bufferSelect, records, 'Seleciona uma camada');
+  if(bufferSelect && !bufferSelect.value && records.length){
+    bufferSelect.value = previousBuffer || String(activeLayerId);
+    if(!bufferSelect.value || !records.some(rec => String(rec.id) === bufferSelect.value)) bufferSelect.value = String(records[0].id);
+  }
+  updateBufferAttributeOptions();
+  const bufferOutput = document.getElementById('buffer-output-name');
+  const bufferSchema = bufferSelect && bufferSelect.value ? getLayerSchema(Number(bufferSelect.value)) : null;
+  if(bufferOutput && bufferOutput.dataset.edited !== 'true' && bufferSchema){
+    bufferOutput.value = `${bufferSchema.name}_buffer`;
+  }
+
+  setAnalysisLayerOptions(document.getElementById('intersect-layer-a'), records, 'Seleciona uma camada');
+  setAnalysisLayerOptions(document.getElementById('intersect-layer-b'), records, 'Seleciona uma camada');
+  const selectA = document.getElementById('intersect-layer-a');
+  const selectB = document.getElementById('intersect-layer-b');
+  if(selectA && !selectA.value && records.length) selectA.value = String(records[0].id);
+  if(selectB && !selectB.value && records.length > 1) selectB.value = String(records[1].id);
+  const output = document.getElementById('intersect-output-name');
+  if(output && !output.value && selectA && selectB && selectA.value && selectB.value){
+    const a = records.find(rec => String(rec.id) === selectA.value);
+    const b = records.find(rec => String(rec.id) === selectB.value);
+    output.value = `${a ? a.name : 'camada'}_${b ? b.name : 'camada'}_intersect`;
+  }
+}
+
+function updateBufferAttributeOptions(){
+  const layerSelect = document.getElementById('buffer-layer-select');
+  const attributeSelect = document.getElementById('buffer-attribute-select');
+  if(!layerSelect || !attributeSelect) return;
+  const schema = getLayerSchema(Number(layerSelect.value));
+  const names = new Set((schema && schema.attributes || []).map(attr => attr.name));
+  buildAnalysisFeatureList().filter(it => it.layerId === Number(layerSelect.value)).forEach(it=>{
+    Object.keys(it.geojson.properties || {}).forEach(name=>{ if(!name.startsWith('_')) names.add(name); });
+  });
+  const previous = attributeSelect.value;
+  attributeSelect.innerHTML = '<option value="">Manter todos os atributos</option>';
+  [...names].sort().forEach(name=>{
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    attributeSelect.appendChild(option);
+  });
+  if(names.has(previous)) attributeSelect.value = previous;
+}
+
+function createAnalysisLayer(features, name){
+  if(typeof pbCreateLayerFromFeatureCollection !== 'function') throw new Error('A API de criação de camadas não está disponível.');
+  const result = pbCreateLayerFromFeatureCollection({type:'FeatureCollection', features}, name);
+  invalidateAnalysisCache();
+  renderAnalysisLayerControls();
+  return result;
 }
 
 /* ============================================================
@@ -163,30 +255,112 @@ function styleAnalysisStatusEl(el){
   obs.observe(el, {childList:true, characterData:true, subtree:true});
 });
 
-function openAnalysisPanel(){
-  if(featuresData.size === 0){
-    showAppAlert('Ainda não desenhaste nenhuma geometria para analisar. Desenha pelo menos uma antes de abrir a análise espacial.');
-    return;
-  }
+function openAnalysisPanel(tool){
   _analysisFeatureCache = null; // invalida cache antes de usar
-  document.getElementById('analysis-overlay').classList.add('open');
+  const overlay = document.getElementById('analysis-overlay');
+  if(!overlay) return;
+  const selectedTool = tool || 'buffer';
+  activeAnalysisTool = selectedTool;
+  const toolLabels = {buffer:'Buffer', intersect:'Intersect', union:'Union', difference:'Clip'};
+  const toolDescriptions = {
+    buffer: 'Criar uma camada a partir de uma distância',
+    intersect: 'Criar uma camada com a área comum',
+    union: 'Unir geometrias numa nova camada',
+    difference: 'Recortar uma geometria com outra'
+  };
+  const title = document.getElementById('analysis-title-text');
+  const subtitle = document.getElementById('analysis-subtitle-text');
+  if(title) title.textContent = toolLabels[selectedTool] || selectedTool;
+  if(subtitle) subtitle.textContent = toolDescriptions[selectedTool] || '';
+  document.querySelectorAll('#analysis-overlay .tool-drawer').forEach(drawer=>{
+    const active = drawer.dataset.tool === selectedTool;
+    drawer.hidden = !active;
+    drawer.classList.toggle('open', active);
+  });
+  overlay.classList.add('open');
+  const button = document.getElementById('btn-open-analysis');
+  if(button){ button.setAttribute('aria-expanded', 'true'); }
   if(!analysisMap){
     initAnalysisMap();
   } else {
     syncAnalysisSourceLayer();
   }
-  renderAnalysisGeomList();
-  renderCheckboxGeomList('analysis-geom-list-intersect', intersectSelection);
+  setAnalysisLabelsVisible(selectedTool !== 'buffer');
+  renderAnalysisLayerControls();
   renderCheckboxGeomList('analysis-geom-list-union', unionSelection);
   renderDiffLists();
-  setTimeout(()=>{ if(analysisMap) analysisMap.invalidateSize(); }, 480);
 }
 
 function closeAnalysisPanel(){
-  document.getElementById('analysis-overlay').classList.remove('open');
+  const overlay = document.getElementById('analysis-overlay');
+  if(!overlay) return;
+  overlay.classList.remove('open');
+  const button = document.getElementById('btn-open-analysis');
+  if(button){ button.setAttribute('aria-expanded', 'false'); }
+  if(activeAnalysisTool === 'buffer') setAnalysisLabelsVisible(false);
+  activeAnalysisTool = null;
 }
 
-document.getElementById('btn-open-analysis')?.addEventListener('click', openAnalysisPanel);
+function openAnalysisToolsMenu(){
+  const menu = document.getElementById('analysis-tools-menu');
+  const button = document.getElementById('btn-open-analysis');
+  if(!menu || !button) return;
+  const rect = button.getBoundingClientRect();
+  menu.hidden = false;
+  const menuRect = menu.getBoundingClientRect();
+  menu.style.top = `${rect.bottom + 6}px`;
+  menu.style.left = `${Math.max(8, Math.min(rect.left, window.innerWidth - menuRect.width - 8))}px`;
+  button.setAttribute('aria-expanded', 'true');
+}
+
+function closeAnalysisToolsMenu(){
+  const menu = document.getElementById('analysis-tools-menu');
+  const button = document.getElementById('btn-open-analysis');
+  if(menu) menu.hidden = true;
+  if(button) button.setAttribute('aria-expanded', 'false');
+}
+
+function bindAnalysisButton(){
+  const analysisButton = document.getElementById('btn-open-analysis');
+  const toolsMenu = document.getElementById('analysis-tools-menu');
+  if(!analysisButton){
+    console.warn('[Analysis] btn-open-analysis not found yet.');
+    return;
+  }
+  analysisButton.addEventListener('click', function(e){
+    e.stopPropagation();
+    const menu = document.getElementById('analysis-tools-menu');
+    if(menu && menu.hidden) openAnalysisToolsMenu();
+    else closeAnalysisToolsMenu();
+  });
+  if(toolsMenu){
+    toolsMenu.querySelectorAll('[data-analysis-tool]').forEach(item=>{
+      item.addEventListener('click', function(e){
+        e.stopPropagation();
+        closeAnalysisToolsMenu();
+        openAnalysisPanel(item.dataset.analysisTool);
+      });
+    });
+  }
+}
+
+if(document.readyState !== 'loading'){
+  bindAnalysisButton();
+} else {
+  document.addEventListener('DOMContentLoaded', bindAnalysisButton);
+}
+
+document.addEventListener('click', function(e){
+  const overlay = document.getElementById('analysis-overlay');
+  const button = document.getElementById('btn-open-analysis');
+  const menu = document.getElementById('analysis-tools-menu');
+  if(menu && !menu.hidden && !menu.contains(e.target) && (!button || !button.contains(e.target))){
+    closeAnalysisToolsMenu();
+  }
+  if(!overlay || !overlay.classList.contains('open') || !button) return;
+  if(overlay.contains(e.target) || button.contains(e.target) || (menu && menu.contains(e.target))) return;
+  closeAnalysisPanel();
+});
 
 /* ============================================================
    LIMITES DE MUNICÍPIO (CAOP preview via GitHub raw)
@@ -215,7 +389,9 @@ function closeMunicipiosPanel(){
   document.getElementById('municipios-panel').classList.add('hidden');
 }
 
-document.getElementById('btn-open-municipios').addEventListener('click', e=>{
+const municipiosOpenButton = document.getElementById('btn-open-municipios');
+if(municipiosOpenButton){
+municipiosOpenButton.addEventListener('click', e=>{
   e.stopPropagation();
   const panel = document.getElementById('municipios-panel');
   if(panel.classList.contains('hidden')) openMunicipiosPanel();
@@ -258,6 +434,7 @@ document.getElementById('municipios-search').addEventListener('input', e=>{
   });
   }, 180);
 });
+}
 
 async function loadMunicipioBoundary(entry){
   const statusEl = document.getElementById('municipios-status');
@@ -341,139 +518,89 @@ document.querySelectorAll('.tool-drawer-header[data-drawer-toggle]').forEach(btn
 });
 
 function initAnalysisMap(){
-  analysisMap = L.map('analysis-map', {zoomControl:true, attributionControl:false, maxZoom: 24});
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom:24, maxNativeZoom:19
-  }).addTo(analysisMap);
+  analysisMap = (typeof window !== 'undefined' && window.map) ? window.map : (typeof map !== 'undefined' ? map : null);
+  if(!analysisMap){
+    console.warn('[Analysis] Mapa principal não encontrado. Não é possível inicializar o painel de análise.');
+    return;
+  }
 
-  analysisSourceLayer = L.geoJSON(null, {
-    pointToLayer:(f, latlng)=> L.circleMarker(latlng, {radius:6, color:DEFAULT_COLOR, weight:2, fillColor:DEFAULT_COLOR, fillOpacity:.85}),
-    style: ()=>({color:DEFAULT_COLOR, weight:3, fillColor:DEFAULT_COLOR, fillOpacity:.2}),
-    onEachFeature: (feature, layer)=>{
-      const t = feature.geometry && feature.geometry.type;
-      if(t !== 'LineString' && t !== 'MultiLineString' && t !== 'Polygon' && t !== 'MultiPolygon') return;
-      const label = feature.properties && feature.properties._origem;
-      if(!label) return;
-      layer.bindTooltip(label, {
-        permanent: true,
-        direction: 'center',
-        className: 'geom-label-tooltip',
-        opacity: .85
-      });
-    }
-  }).addTo(analysisMap);
+  if(!analysisSourceLayer){
+    analysisSourceLayer = L.geoJSON(null, {
+      pointToLayer:(f, latlng)=> L.circleMarker(latlng, {radius:6, color:DEFAULT_COLOR, weight:2, fillColor:DEFAULT_COLOR, fillOpacity:.85}),
+      style: ()=>({color:DEFAULT_COLOR, weight:3, fillColor:DEFAULT_COLOR, fillOpacity:.2}),
+      onEachFeature: (feature, layer)=>{
+        const t = feature.geometry && feature.geometry.type;
+        if(t !== 'LineString' && t !== 'MultiLineString' && t !== 'Polygon' && t !== 'MultiPolygon') return;
+        const label = feature.properties && feature.properties._origem;
+        if(!label) return;
+        layer.bindTooltip(label, {
+          permanent: true,
+          direction: 'center',
+          className: 'geom-label-tooltip',
+          opacity: .85
+        });
+      }
+    }).addTo(analysisMap);
+  }
 
-  bufferLayerGroup = L.layerGroup().addTo(analysisMap);
-  intersectLayerGroup = L.layerGroup().addTo(analysisMap);
-  unionLayerGroup = L.layerGroup().addTo(analysisMap);
-  differenceLayerGroup = L.layerGroup().addTo(analysisMap);
+  bufferLayerGroup = bufferLayerGroup || L.layerGroup().addTo(analysisMap);
+  intersectLayerGroup = intersectLayerGroup || L.layerGroup().addTo(analysisMap);
+  unionLayerGroup = unionLayerGroup || L.layerGroup().addTo(analysisMap);
+  differenceLayerGroup = differenceLayerGroup || L.layerGroup().addTo(analysisMap);
 
   syncAnalysisSourceLayer();
+}
 
   // sliders de distância (range + número sincronizados)
   const rangeEl = document.getElementById('buffer-distance-range');
   const numEl = document.getElementById('buffer-distance-number');
+  const bufferLayerSelect = document.getElementById('buffer-layer-select');
+  const bufferOutputName = document.getElementById('buffer-output-name');
+  const bufferDissolve = document.getElementById('buffer-dissolve');
+  const intersectLayerA = document.getElementById('intersect-layer-a');
+  const intersectLayerB = document.getElementById('intersect-layer-b');
+  const intersectOutputName = document.getElementById('intersect-output-name');
   rangeEl.addEventListener('input', ()=>{
     numEl.value = rangeEl.value;
-    scheduleBufferUpdate();
   });
   numEl.addEventListener('input', ()=>{
     const v = Number(numEl.value);
     if(Number.isNaN(v) || v < 0) return;
     if(v > Number(rangeEl.max)) rangeEl.max = v; // estica o slider se o utilizador escrever um valor maior
     rangeEl.value = v;
-    scheduleBufferUpdate();
   });
-
-  document.getElementById('btn-apply-buffer').addEventListener('click', applyBuffer);
-  document.getElementById('btn-clear-buffer').addEventListener('click', ()=>{
-    bufferLayerGroup.clearLayers();
-    lastBufferFeatures = [];
-    const statusEl = document.getElementById('buffer-status');
-    if(statusEl) statusEl.textContent = '';
-  });
-
-  document.getElementById('btn-export-buffer-geojson').addEventListener('click', ()=>{
-    if(lastBufferFeatures.length === 0){ showAppAlert('Gera primeiro um buffer para poderes exportar.'); return; }
-    downloadGeoJSON({type:'FeatureCollection', features:lastBufferFeatures}, 'engenh_buffer.geojson');
-  });
-  document.getElementById('btn-export-buffer-shp').addEventListener('click', async ()=>{
-    try{
-      if(lastBufferFeatures.length === 0){ showAppAlert('Gera primeiro um buffer para poderes exportar.'); return; }
-      const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastBufferFeatures}, 'EPSG:3763');
-      await exportShapefileZip(gj, 'engenh_buffer', document.getElementById('btn-export-buffer-shp'), PTTM06_WKT);
-    }catch(err){
-      console.error('[export-buffer-shp]', err);
-      showAppAlert('Erro ao exportar buffer.', {error: true});
+  bufferLayerSelect.addEventListener('change', ()=>{
+    updateBufferAttributeOptions();
+    const schema = getLayerSchema(Number(bufferLayerSelect.value));
+    if(bufferOutputName && bufferOutputName.dataset.edited !== 'true'){
+      bufferOutputName.value = schema ? `${schema.name}_buffer` : '';
     }
   });
+  bufferOutputName.addEventListener('input', ()=>{ bufferOutputName.dataset.edited = 'true'; });
+  intersectLayerA.addEventListener('change', ()=>{
+    if(intersectOutputName.dataset.edited === 'true') return;
+    const a = getLayerSchema(Number(intersectLayerA.value));
+    const b = getLayerSchema(Number(intersectLayerB.value));
+    if(a && b) intersectOutputName.value = `${a.name}_${b.name}_intersect`;
+  });
+  intersectLayerB.addEventListener('change', ()=>{
+    if(intersectOutputName.dataset.edited === 'true') return;
+    const a = getLayerSchema(Number(intersectLayerA.value));
+    const b = getLayerSchema(Number(intersectLayerB.value));
+    if(a && b) intersectOutputName.value = `${a.name}_${b.name}_intersect`;
+  });
+  intersectOutputName.addEventListener('input', ()=>{ intersectOutputName.dataset.edited = 'true'; });
+
+  document.getElementById('btn-apply-buffer').addEventListener('click', applyBuffer);
 
   // ---- intersect ----
   document.getElementById('btn-run-intersect').addEventListener('click', runIntersect);
-  document.getElementById('btn-clear-intersect').addEventListener('click', ()=>{
-    intersectLayerGroup.clearLayers();
-    lastIntersectFeatures = [];
-    document.getElementById('intersect-status').textContent = '';
-  });
-  document.getElementById('btn-export-intersect-geojson').addEventListener('click', ()=>{
-    if(lastIntersectFeatures.length === 0){ showAppAlert('Gera primeiro uma interseção para poderes exportar.'); return; }
-    downloadGeoJSON({type:'FeatureCollection', features:lastIntersectFeatures}, 'engenh_intersect.geojson');
-  });
-  document.getElementById('btn-export-intersect-shp').addEventListener('click', async ()=>{
-    try{
-      if(lastIntersectFeatures.length === 0){ showAppAlert('Gera primeiro uma interseção para poderes exportar.'); return; }
-      const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastIntersectFeatures}, 'EPSG:3763');
-      await exportShapefileZip(gj, 'engenh_intersect', document.getElementById('btn-export-intersect-shp'), PTTM06_WKT);
-    }catch(err){
-      console.error('[export-intersect-shp]', err);
-      showAppAlert('Erro ao exportar interseção.', {error: true});
-    }
-  });
 
   // ---- union ----
   document.getElementById('btn-run-union').addEventListener('click', runUnion);
-  document.getElementById('btn-clear-union').addEventListener('click', ()=>{
-    unionLayerGroup.clearLayers();
-    lastUnionFeatures = [];
-    document.getElementById('union-status').textContent = '';
-  });
-  document.getElementById('btn-export-union-geojson').addEventListener('click', ()=>{
-    if(lastUnionFeatures.length === 0){ showAppAlert('Gera primeiro uma união para poderes exportar.'); return; }
-    downloadGeoJSON({type:'FeatureCollection', features:lastUnionFeatures}, 'engenh_union.geojson');
-  });
-  document.getElementById('btn-export-union-shp').addEventListener('click', async ()=>{
-    try{
-      if(lastUnionFeatures.length === 0){ showAppAlert('Gera primeiro uma união para poderes exportar.'); return; }
-      const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastUnionFeatures}, 'EPSG:3763');
-      await exportShapefileZip(gj, 'engenh_union', document.getElementById('btn-export-union-shp'), PTTM06_WKT);
-    }catch(err){
-      console.error('[export-union-shp]', err);
-      showAppAlert('Erro ao exportar união.', {error: true});
-    }
-  });
 
   // ---- difference ----
   document.getElementById('btn-run-difference').addEventListener('click', runDifference);
-  document.getElementById('btn-clear-difference').addEventListener('click', ()=>{
-    differenceLayerGroup.clearLayers();
-    lastDifferenceFeatures = [];
-    document.getElementById('difference-status').textContent = '';
-  });
-  document.getElementById('btn-export-difference-geojson').addEventListener('click', ()=>{
-    if(lastDifferenceFeatures.length === 0){ showAppAlert('Gera primeiro uma diferença para poderes exportar.'); return; }
-    downloadGeoJSON({type:'FeatureCollection', features:lastDifferenceFeatures}, 'engenh_difference.geojson');
-  });
-  document.getElementById('btn-export-difference-shp').addEventListener('click', async ()=>{
-    try{
-      if(lastDifferenceFeatures.length === 0){ showAppAlert('Gera primeiro uma diferença para poderes exportar.'); return; }
-      const gj = reprojectGeoJSON({type:'FeatureCollection', features:lastDifferenceFeatures}, 'EPSG:3763');
-      await exportShapefileZip(gj, 'engenh_difference', document.getElementById('btn-export-difference-shp'), PTTM06_WKT);
-    }catch(err){
-      console.error('[export-difference-shp]', err);
-      showAppAlert('Erro ao exportar diferença.', {error: true});
-    }
-  });
-}
 
 function syncAnalysisSourceLayer(){
   analysisSourceLayer.clearLayers();
@@ -483,6 +610,15 @@ function syncAnalysisSourceLayer(){
     try{ analysisMap.fitBounds(analysisSourceLayer.getBounds(), {padding:[30,30], maxZoom:17}); }
     catch(err){ /* uma única geometria muito pequena pode não ter bounds válidos */ }
   }
+}
+
+function setAnalysisLabelsVisible(visible){
+  if(!analysisSourceLayer) return;
+  if(!visible){
+    analysisSourceLayer.eachLayer(layer=>layer.unbindTooltip());
+    return;
+  }
+  syncAnalysisSourceLayer();
 }
 
 function renderAnalysisGeomList(){
@@ -580,10 +716,12 @@ function runIntersect(){
   intersectLayerGroup.clearLayers();
   lastIntersectFeatures = [];
 
-  const items = buildAnalysisFeatureList().filter(it => intersectSelection.has(it.id));
+  const layerA = Number(document.getElementById('intersect-layer-a').value);
+  const layerB = Number(document.getElementById('intersect-layer-b').value);
+  const items = buildAnalysisFeatureList().filter(it => it.layerId === layerA || it.layerId === layerB);
   const polyItems = items.filter(it => isPolygonal(it.geojson));
 
-  if(items.length < 2){ statusEl.textContent = 'Seleciona pelo menos 2 geometrias à esquerda.'; return; }
+  if(!layerA || !layerB || layerA === layerB){ statusEl.textContent = 'Seleciona duas camadas diferentes.'; return; }
   if(polyItems.length < 2){ statusEl.textContent = '⚠ A interseção só funciona com polígonos (mín. 2 selecionados).'; return; }
 
   let result = polyItems[0].geojson;
@@ -603,7 +741,15 @@ function runIntersect(){
   }).addTo(intersectLayerGroup);
   try{ analysisMap.fitBounds(layer.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
 
-  statusEl.textContent = `✓ Interseção gerada a partir de ${polyItems.length} geometria(s).`;
+  try{
+    const outputName = document.getElementById('intersect-output-name').value.trim() || 'camada_intersect';
+    createAnalysisLayer(lastIntersectFeatures, outputName);
+    intersectLayerGroup.clearLayers();
+    statusEl.textContent = `✓ Camada "${outputName}" criada com a interseção.`;
+  }catch(err){
+    console.error('[analysis-intersect]', err);
+    statusEl.textContent = '⚠ A interseção foi calculada, mas não foi possível criar a camada.';
+  }
 }
 
 function runUnion(){
@@ -687,10 +833,12 @@ function applyBuffer(){
   lastBufferFeatures = [];
 
   const distance = Number(document.getElementById('buffer-distance-range').value);
-  const items = buildAnalysisFeatureList().filter(it => analysisSelection.has(it.id));
+  const layerId = Number(document.getElementById('buffer-layer-select').value);
+  const attributeName = document.getElementById('buffer-attribute-select').value;
+  const items = buildAnalysisFeatureList().filter(it => it.layerId === layerId);
 
   if(items.length === 0){
-    if(statusEl) statusEl.textContent = 'Seleciona pelo menos uma geometria à esquerda.';
+    if(statusEl) statusEl.textContent = 'Seleciona uma camada com geometrias.';
     return;
   }
   if(distance <= 0){
@@ -703,11 +851,33 @@ function applyBuffer(){
       const buffered = turf.buffer(it.geojson, distance, {units:'meters'});
       if(!buffered) return;
       buffered.properties = {...buffered.properties, origem: it.label, distancia_m: distance};
+      if(attributeName && Object.prototype.hasOwnProperty.call(it.geojson.properties || {}, attributeName)){
+        buffered.properties.atributo_buffer = it.geojson.properties[attributeName];
+      }
       lastBufferFeatures.push(buffered);
     }catch(err){
       console.error('Erro ao gerar buffer para', it.label, err);
     }
   });
+
+  if(bufferDissolve.checked && lastBufferFeatures.length > 1){
+    let dissolved = lastBufferFeatures[0];
+    for(let i=1; i<lastBufferFeatures.length; i++){
+      try{
+        const merged = turf.union(dissolved, lastBufferFeatures[i]);
+        if(merged) dissolved = merged;
+      }catch(err){
+        console.error('Erro ao dissolver buffers', err);
+      }
+    }
+    dissolved.properties = {
+      ...dissolved.properties,
+      origem: items.map(it=>it.label).join(' + '),
+      distancia_m: distance,
+      dissolvido: true
+    };
+    lastBufferFeatures = [dissolved];
+  }
 
   if(lastBufferFeatures.length === 0){
     if(statusEl) statusEl.textContent = '⚠ Não foi possível gerar o buffer para estas geometrias.';
@@ -722,7 +892,15 @@ function applyBuffer(){
   // grande pode ficar impercetível se o mapa ficar no enquadramento anterior
   try{ analysisMap.fitBounds(bufferGeoLayer.getBounds(), {padding:[40,40], maxZoom:18}); }catch(err){ /* bounds inválidos, ignora */ }
 
-  if(statusEl) statusEl.textContent = `✓ Buffer gerado: ${items.length} geometria(s), ${distance} m`;
+  try{
+    const outputName = document.getElementById('buffer-output-name').value.trim() || `${getLayerSchema(layerId).name}_buffer`;
+    createAnalysisLayer(lastBufferFeatures, outputName);
+    bufferLayerGroup.clearLayers();
+    if(statusEl) statusEl.textContent = `✓ Camada "${outputName}" criada com ${lastBufferFeatures.length} polígono(s).`;
+  }catch(err){
+    console.error('[analysis-buffer]', err);
+    if(statusEl) statusEl.textContent = '⚠ O buffer foi calculado, mas não foi possível criar a camada.';
+  }
 }
 
 /* --- exposição global --- */

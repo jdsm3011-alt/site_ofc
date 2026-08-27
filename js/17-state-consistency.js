@@ -31,6 +31,18 @@
     var layerCounter = g('layerCounter');
     var getLayerSchema = g('getLayerSchema');
     var countLayerFeatures = g('countLayerFeatures');
+    var workspaces = g('workspaces');
+    var currentWorkspace = g('currentWorkspace');
+
+    function knownLayerIds(){
+      var ids = Array.isArray(layers) ? layers.map(function(l){ return l && l.id; }) : [];
+      if(isNum(activeLayerId) && activeLayerId !== 0) ids.push(activeLayerId);
+      return ids.filter(function(id, index, all){ return id != null && all.indexOf(id) === index; });
+    }
+
+    function hasKey(collection, key){
+      return collection && isFn(collection.has) && collection.has(key);
+    }
 
     /* ---- 1: activeLayerId valido ---- */
     if(isNum(activeLayerId)){
@@ -48,13 +60,17 @@
 
     /* ---- 2: layerOrder vs layers ---- */
     if(Array.isArray(layerOrder) && Array.isArray(layers)){
-      var allKnownIds = layers.map(function(l){ return l.id; });
-      if(isNum(activeLayerId)) allKnownIds.push(activeLayerId);
+      var allKnownIds = knownLayerIds();
 
       var extraInOrder = layerOrder.filter(function(id){ return allKnownIds.indexOf(id) === -1; });
+      var missingFromOrder = allKnownIds.filter(function(id){ return layerOrder.indexOf(id) === -1; });
       if(extraInOrder.length){
         issues.push({check:'layerOrder', severity:'error',
           msg:'layerOrder contem IDs desconhecidos: [' + extraInOrder.join(', ') + ']'});
+      }
+      if(missingFromOrder.length){
+        issues.push({check:'layerOrder', severity:'error',
+          msg:'layerOrder nao contem as camadas: [' + missingFromOrder.join(', ') + ']'});
       }
     }
 
@@ -63,13 +79,17 @@
       var visKeys = isFn(layerVisible.entries)
         ? Array.from(layerVisible.entries()).map(function(e){ return e[0]; })
         : Object.keys(layerVisible);
-      var allKnownIds2 = layers.map(function(l){ return l.id; });
-      if(isNum(activeLayerId)) allKnownIds2.push(activeLayerId);
+      var allKnownIds2 = knownLayerIds();
 
       var extraVis = visKeys.filter(function(k){ return allKnownIds2.indexOf(Number(k)) === -1 && allKnownIds2.indexOf(k) === -1; });
+      var missingVis = allKnownIds2.filter(function(id){ return !hasKey(layerVisible, id); });
       if(extraVis.length){
         issues.push({check:'layerVisible', severity:'warn',
           msg:'layerVisible contem keys de camadas inexistentes: [' + extraVis.join(', ') + ']'});
+      }
+      if(missingVis.length){
+        issues.push({check:'layerVisible', severity:'warn',
+          msg:'layerVisible nao contem as camadas: [' + missingVis.join(', ') + ']'});
       }
     }
 
@@ -77,9 +97,14 @@
     if(isObj(layerPanes) && Array.isArray(layerOrder)){
       var paneKeys = isFn(layerPanes.keys) ? Array.from(layerPanes.keys()) : Object.keys(layerPanes).map(Number);
       var orphanPanes = paneKeys.filter(function(k){ return layerOrder.indexOf(k) === -1; });
+      var missingPanes = knownLayerIds().filter(function(id){ return !hasKey(layerPanes, id); });
       if(orphanPanes.length){
         issues.push({check:'layerPanes', severity:'warn',
           msg:'layerPanes contem panes sem entrada em layerOrder: [' + orphanPanes.join(', ') + ']'});
+      }
+      if(missingPanes.length){
+        issues.push({check:'layerPanes', severity:'error',
+          msg:'layerPanes nao contem as camadas: [' + missingPanes.join(', ') + ']'});
       }
     }
 
@@ -110,7 +135,7 @@
         for(var i = 0; i < mapLayers.length; i++){
           var ml = mapLayers[i];
           var stamp = isFn(g('L') && g('L').Util && g('L').Util.stamp) ? g('L').Util.stamp(ml) : null;
-          if(stamp !== null && !featuresData.has(stamp)){
+          if(stamp !== null && isFn(featuresData.has) && !featuresData.has(stamp)){
             ghostLayers.push({stamp: stamp});
           }
         }
@@ -162,6 +187,31 @@
         issues.push({check:'featuresData↔layers', severity:'error',
           msg: orphanEntries.length + ' feature(s) com layerId desconhecido: ' +
             orphanEntries.slice(0, 5).map(function(f){ return f.label + ' (layerId:' + f.layerId + ')'; }).join(', ')});
+      }
+    }
+
+    /* ---- 8: workspaces guardados ---- */
+    if(Array.isArray(workspaces)){
+      var workspaceProblems = [];
+      workspaces.forEach(function(workspace){
+        if(!workspace || workspace.id == null){
+          workspaceProblems.push('workspace sem id');
+          return;
+        }
+        if(!isObj(workspace.featuresData) || !isFn(workspace.featuresData.forEach)) workspaceProblems.push(workspace.id + ': featuresData invalido');
+        if(!isObj(workspace.drawnGroup) || !isFn(workspace.drawnGroup.getLayers)) workspaceProblems.push(workspace.id + ': drawnGroup invalido');
+        if(!Array.isArray(workspace.layers)) workspaceProblems.push(workspace.id + ': layers invalido');
+        if(!Array.isArray(workspace.layerOrder)) workspaceProblems.push(workspace.id + ': layerOrder invalido');
+        if(!isObj(workspace.layerVisible) || !isFn(workspace.layerVisible.has)) workspaceProblems.push(workspace.id + ': layerVisible invalido');
+        if(!isObj(workspace.layerPanes) || !isFn(workspace.layerPanes.has)) workspaceProblems.push(workspace.id + ': layerPanes invalido');
+      });
+      if(workspaceProblems.length){
+        issues.push({check:'workspaces', severity:'error',
+          msg:'Estado de workspace invalido: ' + workspaceProblems.slice(0, 5).join('; ') + (workspaceProblems.length > 5 ? ' ...' : '')});
+      }
+      if(currentWorkspace && workspaces.indexOf(currentWorkspace) === -1){
+        issues.push({check:'currentWorkspace', severity:'error',
+          msg:'currentWorkspace nao pertence ao array workspaces.'});
       }
     }
 
@@ -325,6 +375,8 @@
 
   function hookEvents(){
     rehookEvents();
+    document.addEventListener('workspace-state-changed', scheduleCheck);
+    document.addEventListener('workspace-state-applied', scheduleCheck);
 
     document.addEventListener('keydown', function(e){
       if((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'i'){
