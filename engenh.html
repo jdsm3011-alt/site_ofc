@@ -166,6 +166,76 @@
     z-index:9999;
   }
   .ui-blocked:hover{ opacity:.6; filter:saturate(.5) hue-rotate(-10deg); }
+
+  .live-data-menu-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .feedback-nav-btn--dropdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .live-data-map-timer {
+    min-width: 50px;
+    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1.2;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+  .btn-dropdown-caret {
+    width: 10px;
+    height: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .live-data-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 180px;
+    width: max-content;
+    max-width: min(220px, calc(100vw - 16px));
+    background: var(--paper-elevated);
+    border: 1px solid var(--line-strong);
+    border-radius: 0;
+    box-shadow: var(--shadow);
+    padding: 6px 0;
+    z-index: 2200;
+  }
+  .live-data-menu.hidden {
+    display: none;
+  }
+  .live-data-menu-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    background: transparent;
+    border: none;
+    color: var(--ink);
+    text-align: left;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .live-data-menu-item:hover,
+  .live-data-menu-item:focus-visible {
+    background: var(--paper-deep);
+    outline: none;
+  }
+  .live-data-menu-item svg {
+    flex-shrink: 0;
+  }
 </style>
 </head>
 <body>
@@ -242,6 +312,9 @@
 <button aria-label="Selecionar por atributos" class="feedback-nav-btn" data-i18n-title="attr.title.selecionar_por_atributos" id="btn-select-by-attr" title="Selecionar por atributos" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="7"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
 </button>
+<button aria-expanded="false" aria-haspopup="dialog" aria-label="Ferramentas" class="feedback-nav-btn" id="btn-open-analysis" title="Ferramentas" type="button">
+<svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+</button>
 <button aria-label="Mudar mapa base" class="feedback-nav-btn" data-i18n-title="attr.title.mudar_mapa_base" id="btn-basemap" title="Mudar mapa base" type="button">
 <svg aria-hidden="true" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
 </button>
@@ -287,6 +360,34 @@
 <a class="back-link" href="index.html" id="back-link">← <span><span data-i18n="txt.voltar_2">Voltar</span></span></a>
 </div>
 </header>
+<div aria-label="Escolher ferramenta" class="analysis-tools-menu" id="analysis-tools-menu" role="menu" hidden>
+<button class="analysis-tools-menu-item" data-analysis-tool="buffer" role="menuitem" type="button">Buffer</button>
+<button class="analysis-tools-menu-item" data-analysis-tool="intersect" role="menuitem" type="button">Intersect</button>
+<button class="analysis-tools-menu-item" data-analysis-tool="union" role="menuitem" type="button">Union</button>
+<button class="analysis-tools-menu-item" data-analysis-tool="difference" role="menuitem" type="button">Clip</button>
+</div>
+<div class="live-data-menu hidden" id="live-data-menu" role="menu" aria-label="Live Data menu">
+  <button class="live-data-toggle" data-layer="flights" role="menuitem" type="button" aria-label="Voos (OpenSky)">
+    <span class="ld-status-dot" data-state="off"></span>
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M2 12h6l4-8v6l8 2-8 2v6l-4-8H2z"/></svg>
+    <span>Voos</span>
+  </button>
+  <button class="live-data-toggle" data-layer="quakes" role="menuitem" type="button" aria-label="Sismos (USGS)">
+    <span class="ld-status-dot" data-state="off"></span>
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M2 12c2-3 4-9 10-9s8 6 10 9c-2 3-4 9-10 9s-8-6-10-9z"/></svg>
+    <span>Sismos</span>
+  </button>
+  <button class="live-data-toggle" data-layer="weather" role="menuitem" type="button" aria-label="Meteorologia (IPMA)">
+    <span class="ld-status-dot" data-state="off"></span>
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/><circle cx="12" cy="12" r="4"/></svg>
+    <span>Meteorologia</span>
+  </button>
+  <button class="live-data-toggle" data-layer="fires" role="menuitem" type="button" aria-label="Incêndios (FIRMS)">
+    <span class="ld-status-dot" data-state="off"></span>
+    <svg aria-hidden="true" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c1 3-2 7-2 10a4 4 0 0 0 8 0c0-3-3-7-2-10-2 3-4 5-4 5S13 5 12 2z"/></svg>
+    <span>Incêndios</span>
+  </button>
+</div>
 <!-- Movido para fora do <header>: o header tem position:relative + z-index:50,
      o que cria um stacking context próprio e "prendia" este dropdown (mesmo
      sendo position:fixed com z-index:2000) atrás de elementos flutuantes do
@@ -1057,16 +1158,7 @@
 <!-- ============ ANÁLISE ESPACIAL (BUFFER) ============ -->
 <div id="analysis-overlay">
 <div class="analysis-header">
-<div class="analysis-title-group">
-<span aria-hidden="true" class="analysis-title-icon">
-<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><circle cx="9.5" cy="9.5" r="6.5"></circle><circle cx="14.5" cy="14.5" r="6.5"></circle></svg>
-</span>
-<div>
-<div class="analysis-title"><span data-i18n="txt.an_lise_espacial">Análise Espacial</span></div>
-<p class="analysis-subtitle"><span data-i18n="txt.buffer_interse_o_uni_o_diferen_a">Buffer · Interseção · União · Diferença</span></p>
-</div>
-</div>
-<button aria-label="Fechar análise espacial" class="analysis-close" data-i18n-title="attr.title.fechar_9" id="analysis-close" title="Fechar">
+<button aria-label="Fechar ferramenta" class="analysis-close" data-i18n-title="attr.title.fechar_9" id="analysis-close" title="Fechar">
 <svg aria-hidden="true" fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="15" xmlns="http://www.w3.org/2000/svg"><line x1="18" x2="6" y1="6" y2="18"></line><line x1="6" x2="18" y1="6" y2="18"></line></svg>
 </button>
 </div>
@@ -1086,9 +1178,17 @@
 </button>
 <div class="tool-drawer-body">
 <div class="analysis-section">
-<b><span data-i18n="txt.geometrias_inclu_das">Geometrias incluídas</span></b>
-<p class="sub"><span data-i18n="txt.desmarca_as_que_n_o_queres_incluir_no_bu">Desmarca as que não queres incluir no buffer.</span></p>
-<ul class="analysis-geom-list" id="analysis-geom-list"></ul>
+<b>Camada de entrada</b>
+<p class="sub">Escolhe a camada que será usada para criar os buffers.</p>
+<select class="analysis-field" id="buffer-layer-select">
+<option value="">Seleciona uma camada</option>
+</select>
+</div>
+<div class="analysis-section">
+<label for="buffer-attribute-select"><b>Atributo (opcional)</b></label>
+<select class="analysis-field" id="buffer-attribute-select">
+<option value="">Manter todos os atributos</option>
+</select>
 </div>
 <div class="analysis-section">
 <b><span data-i18n="txt.dist_ncia_do_buffer">Distância do buffer</span></b>
@@ -1100,16 +1200,18 @@
 </div>
 </div>
 <div class="analysis-section">
+<label for="buffer-output-name"><b>Nome da camada de saída</b></label>
+<input autocomplete="off" class="analysis-field" id="buffer-output-name" type="text"/>
+</div>
+<label class="analysis-checkbox" for="buffer-dissolve">
+<input id="buffer-dissolve" type="checkbox"/>
+<span>Dissolver polígonos resultantes</span>
+</label>
+<div class="analysis-section">
 <div class="btn-row" style="flex-direction:column;">
-<button class="btn primary" id="btn-apply-buffer"><span data-i18n="txt.criar_buffer">Criar buffer</span></button>
-<button class="btn" id="btn-clear-buffer"><span data-i18n="txt.limpar_buffers">↺ Limpar buffers</span></button>
+<button class="btn primary" id="btn-apply-buffer"><span>Criar</span></button>
 </div>
 <p class="analysis-status" id="buffer-status"></p>
-</div>
-<div class="analysis-section export-block">
-<b><span data-i18n="txt.exportar_resultado_do_buffer">Exportar resultado do buffer</span></b>
-<button class="btn primary" id="btn-export-buffer-geojson"><span data-i18n="txt.exportar_geojson">⬇ Exportar GeoJSON</span></button>
-<button class="btn" id="btn-export-buffer-shp"><span data-i18n="txt.exportar_shapefile_zip">⬇ Exportar Shapefile (.zip)</span></button>
 </div>
 </div>
 </div>
@@ -1127,21 +1229,22 @@
 </button>
 <div class="tool-drawer-body">
 <div class="analysis-section">
-<b><span data-i18n="txt.geometrias_a_intersetar">Geometrias a intersetar</span></b>
-<p class="sub"><span data-i18n="txt.seleciona_pelo_menos_2_pol_gonos_o_resul">Seleciona pelo menos 2 polígonos. O resultado é a área comum a todos.</span></p>
-<ul class="analysis-geom-list" id="analysis-geom-list-intersect"></ul>
+<b>Camadas a intersetar</b>
+<p class="sub">Seleciona duas camadas de polígonos. O resultado é a área comum.</p>
+<label for="intersect-layer-a">Primeira camada</label>
+<select class="analysis-field" id="intersect-layer-a"><option value="">Seleciona uma camada</option></select>
+<label for="intersect-layer-b">Segunda camada</label>
+<select class="analysis-field" id="intersect-layer-b"><option value="">Seleciona uma camada</option></select>
+</div>
+<div class="analysis-section">
+<label for="intersect-output-name"><b>Nome da camada de saída</b></label>
+<input autocomplete="off" class="analysis-field" id="intersect-output-name" type="text"/>
 </div>
 <div class="analysis-section">
 <div class="btn-row" style="flex-direction:column;">
-<button class="btn primary" id="btn-run-intersect"><span data-i18n="txt.intersetar">Intersetar</span></button>
-<button class="btn" id="btn-clear-intersect"><span data-i18n="txt.limpar_2">↺ Limpar</span></button>
+<button class="btn primary" id="btn-run-intersect"><span>Intersetar</span></button>
 </div>
 <p class="analysis-status" id="intersect-status"></p>
-</div>
-<div class="analysis-section export-block">
-<b><span data-i18n="txt.exportar_resultado">Exportar resultado</span></b>
-<button class="btn primary" id="btn-export-intersect-geojson"><span data-i18n="txt.exportar_geojson_2">⬇ Exportar GeoJSON</span></button>
-<button class="btn" id="btn-export-intersect-shp"><span data-i18n="txt.exportar_shapefile_zip_2">⬇ Exportar Shapefile (.zip)</span></button>
 </div>
 </div>
 </div>
@@ -1166,14 +1269,8 @@
 <div class="analysis-section">
 <div class="btn-row" style="flex-direction:column;">
 <button class="btn primary" id="btn-run-union"><span data-i18n="txt.unir">Unir</span></button>
-<button class="btn" id="btn-clear-union"><span data-i18n="txt.limpar_3">↺ Limpar</span></button>
 </div>
 <p class="analysis-status" id="union-status"></p>
-</div>
-<div class="analysis-section export-block">
-<b><span data-i18n="txt.exportar_resultado_2">Exportar resultado</span></b>
-<button class="btn primary" id="btn-export-union-geojson"><span data-i18n="txt.exportar_geojson_3">⬇ Exportar GeoJSON</span></button>
-<button class="btn" id="btn-export-union-shp"><span data-i18n="txt.exportar_shapefile_zip_3">⬇ Exportar Shapefile (.zip)</span></button>
 </div>
 </div>
 </div>
@@ -1203,14 +1300,8 @@
 <div class="analysis-section">
 <div class="btn-row" style="flex-direction:column;">
 <button class="btn primary" id="btn-run-difference"><span data-i18n="txt.subtrair">Subtrair</span></button>
-<button class="btn" id="btn-clear-difference"><span data-i18n="txt.limpar_4">↺ Limpar</span></button>
 </div>
 <p class="analysis-status" id="difference-status"></p>
-</div>
-<div class="analysis-section export-block">
-<b><span data-i18n="txt.exportar_resultado_3">Exportar resultado</span></b>
-<button class="btn primary" id="btn-export-difference-geojson"><span data-i18n="txt.exportar_geojson_4">⬇ Exportar GeoJSON</span></button>
-<button class="btn" id="btn-export-difference-shp"><span data-i18n="txt.exportar_shapefile_zip_4">⬇ Exportar Shapefile (.zip)</span></button>
 </div>
 </div>
 </div>
@@ -1509,6 +1600,8 @@
 <script src="js/modules/wizard.js"></script>
 <script src="js/modules/select-by-attr.js"></script>
 <script src="js/modules/popup.js"></script>
+<script src="js/23-live-flights.js"></script>
+<script src="js/21-live-layers.js"></script>
 <script src="js/init.js"></script>
 <script src="js/06-smart-sync.js"></script>
 <script src="js/07-cad-import.js"></script>
