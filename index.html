@@ -1757,71 +1757,50 @@
       transform: translateX(4px);
     }
 
-    /* Transição ao clicar "Abrir fGIS": um círculo em tom de papel
-       escurecido expande-se a partir do botão até cobrir todo o ecrã
-       (efeito "íris"), com uma pequena etiqueta a confirmar a ação,
-       antes de navegar. */
-    .fgis-iris-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2147483647;
-      pointer-events: auto;
-      background:
-        radial-gradient(circle at 50% 50%, #E4D9BE 0%, #D2C4A0 55%, #B8A67C 100%);
-      clip-path: circle(0% at var(--fgis-iris-x, 50%) var(--fgis-iris-y, 50%));
-      transition: clip-path .9s cubic-bezier(.65, 0, .35, 1);
+    /* Transição ao clicar "Abrir fGIS": o botão entra em estado de
+       "loading" (a seta dá lugar a um spinner discreto) e a página
+       desvanece com a mesma transição usada nos restantes links internos
+       do site (body.page-leaving) — consistente com o resto da UI, em
+       vez de um efeito isolado e mais vistoso. */
+    .fgis-spotlight-cta {
+      position: relative;
     }
 
-    .fgis-iris-overlay.is-active {
-      clip-path: circle(140% at var(--fgis-iris-x, 50%) var(--fgis-iris-y, 50%));
+    .fgis-spotlight-cta.is-loading {
+      pointer-events: none;
     }
 
-    .fgis-iris-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
+    .fgis-spotlight-cta.is-loading span:last-child {
       opacity: 0;
-      transition: opacity .5s ease;
     }
 
-    .fgis-iris-label.is-visible {
-      opacity: 1;
-    }
-
-    .fgis-iris-ring {
-      width: 30px;
-      height: 30px;
+    .fgis-spotlight-cta-spinner {
+      display: none;
+      position: absolute;
+      right: 22px;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      margin-top: -7px;
       border-radius: 50%;
-      border: 2px solid rgba(23, 49, 36, .18);
-      border-top-color: rgba(23, 49, 36, .78);
-      animation: fgisIrisSpin .9s linear infinite;
+      border: 2px solid currentColor;
+      border-top-color: transparent;
+      opacity: .55;
+      animation: fgisBtnSpin .7s linear infinite;
     }
 
-    .fgis-iris-text {
-      font-family: 'Spectral', serif;
-      font-size: 15px;
-      letter-spacing: .03em;
-      color: #173124;
-      opacity: .85;
+    .fgis-spotlight-cta.is-loading .fgis-spotlight-cta-spinner {
+      display: inline-block;
     }
 
-    @keyframes fgisIrisSpin {
+    @keyframes fgisBtnSpin {
       to {
         transform: rotate(360deg);
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .fgis-iris-overlay {
-        transition: none !important;
-      }
-
-      .fgis-iris-ring {
+      .fgis-spotlight-cta-spinner {
         animation: none !important;
       }
     }
@@ -5689,6 +5668,7 @@
         </ul>
         <a class="btn-secondary fgis-spotlight-cta" href="engenh.html">
           <span data-i18n="fgis.cta">Abrir fGIS</span>
+          <span class="fgis-spotlight-cta-spinner" aria-hidden="true"></span>
           <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -9345,18 +9325,16 @@
       }
       })();
 
-    // ── FGIS SPOTLIGHT: transição "íris" ao clicar "Abrir fGIS" ──
-    // Um círculo escuro expande-se a partir do botão até cobrir o ecrã;
-    // assim que fecha por completo, mostra uma pequena etiqueta "A abrir
-    // fGIS…" (para o utilizador perceber que algo está a acontecer, mesmo
-    // que a página seguinte demore um pouco a carregar), e só então navega.
+    // ── FGIS SPOTLIGHT: transição ao clicar "Abrir fGIS" ──
+    // O botão entra em estado de "loading" (a seta dá lugar a um spinner)
+    // e a página desvanece com a mesma transição usada nos restantes
+    // links internos do site (body.page-leaving), antes de navegar —
+    // rápido, consistente com o resto da UI e sem overlay próprio.
     (function () {
       var cta = document.querySelector('.fgis-spotlight-cta');
       if (!cta) return;
 
-      var IRIS_DURATION = 900;
-      var LABEL_DELAY = 250;
-      var NAV_DELAY = 700;
+      var NAV_DELAY = 320; // igual à duração da animação pageFadeOut
       var navigating = false;
 
       // pré-carrega o engenh.html assim que o utilizador mostra intenção
@@ -9375,59 +9353,45 @@
       cta.addEventListener('focus', prefetchFgis);
       cta.addEventListener('touchstart', prefetchFgis, { passive: true });
 
+      function resetCta() {
+        navigating = false;
+        cta.classList.remove('is-loading');
+        document.body.classList.remove('page-leaving');
+      }
+
       cta.addEventListener('click', function (e) {
         // deixa o browser tratar normalmente cliques com modificadores
         // (abrir em nova aba, etc.) ou que outro handler já tenha travado
         if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         if (navigating) { e.preventDefault(); return; }
 
-        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduceMotion) return; // navegação normal, sem animação
-
         e.preventDefault();
         navigating = true;
         prefetchFgis();
+        cta.classList.add('is-loading');
 
         var href = cta.href;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // o círculo nasce no centro do próprio botão — sente-se como se a
-        // ação partisse dali, em vez de um efeito genérico no ecrã
-        var btnRect = cta.getBoundingClientRect();
-        var originX = btnRect.left + btnRect.width / 2;
-        var originY = btnRect.top + btnRect.height / 2;
+        if (reduceMotion) {
+          window.location.href = href; // navega de imediato, sem animação
+          return;
+        }
 
-        var overlay = document.createElement('div');
-        overlay.className = 'fgis-iris-overlay';
-        overlay.style.setProperty('--fgis-iris-x', originX + 'px');
-        overlay.style.setProperty('--fgis-iris-y', originY + 'px');
-
-        var label = document.createElement('div');
-        label.className = 'fgis-iris-label';
-        label.innerHTML = '<span class="fgis-iris-ring" aria-hidden="true"></span>' +
-          '<span class="fgis-iris-text">A abrir fGIS…</span>';
-        overlay.appendChild(label);
-
-        document.body.appendChild(overlay);
-        void overlay.offsetWidth; // força reflow antes de mudar para o estado final
-
-        // duplo rAF: garante que o browser pinta o estado inicial (círculo
-        // fechado) antes de aplicarmos o estado final — com um só rAF
-        // alguns browsers colapsam os dois estados e o clip-path não
-        // chega a ser animado
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            overlay.classList.add('is-active');
-          });
-        });
-
-        setTimeout(function () {
-          label.classList.add('is-visible');
-        }, IRIS_DURATION + LABEL_DELAY);
-
+        document.body.classList.add('page-leaving');
         setTimeout(function () {
           window.location.href = href;
-        }, IRIS_DURATION + NAV_DELAY);
+        }, NAV_DELAY);
       });
+
+      // ── corrige o "ecrã preso" ao voltar pelo botão Recuar do browser ──
+      // Ao navegar para engenh.html e voltar atrás, o Chrome/Safari podem
+      // restaurar esta página a partir do bfcache exatamente como ficou
+      // congelada no momento da navegação: botão em "loading" e página a
+      // meio do fade-out. Por isso repomos sempre este estado quando a
+      // página volta a ser mostrada (pageshow cobre tanto o bfcache como
+      // o carregamento normal, e reset aqui é inofensivo em qualquer caso).
+      window.addEventListener('pageshow', resetCta);
     })();
 
     // ── MINI-JOGO OFFLINE: voo livre com física simplificada (só desktop) ──
