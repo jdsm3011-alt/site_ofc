@@ -666,6 +666,53 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
   50%{ opacity:1; }
 }
 
+/* ---------- live flights: botão tráfego aéreo ao vivo ---------- */
+#btn-live-flights.is-active{
+  border-color:var(--green);
+  color:var(--green-deep);
+  background:rgba(31,92,107,.10);
+  box-shadow:0 0 0 2px rgba(31,92,107,.12), 0 1px 2px rgba(0,0,0,.04);
+}
+#btn-live-data.is-active{
+  border-color:var(--green);
+  color:var(--green-deep);
+  background:rgba(31,92,107,.10);
+  box-shadow:0 0 0 2px rgba(31,92,107,.12), 0 1px 2px rgba(0,0,0,.04);
+}
+.live-flight-icon{
+  background:none !important;
+  border:none !important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));
+}
+#live-data-menu{
+  position:fixed; z-index:2000; min-width:180px;
+  background:var(--paper-elevated); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  box-shadow:var(--shadow); padding:6px; display:flex; flex-direction:column; gap:2px;
+}
+#live-data-menu.hidden{display:none;}
+#live-data-menu .live-data-toggle{
+  display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+  border:none; background:none; padding:8px 10px; border-radius:6px; cursor:pointer;
+  font-family:inherit; font-size:13px; color:var(--ink);
+}
+#live-data-menu .live-data-toggle:hover{background:var(--paper-deep);}
+#live-data-menu .live-data-toggle.active{color:var(--green); font-weight:600;}
+.ld-status-dot{
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+  background:var(--ink-secondary); opacity:.4;
+}
+.ld-status-dot[data-state="loading"]{
+  animation:ld-blink .8s ease-in-out infinite; opacity:1;
+}
+.ld-status-dot[data-state="on"]{background:var(--green); opacity:1;}
+.ld-status-dot[data-state="error"]{background:var(--red); opacity:1;}
+@keyframes ld-blink{0%,100%{opacity:.3}50%{opacity:1}}
+.live-data-timer{
+  font-size:11px; padding:4px 8px; min-width:auto;
+  background:var(--paper-elevated); border:1px solid var(--line-strong);
+  color:var(--ink-secondary); font-family:monospace; white-space:nowrap;
+}
+
 /* ---------- ligação: "está offline" sobre o mapa ---------- */
 .back-link.is-disabled{
   pointer-events:none; opacity:.45; cursor:not-allowed;
@@ -1454,19 +1501,24 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 /* ---------- painel de análise espacial ---------- */
 .analysis-block{margin-top:14px; padding-top:14px; border-top:1px solid var(--line);}
 #analysis-overlay{
-  position:fixed; inset:0; z-index:1300; background:var(--paper);
+  position:fixed; bottom:18px; right:18px; width:min(384px, calc(100vw - 32px));
+  max-height:calc(100vh - 36px); z-index:1300; background:var(--paper);
+  border:1px solid var(--line-strong); border-radius:22px; overflow:hidden;
   display:flex; flex-direction:column;
   opacity:0; visibility:hidden; pointer-events:none;
-  transform:scale(.965);
-  transition: opacity .38s cubic-bezier(.19,1,.22,1), transform .48s cubic-bezier(.19,1,.22,1),
-              visibility 0s linear .42s;
+  transform:translateY(12px) scale(.98);
+  transition: opacity .32s cubic-bezier(.19,1,.22,1), transform .34s cubic-bezier(.19,1,.22,1),
+              visibility 0s linear .25s;
 }
 #analysis-overlay.open{
   opacity:1; visibility:visible; pointer-events:auto;
-  transform:scale(1);
-  transition: opacity .34s cubic-bezier(.19,1,.22,1), transform .46s cubic-bezier(.19,1,.22,1),
+  transform:translateY(0) scale(1);
+  transition: opacity .28s cubic-bezier(.19,1,.22,1), transform .32s cubic-bezier(.19,1,.22,1),
               visibility 0s linear 0s;
 }
+#analysis-overlay .analysis-map-wrap{ display:none; }
+#analysis-overlay .analysis-sidebar{ width:100%; }
+#analysis-overlay .analysis-body{ flex:1; overflow:auto; }
 
 /* cabeçalho */
 .analysis-header{
@@ -1512,9 +1564,33 @@ html[data-theme="dark"] .leaflet-control-layers-toggle{ filter:invert(1) hue-rot
 }
 #analysis-overlay.open .analysis-sidebar{ opacity:1; transform:translateX(0); transition-delay:.1s; }
 
+.analysis-tools-menu{
+  position:fixed; min-width:150px; padding:5px 0; z-index:2200;
+  background:var(--paper-elevated); border:1px solid var(--line-strong);
+  box-shadow:var(--shadow); border-radius:8px;
+}
+.analysis-tools-menu[hidden]{display:none;}
+.analysis-tools-menu-item{
+  display:block; width:100%; padding:9px 14px; border:0; background:transparent;
+  color:var(--ink); text-align:left; font:600 12px 'IBM Plex Sans', sans-serif; cursor:pointer;
+}
+.analysis-tools-menu-item:hover,.analysis-tools-menu-item:focus-visible{background:var(--paper-deep); outline:none;}
+
 .analysis-section{display:flex; flex-direction:column;}
 .analysis-section b{display:block; font-size:12.5px; font-weight:700; margin-bottom:2px; letter-spacing:.005em;}
 .analysis-section .sub{font-size:11px; color:var(--stone); margin:2px 0 0; line-height:1.45;}
+.analysis-section label{font-size:11px; color:var(--stone); margin-top:8px;}
+.analysis-field{
+  width:100%; box-sizing:border-box; margin-top:6px; padding:7px 8px;
+  border:1px solid var(--line-strong); border-radius:6px; background:var(--white);
+  color:var(--ink); font:12px 'IBM Plex Sans', sans-serif;
+}
+.analysis-field:focus{outline:2px solid color-mix(in srgb, var(--green) 35%, transparent); outline-offset:1px;}
+.analysis-checkbox{
+  display:flex; align-items:center; gap:8px; margin-top:10px; font-size:11.5px;
+  color:var(--ink); cursor:pointer;
+}
+.analysis-checkbox input{margin:0; accent-color:var(--green);}
 
 /* lista de geometrias, agora agrupada por camada */
 .analysis-geom-list{
