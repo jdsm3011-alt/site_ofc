@@ -2691,6 +2691,14 @@
       transform: translateY(1px) scale(.98);
     }
 
+    /* desempenho: sem animações contínuas enquanto o hero não está visível */
+    .hero.hero-offscreen,
+    .hero.hero-offscreen *,
+    .hero.hero-offscreen *::before,
+    .hero.hero-offscreen *::after {
+      animation-play-state: paused !important;
+    }
+
     .btn-3d-municipio {
       position: absolute;
       top: 14px;
@@ -2698,15 +2706,16 @@
       z-index: 800;
       display: none;
       align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
+      gap: 6px;
+      padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid var(--green-deep);
-      background: var(--green);
-      color: #fff;
-      font-family: 'IBM Plex Sans', sans-serif;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 13px;
       font-weight: 600;
+      line-height: 1;
       text-decoration: none;
       box-shadow: var(--shadow);
       transition: background .15s ease, transform .1s ease;
@@ -2716,8 +2725,14 @@
       display: inline-flex;
     }
 
+    .btn-3d-municipio svg {
+      width: 18px;
+      height: 18px;
+      flex: none;
+    }
+
     .btn-3d-municipio:hover {
-      background: var(--green-deep);
+      background: var(--paper-elevated);
     }
 
     .btn-3d-municipio:active {
@@ -5067,8 +5082,13 @@
             <button id="map-fit-all" title="Ajustar ao território" data-i18n-attr-title="map.ajustar">⌖</button>
           </div>
           <a class="btn-3d-municipio" id="btn-3d-guimaraes" href="dados3dguimarep/guimaraes3d.html"
-            target="_blank" rel="noopener" title="Abrir visualização 3D de Guimarães">
-            <span aria-hidden="true">🧊</span><span>Ver em 3D</span>
+            target="_blank" rel="noopener" title="Abrir visualização 3D de Guimarães" aria-label="Ver em 3D">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"
+              stroke-linecap="round" aria-hidden="true">
+              <path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z" />
+              <path d="M3.5 7 12 11.5 20.5 7M12 11.5v10" />
+            </svg>
+            <span>3D</span>
           </a>
           <div class="osm-map-badge" id="osm-map-badge">
             <span id="osm-badge-label">—</span>
@@ -8873,6 +8893,13 @@
 
     // alterna entre os dois ciclos independentes do hero no fim de cada concelho mostrado
     function heroProximoCiclo(chaveAnterior) {
+      // desempenho: se o hero não está visível (ou o separador está em 2.º plano), não encadeia
+      // mais ciclos; retoma quando voltar a ficar visível (ver heroRetomarSeVisivel)
+      if (!heroVisivel || document.hidden) {
+        heroCicloPendente = true;
+        heroChavePendente = chaveAnterior;
+        return;
+      }
       const podeArdidas = heroCandidatosArdidas.length > 0;
       heroModoCiclo = podeArdidas
         ? (heroModoCiclo === 'catalogo' ? 'ardidas' : 'catalogo')
@@ -8890,6 +8917,29 @@
       const proximo = heroSortearMunicipio(heroCandidatosCatalogo, chaveAnterior) || heroFallbackCatalogo;
       if (proximo) heroRunCycle(proximo.meta, proximo.layer);
     }
+
+    // ── DESEMPENHO: pausar a demo do hero e as animações CSS quando o hero está fora do ecrã ──
+    let heroVisivel = true;
+    let heroCicloPendente = false;
+    let heroChavePendente;
+    function heroRetomarSeVisivel() {
+      if (heroVisivel && !document.hidden && heroCicloPendente) {
+        heroCicloPendente = false;
+        const chave = heroChavePendente;
+        heroChavePendente = undefined;
+        heroProximoCiclo(chave);
+      }
+    }
+    (function () {
+      const heroSec = document.querySelector('section.hero');
+      if (!heroSec || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        heroVisivel = entries[0].isIntersecting;
+        heroSec.classList.toggle('hero-offscreen', !heroVisivel);
+        heroRetomarSeVisivel();
+      }, { threshold: 0 }).observe(heroSec);
+      document.addEventListener('visibilitychange', heroRetomarSeVisivel);
+    })();
 
     // inicializa o mini-mapa: dados reais (municipios.json + municipios_geom.geojson),
     // totalmente não-interativo (sem zoom/drag/click do utilizador)
