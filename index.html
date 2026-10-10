@@ -2691,6 +2691,39 @@
       transform: translateY(1px) scale(.98);
     }
 
+    .btn-3d-municipio {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      z-index: 800;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--green-deep);
+      background: var(--green);
+      color: #fff;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: background .15s ease, transform .1s ease;
+    }
+
+    .btn-3d-municipio.visible {
+      display: inline-flex;
+    }
+
+    .btn-3d-municipio:hover {
+      background: var(--green-deep);
+    }
+
+    .btn-3d-municipio:active {
+      transform: translateY(1px) scale(.98);
+    }
+
     .leaflet-container {
       background: var(--paper-deep);
       font-family: 'IBM Plex Sans', sans-serif;
@@ -5033,6 +5066,10 @@
           <div class="map-controls" aria-label="Controlo do mapa" data-i18n-attr-aria-label="map.controlo">
             <button id="map-fit-all" title="Ajustar ao território" data-i18n-attr-title="map.ajustar">⌖</button>
           </div>
+          <a class="btn-3d-municipio" id="btn-3d-guimaraes" href="dados3dguimarep/guimaraes3d.html"
+            target="_blank" rel="noopener" title="Abrir visualização 3D de Guimarães">
+            <span aria-hidden="true">🧊</span><span>Ver em 3D</span>
+          </a>
           <div class="osm-map-badge" id="osm-map-badge">
             <span id="osm-badge-label">—</span>
             <button onclick="limparOsmOverlay()" data-i18n="map.fechar">✕ fechar</button>
@@ -7006,6 +7043,17 @@
       });
     }
 
+    // ── BOTÃO 3D (Guimarães) ─────────────────────────────────────────────────────
+    const btn3dGuimaraes = document.getElementById('btn-3d-guimaraes');
+    if (btn3dGuimaraes && window.L && L.DomEvent) {
+      L.DomEvent.disableClickPropagation(btn3dGuimaraes);
+    }
+    function atualizarBotao3D(nomeMunicipio) {
+      if (!btn3dGuimaraes) return;
+      const ativo = !!nomeMunicipio && normalizarNome(nomeMunicipio) === 'guimaraes';
+      btn3dGuimaraes.classList.toggle('visible', ativo);
+    }
+
     // ── SELECT MUNICÍPIO ─────────────────────────────────────────────────────────
     function selectMunicipio(m, layer) {
       const metadataOk = !!m && !!m.municipio;
@@ -7020,6 +7068,7 @@
       const layers = metadataOk && Array.isArray(m.selected_layers) ? m.selected_layers : [];
 
       activeMunicipio = m || { municipio, distrito, caop_zip: caopZip, cos_zip: cosZip, bgri_zip: bgriZip, mdt_zip: mdtZip };
+      atualizarBotao3D(municipio);
       limparOsmOverlay();
       limparTodasPreviews();
 
@@ -7312,6 +7361,7 @@
       limparOsmOverlay();
       limparTodasPreviews();
       activeMunicipio = null;
+      atualizarBotao3D(null);
       document.getElementById('selection-content').style.display = 'none';
       document.getElementById('empty-state').style.display = 'flex';
       document.getElementById('search-input').value = '';
