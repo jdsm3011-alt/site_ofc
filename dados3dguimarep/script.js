@@ -1,7 +1,9 @@
 /* Visualizador de edifícios 2D/3D — MapLibre GL JS (um único motor para os dois modos) */
 
 const CONFIG = {
-  pastaDados: 'dados3dguimarep/',
+  // Pasta dos dados relativa a ESTA página: o guimaraes3d.html já está dentro de dados3dguimarep/,
+  // por isso os ficheiros (e o manifest.json) estão ao lado dele. Se mover o HTML para a raiz, use 'dados3dguimarep/'.
+  pastaDados: './',
   // Alturas aleatórias (para experiências, quando os dados não têm altura): entre min e max, em metros
   alturasAleatorias: true,
   alturaMin: 6,
