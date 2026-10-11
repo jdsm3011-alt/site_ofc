@@ -11,7 +11,7 @@ html, body { height: 100%; margin: 0; overflow: hidden; background: #e8e6e0; }
 
 /* Botão Voltar */
 .voltar {
-  position: absolute; top: 16px; left: 16px; z-index: 5;
+  position: absolute; top: 16px; left: 16px; z-index: 30; /* acima do ecrã de espera */
   display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px 10px 12px;
   background: var(--paper); border: 1px solid var(--line); border-radius: 999px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, .12); backdrop-filter: blur(8px);
@@ -95,4 +95,29 @@ button { touch-action: manipulation; }
     transform: none; text-align: center;
   }
   .painel { max-height: 60dvh; }
+}
+
+/* Ecrã de espera: desfoca o mapa até estar tudo pronto */
+.carga {
+  position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
+  background: rgba(232, 230, 224, .38);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1); backdrop-filter: blur(14px) saturate(1.1);
+  transition: opacity .8s ease, backdrop-filter .8s ease, -webkit-backdrop-filter .8s ease;
+}
+.carga[hidden] { display: none; }
+.carga.pronto { opacity: 0; pointer-events: none; -webkit-backdrop-filter: blur(0); backdrop-filter: blur(0); }
+.carga-cartao { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 24px; text-align: center; color: var(--ink); }
+.carga-titulo { margin: 4px 0 0; font-size: 20px; font-weight: 600; letter-spacing: .01em; }
+.carga-msg { margin: 0; font-size: 14px; min-height: 1.4em; max-width: min(320px, 80vw); }
+.carga-anel {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 3px solid var(--line); border-top-color: var(--accent);
+  animation: carga-gira 0.9s linear infinite;
+}
+.carga-barra { width: min(240px, 60vw); height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.carga-barra span { display: block; width: 0; height: 100%; background: var(--accent); transition: width .35s ease; }
+@keyframes carga-gira { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .carga, .carga-barra span { transition: none; }
+  .carga-anel { animation-duration: 2.4s; }
 }

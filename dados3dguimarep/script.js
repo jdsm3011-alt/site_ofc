@@ -31,18 +31,92 @@ const CONFIG = {
   // Sistema de coordenadas assumido quando os dados não estão em graus (PT-TM06/ETRS89)
   crsPadrao: 'EPSG:3763',
   // Vista inicial (abre diretamente em 3D no Estádio): alvo [lon, lat], inclinação (pitch), zoom e rumo (bearing; null = norte)
-  camera3D: { pitch: 60, bearing: null, zoom: 16, alvo: [-8.300889, 41.446167] }
+  camera3D: { pitch: 60, bearing: null, zoom: 16, alvo: [-8.300889, 41.446167] },
+  // Órbita de apresentação à volta do alvo, depois de tudo carregado (0 = desligada). Pára se o utilizador tocar no mapa.
+  orbita: { duracaoMs: 4000 },
+  // Tempo máximo (ms) que o ecrã de espera aguarda pela cor por imagem de satélite; passado isto abre o mapa e a cor continua em segundo plano
+  maxEsperaCorMs: 30000
 };
 
 proj4.defs('EPSG:3763', '+proj=tmerc +lat_0=39.6682583333333 +lon_0=-8.13310833333333 +k=1 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
 proj4.defs('EPSG:27493', '+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1 +x_0=180.598 +y_0=-86.99 +ellps=intl +towgs84=-223.237,110.193,36.649,0,0,0,0 +units=m +no_defs');
 
-const estado = { fator: 1, relevoFalhou: false, avisoRelevo: '' };
+const estado = { fator: 1, relevoFalhou: false, avisoRelevo: '', aCarregar: true, resumo: null };
 const elStatus = document.getElementById('status');
+const elCarga = document.getElementById('carga');
+const elCargaMsg = document.getElementById('carga-msg');
+const elCargaFill = document.getElementById('carga-fill');
+const esperar = ms => new Promise(r => setTimeout(r, ms));
+const reduzirMovimento = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Ecrã de espera (desfocado) enquanto os dados, o relevo e os edifícios não estão prontos
+function setCarga(pct, msg) {
+  if (!estado.aCarregar) return;
+  if (msg) elCargaMsg.textContent = msg;
+  elCargaFill.style.width = Math.min(100, Math.round(pct)) + '%';
+}
 
 function mostrarEstado(msg, erro = false) {
+  estado.resumo = { msg, erro };
+  if (estado.aCarregar && !erro) return; // durante o carregamento, o progresso vive no ecrã de espera
   elStatus.textContent = msg;
   elStatus.className = erro ? 'erro' : '';
+}
+
+function mostrarResumo() {
+  const r = estado.resumo;
+  if (!r) return;
+  mostrarEstado(r.msg, r.erro);
+  if (!r.erro) setTimeout(() => elStatus.classList.add('hide'), 4500);
+}
+
+function progressoCor(fracao) {
+  const msg = `A colorir edifícios pela imagem… ${Math.round(fracao * 100)}%`;
+  if (estado.aCarregar) setCarga(55 + 40 * fracao, msg);
+  else { elStatus.classList.remove('hide'); mostrarEstado(msg); }
+}
+
+// Resolve quando o mapa acabou de desenhar (tiles do terreno, imagem de fundo e edifícios), ou ao fim do limite
+function mapaPronto(limiteMs) {
+  return new Promise(res => {
+    let t;
+    const fim = () => { clearTimeout(t); map.off('idle', fim); res(); };
+    t = setTimeout(fim, limiteMs);
+    map.on('idle', fim);
+    map.triggerRepaint();
+  });
+}
+
+async function terminarCarga(orbita) {
+  estado.aCarregar = false;
+  elCargaFill.style.width = '100%';
+  await esperar(reduzirMovimento() ? 0 : 250);
+  elCarga.classList.add('pronto'); // o desfoque dissolve-se
+  elCarga.setAttribute('aria-busy', 'false');
+  await esperar(reduzirMovimento() ? 0 : 800);
+  elCarga.hidden = true;
+  mostrarResumo();
+  if (orbita) orbitarAlvo();
+}
+
+// Volta completa de câmara à volta do alvo (aceleração e travagem suaves), para o relevo se notar de imediato
+function orbitarAlvo() {
+  const dur = CONFIG.orbita && CONFIG.orbita.duracaoMs;
+  if (!dur || reduzirMovimento()) return;
+  const b0 = map.getBearing(), t0 = performance.now();
+  const ac = new AbortController();
+  let parar = false;
+  for (const ev of ['mousedown', 'touchstart', 'wheel', 'keydown']) {
+    map.getCanvasContainer().addEventListener(ev, () => { parar = true; }, { signal: ac.signal, passive: true });
+  }
+  const passo = agora => {
+    if (parar) { ac.abort(); return; }
+    const t = Math.min(1, (agora - t0) / dur);
+    map.jumpTo({ bearing: b0 + 360 * (0.5 - Math.cos(Math.PI * t) / 2) }); // easeInOutSine
+    if (t < 1) requestAnimationFrame(passo);
+    else { map.jumpTo({ bearing: b0 }); ac.abort(); }
+  };
+  requestAnimationFrame(passo);
 }
 
 /* ---------- Descoberta e leitura dos ficheiros ---------- */
@@ -195,7 +269,9 @@ function expressaoAltura(f) {
 map.on('load', async () => {
   map.setLight({ anchor: 'viewport', position: [1.4, 210, 45], intensity: 0.42, color: '#fff6e8' });
   try {
+    setCarga(8, 'A carregar dados…');
     const { fc, ficheiros, reais, tifs, linhas } = await carregarDados();
+    setCarga(35, 'A preparar o relevo…');
     let aviso = '';
     if (tifs.length) {
       try {
@@ -224,6 +300,7 @@ map.on('load', async () => {
       map.on('mouseleave', 'linhas', () => map.getCanvas().style.cursor = '');
     }
 
+    setCarga(50, 'A desenhar os edifícios…');
     map.addSource('edificios', { type: 'geojson', data: fc, buffer: 32, tolerance: 0.2 });
     map.addLayer({
       id: 'edificios-3d', type: 'fill-extrusion', source: 'edificios',
@@ -243,10 +320,9 @@ map.on('load', async () => {
 
     iniciarPainel({ temLinhas: linhas.length > 0, temRelevo: !!map.getLayer('sombreado') });
     const n = fc.features.length.toLocaleString('pt-PT');
-    mostrarEstado(`${n} edifícios` + (linhas.length ? ` · ${linhas.length.toLocaleString('pt-PT')} linhas` : '') + ` de ${ficheiros} ficheiro(s)` + (reais === 0 ? ' · sem alturas nos dados: extrusão estimada' : '') + aviso);
-    if (estado.relevoFalhou) mostrarEstado(elStatus.textContent, true); // erro do relevo fica visível
-    else setTimeout(() => elStatus.classList.add('hide'), 4500);
-    if (CONFIG.corPorImagem) colorirPorImagem(fc);
+    mostrarEstado(`${n} edifícios` + (linhas.length ? ` · ${linhas.length.toLocaleString('pt-PT')} linhas` : '') + ` de ${ficheiros} ficheiro(s)` + (reais === 0 ? ' · sem alturas nos dados: extrusão estimada' : '') + aviso, estado.relevoFalhou);
+    setCarga(55, 'A colorir edifícios pela imagem…');
+    const corPronta = CONFIG.corPorImagem ? colorirPorImagem(fc) : Promise.resolve();
 
     map.on('click', 'edificios-3d', e => {
       const p = { ...e.features[0].properties };
@@ -257,11 +333,18 @@ map.on('load', async () => {
     });
     map.on('mouseenter', 'edificios-3d', () => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', 'edificios-3d', () => map.getCanvas().style.cursor = '');
+
+    // Só abre o mapa quando os edifícios estão coloridos e o mapa acabou de desenhar (com limite de espera)
+    await Promise.race([corPronta, esperar(CONFIG.maxEsperaCorMs)]);
+    setCarga(97, 'A finalizar…');
+    await mapaPronto(8000);
+    await terminarCarga(true);
   } catch (err) {
     const local = location.protocol === 'file:';
     mostrarEstado(local
       ? 'Abra o site através de um servidor local (ver instruções): o navegador bloqueia a leitura de dados3dguimarep/ em file://.'
       : err.message, true);
+    terminarCarga(false);
   }
 });
 
@@ -443,7 +526,7 @@ async function colorirPorImagem(fc) {
           (amostras[l[j]] = amostras[l[j]] || []).push(d[o], d[o + 1], d[o + 2]);
         }
       } catch (_) { falhas++; }
-      if (++feitos % 15 === 0) { elStatus.classList.remove('hide'); mostrarEstado(`A colorir edifícios pela imagem… ${Math.round(feitos / chaves.length * 100)}%`); }
+      if (++feitos % 15 === 0) progressoCor(feitos / chaves.length);
     };
     await Promise.all(Array.from({ length: 10 }, async () => { while (prox < chaves.length) await proc(chaves[prox++]); }));
     if (falhas === chaves.length) throw new Error('não foi possível ler as imagens de satélite (CORS/rede)');
@@ -465,7 +548,7 @@ async function colorirPorImagem(fc) {
     });
     map.getSource('edificios').setData(fc);
     mostrarEstado(`${n.toLocaleString('pt-PT')} edifícios coloridos pela imagem (zoom ${z})` + estado.avisoRelevo, estado.relevoFalhou);
-    if (!estado.relevoFalhou) setTimeout(() => elStatus.classList.add('hide'), 3500);
+    if (!estado.aCarregar && !estado.relevoFalhou) setTimeout(() => elStatus.classList.add('hide'), 3500);
   } catch (e) {
     console.error(e);
     mostrarEstado(`Cor por imagem indisponível: ${e.message}`, true);
