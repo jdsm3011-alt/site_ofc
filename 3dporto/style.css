@@ -121,10 +121,41 @@ html[data-theme="dark"] .maplibregl-ctrl-icon { filter: invert(1); }
   color: var(--ink); font-size: 13px;
 }
 .painel[hidden], .painel [hidden] { display: none; }
-.painel-titulo {
-  display: block; width: 100%; padding: 11px 14px; text-align: left; font-family: var(--serif); font-size: 15px; font-weight: 600;
-  background: none; border: 0; color: inherit; cursor: pointer;
+.painel { overscroll-behavior: contain; }
+.painel-cab {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 6px 6px 14px; background: var(--paper-elevated);
 }
+.painel-titulo { margin: 0; font-family: var(--serif); font-size: 15px; font-weight: 600; line-height: 1.2; }
+.painel-fechar {
+  flex: none; display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0;
+  color: var(--stone); background: transparent; border: 0; border-radius: 50%; cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.painel-fechar:hover { background: var(--paper-deep); color: var(--ink); }
+.painel-fechar:active { transform: scale(.94); }
+.nivel { margin-top: 8px; }
+.nivel-cab { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.nivel-cab strong { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--green-deep); }
+.nivel input[type="range"] { display: block; width: 100%; margin: 6px 0 0; accent-color: var(--green); }
+.nivel-escala { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10.5px; color: var(--stone); }
+.painel .nota { margin: 2px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--stone); }
+
+/* Botão que reabre o painel depois de fechado */
+.painel-abrir {
+  position: absolute; z-index: 5; right: calc(12px + env(safe-area-inset-right)); bottom: calc(34px + env(safe-area-inset-bottom));
+  display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 12px;
+  font-family: var(--mono); font-size: 13px; font-weight: 600; line-height: 1; color: var(--ink);
+  background: var(--glass); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft); cursor: pointer;
+  transition: background .15s ease, transform .1s ease;
+}
+.painel-abrir[hidden] { display: none; }
+.painel-abrir:hover { background: var(--paper-elevated); }
+.painel-abrir:active { transform: scale(.97); }
+.painel-abrir svg { flex: none; color: var(--green); }
+.painel-abrir:focus-visible, .painel-fechar:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.painel:not([hidden]), .painel-abrir:not([hidden]) { animation: painel-entra .22s ease-out; }
+@keyframes painel-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .painel section { padding: 10px 14px 12px; border-top: 1px solid var(--line); }
 .painel h2 { margin: 0 0 8px; font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--stone); }
 .painel h2 label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -165,6 +196,18 @@ html[data-theme="dark"] .maplibregl-ctrl-icon { filter: invert(1); }
 html[data-theme="dark"] .carga-logo { filter: invert(1); } /* o traço da águia é preto: inverte no tema escuro */
 .carga-titulo { margin: 2px 0 0; font-family: var(--serif); font-size: 22px; font-weight: 600; letter-spacing: .005em; }
 .carga-msg { margin: 0; min-height: 2.8em; max-width: min(300px, 80vw); font-family: var(--mono); font-size: 11px; letter-spacing: .14em; line-height: 1.5; text-transform: uppercase; color: var(--stone); }
+/* Aviso de recursos: discreto, abaixo da barra de progresso */
+.carga-aviso {
+  display: flex; gap: 10px; align-items: flex-start; max-width: min(320px, 84vw); margin-top: 8px; padding-top: 16px;
+  border-top: 1px solid var(--line); text-align: left; color: var(--stone);
+  font-family: var(--sans); font-size: 12.5px; line-height: 1.55;
+  animation: aviso-entra .9s .5s ease-out both;
+}
+.carga-aviso svg { flex: none; width: 16px; height: 16px; margin-top: 2px; color: var(--ochre); }
+.carga-aviso p { margin: 0; }
+.carga-aviso strong { display: block; margin-bottom: 1px; font-weight: 500; color: var(--ink); }
+.carga-aviso .so-movel { display: none; margin-top: 4px; }
+@keyframes aviso-entra { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 .carga-barra { width: 180px; height: 2px; border-radius: 2px; background: var(--line); overflow: hidden; }
 .carga-barra span {
   display: block; width: 0; height: 100%;
@@ -176,8 +219,8 @@ html[data-theme="dark"] .carga-logo { filter: invert(1); } /* o traço da águia
 @keyframes carga-brilho { to { background-position: -200% 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .voltar, #status, .carga, .carga-barra span, .chips button { transition: none; }
-  .carga-logo, .carga-barra span { animation: none; }
+  .voltar, #status, .carga, .carga-barra span, .chips button, .fps { transition: none; }
+  .carga-logo, .carga-barra span, .carga-aviso, .painel:not([hidden]), .painel-abrir:not([hidden]) { animation: none; }
 }
 
 /* Telemóvel e ecrãs tácteis */
@@ -189,10 +232,21 @@ button { touch-action: manipulation; }
 @media (pointer: coarse) {
   .voltar { padding: 12px 18px 12px 14px; font-size: 15px; }
   .painel { font-size: 15px; }
-  .painel-titulo { padding: 14px 16px; font-size: 16px; }
+  .painel-cab { padding: 8px 8px 8px 16px; }
+  .painel-titulo { font-size: 16px; }
+  .painel-fechar { width: 44px; height: 44px; }
+  .painel-abrir { height: 46px; padding: 0 18px 0 14px; font-size: 14px; }
+  .painel .nota { font-size: 12.5px; }
+  .carga-aviso .so-movel { display: block; }
+  .maplibregl-popup-close-button { width: 32px; height: 32px; font-size: 20px; }
+  /* O desfoque (backdrop-filter) sobre um canvas WebGL é caro em GPUs móveis: fundos mais opacos em vez disso */
+  .painel { background: var(--paper-elevated); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .carga { background: radial-gradient(circle at 50% 35%, rgba(61, 107, 79, .10), transparent 30%), var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .carga::before, .carga::after { display: none; }
   .chips button { min-height: 40px; padding: 8px 14px; font-size: 13px; }
   .linha { min-height: 40px; }
   .linha input[type="range"] { width: 130px; height: 32px; }
+  .nivel input[type="range"] { height: 32px; }
   .linha input[type="color"] { width: 48px; height: 34px; }
   .painel input[type="checkbox"] { width: 22px; height: 22px; }
   .painel h2 label { min-height: 36px; }
@@ -207,3 +261,33 @@ button { touch-action: manipulation; }
   }
   .painel { max-height: 60dvh; }
 }
+
+@media (max-height: 480px) and (orientation: landscape) {
+  .painel { max-height: calc(100dvh - 90px); }
+  .carga-cartao { gap: 8px; padding: 12px; }
+  .carga-logo { display: none; }
+}
+
+/* Leitor de FPS (qualidade.js): só aparece quando os fps descem, quando a qualidade muda, ou se o utilizador o pedir */
+.fps {
+  position: absolute; left: calc(12px + env(safe-area-inset-left)); bottom: calc(52px + env(safe-area-inset-bottom)); z-index: 4;
+  display: inline-flex; align-items: center; gap: 6px; max-width: min(380px, calc(100vw - 24px)); padding: 6px 12px;
+  font-family: var(--mono); font-size: 11.5px; font-weight: 500; line-height: 1; white-space: nowrap; color: var(--ink);
+  background: var(--glass); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow-soft);
+  opacity: 0; transform: translateY(4px); pointer-events: none; transition: opacity .3s ease, transform .3s ease;
+}
+.fps.visivel { opacity: 1; transform: none; }
+.fps-ponto { width: 8px; height: 8px; border-radius: 50%; flex: none; background: var(--stone); }
+.fps[data-n="ok"] .fps-ponto { background: var(--green); }
+.fps[data-n="medio"] .fps-ponto { background: var(--ochre); }
+.fps[data-n="mau"] .fps-ponto { background: #C0392B; }
+.fps-num { min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
+.fps-un, .fps-msg { color: var(--stone); }
+.fps-msg { overflow: hidden; text-overflow: ellipsis; }
+.fps-msg:empty { display: none; }
+
+/* Durante a calibração de desempenho (qualidade.js) o ecrã de espera fica opaco e sem desfoque: o desfoque custaria fps ao mapa e falsearia a medição. Depois dissolve-se com um simples fade. */
+.carga.calibrar { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; transition: opacity .8s ease; }
+.carga.calibrar::before, .carga.calibrar::after { display: none; }
+.carga.calibrar .carga-barra span { animation: none; }
+@media (prefers-reduced-motion: reduce) { .carga.calibrar { transition: none; } }

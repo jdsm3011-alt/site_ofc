@@ -1,5 +1,7 @@
 /* Visualizador de edifícios 2D/3D — MapLibre GL JS (um único motor para os dois modos) */
 
+const MOVEL = matchMedia('(pointer: coarse)').matches; // telemóvel/tablet: menos resolução interna e menos memória de tiles
+
 const CONFIG = {
   // Pasta dos dados relativa a ESTA página: o porto3d.html já está dentro de 3dporto/,
   // por isso os ficheiros (e o manifest.json) estão ao lado dele. Se mover o HTML para a raiz, use '3dporto/'.
@@ -11,13 +13,13 @@ const CONFIG = {
   alturaMin: 6,
   alturaMax: 36,
   // Mapa de fundo (sem chave de API): 'imagery' | 'topo' | 'navegacao' | 'osm' | null (sem fundo)
-  basemap: 'imagery',
+  basemap: 'topo',
   // Linhas (ruas, caminhos, rios...): qualquer LineString/MultiLineString nos GeoJSON, desenhadas sobre o relevo
-  linhas: { cor: '#E7A57A', largura: 2.2, contorno: '#173124' }, // ocre claro e tinta, como no index
+  linhas: { cor: '#8A8D86', largura: 1.2, contorno: '#3A3D38' }, // cinzento, fino e discreto
   // Cor de cada edifício a partir dos pixéis da imagem de satélite (Esri) dentro do contorno
   corPorImagem: true,
   zoomCorMax: 18,    // detalhe máximo das imagens usadas
-  maxTilesCor: matchMedia('(pointer: coarse)').matches ? 500 : 1500, // se houver mais tiles, baixa o zoom automaticamente
+  maxTilesCor: MOVEL ? 500 : 1500, // se houver mais tiles, baixa o zoom automaticamente
   // Relevo a partir de um MDT em GeoTIFF na pasta data (.tif/.tiff). exagero: fator vertical; sombreado: sombreamento do terreno
   relevo: { exagero: 1, sombreado: true, assentarEdificios: false },
   // Propriedades onde procurar a altura (em metros), por ordem de prioridade
@@ -235,7 +237,10 @@ const FUNDO_INICIAL = BASEMAPS[CONFIG.basemap] ? CONFIG.basemap : 'nenhum';
 
 const map = new maplibregl.Map({
   container: 'map',
-  pixelRatio: Math.min(window.devicePixelRatio || 1, 2), // limita a resolução interna: poupa GPU, bateria e memória
+  pixelRatio: Math.min(window.devicePixelRatio || 1, MOVEL ? 1.5 : 2), // limita a resolução interna: poupa GPU, bateria e memória
+  fadeDuration: MOVEL ? 0 : 300,                        // sem fundidos de tiles/etiquetas no telemóvel
+  ...(MOVEL ? { maxTileCacheSize: 40 } : {}),           // menos tiles em memória (evita que o separador seja descartado)
+  renderWorldCopies: false,
   center: CONFIG.camera3D.alvo,
   zoom: CONFIG.camera3D.zoom,
   pitch: CONFIG.camera3D.pitch,
@@ -289,7 +294,7 @@ map.on('load', async () => {
       map.addSource('linhas', { type: 'geojson', data: { type: 'FeatureCollection', features: linhas } });
       const traco = { 'line-cap': 'round', 'line-join': 'round' };
       map.addLayer({ id: 'linhas-contorno', type: 'line', source: 'linhas', layout: traco,
-        paint: { 'line-color': CONFIG.linhas.contorno, 'line-width': larguraLinha(CONFIG.linhas.largura + 1.8), 'line-opacity': 0.55 } });
+        paint: { 'line-color': CONFIG.linhas.contorno, 'line-width': larguraLinha(CONFIG.linhas.largura + 1), 'line-opacity': 0.55 } });
       map.addLayer({ id: 'linhas', type: 'line', source: 'linhas', layout: traco,
         paint: { 'line-color': CONFIG.linhas.cor, 'line-width': larguraLinha(CONFIG.linhas.largura) } });
       map.on('click', 'linhas', e => {
@@ -302,6 +307,13 @@ map.on('load', async () => {
     }
 
     setCarga(50, 'A desenhar os edifícios…');
+    // Ponto de referência de cada edifício (1.º vértice): permite limitar a distância de desenho (ver qualidade.js)
+    for (const f of fc.features) {
+      const g = f.geometry, p = (g.type === 'Polygon' ? g.coordinates[0] : g.coordinates[0][0])[0];
+      (f.properties = f.properties || {})._cx = p[0];
+      f.properties._cy = p[1];
+    }
+    estado.temCentros = true;
     map.addSource('edificios', { type: 'geojson', data: fc, buffer: 32, tolerance: 0.2 });
     map.addLayer({
       id: 'edificios-3d', type: 'fill-extrusion', source: 'edificios',
@@ -327,7 +339,7 @@ map.on('load', async () => {
 
     map.on('click', 'edificios-3d', e => {
       const p = { ...e.features[0].properties };
-      const altura = p._h; delete p._h; delete p._z; delete p._cor;
+      const altura = p._h; delete p._h; delete p._z; delete p._cor; delete p._cx; delete p._cy;
       const linhas = Object.entries(p).slice(0, 14).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
       new maplibregl.Popup({ maxWidth: '320px' }).setLngLat(e.lngLat)
         .setHTML(`<table>${linhas}<tr><td>altura (m)</td><td>${altura}</td></tr></table>`).addTo(map);
@@ -339,6 +351,11 @@ map.on('load', async () => {
     await Promise.race([corPronta, esperar(CONFIG.maxEsperaCorMs)]);
     setCarga(97, 'A finalizar…');
     await mapaPronto(8000);
+    // Escolhe o nível de qualidade deste dispositivo (por trás do ecrã de espera) e fixa-o: sem ajustes a meio da utilização
+    if (window.QualidadeAuto) {
+      setCarga(97, 'A otimizar para este dispositivo…');
+      await window.QualidadeAuto.calibrar({ progresso: m => setCarga(97, m) });
+    }
     await terminarCarga(true);
   } catch (err) {
     const local = location.protocol === 'file:';
@@ -565,15 +582,16 @@ function iniciarPainel({ temLinhas, temRelevo }) {
   const marcar = (grupo, valor) => grupo.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === valor));
   const escolher = (grupo, fn) => grupo.addEventListener('click', e => { const b = e.target.closest('button'); if (b) fn(b.dataset.v); });
 
-  if (matchMedia('(max-width: 640px)').matches) { // em ecrãs pequenos o painel começa recolhido
-    $('painel-toggle').setAttribute('aria-expanded', 'false');
-    $('painel-corpo').hidden = true;
-  }
-  $('painel-toggle').addEventListener('click', e => {
-    const aberto = e.currentTarget.getAttribute('aria-expanded') === 'true';
-    e.currentTarget.setAttribute('aria-expanded', !aberto);
-    $('painel-corpo').hidden = aberto;
-  });
+  // Painel: a cruz fecha-o e o botão "Camadas" volta a abri-lo (Esc também fecha)
+  const definirPainel = (aberto, foco) => {
+    $('painel').hidden = !aberto;
+    $('painel-abrir').hidden = aberto;
+    $('painel-abrir').setAttribute('aria-expanded', String(aberto));
+    if (foco) (aberto ? $('painel-fechar') : $('painel-abrir')).focus({ preventScroll: true });
+  };
+  $('painel-fechar').addEventListener('click', () => definirPainel(false, true));
+  $('painel-abrir').addEventListener('click', () => definirPainel(true, true));
+  $('painel').addEventListener('keydown', e => { if (e.key === 'Escape') definirPainel(false, true); });
 
   // Mapa de fundo (ou superfície com uma só cor)
   const aplicarFundo = id => {
@@ -610,7 +628,7 @@ function iniciarPainel({ temLinhas, temRelevo }) {
     const w = CONFIG.linhas.largura * L.k;
     pintar('linhas', 'line-color', L.cor);
     pintar('linhas', 'line-width', larguraLinha(w));
-    pintar('linhas-contorno', 'line-width', larguraLinha(w + 1.8));
+    pintar('linhas-contorno', 'line-width', larguraLinha(w + 1));
     const a = $('amostra-linhas');
     a.style.background = L.cor;
     a.style.height = Math.max(2, Math.round(w * 1.6)) + 'px';
@@ -622,7 +640,7 @@ function iniciarPainel({ temLinhas, temRelevo }) {
   $('linhas-opac').addEventListener('input', e => { pintar('linhas', 'line-opacity', +e.target.value); pintar('linhas-contorno', 'line-opacity', 0.55 * e.target.value); });
 
   aplicarFundo(FUNDO_INICIAL); aplicarEdificios(); aplicarLinhas();
-  $('painel').hidden = false;
+  definirPainel(!matchMedia('(max-width: 640px)').matches); // em ecrãs pequenos começa fechado, para não tapar o mapa
 }
 
 /* Botão Voltar: fecha o separador (funciona quando foi aberto a partir do index);
