@@ -13,7 +13,7 @@ const CONFIG = {
   // Mapa de fundo (sem chave de API): 'imagery' | 'topo' | 'navegacao' | 'osm' | null (sem fundo)
   basemap: 'imagery',
   // Linhas (ruas, caminhos, rios...): qualquer LineString/MultiLineString nos GeoJSON, desenhadas sobre o relevo
-  linhas: { cor: '#ffd23f', largura: 2.2, contorno: '#1d2a33' },
+  linhas: { cor: '#E7A57A', largura: 2.2, contorno: '#173124' }, // ocre claro e tinta, como no index
   // Cor de cada edifício a partir dos pixéis da imagem de satélite (Esri) dentro do contorno
   corPorImagem: true,
   zoomCorMax: 18,    // detalhe máximo das imagens usadas
@@ -230,6 +230,7 @@ const BASEMAPS = {
   navegacao: { url: ESRI + 'World_Street_Map/MapServer/tile/{z}/{y}/{x}', maxzoom: 19, attr: '© Esri, HERE, Garmin, OpenStreetMap contributors' },
   osm:       { url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',      maxzoom: 19, attr: '© OpenStreetMap contributors', paint: { 'raster-saturation': -0.5 } }
 };
+const corTema = (variavel, alternativa) => getComputedStyle(document.documentElement).getPropertyValue(variavel).trim() || alternativa; // cores do tema (style.css)
 const FUNDO_INICIAL = BASEMAPS[CONFIG.basemap] ? CONFIG.basemap : 'nenhum';
 
 const map = new maplibregl.Map({
@@ -244,7 +245,7 @@ const map = new maplibregl.Map({
     version: 8,
     sources: Object.fromEntries(Object.entries(BASEMAPS).map(([k, b]) => ['base-' + k, { type: 'raster', tileSize: 256, maxzoom: b.maxzoom, tiles: [b.url], attribution: b.attr }])),
     layers: [
-      { id: 'fundo', type: 'background', paint: { 'background-color': '#e8e6e0' } },
+      { id: 'fundo', type: 'background', paint: { 'background-color': corTema('--paper-deep', '#EFEBE0') } },
       ...Object.entries(BASEMAPS).map(([k, b]) => ({ id: 'base-' + k, type: 'raster', source: 'base-' + k, paint: b.paint || {}, layout: { visibility: k === FUNDO_INICIAL ? 'visible' : 'none' } }))
     ]
   }
@@ -252,8 +253,8 @@ const map = new maplibregl.Map({
 map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
 map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
 
-const RAMPA = ['interpolate', ['linear'], ['coalesce', ['get', '_h'], 9], 3, '#d9c7a8', 9, '#c9a87e', 20, '#a77f5e', 45, '#7d5f55', 90, '#4d4a5c'];
-function corEdificios(modo = CONFIG.corPorImagem ? 'imagem' : 'altura', cor = '#c9a87e') {
+const RAMPA = ['interpolate', ['linear'], ['coalesce', ['get', '_h'], 9], 3, '#F0E3CC', 9, '#E7A57A', 20, '#C2703D', 45, '#3D6B4F', 90, '#173124'];
+function corEdificios(modo = CONFIG.corPorImagem ? 'imagem' : 'altura', cor = '#C2703D') {
   if (modo === 'unica') return cor;
   if (modo === 'imagem') return ['case', ['has', '_cor'], ['to-color', ['get', '_cor']], RAMPA];
   return RAMPA;
@@ -315,7 +316,7 @@ map.on('load', async () => {
     // Contorno nítido para legibilidade em 2D (desaparece à medida que sobem os volumes)
     map.addLayer({
       id: 'edificios-linha', type: 'line', source: 'edificios',
-      paint: { 'line-color': '#6b4f3a', 'line-width': ['interpolate', ['linear'], ['zoom'], 14, 0.3, 19, 1.2], 'line-opacity': 0.7 }
+      paint: { 'line-color': '#173124', 'line-width': ['interpolate', ['linear'], ['zoom'], 14, 0.3, 19, 1.2], 'line-opacity': 0.7 }
     });
 
     iniciarPainel({ temLinhas: linhas.length > 0, temRelevo: !!map.getLayer('sombreado') });
@@ -429,7 +430,7 @@ async function prepararRelevo(url) {
   map.addSource('dem', { type: 'raster-dem', tiles: ['mdt://{z}/{x}/{y}'], tileSize: N, encoding: 'terrarium', minzoom: 0, maxzoom, bounds });
   if (CONFIG.relevo.sombreado) {
     map.addLayer({ id: 'sombreado', type: 'hillshade', source: 'dem',
-      paint: { 'hillshade-exaggeration': 0.35, 'hillshade-shadow-color': '#26303a', 'hillshade-highlight-color': '#ffffff' } });
+      paint: { 'hillshade-exaggeration': 0.35, 'hillshade-shadow-color': '#173124', 'hillshade-highlight-color': '#FCFAF5' } });
   }
   map.setTerrain({ source: 'dem', exaggeration: CONFIG.relevo.exagero });
 
@@ -582,13 +583,14 @@ function iniciarPainel({ temLinhas, temRelevo }) {
     pintar('sombreado', 'hillshade-exaggeration', id === 'nenhum' ? 0.7 : 0.35);
   };
   escolher($('fundos'), aplicarFundo);
+  $('cor-superficie').value = corTema('--paper-deep', '#EFEBE0');
   $('cor-superficie').addEventListener('input', e => pintar('fundo', 'background-color', e.target.value));
   $('linha-sombreado').hidden = !temRelevo;
   $('sombreado').addEventListener('change', e => ver(['sombreado'], e.target.checked));
 
   // Edifícios
-  const E = { modo: CONFIG.corPorImagem ? 'imagem' : 'altura', cor: '#c9a87e' };
-  const gradientes = { imagem: 'linear-gradient(90deg,#b86f52,#c9c3b6,#ece8df,#8a9a74)', altura: 'linear-gradient(90deg,#d9c7a8,#a77f5e,#4d4a5c)' };
+  const E = { modo: CONFIG.corPorImagem ? 'imagem' : 'altura', cor: '#C2703D' };
+  const gradientes = { imagem: 'linear-gradient(90deg,#b86f52,#c9c3b6,#ece8df,#8a9a74)', altura: 'linear-gradient(90deg,#F0E3CC,#E7A57A,#C2703D,#3D6B4F,#173124)' };
   const aplicarEdificios = () => {
     pintar('edificios-3d', 'fill-extrusion-color', corEdificios(E.modo, E.cor));
     marcar($('edif-modo'), E.modo);

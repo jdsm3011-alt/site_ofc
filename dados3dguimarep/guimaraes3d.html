@@ -3,11 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#2f6f8f">
+  <meta name="theme-color" content="#3D6B4F">
   <meta name="mobile-web-app-capable" content="yes">
-  <title>Guimarães 3D</title>
+  <title>Guimarães 3D — DataGis</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script>
+    /* Tema guardado no index (claro por omissão); aplica-se antes de pintar para evitar flash */
+    try { var t = localStorage.getItem('datagis-theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <div id="map"></div>
@@ -29,7 +40,7 @@
           <button type="button" data-v="osm">OSM</button>
           <button type="button" data-v="nenhum">Cor única</button>
         </div>
-        <label id="linha-superficie" class="linha" hidden>Cor da superfície <input type="color" id="cor-superficie" value="#e8e6e0"></label>
+        <label id="linha-superficie" class="linha" hidden>Cor da superfície <input type="color" id="cor-superficie" value="#EFEBE0"></label>
         <label id="linha-sombreado" class="linha"><input type="checkbox" id="sombreado" checked> Sombreado do relevo</label>
       </section>
 
@@ -55,7 +66,7 @@
 
   <div id="carga" class="carga" aria-busy="true">
     <div class="carga-cartao">
-      <div class="carga-anel" aria-hidden="true"></div>
+      <img class="carga-logo" src="logo.png" alt="" width="72" height="72" onerror="this.remove()">
       <p class="carga-titulo">Guimarães 3D</p>
       <p id="carga-msg" class="carga-msg" role="status" aria-live="polite">A carregar…</p>
       <div class="carga-barra" aria-hidden="true"><span id="carga-fill"></span></div>
@@ -67,6 +78,6 @@
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/proj4@2.12.1/dist/proj4.js"></script>
   <script src="https://unpkg.com/geotiff@2.1.3/dist-browser/geotiff.js"></script>
-  <script src="script.js?v=4"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
