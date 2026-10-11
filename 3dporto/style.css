@@ -289,5 +289,5 @@ button { touch-action: manipulation; }
 /* Durante a calibração de desempenho (qualidade.js) o ecrã de espera fica opaco e sem desfoque: o desfoque custaria fps ao mapa e falsearia a medição. Depois dissolve-se com um simples fade. */
 .carga.calibrar { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; transition: opacity .8s ease; }
 .carga.calibrar::before, .carga.calibrar::after { display: none; }
-.carga.calibrar .carga-barra span { animation: none; }
+.carga.calibrar .carga-barra span, .carga.calibrar .carga-logo { animation: none; }
 @media (prefers-reduced-motion: reduce) { .carga.calibrar { transition: none; } }

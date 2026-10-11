@@ -37,11 +37,14 @@
     (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.connection && navigator.connection.saveData));
   const NIVEL_INICIAL = MOVEL ? (FRACO ? 2 : 1) : 0;
 
-  // Critérios de "sem soluços" na calibração (tempos entre quadros, em ms)
-  const P95_MAX = 19;          // 95% dos quadros têm de caber em ~19 ms (60 fps com folga para o ruído do relógio)
-  const LONGO_MS = 25;         // quadro "longo": falhou pelo menos um refresh a 60 Hz
-  const LONGOS_MAX = 0.02;     // no máximo 2% de quadros longos
-  const MUITO_LONGO_MS = 50;   // soluço visível; tolera-se 1 em toda a medição
+  // Critérios de "fluido" na calibração (tempos entre quadros, em ms).
+  // Desktop: alvo ~60 fps, aceitando quedas ocasionais. Telemóvel/tablet: alvo ~30 fps, que já é uma experiência boa e poupa bateria.
+  const P95_MAX = MOVEL ? 40 : 24;            // 95% dos quadros têm de caber neste tempo (desktop ≈ 42 fps no pior; móvel ≈ 25 fps)
+  const LONGO_MS = MOVEL ? 50 : 33;           // quadro "longo": perdeu pelo menos um refresh
+  const LONGOS_MAX = 0.05;                    // no máximo 5% de quadros longos
+  const MUITO_LONGO_MS = MOVEL ? 100 : 66;    // soluço visível; toleram-se 2 em toda a medição
+  const NIVEL_MIN = MOVEL ? 1 : 0;            // no telemóvel o nível 0 (sem limites) só se escolhe manualmente
+  const FPS_OK = MOVEL ? 27 : 55, FPS_MEDIO = MOVEL ? 20 : 40, FPS_BAIXO = MOVEL ? 24 : 45; // limiares do leitor de FPS
   const CALIBRAR_LIMITE_MS = 25000;
   const CACHE_VALIDADE_MS = 3 * 24 * 3600 * 1000; // passado isto, volta a calibrar do zero (o dispositivo pode ter mudado)
 
@@ -74,7 +77,7 @@
     return { n, p50: p(0.5), p95: p(0.95),
       longos: dts.filter(d => d > LONGO_MS).length / n, muitoLongos: dts.filter(d => d > MUITO_LONGO_MS).length };
   }
-  const semSolucos = s => !!s && s.p95 <= P95_MAX && s.longos <= LONGOS_MAX && s.muitoLongos <= 1;
+  const semSolucos = s => !!s && s.p95 <= P95_MAX && s.longos <= LONGOS_MAX && s.muitoLongos <= 2;
 
   /* ---------- Aplicar um nível ---------- */
   let nivel = 0, ratioAtual = Math.min(DPR, MOVEL ? 1.5 : 2), // igual ao pixelRatio com que o mapa foi criado (script.js)
@@ -157,7 +160,7 @@
       if (perde) perde.loseContext();
     } catch (_) {}
     const pixeis = window.innerWidth * window.innerHeight * DPR * DPR;
-    return [gpu, DPR, Math.round(Math.log2(Math.max(1, pixeis)) * 2), navigator.hardwareConcurrency || 0].join('|'); // tamanho em meias oitavas
+    return ['c3', gpu, DPR, Math.round(Math.log2(Math.max(1, pixeis)) * 2), navigator.hardwareConcurrency || 0].join('|'); // tamanho em meias oitavas
   }
   function lerGuardado() {
     try {
@@ -196,7 +199,8 @@
     const inicio = performance.now();
     const cam = { center: map.getCenter(), zoom: map.getZoom(), bearing: map.getBearing(), pitch: map.getPitch() };
     const guardado = lerGuardado();
-    const primeiro = guardado ? guardado.nivel : NIVEL_INICIAL; // com resultado recente só se verifica (e eventualmente desce)
+    // Com resultado recente verifica-se um nível acima do guardado (para a qualidade poder voltar a subir) e desce-se se não aguentar
+    const primeiro = guardado ? Math.max(NIVEL_MIN, guardado.nivel - 1) : NIVEL_INICIAL;
     let escolhido = primeiro, aquecido = false, semMelhoria = 0, anterior = null, limiteDoSistema = false;
 
     // Durante a medição o ecrã de espera fica opaco e sem desfoque: o desfoque custaria fps ao mapa e falsearia a medição
@@ -205,14 +209,19 @@
       for (let i = primeiro; i < NIVEIS.length; i++) {
         progresso && progresso(`A otimizar para este dispositivo… ${i - primeiro + 1}/${NIVEIS.length - primeiro}`);
         aplicar(i, true);
-        map.jumpTo({ center: cam.center, zoom: cam.zoom, bearing: cam.bearing, pitch: NIVEIS[i].pitch }); // pior caso: inclinação máxima
+        map.jumpTo({ center: cam.center, zoom: cam.zoom, bearing: cam.bearing, pitch: Math.min(NIVEIS[i].pitch, MOVEL ? 70 : 75) }); // caso exigente mas realista (a rede de segurança trata dos extremos)
         await aguardarParado(4000);
         if (!aquecido) { await girar(360, 1400); await aguardarParado(3000); aquecido = true; } // carrega os tiles de todas as direções
         await esperar(150);
 
-        const ti = performance.now();
-        await girar(70, 1600);
-        const s = estatisticas(quadros.filter(q => q.t > ti + 250).map(q => q.dt));
+        const medir = async () => {
+          const ti = performance.now();
+          await girar(70, 1600);
+          return estatisticas(quadros.filter(q => q.t > ti + 250).map(q => q.dt));
+        };
+        let s = await medir();
+        // Falhou por pouco (ou sem amostras suficientes)? Mede outra vez: um soluço isolado não deve baixar a qualidade
+        if (!semSolucos(s) && (!s || s.p95 <= P95_MAX * 1.3)) { const s2 = await medir(); if (semSolucos(s2) || !s) s = s2; }
         escolhido = i;
         if (semSolucos(s)) break;
         if (i === NIVEIS.length - 1) break;
@@ -239,7 +248,7 @@
   // Não grava o nível: na visita seguinte a calibração volta a verificar e decide sozinha.
   // Mede o tempo de quadro "vivido" (média ponderada pelo tempo): um quadro lento pesa mais do que um rápido.
   let redeAtiva = true, emergencias = 0, aposEmergencia = null;
-  const TEMPO_VIVIDO_MAX = 28; // ms (~36 fps)
+  const TEMPO_VIVIDO_MAX = MOVEL ? 45 : 33; // ms (≈22 fps no móvel, ≈30 fps no desktop)
   function vigiar(agora) {
     if (estado.aCarregar || !redeAtiva || !automatico() || document.hidden) return; // só depois de o mapa abrir
     const dts = quadros.filter(q => agora - q.t < 4000).map(q => q.dt);
@@ -277,8 +286,8 @@
     const fps = fpsAtual(agora), sempre = !!(elMostrar && elMostrar.checked);
     if (fps !== null) hudNum.textContent = Math.round(fps);
     else if (sempre) hudNum.textContent = '–';
-    hud.dataset.n = fps === null ? '' : fps >= 55 ? 'ok' : fps >= 40 ? 'medio' : 'mau';
-    if (fps !== null && fps < 45) baixoVisivelAte = agora + 4000;
+    hud.dataset.n = fps === null ? '' : fps >= FPS_OK ? 'ok' : fps >= FPS_MEDIO ? 'medio' : 'mau';
+    if (fps !== null && fps < FPS_BAIXO) baixoVisivelAte = agora + 4000;
     if (agora >= msgAte) hudMsg.textContent = sempre && nivel > 0 ? 'qualidade ' + qualidadeTxt() : '';
     hud.classList.toggle('visivel', sempre || agora < msgAte || agora < baixoVisivelAte);
   }
