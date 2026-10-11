@@ -30,8 +30,8 @@ const CONFIG = {
   variacao: 3,
   // Sistema de coordenadas assumido quando os dados não estão em graus (PT-TM06/ETRS89)
   crsPadrao: 'EPSG:3763',
-  // Vista inicial (abre diretamente em 3D na Torre dos Clérigos): alvo [lon, lat], inclinação (pitch), zoom e rumo (bearing; null = norte)
-  camera3D: { pitch: 60, bearing: null, zoom: 15.5, alvo: [-8.613900, 41.145700] },
+  // Vista inicial (abre diretamente em 3D na FLUP (Faculdade de Letras)): alvo [lon, lat], inclinação (pitch), zoom e rumo (bearing; null = norte)
+  camera3D: { pitch: 60, bearing: null, zoom: 16, alvo: [-8.632570, 41.151055] },
   // Órbita de apresentação à volta do alvo, depois de tudo carregado (0 = desligada). Pára se o utilizador tocar no mapa.
   orbita: { duracaoMs: 4000 },
   // Tempo máximo (ms) que o ecrã de espera aguarda pela cor por imagem de satélite; passado isto abre o mapa e a cor continua em segundo plano
