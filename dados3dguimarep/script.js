@@ -624,3 +624,24 @@ function iniciarPainel({ temLinhas, temRelevo }) {
   aplicarFundo(FUNDO_INICIAL); aplicarEdificios(); aplicarLinhas();
   $('painel').hidden = false;
 }
+
+/* Botão Voltar: fecha o separador (funciona quando foi aberto a partir do index);
+   se o navegador não permitir fechar, volta à página principal. */
+document.getElementById('voltar').addEventListener('click', e => {
+  e.preventDefault();
+  const destino = e.currentTarget.href;
+  window.close();
+  setTimeout(() => { if (!window.closed) location.href = destino; }, 200);
+});
+
+/* Céu: o MapLibre 4 deixa transparente a zona acima do horizonte, por isso o degradé está no CSS (#map).
+   Aqui só se calcula onde fica o horizonte (em % da altura) para o degradé acompanhar a inclinação. */
+function atualizarCeu() {
+  const el = map.getContainer(), h = el.clientHeight || 1;
+  const p = Math.max(map.getPitch(), 1) * Math.PI / 180;
+  const horizonte = h / 2 - 1.5 * h / Math.tan(p); // fov vertical do MapLibre ≈ 36,87° => tan(fov/2) = 1/3
+  el.style.setProperty('--horizonte', Math.max(0, Math.min(70, horizonte / h * 100)).toFixed(1) + '%');
+}
+map.on('pitch', atualizarCeu);
+map.on('resize', atualizarCeu);
+atualizarCeu();

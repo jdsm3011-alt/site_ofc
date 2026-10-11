@@ -48,7 +48,19 @@ html[data-theme="dark"] {
 }
 
 html, body { height: 100%; margin: 0; overflow: hidden; background: var(--paper-deep); color: var(--ink); }
-#map { position: absolute; inset: 0; }
+/* Céu: degradé por trás do canvas transparente; o horizonte (--horizonte) é atualizado pelo script */
+#map {
+  position: absolute; inset: 0; --horizonte: 0%;
+  --ceu-topo: #5F94BC; --ceu-meio: #9CC3DA; --ceu-horizonte: #E9ECE3;
+  background:
+    radial-gradient(ellipse 60% 40% at 78% calc(var(--horizonte) * .55), rgba(255, 244, 214, .55), transparent 70%),
+    linear-gradient(to bottom,
+      var(--ceu-topo) 0%,
+      var(--ceu-meio) calc(var(--horizonte) * .6),
+      var(--ceu-horizonte) calc(var(--horizonte) + 6%),
+      var(--paper-deep) calc(var(--horizonte) + 22%));
+}
+html[data-theme="dark"] #map { --ceu-topo: #0A1018; --ceu-meio: #16222B; --ceu-horizonte: #2A3A36; }
 
 /* Botão Voltar (mesmo desenho do botão 3D do index) */
 .voltar {
