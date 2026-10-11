@@ -5081,8 +5081,8 @@
           <div class="map-controls" aria-label="Controlo do mapa" data-i18n-attr-aria-label="map.controlo">
             <button id="map-fit-all" title="Ajustar ao território" data-i18n-attr-title="map.ajustar">⌖</button>
           </div>
-          <a class="btn-3d-municipio" id="btn-3d-guimaraes" href="dados3dguimarep/guimaraes3d.html"
-            target="_blank" rel="noopener" title="Abrir visualização 3D de Guimarães" aria-label="Ver em 3D">
+          <a class="btn-3d-municipio" id="btn-3d" href="dados3dguimarep/guimaraes3d.html"
+            target="_blank" rel="opener" title="Abrir visualização 3D de Guimarães" aria-label="Ver em 3D">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"
               stroke-linecap="round" aria-hidden="true">
               <path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z" />
@@ -7063,15 +7063,25 @@
       });
     }
 
-    // ── BOTÃO 3D (Guimarães) ─────────────────────────────────────────────────────
-    const btn3dGuimaraes = document.getElementById('btn-3d-guimaraes');
-    if (btn3dGuimaraes && window.L && L.DomEvent) {
-      L.DomEvent.disableClickPropagation(btn3dGuimaraes);
+    // ── BOTÃO 3D (municípios com visualização 3D) ───────────────────────────────
+    // Chave = nome normalizado (minúsculas, sem acentos). rel="opener" no <a> permite que o botão "Voltar" da página 3D feche o separador.
+    const DESTINOS_3D = {
+      guimaraes: { href: 'dados3dguimarep/guimaraes3d.html', nome: 'Guimarães' },
+      porto: { href: '3dporto/porto3d.html', nome: 'Porto' }
+    };
+    const btn3d = document.getElementById('btn-3d');
+    if (btn3d && window.L && L.DomEvent) {
+      L.DomEvent.disableClickPropagation(btn3d);
     }
     function atualizarBotao3D(nomeMunicipio) {
-      if (!btn3dGuimaraes) return;
-      const ativo = !!nomeMunicipio && normalizarNome(nomeMunicipio) === 'guimaraes';
-      btn3dGuimaraes.classList.toggle('visible', ativo);
+      if (!btn3d) return;
+      const chave = nomeMunicipio ? normalizarNome(nomeMunicipio) : '';
+      const destino = Object.prototype.hasOwnProperty.call(DESTINOS_3D, chave) ? DESTINOS_3D[chave] : null;
+      if (destino) {
+        btn3d.href = destino.href;
+        btn3d.title = 'Abrir visualização 3D de ' + destino.nome;
+      }
+      btn3d.classList.toggle('visible', !!destino);
     }
 
     // ── SELECT MUNICÍPIO ─────────────────────────────────────────────────────────
