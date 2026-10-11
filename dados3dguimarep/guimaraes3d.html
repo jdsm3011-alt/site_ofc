@@ -7,15 +7,15 @@
   <meta name="mobile-web-app-capable" content="yes">
   <title>Guimarães 3D</title>
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
   <div id="map"></div>
 
-  <button id="btn3d" class="mode" type="button" aria-pressed="false" title="Alternar entre 2D e 3D (tecla D)">
-    <span class="mode-opt" data-m="2d">2D</span>
-    <span class="mode-opt" data-m="3d">3D</span>
-  </button>
+  <a id="voltar" class="voltar" href="../index.html" aria-label="Voltar à página principal">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Voltar</span>
+  </a>
 
   <aside id="painel" class="painel" aria-label="Mapa de fundo e simbologia" hidden>
     <button id="painel-toggle" class="painel-titulo" type="button" aria-expanded="true">Camadas e simbologia</button>
@@ -58,6 +58,6 @@
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script src="https://unpkg.com/proj4@2.12.1/dist/proj4.js"></script>
   <script src="https://unpkg.com/geotiff@2.1.3/dist-browser/geotiff.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

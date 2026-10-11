@@ -4,14 +4,14 @@ const CONFIG = {
   // Pasta dos dados relativa a ESTA página: o guimaraes3d.html já está dentro de dados3dguimarep/,
   // por isso os ficheiros (e o manifest.json) estão ao lado dele. Se mover o HTML para a raiz, use 'dados3dguimarep/'.
   pastaDados: './',
+  // Ficheiros a carregar, pelo nome (na pasta acima). Se a lista ficar vazia, tenta manifest.json e depois a listagem da pasta.
+  ficheiros: ['guima_edific.geojson', 'engenh_osm_estradas_guimaraes.geojson', 'mdt.tif'],
   // Alturas aleatórias (para experiências, quando os dados não têm altura): entre min e max, em metros
   alturasAleatorias: true,
   alturaMin: 6,
   alturaMax: 36,
   // Mapa de fundo (sem chave de API): 'imagery' | 'topo' | 'navegacao' | 'osm' | null (sem fundo)
   basemap: 'imagery',
-  // false = edifícios sempre com a altura real/fixa (só a câmara transita); true = os volumes crescem do chão ao mudar para 3D
-  animarAltura: false,
   // Linhas (ruas, caminhos, rios...): qualquer LineString/MultiLineString nos GeoJSON, desenhadas sobre o relevo
   linhas: { cor: '#ffd23f', largura: 2.2, contorno: '#1d2a33' },
   // Cor de cada edifício a partir dos pixéis da imagem de satélite (Esri) dentro do contorno
@@ -30,16 +30,15 @@ const CONFIG = {
   variacao: 3,
   // Sistema de coordenadas assumido quando os dados não estão em graus (PT-TM06/ETRS89)
   crsPadrao: 'EPSG:3763',
-  camera3D: { pitch: 60, bearing: null, zoom: 16, alvo: [-8.300889, 41.446167] }, // alvo [lon, lat]: para onde voa ao entrar em 3D (41°26'46.2"N 8°18'03.2"W); null = mantém o centro; // zoom: aproxima até este nível ao entrar em 3D (null = não mexe no zoom); // bearing: null = não roda; número = roda para esse rumo ao entrar em 3D
-  duracao: 1400
+  // Vista inicial (abre diretamente em 3D no Estádio): alvo [lon, lat], inclinação (pitch), zoom e rumo (bearing; null = norte)
+  camera3D: { pitch: 60, bearing: null, zoom: 16, alvo: [-8.300889, 41.446167] }
 };
 
 proj4.defs('EPSG:3763', '+proj=tmerc +lat_0=39.6682583333333 +lon_0=-8.13310833333333 +k=1 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs');
 proj4.defs('EPSG:27493', '+proj=tmerc +lat_0=39.66666666666666 +lon_0=-8.131906111111112 +k=1 +x_0=180.598 +y_0=-86.99 +ellps=intl +towgs84=-223.237,110.193,36.649,0,0,0,0 +units=m +no_defs');
 
-const estado = { modo: '2d', fator: CONFIG.animarAltura ? 0 : 1, animacao: null };
+const estado = { fator: 1, relevoFalhou: false, avisoRelevo: '' };
 const elStatus = document.getElementById('status');
-const botao = document.getElementById('btn3d');
 
 function mostrarEstado(msg, erro = false) {
   elStatus.textContent = msg;
@@ -49,6 +48,10 @@ function mostrarEstado(msg, erro = false) {
 /* ---------- Descoberta e leitura dos ficheiros ---------- */
 
 async function descobrirFicheiros() {
+  // 0) nomes definidos em CONFIG.ficheiros
+  if (CONFIG.ficheiros && CONFIG.ficheiros.length) {
+    return CONFIG.ficheiros.map(n => CONFIG.pastaDados + encodeURIComponent(n));
+  }
   // 1) dados3dguimarep/manifest.json (lista de nomes), se existir
   try {
     const r = await fetch(CONFIG.pastaDados + 'manifest.json');
@@ -114,7 +117,11 @@ async function carregarDados() {
   const todas = [], linhas = [];
   let reais = 0;
   for (const url of urls) {
-    const gj = await (await fetch(url)).json();
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`Não foi possível carregar "${decodeURIComponent(url)}" (HTTP ${resp.status}). Confirme que o ficheiro está na mesma pasta do HTML e que o nome está certo.`);
+    let gj;
+    try { gj = await resp.json(); }
+    catch (_) { throw new Error(`"${decodeURIComponent(url)}" não é um GeoJSON válido (o servidor pode ter devolvido uma página em vez do ficheiro: confirme o nome e a pasta).`); }
     const feats = (gj.type === 'FeatureCollection' ? gj.features : [gj]).filter(f => f && f.geometry &&
       /Polygon|LineString/.test(f.geometry.type));
     const crs = detetarCRS(gj, feats);
@@ -153,12 +160,12 @@ const FUNDO_INICIAL = BASEMAPS[CONFIG.basemap] ? CONFIG.basemap : 'nenhum';
 
 const map = new maplibregl.Map({
   container: 'map',
-  pixelRatio: Math.min(window.devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 2 : 3), // poupa bateria e memória em telemóveis
-  center: [-8.0, 39.6],
-  zoom: 6,
-  pitch: 0,
-  maxPitch: 0,           // em 2D a inclinação está bloqueada
-  dragRotate: false,
+  pixelRatio: Math.min(window.devicePixelRatio || 1, 2), // limita a resolução interna: poupa GPU, bateria e memória
+  center: CONFIG.camera3D.alvo,
+  zoom: CONFIG.camera3D.zoom,
+  pitch: CONFIG.camera3D.pitch,
+  bearing: CONFIG.camera3D.bearing ?? 0,
+  maxPitch: 85,
   style: {
     version: 8,
     sources: Object.fromEntries(Object.entries(BASEMAPS).map(([k, b]) => ['base-' + k, { type: 'raster', tileSize: 256, maxzoom: b.maxzoom, tiles: [b.url], attribution: b.attr }])),
@@ -196,7 +203,8 @@ map.on('load', async () => {
         if (CONFIG.relevo.assentarEdificios) await assentar(fc);
         aviso = ' · relevo ativo';
       }
-      catch (e) { console.error(e); aviso = ` · relevo não carregado (${e.message})`; }
+      catch (e) { console.error(e); aviso = ` · relevo não carregado (${e.message})`; estado.relevoFalhou = true; }
+      estado.avisoRelevo = aviso;
     }
 
     // Linhas: ficam por baixo dos edifícios e assentam no relevo
@@ -234,10 +242,10 @@ map.on('load', async () => {
     });
 
     iniciarPainel({ temLinhas: linhas.length > 0, temRelevo: !!map.getLayer('sombreado') });
-    map.fitBounds(limites({ features: [...fc.features, ...linhas] }), { padding: 60, duration: 0 });
     const n = fc.features.length.toLocaleString('pt-PT');
     mostrarEstado(`${n} edifícios` + (linhas.length ? ` · ${linhas.length.toLocaleString('pt-PT')} linhas` : '') + ` de ${ficheiros} ficheiro(s)` + (reais === 0 ? ' · sem alturas nos dados: extrusão estimada' : '') + aviso);
-    setTimeout(() => elStatus.classList.add('hide'), 4500);
+    if (estado.relevoFalhou) mostrarEstado(elStatus.textContent, true); // erro do relevo fica visível
+    else setTimeout(() => elStatus.classList.add('hide'), 4500);
     if (CONFIG.corPorImagem) colorirPorImagem(fc);
 
     map.on('click', 'edificios-3d', e => {
@@ -264,7 +272,15 @@ proj4.defs('EPSG:32629', '+proj=utm +zone=29 +datum=WGS84 +units=m +no_defs');
 
 async function prepararRelevo(url) {
   const N = 256;
-  const tiff = await GeoTIFF.fromUrl(url);
+  // O MDT é pequeno: descarrega-se uma vez e lê-se da memória. Evita depender de pedidos HTTP Range
+  // (o geotiff.js falha com "Server responded with full file" quando o host devolve o ficheiro inteiro).
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`mdt.tif: HTTP ${resp.status}`);
+  const buf = await resp.arrayBuffer();
+  const sig = new Uint8Array(buf, 0, 2);
+  if (!((sig[0] === 0x49 && sig[1] === 0x49) || (sig[0] === 0x4D && sig[1] === 0x4D)))
+    throw new Error('o servidor não devolveu um GeoTIFF (ficheiro em falta ou redirecionado para uma página HTML)');
+  const tiff = await GeoTIFF.fromArrayBuffer(buf);
   const img = await tiff.getImage();
   const chaves = img.getGeoKeys() || {};
   const cod = chaves.ProjectedCSTypeGeoKey || chaves.GeographicTypeGeoKey;
@@ -448,8 +464,8 @@ async function colorirPorImagem(fc) {
       n++;
     });
     map.getSource('edificios').setData(fc);
-    mostrarEstado(`${n.toLocaleString('pt-PT')} edifícios coloridos pela imagem (zoom ${z})`);
-    setTimeout(() => elStatus.classList.add('hide'), 3500);
+    mostrarEstado(`${n.toLocaleString('pt-PT')} edifícios coloridos pela imagem (zoom ${z})` + estado.avisoRelevo, estado.relevoFalhou);
+    if (!estado.relevoFalhou) setTimeout(() => elStatus.classList.add('hide'), 3500);
   } catch (e) {
     console.error(e);
     mostrarEstado(`Cor por imagem indisponível: ${e.message}`, true);
@@ -523,53 +539,3 @@ function iniciarPainel({ temLinhas, temRelevo }) {
   aplicarFundo(FUNDO_INICIAL); aplicarEdificios(); aplicarLinhas();
   $('painel').hidden = false;
 }
-
-/* ---------- Transição 2D <-> 3D ---------- */
-
-function animarFator(destino, duracao) {
-  cancelAnimationFrame(estado.animacao);
-  const inicio = estado.fator, t0 = performance.now();
-  const passo = agora => {
-    const t = Math.min(1, (agora - t0) / duracao);
-    const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // easeInOutCubic
-    estado.fator = inicio + (destino - inicio) * e;
-    if (map.getLayer('edificios-3d')) map.setPaintProperty('edificios-3d', 'fill-extrusion-height', expressaoAltura(estado.fator));
-    if (map.getLayer('edificios-linha')) map.setPaintProperty('edificios-linha', 'line-opacity', 0.7 * (1 - estado.fator * 0.85));
-    if (t < 1) estado.animacao = requestAnimationFrame(passo);
-  };
-  estado.animacao = requestAnimationFrame(passo);
-}
-
-function definirModo(modo) {
-  estado.modo = modo;
-  const e3d = modo === '3d';
-  botao.setAttribute('aria-pressed', e3d);
-  const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const dur = reduzir ? 0 : CONFIG.duracao;
-
-  if (e3d) {
-    map.setMaxPitch(85);
-    map.dragRotate.enable();
-    map.touchZoomRotate.enableRotation();
-    map.touchPitch.enable();
-    // Mantém o centro: apenas a inclinação e a rotação mudam
-    const alvo = { pitch: CONFIG.camera3D.pitch, center: map.getCenter(), zoom: map.getZoom(), duration: dur, essential: true };
-    estado.zoom2d = map.getZoom(); estado.centro2d = map.getCenter();
-    if (CONFIG.camera3D.alvo) alvo.center = CONFIG.camera3D.alvo;
-    if (CONFIG.camera3D.zoom !== null) alvo.zoom = Math.max(map.getZoom(), CONFIG.camera3D.zoom);
-    if (CONFIG.camera3D.bearing !== null) alvo.bearing = CONFIG.camera3D.bearing;
-    map.easeTo(alvo); // aproxima (se configurado) e inclina, mantendo o centro
-  } else {
-    map.dragRotate.disable();
-    map.touchPitch.disable();
-    map.touchZoomRotate.disableRotation();
-    map.easeTo({ pitch: 0, bearing: 0, center: estado.centro2d ?? map.getCenter(), zoom: estado.zoom2d ?? map.getZoom(), duration: dur, essential: true }); // volta à vista de antes do 3D
-    map.once('moveend', () => { if (estado.modo === '2d') map.setMaxPitch(0); });
-  }
-  if (CONFIG.animarAltura) animarFator(e3d ? 1 : 0, dur);
-}
-
-botao.addEventListener('click', () => definirModo(estado.modo === '2d' ? '3d' : '2d'));
-document.addEventListener('keydown', e => {
-  if (e.key.toLowerCase() === 'd' && !e.ctrlKey && !e.metaKey) botao.click();
-});
