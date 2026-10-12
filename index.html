@@ -4307,6 +4307,68 @@
       background: var(--green);
       border-color: var(--green);
     }
+    /* ── Formulário de contacto no footer ─────── */
+    .footer-form {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-transform: none;
+      letter-spacing: normal;
+      text-align: left;
+    }
+    .footer-form-title {
+      font-family: 'Spectral', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0;
+    }
+    .site-footer .footer-form-text {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+      margin: 0 0 4px;
+    }
+    .footer-form input[type="text"],
+    .footer-form textarea {
+      width: 100%;
+      box-sizing: border-box;
+      resize: none;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid rgba(61, 107, 79, .2);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      line-height: 1.5;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .footer-form input[type="text"]::placeholder,
+    .footer-form textarea::placeholder {
+      color: var(--stone);
+      opacity: .8;
+    }
+    .footer-form input[type="text"]:focus,
+    .footer-form textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(61, 107, 79, .12);
+    }
+    .footer-form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .site-footer .footer-form-ok {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      color: var(--green);
+      margin: 0;
+    }
+
     @media (max-width: 640px) {
       .footer-bottom-bar {
         flex-direction: column;
@@ -5918,38 +5980,69 @@
       </div>
 
       <div class="footer-bottom-bar">
-              <div class="footer-sitemap">
-                
-                
-                <a href="areas_ardidas.html">Áreas Ardidas</a>
-                 
-                 
-                <a href="engenh.html">fGIS</a>
-                <a href="documentacao.html">Documentação</a>
-              
-                
-                
-              
+              <form class="footer-form" id="footer-form" action="https://formspree.io/f/xvzjojbj" method="POST">
+                <h3 class="footer-form-title" data-i18n="footerForm.title">Entre em contacto</h3>
+                <p class="footer-form-text" data-i18n="footerForm.text"></p>
+                <input type="text" id="footer-form-nome" name="nome_instituicao" maxlength="120" required
+                  placeholder="Nome / Instituição" data-i18n-attr-placeholder="footerForm.nome" autocomplete="organization">
+                <textarea id="footer-form-msg" name="message" rows="4" maxlength="1000" required
+                  placeholder="A tua mensagem..." data-i18n-attr-placeholder="footerForm.mensagem"></textarea>
+                <input type="hidden" name="_subject" value="Nova mensagem do site (formulário do footer)">
+                <div class="footer-form-actions">
+                  <button type="submit" class="feedback-toast-submit" id="footer-form-submit">
+                    <span data-i18n="feedback.enviar">Enviar</span> <span aria-hidden="true">→</span>
+                  </button>
+                </div>
+                <p class="feedback-toast-error" id="footer-form-error" hidden data-i18n="feedback.erro">
+                  Não foi possível enviar agora. Tenta novamente.
+                </p>
+                <p class="footer-form-ok" id="footer-form-ok" hidden data-i18n="footerForm.ok">Mensagem enviada. Obrigado!</p>
+              </form>
             </div>
 
             <div class="footer-signature">
               <span class="footer-brand">D. Machado<span class="footer-brand-year">© 2026</span></span>
               <span class="footer-divider" aria-hidden="true"></span>
-              <span class="footer-updated">Última atualização: 03/10/2026, 16:30.</span>
-              <span class="footer-divider" aria-hidden="true"></span>
-              <span class="footer-contactos-wrap">
-                <a class="footer-contactos-link" id="footer-contactos-link" tabindex="0">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                  Contacto
-                </a>
-                <span class="footer-contactos-popup" id="footer-contactos-popup" title="Clicar para copiar" tabindex="0" role="button">
-                  <svg class="footer-contactos-popup-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                  jdsm3011@gmail.com
-                </span>
+              <span class="footer-updated">Última atualização: 12/10/2026, 21:30.</span>
+               
+               
+                
+                
               </span>
             </div>
           </div>
   </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('footer-form');
+      if (!form) return;
+      var errorMsg = document.getElementById('footer-form-error');
+      var okMsg = document.getElementById('footer-form-ok');
+      var submitBtn = document.getElementById('footer-form-submit');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (errorMsg) errorMsg.hidden = true;
+        if (okMsg) okMsg.hidden = true;
+        if (submitBtn) submitBtn.disabled = true;
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error('Resposta não-ok do servidor');
+            form.reset();
+            if (okMsg) okMsg.hidden = false;
+            if (submitBtn) submitBtn.disabled = false;
+          })
+          .catch(function () {
+            if (errorMsg) errorMsg.hidden = false;
+            if (submitBtn) submitBtn.disabled = false;
+          });
+      });
+    })();
+  </script>
 
   <script>
     (function(){
@@ -9286,6 +9379,11 @@
           'feedback.enviar': 'Send',
           'feedback.erro': 'Could not send it right now. Please try again.',
           'feedback.obrigado': 'Thank you!',
+          'footerForm.title': 'Get in touch',
+          'footerForm.text': 'Questions, suggestions or collaboration proposals? Leave your message here.',
+          'footerForm.nome': 'Name / Institution',
+          'footerForm.mensagem': 'Your message...',
+          'footerForm.ok': 'Message sent. Thank you!',
 
           'footer.sobreTitle': 'About',
           'footer.sobreText': 'This (unofficial) project is being carried out to address the need for organised, structured geographic information, hence this website and all of its components. It provides various spatial analysis tools covering a wide range of data within the Portuguese territorial context. Notable among them is the "Areal weighting" tool, which allows up to 5 buffers (areas of influence) in any Portuguese municipality with flexible radii. Through its inherent computation, it weights population, buildings (among other BGRI data) located within those radii. The platform also features fGIS, a WebGIS that behaves like a traditional GIS (still with several limitations) but allows direct visualisation and overlay of geographic data from this website. If you are a teacher or student, this website contains a wide range of pre-processed geographic data ready to use. Please note that it is still under development. This project is developed and maintained independently.',
