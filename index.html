@@ -5257,7 +5257,8 @@
                     </div>
                   </div>
                   <div class="di-right">
-                    <a class="btn-go" id="btn-areas-ardidas" href="areas_ardidas.html" title="Abrir histórico de áreas ardidas">→</a>
+                    <a class="btn-go" id="btn-areas-ardidas" href="areas_ardidas.html" title="Abrir histórico de áreas ardidas"
+                      onclick="if (activeMunicipio && activeMunicipio.municipio) { this.href = 'areas_ardidas.html?municipio=' + encodeURIComponent(activeMunicipio.municipio); } else { this.href = 'areas_ardidas.html'; }">→</a>
                   </div>
                 </div>
 
