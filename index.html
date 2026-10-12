@@ -4015,6 +4015,29 @@
       display: none;
     }
 
+    .btn-go {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: var(--white);
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color .12s, background .12s;
+      flex-shrink: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ochre);
+    }
+
+    .btn-go:hover {
+      border-color: var(--ochre);
+      background: #fef3ec;
+    }
+
     /* ── PREVIEW BUTTON ──────────────────────── */
     .btn-preview {
       display: inline-flex;
@@ -4727,10 +4750,9 @@
         <a href="#terms-section" data-i18n="nav.termos">Termos e condições</a>
         <a href="documentacao.html" data-i18n="nav.documentacao">Documentação</a>
         <a href="#site-footer" data-i18n="nav.sobre">Sobre </a>
-         
-         
-         
         
+         
+         
         <a href="engenh.html" data-i18n="nav.fgis">fGIS</a>
         
 
@@ -5227,11 +5249,17 @@
                 </div>
 
                 <!-- Histórico de áreas ardidas -->
-                <a class="btn-ardidas" id="btn-areas-ardidas" href="areas_ardidas.html" style="margin-top:10px;">
-                  <span class="dla-icon">🔥</span>
-                  <span class="dla-text" data-i18n="panel.areasArdidas">Histórico de áreas ardidas</span>
-                  <span class="dla-arrow">→</span>
-                </a>
+                <div class="download-item">
+                  <div class="di-left">
+                    <div class="di-text">
+                      <span class="di-name" data-i18n="panel.areasArdidas">Histórico de áreas ardidas</span>
+                      <span class="di-meta">areas_ardidas.html</span>
+                    </div>
+                  </div>
+                  <div class="di-right">
+                    <a class="btn-go" id="btn-areas-ardidas" href="areas_ardidas.html" title="Abrir histórico de áreas ardidas">→</a>
+                  </div>
+                </div>
 
                 <!-- OSM -->
                 <div class="osm-section" id="osm-section">
@@ -5712,9 +5740,7 @@
         <div class="sobre-text-col">
           <h2 class="footer-sobre-title" data-i18n="footer.sobreTitle">Sobre</h2>
           <p class="footer-sobre-text" data-i18n="footer.sobreText">Este projeto (não oficial) está a ser realizado para responder à necessidade de informação geográfica
-            organizada e estruturada, daí este website, com todas as suas componentes. Dispõe de diversas ferramentas de análise espacial que englobam uma elevada diversidade de dados
-            dentro do contexto territorial português. Destaco a ferramenta "Areal weighting" (disponível no topo do website), que permite afixar até 5 buffers (áreas de influência) em qualquer município português, com raios flexíveis.
-            Através do cálculo inerente ao mesmo, consegue ponderar a população, edifícios (entre outros dados da BGRI) que se encontram localizados dentro desses mesmos raios (preste apenas atenção ao ano dos dados em si).
+            organizada e estruturada, daí este website, com todas as suas componentes.
             A plataforma disponibiliza ainda um WebGIS (fGIS), que se comporta como um SIG tradicional (com bastantes limitações ainda), mas permite, de forma direta, visualizar e sobrepor informação geográfica deste website, bem como outras ferramentas inerentes aos SIG. Refiro que esta plataforma ainda está em desenvolvimento.
             Se for professor ou aluno, este website contém um grande leque de informação geográfica pré-processada, pronta a usar. Relembro que o mesmo ainda se
             encontra em desenvolvimento. Este projeto é desenvolvido e mantido de forma autónoma.</p>
@@ -5893,10 +5919,10 @@
       <div class="footer-bottom-bar">
               <div class="footer-sitemap">
                 
-                <a href="estatisticas.html">Estatísticas</a>
+                
                 <a href="areas_ardidas.html">Áreas Ardidas</a>
-                <a href="BGRI_vier.html">BGRI</a>
-                <a href="ArealWeighting.html">Areal Weighting</a>
+                 
+                 
                 <a href="engenh.html">fGIS</a>
                 <a href="documentacao.html">Documentação</a>
               
